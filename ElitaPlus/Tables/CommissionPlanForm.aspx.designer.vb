@@ -195,6 +195,15 @@ Namespace Tables
         Protected WithEvents hdnSelectedTab As Global.System.Web.UI.WebControls.HiddenField
 
         '''<summary>
+        '''Label2 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
         '''Label1 control.
         '''</summary>
         '''<remarks>
@@ -213,13 +222,40 @@ Namespace Tables
         Protected WithEvents Label6 As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
-        '''Label2 control.
+        '''moGridView control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moGridView As Global.System.Web.UI.WebControls.GridView
+
+        '''<summary>
+        '''BtnNewRate_WRITE control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents BtnNewRate_WRITE As Global.System.Web.UI.WebControls.Button
+
+        '''<summary>
+        '''BtnSaveRate_WRITE control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents BtnSaveRate_WRITE As Global.System.Web.UI.WebControls.Button
+
+        '''<summary>
+        '''BtnCancelRate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents BtnCancelRate As Global.System.Web.UI.WebControls.Button
 
         '''<summary>
         '''moCommBreakPanel control.
@@ -796,42 +832,6 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents BtnDeleteGrid_WRITE As Global.System.Web.UI.WebControls.Button
-
-        '''<summary>
-        '''moGridView control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents moGridView As Global.System.Web.UI.WebControls.GridView
-
-        '''<summary>
-        '''BtnNewRate_WRITE control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents BtnNewRate_WRITE As Global.System.Web.UI.WebControls.Button
-
-        '''<summary>
-        '''BtnSaveRate_WRITE control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents BtnSaveRate_WRITE As Global.System.Web.UI.WebControls.Button
-
-        '''<summary>
-        '''BtnCancelRate control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents BtnCancelRate As Global.System.Web.UI.WebControls.Button
 
         '''<summary>
         '''HiddenSaveChangesPromptResponse control.

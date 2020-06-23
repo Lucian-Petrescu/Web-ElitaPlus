@@ -401,18 +401,140 @@
         <table id="Table2" cellspacing="0" cellpadding="0" width="100%" border="0" class="formGrid" style="padding: 0px; margin: 0px">
             <tr>
                 <td>
-
                     <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
 
                     <div id="tabs" class="style-tabs-old" style="border: none;">
                         <ul>
+                            <li style="background: #d5d6e4"><a href="#tabsCommPlanDist">
+                                <asp:Label ID="Label2" runat="server" CssClass="tabHeaderText">Commission_Distribution</asp:Label></a></li>
                             <li style="background: #d5d6e4; display:none;"><a href="#tabsCommissionBreakdown">
                                 <asp:Label ID="Label1" runat="server" CssClass="tabHeaderTextOld">Commission_Breakdown</asp:Label></a></li>
                             <li style="background: #d5d6e4; display:none;"><a href="#tabmoEntityTabPanelWRITE">
-                                <asp:Label ID="Label6" runat="server" CssClass="tabHeaderTextOld">Entities</asp:Label></a></li>
-                            <li style="background: #d5d6e4"><a href="#tabsCommPlanDist">
-                                <asp:Label ID="Label2" runat="server" CssClass="tabHeaderText">Commission_Distribution</asp:Label></a></li>
+                                <asp:Label ID="Label6" runat="server" CssClass="tabHeaderTextOld">Entities</asp:Label></a></li>                            
                         </ul>
+
+                        <div id="tabsCommPlanDist">
+                            <table id="tblOpportunities" class="dataGrid" border="0" rules="cols" width="98%">
+                                <tr>
+                                    <td colspan="2">
+                                        <%--<Elita:MessageController runat="server" ID="moMsgControllerRate" Visible="false" />--%>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="Center" colspan="2">
+                                        <div id="scroller" style="overflow: auto; width: 96%; height: 125px" align="center">
+                                            <asp:GridView ID="moGridView" runat="server" OnRowCreated="ItemCreated" OnRowCommand="ItemCommand"
+                                                AllowPaging="False" PageSize="50" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"
+                                                SkinID="DetailPageGridView">
+                                                <SelectedRowStyle Wrap="False"></SelectedRowStyle>
+                                                <EditRowStyle Wrap="False"></EditRowStyle>
+                                                <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
+                                                <RowStyle Wrap="False"></RowStyle>
+                                                <HeaderStyle Wrap="False"></HeaderStyle>
+                                                <Columns>
+                                                    <asp:TemplateField ShowHeader="false">
+                                                        <ItemStyle HorizontalAlign="Center" Width="3%"></ItemStyle>
+                                                        <ItemTemplate>
+                                                            <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="~/Navigation/images/icons/edit2.gif"
+                                                                CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField ShowHeader="false">
+                                                        <ItemStyle HorizontalAlign="Center" Width="3%"></ItemStyle>
+                                                        <ItemTemplate>
+                                                            <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="~/Navigation/images/icons/trash.gif"
+                                                                runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField Visible="False">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="moCOMM_PLAN_DIST_ID" Text='<%# GetGuidStringFromByteArray(Container.DataItem("COMM_PLAN_DISTRIBUTION_ID"))%>'
+                                                                runat="server">
+                                                            </asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField Visible="False">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="moCOVERAGE_RATE_ID" Text='<%# GetGuidStringFromByteArray(Container.DataItem("COMMISSION_PLAN_ID"))%>'
+                                                                runat="server">
+                                                            </asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField Visible="true" HeaderText="PAYEE_TYPE">
+                                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblPayeeType" Text='<%# Container.DataItem("PAYEE_TYPE_XCD")%>' runat="server"> </asp:Label>
+                                                        </ItemTemplate>
+                                                        <EditItemTemplate>
+                                                            <asp:DropDownList ID="cboPayeeType" runat="server" Width="100"></asp:DropDownList>
+                                                        </EditItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField Visible="true" HeaderText="ENTITY_TYPE">
+                                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblEntityType" Text='<%# GetGuidStringFromByteArray(Container.DataItem("ENTITY_ID"))%>' runat="server"> </asp:Label>
+                                                        </ItemTemplate>
+                                                        <EditItemTemplate>
+                                                            <asp:DropDownList ID="cboEntityType" runat="server" Width="100"></asp:DropDownList>
+                                                        </EditItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField Visible="True" HeaderText="COMMISSION_AMOUNT">
+                                                        <ItemStyle HorizontalAlign="center"></ItemStyle>
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="moLowPriceLabel" Text='<%# GetAmountFormattedToVariableString(Container.DataItem("COMMISSION_AMOUNT"))%>'
+                                                                runat="server">
+                                                            </asp:Label>
+                                                        </ItemTemplate>
+                                                        <EditItemTemplate>
+                                                            <asp:TextBox ID="moLowPriceText" runat="server" Visible="True" Width="75"></asp:TextBox>
+                                                        </EditItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField Visible="True" HeaderText="Commission_Percent">
+                                                        <ItemStyle HorizontalAlign="center"></ItemStyle>
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="moCommission_PercentLabel" Text='<%# GetAmountFormattedDoubleString(Container.DataItem("COMMISSION_PERCENTAGE"), "N4")%>'
+                                                                runat="server">
+                                                            </asp:Label>
+                                                        </ItemTemplate>
+                                                        <EditItemTemplate>
+                                                            <asp:TextBox ID="moCommission_PercentText" runat="server" Visible="True" Width="75"></asp:TextBox>
+                                                        </EditItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField Visible="true" HeaderText="COMMISSION_PERCENT_XCD">
+                                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblCommPercentSourceXcd" Text='<%# Container.DataItem("COMMISSIONS_SOURCE_XCD")%>' runat="server"> </asp:Label>
+                                                        </ItemTemplate>
+                                                        <EditItemTemplate>
+                                                            <asp:DropDownList ID="cboCommPercentSourceXcd" runat="server" Visible="True" Width="100"></asp:DropDownList>
+                                                        </EditItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField Visible="True" HeaderText="POSITION">
+                                                        <ItemStyle HorizontalAlign="center"></ItemStyle>
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="moRenewal_NumberLabel" Text='<%# GetAmountFormattedToString(Container.DataItem("POSITION"))%>'
+                                                                runat="server">
+                                                            </asp:Label>
+                                                        </ItemTemplate>
+                                                        <EditItemTemplate>
+                                                            <asp:TextBox ID="moRenewal_NumberText" runat="server" Visible="True" Width="75" MaxLength="3" Text="0"></asp:TextBox>
+                                                        </EditItemTemplate>
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                                <PagerStyle HorizontalAlign="Center" CssClass="PAGER"></PagerStyle>
+                                            </asp:GridView>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" width="96%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <asp:Button ID="BtnNewRate_WRITE" runat="server" SkinID="AlternateLeftButton" Text="New"></asp:Button>&nbsp;
+                            <asp:Button ID="BtnSaveRate_WRITE" runat="server" SkinID="PrimaryRightButton" Text="Save"></asp:Button>&nbsp;
+                            <asp:Button ID="BtnCancelRate" runat="server" SkinID="AlternateLeftButton" Text="Cancel"></asp:Button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
 
                         <div id="tabsCommissionBreakdown" style="border: 1px solid black; display:none;">
                             <div class="Page" runat="server" id="moCommBreakPanel" style="display: block; height: 370px; overflow: auto">
@@ -877,7 +999,7 @@
                                     </table>
                                 </asp:Panel>
 
-                                <asp:Panel ID="moDetailButtonPanel" runat="server">
+                                <asp:Panel ID="moDetailButtonPanel" runat="server" Visible="false">
                                     <div class="btnZone">
                                         <asp:Button ID="btnEntityBack" runat="server" Text="Back" SkinID="AlternateRightButton"></asp:Button>&nbsp;
                             <asp:Button ID="btnEntitySave" runat="server" Text="SAVE" SkinID="PrimaryRightButton"></asp:Button>&nbsp;
@@ -975,129 +1097,7 @@
                     <!-- Tab end -->
                 </asp:Panel>
               </div>      --%>
-
-                        <div id="tabsCommPlanDist">
-                            <table id="tblOpportunities" class="dataGrid" border="0" rules="cols" width="98%">
-                                <tr>
-                                    <td colspan="2">
-                                        <%--<Elita:MessageController runat="server" ID="moMsgControllerRate" Visible="false" />--%>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td align="Center" colspan="2">
-                                        <div id="scroller" style="overflow: auto; width: 96%; height: 125px" align="center">
-                                            <asp:GridView ID="moGridView" runat="server" OnRowCreated="ItemCreated" OnRowCommand="ItemCommand"
-                                                AllowPaging="False" PageSize="50" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"
-                                                SkinID="DetailPageGridView">
-                                                <SelectedRowStyle Wrap="False"></SelectedRowStyle>
-                                                <EditRowStyle Wrap="False"></EditRowStyle>
-                                                <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
-                                                <RowStyle Wrap="False"></RowStyle>
-                                                <HeaderStyle Wrap="False"></HeaderStyle>
-                                                <Columns>
-                                                    <asp:TemplateField ShowHeader="false">
-                                                        <ItemStyle HorizontalAlign="Center" Width="3%"></ItemStyle>
-                                                        <ItemTemplate>
-                                                            <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="~/Navigation/images/icons/edit2.gif"
-                                                                CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
-                                                        </ItemTemplate>
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField ShowHeader="false">
-                                                        <ItemStyle HorizontalAlign="Center" Width="3%"></ItemStyle>
-                                                        <ItemTemplate>
-                                                            <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="~/Navigation/images/icons/trash.gif"
-                                                                runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
-                                                        </ItemTemplate>
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField Visible="False">
-                                                        <ItemTemplate>
-                                                            <asp:Label ID="moCOMM_PLAN_DIST_ID" Text='<%# GetGuidStringFromByteArray(Container.DataItem("COMM_PLAN_DISTRIBUTION_ID"))%>'
-                                                                runat="server">
-                                                            </asp:Label>
-                                                        </ItemTemplate>
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField Visible="False">
-                                                        <ItemTemplate>
-                                                            <asp:Label ID="moCOVERAGE_RATE_ID" Text='<%# GetGuidStringFromByteArray(Container.DataItem("COMMISSION_PLAN_ID"))%>'
-                                                                runat="server">
-                                                            </asp:Label>
-                                                        </ItemTemplate>
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField Visible="true" HeaderText="PAYEE_TYPE">
-                                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                                        <ItemTemplate>
-                                                            <asp:Label ID="lblPayeeType" Text='<%# Container.DataItem("PAYEE_TYPE_XCD")%>' runat="server"> </asp:Label>
-                                                        </ItemTemplate>
-                                                        <EditItemTemplate>
-                                                            <asp:DropDownList ID="cboPayeeType" runat="server" Width="100"></asp:DropDownList>
-                                                        </EditItemTemplate>
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField Visible="true" HeaderText="ENTITY_TYPE">
-                                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                                        <ItemTemplate>
-                                                            <asp:Label ID="lblEntityType" Text='<%# GetGuidStringFromByteArray(Container.DataItem("ENTITY_ID"))%>' runat="server"> </asp:Label>
-                                                        </ItemTemplate>
-                                                        <EditItemTemplate>
-                                                            <asp:DropDownList ID="cboEntityType" runat="server" Width="100"></asp:DropDownList>
-                                                        </EditItemTemplate>
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField Visible="True" HeaderText="COMMISSION_AMOUNT">
-                                                        <ItemStyle HorizontalAlign="center"></ItemStyle>
-                                                        <ItemTemplate>
-                                                            <asp:Label ID="moLowPriceLabel" Text='<%# GetAmountFormattedToVariableString(Container.DataItem("COMMISSION_AMOUNT"))%>'
-                                                                runat="server">
-                                                            </asp:Label>
-                                                        </ItemTemplate>
-                                                        <EditItemTemplate>
-                                                            <asp:TextBox ID="moLowPriceText" runat="server" Visible="True" Width="75"></asp:TextBox>
-                                                        </EditItemTemplate>
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField Visible="True" HeaderText="Commission_Percent">
-                                                        <ItemStyle HorizontalAlign="center"></ItemStyle>
-                                                        <ItemTemplate>
-                                                            <asp:Label ID="moCommission_PercentLabel" Text='<%# GetAmountFormattedDoubleString(Container.DataItem("COMMISSION_PERCENTAGE"), "N4")%>'
-                                                                runat="server">
-                                                            </asp:Label>
-                                                        </ItemTemplate>
-                                                        <EditItemTemplate>
-                                                            <asp:TextBox ID="moCommission_PercentText" runat="server" Visible="True" Width="75"></asp:TextBox>
-                                                        </EditItemTemplate>
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField Visible="true" HeaderText="COMMISSION_PERCENT_XCD">
-                                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                                        <ItemTemplate>
-                                                            <asp:Label ID="lblCommPercentSourceXcd" Text='<%# Container.DataItem("COMMISSIONS_SOURCE_XCD")%>' runat="server"> </asp:Label>
-                                                        </ItemTemplate>
-                                                        <EditItemTemplate>
-                                                            <asp:DropDownList ID="cboCommPercentSourceXcd" runat="server" Visible="True" Width="100"></asp:DropDownList>
-                                                        </EditItemTemplate>
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField Visible="True" HeaderText="POSITION">
-                                                        <ItemStyle HorizontalAlign="center"></ItemStyle>
-                                                        <ItemTemplate>
-                                                            <asp:Label ID="moRenewal_NumberLabel" Text='<%# GetAmountFormattedToString(Container.DataItem("POSITION"))%>'
-                                                                runat="server">
-                                                            </asp:Label>
-                                                        </ItemTemplate>
-                                                        <EditItemTemplate>
-                                                            <asp:TextBox ID="moRenewal_NumberText" runat="server" Visible="True" Width="75" MaxLength="3" Text="0"></asp:TextBox>
-                                                        </EditItemTemplate>
-                                                    </asp:TemplateField>
-                                                </Columns>
-                                                <PagerStyle HorizontalAlign="Center" CssClass="PAGER"></PagerStyle>
-                                            </asp:GridView>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" width="96%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <asp:Button ID="BtnNewRate_WRITE" runat="server" SkinID="AlternateLeftButton" Text="New"></asp:Button>&nbsp;
-                            <asp:Button ID="BtnSaveRate_WRITE" runat="server" SkinID="PrimaryRightButton" Text="Save"></asp:Button>&nbsp;
-                            <asp:Button ID="BtnCancelRate" runat="server" SkinID="AlternateLeftButton" Text="Cancel"></asp:Button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                        
                     </div>
                 </td>
             </tr>

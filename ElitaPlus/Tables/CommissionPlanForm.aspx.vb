@@ -49,6 +49,7 @@ Namespace Tables
             Public IsDiffNotSelectedOnce As Boolean
             Public IsBucketIncomingSelected As Boolean
             Public IsDealerConfiguredForSourceXcd As Boolean = False
+            Public IsCompanyConfiguredForSourceXcd As Boolean = False
             Public IsIgnorePremiumSetYesForContract As Boolean = False
 
             Public IsCoverageNew As Boolean = False
@@ -365,6 +366,37 @@ Namespace Tables
             End Get
         End Property
 
+        Public ReadOnly Property HasCompanyConfigeredForSourceXcd() As Boolean
+            Get
+                Dim isCompanyConfiguredForSourceXcd As Boolean
+                isCompanyConfiguredForSourceXcd = False
+                If Not Me.State.MyBo Is Nothing Then
+                    If (Me.State.MyBo.DealerId <> Guid.Empty) Then
+                        Dim oDealer As New Dealer(Me.State.MyBo.DealerId)
+                        Dim oCompany As New Company(oDealer.CompanyId)
+                        If Not oCompany.AttributeValues Is Nothing Then
+                            If oCompany.AttributeValues.Contains("NEW_COMMISSION_MODULE_CONFIGURED") Then
+                                'If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.EXT_YESNO_Y Then
+                                If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.YESNO_Y Then
+                                    isCompanyConfiguredForSourceXcd = True
+                                Else
+                                    isCompanyConfiguredForSourceXcd = False
+                                End If
+                            Else
+                                isCompanyConfiguredForSourceXcd = False
+                            End If
+                        Else
+                            isCompanyConfiguredForSourceXcd = False
+                        End If
+                    Else
+                        isCompanyConfiguredForSourceXcd = False
+                    End If
+                Else
+                    isCompanyConfiguredForSourceXcd = False
+                End If
+                Return isCompanyConfiguredForSourceXcd
+            End Get
+        End Property
         Private Property CoverageRateId1() As String
             Get
                 Return GetGuidStringFromByteArray(Me.State.moCommPlanId.ToByteArray)
@@ -382,22 +414,10 @@ Namespace Tables
             End Set
         End Property
 
-        'Private Property IsNewRate() As Boolean
-        '    Get
-        '        Return Convert.ToBoolean(moIsNewRateLabel.Text)
-        '    End Get
-        '    Set(ByVal Value As Boolean)
-        '        moIsNewRateLabel.Text = Value.ToString
-        '    End Set
-        'End Property
-
-
-
 #Region "Properties-Tolerance"
 
         Private ReadOnly Property TheComTolerance() As CommissionTolerance
             Get
-                'If Me.State.IsToleranceNew = True Then
                 If Me.State.moCommissionToleranceId = Guid.Empty Then
                     ' For creating, inserting
                     Me.State.moCommTolerance = Me.State.MyBo.AddCommTolerance(Nothing)
@@ -455,28 +475,45 @@ Namespace Tables
                     UpdateBreadCrum()
                     'Me.SetFormTitle(PAGETITLE)
                     Me.SetFormTab(PAGETAB)
-                    Me.TranslateGridHeader(Grid)
-                    Me.TranslateGridControls(Grid)
-                    Me.SetGridItemStyleColor(Me.Grid)
+                    'Me.TranslateGridHeader(Grid)
+                    'Me.TranslateGridControls(Grid)
+                    'Me.SetGridItemStyleColor(Me.Grid)
                     Me.SetGridItemStyleColor(moGridView)
                     Me.TranslateGridHeader(Me.moGridView)
                     Me.TranslateGridControls(moGridView)
                     Me.SetStateProperties()
                     'US-521672
                     Me.State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
-                    BindSourceOptionDropdownlist()
-                    ExecuteEvents()
+                    Me.State.IsCompanyConfiguredForSourceXcd = HasCompanyConfigeredForSourceXcd()
+                    If Not Me.State.IsCompanyConfiguredForSourceXcd Then
+                        Me.moGridView.Visible = False
+                    Else
+                        Me.moGridView.Visible = True
+                        'US-521672
+                        SetGridSourceXcdLabelFromBo()
+                    End If
+
+                    'BindSourceOptionDropdownlist()
+                    'ExecuteEvents()
 
                     Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO,
-                                                                        Me.MSG_TYPE_CONFIRM, True)
+                                     Me.MSG_TYPE_CONFIRM, True)
                     Me.AddCalendar(Me.BtnEffectiveDate_WRITE, Me.moEffectiveText_WRITE)
                     Me.AddCalendar(Me.BtnExpirationDate_WRITE, Me.moExpirationText_WRITE)
-                    HideGridSourceXcdColumn()
+                    'HideGridSourceXcdColumn()
                 Else
-                    CheckIfComingFromConfirm()
+                    Me.State.IsCompanyConfiguredForSourceXcd = HasCompanyConfigeredForSourceXcd()
+                    If Not Me.State.IsCompanyConfiguredForSourceXcd Then
+                        'Me.DisplayMessage(Message.MSG_COMPANY_NOT_CONFIGURED_FOR_DEALER, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO, Me.HiddenSaveChangesPromptResponse)
+                        Me.moGridView.Visible = False
+                    Else
+                        Me.moGridView.Visible = True
+                        'US-521672
+                        SetGridSourceXcdLabelFromBo()
+                        CheckIfComingFromConfirm()
+                    End If
                 End If
-                'US-521672
-                SetGridSourceXcdLabelFromBo()
+
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -492,28 +529,6 @@ Namespace Tables
             Dim retType As New CommissionPeriodSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.moCommPlanId, Me.State.boChanged)
             Me.ReturnToCallingPage(retType)
         End Sub
-
-        'Private Sub btnEntityBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnEntityBack.Click
-        '    Try
-        '        If IsDirtyPeriodBO() = True Then
-        '            Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-        '                                    Me.HiddenSaveChangesPromptResponse)
-        '            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
-        '        Else
-        '            Me.ClearGridHeaders(Me.Grid)
-        '            Me.State.IsToleranceNew = False
-        '            PopulateTolerance(Me.POPULATE_ACTION_NO_EDIT)
-        '            ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, True)
-        '            EnableDisablePeriodEntity(True)
-        '            Me.EnableDisableControls(moPeriodPanel_WRITE, False)
-        '            hdnSelectedTab.Value = 0
-        '            ControlMgr.SetVisibleControl(Me, Me.btnEntityBack, False)
-        '            TheDealerControl.ChangeEnabledControlProperty(False)
-        '        End If
-        '    Catch ex As Exception
-        '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
-        '    End Try
-        'End Sub
 
         Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
             Try
@@ -634,8 +649,24 @@ Namespace Tables
            Handles multipleDropControl.SelectedDropChanged
             Try
                 EnableDateFields()
-                If Me.State.IsCommPlanDistNew = True Then
-                    PopulatePayeeType()
+                'If Me.State.IsCommPlanDistNew = True Then
+                '    'PopulatePayeeType()
+                'End If
+                Me.State.IsCompanyConfiguredForSourceXcd = HasCompanyConfigeredForSourceXcd()
+                If Me.State.IsCompanyConfiguredForSourceXcd Then
+                    SetGridControls(moGridView, True)
+                    FillSourceXcdDropdownList()
+                    FillEntityDropDownList()
+                    FillPayeeTypeDropDownList()
+                    SetGridSourceXcdDropdownFromBo()
+                    SetGridSourceXcdLabelFromBo()
+                    'SetGridSourceXcdTextboxForNewCoverage()
+                    Me.moGridView.Visible = False
+                    BtnNewRate_WRITE.Visible = False
+                Else
+                    Me.DisplayMessage(Message.MSG_COMPANY_NOT_CONFIGURED_FOR_DEALER, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO, Me.HiddenSaveChangesPromptResponse)
+                    Me.moGridView.Visible = False
+                    BtnNewRate_WRITE.Visible = False
                 End If
                 'ControlMgr.SetVisibleControl(Me, moRestrictDetailPanel2, GetRestrictMarkup())
             Catch ex As Exception
@@ -788,13 +819,13 @@ Namespace Tables
 
 #Region "Client Attributes"
 
-        Private Sub ExecuteEvents()
-            cboPayeeType1.Attributes("onChange") = String.Format("return EnableControl('{0}','{1}');", cboPayeeType1.ClientID, cboPeriodEntity1.ClientID)
-            cboPayeeType2.Attributes("onChange") = String.Format("return EnableControl('{0}','{1}');", cboPayeeType2.ClientID, cboPeriodEntity2.ClientID)
-            cboPayeeType3.Attributes("onChange") = String.Format("return EnableControl('{0}','{1}');", cboPayeeType3.ClientID, cboPeriodEntity3.ClientID)
-            cboPayeeType4.Attributes("onChange") = String.Format("return EnableControl('{0}','{1}');", cboPayeeType4.ClientID, cboPeriodEntity4.ClientID)
-            cboPayeeType5.Attributes("onChange") = String.Format("return EnableControl('{0}','{1}');", cboPayeeType5.ClientID, cboPeriodEntity5.ClientID)
-        End Sub
+        'Private Sub ExecuteEvents()
+        '    'cboPayeeType1.Attributes("onChange") = String.Format("return EnableControl('{0}','{1}');", cboPayeeType1.ClientID, cboPeriodEntity1.ClientID)
+        '    'cboPayeeType2.Attributes("onChange") = String.Format("return EnableControl('{0}','{1}');", cboPayeeType2.ClientID, cboPeriodEntity2.ClientID)
+        '    'cboPayeeType3.Attributes("onChange") = String.Format("return EnableControl('{0}','{1}');", cboPayeeType3.ClientID, cboPeriodEntity3.ClientID)
+        '    'cboPayeeType4.Attributes("onChange") = String.Format("return EnableControl('{0}','{1}');", cboPayeeType4.ClientID, cboPeriodEntity4.ClientID)
+        '    'cboPayeeType5.Attributes("onChange") = String.Format("return EnableControl('{0}','{1}');", cboPayeeType5.ClientID, cboPeriodEntity5.ClientID)
+        'End Sub
 #End Region
 
 #Region "Clear"
@@ -996,7 +1027,7 @@ Namespace Tables
             Me.State.moCommTolerance = New CommissionTolerance
             Me.State.IsToleranceNew = True
             ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, False)
-            EnableDisablePeriodEntity(False)
+            'EnableDisablePeriodEntity(False)
             Me.EnableDisableControls(moPeriodPanel_WRITE, True)
             EnableToleranceGrid(False)
             InitializeFormTolerance()
@@ -1034,7 +1065,7 @@ Namespace Tables
                 PopulateFormFromPeriodEntityBO()
                 PopulateTolerance(Me.POPULATE_ACTION_SAVE)
                 ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, True)
-                EnableDisablePeriodEntity(True)
+                'EnableDisablePeriodEntity(True)
                 PopulatePeriodEntity()
                 TheDealerControl.ChangeEnabledControlProperty(False)
                 'ControlMgr.SetEnableControl(Me, moComputeMethodDropDown, True)
@@ -1057,14 +1088,14 @@ Namespace Tables
             Try
                 If IsDirtyPeriodBO() = True Then
                     Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                            Me.HiddenSaveChangesPromptResponse)
+                                      Me.HiddenSaveChangesPromptResponse)
                     Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ClearGridHeaders(Me.Grid)
+                    'Me.ClearGridHeaders(Me.Grid)
                     Me.State.IsToleranceNew = False
                     PopulateTolerance(Me.POPULATE_ACTION_NO_EDIT)
                     ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, True)
-                    EnableDisablePeriodEntity(True)
+                    'EnableDisablePeriodEntity(True)
                     Me.EnableDisableControls(moPeriodPanel_WRITE, False)
                     TheDealerControl.ChangeEnabledControlProperty(False)
                     ControlMgr.SetVisibleControl(Me, Me.btnEntityBack, False)
@@ -1099,7 +1130,7 @@ Namespace Tables
             EnableToleranceGrid(False)
             PopulateFormFromToleranceBO()
             ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, False)
-            EnableDisablePeriodEntity(False)
+            'EnableDisablePeriodEntity(False)
             Me.EnableDisableControls(moPeriodPanel_WRITE, True)
         End Sub
 
@@ -1633,96 +1664,96 @@ Namespace Tables
             'Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             'Dim dvPayeeType As DataView = LookupListNew.GetPayeeTypeLookupList(langId)
             'Dim dvPayeeType1 As DataView = dvPayeeType
-            Dim PayeeTypeList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="PYTYPE", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-            Dim FilteredPayeeTypeList As DataElements.ListItem()
-            Dim FilteredPayeeType1List As DataElements.ListItem()
-            Dim yesId As Guid = (From lst In CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-                                 Where lst.Code = "Y"
-                                 Select lst.ListItemId).FirstOrDefault()
+            'Dim PayeeTypeList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="PYTYPE", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
+            'Dim FilteredPayeeTypeList As DataElements.ListItem()
+            'Dim FilteredPayeeType1List As DataElements.ListItem()
+            'Dim yesId As Guid = (From lst In CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
+            '                     Where lst.Code = "Y"
+            '                     Select lst.ListItemId).FirstOrDefault()
 
-            Dim dealerId As Guid = TheDealerControl.SelectedGuid
-            Dim oDealer As New Dealer(dealerId)
+            'Dim dealerId As Guid = TheDealerControl.SelectedGuid
+            'Dim oDealer As New Dealer(dealerId)
 
-            If Not oDealer.DealerGroupId.Equals(Guid.Empty) Then
-                Dim oDealerGrp As New DealerGroup(oDealer.DealerGroupId)
-                'Dim lkYesNo As DataView = LookupListNew.DropdownLookupList("YESNO", Authentication.LangId)
-                'lkYesNo.RowFilter += " and code='Y'"
-                'Dim yesId As Guid = New Guid(CType(lkYesNo.Item(0).Item("ID"), Byte()))
-                If oDealerGrp.AcctingByGroupId.Equals(yesId) Then
-                    'dvPayeeType.RowFilter += "and code <>'" & Payee_Type_Dealer & "'"
-                    FilteredPayeeTypeList = (From lst In PayeeTypeList
-                                             Where lst.Code <> Payee_Type_Dealer
-                                             Select lst).ToArray()
-                Else
-                    'dvPayeeType.RowFilter += "and code <>'" & Payee_Type_Dealer_Group & "'"
-                    FilteredPayeeTypeList = (From lst In PayeeTypeList
-                                             Where lst.Code <> Payee_Type_Dealer_Group
-                                             Select lst).ToArray()
-                End If
-            Else
-                'dvPayeeType.RowFilter += "and code <>'" & Payee_Type_Dealer_Group & "'"
-                FilteredPayeeTypeList = (From lst In PayeeTypeList
-                                         Where lst.Code <> Payee_Type_Dealer_Group
-                                         Select lst).ToArray()
-            End If
-
-            'Me.BindListControlToDataView(Me.cboPayeeType1, dvPayeeType, , , False)
-            Me.cboPayeeType1.Populate(FilteredPayeeTypeList, New PopulateOptions() With
-            {
-                .AddBlankItem = False
-            })
-
-            'Me.BindListControlToDataView(Me.cboPayeeType2, dvPayeeType, , , False)
-            Me.cboPayeeType2.Populate(FilteredPayeeTypeList, New PopulateOptions() With
-            {
-                .AddBlankItem = False
-            })
-
-            'Me.BindListControlToDataView(Me.cboPayeeType3, dvPayeeType, , , False)
-            Me.cboPayeeType3.Populate(FilteredPayeeTypeList, New PopulateOptions() With
-            {
-                .AddBlankItem = False
-            })
-
-            'Me.BindListControlToDataView(Me.cboPayeeType4, dvPayeeType, , , False)
-            Me.cboPayeeType4.Populate(FilteredPayeeTypeList, New PopulateOptions() With
-            {
-                .AddBlankItem = False
-            })
-
-            'Me.BindListControlToDataView(Me.cboPayeeType5, dvPayeeType, , , False)
-            Me.cboPayeeType5.Populate(FilteredPayeeTypeList, New PopulateOptions() With
-            {
-                .AddBlankItem = False
-            })
-
-            'dvPayeeType1.RowFilter += "and code='" & Payee_Type_Comm_Entity & "'"
-            FilteredPayeeType1List = (From lst In PayeeTypeList
-                                      Where lst.Code = Payee_Type_Comm_Entity
-                                      Select lst).ToArray()
-
-            'If dvPayeeType1.Count = 1 Then
-            '    Me.litScriptVars.Text += "var commEntity = '" + GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString + "';"
+            'If Not oDealer.DealerGroupId.Equals(Guid.Empty) Then
+            '    Dim oDealerGrp As New DealerGroup(oDealer.DealerGroupId)
+            '    'Dim lkYesNo As DataView = LookupListNew.DropdownLookupList("YESNO", Authentication.LangId)
+            '    'lkYesNo.RowFilter += " and code='Y'"
+            '    'Dim yesId As Guid = New Guid(CType(lkYesNo.Item(0).Item("ID"), Byte()))
+            '    If oDealerGrp.AcctingByGroupId.Equals(yesId) Then
+            '        'dvPayeeType.RowFilter += "and code <>'" & Payee_Type_Dealer & "'"
+            '        FilteredPayeeTypeList = (From lst In PayeeTypeList
+            '                                 Where lst.Code <> Payee_Type_Dealer
+            '                                 Select lst).ToArray()
+            '    Else
+            '        'dvPayeeType.RowFilter += "and code <>'" & Payee_Type_Dealer_Group & "'"
+            '        FilteredPayeeTypeList = (From lst In PayeeTypeList
+            '                                 Where lst.Code <> Payee_Type_Dealer_Group
+            '                                 Select lst).ToArray()
+            '    End If
+            'Else
+            '    'dvPayeeType.RowFilter += "and code <>'" & Payee_Type_Dealer_Group & "'"
+            '    FilteredPayeeTypeList = (From lst In PayeeTypeList
+            '                             Where lst.Code <> Payee_Type_Dealer_Group
+            '                             Select lst).ToArray()
             'End If
 
-            'If FilteredPayeeType1List.Count = 1 Then
-            '    Me.litScriptVars.Text += "var commEntity = '" + FilteredPayeeType1List.First().ListItemId.ToString + "';"
-            'End If
+            ''Me.BindListControlToDataView(Me.cboPayeeType1, dvPayeeType, , , False)
+            'Me.cboPayeeType1.Populate(FilteredPayeeTypeList, New PopulateOptions() With
+            '{
+            '    .AddBlankItem = False
+            '})
 
-            If Me.State.IsCommPlanDistNew = True Then
-                Dim FirstPayeeType As String
-                FirstPayeeType = FilteredPayeeType1List.First().ListItemId.ToString()
-                'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType1)
-                'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType2)
-                'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType3)
-                'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType4)
-                'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType5)
-                BindSelectItem(FirstPayeeType, cboPayeeType1)
-                BindSelectItem(FirstPayeeType, cboPayeeType2)
-                BindSelectItem(FirstPayeeType, cboPayeeType3)
-                BindSelectItem(FirstPayeeType, cboPayeeType4)
-                BindSelectItem(FirstPayeeType, cboPayeeType5)
-            End If
+            ''Me.BindListControlToDataView(Me.cboPayeeType2, dvPayeeType, , , False)
+            'Me.cboPayeeType2.Populate(FilteredPayeeTypeList, New PopulateOptions() With
+            '{
+            '    .AddBlankItem = False
+            '})
+
+            ''Me.BindListControlToDataView(Me.cboPayeeType3, dvPayeeType, , , False)
+            'Me.cboPayeeType3.Populate(FilteredPayeeTypeList, New PopulateOptions() With
+            '{
+            '    .AddBlankItem = False
+            '})
+
+            ''Me.BindListControlToDataView(Me.cboPayeeType4, dvPayeeType, , , False)
+            'Me.cboPayeeType4.Populate(FilteredPayeeTypeList, New PopulateOptions() With
+            '{
+            '    .AddBlankItem = False
+            '})
+
+            ''Me.BindListControlToDataView(Me.cboPayeeType5, dvPayeeType, , , False)
+            'Me.cboPayeeType5.Populate(FilteredPayeeTypeList, New PopulateOptions() With
+            '{
+            '    .AddBlankItem = False
+            '})
+
+            ''dvPayeeType1.RowFilter += "and code='" & Payee_Type_Comm_Entity & "'"
+            'FilteredPayeeType1List = (From lst In PayeeTypeList
+            '                          Where lst.Code = Payee_Type_Comm_Entity
+            '                          Select lst).ToArray()
+
+            ''If dvPayeeType1.Count = 1 Then
+            ''    Me.litScriptVars.Text += "var commEntity = '" + GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString + "';"
+            ''End If
+
+            ''If FilteredPayeeType1List.Count = 1 Then
+            ''    Me.litScriptVars.Text += "var commEntity = '" + FilteredPayeeType1List.First().ListItemId.ToString + "';"
+            ''End If
+
+            'If Me.State.IsCommPlanDistNew = True Then
+            '    Dim FirstPayeeType As String
+            '    FirstPayeeType = FilteredPayeeType1List.First().ListItemId.ToString()
+            '    'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType1)
+            '    'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType2)
+            '    'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType3)
+            '    'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType4)
+            '    'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType5)
+            '    BindSelectItem(FirstPayeeType, cboPayeeType1)
+            '    BindSelectItem(FirstPayeeType, cboPayeeType2)
+            '    BindSelectItem(FirstPayeeType, cboPayeeType3)
+            '    BindSelectItem(FirstPayeeType, cboPayeeType4)
+            '    BindSelectItem(FirstPayeeType, cboPayeeType5)
+            'End If
         End Sub
         Private Sub PopulatePeriodEntity()
             'Dim i As Integer
@@ -1730,104 +1761,103 @@ Namespace Tables
             'Dim oPeriodEntity As CommissionPeriodEntity
             'oDataView = LookupListNew.GetCommEntityLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-            Dim listcontext As ListContext = New ListContext()
-            listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-            Dim CommEntityList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CommEntityByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontext)
+            'Dim listcontext As ListContext = New ListContext()
+            'listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
+            'Dim CommEntityList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CommEntityByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontext)
 
-            'Me.BindListControlToDataView(cboPeriodEntity1, oDataView, , , True)
-            Me.cboPeriodEntity1.Populate(CommEntityList, New PopulateOptions() With
-            {
-                .AddBlankItem = True
-            })
+            ''Me.BindListControlToDataView(cboPeriodEntity1, oDataView, , , True)
+            'Me.cboPeriodEntity1.Populate(CommEntityList, New PopulateOptions() With
+            '{
+            '    .AddBlankItem = True
+            '})
 
-            'Me.BindListControlToDataView(cboPeriodEntity2, oDataView, , , True)
-            Me.cboPeriodEntity2.Populate(CommEntityList, New PopulateOptions() With
-            {
-                .AddBlankItem = True
-            })
+            ''Me.BindListControlToDataView(cboPeriodEntity2, oDataView, , , True)
+            'Me.cboPeriodEntity2.Populate(CommEntityList, New PopulateOptions() With
+            '{
+            '    .AddBlankItem = True
+            '})
 
-            'Me.BindListControlToDataView(cboPeriodEntity3, oDataView, , , True)
-            Me.cboPeriodEntity3.Populate(CommEntityList, New PopulateOptions() With
-            {
-                .AddBlankItem = True
-            })
+            ''Me.BindListControlToDataView(cboPeriodEntity3, oDataView, , , True)
+            'Me.cboPeriodEntity3.Populate(CommEntityList, New PopulateOptions() With
+            '{
+            '    .AddBlankItem = True
+            '})
 
-            'Me.BindListControlToDataView(cboPeriodEntity4, oDataView, , , True)
-            Me.cboPeriodEntity4.Populate(CommEntityList, New PopulateOptions() With
-            {
-                .AddBlankItem = True
-            })
+            ''Me.BindListControlToDataView(cboPeriodEntity4, oDataView, , , True)
+            'Me.cboPeriodEntity4.Populate(CommEntityList, New PopulateOptions() With
+            '{
+            '    .AddBlankItem = True
+            '})
 
-            'Me.BindListControlToDataView(cboPeriodEntity5, oDataView, , , True)
-            Me.cboPeriodEntity5.Populate(CommEntityList, New PopulateOptions() With
-            {
-                .AddBlankItem = True
-            })
+            ''Me.BindListControlToDataView(cboPeriodEntity5, oDataView, , , True)
+            'Me.cboPeriodEntity5.Populate(CommEntityList, New PopulateOptions() With
+            '{
+            '    .AddBlankItem = True
+            '})
 
-            If Me.State.IsCommPlanDistNew = True Then
-                'If oDataView.Count > 0 Then
-                If CommEntityList.Count > 0 Then
-                    Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity1), 1, Me.GetSelectedItem(cboPayeeType1))
-                    Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity2), 2, Me.GetSelectedItem(cboPayeeType2))
-                    Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity3), 3, Me.GetSelectedItem(cboPayeeType3))
-                    Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity4), 4, Me.GetSelectedItem(cboPayeeType4))
-                    Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity5), 5, Me.GetSelectedItem(cboPayeeType5))
-                End If
-            Else
-                Dim PayeeTypeCode As String
-                'For Each oPeriodEntity As CommissionPeriodEntity In Me.State.MyBo.AssociatedCommPeriodEntity
-                '    Select Case oPeriodEntity.Position
-                '        Case 1
-                '            BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity1)
-                '            BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType1)
+            'If Me.State.IsCommPlanDistNew = True Then
+            '    'If oDataView.Count > 0 Then
+            '    If CommEntityList.Count > 0 Then
+            '        Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity1), 1, Me.GetSelectedItem(cboPayeeType1))
+            '        Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity2), 2, Me.GetSelectedItem(cboPayeeType2))
+            '        Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity3), 3, Me.GetSelectedItem(cboPayeeType3))
+            '        Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity4), 4, Me.GetSelectedItem(cboPayeeType4))
+            '        Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity5), 5, Me.GetSelectedItem(cboPayeeType5))
+            '    End If
+            'Else
+            '    Dim PayeeTypeCode As String
+            'For Each oPeriodEntity As CommissionPeriodEntity In Me.State.MyBo.AssociatedCommPeriodEntity
+            '    Select Case oPeriodEntity.Position
+            '        Case 1
+            '            BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity1)
+            '            BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType1)
 
-                '            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType1))
-                '            If PayeeTypeCode <> Payee_Type_Comm_Entity Then
-                '                ControlMgr.SetEnableControl(Me, cboPeriodEntity1, False)
-                '            Else
-                '                ControlMgr.SetEnableControl(Me, cboPeriodEntity1, True)
-                '            End If
-                '        Case 2
-                '            BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity2)
-                '            BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType2)
-                '            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType2))
-                '            If PayeeTypeCode <> Payee_Type_Comm_Entity Then
-                '                ControlMgr.SetEnableControl(Me, cboPeriodEntity2, False)
-                '            Else
-                '                ControlMgr.SetEnableControl(Me, cboPeriodEntity2, True)
-                '            End If
-                '        Case 3
-                '            BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity3)
-                '            BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType3)
-                '            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType3))
-                '            If PayeeTypeCode <> Payee_Type_Comm_Entity Then
-                '                ControlMgr.SetEnableControl(Me, cboPeriodEntity3, False)
-                '            Else
-                '                ControlMgr.SetEnableControl(Me, cboPeriodEntity3, True)
-                '            End If
-                '        Case 4
-                '            BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity4)
-                '            BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType4)
-                '            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType4))
-                '            If PayeeTypeCode <> Payee_Type_Comm_Entity Then
-                '                ControlMgr.SetEnableControl(Me, cboPeriodEntity4, False)
-                '            Else
-                '                ControlMgr.SetEnableControl(Me, cboPeriodEntity4, True)
-                '            End If
-                '        Case 5
-                '            BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity5)
-                '            BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType5)
-                '            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType5))
-                '            If PayeeTypeCode <> Payee_Type_Comm_Entity Then
-                '                ControlMgr.SetEnableControl(Me, cboPeriodEntity5, False)
-                '            Else
-                '                ControlMgr.SetEnableControl(Me, cboPeriodEntity5, True)
-                '            End If
-                '    End Select
-                'Next
-            End If
+            '            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType1))
+            '            If PayeeTypeCode <> Payee_Type_Comm_Entity Then
+            '                ControlMgr.SetEnableControl(Me, cboPeriodEntity1, False)
+            '            Else
+            '                ControlMgr.SetEnableControl(Me, cboPeriodEntity1, True)
+            '            End If
+            '        Case 2
+            '            BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity2)
+            '            BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType2)
+            '            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType2))
+            '            If PayeeTypeCode <> Payee_Type_Comm_Entity Then
+            '                ControlMgr.SetEnableControl(Me, cboPeriodEntity2, False)
+            '            Else
+            '                ControlMgr.SetEnableControl(Me, cboPeriodEntity2, True)
+            '            End If
+            '        Case 3
+            '            BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity3)
+            '            BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType3)
+            '            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType3))
+            '            If PayeeTypeCode <> Payee_Type_Comm_Entity Then
+            '                ControlMgr.SetEnableControl(Me, cboPeriodEntity3, False)
+            '            Else
+            '                ControlMgr.SetEnableControl(Me, cboPeriodEntity3, True)
+            '            End If
+            '        Case 4
+            '            BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity4)
+            '            BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType4)
+            '            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType4))
+            '            If PayeeTypeCode <> Payee_Type_Comm_Entity Then
+            '                ControlMgr.SetEnableControl(Me, cboPeriodEntity4, False)
+            '            Else
+            '                ControlMgr.SetEnableControl(Me, cboPeriodEntity4, True)
+            '            End If
+            '        Case 5
+            '            BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity5)
+            '            BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType5)
+            '            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType5))
+            '            If PayeeTypeCode <> Payee_Type_Comm_Entity Then
+            '                ControlMgr.SetEnableControl(Me, cboPeriodEntity5, False)
+            '            Else
+            '                ControlMgr.SetEnableControl(Me, cboPeriodEntity5, True)
+            '            End If
+            '    End Select
+            'Next
+            'End If
         End Sub
-
 
 #End Region
 
@@ -1882,7 +1912,7 @@ Namespace Tables
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
                 bIsOk = False
 
-                SetSourceBucketValues()
+                'SetSourceBucketValues()
             End Try
             If bIsOk Then
                 If bIsDirty Then
@@ -1986,6 +2016,28 @@ Namespace Tables
 
         End Sub
 
+        Protected Sub ComingFromNewDistribution()
+            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+
+            If Not confResponse = String.Empty Then
+                ' Return from the Back Button
+
+                Select Case confResponse
+                    Case Me.MSG_BTN_OK
+                        SetStateProperties()
+                        SetGridControls(moGridView, True)
+                        FillSourceXcdDropdownList()
+                        FillEntityDropDownList()
+                        FillPayeeTypeDropDownList()
+                        SetGridSourceXcdDropdownFromBo()
+                        SetGridSourceXcdLabelFromBo()
+                        'SetGridSourceXcdTextboxForNewCoverage()
+
+                End Select
+            End If
+
+        End Sub
+
 #End Region
 
 #Region "Breadkdown State-Management"
@@ -2036,6 +2088,8 @@ Namespace Tables
             Try
                 Select Case Me.State.ActionInProgress
                     ' Period
+                    Case ElitaPlusPage.DetailPageCommand.OK
+                        ComingFromNewDistribution()
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
                     Case ElitaPlusPage.DetailPageCommand.New_
@@ -2900,20 +2954,20 @@ Namespace Tables
             'ValidateDiffSourceLogic()
         End Sub
 
-        Private Sub EnableDisablePeriodEntity(ByVal oEnable As Boolean)
+        'Private Sub EnableDisablePeriodEntity(ByVal oEnable As Boolean)
 
-            'ControlMgr.SetVisibleControl(Me, btnEntitySave, oEnable)
-            'ControlMgr.SetVisibleControl(Me, btnEntityUndo, oEnable)
-            Me.ChangeControlEnabledProperty(Me.btnEntitySave, oEnable)
-            Me.ChangeControlEnabledProperty(Me.btnEntityUndo, oEnable)
+        '    'ControlMgr.SetVisibleControl(Me, btnEntitySave, oEnable)
+        '    'ControlMgr.SetVisibleControl(Me, btnEntityUndo, oEnable)
+        '    Me.ChangeControlEnabledProperty(Me.btnEntitySave, oEnable)
+        '    Me.ChangeControlEnabledProperty(Me.btnEntityUndo, oEnable)
 
-            Me.ChangeControlEnabledProperty(Me.cboPeriodEntity1, oEnable)
-            Me.ChangeControlEnabledProperty(Me.cboPeriodEntity2, oEnable)
-            Me.ChangeControlEnabledProperty(Me.cboPeriodEntity3, oEnable)
-            Me.ChangeControlEnabledProperty(Me.cboPeriodEntity4, oEnable)
-            Me.ChangeControlEnabledProperty(Me.cboPeriodEntity5, oEnable)
+        '    Me.ChangeControlEnabledProperty(Me.cboPeriodEntity1, oEnable)
+        '    Me.ChangeControlEnabledProperty(Me.cboPeriodEntity2, oEnable)
+        '    Me.ChangeControlEnabledProperty(Me.cboPeriodEntity3, oEnable)
+        '    Me.ChangeControlEnabledProperty(Me.cboPeriodEntity4, oEnable)
+        '    Me.ChangeControlEnabledProperty(Me.cboPeriodEntity5, oEnable)
 
-        End Sub
+        'End Sub
 
         Private Sub btnEntityUndo_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnEntityUndo.Click
             Dim dealerId As Guid = TheDealerControl.SelectedGuid
@@ -2987,7 +3041,7 @@ Namespace Tables
 
 #Region "Acct Source Xcd Option Bucket Logic"
         Private Sub ValidateDiffSourceLogic()
-            If Me.State.IsDealerConfiguredForSourceXcd Then
+            If Me.State.IsCompanyConfiguredForSourceXcd Then
 
                 ValidateDifferenceSourceXcd()
 
@@ -3036,15 +3090,15 @@ Namespace Tables
 
         End Sub
 
-        Private Sub HideGridSourceXcdColumn()
-            If Not Me.State.IsDealerConfiguredForSourceXcd Then
-                Me.Grid.Columns(COMMISSION_PERCENT1_SOURCE_COL).Visible = False
-                Me.Grid.Columns(COMMISSION_PERCENT2_SOURCE_COL).Visible = False
-                Me.Grid.Columns(COMMISSION_PERCENT3_SOURCE_COL).Visible = False
-                Me.Grid.Columns(COMMISSION_PERCENT4_SOURCE_COL).Visible = False
-                Me.Grid.Columns(COMMISSION_PERCENT5_SOURCE_COL).Visible = False
-            End If
-        End Sub
+        'Private Sub HideGridSourceXcdColumn()
+        '    If Not Me.State.IsCompanyConfiguredForSourceXcd Then
+        '        Me.Grid.Columns(COMMISSION_PERCENT1_SOURCE_COL).Visible = False
+        '        Me.Grid.Columns(COMMISSION_PERCENT2_SOURCE_COL).Visible = False
+        '        Me.Grid.Columns(COMMISSION_PERCENT3_SOURCE_COL).Visible = False
+        '        Me.Grid.Columns(COMMISSION_PERCENT4_SOURCE_COL).Visible = False
+        '        Me.Grid.Columns(COMMISSION_PERCENT5_SOURCE_COL).Visible = False
+        '    End If
+        'End Sub
 
         Private Sub SetGridSourceXcdLabelFromBo()
             'If moGridView.EditIndex = -1 Then Exit Sub
@@ -3127,106 +3181,106 @@ Namespace Tables
             Next
         End Sub
 
-        Private Sub SetSourceBucketValues()
-            If Me.State.IsDealerConfiguredForSourceXcd Then
+        'Private Sub SetSourceBucketValues()
+        '    If Me.State.IsCompanyConfiguredForSourceXcd Then
 
-                DisableMarkUpPercentage()
+        '        DisableMarkUpPercentage()
 
-                If Me.cboBrokerCommPctSourceXcd.Visible And Me.cboBrokerCommPctSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    If cboBrokerCommPctSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
-                        Me.txtBrokerCommPct.Text = "0.0000"
-                        ControlMgr.SetEnableControl(Me, txtBrokerCommPct, False)
-                    Else
-                        ControlMgr.SetEnableControl(Me, txtBrokerCommPct, True)
-                    End If
-                End If
+        '        If Me.cboBrokerCommPctSourceXcd.Visible And Me.cboBrokerCommPctSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+        '            If cboBrokerCommPctSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
+        '                Me.txtBrokerCommPct.Text = "0.0000"
+        '                ControlMgr.SetEnableControl(Me, txtBrokerCommPct, False)
+        '            Else
+        '                ControlMgr.SetEnableControl(Me, txtBrokerCommPct, True)
+        '            End If
+        '        End If
 
-                If Me.cboBrokerCommPct2SourceXcd.Visible And Me.cboBrokerCommPct2SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    If cboBrokerCommPct2SourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
-                        Me.txtBrokerCommPct2.Text = "0.0000"
-                        ControlMgr.SetEnableControl(Me, txtBrokerCommPct2, False)
-                    Else
-                        ControlMgr.SetEnableControl(Me, txtBrokerCommPct2, True)
-                    End If
-                End If
+        '        If Me.cboBrokerCommPct2SourceXcd.Visible And Me.cboBrokerCommPct2SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+        '            If cboBrokerCommPct2SourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
+        '                Me.txtBrokerCommPct2.Text = "0.0000"
+        '                ControlMgr.SetEnableControl(Me, txtBrokerCommPct2, False)
+        '            Else
+        '                ControlMgr.SetEnableControl(Me, txtBrokerCommPct2, True)
+        '            End If
+        '        End If
 
-                If Me.cboBrokerCommPct3SourceXcd.Visible And Me.cboBrokerCommPct3SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    If cboBrokerCommPct3SourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
-                        Me.txtBrokerCommPct3.Text = "0.0000"
-                        ControlMgr.SetEnableControl(Me, txtBrokerCommPct3, False)
-                    Else
-                        ControlMgr.SetEnableControl(Me, txtBrokerCommPct3, True)
-                    End If
-                End If
+        '        If Me.cboBrokerCommPct3SourceXcd.Visible And Me.cboBrokerCommPct3SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+        '            If cboBrokerCommPct3SourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
+        '                Me.txtBrokerCommPct3.Text = "0.0000"
+        '                ControlMgr.SetEnableControl(Me, txtBrokerCommPct3, False)
+        '            Else
+        '                ControlMgr.SetEnableControl(Me, txtBrokerCommPct3, True)
+        '            End If
+        '        End If
 
-                If Me.cboBrokerCommPct4SourceXcd.Visible And Me.cboBrokerCommPct4SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    If cboBrokerCommPct4SourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
-                        Me.txtBrokerCommPct4.Text = "0.0000"
-                        ControlMgr.SetEnableControl(Me, txtBrokerCommPct4, False)
-                    Else
-                        ControlMgr.SetEnableControl(Me, txtBrokerCommPct4, True)
-                    End If
-                End If
+        '        If Me.cboBrokerCommPct4SourceXcd.Visible And Me.cboBrokerCommPct4SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+        '            If cboBrokerCommPct4SourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
+        '                Me.txtBrokerCommPct4.Text = "0.0000"
+        '                ControlMgr.SetEnableControl(Me, txtBrokerCommPct4, False)
+        '            Else
+        '                ControlMgr.SetEnableControl(Me, txtBrokerCommPct4, True)
+        '            End If
+        '        End If
 
-                If Me.cboBrokerCommPct5SourceXcd.Visible And Me.cboBrokerCommPct5SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    If cboBrokerCommPct5SourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
-                        Me.txtBrokerCommPct5.Text = "0.0000"
-                        ControlMgr.SetEnableControl(Me, txtBrokerCommPct5, False)
-                    Else
-                        ControlMgr.SetEnableControl(Me, txtBrokerCommPct5, True)
-                    End If
-                End If
+        '        If Me.cboBrokerCommPct5SourceXcd.Visible And Me.cboBrokerCommPct5SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+        '            If cboBrokerCommPct5SourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
+        '                Me.txtBrokerCommPct5.Text = "0.0000"
+        '                ControlMgr.SetEnableControl(Me, txtBrokerCommPct5, False)
+        '            Else
+        '                ControlMgr.SetEnableControl(Me, txtBrokerCommPct5, True)
+        '            End If
+        '        End If
 
-                DisableCommPercentage()
+        '        DisableCommPercentage()
 
-            End If
-        End Sub
+        '    End If
+        'End Sub
 
-        Private Sub BindSourceOptionDropdownlist()
-            If Me.State.IsDealerConfiguredForSourceXcd Then
-                DisplaySourceXcdFields()
+        'Private Sub BindSourceOptionDropdownlist()
+        '    If Me.State.IsCompanyConfiguredForSourceXcd Then
+        '        DisplaySourceXcdFields()
 
-                Dim oAcctBucketsSourceOption As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTBUCKETSOURCE_COMMBRKDOWN")
+        '        Dim oAcctBucketsSourceOption As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTBUCKETSOURCE_COMMBRKDOWN")
 
-                cboBrokerCommPctSourceXcd.Populate(oAcctBucketsSourceOption, New PopulateOptions() With
-                                     {
-                                     .AddBlankItem = False,
-                                     .TextFunc = AddressOf PopulateOptions.GetDescription,
-                                     .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
-                                     })
+        '        cboBrokerCommPctSourceXcd.Populate(oAcctBucketsSourceOption, New PopulateOptions() With
+        '                             {
+        '                             .AddBlankItem = False,
+        '                             .TextFunc = AddressOf PopulateOptions.GetDescription,
+        '                             .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
+        '                             })
 
-                cboBrokerCommPct2SourceXcd.Populate(oAcctBucketsSourceOption, New PopulateOptions() With
-                                    {
-                                    .AddBlankItem = False,
-                                    .TextFunc = AddressOf PopulateOptions.GetDescription,
-                                    .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
-                                    })
+        '        cboBrokerCommPct2SourceXcd.Populate(oAcctBucketsSourceOption, New PopulateOptions() With
+        '                            {
+        '                            .AddBlankItem = False,
+        '                            .TextFunc = AddressOf PopulateOptions.GetDescription,
+        '                            .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
+        '                            })
 
-                cboBrokerCommPct3SourceXcd.Populate(oAcctBucketsSourceOption, New PopulateOptions() With
-                                    {
-                                    .AddBlankItem = False,
-                                    .TextFunc = AddressOf PopulateOptions.GetDescription,
-                                    .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
-                                    })
+        '        cboBrokerCommPct3SourceXcd.Populate(oAcctBucketsSourceOption, New PopulateOptions() With
+        '                            {
+        '                            .AddBlankItem = False,
+        '                            .TextFunc = AddressOf PopulateOptions.GetDescription,
+        '                            .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
+        '                            })
 
-                cboBrokerCommPct4SourceXcd.Populate(oAcctBucketsSourceOption, New PopulateOptions() With
-                                    {
-                                    .AddBlankItem = False,
-                                    .TextFunc = AddressOf PopulateOptions.GetDescription,
-                                    .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
-                                    })
+        '        cboBrokerCommPct4SourceXcd.Populate(oAcctBucketsSourceOption, New PopulateOptions() With
+        '                            {
+        '                            .AddBlankItem = False,
+        '                            .TextFunc = AddressOf PopulateOptions.GetDescription,
+        '                            .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
+        '                            })
 
-                cboBrokerCommPct5SourceXcd.Populate(oAcctBucketsSourceOption, New PopulateOptions() With
-                                    {
-                                    .AddBlankItem = False,
-                                    .TextFunc = AddressOf PopulateOptions.GetDescription,
-                                    .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
-                                    })
-            Else
-                HideSourceScdFields()
-            End If
+        '        cboBrokerCommPct5SourceXcd.Populate(oAcctBucketsSourceOption, New PopulateOptions() With
+        '                            {
+        '                            .AddBlankItem = False,
+        '                            .TextFunc = AddressOf PopulateOptions.GetDescription,
+        '                            .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
+        '                            })
+        '    Else
+        '        HideSourceScdFields()
+        '    End If
 
-        End Sub
+        'End Sub
 
         Private Sub FillSourceXcdDropdownList()
 
@@ -3338,7 +3392,6 @@ Namespace Tables
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
             Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboCommPercentSourceXcd"), DropDownList)
-            Dim mocboEntityType As DropDownList = DirectCast(gRow.Cells(COL_ENTITY_ID_IDX).FindControl("cboEntityType"), DropDownList)
             Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
             Dim diffValue As Decimal = 0.0000
 
@@ -3614,7 +3667,7 @@ Namespace Tables
                     moGridView.EditIndex = nIndex
                     moGridView.SelectedIndex = nIndex
                     CoverageRateId = Me.GetGridText(moGridView, nIndex, COL_COMMISSION_PLAN_DIST_ID_IDX)
-                    Me.State.moCommPlanDistId = GetGuidFromString(CoverageRateId) 
+                    Me.State.moCommPlanDistId = GetGuidFromString(CoverageRateId)
                     ' Me.State.moCoverageRateList(moGridView.SelectedIndex).Id
                     Me.State.MyBoDist = New CommPlanDistribution(Me.State.moCommPlanDistId)
                     If DeleteSelectedCoverageRate(nIndex) = True Then
@@ -3667,21 +3720,35 @@ Namespace Tables
         Private Sub BtnNewRate_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNewRate_WRITE.Click
             Try
                 'IsNewRate = True
-                Me.State.IsCommPlanDistNew = True
-                CoverageRateId = Guid.Empty.ToString
-                PopulateCoverageRateList(ACTION_NEW)
+                If moGridView.Rows.Count = 5 Then
+                    'Me.DisplayMessage(Message.MSG_DISTRIBUTION_RECORD_EXCEEDED_LIMIT, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO, Me.HiddenSaveChangesPromptResponse)
+                    'Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK                    
+                    Throw New GUIException(Message.MSG_DISTRIBUTION_RECORD_EXCEEDED_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.MSG_COMMISSION_DISTRIBUTION_RECORD_EXCEEDS_LIMIT)
+                Else
+                    Me.State.IsCommPlanDistNew = True
+                    CoverageRateId = Guid.Empty.ToString
+                    PopulateCoverageRateList(ACTION_NEW)
+                End If
+
                 'FillDropdownList()
-                SetGridControls(moGridView, False)
+                'SetGridControls(moGridView, True)
                 FillSourceXcdDropdownList()
                 FillEntityDropDownList()
                 FillPayeeTypeDropDownList()
                 SetGridSourceXcdDropdownFromBo()
                 SetGridSourceXcdLabelFromBo()
-                SetGridSourceXcdTextboxForNewCoverage()
+                'SetGridSourceXcdTextboxForNewCoverage()
 
                 'EnableDisableControls(Me.moCoverageEditPanel, True)
                 'setbuttons(False)
             Catch ex As Exception
+                SetStateProperties()
+                SetGridControls(moGridView, True)
+                FillSourceXcdDropdownList()
+                FillEntityDropDownList()
+                FillPayeeTypeDropDownList()
+                SetGridSourceXcdDropdownFromBo()
+                SetGridSourceXcdLabelFromBo()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
@@ -3819,30 +3886,29 @@ Namespace Tables
 
             Return oControl
         End Function
-        Private Sub SetGridSourceXcdTextboxForNewCoverage()
-            If moGridView.EditIndex = -1 Then Exit Sub
-            With TheCommPlanDist
-                If Me.State.IsDealerConfiguredForSourceXcd Then
-                    Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-                    Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboCommPercentSourceXcd"), DropDownList)
+        'Private Sub SetGridSourceXcdTextboxForNewCoverage()
+        '    If moGridView.EditIndex = -1 Then Exit Sub
+        '    With TheCommPlanDist
+        '        If Me.State.IsCompanyConfiguredForSourceXcd Then
+        '            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+        '            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboCommPercentSourceXcd"), DropDownList)
+        '            Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
 
-                    Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
+        '            Dim diffValue As Decimal = 0.0000
 
-                    Dim diffValue As Decimal = 0.0000
+        '            If mocboCommPercentSourceXcd.Visible Then
+        '                If mocboCommPercentSourceXcd.Items.Count > 0 Then
+        '                    If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
+        '                        Me.PopulateControlFromBOProperty(moTextCommission_PercentText, diffValue, Me.PERCENT_FORMAT)
+        '                        moTextCommission_PercentText.Enabled = False
+        '                    End If
+        '                End If
+        '            End If
 
-                    If mocboCommPercentSourceXcd.Visible Then
-                        If mocboCommPercentSourceXcd.Items.Count > 0 Then
-                            If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
-                                Me.PopulateControlFromBOProperty(moTextCommission_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                moTextCommission_PercentText.Enabled = False
-                            End If
-                        End If
-                    End If
+        '        End If
+        '    End With
 
-                End If
-            End With
-
-        End Sub
+        'End Sub
         Private Function DeleteSelectedCoverageRate(ByVal nIndex As Integer) As Boolean
             Dim bIsOk As Boolean = True
             Try
