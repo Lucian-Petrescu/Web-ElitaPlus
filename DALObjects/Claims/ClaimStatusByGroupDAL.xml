@@ -166,7 +166,7 @@
            getcodefromlistitem(g.skipping_allowed_id) skipping_allowed_code,
            g.group_number,
            g.turnaround_time_days,
-           g.tat_reminder_hours,
+           g.tat_reminder_hours
       from elp_claim_status_by_group g 
       where g.company_group_id = :company_group_id
       order by g.status_order
