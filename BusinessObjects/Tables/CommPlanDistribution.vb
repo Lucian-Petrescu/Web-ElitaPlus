@@ -131,7 +131,7 @@ Public Class CommPlanDistribution
     End Property
 
     '<ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)>
-    <ValueMandatory("")>
+    '<ValueMandatory("")>
     Public Property CommissionAmount() As DecimalType
         Get
             CheckDeleted()
@@ -148,7 +148,7 @@ Public Class CommPlanDistribution
     End Property
 
     '<ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)>
-    <ValueMandatory("")>
+    '<ValueMandatory("")>
     Public Property CommissionPercent() As DecimalType
         Get
             CheckDeleted()

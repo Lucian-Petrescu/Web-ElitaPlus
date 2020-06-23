@@ -3055,26 +3055,8 @@ Namespace Tables
                     Dim gRow As GridViewRow = moGridView.Rows(i)
                     If gRow.RowType = DataControlRowType.DataRow Then
                         Dim mollblCommPercentSourceXcd As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblCommPercentSourceXcd"), Label)
-                        'Dim molblEntityType As Label = DirectCast(gRow.Cells(COL_ENTITY_ID_IDX).FindControl("lblEntityType"), Label)
                         Dim molblPayeeType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblPayeeType"), Label)
                         Dim molblEntityType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblEntityType"), Label)
-
-                        'If Not molblEntityType Is Nothing Then
-                        '    If molblEntityType.Visible Then
-                        '        If (Not molblEntityType.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblEntityType.Text)) Then
-                        '            'Dim strConvertProdCode As String = LookupListNew.GetCodeFromId("CommEntityByCompanyGroup", GetGuidFromString(molblEntityType.Text))
-                        '            'Dim strConvertProdCode As String =  LookupListNew.GetDescrionFromListCode("CommEntityByCompanyGroup",LookupListNew.getcode)
-                        '            'Dim strConvertProdCode As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_TRANSLATE_PRODUCT_CODE, Authentication.CurrentUser.LanguageId), GetGuidFromString(molblEntityType.Text))
-                        '            'molblEntityType.Text = strConvertProdCode
-
-                        '            'Dim listcontext As ListContext = New ListContext()
-                        '            'listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                        '            'Dim CommEntityList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CommEntityByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontext)
-                        '            'Dim FilteredPayeeType1List As String
-                        '            'FilteredPayeeType1List = (From lst In CommEntityList Where lst.ListItemId = GetGuidFromString(molblEntityType.Text) Select lst.Description).FirstOrDefault
-                        '        End If
-                        '    End If
-                        'End If
 
                         If Not molblPayeeType Is Nothing Then
                             If molblPayeeType.Visible Then
@@ -3103,60 +3085,46 @@ Namespace Tables
                     End If
                 Next
             Next
-            'For pageIndexk As Integer = 0 To Me.Grid.PageCount - 1
-            '    Me.Grid.PageIndex = pageIndexk
-            '    Dim rowNum As Integer = Me.Grid.Rows.Count
-            '    For i As Integer = 0 To rowNum - 1
-            '        Dim gRow As GridViewRow = Grid.Rows(i)
-            '        If gRow.RowType = DataControlRowType.DataRow Then
-            '            Dim molblCommPercent1SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT1_SOURCE_COL).FindControl("moBrokerMarkupPct1SourceLabel"), Label)
-            '            Dim molblCommPercent2SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT2_SOURCE_COL).FindControl("moBrokerMarkupPct2SourceLabel"), Label)
-            '            Dim molblCommPercent3SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT3_SOURCE_COL).FindControl("moBrokerMarkupPct3SourceLabel"), Label)
-            '            Dim molblCommPercent4SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT4_SOURCE_COL).FindControl("moBrokerMarkupPct4SourceLabel"), Label)
-            '            Dim molblCommPercent5SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT5_SOURCE_COL).FindControl("moBrokerMarkupPct5SourceLabel"), Label)
+        End Sub
 
-            '            If Not molblCommPercent1SourceXcd Is Nothing Then
-            '                If molblCommPercent1SourceXcd.Visible Then
-            '                    If (Not molblCommPercent1SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent1SourceXcd.Text)) Then
-            '                        molblCommPercent1SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent1SourceXcd.Text)
-            '                    End If
-            '                End If
-            '            End If
+        Private Sub SetGridSourceXcdLabelFromBoforNew()
+            'If moGridView.EditIndex = -1 Then Exit Sub
+            For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
+                Me.moGridView.PageIndex = pageIndexk
+                Dim rowNum As Integer = Me.moGridView.Rows.Count
+                For i As Integer = 0 To rowNum - 1
+                    Dim gRow As GridViewRow = moGridView.Rows(i)
+                    If gRow.RowType = DataControlRowType.DataRow Then
+                        Dim molblCommPercentSourceXcd As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblCommPercentSourceXcd"), Label)
+                        Dim molblPayeeType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblPayeeType"), Label)
+                        Dim molblEntityType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblEntityType"), Label)
 
-            '            If Not molblCommPercent2SourceXcd Is Nothing Then
-            '                If molblCommPercent2SourceXcd.Visible Then
-            '                    If (Not molblCommPercent2SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent2SourceXcd.Text)) Then
-            '                        molblCommPercent2SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent2SourceXcd.Text)
-            '                    End If
-            '                End If
-            '            End If
+                        If Not molblCommPercentSourceXcd Is Nothing Then
+                            If molblCommPercentSourceXcd.Visible Then
+                                If (Not molblCommPercentSourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercentSourceXcd.Text)) Then
+                                    molblCommPercentSourceXcd.Text = GetCodeAmtSourceOption(molblCommPercentSourceXcd.Text)
+                                End If
+                            End If
+                        End If
 
-            '            If Not molblCommPercent3SourceXcd Is Nothing Then
-            '                If molblCommPercent3SourceXcd.Visible Then
-            '                    If (Not molblCommPercent3SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent3SourceXcd.Text)) Then
-            '                        molblCommPercent3SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent3SourceXcd.Text)
-            '                    End If
-            '                End If
-            '            End If
+                        If Not molblPayeeType Is Nothing Then
+                            If molblPayeeType.Visible Then
+                                If (Not molblPayeeType.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblPayeeType.Text)) Then
+                                    molblPayeeType.Text = GetDescOfExtCodePayeeTypeXcdOption(molblPayeeType.Text)
+                                End If
+                            End If
+                        End If
 
-            '            If Not molblCommPercent4SourceXcd Is Nothing Then
-            '                If molblCommPercent4SourceXcd.Visible Then
-            '                    If (Not molblCommPercent4SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent4SourceXcd.Text)) Then
-            '                        molblCommPercent4SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent4SourceXcd.Text)
-            '                    End If
-            '                End If
-            '            End If
-
-            '            If Not molblCommPercent5SourceXcd Is Nothing Then
-            '                If molblCommPercent5SourceXcd.Visible Then
-            '                    If (Not molblCommPercent5SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent5SourceXcd.Text)) Then
-            '                        molblCommPercent5SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent5SourceXcd.Text)
-            '                    End If
-            '                End If
-            '            End If
-            '        End If
-            '    Next
-            'Next
+                        If Not molblEntityType Is Nothing Then
+                            If molblEntityType.Visible Then
+                                If (Not molblEntityType.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblEntityType.Text)) Then
+                                    molblEntityType.Text = GetDescOfIDFromEntityTypeOption(molblEntityType.Text)
+                                End If
+                            End If
+                        End If
+                    End If
+                Next
+            Next
         End Sub
 
         Private Sub SetSourceBucketValues()
@@ -3370,14 +3338,11 @@ Namespace Tables
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
             Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboCommPercentSourceXcd"), DropDownList)
-
             Dim mocboEntityType As DropDownList = DirectCast(gRow.Cells(COL_ENTITY_ID_IDX).FindControl("cboEntityType"), DropDownList)
-
             Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
             Dim diffValue As Decimal = 0.0000
 
             If Me.State.IsNewWithCopy = False Then
-                'With TheCommPlanDist
                 With TheCommPlanDist
                     If mocboCommPercentSourceXcd.Visible Then
                         If Not .CommissionsPercentSourceXcd Is Nothing And mocboCommPercentSourceXcd.Items.Count > 0 Then
@@ -3391,55 +3356,8 @@ Namespace Tables
                             End If
                         End If
                     End If
-
-                    'If mocboEntityType.Visible Then
-                    '    If Not .CommissionsPercentSourceXcd Is Nothing And mocboEntityType.Items.Count > 0 Then
-                    '        Me.SetSelectedItem(mocboEntityType, .en)
-                    '    End If
-                    'End If
-
                 End With
             End If
-        End Sub
-
-        Private Sub SetGridSourceXcdLabelFromBoforNew()
-            'If moGridView.EditIndex = -1 Then Exit Sub
-            For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
-                Me.moGridView.PageIndex = pageIndexk
-                Dim rowNum As Integer = Me.moGridView.Rows.Count
-                For i As Integer = 0 To rowNum - 1
-                    Dim gRow As GridViewRow = moGridView.Rows(i)
-                    If gRow.RowType = DataControlRowType.DataRow Then
-                        Dim molblCommPercentSourceXcd As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblCommPercentSourceXcd"), Label)
-                        Dim molblPayeeType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblPayeeType"), Label)
-                        Dim molblEntityType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblEntityType"), Label)
-
-                        If Not molblCommPercentSourceXcd Is Nothing Then
-                            If molblCommPercentSourceXcd.Visible Then
-                                If (Not molblCommPercentSourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercentSourceXcd.Text)) Then
-                                    molblCommPercentSourceXcd.Text = GetCodeAmtSourceOption(molblCommPercentSourceXcd.Text)
-                                End If
-                            End If
-                        End If
-
-                        If Not molblPayeeType Is Nothing Then
-                            If molblPayeeType.Visible Then
-                                If (Not molblPayeeType.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblPayeeType.Text)) Then
-                                    molblPayeeType.Text = GetDescOfExtCodePayeeTypeXcdOption(molblPayeeType.Text)
-                                End If
-                            End If
-                        End If
-
-                        If Not molblEntityType Is Nothing Then
-                            If molblEntityType.Visible Then
-                                If (Not molblEntityType.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblEntityType.Text)) Then
-                                    molblEntityType.Text = GetDescOfIDFromEntityTypeOption(molblEntityType.Text)
-                                End If
-                            End If
-                        End If
-                    End If
-                Next
-            Next
         End Sub
 
         Private Sub PoupulateSourceOptionDropdownlist(ByVal oDropDownList As DropDownList)
@@ -3685,7 +3603,7 @@ Namespace Tables
                     FillEntityDropDownList()
                     FillPayeeTypeDropDownList()
                     SetGridSourceXcdDropdownFromBo()
-                    SetGridSourceXcdLabelFromBoforNew()
+                    SetGridSourceXcdLabelFromBo()
 
                     SetGridControls(moGridView, False)
                     'Me.SetFocusInGrid(moGridView, nIndex, LOW_PRICE)
@@ -3693,7 +3611,12 @@ Namespace Tables
                     'setbuttons(False)
                 ElseIf (e.CommandName = DELETE_COMMAND_NAME) Then
                     'nIndex = e.Item.ItemIndex
+                    moGridView.EditIndex = nIndex
+                    moGridView.SelectedIndex = nIndex
                     CoverageRateId = Me.GetGridText(moGridView, nIndex, COL_COMMISSION_PLAN_DIST_ID_IDX)
+                    Me.State.moCommPlanDistId = GetGuidFromString(CoverageRateId) 
+                    ' Me.State.moCoverageRateList(moGridView.SelectedIndex).Id
+                    Me.State.MyBoDist = New CommPlanDistribution(Me.State.moCommPlanDistId)
                     If DeleteSelectedCoverageRate(nIndex) = True Then
                         PopulateCoverageRateList(ACTION_CANCEL_DELETE)
                     End If
@@ -3712,8 +3635,6 @@ Namespace Tables
         Private Sub BtnSaveRate_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSaveRate_WRITE.Click
             Try
                 SaveRateChanges()
-
-
                 SetGridSourceXcdLabelFromBo()
 
                 TheDealerControl.ChangeEnabledControlProperty(False)
@@ -3755,11 +3676,7 @@ Namespace Tables
                 FillEntityDropDownList()
                 FillPayeeTypeDropDownList()
                 SetGridSourceXcdDropdownFromBo()
-                SetGridSourceXcdLabelFromBoforNew()
-
-                'Me.SetFocusInGrid(moGridView, moGridView.SelectedIndex, LOW_PRICE)
-                'US-521697
-                SetGridSourceXcdLabelFromBoforNew()
+                SetGridSourceXcdLabelFromBo()
                 SetGridSourceXcdTextboxForNewCoverage()
 
                 'EnableDisableControls(Me.moCoverageEditPanel, True)
@@ -3867,16 +3784,8 @@ Namespace Tables
             End If
 
             If mocboPayeeType.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                'Dim PayeeTypeCode As String
-
-                'PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE,  Me.GetSelectedItem(mocboPayeeType))
-                'PayeeTypeCode = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(mocboPayeeType))
-                'PayeeTypeCode = LookupListNew.GetDescriptionFromExtCode("PYTYPE", ElitaPlusIdentity.Current.ActiveUser.LanguageId, mocboPayeeType.SelectedValue)
                 moTextmoRenewal_NumberText.Text = mocboPayeeType.SelectedValue   'PayeeTypeCode 
                 Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_PAYEE_TYPE_XCD, moTextmoRenewal_NumberText)
-
-                'Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_PAYEE_TYPE_XCD, mocboPayeeType, True, False)
-
             End If
 
             'If Me.State.IsIgnorePremiumSetYesForContract Then
@@ -3942,7 +3851,6 @@ Namespace Tables
                     Me.State.moCoverageRateList(nIndex) = Nothing
                 Else
                     With TheCommPlanDist()
-                        'With TheCommPlanDist()                        
                         .Delete()
                         .Save()
                     End With
