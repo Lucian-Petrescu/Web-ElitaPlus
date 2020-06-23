@@ -1014,90 +1014,7 @@
                                     </div>
                                 </asp:Panel>
                             </div>
-                        </div>
-
-                        <%--<div id="tabmoEntityTabPanelWRITE" style="border:1px solid black;">
-                 <asp:Panel ID="moEntityTabPanel_WRITE" runat="server" Width="100%" Height="100%">
-                        <table id="tblEntities" style="width: 95%; height: 100%" cellspacing="0" cellpadding="0"
-                            rules="cols" border="0">
-                            <tr>
-                                <td align="center" colspan="" style="height: 1px" valign="middle" width="45%">
-                                    <asp:Label ID="Label26" runat="server" Font-Bold="False">PAYEE_TYPE</asp:Label>
-                                </td>
-                                <td align="center" colspan="" style="height: 1px" valign="middle" width="45%">
-                                    <asp:Label ID="LabelCommEntity" runat="server" Font-Bold="False">Commission_Entity</asp:Label>
-                                </td>
-                            </tr>
-                            <tr>                                              
-                                <td align="center" colspan="" style="height: 1px" valign="middle" width="45%">
-                                    <asp:DropDownList ID="cboPayeeType1" runat="server" TabIndex="4" Width="70%" SkinID="MediumDropDown"
-                                        AutoPostBack="False">
-                                    </asp:DropDownList>
-                                </td>
-                                <td align="center" colspan="" style="height: 1px" valign="middle" width="45%">
-                                    <asp:DropDownList ID="cboPeriodEntity1" runat="server" TabIndex="4" Width="70%" SkinID="MediumDropDown"
-                                        AutoPostBack="False">
-                                    </asp:DropDownList>
-                                </td>                                                                
-                            </tr>
-                            <tr>
-                                <td align="center" colspan="" style="height: 1px" valign="middle" width="45%">
-                                    <asp:DropDownList ID="cboPayeeType2" runat="server" TabIndex="4" Width="70%" SkinID="MediumDropDown"
-                                        AutoPostBack="False">
-                                    </asp:DropDownList>
-                                </td>
-                                <td align="center" colspan="" style="height: 1px" valign="middle" width="45%">
-                                    <asp:DropDownList ID="cboPeriodEntity2" runat="server" TabIndex="4" Width="70%" SkinID="MediumDropDown"
-                                        AutoPostBack="False">
-                                    </asp:DropDownList>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="center" colspan="" style="height: 1px" valign="middle" width="45%">
-                                    <asp:DropDownList ID="cboPayeeType3" runat="server" TabIndex="4" Width="70%" SkinID="MediumDropDown"
-                                        AutoPostBack="False">
-                                    </asp:DropDownList>
-                                </td>
-                                <td align="center" colspan="" style="height: 1px" valign="middle" width="45%">
-                                    <asp:DropDownList ID="cboPeriodEntity3" runat="server" TabIndex="4" Width="70%" SkinID="MediumDropDown"
-                                        AutoPostBack="False">
-                                    </asp:DropDownList>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="center" colspan="" style="height: 1px" valign="middle" width="45%">
-                                    <asp:DropDownList ID="cboPayeeType4" runat="server" TabIndex="4" Width="70%" SkinID="MediumDropDown"
-                                        AutoPostBack="False">
-                                    </asp:DropDownList>
-                                </td>                                                            
-                                <td align="center" colspan="" style="height: 1px" valign="middle" width="45%">
-                                    <asp:DropDownList ID="cboPeriodEntity4" runat="server" TabIndex="4" Width="70%" SkinID="MediumDropDown"
-                                        AutoPostBack="False">
-                                    </asp:DropDownList>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="center" colspan="" style="height: 1px" valign="middle" width="45%">
-                                    <asp:DropDownList ID="cboPayeeType5" runat="server" TabIndex="4" Width="70%" SkinID="MediumDropDown"
-                                        AutoPostBack="False">
-                                    </asp:DropDownList>
-                                </td>
-                                <td align="center" colspan="" style="height: 1px" valign="middle" width="45%">
-                                    <asp:DropDownList ID="cboPeriodEntity5" runat="server" TabIndex="4" Width="70%" SkinID="MediumDropDown"
-                                        AutoPostBack="False">
-                                    </asp:DropDownList>
-                                </td>
-                            </tr>
-                            </table>
-                            <div class="btnZone">
-                                <asp:Button ID="btnEntityBack" runat="server" Text="Back" SkinID="AlternateRightButton"></asp:Button>&nbsp;
-                                <asp:Button ID="btnEntitySave" runat="server" Text="SAVE" SkinID="PrimaryRightButton"></asp:Button>&nbsp;
-                                <asp:Button ID="btnEntityUndo" runat="server" Text="Undo" SkinID="PrimaryRightButton"></asp:Button>
-                            </div>        
-                    <!-- Tab end -->
-                </asp:Panel>
-              </div>      --%>
-                        
+                        </div>                        
                     </div>
                 </td>
             </tr>
@@ -1115,26 +1032,5 @@
             <asp:Button ID="btnDelete_WRITE" runat="server" SkinID="CenterButton" Text="Delete"></asp:Button>
         </asp:Panel>
     </div>
-
-    <%--<script type="text/javascript" language="javascript">  
-        <asp: literal id="litScriptVars" runat="server"></asp: literal >
-
-            function EnableControl(value1, value2) {
-
-                var cboName;
-                var cboName1;
-
-                cboName = value1;
-                cboName1 = value2;
-
-                if (document.getElementById(cboName).value != commEntity) {
-                    document.getElementById(cboName1).disabled = true;
-                    document.getElementById(cboName1).value = '';
-                }
-                else {
-                    document.getElementById(cboName1).disabled = false;
-                }
-            }
-    </script>--%>
 
 </asp:Content>
