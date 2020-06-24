@@ -212,6 +212,7 @@ Namespace Claims.AccountPayable
 
         Private Sub SetGridButtonState(ByVal isVisible As Boolean)
             ControlMgr.SetVisibleControl(Me, BtnNewLine, isVisible)
+            ControlMgr.SetVisibleControl(Me, BtnSearchLines, isVisible)
             ControlMgr.SetVisibleControl(Me, BtnCancelLine, Not isVisible)
             ControlMgr.SetVisibleControl(Me, BtnSaveLines, Not isVisible)
             ControlMgr.SetVisibleControl(Me, btnApply_WRITE, isVisible)
@@ -226,6 +227,7 @@ Namespace Claims.AccountPayable
             ControlMgr.SetVisibleControl(Me, btnApply_WRITE, False)
             ControlMgr.SetEnableControl(Me, InvoiceLinesGrid, False)
             ControlMgr.SetVisibleControl(Me, BtnNewLine, False)
+            ControlMgr.SetVisibleControl(Me, BtnSearchLines, false)
         End Sub
 
         Private Sub SetGridPageSize()
@@ -239,6 +241,7 @@ Namespace Claims.AccountPayable
 
             If State.IsNewInvoice Then
                 ControlMgr.SetVisibleControl(Me, BtnNewLine, False)
+                ControlMgr.SetVisibleControl(Me, BtnSearchLines, false)
                 ControlMgr.SetVisibleControl(Me, BtnCancelLine, False)
                 ControlMgr.SetVisibleControl(Me, BtnSaveLines, False)
             End If
@@ -805,6 +808,46 @@ Namespace Claims.AccountPayable
             SetGridButtonState(True)
             SetButtonsState()
 
+        End Sub
+
+        Private Sub BtnSearchLines_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSearchLines.Click
+            Try
+                InitPoLinesSearch()
+                HiddenFieldPoLineSearch.Value = "Y"
+
+            Catch ex As Threading.ThreadAbortException
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub btnAddPoLines_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnAddPoLines.Click
+
+            Try
+                HiddenFieldPoLineSearch.Value = "N"
+
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub InitPoLinesSearch()
+            If String.IsNullOrEmpty(moVendorDropDown.SelectedValue) andAlso State.ApInvoiceHeaderBo.Id = Guid.Empty  Then Exit Sub
+            ucApInvoiceLinesSearch.HostMessageController = MasterPage.MessageController
+
+            ucApInvoiceLinesSearch.TranslationFunc = Function(value As String)
+                Return TranslationBase.TranslateLabelOrMessage(value)
+            End Function
+
+            ucApInvoiceLinesSearch.TranslateGridHeaderFunc = Sub(grid As System.Web.UI.WebControls.GridView)
+                TranslateGridHeader(grid)
+            End Sub
+
+            ucApInvoiceLinesSearch.CompanyId = State.CompanyId
+            ucApInvoiceLinesSearch.ServiceCenter = moVendorDropDown.SelectedValue
+            ucApInvoiceLinesSearch.ApInvoiceHeaderId= State.ApInvoiceHeaderBo.Id
+            ucApInvoiceLinesSearch.InitializeComponent()
+            
         End Sub
 
 #End Region

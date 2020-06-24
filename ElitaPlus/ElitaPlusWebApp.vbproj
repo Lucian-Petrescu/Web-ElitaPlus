@@ -962,6 +962,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Common\ServiceCenterSelected.vb" />
+    <Compile Include="Common\UserControlApInvoiceLinesSearch.ascx.designer.vb">
+      <DependentUpon>UserControlApInvoiceLinesSearch.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UserControlApInvoiceLinesSearch.ascx.vb">
+      <DependentUpon>UserControlApInvoiceLinesSearch.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Common\UserControlCallerInfo.ascx.designer.vb">
       <DependentUpon>UserControlCallerInfo.ascx</DependentUpon>
     </Compile>
@@ -5817,6 +5824,7 @@
     <Content Include="Claims\ClaimReimbursementForm.aspx" />
     <Content Include="Claims\UserControlConsequentialDamage.ascx" />
     <Content Include="Common\DynamicFulfillmentUI.ascx" />
+    <Content Include="Common\UserControlApInvoiceLinesSearch.ascx" />
     <Content Include="Common\UserControlCallerInfo.ascx" />
     <Content Include="Common\UserControlCaseHeaderInfo.ascx" />
     <Content Include="Common\UserControlDealerInflation.ascx" />
@@ -9071,7 +9079,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/ElitaPlus</IISUrl>
+          <IISUrl>http://localhost:81/ElitaPlus</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

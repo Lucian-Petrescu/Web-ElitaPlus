@@ -15,15 +15,6 @@ Namespace Claims.AccountPayable
     Partial Public Class AddApInvoiceForm
 
         '''<summary>
-        '''ScriptManager1 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
-
-        '''<summary>
         '''moInvoiceNumberLabel control.
         '''</summary>
         '''<remarks>
@@ -141,6 +132,69 @@ Namespace Claims.AccountPayable
         Protected WithEvents moAPInvoiceTerm As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
+        '''ScriptManager1 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
+
+        '''<summary>
+        '''HiddenFieldPoLineSearch control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents HiddenFieldPoLineSearch As Global.System.Web.UI.WebControls.HiddenField
+
+        '''<summary>
+        '''lblNewSCError control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblNewSCError As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''Label3 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents Label3 As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''ucApInvoiceLinesSearch control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ucApInvoiceLinesSearch As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlApInvoiceLinesSearch
+
+        '''<summary>
+        '''btnCancelLineSearch control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents btnCancelLineSearch As Global.System.Web.UI.WebControls.Button
+
+        '''<summary>
+        '''btnAddPoLines control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents btnAddPoLines As Global.System.Web.UI.WebControls.Button
+
+        '''<summary>
         '''tr1 control.
         '''</summary>
         '''<remarks>
@@ -211,6 +265,15 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents BtnNewLine As Global.System.Web.UI.WebControls.Button
+
+        '''<summary>
+        '''BtnSearchLines control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents BtnSearchLines As Global.System.Web.UI.WebControls.Button
 
         '''<summary>
         '''BtnSaveLines control.
