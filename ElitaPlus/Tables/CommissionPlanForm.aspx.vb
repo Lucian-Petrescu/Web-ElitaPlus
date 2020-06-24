@@ -520,6 +520,7 @@ Namespace Tables
                 SavePeriodChanges()
                 SetGridSourceXcdLabelFromBo()
             Catch ex As Exception
+                SetGridSourceXcdLabelFromBo()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
@@ -529,6 +530,7 @@ Namespace Tables
                 ClearPeriod()
                 PopulatePeriod()
             Catch ex As Exception
+                SetGridSourceXcdLabelFromBo()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
@@ -565,6 +567,7 @@ Namespace Tables
                     CreateNew()
                 End If
             Catch ex As Exception
+                SetGridSourceXcdLabelFromBo()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
@@ -591,6 +594,7 @@ Namespace Tables
                     CreateNewCopy()
                 End If
             Catch ex As Exception
+                SetGridSourceXcdLabelFromBo()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
