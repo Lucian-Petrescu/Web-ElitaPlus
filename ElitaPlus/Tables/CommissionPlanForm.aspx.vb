@@ -473,7 +473,7 @@ Namespace Tables
                         CheckIfComingFromConfirm()
                     End If
                 End If
-
+                btnBack.Visible = True
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -612,11 +612,11 @@ Namespace Tables
                     FillPayeeTypeDropDownList()
                     SetGridSourceXcdDropdownFromBo()
                     SetGridSourceXcdLabelFromBo()
-                    Me.moGridView.Visible = False
-                    BtnNewRate_WRITE.Visible = False
+                    Me.moGridView.Visible = True
+                    BtnNewRate_WRITE.Visible = True
                 Else
                     Me.DisplayMessage(Message.MSG_COMPANY_NOT_CONFIGURED_FOR_DEALER, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO, Me.HiddenSaveChangesPromptResponse)
-                    btnBack.Visible = False
+                    btnBack.Visible = True
                     Me.moGridView.Visible = False
                     BtnNewRate_WRITE.Visible = False
                     BtnSaveRate_WRITE.Visible = False
