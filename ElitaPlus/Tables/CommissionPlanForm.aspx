@@ -346,7 +346,7 @@
     <div class="dataContainer">
 
         <table id="Table3" cellspacing="0" cellpadding="0" width="100%" border="0" class="formGrid" style="padding: 0px; margin: 0px">
-            <asp:Panel ID="moPeriodPanel_WRITE" runat="server">
+            <asp:Panel ID="moCoverageEditPanel" runat="server">
                 <tr>
                     <td align="center" colspan="6" class="borderLeft" width="30%">
                         <uc1:MultipleColumnDDLabelControl ID="multipleDropControl" runat="server"></uc1:MultipleColumnDDLabelControl>

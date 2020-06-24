@@ -6,7 +6,6 @@ Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports Assurant.ElitaPlus.DALObjects
 Imports System.Globalization
 Imports Assurant.ElitaPlus.Business
-Imports Microsoft.Web.Services3.Referral
 
 Namespace Tables
 
@@ -405,7 +404,7 @@ Namespace Tables
 
 #Region "Handlers"
 
-
+        Protected WithEvents moCoverageEditPanel As System.Web.UI.WebControls.Panel
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
@@ -454,6 +453,7 @@ Namespace Tables
                         Me.moGridView.Visible = False
                     Else
                         Me.moGridView.Visible = True
+                        'Me.SetStateProperties()
                         'US-521672
                         SetGridSourceXcdLabelFromBo()
                     End If
@@ -518,6 +518,7 @@ Namespace Tables
         Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
                 SavePeriodChanges()
+                SetGridSourceXcdLabelFromBo()
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -615,8 +616,16 @@ Namespace Tables
                     BtnNewRate_WRITE.Visible = False
                 Else
                     Me.DisplayMessage(Message.MSG_COMPANY_NOT_CONFIGURED_FOR_DEALER, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO, Me.HiddenSaveChangesPromptResponse)
+                    btnBack.Visible = False
                     Me.moGridView.Visible = False
                     BtnNewRate_WRITE.Visible = False
+                    BtnSaveRate_WRITE.Visible = False
+                    BtnCancelRate.Visible = False
+                    btnSave_WRITE.Visible = False
+                    btnUndo_WRITE.Visible = False
+                    btnNew_WRITE.Visible = False
+                    btnCopy_WRITE.Visible = False
+                    btnDelete_WRITE.Visible = False
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -749,10 +758,10 @@ Namespace Tables
                 EnableDateFields()
                 PopulateTolerance()
                 PupulateCodeDescFromBO()
-                If Me.State.IsCommPlanDistNew = False Then
-                    PopulatePayeeType()
-                End If
-                PopulatePeriodEntity()
+                'If Me.State.IsCommPlanDistNew = False Then
+                '    PopulatePayeeType()
+                'End If
+                'PopulatePeriodEntity()
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -945,7 +954,7 @@ Namespace Tables
             Me.State.moCommTolerance = New CommissionTolerance
             Me.State.IsToleranceNew = True
             ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, False)
-            Me.EnableDisableControls(moPeriodPanel_WRITE, True)
+            Me.EnableDisableControls(moCoverageEditPanel, True)
             EnableToleranceGrid(False)
             InitializeFormTolerance()
             PopulateFormFromPeriodEntityBO()
@@ -1003,7 +1012,7 @@ Namespace Tables
                     Me.State.IsToleranceNew = False
                     PopulateTolerance(Me.POPULATE_ACTION_NO_EDIT)
                     ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, True)
-                    Me.EnableDisableControls(moPeriodPanel_WRITE, False)
+                    Me.EnableDisableControls(moCoverageEditPanel, False)
                     TheDealerControl.ChangeEnabledControlProperty(False)
                     ControlMgr.SetVisibleControl(Me, Me.btnEntityBack, False)
                 End If
@@ -1037,7 +1046,7 @@ Namespace Tables
             EnableToleranceGrid(False)
             PopulateFormFromToleranceBO()
             ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, False)
-            Me.EnableDisableControls(moPeriodPanel_WRITE, True)
+            Me.EnableDisableControls(moCoverageEditPanel, True)
         End Sub
 
         Private Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
@@ -1534,7 +1543,7 @@ Namespace Tables
             PopulatePeriodEntity()
             TheDealerControl.ChangeEnabledControlProperty(False)
 
-        End Sub        
+        End Sub
 
 #Region "Acct Source Xcd Option Bucket Logic"
         Private Sub ValidateDiffSourceLogic()
@@ -1627,46 +1636,7 @@ Namespace Tables
                 Next
             Next
         End Sub
-
-        Private Sub SetGridSourceXcdLabelFromBoforNew()
-            'If moGridView.EditIndex = -1 Then Exit Sub
-            For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
-                Me.moGridView.PageIndex = pageIndexk
-                Dim rowNum As Integer = Me.moGridView.Rows.Count
-                For i As Integer = 0 To rowNum - 1
-                    Dim gRow As GridViewRow = moGridView.Rows(i)
-                    If gRow.RowType = DataControlRowType.DataRow Then
-                        Dim molblCommPercentSourceXcd As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblCommPercentSourceXcd"), Label)
-                        Dim molblPayeeType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblPayeeType"), Label)
-                        Dim molblEntityType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblEntityType"), Label)
-
-                        If Not molblCommPercentSourceXcd Is Nothing Then
-                            If molblCommPercentSourceXcd.Visible Then
-                                If (Not molblCommPercentSourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercentSourceXcd.Text)) Then
-                                    molblCommPercentSourceXcd.Text = GetCodeAmtSourceOption(molblCommPercentSourceXcd.Text)
-                                End If
-                            End If
-                        End If
-
-                        If Not molblPayeeType Is Nothing Then
-                            If molblPayeeType.Visible Then
-                                If (Not molblPayeeType.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblPayeeType.Text)) Then
-                                    molblPayeeType.Text = GetDescOfExtCodePayeeTypeXcdOption(molblPayeeType.Text)
-                                End If
-                            End If
-                        End If
-
-                        If Not molblEntityType Is Nothing Then
-                            If molblEntityType.Visible Then
-                                If (Not molblEntityType.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblEntityType.Text)) Then
-                                    molblEntityType.Text = GetDescOfIDFromEntityTypeOption(molblEntityType.Text)
-                                End If
-                            End If
-                        End If
-                    End If
-                Next
-            Next
-        End Sub
+        
         Private Sub FillSourceXcdDropdownList()
 
             'fill the drop downs
@@ -1993,6 +1963,7 @@ Namespace Tables
                     SetGridSourceXcdLabelFromBo()
 
                     SetGridControls(moGridView, False)
+                    EnableDisableControls(Me.moCoverageEditPanel, True)
                 ElseIf (e.CommandName = DELETE_COMMAND_NAME) Then
                     moGridView.EditIndex = nIndex
                     moGridView.SelectedIndex = nIndex
@@ -2002,7 +1973,7 @@ Namespace Tables
                     If DeleteSelectedCoverageRate(nIndex) = True Then
                         PopulateCoverageRateList(ACTION_CANCEL_DELETE)
                     End If
-
+                    SetGridSourceXcdLabelFromBo()
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2054,6 +2025,9 @@ Namespace Tables
                 FillPayeeTypeDropDownList()
                 SetGridSourceXcdDropdownFromBo()
                 SetGridSourceXcdLabelFromBo()
+                SetGridControls(moGridView, True)
+                EnableDisableControls(Me.moCoverageEditPanel, True)
+                setbuttons(False)
             Catch ex As Exception
                 SetStateProperties()
                 SetGridControls(moGridView, True)
@@ -2065,6 +2039,18 @@ Namespace Tables
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
+
+        Private Sub setbuttons(ByVal enable As Boolean)
+            ControlMgr.SetEnableControl(Me, btnBack, enable)
+            'ControlMgr.SetEnableControl(Me, btnApply_WRITE, enable)
+            ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enable)
+            ControlMgr.SetEnableControl(Me, btnCopy_WRITE, enable)
+            ControlMgr.SetEnableControl(Me, btnNew_WRITE, enable)
+            ControlMgr.SetEnableControl(Me, btnUndo_WRITE, enable)
+            'ControlMgr.SetVisibleControl(Me, BtnEffectiveDate, enable)
+            'ControlMgr.SetVisibleControl(Me, BtnExpirationDate, enable)
+        End Sub
+
         Private Sub SaveRateChanges()
             If ApplyRateChanges() = True Then
                 If Me.State.IsCommPlanDistNew = True Then
@@ -2124,10 +2110,27 @@ Namespace Tables
             Dim mocboPayeeType As DropDownList = DirectCast(gRow.Cells(COL_PAYEE_TYPE_XCD_IDX).FindControl("cboPayeeType"), DropDownList)
             Dim mocboEntityType As DropDownList = DirectCast(gRow.Cells(COL_ENTITY_ID_IDX).FindControl("cboEntityType"), DropDownList)
             Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboCommPercentSourceXcd"), DropDownList)
-
             Dim moTextmoLowPriceText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_AMOUNT_IDX).FindControl("moLowPriceText"), TextBox)
             Dim moTextmoCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
             Dim moTextmoRenewal_NumberText As TextBox = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("moRenewal_NumberText"), TextBox)
+            
+            If (mocboCommPercentSourceXcd.Items.Count > 0) Then
+                If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
+                    moTextmoCommission_PercentText.Text = "0.0000"
+                End If
+            End If
+
+            If (String.IsNullOrWhiteSpace(moTextmoLowPriceText.Text))
+                moTextmoLowPriceText.Text = "0.00"
+            End If
+
+            If (String.IsNullOrWhiteSpace(moTextmoCommission_PercentText.Text))
+                moTextmoCommission_PercentText.Text = "0.0000"
+            End If
+
+            If (String.IsNullOrWhiteSpace(moTextmoRenewal_NumberText.Text))
+                moTextmoRenewal_NumberText.Text = "1"
+            End If
 
             Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_AMT, moTextmoLowPriceText)
             Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_PER, moTextmoCommission_PercentText)
@@ -2240,7 +2243,7 @@ Namespace Tables
 
                         'IsNewRate = True
                         Me.State.IsCommPlanDistNew = True
-
+                        Me.State.MyBoDist = New CommPlanDistribution()
                         Dim oRow As DataRow = oDataView.Table.NewRow
                         With TheCommPlanDist
                             CoverageRateId = .Id.ToString
@@ -2254,6 +2257,9 @@ Namespace Tables
                             oRow(DB_POSITION) = 0
                         End With
                         oDataView.Table.Rows.Add(oRow)
+
+                        Me.State.moCommPlanDistId = GetGuidFromString(CoverageRateId)
+
                         Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageRateId), moGridView,
                                     moGridView.PageIndex, True)
                         EnableForEditRateButtons(True)

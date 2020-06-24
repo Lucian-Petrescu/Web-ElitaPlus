@@ -15,15 +15,6 @@ Namespace Tables
     Partial Public Class CommissionPlanForm
 
         '''<summary>
-        '''moPeriodPanel_WRITE control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents moPeriodPanel_WRITE As Global.System.Web.UI.WebControls.Panel
-
-        '''<summary>
         '''multipleDropControl control.
         '''</summary>
         '''<remarks>
