@@ -1,23 +1,23 @@
-'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (2/27/2007)********************
+﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (12/20/2012)********************
 
 
 Public Class PoliceStationDAL
-    Inherits DALBase
+    Inherits OracleDALBase
 
 
 #Region "Constants"
     Public Const TABLE_NAME As String = "ELP_POLICE_STATION"
     Public Const TABLE_KEY_NAME As String = "police_station_id"
-
     Public Const COL_NAME_POLICE_STATION_ID As String = "police_station_id"
     Public Const COL_NAME_COUNTRY_ID As String = "country_id"
     Public Const COL_NAME_POLICE_STATION_CODE As String = "police_station_code"
     Public Const COL_NAME_POLICE_STATION_NAME As String = "police_station_name"
+    Public Const COL_NAME_POLICE_STATION_DISTRICT_CODE As String = "police_station_district_code"
+    Public Const COL_NAME_POLICE_STATION_DISTRICT_NAME As String = "police_station_district_name"
     Public Const COL_NAME_ADDRESS1 As String = "address1"
     Public Const COL_NAME_ADDRESS2 As String = "address2"
     'Added for Def-1598
     Public Const COL_NAME_ADDRESS3 As String = "address3"
-
     Public Const COL_NAME_CITY As String = "city"
     Public Const COL_NAME_REGION_ID As String = "region_id"
     Public Const COL_NAME_POSTAL_CODE As String = "postal_code"
@@ -26,7 +26,7 @@ Public Class PoliceStationDAL
 
 #Region "Constructors"
     Public Sub New()
-        MyBase.new()
+        MyBase.New()
     End Sub
 
 #End Region
@@ -91,6 +91,7 @@ Public Class PoliceStationDAL
         bIsLikeClause = Me.IsLikeClause(descriptionMask) OrElse Me.IsLikeClause(codeMask)
         Return bIsLikeClause
     End Function
+
 #End Region
 
 #Region "Overloaded Methods"
@@ -102,9 +103,52 @@ Public Class PoliceStationDAL
             MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
+
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+        With command
+            .BindByName = True
+            .AddParameter(parameterName:="pi_country_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COUNTRY_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_CODE, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_name", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_NAME, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_address1", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_ADDRESS1, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_address2", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_ADDRESS2, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_address3", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_ADDRESS3, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_city", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_CITY, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_region_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_REGION_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_postal_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POSTAL_CODE, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_modified_by", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_POLICE_STATION_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_Dist_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_DISTRICT_CODE, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_Dist_Name", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_DISTRICT_NAME, direction:=ParameterDirection.Input)
+        End With
+    End Sub
+
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+        With command
+            .BindByName = True
+            .AddParameter(parameterName:="pi_police_station_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_POLICE_STATION_ID, direction:=ParameterDirection.Input)
+        End With
+    End Sub
+
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+        With command
+            .BindByName = True
+            .AddParameter(parameterName:="pi_country_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COUNTRY_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_CODE, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_name", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_NAME, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_address1", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_ADDRESS1, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_address2", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_ADDRESS2, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_address3", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_ADDRESS3, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_city", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_CITY, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_region_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_REGION_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_postal_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POSTAL_CODE, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_created_by", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_POLICE_STATION_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_Dist_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_DISTRICT_CODE, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_Dist_Name", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_DISTRICT_NAME, direction:=ParameterDirection.Input)
+        End With
+    End Sub
+
 #End Region
 
-
 End Class
-
-

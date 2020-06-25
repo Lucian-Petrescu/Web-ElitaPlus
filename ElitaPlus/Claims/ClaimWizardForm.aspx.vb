@@ -96,6 +96,7 @@ Public Class ClaimWizardForm
     Public Const gridClaimCaseDeviceInfoPurchasedDate As Integer = 3
     Private Const LABEL_SERVICE_CENTER As String = "SERVICE_CENTER"
     Public Const SESSION_KEY_CLAIM_WIZARD_BACKUP_STATE As String = "SESSION_KEY_CLAIM_WIZARD_BACKUP_STATE"
+    Public Const ISSUE_CODE_CR_DEVICE_MIS As String = "CR_DEVICE_MIS"
 
 #End Region
 
@@ -320,6 +321,7 @@ Public Class ClaimWizardForm
 
             End If
             BindBoPropertiesToLabels(Me.State.StepName)
+            PopulateClaimedEnrolledDetails()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2240,8 +2242,7 @@ Public Class ClaimWizardForm
         Me.State.ClaimBO.RecalculateDeductibleForChanges()
         Me.State.ClaimIssuesView = Me.State.ClaimBO.GetClaimIssuesView()
         Me.State.ClaimImagesView = Me.State.ClaimBO.GetClaimImagesView()
-       
-        'populateClaimEquipment()
+
         PopulateClaimIssuesGrid()
         PopulateClaimImagesGrid()
         PopulateClaimAuthorizationGrid()
@@ -2389,15 +2390,6 @@ Public Class ClaimWizardForm
             End With
         End If
 
-        With Me.State.ClaimBO
-            If Not .EnrolledEquipment Is Nothing Or Not .ClaimedEquipment Is Nothing Then
-                With Me.ucClaimDeviceInfo
-                    .thisPage = Me
-                    .ClaimBO = CType(Me.State.ClaimBO, ClaimBase)
-                End With
-            End If
-        End With
-
         If Me.State.ClaimBO.CertificateItem.IsEquipmentRequired Then
             'populate best replacement record
             With Me.step3_ReplacementOption
@@ -2501,6 +2493,23 @@ Public Class ClaimWizardForm
     '    End With
 
     'End Sub
+
+    Sub PopulateClaimedEnrolledDetails()
+        With Me.State.ClaimBO
+            If Not .EnrolledEquipment Is Nothing Or Not .ClaimedEquipment Is Nothing Then
+                With Me.ucClaimDeviceInfo
+                    .thisPage = Me
+                    .ClaimBO = CType(Me.State.ClaimBO, ClaimBase)
+                    For Each i As ClaimIssue In State.ClaimBO.ClaimIssuesList
+                        If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS And (i.StatusCode = Codes.CLAIMISSUE_STATUS__RESOLVED Or i.StatusCode = Codes.CLAIMISSUE_STATUS__REJECTED Or i.StatusCode = Codes.CLAIMISSUE_STATUS__WAIVED) Then
+                            .ShowDeviceEditImg = False
+                            Exit For
+                        End If
+                    Next
+                End With
+            End If
+        End With
+    End Sub
 
     Private Sub PopulateBOFromFormForStep3()
 
