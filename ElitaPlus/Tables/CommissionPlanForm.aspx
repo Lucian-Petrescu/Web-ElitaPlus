@@ -1024,7 +1024,7 @@
 
     <div class="btnZone">
         <asp:Panel ID="moPeriodButtonPanel" runat="server">
-            <asp:Button ID="btnBack" runat="server" SkinID="AlternateLeftButton" Text="Back"></asp:Button>
+            <asp:Button ID="btnBack" runat="server" SkinID="AlternateLeftButton" Text="Back" Visible="true"></asp:Button>
             <asp:Button ID="btnSave_WRITE" runat="server" SkinID="PrimaryRightButton" Text="Save"></asp:Button>
             <asp:Button ID="btnUndo_WRITE" runat="server" SkinID="AlternateRightButton" Text="Undo"></asp:Button>
             <asp:Button ID="btnNew_WRITE" runat="server" SkinID="AlternateLeftButton" Text="New"></asp:Button>
