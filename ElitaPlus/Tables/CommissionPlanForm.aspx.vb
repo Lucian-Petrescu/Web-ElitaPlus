@@ -1186,9 +1186,9 @@ Namespace Tables
                 ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Me.Grid)
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                If Not Me.State.IsDealerConfiguredForSourceXcd Then
-                    Me.State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
-                End If
+                'If Not Me.State.IsDealerConfiguredForSourceXcd Then
+                '    Me.State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
+                'End If
                 SetGridSourceXcdLabelFromBo()
             End Try
 
@@ -1988,7 +1988,7 @@ Namespace Tables
         End Sub
 
         Private Sub setbuttons(ByVal enable As Boolean)
-            ControlMgr.SetEnableControl(Me, btnBack, enable)
+            'ControlMgr.SetEnableControl(Me, btnBack, enable)
             'ControlMgr.SetEnableControl(Me, btnApply_WRITE, enable)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enable)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, enable)
