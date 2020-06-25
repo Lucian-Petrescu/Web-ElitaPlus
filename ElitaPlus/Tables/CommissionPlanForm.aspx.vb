@@ -1186,9 +1186,9 @@ Namespace Tables
                 ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Me.Grid)
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                If Not Me.State.IsDealerConfiguredForSourceXcd Then
-                    Me.State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
-                End If
+                'If Not Me.State.IsDealerConfiguredForSourceXcd Then
+                '    Me.State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
+                'End If
                 SetGridSourceXcdLabelFromBo()
             End Try
 
