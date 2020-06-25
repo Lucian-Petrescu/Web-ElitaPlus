@@ -128,7 +128,8 @@ Namespace Tables
                     Or EventTypeCode = "ISSUE_REJECTED" _
                     Or EventTypeCode = "ISSUE_CLOSED" _
                     Or EventTypeCode = "ISSUE_PENDING" _
-                    Or EventTypeCode = "ISSUE_WAIVED") Then
+                    Or EventTypeCode = "ISSUE_WAIVED" _
+                    Or EventTypeCode = "ISSUE_REOPENED") Then
                 Return LookupListNew.GetIssueLookupListGlobal()
             ElseIf (EventTypeCode = "CLM_EXT_STATUS") Then
                 Return LookupListNew.GetExtendedStatusLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
@@ -384,7 +385,8 @@ Namespace Tables
                   Or EventTypeCode = "ISSUE_REJECTED" _
                   Or EventTypeCode = "ISSUE_CLOSED" _
                   Or EventTypeCode = "ISSUE_PENDING" _
-                  Or EventTypeCode = "ISSUE_WAIVED") Then
+                  Or EventTypeCode = "ISSUE_WAIVED" _
+                  Or EventTypeCode = "ISSUE_REOPENED") Then
                     Me.ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList(ListCodes.GetIssue, Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                       {
                                        .AddBlankItem = True
@@ -608,7 +610,8 @@ Namespace Tables
                   Or EventTypeCode = "ISSUE_REJECTED" _
                   Or EventTypeCode = "ISSUE_CLOSED" _
                   Or EventTypeCode = "ISSUE_PENDING" _
-                  Or EventTypeCode = "ISSUE_WAIVED") Then
+                  Or EventTypeCode = "ISSUE_WAIVED" _
+                  Or EventTypeCode = "ISSUE_REOPENED") Then
                 Me.ddlEventArgument.Populate(CommonConfigManager.Current.ListManager.GetList(ListCodes.GetIssue, Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                           {
                                            .AddBlankItem = True

@@ -215,7 +215,8 @@ Namespace Tables
                     Or EventTypeCode = "ISSUE_REJECTED" _
                     Or EventTypeCode = "ISSUE_CLOSED" _
                     Or EventTypeCode = "ISSUE_PENDING" _
-                    Or EventTypeCode = "ISSUE_WAIVED") Then
+                    Or EventTypeCode = "ISSUE_WAIVED" _
+                    Or EventTypeCode = "ISSUE_REOPENED") Then
 
                 Return CommonConfigManager.Current.ListManager.GetList(listCode:="GetIssue", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             ElseIf (EventTypeCode = "CLM_EXT_STATUS") Then
