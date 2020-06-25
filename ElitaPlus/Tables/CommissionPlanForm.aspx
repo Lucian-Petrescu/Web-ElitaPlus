@@ -422,10 +422,10 @@
                                 </tr>
                                 <tr>
                                     <td align="Center" colspan="2">
-                                        <div id="scroller" style="overflow: auto; width: 96%; height: 125px" align="center">
+                                        <div id="scroller" style="overflow: auto; width: 96%; height: 300px" align="center">
                                             <asp:GridView ID="moGridView" runat="server" OnRowCreated="ItemCreated" OnRowCommand="ItemCommand"
                                                 AllowPaging="False" PageSize="50" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"
-                                                SkinID="DetailPageGridView">
+                                                SkinID="DetailPageGridView" style="height: 125px;">
                                                 <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                                                 <EditRowStyle Wrap="False"></EditRowStyle>
                                                 <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -504,6 +504,7 @@
                                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblCommPercentSourceXcd" Text='<%# Container.DataItem("COMMISSIONS_SOURCE_XCD")%>' runat="server"> </asp:Label>
+                                                            <asp:Label ID="lblCommPercentSourceXcdCode" Text='<%# Container.DataItem("COMMISSIONS_SOURCE_XCD")%>' runat="server" Visible="False"> </asp:Label>
                                                         </ItemTemplate>
                                                         <EditItemTemplate>
                                                             <asp:DropDownList ID="cboCommPercentSourceXcd" runat="server" Visible="True" Width="100"></asp:DropDownList>

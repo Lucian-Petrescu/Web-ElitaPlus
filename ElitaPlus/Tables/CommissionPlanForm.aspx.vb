@@ -38,6 +38,7 @@ Namespace Tables
             Public moCommPlanDistSearch As CommPlanDistribution.SearchDV = Nothing
             Public searchDV As DataView = Nothing
 
+            Public IsCommPerGreaterThanHundred As Boolean
             Public IsPmComCombination As Boolean
             Public IsDiffSelectedTwice As Boolean
             Public IsDiffNotSelectedOnce As Boolean
@@ -582,28 +583,13 @@ Namespace Tables
 
 #Region "Handlers-DropDowns"
 
-
         Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
            Handles multipleDropControl.SelectedDropChanged
             Try
-                'Me.State.IsCommPlanDistNew = True
-                'ClearPeriod()
-                'SetPeriodButtonsState(True)
-                'PopulatePeriod()
-                'PopulateCoverageRateList()
-                'TheDealerControl.ChangeEnabledControlProperty(True)
-
                 EnableDateFields()
-                'SetGridControls(moGridView, True)
-                'FillSourceXcdDropdownList()
-                'FillEntityDropDownList()
-                'FillPayeeTypeDropDownList()
-                'SetGridSourceXcdDropdownFromBo()
-                'SetGridSourceXcdLabelFromBo()
                 Me.moGridView.Visible = True
                 BtnNewRate_WRITE.Visible = True
                 btnBack.Visible = True
-                'Me.DisplayMessage(Message.MSG_COMPANY_NOT_CONFIGURED_FOR_DEALER, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO, Me.HiddenSaveChangesPromptResponse)
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -1129,31 +1115,7 @@ Namespace Tables
             Me.PopulateBOProperty(oComTolerance, oPropertyName, oControl)
         End Sub
 
-        Private Sub PopulateToleranceBOFromForm()
-
-            With Me.State.moCommTolerance
-                BindBoPropertiesToLabels()
-                .CommissionPeriodId = Me.State.MyBo.Id
-                If GetRestrictMarkup() = True Then
-                    Me.PopulateToleranceBOItem(Me.State.moCommTolerance, ALLOWED_MARKUP_PCT_PROPERTY, moAllowedMarkupPctDetailText)
-                    Me.PopulateToleranceBOItem(Me.State.moCommTolerance, TOLERANCE_PROPERTY, moToleranceDetailText)
-                Else
-                    If Me.State.IsToleranceNew Then
-                        .AllowedMarkupPct = New DecimalType(0)
-                        .Tolerance = New DecimalType(0)
-                    End If
-                End If
-                If .IsDirty Then
-                    '.Validate()
-                End If
-            End With
-
-            PopulateAssocCommBOFromForm()
-            PopulateCommPlanDistBOFromForm()
-
-            If Me.ErrCollection.Count > 0 Then
-                Throw New PopulateBOErrorException
-            End If
+        Private Sub PopulateToleranceBOFromForm()           
 
         End Sub
 
@@ -1176,19 +1138,14 @@ Namespace Tables
 
             Try
                 If Me.State.IsCommPlanDistNew = True Then Return ' We can not have Tolerances if the Period is new
-
                 EnableToleranceGrid(True)
                 oDataView = GetToleranceDataView()
                 Me.State.searchDV = oDataView
                 BasePopulateGrid(Me.Grid, Me.State.searchDV, Me.State.moCommissionToleranceId, oAction)
-                'SetGridSourceXcdLabelFromBo()
                 EnableRestrictMarkup(GetRestrictMarkup(), oDataView.Count)
                 ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Me.Grid)
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                'If Not Me.State.IsDealerConfiguredForSourceXcd Then
-                '    Me.State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
-                'End If
                 SetGridSourceXcdLabelFromBo()
             End Try
 
@@ -1350,25 +1307,63 @@ Namespace Tables
             End If
 
         End Sub
-
-        Protected Sub ComingFromNewDistribution()
+        Protected Sub ComingFromSaveNewDistribution()
             Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
-                ' Return from the Back Button
+                ' Return from the New Copy Button
 
                 Select Case confResponse
-                    Case Me.MSG_BTN_OK
-                        SetStateProperties()
-                        SetGridControls(moGridView, True)
-                        FillSourceXcdDropdownList()
-                        FillEntityDropDownList()
-                        FillPayeeTypeDropDownList()
-                        SetGridSourceXcdDropdownFromBo()
+                    Case Me.MSG_VALUE_YES
+                        ' Save and create a new Copy BO
+                        SaveRateChanges()
                         SetGridSourceXcdLabelFromBo()
+                    Case Me.MSG_VALUE_NO
+                        ' create a new BO
+
                 End Select
             End If
+        End Sub
 
+        Protected Sub ComingFromNewDistribution()
+            Try
+
+
+                Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+
+                If Not confResponse = String.Empty Then
+                    ' Return from the Back Button
+
+                    Select Case confResponse
+                        Case Me.MSG_BTN_OK
+                            Me.State.IsCommPlanDistNew = True
+                            CoverageRateId = Guid.Empty.ToString
+                            PopulateCoverageRateList(ACTION_NEW)
+                            'SetGridControls(moGridView, True)
+                            FillSourceXcdDropdownList()
+                            FillEntityDropDownList()
+                            FillPayeeTypeDropDownList()
+                            SetGridSourceXcdDropdownFromBo()
+                            SetGridSourceXcdLabelFromBo()
+                            SetGridControls(moGridView, True)
+                            EnableDisableControls(Me.moCoverageEditPanel, True)
+                            setbuttons(False)
+                            btnBack.Visible = True
+                    End Select
+                End If
+            Catch ex As Exception
+                ' SetStateProperties()
+                FillSourceXcdDropdownList()
+                FillEntityDropDownList()
+                FillPayeeTypeDropDownList()
+                SetGridSourceXcdDropdownFromBo()
+                SetGridSourceXcdLabelFromBo()
+                SetGridControls(moGridView, True)
+                EnableDisableControls(Me.moCoverageEditPanel, True)
+                setbuttons(False)
+                btnBack.Visible = True
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
         End Sub
 
 #End Region
@@ -1455,11 +1450,6 @@ Namespace Tables
         End Sub
         Private Sub UpdateEntityTable()
         End Sub
-        Private Sub PopulateAssocCommBOFromForm()
-        End Sub
-
-        Private Sub PopulateCommPlanDistBOFromForm()
-        End Sub
 
         Private Sub btnEntityUndo_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnEntityUndo.Click
             Dim dealerId As Guid = TheDealerControl.SelectedGuid
@@ -1479,7 +1469,7 @@ Namespace Tables
 
             If Me.State.IsPmComCombination Then
                 ElitaPlusPage.SetLabelError(Me.lblAcctSourceBucket)
-                Throw New GUIException(Message.MSG_PRICEMETRICS_CERTCALC_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_PRICE_METRICS_AND_CERT_COMM_NOT_ALLOWED)            
+                Throw New GUIException(Message.MSG_PRICEMETRICS_CERTCALC_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_PRICE_METRICS_AND_CERT_COMM_NOT_ALLOWED)
             End If
 
         End Sub
@@ -1497,47 +1487,83 @@ Namespace Tables
                         'Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
                         Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboCommPercentSourceXcd"), DropDownList)
                         Dim mollblCommPercentSourceXcd As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblCommPercentSourceXcd"), Label)
-                        Me.State.IsDiffSelectedTwice = False
-                        Me.State.IsDiffNotSelectedOnce = False
+                        Dim mollblCommPercentSourceXcdCode As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblCommPercentSourceXcdCode"), Label)
 
-                        'ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_PRICEMATRIX
-                        If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_CERTCOMM) Then
-                            countPM = countPM + 1
+                        If Not mocboCommPercentSourceXcd Is Nothing Then
+                            If mocboCommPercentSourceXcd.Items.Count > 0 Then
+                                If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_CERTCOMM) Then
+                                    countPM = countPM + 1
+                                End If
+
+                                If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_PRICEMATRIX) Then
+                                    countCertComm = countCertComm + 1
+                                End If
+                            End If
                         End If
 
-                        If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_PRICEMATRIX) Then
-                            countCertComm = countCertComm + 1
+                        If Not mollblCommPercentSourceXcdCode Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(mollblCommPercentSourceXcdCode.Text) Then
+
+                                If mollblCommPercentSourceXcdCode.Text.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_CERTCOMM) Then
+                                    countPM = countPM + 1
+                                End If
+
+                                If mollblCommPercentSourceXcdCode.Text.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_PRICEMATRIX) Then
+                                    countCertComm = countCertComm + 1
+                                End If
+                            End If
                         End If
+
                     End If
                 Next
             Next
 
-            If ((countPM = 1 Or countPM > 1) And (countCertComm = 1 Or countCertComm > 1)) Then
+            If ((countPM = 1 Or countPM >
+                1) And (countCertComm = 1 Or countCertComm > 1)) Then
                 Me.State.IsPmComCombination = True
             Else
                 Me.State.IsPmComCombination = False
             End If
         End Sub
 
-        Private Sub CheckPMCertCombonation()
-            If moGridView.Rows.Count > 0 Then
-                Dim i As Integer = 0
-                Dim oCoverageRate(moGridView.Rows.Count - 1) As CommPlanDistribution
+        Private Function IsCommPerGreaterThanHundred() As Boolean
+            Dim countCommPer As Decimal = 0
+            Dim isCommPerMoreThanHundred As Boolean
+            For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
+                Me.moGridView.PageIndex = pageIndexk
+                Dim rowNum As Integer = Me.moGridView.Rows.Count
+                For i As Integer = 0 To rowNum - 1
+                    Dim gRow As GridViewRow = moGridView.Rows(i)
+                    If gRow.RowType = DataControlRowType.DataRow Then
+                        Dim molblCommPer As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("moCommission_PercentLabel"), Label)
+                        Dim motextBoxCommPer As TextBox = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("moCommission_PercentText"), TextBox)
+                        
+                        If Not motextBoxCommPer Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(motextBoxCommPer.Text) Then
+                                Dim cPer As Decimal = Convert.ToDecimal(motextBoxCommPer.Text)
+                                countCommPer = countCommPer + cPer
+                            End If
+                        End If
 
-                For i = 0 To moGridView.Rows.Count - 1
-                    oCoverageRate(i) = New CommPlanDistribution
-                    dim str As String
-                    
-                    If moGridView.Rows(i).Cells(COL_PAYEE_TYPE_XCD_IDX).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                       str   = CType(moGridView.Rows(i).Cells(COL_PAYEE_TYPE_XCD_IDX).Controls(1), Label).Text
-                    Else
-                       str = CType(moGridView.Rows(i).Cells(COL_PAYEE_TYPE_XCD_IDX).Controls(1), DropDownList).Text
+                        If Not molblCommPer Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(molblCommPer.Text) Then
+                                Dim cPer As Decimal = Convert.ToDecimal(molblCommPer.Text)
+                                countCommPer = countCommPer + cPer
+                            End If
+                        End If
+
                     End If
                 Next
+            Next
 
-                'Me.State.moCoverageRateList = oCoverageRate
+            If (countCommPer > 100) Then
+                isCommPerMoreThanHundred = True
+            Else
+                isCommPerMoreThanHundred = False
             End If
-        End Sub
+
+            Return isCommPerMoreThanHundred
+        End Function
 
         Private Sub SetGridSourceXcdLabelFromBo()
             'If moGridView.EditIndex = -1 Then Exit Sub
@@ -1548,6 +1574,7 @@ Namespace Tables
                     Dim gRow As GridViewRow = moGridView.Rows(i)
                     If gRow.RowType = DataControlRowType.DataRow Then
                         Dim mollblCommPercentSourceXcd As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblCommPercentSourceXcd"), Label)
+                        Dim mollblCommPercentSourceXcdCode As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblCommPercentSourceXcdCode"), Label)
                         Dim molblPayeeType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblPayeeType"), Label)
                         Dim molblEntityType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblEntityType"), Label)
 
@@ -1628,28 +1655,21 @@ Namespace Tables
 
             If Not oDealer.DealerGroupId.Equals(Guid.Empty) Then
                 Dim oDealerGrp As New DealerGroup(oDealer.DealerGroupId)
-                'Dim lkYesNo As DataView = LookupListNew.DropdownLookupList("YESNO", Authentication.LangId)
-                'lkYesNo.RowFilter += " and code='Y'"
-                'Dim yesId As Guid = New Guid(CType(lkYesNo.Item(0).Item("ID"), Byte()))
                 If oDealerGrp.AcctingByGroupId.Equals(yesId) Then
-                    'dvPayeeType.RowFilter += "and code <>'" & Payee_Type_Dealer & "'"
                     FilteredPayeeTypeList = (From lst In PayeeTypeList
                                              Where lst.Code <> Payee_Type_Dealer
                                              Select lst).ToArray()
                 Else
-                    'dvPayeeType.RowFilter += "and code <>'" & Payee_Type_Dealer_Group & "'"
                     FilteredPayeeTypeList = (From lst In PayeeTypeList
                                              Where lst.Code <> Payee_Type_Dealer_Group
                                              Select lst).ToArray()
                 End If
             Else
-                'dvPayeeType.RowFilter += "and code <>'" & Payee_Type_Dealer_Group & "'"
                 FilteredPayeeTypeList = (From lst In PayeeTypeList
                                          Where lst.Code <> Payee_Type_Dealer_Group
                                          Select lst).ToArray()
             End If
 
-            'Me.BindListControlToDataView(Me.cboPayeeType1, dvPayeeType, , , False)
             mocboPayeeType.Populate(FilteredPayeeTypeList, New PopulateOptions() With
             {
                 .AddBlankItem = False,
@@ -1661,29 +1681,9 @@ Namespace Tables
                                       Where lst.Code = Payee_Type_Comm_Entity
                                       Select lst).ToArray()
 
-            'If dvPayeeType1.Count = 1 Then
-            '    Me.litScriptVars.Text += "var commEntity = '" + GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString + "';"
-            'End If
-
-            'If FilteredPayeeType1List.Count = 1 Then
-            '    Me.litScriptVars.Text += "var commEntity = '" + FilteredPayeeType1List.First().ListItemId.ToString + "';"
-            'End If
-
-            'If Me.State.IsCommPlanDistNew = True Then
             Dim FirstPayeeType As String
             FirstPayeeType = FilteredPayeeType1List.First().ListItemId.ToString()
-            'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType1)
-            'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType2)
-            'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType3)
-            'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType4)
-            'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType5)
             BindSelectItem(FirstPayeeType, mocboPayeeType)
-            'BindSelectItem(FirstPayeeType, cboPayeeType2)
-            'BindSelectItem(FirstPayeeType, cboPayeeType3)
-            'BindSelectItem(FirstPayeeType, cboPayeeType4)
-            'BindSelectItem(FirstPayeeType, cboPayeeType5)
-            'End If
-
         End Sub
 
         Private Sub SetGridSourceXcdDropdownFromBo()
@@ -1712,8 +1712,6 @@ Namespace Tables
         End Sub
 
         Private Sub PoupulateSourceOptionDropdownlist(ByVal oDropDownList As DropDownList)
-            DisplaySourceXcdFields()
-
             Dim oAcctBucketsSourceOption As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTBUCKETSOURCE_COMMBRKDOWN")
 
             oDropDownList.Populate(oAcctBucketsSourceOption, New PopulateOptions() With
@@ -1722,19 +1720,6 @@ Namespace Tables
                                 .TextFunc = AddressOf PopulateOptions.GetDescription,
                                 .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                                 })
-            HideSourceScdFields()
-        End Sub
-
-        Private Sub DisplaySourceXcdFields()
-        End Sub
-
-        Private Sub HideSourceScdFields()
-        End Sub
-
-        Private Sub DisableMarkUpPercentage()
-        End Sub
-
-        Private Sub DisableCommPercentage()
         End Sub
 
         Public Function GetCodeAmtSourceOption(ByVal desc As String) As String
@@ -1755,7 +1740,6 @@ Namespace Tables
                 sGetDescOfExtCodeFromPayeeTypeXcd = String.Empty
                 If Not desc Is Nothing And Not String.IsNullOrWhiteSpace(desc) Then
                     sGetDescOfExtCodeFromPayeeTypeXcd = LookupListNew.GetDescriptionFromExtCode("PYTYPE", ElitaPlusIdentity.Current.ActiveUser.LanguageId, desc)
-                    'sGetDescOfExtCodeFromPayeeTypeXcd = LookupListNew.GetCodeFromDescription("PYTYPE", ElitaPlusIdentity.Current.ActiveUser.LanguageId, desc)
                 End If
                 Return sGetDescOfExtCodeFromPayeeTypeXcd
             Catch ex As Exception
@@ -1837,7 +1821,6 @@ Namespace Tables
         Public Function SaveCoverageRateList() As Boolean
             Dim i As Integer = 0
             Try
-                'If Me.State.IsNewWithCopy = True And Not Me.State.moCoverageRateList Is Nothing Then
                 If Not Me.State.moCoverageRateList Is Nothing Then
                     'Associate each detail record to the newly created coverage record
                     'and Save each detail (Coverage Rate) Record
@@ -1869,7 +1852,6 @@ Namespace Tables
 
 #Region "Handlers-CoverageRate-DataGrid"
 
-        ' Coverage-Rate DataGrid
         Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
             Try
                 BaseItemCreated(sender, e)
@@ -1888,7 +1870,6 @@ Namespace Tables
             End Try
         End Sub
 
-        'The pencil was clicked
         Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles moGridView.RowCommand
             Dim nIndex As Integer = CInt(e.CommandArgument)
 
@@ -1930,15 +1911,27 @@ Namespace Tables
 
         Private Sub BtnSaveRate_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSaveRate_WRITE.Click
             Try
-                'CheckPMCertCombonation
-                'ValidatePmCertSourceLogic()
-                
+                ValidatePmCertSourceLogic()
+
+                'If IsCommPerGreaterThanHundred() Then
+                '    Me.State.ActionInProgress = DetailPageCommand.OK
+                '    Me.DisplayMessage(Message.MSG_COMMISSION_PERCENTAGE_IS_GREATER_THAN_HUNDRED, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_INFO, Me.HiddenSaveChangesPromptResponse)
+                'End If
+
                 SaveRateChanges()
                 SetGridSourceXcdLabelFromBo()
 
                 TheDealerControl.ChangeEnabledControlProperty(False)
             Catch ex As Exception
+                FillSourceXcdDropdownList()
+                FillEntityDropDownList()
+                FillPayeeTypeDropDownList()
+                SetGridSourceXcdDropdownFromBo()
                 SetGridSourceXcdLabelFromBo()
+                SetGridControls(moGridView, True)
+                EnableDisableControls(Me.moCoverageEditPanel, True)
+                setbuttons(False)
+                btnBack.Visible = True
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
@@ -1960,6 +1953,7 @@ Namespace Tables
             Try
                 If moGridView.Rows.Count = 5 Then
                     'Throw New GUIException(Message.MSG_DISTRIBUTION_RECORD_LIMITED_FOR_EXTRACT_REPORT, Assurant.ElitaPlus.Common.ErrorCodes.MSG_COMMISSION_DISTRIBUTION_RECORD_LIMITED_FOR_EXTRACT_REPORT)
+                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
                     Me.DisplayMessage(Message.MSG_DISTRIBUTION_RECORD_LIMITED_FOR_EXTRACT_REPORT, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO, Me.HiddenSaveChangesPromptResponse)
                 End If
                 Me.State.IsCommPlanDistNew = True
@@ -1976,7 +1970,7 @@ Namespace Tables
                 setbuttons(False)
                 btnBack.Visible = True
             Catch ex As Exception
-                SetStateProperties()
+                ' SetStateProperties()
                 SetGridControls(moGridView, True)
                 FillSourceXcdDropdownList()
                 FillEntityDropDownList()
@@ -2141,12 +2135,6 @@ Namespace Tables
             End If
 
             Try
-                'If CoveragePricingCode = NO_COVERAGE_PRICING Then
-                '    EnableCoveragePricing(False)
-                'Else
-                '    EnableCoveragePricing(True)
-                'End If
-
                 If Me.State.IsNewWithCopy Then
                     oDataView = oCoverageRates.getPlanList(Guid.Empty)
                     If Not oAction = ACTION_CANCEL_DELETE Then
@@ -2188,7 +2176,6 @@ Namespace Tables
                     Case ACTION_NEW
                         If Me.State.IsNewWithCopy Then oDataView.Table.DefaultView.Sort() = Nothing ' Clear sort, so that the new line shows up at the bottom
 
-                        'IsNewRate = True
                         Me.State.IsCommPlanDistNew = True
                         Me.State.MyBoDist = New CommPlanDistribution()
                         Dim oRow As DataRow = oDataView.Table.NewRow
