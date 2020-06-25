@@ -1988,7 +1988,7 @@ Namespace Tables
         End Sub
 
         Private Sub setbuttons(ByVal enable As Boolean)
-            ControlMgr.SetEnableControl(Me, btnBack, enable)
+            'ControlMgr.SetEnableControl(Me, btnBack, enable)
             'ControlMgr.SetEnableControl(Me, btnApply_WRITE, enable)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enable)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, enable)
