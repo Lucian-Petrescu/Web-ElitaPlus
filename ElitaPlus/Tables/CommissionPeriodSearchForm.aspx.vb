@@ -223,7 +223,7 @@ Namespace Tables
             End Get
         End Property
 
-        Public ReadOnly Property HasCompanyConfigeredForSourceXcd() As Boolean
+        Public ReadOnly Property HasCompanyConfigeredForSourceXcd1() As Boolean
             Get
                 Dim isCompanyConfiguredForSourceXcd As Boolean
                 isCompanyConfiguredForSourceXcd = False
@@ -254,6 +254,33 @@ Namespace Tables
                 Return isCompanyConfiguredForSourceXcd
             End Get
         End Property
+
+        Public ReadOnly Property HasCompanyConfigeredForSourceXcd() As Boolean
+            Get
+                Dim isCompanyConfiguredForSourceXcd As Boolean
+                isCompanyConfiguredForSourceXcd = False
+                Dim oCompany as Company
+                dim oDataView as DataView = LookupListNew.GetUserCompanyLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.Id)
+                for each row as dataRowView in oDataView
+                    dim oCompany_id as Guid = New Guid(CType(row.Item("id"), Byte()))
+                    oCompany = new Company(oCompany_id)
+                    isCompanyConfiguredForSourceXcd = False
+                    If Not oCompany.AttributeValues Is Nothing Then
+                        If oCompany.AttributeValues.Contains("NEW_COMMISSION_MODULE_CONFIGURED") Then
+                            'If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.EXT_YESNO_Y Then
+                            If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.YESNO_Y Then                                
+                                isCompanyConfiguredForSourceXcd = True
+                                Exit For
+                            End If
+                        end if
+                    End If                    
+                Next
+                
+                Return isCompanyConfiguredForSourceXcd
+                
+            End Get
+        End Property
+
 #End Region
 
 #Region "Handlers"
