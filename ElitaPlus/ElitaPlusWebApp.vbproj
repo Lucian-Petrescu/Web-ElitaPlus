@@ -1459,6 +1459,13 @@
       <DependentUpon>CommissionPlanForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Tables\CommissionPlanSearchForm.aspx.designer.vb">
+      <DependentUpon>CommissionPlanSearchForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tables\CommissionPlanSearchForm.aspx.vb">
+      <DependentUpon>CommissionPlanSearchForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Tables\ProducerForm.aspx.designer.vb">
       <DependentUpon>ProducerForm.aspx</DependentUpon>
     </Compile>
@@ -6316,6 +6323,7 @@
     <Content Include="Tables\BenefitProductCodeForm.aspx" />
     <Content Include="Tables\BenefitProductCodeSearchForm.aspx" />
     <Content Include="Tables\CommissionPlanForm.aspx" />
+    <Content Include="Tables\CommissionPlanSearchForm.aspx" />
     <Content Include="Tables\ProducerForm.aspx" />
     <Content Include="Tables\ClaimFulfillmentOrderDetailForm.aspx" />
     <Content Include="Tables\ClaimFulfillmentOrderListForm.aspx" />
@@ -8588,6 +8596,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tables\CommissionPlanForm.aspx.resx">
       <DependentUpon>CommissionPlanForm.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CommissionPlanSearchForm.aspx.resx">
+      <DependentUpon>CommissionPlanSearchForm.aspx.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tables\ProducerForm.aspx.resx">
       <DependentUpon>ProducerForm.aspx.vb</DependentUpon>
