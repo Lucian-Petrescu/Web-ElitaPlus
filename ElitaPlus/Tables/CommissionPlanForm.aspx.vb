@@ -1474,7 +1474,7 @@ Namespace Tables
 
 #Region "Acct Source Xcd Option Bucket Logic"
         Private Sub ValidatePmCertSourceLogic()
-
+            'Avoid Price Metrics and Cert Commission combination
             ValidatePmCertCommSourceXcd()
 
             If Me.State.IsPmComCombination Then
