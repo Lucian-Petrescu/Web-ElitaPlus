@@ -212,70 +212,7 @@ Public Class CommPlan
         End Set
     End Property
 
-    Public Sub AttachPeriodEntity(ByVal newEntityId As Guid, ByVal position As Integer, ByVal PayeeTypeId As Guid, Optional ByVal newObject As CommissionPeriodEntity = Nothing)
-
-        Dim newBO As CommissionPeriodEntity = New CommissionPeriodEntity(Me.Dataset)
-        If Not newBO Is Nothing Then
-            newBO.CommissionPeriodId = Me.Id
-            newBO.EntityId = newEntityId
-            newBO.Position = position
-            newBO.PayeeTypeId = PayeeTypeId
-            newBO.Save()
-        End If
-
-    End Sub
-
-    Public Sub DetachPeriodEntity(ByVal periodEntity As CommissionPeriodEntity)
-
-        If Not periodEntity Is Nothing Then
-            periodEntity.Delete()
-            periodEntity.Save()
-        End If
-
-    End Sub
-
-    'Public ReadOnly Property AssociatedCommPeriodEntity() As CommissionPeriodEntity.PeriodEntityList
-    '    Get
-    '        Return New CommissionPeriodEntity.PeriodEntityList(Me)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property AssociatedCommTolerance() As CommissionTolerance.ToleranceList
-    '    Get
-    '        Return New CommissionTolerance.ToleranceList(Me)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property AddAssocComm(ByVal toleranceid As Guid) As AssociateCommissions.AssocCommList
-    '    Get
-    '        Return New AssociateCommissions.AssocCommList(Me, toleranceid)
-    '    End Get
-
-    'End Property
-    Public Sub AttachTolerance(Optional ByVal NewObject As CommissionTolerance = Nothing)
-
-        Dim newBO As CommissionTolerance = New CommissionTolerance(Me.Dataset)
-        newBO.Copy(NewObject, Me.Dataset)
-
-        If Not newBO Is Nothing Then
-            newBO.CommissionPeriodId = Me.Id
-            newBO.Save()
-        End If
-
-    End Sub
-
-    Public Function AddCommTolerance(ByVal commToleranceID As Guid) As CommissionTolerance
-        If commToleranceID.Equals(Guid.Empty) Then
-            Dim objcommTolerance As New CommissionTolerance(Me.Dataset)
-            objcommTolerance.CommissionPeriodId = Me.Id
-            Return objcommTolerance
-        Else
-            Dim objcommTolerance As New CommissionTolerance(commToleranceID, Me.Dataset)
-            Return objcommTolerance
-        End If
-    End Function
-
-    Public Function AddAssocComm(ByVal assCommID As Guid) As CommPlanDistribution
+    Public Function AddCommPlanDistribution(ByVal assCommID As Guid) As CommPlanDistribution
         If assCommID.Equals(Guid.Empty) Then
             Dim objAssocComm As New CommPlanDistribution(Me.Dataset)
             Return objAssocComm
@@ -354,39 +291,7 @@ Public Class CommPlan
 
         'copy the children 
 
-        'Dim oPeriodEntity As CommissionPeriodEntity
-        'For Each oPeriodEntity In original.AssociatedCommPeriodEntity
-        '    Dim newPeriodEntity As New CommissionPeriodEntity
-        '    newPeriodEntity.CopyFrom(oPeriodEntity)
-        '    AttachPeriodEntity(newPeriodEntity.EntityId, newPeriodEntity.Position, newPeriodEntity.PayeeTypeId)
-        'Next
-
-        'Dim oCommTolerance As CommissionTolerance
-        'For Each oCommTolerance In original.AssociatedCommTolerance
-        '    'Dim newTolerance As New CommissionTolerance
-        '    'newTolerance.Copy(oCommTolerance, Me.Dataset)
-        '    AttachTolerance(oCommTolerance)
-        'Next
-
     End Sub
-    'Public Overrides Sub Save()
-    '    Try
-    '        MyBase.Save()
-    '        If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
-    '            Dim dal As New CommissionPeriodDAL
-    '            dal.Update(Me.Row)
-    '            'Reload the Data from the DB
-    '            If Me.Row.RowState <> DataRowState.Detached Then
-    '                Dim objId As Guid = Me.Id
-    '                Me.Dataset = New Dataset
-    '                Me.Row = Nothing
-    '                Me.Load(objId)
-    '            End If
-    '        End If
-    '    Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-    '        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
-    '    End Try
-    'End Sub
 
     Public Overrides Sub Save()
         Try
@@ -414,20 +319,6 @@ Public Class CommPlan
 
 #Region "DataView Retrieveing Methods"
 
-    'Public Shared Function LoadList(ByVal oCommPlanData As CommPlanDALData) As DataView
-    '    Try
-    '        Dim dal As New CommPlanDAL
-    '        Dim ds As DataSet
-
-    '        ds = dal.LoadList(oCommPlanData)
-    '        Return (ds.Tables(CommPlanDAL.TABLE_NAME).DefaultView)
-
-    '    Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-    '        Throw New DataBaseAccessException(ex.ErrorType, ex)
-    '    End Try
-
-    'End Function
-
     Public Shared Function getList(ByVal oCommPlanData As CommPlanData) As CommPlanSearchDV
         Try
             Dim dal As New CommPlanDAL
@@ -437,23 +328,6 @@ Public Class CommPlan
         End Try
     End Function
     
-    'Public Shared Function GetRestrictMarkup(ByVal oCommPlanData As CommPlanData, ByVal Optional loggedinuserspecific As Boolean = True) As Boolean
-    '    Dim oContract As Contract
-    '    Dim oRestrictMarkupId, oYesRestrictMarkupId As Guid
-
-    '    With oCommPlanData
-    '        oContract = Contract.GetCurrentContract(.dealerId, loggedinuserspecific)
-    '    End With
-    '    If oContract Is Nothing Then
-    '        Dim errors() As ValidationError = {New ValidationError(COMMISSIONPERIODFORM_FORM001, GetType(CommissionPeriod), Nothing, Nothing, Nothing)}
-    '        Throw New BOValidationException(errors, GetType(CommissionPeriod).FullName)
-    '    End If
-    '    oRestrictMarkupId = oContract.RestrictMarkupId
-    '    oYesRestrictMarkupId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "Y")
-
-    '    Return oRestrictMarkupId.Equals(oYesRestrictMarkupId)
-    'End Function
-
 #End Region
 
 #Region "Validation"
