@@ -78,68 +78,68 @@
             var rowIndex = row.rowIndex;
             //var grid = document.getElementById('<%=moGridView.ClientID%>')
 
-             var count = row.cells.length;
+            var count = row.cells.length;
 
-             if (count == 7) {
+            if (count == 7) {
+                var grossAmount = row.cells[4].getElementsByTagName("input")[0].value;
+                var grossPercent = row.cells[5].getElementsByTagName("input")[0].value;
+
+                if (obj.id.indexOf("moGross_AmtText") > 0) {
+                    if (grossAmount == "") {
+                        row.cells[5].getElementsByTagName("input")[0].disabled = false;
+                    }
+                    else {
+                        row.cells[5].getElementsByTagName("input")[0].value = 0;
+                        row.cells[5].getElementsByTagName("input")[0].disabled = true;
+                        document.getElementById('<%=hdnGrossAmtOrPercent.ClientID %>').value = "Percent";
+                         document.getElementById('<%=hdnGrossAmtOrPercentValue.ClientID %>').value = grossAmount;
+
+                     }
+                 }
+                 else if (obj.id.indexOf("moGross_Amount_PercentText") > 0) {
+                     if (grossPercent == "") {
+                         row.cells[4].getElementsByTagName("input")[0].disabled = false;
+                     }
+                     else {
+                         row.cells[4].getElementsByTagName("input")[0].value = 0;
+                         row.cells[4].getElementsByTagName("input")[0].disabled = true;
+                         document.getElementById('<%=hdnGrossAmtOrPercent.ClientID %>').value = "Amount";
+                        document.getElementById('<%=hdnGrossAmtOrPercentValue.ClientID %>').value = grossPercent;
+
+                     }
+                 }
+             }
+
+             else if (count == 12) {
                  var grossAmount = row.cells[4].getElementsByTagName("input")[0].value;
-                 var grossPercent = row.cells[5].getElementsByTagName("input")[0].value;
+                 var grossPercent = row.cells[10].getElementsByTagName("input")[0].value;
 
                  if (obj.id.indexOf("moGross_AmtText") > 0) {
                      if (grossAmount == "") {
-                         row.cells[5].getElementsByTagName("input")[0].disabled = false;
+                         row.cells[10].getElementsByTagName("input")[0].disabled = false;
                      }
                      else {
-                         row.cells[5].getElementsByTagName("input")[0].value = 0;
-                         row.cells[5].getElementsByTagName("input")[0].disabled = true;
+                         row.cells[10].getElementsByTagName("input")[0].value = 0;
+                         row.cells[10].getElementsByTagName("input")[0].disabled = true;
                          document.getElementById('<%=hdnGrossAmtOrPercent.ClientID %>').value = "Percent";
-                        document.getElementById('<%=hdnGrossAmtOrPercentValue.ClientID %>').value = grossAmount;
+                    document.getElementById('<%=hdnGrossAmtOrPercentValue.ClientID %>').value = grossAmount;
 
-                    }
                 }
-                else if (obj.id.indexOf("moGross_Amount_PercentText") > 0) {
-                    if (grossPercent == "") {
-                        row.cells[4].getElementsByTagName("input")[0].disabled = false;
-                    }
-                    else {
-                        row.cells[4].getElementsByTagName("input")[0].value = 0;
-                        row.cells[4].getElementsByTagName("input")[0].disabled = true;
-                        document.getElementById('<%=hdnGrossAmtOrPercent.ClientID %>').value = "Amount";
-                        document.getElementById('<%=hdnGrossAmtOrPercentValue.ClientID %>').value = grossPercent;
-
-                    }
-                }
-        }
-
-        else if (count == 12) {
-            var grossAmount = row.cells[4].getElementsByTagName("input")[0].value;
-            var grossPercent = row.cells[10].getElementsByTagName("input")[0].value;
-
-            if (obj.id.indexOf("moGross_AmtText") > 0) {
-                if (grossAmount == "") {
-                    row.cells[10].getElementsByTagName("input")[0].disabled = false;
+            }
+            else if (obj.id.indexOf("moGross_Amount_PercentText") > 0) {
+                if (grossPercent == "") {
+                    row.cells[4].getElementsByTagName("input")[0].disabled = false;
                 }
                 else {
-                    row.cells[10].getElementsByTagName("input")[0].value = 0;
-                    row.cells[10].getElementsByTagName("input")[0].disabled = true;
-                    document.getElementById('<%=hdnGrossAmtOrPercent.ClientID %>').value = "Percent";
-                        document.getElementById('<%=hdnGrossAmtOrPercentValue.ClientID %>').value = grossAmount;
-
-                    }
-                }
-                else if (obj.id.indexOf("moGross_Amount_PercentText") > 0) {
-                    if (grossPercent == "") {
-                        row.cells[4].getElementsByTagName("input")[0].disabled = false;
-                    }
-                    else {
-                        row.cells[4].getElementsByTagName("input")[0].value = 0;
-                        row.cells[4].getElementsByTagName("input")[0].disabled = true;
-                        document.getElementById('<%=hdnGrossAmtOrPercent.ClientID %>').value = "Amount";
+                    row.cells[4].getElementsByTagName("input")[0].value = 0;
+                    row.cells[4].getElementsByTagName("input")[0].disabled = true;
+                    document.getElementById('<%=hdnGrossAmtOrPercent.ClientID %>').value = "Amount";
                         document.getElementById('<%=hdnGrossAmtOrPercentValue.ClientID %>').value = grossPercent;
 
                     }
                 }
+            }
         }
-}
 
 
     </script>
@@ -229,7 +229,7 @@
                                     <td style="height: 17px" align="right" colspan="1">
                                         <asp:Label ID="lblTaxType" runat="server" Font-Bold="false">TAX_TYPE:</asp:Label>&nbsp;
                                     </td>
-                                    <td style="height: 17px"  align="left" colspan="1">
+                                    <td style="height: 17px" align="left" colspan="1">
                                         <asp:DropDownList ID="moTaxTypeDrop" TabIndex="10" runat="server" SkinID="SmallDropDown">
                                         </asp:DropDownList>
                                     </td>
@@ -469,7 +469,19 @@
                                 <tr>
                                     <td style="width: 1px" width="1"></td>
                                     <td style="height: 12px" align="right" colspan="1">&nbsp;
-                                        <asp:Label ID="moFulfillmentProfileLabel" runat="server" Font-Bold="false">Fulfillment_Profile</asp:Label>&nbsp;
+                                        <asp:Label ID="moFulfillmentProviderLabel" runat="server" Font-Bold="false">Fulfillment_Provider</asp:Label>&nbsp;
+                                    </td>
+                                    <td nowrap colspan="1" align="left">
+                                        <asp:DropDownList ID="moFulfillmentProviderDrop" TabIndex="19" runat="server" SkinID="SmallDropDown">
+                                        </asp:DropDownList>
+                                    </td>
+                                    <td align="right"></td>
+                                    <td align="left"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 1px" width="1"></td>
+                                    <td style="height: 12px" align="right" colspan="1">&nbsp;
+                                    <asp:Label ID="moFulfillmentProfileLabel" runat="server" Font-Bold="false">Fulfillment_Profile</asp:Label>&nbsp;
                                     </td>
                                     <td nowrap colspan="1" align="left">
                                         <asp:DropDownList ID="moFulfillmentProfileDrop" TabIndex="19" runat="server" SkinID="SmallDropDown">
@@ -513,26 +525,26 @@
                                         <asp:DropDownList ID="moReInsuredDrop" AutoPostBack="true" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
                                     </td>
                                 </tr>
-                                 <tr>
-                                     <td style="width: 1px" width="1"></td>
-                                <td style="height: 12px" align="right" colspan="1">&nbsp;
-                                    <asp:Label ID="LabelDepSchCashReimbursement" runat="server">DEP_SCH_CASH_REIMBURSEMENT</asp:Label>:
-                                </td>
-                                <td nowrap colspan="1" align="left">
-                                    <asp:DropDownList ID="ddlDepSchCashReimbursement" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
-                                </td>
-                                <td align="right"></td>
-                                <td align="left"></td>
-                            </tr>
                                 <tr>
-                                 <td style="width: 1px" width="1"></td>
-                                <td style="height: 12px" align="right" colspan="1">&nbsp;
+                                    <td style="width: 1px" width="1"></td>
+                                    <td style="height: 12px" align="right" colspan="1">&nbsp;
+                                    <asp:Label ID="LabelDepSchCashReimbursement" runat="server">DEP_SCH_CASH_REIMBURSEMENT</asp:Label>:
+                                    </td>
+                                    <td nowrap colspan="1" align="left">
+                                        <asp:DropDownList ID="ddlDepSchCashReimbursement" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
+                                    </td>
+                                    <td align="right"></td>
+                                    <td align="left"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 1px" width="1"></td>
+                                    <td style="height: 12px" align="right" colspan="1">&nbsp;
                                     <asp:Label ID="moPerIncidentLiabilityLimitCapLabel" runat="server" Font-Bold="false">PER_INCIDENT_LIABILITY_LIMIT_CAP</asp:Label>&nbsp;
-                                </td>
-                                <td nowrap colspan="1" align="left">
-                                    <asp:TextBox ID="moPerIncidentLiabilityLimitCapText" TabIndex="12" runat="server" SkinID="SmallTextBox"></asp:TextBox>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td nowrap colspan="1" align="left">
+                                        <asp:TextBox ID="moPerIncidentLiabilityLimitCapText" TabIndex="12" runat="server" SkinID="SmallTextBox"></asp:TextBox>
+                                    </td>
+                                </tr>
                             </tbody>
                         </asp:Panel>
                     </table>
@@ -672,11 +684,13 @@
                                                 <asp:TextBox ID="moCommission_PercentText" runat="server" Visible="True" Width="75"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField Visible ="true" HeaderText="COMMISSION_PERCENT_XCD">
-                                            <ItemStyle HorizontalAlign="Center"> </ItemStyle>
-                                            <ItemTemplate><asp:Label ID="lblCommPercentSourceXcd" Text='<%# Container.DataItem("commissions_percent_source_xcd")%>' runat="server"> </asp:Label>
+                                        <asp:TemplateField Visible="true" HeaderText="COMMISSION_PERCENT_XCD">
+                                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblCommPercentSourceXcd" Text='<%# Container.DataItem("commissions_percent_source_xcd")%>' runat="server"> </asp:Label>
                                             </ItemTemplate>
-                                            <EditItemTemplate> <asp:DropDownList ID="cboCommPercentSourceXcd" runat="server" Visible="True" Width="100"></asp:DropDownList>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList ID="cboCommPercentSourceXcd" runat="server" Visible="True" Width="100"></asp:DropDownList>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="Marketing_Percent">
@@ -690,11 +704,13 @@
                                                 <asp:TextBox ID="moMarketing_PercentText" runat="server" Visible="True" Width="75"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField Visible ="true" HeaderText="MARKETING_PERCENT_XCD">
-                                            <ItemStyle HorizontalAlign="Center"> </ItemStyle>
-                                            <ItemTemplate><asp:Label ID="lblMarketingExpenseSourceXcd" Text='<%# Container.DataItem("marketing_percent_source_xcd")%>' runat="server"> </asp:Label>
+                                        <asp:TemplateField Visible="true" HeaderText="MARKETING_PERCENT_XCD">
+                                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblMarketingExpenseSourceXcd" Text='<%# Container.DataItem("marketing_percent_source_xcd")%>' runat="server"> </asp:Label>
                                             </ItemTemplate>
-                                            <EditItemTemplate><asp:DropDownList ID="cboMarketingExpenseSourceXcd" runat="server"  Visible="True" Width="100"></asp:DropDownList>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList ID="cboMarketingExpenseSourceXcd" runat="server" Visible="True" Width="100"></asp:DropDownList>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="ADMINISTRATIVE_EXPENSE">
@@ -708,11 +724,13 @@
                                                 <asp:TextBox ID="moAdmin_ExpenseText" runat="server" Visible="True" Width="75"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField Visible ="true" HeaderText="ADMIN_EXPENSE_XCD">
-                                            <ItemStyle HorizontalAlign="Center"> </ItemStyle>
-                                            <ItemTemplate><asp:Label ID="lblAdminExpenseSourceXcd" Text='<%# Container.DataItem("admin_expense_source_xcd")%>' runat="server"> </asp:Label>
+                                        <asp:TemplateField Visible="true" HeaderText="ADMIN_EXPENSE_XCD">
+                                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblAdminExpenseSourceXcd" Text='<%# Container.DataItem("admin_expense_source_xcd")%>' runat="server"> </asp:Label>
                                             </ItemTemplate>
-                                            <EditItemTemplate><asp:DropDownList ID="cboAdminExpenseSourceXcd" runat="server"  Visible="True" Width="100"></asp:DropDownList>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList ID="cboAdminExpenseSourceXcd" runat="server" Visible="True" Width="100"></asp:DropDownList>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="Profit_Percent">
@@ -726,11 +744,13 @@
                                                 <asp:TextBox ID="moProfit_ExpenseText" runat="server" Visible="True" Width="75"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField Visible ="true" HeaderText="PROFIT_EXPENSE_XCD">
-                                            <ItemStyle HorizontalAlign="Center"> </ItemStyle>
-                                            <ItemTemplate><asp:Label ID="lblProfitExpenseSourceXcd" Text='<%# Container.DataItem("profit_percent_source_xcd")%>' runat="server"> </asp:Label>
+                                        <asp:TemplateField Visible="true" HeaderText="PROFIT_EXPENSE_XCD">
+                                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblProfitExpenseSourceXcd" Text='<%# Container.DataItem("profit_percent_source_xcd")%>' runat="server"> </asp:Label>
                                             </ItemTemplate>
-                                            <EditItemTemplate><asp:DropDownList ID="cboProfitExpenseSourceXcd" runat="server"  Visible="True" Width="100"></asp:DropDownList>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList ID="cboProfitExpenseSourceXcd" runat="server" Visible="True" Width="100"></asp:DropDownList>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="Loss_Cost_Percent">
@@ -744,11 +764,13 @@
                                                 <asp:TextBox ID="moLoss_Cost_PercentText" runat="server" Visible="True" Width="75"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField Visible ="true" HeaderText="LOSS_COST_PERCENT_XCD">
-                                            <ItemStyle HorizontalAlign="Center"> </ItemStyle>
-                                            <ItemTemplate><asp:Label ID="lblLossCostPercentSourceXcd" Text='<%# Container.DataItem("loss_cost_percent_source_xcd")%>' runat="server"> </asp:Label>
+                                        <asp:TemplateField Visible="true" HeaderText="LOSS_COST_PERCENT_XCD">
+                                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblLossCostPercentSourceXcd" Text='<%# Container.DataItem("loss_cost_percent_source_xcd")%>' runat="server"> </asp:Label>
                                             </ItemTemplate>
-                                            <EditItemTemplate><asp:DropDownList ID="cboLossCostPercentSourceXcd" runat="server"  Visible="True" Width="100"></asp:DropDownList>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList ID="cboLossCostPercentSourceXcd" runat="server" Visible="True" Width="100"></asp:DropDownList>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="GROSS_AMOUNT_PERCENTAGE">
@@ -773,11 +795,13 @@
                                                 <asp:TextBox ID="moRenewal_NumberText" runat="server" Visible="True" Width="75" MaxLength="3" Text="0"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField Visible ="true" HeaderText="TAX_REGION">
-                                            <ItemStyle HorizontalAlign="Center"> </ItemStyle>
-                                            <ItemTemplate><asp:Label ID="lblTaxRegion" Text='<%#Container.DataItem("TAX_REGION")%>' runat="server"> </asp:Label>
-                                             </ItemTemplate>
-                                            <EditItemTemplate><asp:DropDownList ID="ddlTax_Region" runat="server"  Visible="True" Width="75"></asp:DropDownList>
+                                        <asp:TemplateField Visible="true" HeaderText="TAX_REGION">
+                                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTaxRegion" Text='<%#Container.DataItem("TAX_REGION")%>' runat="server"> </asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList ID="ddlTax_Region" runat="server" Visible="True" Width="75"></asp:DropDownList>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -918,7 +942,7 @@
                     <tr>
                         <td align="Center" colspan="2">
                             <div id="scrollerCovConseqDamage" style="overflow: auto; width: 96%; height: 125px" align="center">
-                                <asp:GridView ID="moGridViewConseqDamage" runat="server" OnRowCommand="ConseqDamageRowCommand" 
+                                <asp:GridView ID="moGridViewConseqDamage" runat="server" OnRowCommand="ConseqDamageRowCommand"
                                     AllowPaging="False" PageSize="50" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"
                                     SkinID="DetailPageGridView">
                                     <SelectedRowStyle Wrap="False"></SelectedRowStyle>
