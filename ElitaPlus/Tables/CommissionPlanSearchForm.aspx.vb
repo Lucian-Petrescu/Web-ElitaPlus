@@ -34,8 +34,7 @@ Namespace Tables
 
 #Region "MyState"
         Class MyState
-            Public moCommissionPeriodId As Guid = Guid.Empty
-            Public moCommPCodeId As Guid = Guid.Empty
+            Public moCommissionPlanId As Guid = Guid.Empty
             Public moDealerId As Guid = Guid.Empty
             Public mnPageIndex As Integer
             Public searchDV As DataView = Nothing
@@ -96,16 +95,16 @@ Namespace Tables
                     Me.State.searchDV = Nothing
                 End If
                 If Not retObj Is Nothing Then
-
+                    
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.State.moCommissionPeriodId = retObj.moCommissionPeriodId
-                            Me.State.moCommPCodeId = Guid.Empty
+                            Me.State.moCommissionPlanId = retObj.moCommissionPlanId
                         Case Else
-                            Me.State.moCommissionPeriodId = Guid.Empty
-                            Me.State.moCommPCodeId = Guid.Empty
+                            Me.State.moCommissionPlanId = Guid.Empty
                     End Select
+                    
                     Me.PopulateDealerDropDown()
+                   
                     If Me.State.IsGridVisible Then
                         GridCommPlan.PageIndex = Me.State.mnPageIndex
                         GridCommPlan.PageSize = Me.State.PageSize
@@ -122,12 +121,12 @@ Namespace Tables
 
         Public Class ReturnType
             Public LastOperation As ElitaPlusPage.DetailPageCommand
-            Public moCommissionPeriodId As Guid
+            Public moCommissionPlanId As Guid
             Public BoChanged As Boolean = False
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal oCommissionPeriodId As Guid, Optional ByVal boChanged As Boolean = False)
+            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal oCommissionPlanId As Guid, Optional ByVal boChanged As Boolean = False)
                 Me.LastOperation = LastOp
-                Me.moCommissionPeriodId = oCommissionPeriodId
+                Me.moCommissionPlanId = oCommissionPlanId
                 Me.BoChanged = boChanged
             End Sub
 
