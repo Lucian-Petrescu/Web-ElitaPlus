@@ -27,15 +27,6 @@ Namespace Tables
         Public Const GRID_COL_CM_EFFECTIVE_IDX As Integer = 5
         Public Const GRID_COL_CM_EXPIRATION_IDX As Integer = 6
 
-        Public Const GRIDCOMMPLAN_COL_COMM_PLAN_ID_IDX As Integer = 1
-        Public Const GRIDCOMMPLAN_COL_COMPANY_CODE_IDX As Integer = 2
-        Public Const GRIDCOMMPLAN_COL_DEALER_IDX As Integer = 3
-        Public Const GRIDCOMMPLAN_COL_CODE_IDX As Integer = 4
-        Public Const GRIDCOMMPLAN_COL_DESCRIPTION_IDX As Integer = 5
-        Public Const GRIDCOMMPLAN_COL_EFFECTIVE_IDX As Integer = 6
-        Public Const GRIDCOMMPLAN_COL_EXPIRATION_IDX As Integer = 7
-        Public Const GRIDCOMMPLAN_TOTAL_COLUMNS As Integer = 8
-
         Private Const GRID_CTRL_NAME_COMM_PERIOD_ID As String = "moCommissionPeriodId_NO_TRANSLATE"
 
         Private Const LABEL_DEALER As String = "DEALER"
@@ -61,8 +52,7 @@ Namespace Tables
             Public IsGridVisible As Boolean = False
             Public searchBtnClicked As Boolean = False
             Public SortExpression As String = CommissionPeriodDAL.COL_NAME_DEALER_NAME
-            Public moCommPlanDistId As Guid = Guid.Empty
-            Public moCommPlanId As Guid = Guid.Empty
+
             ' these variables are used to store the sorting columns information.
             Public SortColumns(GRID_TOTAL_COLUMNS - 1) As String
             Public IsSortDesc(GRID_TOTAL_COLUMNS - 1) As Boolean
@@ -195,91 +185,7 @@ Namespace Tables
         '        End If
         '        Return multipleDropControl
         '    End Get
-        'End Property
-        Public ReadOnly Property HasDealerConfigeredForSourceXcd() As Boolean
-            Get
-                Dim isDealerConfiguredForSourceXcd As Boolean
-                isDealerConfiguredForSourceXcd = False
-                If Not Me.State Is Nothing Then
-                    If (Me.State.moDealerId <> Guid.Empty) Then
-                        Dim oDealer As New Dealer(Me.State.moDealerId)
-
-                        If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
-                            If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
-                                isDealerConfiguredForSourceXcd = True
-                            Else
-                                isDealerConfiguredForSourceXcd = False
-                            End If
-                        Else
-                            isDealerConfiguredForSourceXcd = False
-                        End If
-                    Else
-                        isDealerConfiguredForSourceXcd = False
-                    End If
-                Else
-                    isDealerConfiguredForSourceXcd = False
-                End If
-                Return isDealerConfiguredForSourceXcd
-            End Get
-        End Property
-
-        Public ReadOnly Property HasCompanyConfigeredForSourceXcd1() As Boolean
-            Get
-                Dim isCompanyConfiguredForSourceXcd As Boolean
-                isCompanyConfiguredForSourceXcd = False
-                If Not Me.State Is Nothing Then
-                    If (Me.State.moDealerId <> Guid.Empty) Then
-                        Dim oDealer As New Dealer(Me.State.moDealerId)
-                        Dim oCompany As New Company(oDealer.CompanyId)
-                        If Not oCompany.AttributeValues Is Nothing Then
-                            If oCompany.AttributeValues.Contains("NEW_COMMISSION_MODULE_CONFIGURED") Then
-                                'If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.EXT_YESNO_Y Then
-                                If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.YESNO_Y Then                                
-                                    isCompanyConfiguredForSourceXcd = True
-                                Else
-                                    isCompanyConfiguredForSourceXcd = False
-                                End If
-                            Else
-                                isCompanyConfiguredForSourceXcd = False
-                            End If
-                        Else
-                            isCompanyConfiguredForSourceXcd = False
-                        End If
-                    Else
-                        isCompanyConfiguredForSourceXcd = False
-                    End If
-                Else
-                    isCompanyConfiguredForSourceXcd = False
-                End If
-                Return isCompanyConfiguredForSourceXcd
-            End Get
-        End Property
-
-        Public ReadOnly Property HasCompanyConfigeredForSourceXcd() As Boolean
-            Get
-                Dim isCompanyConfiguredForSourceXcd As Boolean
-                isCompanyConfiguredForSourceXcd = False
-                Dim oCompany as Company
-                dim oDataView as DataView = LookupListNew.GetUserCompanyLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.Id)
-                for each row as dataRowView in oDataView
-                    dim oCompany_id as Guid = New Guid(CType(row.Item("id"), Byte()))
-                    oCompany = new Company(oCompany_id)
-                    isCompanyConfiguredForSourceXcd = False
-                    If Not oCompany.AttributeValues Is Nothing Then
-                        If oCompany.AttributeValues.Contains("NEW_COMMISSION_MODULE_CONFIGURED") Then
-                            'If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.EXT_YESNO_Y Then
-                            If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.YESNO_Y Then                                
-                                isCompanyConfiguredForSourceXcd = True
-                                Exit For
-                            End If
-                        end if
-                    End If                    
-                Next
-                
-                Return isCompanyConfiguredForSourceXcd
-                
-            End Get
-        End Property
+        'End Property       
 
 #End Region
 
@@ -306,7 +212,6 @@ Namespace Tables
 #End Region
 
 #Region "Handlers-Init"
-
 
         Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
@@ -390,26 +295,18 @@ Namespace Tables
         Private Sub btnNew_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew.Click
             Try
                 Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(moDealerDrop)
-                If Not HasCompanyConfigeredForSourceXcd Then
-                    If chkIsCommProdCode.Checked Then
-                        Me.State.moCommPCodeId = Guid.Empty
-                        Me.State.moChkIsCommProdCode = True
-                        Me.State.mnPageIndex = GridCommPrd.PageIndex
-                        Me.State.moProductCodeId = Me.GetSelectedItem(moProductDrop)
-                        Me.callPage(CommPCodeForm.URL, Me.State.moCommPCodeId)
-                    Else
-                        Me.State.moCommissionPeriodId = Guid.Empty
-                        Me.State.moChkIsCommProdCode = False
-                        Me.State.mnPageIndex = Grid.PageIndex
-                        Me.State.moProductCodeId = Guid.Empty
-                        Me.callPage(CommissionPeriodForm.URL, Me.State.moCommissionPeriodId)
-                    End If
+                If chkIsCommProdCode.Checked Then
+                    Me.State.moCommPCodeId = Guid.Empty
+                    Me.State.moChkIsCommProdCode = True
+                    Me.State.mnPageIndex = GridCommPrd.PageIndex
+                    Me.State.moProductCodeId = Me.GetSelectedItem(moProductDrop)
+                    Me.callPage(CommPCodeForm.URL, Me.State.moCommPCodeId)
                 Else
-                    Me.State.moCommPlanId = Guid.Empty
+                    Me.State.moCommissionPeriodId = Guid.Empty
                     Me.State.moChkIsCommProdCode = False
-                    Me.State.mnPageIndex = GridCommPlan.PageIndex
+                    Me.State.mnPageIndex = Grid.PageIndex
                     Me.State.moProductCodeId = Guid.Empty
-                    Me.callPage(CommissionPlanForm.URL, Me.State.moCommPlanId)
+                    Me.callPage(CommissionPeriodForm.URL, Me.State.moCommissionPeriodId)
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -577,79 +474,6 @@ Namespace Tables
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
-
-
-        Protected Sub GridCommPlan_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles GridCommPlan.RowCreated
-            Try
-                BaseItemCreated(sender, e)
-            Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
-
-        Protected Sub GridCommPlan_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridCommPlan.RowCommand
-            Try
-                If e.CommandName = Me.SELECT_COMMAND_NAME Then
-                    Dim index As Integer = CInt(e.CommandArgument)
-                    Me.State.moCommPlanId = New Guid(Me.GridCommPlan.Rows(index).Cells(Me.GRIDCOMMPLAN_COL_COMM_PLAN_ID_IDX).Text)
-                    Me.State.mnPageIndex = GridCommPlan.PageIndex
-                    Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(moDealerDrop)
-                    Me.callPage(CommissionPlanForm.URL, Me.State.moCommPlanId)
-                End If
-            Catch ex As Threading.ThreadAbortException
-                '  System.Threading.Thread.Sleep(500)
-            Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
-
-        Protected Sub GridCommPlan_ItemDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridCommPlan.RowDataBound
-            Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
-            Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-            If Not dvRow Is Nothing And Not Me.State.bnoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    e.Row.Cells(Me.GRIDCOMMPLAN_COL_COMM_PLAN_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(CommPlan.CommPlanSearchDV.COL_COMMISSION_PERIOD_ID), Byte()))
-                    e.Row.Cells(Me.GRIDCOMMPLAN_COL_COMPANY_CODE_IDX).Text = dvRow(CommPlan.CommPlanSearchDV.COL_COMPANY_CODE).ToString
-                    e.Row.Cells(Me.GRIDCOMMPLAN_COL_DEALER_IDX).Text = dvRow(CommPlan.CommPlanSearchDV.COL_DEALER_NAME).ToString
-                    e.Row.Cells(Me.GRIDCOMMPLAN_COL_CODE_IDX).Text = dvRow(CommPlan.CommPlanSearchDV.COL_CODE).ToString
-                    e.Row.Cells(Me.GRIDCOMMPLAN_COL_DESCRIPTION_IDX).Text = dvRow(CommPlan.CommPlanSearchDV.COL_DESCRIPTION).ToString
-                    e.Row.Cells(Me.GRIDCOMMPLAN_COL_EFFECTIVE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CommPlan.CommPlanSearchDV.COL_EFFECTIVE_DATE), Date))
-                    e.Row.Cells(Me.GRIDCOMMPLAN_COL_EXPIRATION_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CommPlan.CommPlanSearchDV.COL_EXPIRATION_DATE), Date))
-                End If
-            End If
-        End Sub
-
-        Protected Sub GridCommPlan_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridCommPlan.PageIndexChanging
-            Try
-                Me.State.mnPageIndex = e.NewPageIndex
-                GridCommPlan.PageIndex = e.NewPageIndex
-                Me.State.moCommPlanId = Guid.Empty
-                PopulateCommPlanGrid()
-            Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
-
-        Protected Sub GridCommPlan_SortCommand(sender As Object, e As GridViewSortEventArgs) Handles GridCommPlan.Sorting
-            Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
-
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
-                    Else
-                        Me.SortDirection = e.SortExpression + " ASC"
-                    End If
-                Else
-                    Me.SortDirection = e.SortExpression + " ASC"
-                End If
-
-                Me.State.mnPageIndex = 0
-                Me.PopulateCommPlanGrid()
-            Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
 #End Region
 
 #End Region
@@ -743,35 +567,31 @@ Namespace Tables
         Private Sub PopulateGrid()
             Try
                 Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid
-                If Not HasCompanyConfigeredForSourceXcd Then
-                    If chkIsCommProdCode.Checked Then
-                        Me.State.moChkIsCommProdCode = True
-                        Me.State.moProductCodeId = Me.GetSelectedItem(moProductDrop)
-                        'If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-                        Me.State.searchDV = CommissionPeriod.getCommPrdList(GetCommPrdSearchParm)
-                        'End If
-                    Else
-                        Me.State.moProductCodeId = Guid.Empty
-                        Me.State.moChkIsCommProdCode = False
-                        'If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-                        Me.State.searchDV = CommissionPeriod.getList(GetSearchParm)
-                        'End If
-
-                    End If
-
-                    Me.State.searchDV.Sort = Me.SortDirection
-                    If chkIsCommProdCode.Checked Then
-                        Me.GridCommPrd.AutoGenerateColumns = False
-                        SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.moCommPCodeId, Me.GridCommPrd, Me.State.mnPageIndex)
-                    Else
-                        Me.Grid.AutoGenerateColumns = False
-                        SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.moCommissionPeriodId, Me.Grid, Me.State.mnPageIndex)
-                    End If
-
-                    Me.SortAndBindGrid()
+                If chkIsCommProdCode.Checked Then
+                    Me.State.moChkIsCommProdCode = True
+                    Me.State.moProductCodeId = Me.GetSelectedItem(moProductDrop)
+                    'If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
+                    Me.State.searchDV = CommissionPeriod.getCommPrdList(GetCommPrdSearchParm)
+                    'End If
                 Else
-                    PopulateCommPlanGrid()
+                    Me.State.moProductCodeId = Guid.Empty
+                    Me.State.moChkIsCommProdCode = False
+                    'If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
+                    Me.State.searchDV = CommissionPeriod.getList(GetSearchParm)
+                    'End If
+
                 End If
+
+                Me.State.searchDV.Sort = Me.SortDirection
+                If chkIsCommProdCode.Checked Then
+                    Me.GridCommPrd.AutoGenerateColumns = False
+                    SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.moCommPCodeId, Me.GridCommPrd, Me.State.mnPageIndex)
+                Else
+                    Me.Grid.AutoGenerateColumns = False
+                    SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.moCommissionPeriodId, Me.Grid, Me.State.mnPageIndex)
+                End If
+
+                Me.SortAndBindGrid()
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -883,72 +703,6 @@ Namespace Tables
                 HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
-
-#End Region
-
-#Region "Commission Plan Related"
-        Private Sub PopulateCommPlanGrid()
-            Try
-                Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid
-                Me.State.moProductCodeId = Guid.Empty
-
-                Me.State.moChkIsCommProdCode = False
-
-                Me.State.searchDV = CommPlan.getList(GetSearchParmCommPlan)
-
-                Me.State.searchDV.Sort = Me.SortDirection
-
-                Me.GridCommPlan.AutoGenerateColumns = False
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.moCommPlanId, Me.GridCommPlan, Me.State.mnPageIndex)
-
-                Me.SortAndBindCommPlanGrid()
-            Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
-
-        Private Sub SortAndBindCommPlanGrid()
-            Me.State.mnPageIndex = Me.GridCommPlan.PageIndex
-            If (Me.State.searchDV.Count = 0) Then
-                Me.State.bnoRow = True
-                CreateHeaderForEmptyGrid(GridCommPlan, Me.SortDirection)
-            Else
-                Me.State.bnoRow = False
-                Me.GridCommPlan.Enabled = True
-                Me.GridCommPlan.DataSource = Me.State.searchDV
-                HighLightSortColumn(GridCommPlan, Me.SortDirection)
-                Me.GridCommPlan.DataBind()
-            End If
-
-            If Not GridCommPlan.BottomPagerRow.Visible Then GridCommPlan.BottomPagerRow.Visible = True
-
-            'ControlMgr.SetVisibleControl(Me, GridCommPlan, Me.State.IsGridVisible)
-            'ControlMgr.SetVisibleControl(Me, trPageSize, Me.GridCommPlan.Visible)
-
-            ControlMgr.SetVisibleControl(Me, GridCommPlan, True)
-            ControlMgr.SetVisibleControl(Me, trPageSize, True)
-
-            Session("recCount") = Me.State.searchDV.Count
-
-            If Me.State.searchDV.Count > 0 Then
-                If Me.GridCommPlan.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
-                End If
-            End If
-        End Sub
-
-        Private Function GetSearchParmCommPlan() As CommPlanData
-            Dim oCommPlanData As CommPlanData = New CommPlanData
-
-            With oCommPlanData
-                .companyIds = ElitaPlusIdentity.Current.ActiveUser.Companies
-                .dealerId = Me.State.moDealerId
-            End With
-
-            Return oCommPlanData
-
-        End Function
-
 
 #End Region
     End Class
