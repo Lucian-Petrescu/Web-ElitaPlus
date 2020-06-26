@@ -29,6 +29,7 @@ Namespace Tables
 
             Public IsCommPerGreaterThanHundred As Boolean
             Public IsPmComCombination As Boolean
+            Public IsAmountAndPercentBothPresent As Boolean
             Public IsDiffSelectedTwice As Boolean
             Public IsDiffNotSelectedOnce As Boolean
             Public IsBucketIncomingSelected As Boolean
@@ -297,7 +298,7 @@ Namespace Tables
 #Region "Handlers-Buttons"
 
         Private Sub GoBack()
-            Dim retType As New CommissionPeriodSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.moCommPlanId, Me.State.boChanged)
+            Dim retType As New CommissionPlanSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.moCommPlanId, Me.State.boChanged)
             Me.ReturnToCallingPage(retType)
         End Sub
 
@@ -715,6 +716,29 @@ Namespace Tables
 
 #Region "Period State-Management"
 
+        Protected Sub ComingFromSaveDistribution100PerAlert()
+            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+
+            If Not confResponse = String.Empty Then
+                ' Return from the Back Button
+
+                Select Case confResponse
+                    Case Me.MSG_VALUE_YES
+                        SaveDistributionChanges()
+                        SetGridSourceXcdLabelFromBo()
+                    Case Me.MSG_VALUE_NO
+                        'Do not save data
+                        SetGridControls(moGridView, True)
+                        FillSourceXcdDropdownList()
+                        FillEntityDropDownList()
+                        FillPayeeTypeDropDownList()
+                        SetGridSourceXcdDropdownFromBo()
+                        SetGridSourceXcdLabelFromBo()
+                End Select
+            End If
+
+        End Sub
+
         Protected Sub ComingFromBack()
             Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
 
@@ -776,23 +800,6 @@ Namespace Tables
             End If
 
         End Sub
-        Protected Sub ComingFromSaveNewDistribution()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-
-            If Not confResponse = String.Empty Then
-                ' Return from the New Copy Button
-
-                Select Case confResponse
-                    Case Me.MSG_VALUE_YES
-                        ' Save and create a new Copy BO
-                        SaveDistributionChanges()
-                        SetGridSourceXcdLabelFromBo()
-                    Case Me.MSG_VALUE_NO
-                        ' create a new BO
-
-                End Select
-            End If
-        End Sub
 
         Protected Sub ComingFromNewDistribution()
             Try
@@ -807,6 +814,42 @@ Namespace Tables
                             DistributionId = Guid.Empty.ToString
                             PopulateDistributionList(ACTION_NEW)
                             'SetGridControls(moGridView, True)
+                            FillSourceXcdDropdownList()
+                            FillEntityDropDownList()
+                            FillPayeeTypeDropDownList()
+                            SetGridSourceXcdDropdownFromBo()
+                            SetGridSourceXcdLabelFromBo()
+                            SetGridControls(moGridView, True)
+                            EnableDisableControls(Me.moCoverageEditPanel, True)
+                            setbuttons(False)
+                            btnBack.Visible = True
+                    End Select
+                End If
+            Catch ex As Exception
+                ' SetStateProperties()
+                FillSourceXcdDropdownList()
+                FillEntityDropDownList()
+                FillPayeeTypeDropDownList()
+                SetGridSourceXcdDropdownFromBo()
+                SetGridSourceXcdLabelFromBo()
+                SetGridControls(moGridView, True)
+                EnableDisableControls(Me.moCoverageEditPanel, True)
+                setbuttons(False)
+                btnBack.Visible = True
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Protected Sub ComingFromNewDistributionForEitherAmtPer()
+            Try
+                Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+
+                If Not confResponse = String.Empty Then
+                    ' Return from the Back Button
+
+                    Select Case confResponse
+                        Case Me.MSG_BTN_OK
+                            SetGridControls(moGridView, True)
                             FillSourceXcdDropdownList()
                             FillEntityDropDownList()
                             FillPayeeTypeDropDownList()
@@ -864,7 +907,11 @@ Namespace Tables
                 Select Case Me.State.ActionInProgress
                     ' Period
                     Case ElitaPlusPage.DetailPageCommand.OK
-                        ComingFromNewDistribution()
+                        If Me.State.IsAmountAndPercentBothPresent Then
+                            ComingFromNewDistributionForEitherAmtPer()
+                        Else
+                            ComingFromNewDistribution()
+                        End If
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
                     Case ElitaPlusPage.DetailPageCommand.New_
@@ -872,11 +919,14 @@ Namespace Tables
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
                         ComingFromNewCopy()
 
-                    ' Breadkdown
+
                     Case ElitaPlusPage.DetailPageCommand.Redirect_
                         ComingFromEditTolerance()
                     Case ElitaPlusPage.DetailPageCommand.Accept
-                        'ComingFromNewTolerance()
+                        'Alert for accepting greater than 100% commission percentage
+                        ComingFromSaveDistribution100PerAlert()
+
+                        TheDealerControl.ChangeEnabledControlProperty(False)
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
                         Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
                 End Select
@@ -989,6 +1039,70 @@ Namespace Tables
             End If
 
             Return isCommPerMoreThanHundred
+        End Function
+
+        Private Function IsAmountAndPercentBothPresent() As Boolean
+            Dim countCommPer As Int16 = 0
+            Dim countAmt As Int16 = 0
+
+            For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
+                Me.moGridView.PageIndex = pageIndexk
+                Dim rowNum As Integer = Me.moGridView.Rows.Count
+                For i As Integer = 0 To rowNum - 1
+                    Dim gRow As GridViewRow = moGridView.Rows(i)
+                    If gRow.RowType = DataControlRowType.DataRow Then
+                        Dim molblCommPer As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("moCommission_PercentLabel"), Label)
+                        Dim motextBoxCommPer As TextBox = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("moCommission_PercentText"), TextBox)
+
+                        Dim molblAmt As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("moLowPriceLabel"), Label)
+                        Dim motextBoxAmt As TextBox = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("moLowPriceText"), TextBox)
+
+                        If Not motextBoxCommPer Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(motextBoxCommPer.Text) Then
+                                Dim cPer As Decimal = Convert.ToDecimal(motextBoxCommPer.Text)
+                                If cPer > 0 Then
+                                    countCommPer = countCommPer + 1
+                                End If
+                            End If
+                        End If
+
+                        If Not molblCommPer Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(molblCommPer.Text) Then
+                                Dim cPer As Decimal = Convert.ToDecimal(molblCommPer.Text)
+                                countCommPer = countCommPer + 1
+                            End If
+                        End If
+
+
+                        If Not motextBoxAmt Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(motextBoxAmt.Text) Then
+                                Dim cAmt As Decimal = Convert.ToDecimal(motextBoxAmt.Text)
+                                If cAmt > 0 Then
+                                    countAmt = countAmt + 1
+                                End If
+                            End If
+                        End If
+
+                        If Not molblAmt Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(molblAmt.Text) Then
+                                Dim cAmt As Decimal = Convert.ToDecimal(molblAmt.Text)
+                                If cAmt > 0 Then
+                                    countAmt = countAmt + 1
+                                End If
+                            End If
+                        End If
+
+                    End If
+                Next
+            Next
+
+            If ((countCommPer = 1 Or countCommPer > 1) And (countAmt = 1 Or countAmt > 1)) Then
+                Me.State.IsAmountAndPercentBothPresent = True
+            Else
+                Me.State.IsAmountAndPercentBothPresent = False
+            End If
+
+            Return Me.State.IsAmountAndPercentBothPresent
         End Function
 
         Private Sub SetGridSourceXcdLabelFromBo()
@@ -1336,22 +1450,42 @@ Namespace Tables
             Try
                 ValidatePmCertSourceLogic()
 
-                'If IsCommPerGreaterThanHundred() Then
-                '    Me.State.ActionInProgress = DetailPageCommand.OK
-                '    Me.DisplayMessage(Message.MSG_COMMISSION_PERCENTAGE_IS_GREATER_THAN_HUNDRED, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_INFO, Me.HiddenSaveChangesPromptResponse)
-                'End If
+                If IsAmountAndPercentBothPresent() Then
+                    Me.State.IsAmountAndPercentBothPresent = True
+                    'Me.State.ActionInProgress = DetailPageCommand.OK
+                    'Me.DisplayMessage(Message.MSG_COMMISSION_PERCENTAGE_IS_GREATER_THAN_HUNDRED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, Me.HiddenSaveChangesPromptResponse)
+                    Throw New GUIException(Message.MSG_EITHER_PERCENTAGE_OR_AMOUNT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_ONLY_EITHER_PERCENTAGE_OR_AMOUNT_ALLOWED)
+                End If
 
-                SaveDistributionChanges()
-                SetGridSourceXcdLabelFromBo()
+                If IsCommPerGreaterThanHundred() Then
+                    Me.State.ActionInProgress = DetailPageCommand.Accept
+                    Me.DisplayMessage(Message.MSG_COMMISSION_PERCENTAGE_IS_GREATER_THAN_HUNDRED, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_INFO, Me.HiddenSaveChangesPromptResponse)
+                Else
+                    SaveDistributionChanges()
+                    SetGridSourceXcdLabelFromBo()
 
-                TheDealerControl.ChangeEnabledControlProperty(False)
+                    TheDealerControl.ChangeEnabledControlProperty(False)
+                End If
+
             Catch ex As Exception
-                Me.State.IsCommPlanDistNew = False
-                EnableForEditRateButtons(False)
-                'Below method reloads the data in the grid
-                PopulateDistributionList(ACTION_CANCEL_DELETE)
-                SetGridSourceXcdLabelFromBo()
-                TheDealerControl.ChangeEnabledControlProperty(False)
+                If Me.State.IsAmountAndPercentBothPresent = True Then
+                    SetGridControls(moGridView, True)
+                    FillSourceXcdDropdownList()
+                    FillEntityDropDownList()
+                    FillPayeeTypeDropDownList()
+                    SetGridSourceXcdDropdownFromBo()
+                    SetGridSourceXcdLabelFromBo()
+                    SetGridControls(moGridView, True)
+                    EnableDisableControls(Me.moCoverageEditPanel, True)
+                Else
+                    Me.State.IsCommPlanDistNew = False
+                    EnableForEditRateButtons(False)
+                    'Below method reloads the data in the grid
+                    PopulateDistributionList(ACTION_CANCEL_DELETE)
+                    SetGridSourceXcdLabelFromBo()
+                    TheDealerControl.ChangeEnabledControlProperty(False)
+                End If
+
                 setbuttons(False)
                 btnBack.Visible = True
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -1373,7 +1507,7 @@ Namespace Tables
 
         Private Sub BtnNewRate_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNewRate_WRITE.Click
             Try
-                If moGridView.Rows.Count = 5 Then
+                If moGridView.Rows.Count >= 5 Then
                     'Throw New GUIException(Message.MSG_DISTRIBUTION_RECORD_LIMITED_FOR_EXTRACT_REPORT, Assurant.ElitaPlus.Common.ErrorCodes.MSG_COMMISSION_DISTRIBUTION_RECORD_LIMITED_FOR_EXTRACT_REPORT)
                     Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
                     Me.DisplayMessage(Message.MSG_DISTRIBUTION_RECORD_LIMITED_FOR_EXTRACT_REPORT, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO, Me.HiddenSaveChangesPromptResponse)
