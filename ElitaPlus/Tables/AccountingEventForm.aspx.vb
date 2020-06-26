@@ -322,10 +322,23 @@ Partial Class AccountingEventForm
 
             Me.PopulateControlFromBOProperty(Me.moEventTypeDDL, .AcctEventTypeId)
 
-            If Me.moAccountingCompanyDropDown.Items.Count > 1 Then
-                Me.PopulateControlFromBOProperty(Me.moAccountingCompanyDropDown, .AcctCompanyId)
+            If Not .AcctCompanyId = Guid.Empty Then
+
+                If Me.moAccountingCompanyDropDown.Items.Count > 1 Then
+                    Me.PopulateControlFromBOProperty(Me.moAccountingCompanyDropDown, .AcctCompanyId)
+                Else
+                    Me.moAccountingCompanyDropDown.SelectedIndex = 0
+                End If
+
             Else
-                Me.moAccountingCompanyDropDown.SelectedIndex = 0
+
+                If Me.State.MyBO.IsNew Then
+                    If ElitaPlusIdentity.Current.ActiveUser.AccountingCompanies.Length > 1 Then
+                        Me.PopulateBOProperty(Me.State.MyBO, ACCTCOMPANY_PROPERTY, Me.moAccountingCompanyDropDown)
+                    Else
+                        Me.State.MyBO.AcctCompanyId = ElitaPlusIdentity.Current.ActiveUser.AccountingCompanies(0).Id
+                    End If
+                End If
             End If
 
             PopulateEventDetails()
