@@ -151,6 +151,7 @@ Theme="Default" %>
             </tr>
             <tr>
                 <td>
+                    &nbsp;&nbsp;
                     <asp:Label ID="Label3" runat="server" Text="INVOICE_LINE_SEARCH" CssClass="modalTitle"></asp:Label>
                 </td>
             </tr>
@@ -180,18 +181,13 @@ Theme="Default" %>
 </div>
 <script type="text/javascript">
 
-    function SetShowNewSCValue(newValue) {
-        $('#<% =HiddenFieldPoLineSearch.ClientID%>').val(newValue);
-    }
-
     if ($('#<% =HiddenFieldPoLineSearch.ClientID%>').val() == "Y") {
         revealModal("ModalPoLineSearch");
     } else {
         hideModal('ModalPoLineSearch');
     };
 
-</script>
-
+    </script>
 <div class="dataContainer">
 <h2 class="dataGridHeader">
     Invoice Line Items </h2>

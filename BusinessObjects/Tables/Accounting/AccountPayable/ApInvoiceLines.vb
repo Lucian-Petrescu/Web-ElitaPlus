@@ -465,6 +465,31 @@ Public Class ApInvoiceLines
         End Try
     End Function
 
+    public Function GetAuthorization(ByVal serviceCenterId As Guid , ByVal claimNumber As String, ByVal authorizationNumber As string,ByVal companyId As Guid) As Dataview
+        Try
+            Dim dal As New ApInvoiceLinesDAL
+            Dim ds As DataSet = New DataSet
+
+            ds = dal.GetAuthorization(serviceCenterId, claimNumber,authorizationNumber,companyId)
+            Return ds.Tables(ApInvoiceLinesDAL.TABLE_NAME).DefaultView
+
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+    Public function GetPoLines(ByVal claimIds As Generic.List(Of Guid),ByVal authorizationIds As Generic.List(Of Guid),ByVal companyId As Guid ) As Dataview
+        Try
+            Dim dal As New ApInvoiceLinesDAL
+            Dim ds As DataSet = New DataSet
+
+            ds = dal.GetPoLines(claimIds, authorizationIds, companyId)
+            Return ds.Tables(ApInvoiceLinesDAL.TABLE_NAME).DefaultView
+
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End function
+
 #End Region
 
 

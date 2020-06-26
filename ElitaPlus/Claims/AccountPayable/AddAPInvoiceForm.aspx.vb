@@ -844,7 +844,8 @@ Namespace Claims.AccountPayable
             End Sub
 
             ucApInvoiceLinesSearch.CompanyId = State.CompanyId
-            ucApInvoiceLinesSearch.ServiceCenter = moVendorDropDown.SelectedValue
+            ucApInvoiceLinesSearch.ServiceCenterId =  New Guid(moVendorDropDown.SelectedItem.Value)
+            ucApInvoiceLinesSearch.ServiceCenter = moVendorDropDown.SelectedItem.Text
             ucApInvoiceLinesSearch.ApInvoiceHeaderId= State.ApInvoiceHeaderBo.Id
             ucApInvoiceLinesSearch.InitializeComponent()
             

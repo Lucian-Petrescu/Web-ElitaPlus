@@ -1,5 +1,5 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject v2.cst (10/21/2019)********************
-
+Imports System.Collections.Generic
 
 Public Class ApInvoiceLinesDAL
     Inherits OracleDALBase
@@ -50,6 +50,12 @@ Public Class ApInvoiceLinesDAL
     Public Const PAR_I_NAME_BILLING_PERIOD_END_DATE As String = "pi_billing_period_end_date"
     Public Const PAR_I_NAME_REFERENCE_NUMBER As String = "pi_reference_number"
     Public Const PAR_I_NAME_VENDOR_TRANSACTION_TYPE As String = "pi_vendor_transaction_type"
+    Public Const PAR_I_NAME_SERVICE_CENTER_ID As String = "pi_service_center_id"
+    Public Const PAR_I_NAME_CLAIM_NUMBER As String = "pi_claim_number"
+    Public Const PAR_I_NAME_AUTHORIZATION_NUMBER As String = "pi_authorization_number"
+    Public Const PAR_I_NAME_COMPANY_ID As String = "pi_company_id"
+    Public Const PAR_I_NAME_CLAIM_IDS As String = "pi_company_id"
+    Public Const PAR_I_NAME_AUTHORIZATION_IDS As String = "pi_claim_authorization_ids"
     Public Const PAR_O_AP_INVOICE_LINES_CUR As String = "po_ResultCursor"
 
 #End Region
@@ -114,6 +120,72 @@ Public Class ApInvoiceLinesDAL
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
                 OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
                 Return familyDS
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+    public Function GetAuthorization(ByVal serviceCenterId As Guid , ByVal claimNumber As String, ByVal authorizationNumber As string,ByVal companyId As Guid) As Dataset
+        Try
+            Dim authorizationDataSet As New DataSet
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOADAUTHS"))
+                cmd.AddParameter(PAR_I_NAME_SERVICE_CENTER_ID, OracleDbType.Raw, serviceCenterId.ToByteArray())
+                cmd.AddParameter(PAR_I_NAME_CLAIM_NUMBER, OracleDbType.Varchar2, claimNumber)
+                cmd.AddParameter(PAR_I_NAME_AUTHORIZATION_NUMBER, OracleDbType.Varchar2, authorizationNumber)
+                cmd.AddParameter(PAR_I_NAME_COMPANY_ID, OracleDbType.Raw, companyId.ToByteArray())
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, authorizationDataSet)
+                Return authorizationDataSet
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+    public Function GetPoLines(ByVal claimIds As List(Of Guid) , ByVal claimAuthorizationIds As List(Of Guid) ,ByVal companyId As Guid) As Dataset
+        Try
+            Dim authorizationDataSet As New DataSet
+
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOADPOLINES"))
+               
+                
+                Dim claimArrayIds(claimIds.Count - 1) As String
+                Dim claimArrayIdsSize(claimIds.Count - 1) As Integer
+                Dim claimbatchCnt As Integer = 0
+                For Each guidTemp As Guid In claimIds
+                    claimArrayIds(claimbatchCnt) = GuidControl.GuidToHexString(guidTemp)
+                    claimarrayIdsSize(claimbatchCnt) = 50
+                    claimbatchCnt = claimbatchCnt + 1
+                Next
+
+                Dim authorizationArrayIds(claimAuthorizationIds.Count - 1) As String
+                Dim authArrayIdsSize(claimAuthorizationIds.Count - 1) As Integer
+                Dim authbatchCnt As Integer = 0
+                For Each guidTemp As Guid In claimAuthorizationIds
+                    authorizationArrayIds(authbatchCnt) = GuidControl.GuidToHexString(guidTemp)
+                    authArrayIdsSize(authbatchCnt) = 50
+                    authbatchCnt = authbatchCnt + 1
+                Next
+
+                Dim claimParamIds As OracleParameter = New OracleParameter()
+                claimParamIds = cmd.Parameters.Add(PAR_I_NAME_CLAIM_IDS, OracleDbType.Varchar2)
+                claimParamIds.Direction = ParameterDirection.Input
+                claimParamIds.CollectionType = OracleCollectionType.PLSQLAssociativeArray
+                claimParamIds.Value = claimArrayIds
+                claimParamIds.Size = claimIds.Count
+                claimParamIds.ArrayBindSize = claimarrayIdsSize
+
+                Dim authParamIds As OracleParameter = New OracleParameter()
+                authParamIds = cmd.Parameters.Add(PAR_I_NAME_AUTHORIZATION_IDS, OracleDbType.Varchar2)
+                authParamIds.Direction = ParameterDirection.Input
+                authParamIds.CollectionType = OracleCollectionType.PLSQLAssociativeArray
+                authParamIds.Value = authorizationArrayIds
+                authParamIds.Size = authorizationArrayIds.Count
+                authParamIds.ArrayBindSize = authArrayIdsSize
+
+                cmd.AddParameter(PAR_I_NAME_COMPANY_ID, OracleDbType.Raw, companyId.ToByteArray())
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, authorizationDataSet)
+                Return authorizationDataSet
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

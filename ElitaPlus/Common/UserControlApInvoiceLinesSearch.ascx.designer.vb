@@ -50,13 +50,13 @@ Partial Public Class UserControlApInvoiceLinesSearch
     Protected WithEvents txtClaimNumber As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''Label1 control.
+    '''lblAuthorizationNUmber control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblAuthorizationNUmber As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''txtAuthorizationNumber control.
@@ -93,6 +93,24 @@ Partial Public Class UserControlApInvoiceLinesSearch
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''authGridTitle control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents authGridTitle As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''AuthGridPageSize control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents AuthGridPageSize As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
     '''trPageSize control.
@@ -158,6 +176,15 @@ Partial Public Class UserControlApInvoiceLinesSearch
     Protected WithEvents btnSearchLines As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''poLineGridTitle control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents poLineGridTitle As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
     '''linesGridHeader control.
     '''</summary>
     '''<remarks>
@@ -165,6 +192,60 @@ Partial Public Class UserControlApInvoiceLinesSearch
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents linesGridHeader As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''PoLineGridPageSize control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents PoLineGridPageSize As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''tr1 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents tr1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''lblPoLinePageSize control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPoLinePageSize As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Label2 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''PoLineCboPageSize control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents PoLineCboPageSize As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''lblPoLinesRecords control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPoLinesRecords As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''GridPoLines control.
