@@ -1470,10 +1470,11 @@ Namespace Tables
             Catch ex As Exception
                 If Me.State.IsAmountAndPercentBothPresent = True Then
                     SetGridControls(moGridView, True)
-                    FillSourceXcdDropdownList()
-                    FillEntityDropDownList()
-                    FillPayeeTypeDropDownList()
-                    SetGridSourceXcdDropdownFromBo()
+                    PopulateDistributionList(ACTION_CANCEL_DELETE)
+                    'FillSourceXcdDropdownList()
+                    'FillEntityDropDownList()
+                    'FillPayeeTypeDropDownList()
+                    'SetGridSourceXcdDropdownFromBo()
                     SetGridSourceXcdLabelFromBo()
                     SetGridControls(moGridView, True)
                     EnableDisableControls(Me.moCoverageEditPanel, True)
@@ -1511,20 +1512,22 @@ Namespace Tables
                     'Throw New GUIException(Message.MSG_DISTRIBUTION_RECORD_LIMITED_FOR_EXTRACT_REPORT, Assurant.ElitaPlus.Common.ErrorCodes.MSG_COMMISSION_DISTRIBUTION_RECORD_LIMITED_FOR_EXTRACT_REPORT)
                     Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
                     Me.DisplayMessage(Message.MSG_DISTRIBUTION_RECORD_LIMITED_FOR_EXTRACT_REPORT, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO, Me.HiddenSaveChangesPromptResponse)
+                Else
+                    Me.State.IsCommPlanDistNew = True
+                    DistributionId = Guid.Empty.ToString
+                    PopulateDistributionList(ACTION_NEW)
+                    'SetGridControls(moGridView, True)
+                    FillSourceXcdDropdownList()
+                    FillEntityDropDownList()
+                    FillPayeeTypeDropDownList()
+                    SetGridSourceXcdDropdownFromBo()
+                    SetGridSourceXcdLabelFromBo()
+                    SetGridControls(moGridView, True)
+                    EnableDisableControls(Me.moCoverageEditPanel, True)
+                    setbuttons(False)
+                    btnBack.Visible = True
                 End If
-                Me.State.IsCommPlanDistNew = True
-                DistributionId = Guid.Empty.ToString
-                PopulateDistributionList(ACTION_NEW)
-                'SetGridControls(moGridView, True)
-                FillSourceXcdDropdownList()
-                FillEntityDropDownList()
-                FillPayeeTypeDropDownList()
-                SetGridSourceXcdDropdownFromBo()
-                SetGridSourceXcdLabelFromBo()
-                SetGridControls(moGridView, True)
-                EnableDisableControls(Me.moCoverageEditPanel, True)
-                setbuttons(False)
-                btnBack.Visible = True
+
             Catch ex As Exception
                 ' SetStateProperties()
                 SetGridControls(moGridView, True)
