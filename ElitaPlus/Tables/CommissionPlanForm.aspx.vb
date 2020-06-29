@@ -732,7 +732,7 @@ Namespace Tables
                 oPlan = TheCommPlan
                 commPaymentExists = oPlan.CommPaymentExist(oPlan.Id)
                 If commPaymentExists = "N" Then
-                    ErrControllerMaster.AddErrorAndShow("DATES_OVERLAPPING")
+                    Throw New GUIException(Message.MSG_EXTRACT_LINKED_WITH_PLAN_DELETE_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXTRACT_LINKED_WITH_OTHER_PLAN_DELETE_NOT_ALLOWED)
                 Else
                     With oPlan
                         .Delete()
