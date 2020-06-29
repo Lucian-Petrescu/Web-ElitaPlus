@@ -212,13 +212,13 @@ Public Class CommPlan
         End Set
     End Property
 
-    Public Function AddCommPlanDistribution(ByVal assCommID As Guid) As CommPlanDistribution
-        If assCommID.Equals(Guid.Empty) Then
-            Dim objAssocComm As New CommPlanDistribution(Me.Dataset)
-            Return objAssocComm
+    Public Function AddCommPlanDistribution(ByVal assDistID As Guid) As CommPlanDistribution
+        If assDistID.Equals(Guid.Empty) Then
+            Dim objCommDist As New CommPlanDistribution(Me.Dataset)
+            Return objCommDist
         Else
-            Dim objAssocComm As New CommPlanDistribution(assCommID, Me.Dataset)
-            Return objAssocComm
+            Dim objCommDist As New CommPlanDistribution(assDistID, Me.Dataset)
+            Return objCommDist
         End If
     End Function
 
@@ -276,6 +276,51 @@ Public Class CommPlan
             Return nExpiration
         End Get
     End Property
+
+    Public ReadOnly Property ExpirationOverlapping(ByVal oData As Object) As Integer
+        Get
+            Dim ds As Dataset
+            Dim nExpiration As Integer
+
+            '   If moRowExpiration Is Nothing Then
+            Dim oCommPlanDataExp As CommPlanDataExp = CType(oData, CommPlanDataExp)
+            Dim dal As New CommPlanDAL
+            ds = dal.GetExpirationOverlap(oCommPlanDataExp)
+            If ds.Tables(CommPlanDAL.TABLE_NAME).Rows.Count = 0 Then
+                nExpiration = 0
+            Else
+                moRowExpiration = ds.Tables(CommPlanDAL.TABLE_NAME).Rows(0)
+                nExpiration = CType(moRowExpiration(CommPlanDAL.COL_NAME_EXPIRATION_COUNT), Integer)
+            End If
+            '  Else
+            '   nExpiration = CType(moRowExpiration(CommissionPeriodDAL.COL_NAME_EXPIRATION_COUNT), Integer)
+            '   End If
+
+            Return nExpiration
+        End Get
+    End Property
+
+    Public Shared Function CommPaymentExist(ByVal pi_commmission_plan_id As Guid) As String
+        Try
+            Dim dal As New CommPlanDAL
+            Return dal.CommPaymentExist(pi_commmission_plan_id)
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+
+    End Function
+
+    'Public Shared Function CheckDatesOverLap(ByVal pi_dealer_id As Guid, byval pi_effective_date As Date, pi_expiration_date as Date ) As String
+    Public Shared Function CheckDatesOverLap(ByVal pi_dealer_id As Guid, ByVal pi_expiration_date as Date ) As String
+        Try
+            Dim dal As New CommPlanDAL
+            'Return dal.CheckDatesOverLap(pi_dealer_id ,pi_effective_date , pi_expiration_date )
+            Return dal.CheckDatesOverLap(pi_dealer_id, pi_expiration_date )
+       Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+
+    End Function
 
 #End Region
 
