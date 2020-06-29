@@ -141,22 +141,12 @@ Public Class ApInvoiceLinesDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    public Function GetPoLines(ByVal claimIds As List(Of Guid) , ByVal claimAuthorizationIds As List(Of Guid) ,ByVal companyId As Guid) As Dataset
+    public Function GetPoLines(ByVal claimAuthorizationIds As List(Of Guid) ,ByVal companyId As Guid) As Dataset
         Try
             Dim authorizationDataSet As New DataSet
 
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOADPOLINES"))
                
-                
-                Dim claimArrayIds(claimIds.Count - 1) As String
-                Dim claimArrayIdsSize(claimIds.Count - 1) As Integer
-                Dim claimbatchCnt As Integer = 0
-                For Each guidTemp As Guid In claimIds
-                    claimArrayIds(claimbatchCnt) = GuidControl.GuidToHexString(guidTemp)
-                    claimarrayIdsSize(claimbatchCnt) = 50
-                    claimbatchCnt = claimbatchCnt + 1
-                Next
-
                 Dim authorizationArrayIds(claimAuthorizationIds.Count - 1) As String
                 Dim authArrayIdsSize(claimAuthorizationIds.Count - 1) As Integer
                 Dim authbatchCnt As Integer = 0
@@ -165,14 +155,6 @@ Public Class ApInvoiceLinesDAL
                     authArrayIdsSize(authbatchCnt) = 50
                     authbatchCnt = authbatchCnt + 1
                 Next
-
-                Dim claimParamIds As OracleParameter = New OracleParameter()
-                claimParamIds = cmd.Parameters.Add(PAR_I_NAME_CLAIM_IDS, OracleDbType.Varchar2)
-                claimParamIds.Direction = ParameterDirection.Input
-                claimParamIds.CollectionType = OracleCollectionType.PLSQLAssociativeArray
-                claimParamIds.Value = claimArrayIds
-                claimParamIds.Size = claimIds.Count
-                claimParamIds.ArrayBindSize = claimarrayIdsSize
 
                 Dim authParamIds As OracleParameter = New OracleParameter()
                 authParamIds = cmd.Parameters.Add(PAR_I_NAME_AUTHORIZATION_IDS, OracleDbType.Varchar2)

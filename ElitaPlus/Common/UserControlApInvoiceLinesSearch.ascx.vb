@@ -150,6 +150,7 @@ Public Class UserControlApInvoiceLinesSearch
             TranslateGridHeaderFunc.Invoke(GridPoLines)
             TranslateGridHeaderFunc.Invoke(GridAuth)
             SetTranslations()
+            txtServiceCenter.Text = ServiceCenter
             ControlMgr.SetVisibleControl(ElitaHostPage, PoLineGridPageSize, False)
 
         Catch ex As Exception
@@ -257,6 +258,7 @@ Public Class UserControlApInvoiceLinesSearch
         UpdateRecordCount(authDv.Count)
         GridAuth.PageSize = PageSize
         GridAuth.DataBind()
+        Session("authRecCount") = authDv.Count
     End Sub
    Private Function GetAuthorizationGridDataView() As DataView
         Dim apInvoiceLinesBo As New ApInvoiceLines
@@ -265,9 +267,8 @@ Public Class UserControlApInvoiceLinesSearch
 
     Private Function GetPoLinesGridDataView() As DataView
         Dim apInvoiceLinesBo As New ApInvoiceLines
-        Dim selectedClaimIds As List(Of Guid) = GetSelectedAuthorizationIds()
         Dim selectedAuthIds As List(Of Guid) = GetSelectedAuthorizationIds()
-        Return apInvoiceLinesBo.GetPoLines(selectedClaimIds, selectedAuthIds, CompanyId)
+        Return apInvoiceLinesBo.GetPoLines(selectedAuthIds, CompanyId)
     End Function
 
     Private Sub GridAuth_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridAuth.PageIndexChanged
@@ -288,16 +289,16 @@ Public Class UserControlApInvoiceLinesSearch
     End Sub
     Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
-            Dim list As IList = GridAuth.DataSource
             PageSize = CType(cboPageSize.SelectedValue, Integer)
-            PageIndex = NewCurrentPageIndexFunc(GridAuth, list?.Count, PageSize)
+            PageIndex = NewCurrentPageIndexFunc.Invoke(GridAuth,  CType(Session("authRecCount"), Int32) , PageSize)
             GridAuth.PageIndex = PageIndex
-            Me.PopulateAuthorizationGrid()
+            PopulateAuthorizationGrid()
+           
         Catch ex As Exception
             HandleLocalException(ex)
         End Try
     End Sub
-     Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridAuth.RowDataBound
+    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridAuth.RowDataBound
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Try
             If e.Row.RowType = DataControlRowType.DataRow Then
@@ -316,12 +317,15 @@ Public Class UserControlApInvoiceLinesSearch
        
     End Function
 #End Region
-    #Region "Po Line Grid"
+
+#Region "Po Line Grid"
     Private Sub PopulatePoLinesGrid()
         Dim poLinesDv As DataView = GetPoLinesGridDataView()
         UpdatePoLinesRecordCount(poLinesDv.Count)
         GridPoLines.DataSource = poLinesDv
+        GridPoLines.PageSize = PageSize
         GridPoLines.DataBind()
+        Session("PoLineRecCount") = poLinesDv.Count
     End Sub
     Private Sub GridPoLines_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridPoLines.PageIndexChanged
         Try
@@ -341,9 +345,8 @@ Public Class UserControlApInvoiceLinesSearch
     End Sub
     Private Sub PoLineCboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles PoLineCboPageSize.SelectedIndexChanged
         Try
-            Dim list As IList = GridPoLines.DataSource
             PageSize = CType(PoLineCboPageSize.SelectedValue, Integer)
-            PageIndex = NewCurrentPageIndexFunc(GridPoLines, list?.Count, PageSize)
+            PageIndex = NewCurrentPageIndexFunc.Invoke(GridPoLines,  CType(Session("PoLineRecCount"), Int32), PageSize)
             GridPoLines.PageIndex = PageIndex
             PopulatePoLinesGrid()
         Catch ex As Exception
@@ -351,7 +354,6 @@ Public Class UserControlApInvoiceLinesSearch
         End Try
     End Sub
 #End Region
-
 
 #Region "Button Event"
 

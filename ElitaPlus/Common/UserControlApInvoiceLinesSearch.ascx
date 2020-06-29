@@ -136,8 +136,8 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlApInvoiceLinesSearch" %>
                     <asp:Label ID="lblPoLinePageSize" runat="server">Page_Size</asp:Label><asp:Label ID="Label2" runat="server">:</asp:Label>
                     &nbsp;
                     <asp:DropDownList ID="PoLineCboPageSize" runat="server" Width="50px" AutoPostBack="true" SkinID="SmallDropDown">
-                        <asp:ListItem Value="5" >5</asp:ListItem>
-                        <asp:ListItem Value="10" Selected="True" >10</asp:ListItem>
+                        <asp:ListItem Value="5" Selected="True" >5</asp:ListItem>
+                        <asp:ListItem Value="10"  >10</asp:ListItem>
                         <asp:ListItem Value="15">15</asp:ListItem>
                         <asp:ListItem Value="20">20</asp:ListItem>
                         <asp:ListItem Value="25">25</asp:ListItem>
@@ -178,7 +178,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlApInvoiceLinesSearch" %>
                 <asp:BoundField DataField="UOM_XCD" HeaderText="unit_of_measurement" HtmlEncode="false"></asp:BoundField>
                 <asp:BoundField DataField="PO_Number" HeaderText="PO_Number" HtmlEncode="false"></asp:BoundField>
             </Columns>
-            <PagerSettings PageButtonCount="10" Mode="Numeric" Position="TopAndBottom" />
+            <PagerSettings PageButtonCount="5" Mode="Numeric" Position="TopAndBottom" />
             <PagerStyle />
         </asp:GridView>
     </div>

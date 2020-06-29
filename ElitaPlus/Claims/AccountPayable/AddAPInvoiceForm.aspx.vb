@@ -118,7 +118,7 @@ Namespace Claims.AccountPayable
         Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
             Try
                 MasterPage.MessageController.Clear_Hide()
-
+                RewireUserControlHandler(ucApInvoiceLinesSearch)
                 If Not Page.IsPostBack Then
                     AddCalendar_New(btnInvoiceDate, moInvoiceDate)
                     SetFormTitle(PageTitle)
@@ -140,6 +140,19 @@ Namespace Claims.AccountPayable
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
             ShowMissingTranslations(MasterPage.MessageController)
+        End Sub
+        Private Sub RewireUserControlHandler(userControl As UserControlApInvoiceLinesSearch)
+            userControl.TranslationFunc = Function(value As String)
+                Return TranslationBase.TranslateLabelOrMessage(value)
+            End Function
+
+            userControl.TranslateGridHeaderFunc = Sub(grid As GridView)
+                TranslateGridHeader(grid)
+            End Sub
+           userControl.NewCurrentPageIndexFunc = Function(grid As GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer)
+                Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
+            End Function
+            userControl.HostMessageController = MasterPage.MessageController
         End Sub
 
 #End Region
@@ -842,6 +855,10 @@ Namespace Claims.AccountPayable
             ucApInvoiceLinesSearch.TranslateGridHeaderFunc = Sub(grid As System.Web.UI.WebControls.GridView)
                 TranslateGridHeader(grid)
             End Sub
+
+            ucApInvoiceLinesSearch.NewCurrentPageIndexFunc = Function(grid As System.Web.UI.WebControls.GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer)
+                Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
+            End Function
 
             ucApInvoiceLinesSearch.CompanyId = State.CompanyId
             ucApInvoiceLinesSearch.ServiceCenterId =  New Guid(moVendorDropDown.SelectedItem.Value)

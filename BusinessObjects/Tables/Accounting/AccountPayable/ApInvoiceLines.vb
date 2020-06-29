@@ -477,12 +477,12 @@ Public Class ApInvoiceLines
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public function GetPoLines(ByVal claimIds As Generic.List(Of Guid),ByVal authorizationIds As Generic.List(Of Guid),ByVal companyId As Guid ) As Dataview
+    Public function GetPoLines(ByVal authorizationIds As Generic.List(Of Guid),ByVal companyId As Guid ) As Dataview
         Try
             Dim dal As New ApInvoiceLinesDAL
             Dim ds As DataSet = New DataSet
 
-            ds = dal.GetPoLines(claimIds, authorizationIds, companyId)
+            ds = dal.GetPoLines( authorizationIds, companyId)
             Return ds.Tables(ApInvoiceLinesDAL.TABLE_NAME).DefaultView
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
