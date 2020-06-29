@@ -427,6 +427,8 @@ Public Class Authentication
         ' First Access to DB that is not for Log
         oServers = New Servers(connType, machineDomain, webServiceName, webServiceFunctionName)
 
+        identity.LdapIp = oServers.LdapIp
+
         ' Privacy groups
         If Not userPrivacyGroups Is Nothing Then
             ' We already have the user privacy groups

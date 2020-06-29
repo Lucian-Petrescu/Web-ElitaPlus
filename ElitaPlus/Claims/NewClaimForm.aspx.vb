@@ -84,7 +84,7 @@ Partial Class NewClaimForm
     Public Const EQUIPMENT_VERIFIED As String = "EQUIPMENT_VERIFIED"
 
     Public Const COL_PRICE_DV As String = "Price"
-
+    Public Const ISSUE_CODE_CR_DEVICE_MIS As String = "CR_DEVICE_MIS"
 
 #End Region
 
@@ -447,7 +447,6 @@ Partial Class NewClaimForm
                 Me.State.ClaimIssuesView = Me.State.MyBO.GetClaimIssuesView()
                 PopulateDropdowns()
                 PopulateServiceCenterSelected()
-                PopulateClaimEquipment()
 
                 ddlIssueCode.Attributes.Add("onchange", String.Format("RefreshDropDownsAndSelect('{0}','{1}',true,'{2}');", ddlIssueCode.ClientID, ddlIssueDescription.ClientID, "D"))
                 ddlIssueDescription.Attributes.Add("onchange", String.Format("RefreshDropDownsAndSelect('{0}','{1}',true,'{2}');", ddlIssueCode.ClientID, ddlIssueDescription.ClientID, "C"))
@@ -521,6 +520,8 @@ Partial Class NewClaimForm
                     nDeductiblePercent = Me.State.oDeductiblePercent.Value
                 End If
             End If
+
+            PopulateClaimedEnrolledDetails()
 
             BindBoPropertiesToLabels()
             If (Me.CheckIfComingFromCreateClaimConfirm()) Then
@@ -1814,12 +1815,20 @@ Partial Class NewClaimForm
         End With
     End Sub
 
-    Sub PopulateClaimEquipment()
-
-        Me.dvClaimEquipment.Visible = True
-        With Me.ucClaimDeviceInfo
-            .thisPage = Me
-            .ClaimBO = CType(Me.State.MyBO, ClaimBase)
+    Sub PopulateClaimedEnrolledDetails()
+        With Me.State.MyBO
+            If Not .EnrolledEquipment Is Nothing Or Not .ClaimedEquipment Is Nothing Then
+                With Me.ucClaimDeviceInfo
+                    .thisPage = Me
+                    .ClaimBO = CType(Me.State.MyBO, ClaimBase)
+                    For Each i As ClaimIssue In Me.State.MyBO.ClaimIssuesList
+                        If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS And (i.StatusCode = Codes.CLAIMISSUE_STATUS__RESOLVED Or i.StatusCode = Codes.CLAIMISSUE_STATUS__REJECTED Or i.StatusCode = Codes.CLAIMISSUE_STATUS__WAIVED) Then
+                            .ShowDeviceEditImg = False
+                            Exit For
+                        End If
+                    Next
+                End With
+            End If
         End With
     End Sub
 

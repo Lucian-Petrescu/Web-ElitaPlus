@@ -66,6 +66,17 @@
 														<asp:textbox id="txtPoliceStationName" runat="server" Width="90%"></asp:textbox>&nbsp;
 													</TD>
 												</TR>
+                                                <TR>
+													<TD style="HEIGHT: 3px" noWrap align="right" width="1%">&nbsp;
+														<asp:label id="lblPoliceStationDistrictCode" runat="server">Police_Station_District_Code</asp:label></TD>
+													<TD style="HEIGHT: 3px" width="20%">&nbsp;
+														<asp:textbox id="txtPoliceStationDistrictCode" runat="server" Width="40%"></asp:textbox></TD>
+													<TD style="HEIGHT: 3px" noWrap align="right" width="1%">
+														<asp:label id="lblPoliceStationDistrictName" runat="server">Police_Station_District_Name</asp:label></TD>
+													<TD style="HEIGHT: 3px" width="20%">&nbsp;
+														<asp:textbox id="txtPoliceStationDistrictName" runat="server" Width="90%"></asp:textbox>&nbsp;
+													</TD>
+												</TR>
 												<uc1:UserControlAddress id="moAddressController" runat="server"></uc1:UserControlAddress></TABLE>
 										</asp:panel></DIV>
 								</TD>
