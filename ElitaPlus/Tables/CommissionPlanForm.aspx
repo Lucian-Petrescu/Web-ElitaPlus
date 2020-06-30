@@ -10,7 +10,6 @@
     <script language="JavaScript" type="text/javascript" src="../Navigation/Scripts/GlobalHeader.js"></script>
 
     <script type="text/javascript" language="javascript">
-
         $(function () {
             $("[id*=cboCommPercentSourceXcd]").change(function () {
                 var row = $(this).closest("tr");
@@ -73,6 +72,21 @@
                 </tr>
                 <tr>
                     <td align="right" class="borderLeft" width="10%">*
+                        <asp:Label ID="LabelCode" runat="server">Code</asp:Label>:&nbsp;
+                    </td>
+                    <td width="20%">&nbsp;
+                        <asp:TextBox ID="TextBoxCode" TabIndex="10" runat="server" MaxLength="20" SkinID="MediumTextBox" Width="150px"></asp:TextBox>
+                    </td>
+                    <td width="10%" align="right">*
+                        <asp:Label ID="LabelDescription" runat="server">Description</asp:Label>:&nbsp;
+                    </td>
+                    <td width="20%">&nbsp;
+                        <asp:TextBox ID="TextBoxDescription" TabIndex="10" runat="server" MaxLength="20" SkinID="MediumTextBox"
+                            Width="150px"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" class="borderLeft" width="10%">*
                         <asp:Label ID="moEffectiveLabel" runat="server">Effective</asp:Label>:&nbsp;
                     </td>
                     <td width="20%">&nbsp;
@@ -87,21 +101,9 @@
                             Width="150px"></asp:TextBox>
                         <asp:ImageButton ID="BtnExpirationDate_WRITE" runat="server" ImageAlign="AbsMiddle"
                             ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
-                    </td>                    
-                    <td align="right" class="borderLeft" width="10%">*
-                        <asp:Label ID="LabelCode" runat="server">Code</asp:Label>:&nbsp;
-                    </td>
-                    <td width="20%">&nbsp;
-                        <asp:TextBox ID="TextBoxCode" TabIndex="10" runat="server" MaxLength="20" SkinID="MediumTextBox" Width="150px"></asp:TextBox>
-                    </td>
-                    <td width="10%" align="right">*
-                        <asp:Label ID="LabelDescription" runat="server">Description</asp:Label>:&nbsp;
-                    </td>
-                    <td width="20%">&nbsp;
-                        <asp:TextBox ID="TextBoxDescription" TabIndex="10" runat="server" MaxLength="20" SkinID="MediumTextBox"
-                            Width="150px"></asp:TextBox>
                     </td>
                 </tr>
+
                 <tr>
                     <td>
                         <asp:Label ID="moCoverageIdLabel" runat="server" Visible="False"></asp:Label>
