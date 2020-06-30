@@ -119,6 +119,22 @@ Public Class CommPlanDistributionDAL
         End Try
     End Sub
 
+    Public Function CommPaymentExist(ByVal pi_commmission_plan_id As Guid) As String
+        Try
+            Dim selectStmt As String = Me.Config("/SQL/COMM_PAYMENT_EXIST")
+
+            Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_Commmission_Plan_id", pi_commmission_plan_id.ToByteArray)}
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_status", GetType(String))}
+
+            DBHelper.ExecuteSp(selectStmt, inparameters, outParameters)
+            Return outParameters(0).Value.ToString()
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Function
+
 #End Region
 
 #Region "Overloaded Methods"

@@ -22,6 +22,7 @@ Namespace Tables
             Public moDistributionList() As CommPlanDistribution
             Public moCommPlanId As Guid = Guid.Empty
             Public moCommPlanDistId As Guid = Guid.Empty
+            Public moCommPlanDistPlanId As Guid = Guid.Empty
             Public LastErrMsg As String
             Public IsCommPlanDistNew As Boolean = False
             Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
@@ -740,6 +741,7 @@ Namespace Tables
                     End With
                 End If
             Catch ex As Exception
+                Me.LoadDistributionList()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
                 bIsOk = False
             End Try
@@ -1495,6 +1497,8 @@ Namespace Tables
                     moGridView.EditIndex = nIndex
                     moGridView.SelectedIndex = nIndex
                     DistributionId = Me.GetGridText(moGridView, nIndex, COL_COMMISSION_PLAN_DIST_ID_IDX)
+
+                    Me.State.moCommPlanDistPlanId = GetGuidFromString(Me.GetGridText(moGridView, nIndex, COL_COMMISSION_PLAN_ID_IDX))
                     Me.State.moCommPlanDistId = GetGuidFromString(DistributionId)
                     Me.State.MyBoDist = New CommPlanDistribution(Me.State.moCommPlanDistId)
                     If DeleteSelectedDistribution(nIndex) = True Then
@@ -1536,7 +1540,7 @@ Namespace Tables
             Catch ex As Exception
                 If Me.State.IsAmountAndPercentBothPresent = True Then
                     SetGridControls(moGridView, True)
-                    PopulateDistributionList(ACTION_CANCEL_DELETE)
+                    Me.LoadDistributionList()
                     'FillSourceXcdDropdownList()
                     'FillEntityDropDownList()
                     'FillPayeeTypeDropDownList()
@@ -1548,7 +1552,7 @@ Namespace Tables
                     Me.State.IsCommPlanDistNew = False
                     EnableForEditRateButtons(False)
                     'Below method reloads the data in the grid
-                    PopulateDistributionList(ACTION_CANCEL_DELETE)
+                    Me.LoadDistributionList()
                     SetGridSourceXcdLabelFromBo()
                     TheDealerControl.ChangeEnabledControlProperty(False)
                 End If
@@ -1730,18 +1734,27 @@ Namespace Tables
         End Function
         Private Function DeleteSelectedDistribution(ByVal nIndex As Integer) As Boolean
             Dim bIsOk As Boolean = True
+            Dim oPlanDist As CommPlanDistribution
+            Dim commPaymentExists As String
             Try
                 If Me.State.IsNewWithCopy Then
-                    If Me.State.moDistributionList Is Nothing Then Me.LoadDistributionList()
+                    If Me.State.moDistributionList Is Nothing Then
+                        Me.LoadDistributionList()
+                    End If
                     Me.State.moDistributionList(nIndex) = Nothing
                 Else
-                    With TheCommPlanDist()
-                        .Delete()
-                        .Save()
-                    End With
+                    commPaymentExists = oPlanDist.CommPaymentExist(Me.State.moCommPlanDistPlanId)
+                    If commPaymentExists = "N" Then
+                        Throw New GUIException(Message.MSG_EXTRACT_LINKED_WITH_PLAN_DELETE_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXTRACT_LINKED_WITH_OTHER_PLAN_DELETE_NOT_ALLOWED)
+                    Else
+                        With TheCommPlanDist()
+                            .Delete()
+                            .Save()
+                        End With
+                    End If
                 End If
-
             Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)                
                 'moMsgControllerRate.AddError(COVERAGE_FORM005)
                 'moMsgControllerRate.AddError(ex.Message, False)
                 'moMsgControllerRate.Show()

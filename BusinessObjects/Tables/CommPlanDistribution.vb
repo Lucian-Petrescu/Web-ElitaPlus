@@ -317,6 +317,16 @@ Public Class CommPlanDistribution
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
+
+    Public Shared Function CommPaymentExist(ByVal pi_commmission_plan_id As Guid) As String
+        Try
+            Dim dal As New CommPlanDistributionDAL
+            Return dal.CommPaymentExist(pi_commmission_plan_id)
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+
+    End Function
 #End Region
 
 #Region "SearchDV"

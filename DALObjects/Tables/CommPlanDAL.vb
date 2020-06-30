@@ -171,7 +171,7 @@ Public Class CommPlanDAL
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_status", GetType(String))}
 
             DBHelper.ExecuteSp(selectStmt, inparameters, outParameters)
-            Return outParameters(0).Value
+            Return outParameters(0).Value.ToString()
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
