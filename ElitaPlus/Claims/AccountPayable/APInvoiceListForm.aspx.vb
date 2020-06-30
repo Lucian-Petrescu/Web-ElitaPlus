@@ -27,7 +27,7 @@ Partial Class APInvoiceListForm
     Public Const GRID_COL_UNMATCHED_LINES_IDX As Integer = 10
     Public Const GRID_COL_INVOICE_HEADER_ID_IDX As Integer = 11
 
-    Public Const MAX_LIMIT As Integer = 100
+    Public Const MAX_LIMIT As Integer = 1000
 
 #End Region
 
