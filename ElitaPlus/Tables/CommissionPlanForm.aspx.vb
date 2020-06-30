@@ -405,7 +405,7 @@ Namespace Tables
 
         Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
-                If DeletePeriod() = True Then
+                If DeletePlan() = True Then
                     Me.State.boChanged = True
                     GoBack()
                 End If
@@ -724,7 +724,7 @@ Namespace Tables
             Return bIsOk
         End Function
 
-        Private Function DeletePeriod() As Boolean
+        Private Function DeletePlan() As Boolean
             Dim bIsOk As Boolean = True
             Dim oPlan As CommPlan
             Dim commPaymentExists As String
@@ -1540,7 +1540,7 @@ Namespace Tables
             Catch ex As Exception
                 If Me.State.IsAmountAndPercentBothPresent = True Then
                     SetGridControls(moGridView, True)
-                    Me.LoadDistributionList()
+                    'Me.LoadDistributionList()
                     'FillSourceXcdDropdownList()
                     'FillEntityDropDownList()
                     'FillPayeeTypeDropDownList()
@@ -1552,7 +1552,7 @@ Namespace Tables
                     Me.State.IsCommPlanDistNew = False
                     EnableForEditRateButtons(False)
                     'Below method reloads the data in the grid
-                    Me.LoadDistributionList()
+                    'Me.LoadDistributionList()
                     SetGridSourceXcdLabelFromBo()
                     TheDealerControl.ChangeEnabledControlProperty(False)
                 End If
@@ -1632,6 +1632,9 @@ Namespace Tables
         Private Function ApplyDistributionChanges() As Boolean
             Dim bIsOk As Boolean = True
             Dim bIsDirty As Boolean
+            Dim oPlanDist As CommPlanDistribution
+            Dim commPaymentExists As String
+
             If moGridView.EditIndex < 0 Then Return False ' Distribution is not in edit mode
             If Me.State.IsNewWithCopy Then
                 Me.LoadDistributionList()
@@ -1642,12 +1645,21 @@ Namespace Tables
                 DistributionId = Me.GetSelectedGridText(moGridView, COL_COMMISSION_PLAN_DIST_ID_IDX)
             End If
             BindBoPropertiesToGridHeader()
+
             With TheCommPlanDist
                 PopulateRateBOFromForm()
-                bIsDirty = .IsDirty
-                .Save()
-                EnableForEditRateButtons(False)
+                commPaymentExists = oPlanDist.CommPaymentExist(.CommissionPlanId)
+                If commPaymentExists = "N" Then
+                    Me.State.moCommPlanDistPlanId = Guid.Empty
+                    Throw New GUIException(Message.MSG_EXTRACT_LINKED_WITH_PLAN_DELETE_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXTRACT_LINKED_WITH_OTHER_PLAN_DELETE_NOT_ALLOWED)
+                Else
+                    bIsDirty = .IsDirty
+                    .Save()
+                    'Me.State.moCommPlanDistPlanId = Guid.Empty
+                    EnableForEditRateButtons(False)
+                End If
             End With
+
             If (bIsOk = True) Then
                 If bIsDirty = True Then
                     Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
@@ -1744,17 +1756,20 @@ Namespace Tables
                     Me.State.moDistributionList(nIndex) = Nothing
                 Else
                     commPaymentExists = oPlanDist.CommPaymentExist(Me.State.moCommPlanDistPlanId)
+
                     If commPaymentExists = "N" Then
+                        Me.State.moCommPlanDistPlanId = Guid.Empty
                         Throw New GUIException(Message.MSG_EXTRACT_LINKED_WITH_PLAN_DELETE_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXTRACT_LINKED_WITH_OTHER_PLAN_DELETE_NOT_ALLOWED)
                     Else
                         With TheCommPlanDist()
                             .Delete()
                             .Save()
+                            Me.State.moCommPlanDistPlanId = Guid.Empty
                         End With
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)                
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
                 'moMsgControllerRate.AddError(COVERAGE_FORM005)
                 'moMsgControllerRate.AddError(ex.Message, False)
                 'moMsgControllerRate.Show()
