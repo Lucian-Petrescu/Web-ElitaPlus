@@ -349,40 +349,45 @@ Namespace Certificates
                 ElseIf String.IsNullOrEmpty(oWebPasswd.UserId) Or String.IsNullOrEmpty(oWebPasswd.Password) Then
                     Throw New ArgumentNullException($"Web Password username or password not configured for Service Type {Codes.SERVICE_TYPE_SOLICIT_API_URL}")
                 End If
-
-                Dim uri As String = String.Format(oWebPasswd.Url, "Elita", oWebPasswd.AuthenticationKey)
                 System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls Or System.Net.SecurityProtocolType.Tls11 Or System.Net.SecurityProtocolType.Tls12
                 Dim client As HttpClient = New HttpClient()
                 client.DefaultRequestHeaders.Accept.Clear()
-                'client.DefaultRequestHeaders.Add(oWebPasswd.UserId, oWebPasswd.Password)
-                client.DefaultRequestHeaders.Add(System.Configuration.ConfigurationManager.AppSettings("AzureSolicitOcpKey"), oWebPasswd.AuthenticationKey)
-
+                client.DefaultRequestHeaders.Add(oWebPasswd.UserId, oWebPasswd.Password)
                 client.DefaultRequestHeaders.Accept.Add(New MediaTypeWithQualityHeaderValue("application/json"))
 
-                Dim searchRequestBody As Solicit.SolicitDetails = New Solicit.SolicitDetails()
+
+                Dim searchRequestBody As Solicit.SolicitSearch = New Solicit.SolicitSearch()
+
                 'pbi-543167 needs to revisit as currently organization code is hardcoded which evantaally gets generated using companyID+ dealer value(ddlDealer.SelectedValue)
-                searchRequestBody.owner.organization.code = "ASJP-AJP-RSIM" 'ddlDealer.SelectedValue
-                searchRequestBody.origin.salesOrderNumber = txtInitialSalesOrder.Text
-                searchRequestBody.customer.id = txtCustomerId.Text
-                'pbi-543167 needs to revisit as this date criteria has been commented due to mismatch in ELITA request and actually solicit search request
-                ' searchRequestBody.effectiveDate = txtApplyDate.Text
-                searchRequestBody.customer.cellPhoneNumber = txtSimPhoneNumber.Text
+                Dim searchOrganization As Solicit.SolicitSearch = New Solicit.SolicitSearch()
+                searchRequestBody.ownerOrganizationCode = "ASJP-AJP-RSIM" 'ddlDealer.SelectedValue
+                Dim searchLocatorProperties As Solicit.LocatorProperties = New Solicit.LocatorProperties()
+                searchLocatorProperties.salesOrderNumber = txtInitialSalesOrder.Text
+                searchLocatorProperties.customerId = txtCustomerId.Text
+                searchLocatorProperties.dateOfBirth = txtApplyDate.Text
+                searchLocatorProperties.simPhoneNumber = txtSimPhoneNumber.Text
+
+                Dim jsonObjectA As String = JsonConvert.SerializeObject(searchOrganization)
+                Dim jsonObjectB As String = JsonConvert.SerializeObject(searchLocatorProperties)
+
+                Dim jSoNToPost As String = String.Format("""organization"": {0},""locatorproperties"":""{1}""", jsonObjectA, jsonObjectB)
+                jSoNToPost = String.Concat("{", jSoNToPost, "}")
 
                 'Dim jsonData = JsonConvert.SerializeObject(searchRequestBody)
-                'Dim data = New StringContent(jsonData, Encoding.UTF8, "application/json")
-
-                'Dim response As HttpResponseMessage = client.PostAsync(url, data)
-                'Dim result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
-                'If Not response.IsSuccessStatusCode Then
-                '    Throw New Exception($"There is an error in displaying the SOLICIT Data. {response.ReasonPhrase}")
-                'End If
-                Dim response As HttpResponseMessage = client.GetAsync(oWebPasswd.Url).GetAwaiter().GetResult()
+                Dim data = New StringContent(jSoNToPost, Encoding.UTF8, "application/json")
+                Dim url As New Uri(oWebPasswd.Url)
+                Dim response As HttpResponseMessage = client.PostAsync(url, data).GetAwaiter().GetResult()
+                Dim json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
                 If Not response.IsSuccessStatusCode Then
                     Throw New Exception($"There is an error in displaying the SOLICIT Data. {response.ReasonPhrase}")
                 End If
-                Dim json As String = response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
 
+                ''Dim response As HttpResponseMessage = client.GetAsync("/solicitsearch").GetAwaiter().GetResult()
 
+                'If Not response.IsSuccessStatusCode Then
+                '    Throw New Exception($"There is an error in displaying the SOLICIT Data. {response.ReasonPhrase}")
+                'End If
+                'Dim json As String = response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
                 Try
                     Dim solicitDetailsList As List(Of Solicit.SolicitDetails) = JsonConvert.DeserializeObject(Of List(Of Solicit.SolicitDetails))(json)
                     Dim solicitDetailsListXml As String = ConvertJsonToXML(solicitDetailsList)
