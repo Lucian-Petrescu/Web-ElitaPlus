@@ -87,8 +87,8 @@
                             Width="150px"></asp:TextBox>
                         <asp:ImageButton ID="BtnExpirationDate_WRITE" runat="server" ImageAlign="AbsMiddle"
                             ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
-                    </td>
-                    <td align="right" width="10%">*
+                    </td>                    
+                    <td align="right" class="borderLeft" width="10%">*
                         <asp:Label ID="LabelCode" runat="server">Code</asp:Label>:&nbsp;
                     </td>
                     <td width="20%">&nbsp;

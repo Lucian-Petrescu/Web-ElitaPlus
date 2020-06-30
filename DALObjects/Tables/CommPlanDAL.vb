@@ -8,6 +8,13 @@ Public Class CommPlanData
     Public companyIds As ArrayList
 
 End Class
+
+Public Class CommPlanDataExp
+
+    Public dealerId As Guid
+    Public expirationDate As Date
+
+End Class
 #End Region
 
 Public Class CommPlanDAL
@@ -19,16 +26,16 @@ Public Class CommPlanDAL
     '  Public Const DSNAME As String = "LIST"
 
     Public Const COL_NAME_COMM_PLAN_ID As String = "commission_plan_id"
-    
+
     Public Const COL_NAME_DEALER_ID As String = "reference_id"
     Public Const COL_NAME_RFERENCE_SOURCE As String = "reference"
     Public Const COL_NAME_COMPANY_CODE As String = "company_code"
     Public Const COL_NAME_CODE As String = "code"
     Public Const COL_NAME_DESCRIPTION As String = "description"
     Public Const COL_NAME_EFFECTIVE_DATE As String = "effective_date"
-    Public Const COL_NAME_EXPIRATION_DATE As String = "expiration_date"    
+    Public Const COL_NAME_EXPIRATION_DATE As String = "expiration_date"
     Public Const COL_NAME_DEALER_NAME As String = "dealer_name"
-    
+
 
     Public Const COL_NAME_COMPANY_ID = "company_id"
     Public Const COL_NAME_DEALER_ID0 As String = "dealer_id0"
@@ -85,13 +92,13 @@ Public Class CommPlanDAL
             With oCommPlanData
 
                 If .dealerId.Equals(Guid.Empty) Then
-                    inparameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, GenericConstants.WILDCARD), 
+                    inparameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, GenericConstants.WILDCARD),
                                                                      New DBHelper.DBHelperParameter("user_id", activeUserId.ToByteArray)}
                 Else
                     inparameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, .dealerId.ToByteArray),
                                                                      New DBHelper.DBHelperParameter("user_id", activeUserId.ToByteArray)}
                 End If
-                
+
             End With
 
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
@@ -131,6 +138,94 @@ Public Class CommPlanDAL
 
     End Function
 
+    Public Function GetExpirationOverlap(ByVal oCommPlanData As CommPlanDataExp) As DataSet
+        Try
+            'Dim selectStmt As String = Me.Config("/SQL/OVERLAP_EXPIRATION")
+            Dim selectStmt As String = Me.Config("/SQL/CHECK_FOR_DATES_OVERLAP")
+            Dim inparameters() As DBHelper.DBHelperParameter
+
+            With oCommPlanData
+                inparameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, .dealerId.ToByteArray),
+                                                                 New DBHelper.DBHelperParameter(COL_NAME_EXPIRATION_DATE, .expirationDate)}
+            End With
+
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
+
+            Dim ds As New DataSet
+            Dim tbl As String = Me.TABLE_NAME
+
+            DBHelper.FetchSp(selectStmt, inparameters, outParameters, ds, tbl)
+            Return ds
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Function
+
+    Public Function CommPaymentExist(ByVal pi_commmission_plan_id As Guid) As String
+        Try
+            Dim selectStmt As String = Me.Config("/SQL/COMM_PAYMENT_EXIST")
+
+            Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_Commmission_Plan_id", pi_commmission_plan_id.ToByteArray)}
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_status", GetType(String))}
+
+            DBHelper.ExecuteSp(selectStmt, inparameters, outParameters)
+            Return outParameters(0).Value.ToString()
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Function
+
+    'Public Function CheckDatesOverLap(ByVal pi_dealer_id As Guid, ByVal pi_effective_date As Date, pi_expiration_date As Date) As String
+    Public Function CheckDatesOverLap(ByVal pi_dealer_id As Guid, ByVal pi_expiration_date As Date) As String
+        Try
+            Dim selectStmt As String = Me.Config("/SQL/CHECK_FOR_DATES_OVERLAP")
+
+            'Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_dealer_id", pi_dealer_id.ToByteArray),
+            '                                                                                     New DBHelper.DBHelperParameter("pi_effective_date", pi_effective_date),
+            '                                                                                     New DBHelper.DBHelperParameter("pi_expiration_date", pi_expiration_date)}
+            Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_dealer_id", pi_dealer_id.ToByteArray),                                                                                                 
+                                                                                                 New DBHelper.DBHelperParameter("pi_expiration_date", pi_expiration_date)}
+
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_status", GetType(String))}
+
+            DBHelper.ExecuteSp(selectStmt, inparameters, outParameters)
+            'DBHelper.FetchSp(selectStmt, inparameters, outParameters, ds, tbl)
+            'DBHelper.FetchSp(selectStmt, inparameters, outParameters,)
+            Return outParameters(0).Value.ToString()
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Function
+
+    Public Function CheckExpirationOverlap(ByVal oCommPlanData As CommPlanDataExp) As DataSet
+        Try
+            Dim selectStmt As String = Me.Config("/SQL/CHECK_FOR_DATES_OVERLAP")
+            Dim inparameters() As DBHelper.DBHelperParameter
+
+            With oCommPlanData
+                inparameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_dealer_id", .dealerId.ToByteArray),
+                                                                 New DBHelper.DBHelperParameter("pi_expiration_date", .expirationDate)}
+            End With
+
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
+
+            Dim ds As New DataSet
+            Dim tbl As String = Me.TABLE_NAME
+
+            DBHelper.FetchSp(selectStmt, inparameters, outParameters, ds, tbl)
+            Return ds
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Function
 #End Region
 
 #Region "Overloaded Methods"
@@ -138,7 +233,7 @@ Public Class CommPlanDAL
     Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         Dim commPlanDAL As New CommPlanDAL 'CommPlanDistributionDAL  
-        
+
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
             tr = DBHelper.GetNewTransaction
@@ -220,12 +315,12 @@ Public Class CommPlanDAL
         With command
             .AddParameter("pi_dealer_id", OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_ID)
             .AddParameter("pi_code", OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE)
-            .AddParameter("pi_description", OracleDbType.Varchar2, sourceColumn:=COL_NAME_DESCRIPTION)            
+            .AddParameter("pi_description", OracleDbType.Varchar2, sourceColumn:=COL_NAME_DESCRIPTION)
             .AddParameter("pi_effective_date", OracleDbType.Date, sourceColumn:=COL_NAME_EFFECTIVE_DATE)
             .AddParameter("pi_expiration_date", OracleDbType.Date, sourceColumn:=COL_NAME_EXPIRATION_DATE)
             .AddParameter("pi_created_by", OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY)
             .AddParameter("pi_commission_plan_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)
-            .AddParameter("pi_reference", OracleDbType.Varchar2, sourceColumn:=COL_NAME_RFERENCE_SOURCE)            
+            .AddParameter("pi_reference", OracleDbType.Varchar2, sourceColumn:=COL_NAME_RFERENCE_SOURCE)
             .AddParameter("po_exec_status", OracleDbType.Int32, ParameterDirection.Output)
         End With
     End Sub
@@ -234,12 +329,12 @@ Public Class CommPlanDAL
         With command
             .AddParameter("pi_dealer_id", OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_ID)
             .AddParameter("pi_code", OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE)
-            .AddParameter("pi_description", OracleDbType.Varchar2, sourceColumn:=COL_NAME_DESCRIPTION)            
+            .AddParameter("pi_description", OracleDbType.Varchar2, sourceColumn:=COL_NAME_DESCRIPTION)
             .AddParameter("pi_effective_date", OracleDbType.Date, sourceColumn:=COL_NAME_EFFECTIVE_DATE)
             .AddParameter("pi_expiration_date", OracleDbType.Date, sourceColumn:=COL_NAME_EXPIRATION_DATE)
             .AddParameter("pi_modified_by", OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY)
             .AddParameter("pi_commission_plan_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)
-            .AddParameter("pi_reference", OracleDbType.Varchar2, sourceColumn:=COL_NAME_RFERENCE_SOURCE)            
+            .AddParameter("pi_reference", OracleDbType.Varchar2, sourceColumn:=COL_NAME_RFERENCE_SOURCE)
             .AddParameter("po_exec_status", OracleDbType.Int32, ParameterDirection.Output)
         End With
     End Sub

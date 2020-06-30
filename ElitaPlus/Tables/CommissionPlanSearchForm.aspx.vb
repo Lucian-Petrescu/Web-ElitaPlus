@@ -95,16 +95,16 @@ Namespace Tables
                     Me.State.searchDV = Nothing
                 End If
                 If Not retObj Is Nothing Then
-                    
+
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
                             Me.State.moCommissionPlanId = retObj.moCommissionPlanId
                         Case Else
                             Me.State.moCommissionPlanId = Guid.Empty
                     End Select
-                    
+
                     Me.PopulateDealerDropDown()
-                   
+
                     If Me.State.IsGridVisible Then
                         GridCommPlan.PageIndex = Me.State.mnPageIndex
                         GridCommPlan.PageSize = Me.State.PageSize
@@ -343,10 +343,12 @@ Namespace Tables
 
         Private Sub btnNew_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew.Click
             Try
-                Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(moDealerDrop)
-                Me.State.moCommPlanId = Guid.Empty
-                Me.State.mnPageIndex = GridCommPlan.PageIndex
-                Me.callPage(CommissionPlanForm.URL, Me.State.moCommPlanId)
+                If HasCompanyConfigeredForSourceXcd() Then
+                    Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(moDealerDrop)
+                    Me.State.moCommPlanId = Guid.Empty
+                    Me.State.mnPageIndex = GridCommPlan.PageIndex
+                    Me.callPage(CommissionPlanForm.URL, Me.State.moCommPlanId)
+                End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -477,7 +479,9 @@ Namespace Tables
         Private Sub PopulateGrid()
             Try
                 Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid
-                PopulateCommPlanGrid()
+                If HasCompanyConfigeredForSourceXcd() Then
+                    PopulateCommPlanGrid()
+                End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
