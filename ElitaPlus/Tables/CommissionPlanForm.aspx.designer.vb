@@ -24,6 +24,42 @@ Namespace Tables
         Protected WithEvents multipleDropControl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl
 
         '''<summary>
+        '''LabelCode control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents LabelCode As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''TextBoxCode control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents TextBoxCode As Global.System.Web.UI.WebControls.TextBox
+
+        '''<summary>
+        '''LabelDescription control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents LabelDescription As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''TextBoxDescription control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents TextBoxDescription As Global.System.Web.UI.WebControls.TextBox
+
+        '''<summary>
         '''moEffectiveLabel control.
         '''</summary>
         '''<remarks>
@@ -76,42 +112,6 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents BtnExpirationDate_WRITE As Global.System.Web.UI.WebControls.ImageButton
-
-        '''<summary>
-        '''LabelCode control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelCode As Global.System.Web.UI.WebControls.Label
-
-        '''<summary>
-        '''TextBoxCode control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxCode As Global.System.Web.UI.WebControls.TextBox
-
-        '''<summary>
-        '''LabelDescription control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelDescription As Global.System.Web.UI.WebControls.Label
-
-        '''<summary>
-        '''TextBoxDescription control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxDescription As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
         '''moCoverageIdLabel control.

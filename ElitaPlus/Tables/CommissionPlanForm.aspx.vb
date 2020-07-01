@@ -15,7 +15,6 @@ Namespace Tables
 #Region "Page State"
 
 #Region "MyState"
-
         Class MyState
             Public MyBo As CommPlan
             Public MyBoDist As CommPlanDistribution
@@ -25,6 +24,7 @@ Namespace Tables
             Public moCommPlanDistPlanId As Guid = Guid.Empty
             Public LastErrMsg As String
             Public IsCommPlanDistNew As Boolean = False
+            Public IsComingFromSavePlan As Boolean = False
             Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
             Public boChanged As Boolean = False
 
@@ -293,12 +293,13 @@ Namespace Tables
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
             'Put user code to initialize the page here
             Try
                 Me.MasterPage.MessageController.Clear_Hide()
                 ClearLabelsErrSign()
                 ClearGridHeaders(moGridView)
+                
                 If Not Page.IsPostBack Then
                     Me.MasterPage.MessageController.Clear()
                     Me.MasterPage.UsePageTabTitleInBreadCrum = False
@@ -322,6 +323,8 @@ Namespace Tables
                                      Me.MSG_TYPE_CONFIRM, True)
                     Me.AddCalendar(Me.BtnEffectiveDate_WRITE, Me.moEffectiveText_WRITE)
                     Me.AddCalendar(Me.BtnExpirationDate_WRITE, Me.moExpirationText_WRITE)
+                    Me.AddCalendar(Me.BtnExpirationDate_WRITE, moExpirationText_WRITE,String.Empty,System.DateTime.Now.ToString,"Y")
+                    
                 Else
                     If HasCompanyConfigeredForSourceXcd() Then
                         Me.moGridView.Visible = True
@@ -365,7 +368,7 @@ Namespace Tables
         Private Sub SavePlanChanges()
             If ApplyPlanChanges() = True Then
                 Me.State.boChanged = True
-                ClearDistributionGrid()
+                'ClearDistributionGrid()
                 PopulatePeriod()
                 Me.State.IsCommPlanDistNew = False
                 SetPeriodButtonsState(False)
@@ -374,17 +377,14 @@ Namespace Tables
 
         Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
-                'Dim ExpirationOverlapCount As Integer = ExpirationOverlapping()
-                'If ExpirationOverlapCount = 0 Then
                 SavePlanChanges()
+                Me.SetStateProperties()
                 SetGridSourceXcdLabelFromBo()
-                'Else
-                '    Throw New GUIException(Message.MSG_EXPIRATION_DATE_IS_OVERLAPPING_WITH_OTHER_PLAN, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXPIRATION_DATE_IS_OVERLAPPING)
-                'End If
-
+                ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, False)
             Catch ex As Exception
                 SetGridControls(moGridView, True)
-                PopulateDistributionList(ACTION_CANCEL_DELETE)
+                'PopulateDistributionList(ACTION_CANCEL_DELETE)
+                RePopulateDistributionList()
                 SetGridSourceXcdLabelFromBo()
                 SetGridControls(moGridView, True)
                 EnableDisableControls(Me.moCoverageEditPanel, True)
@@ -712,7 +712,8 @@ Namespace Tables
                         Throw New GUIException(Message.MSG_EXPIRATION_DATE_IS_OVERLAPPING_WITH_OTHER_PLAN, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXPIRATION_DATE_IS_OVERLAPPING)
                     End If
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    'Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    Me.MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
                 End If
                 Me.State.IsCommPlanDistNew = False
                 SetPeriodButtonsState(False)
@@ -1535,11 +1536,13 @@ Namespace Tables
                     SetGridSourceXcdLabelFromBo()
 
                     TheDealerControl.ChangeEnabledControlProperty(False)
+                    ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, False)
                 End If
 
             Catch ex As Exception
                 If Me.State.IsAmountAndPercentBothPresent = True Then
                     SetGridControls(moGridView, True)
+                    RePopulateDistributionList()
                     'Me.LoadDistributionList()
                     'FillSourceXcdDropdownList()
                     'FillEntityDropDownList()
@@ -1553,12 +1556,15 @@ Namespace Tables
                     EnableForEditRateButtons(False)
                     'Below method reloads the data in the grid
                     'Me.LoadDistributionList()
+                    RePopulateDistributionList()
                     SetGridSourceXcdLabelFromBo()
                     TheDealerControl.ChangeEnabledControlProperty(False)
                 End If
 
                 setbuttons(False)
                 btnBack.Visible = True
+                btnSave_WRITE.Visible = False
+                BtnSaveRate_WRITE.Visible = True
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
@@ -1765,10 +1771,12 @@ Namespace Tables
                             .Delete()
                             .Save()
                             Me.State.moCommPlanDistPlanId = Guid.Empty
+                            Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
                         End With
                     End If
                 End If
             Catch ex As Exception
+                RePopulateDistributionList()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
                 'moMsgControllerRate.AddError(COVERAGE_FORM005)
                 'moMsgControllerRate.AddError(ex.Message, False)
@@ -1851,6 +1859,42 @@ Namespace Tables
                         EnableForEditRateButtons(True)
 
                 End Select
+
+                moGridView.DataSource = oDataView
+                moGridView.DataBind()
+                ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, moGridView)
+
+            Catch ex As Exception
+                'moMsgControllerRate.AddError(COVERAGE_FORM004)
+                'moMsgControllerRate.AddError(ex.Message, False)
+                'moMsgControllerRate.Show()
+            End Try
+        End Sub
+
+        Private Sub RePopulateDistributionList(Optional ByVal oAction As String = ACTION_NONE)
+            Dim oDistribution As CommPlanDistribution
+            Dim oDataView As DataView
+
+            If Me.State.IsPlanNew = True And Not Me.State.IsNewWithCopy Then
+                Return ' We can not have Distribution if the plan is new
+            End If
+
+            Try
+                If Me.State.IsNewWithCopy Then
+                    oDataView = oDistribution.getPlanList(Guid.Empty)
+                    If Not oAction = ACTION_CANCEL_DELETE Then
+                        Me.LoadDistributionList()
+                    End If
+                    If Not Me.State.moDistributionList Is Nothing Then
+                        oDataView = getDVFromArray(Me.State.moDistributionList, oDataView.Table)
+                    End If
+                Else
+                    oDataView = oDistribution.getPlanList(Me.State.moCommPlanId) 'TheCommPlanDist.Id)
+                End If
+
+                        Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(DistributionId), moGridView,
+                                    moGridView.PageIndex)
+                        EnableForEditRateButtons(False)
 
                 moGridView.DataSource = oDataView
                 moGridView.DataBind()
