@@ -49,9 +49,7 @@
         </tr>
         <xsl:for-each select="ArrayOfSolicitDetails/SolicitDetails">
           <tr class="out" onmouseover="this.className='over'" onmouseout="this.className='out'">
-            <xsl:attribute name="id">
-              tr_<xsl:value-of select="position()" />
-            </xsl:attribute>
+            <xsl:attribute name="id">tr_<xsl:value-of select="position()" /></xsl:attribute>
             <xsl:if test="position() &gt; $recordCount">
               <xsl:attribute name="style">display:none</xsl:attribute>
             </xsl:if>
@@ -68,9 +66,7 @@
                   openClose('a<xsl:value-of select="position()" />')
                 </xsl:attribute>
                 <span style="cursor:pointer">
-                  <xsl:attribute name="id">
-                    tick_a<xsl:value-of select="position()" />
-                  </xsl:attribute>
+                  <xsl:attribute name="id">tick_a<xsl:value-of select="position()" /></xsl:attribute>
                   +
                 </span>
                 <span class="">
@@ -79,26 +75,26 @@
               </div>
             </td>
             <td nowrap="nowrap">
-              <xsl:value-of select="customer/id" />
-            </td>
+               <xsl:value-of select="customer/id" />
+             </td>  
+             <td nowrap="nowrap">
+               
+                <xsl:value-of select="customer/lastName" />
+             </td>
             <td nowrap="nowrap">
-
-              <xsl:value-of select="customer/lastName" />
-            </td>
-            <td nowrap="nowrap">
-
+              
               <xsl:value-of select="customer/firstName" />
-            </td>
+            </td> 
             <td>
-
+              
               <xsl:value-of select="effectiveDate" />
             </td>
             <td nowrap="nowrap">
-
-              <xsl:value-of select="customer/cellPhoneNumber"/>
+                  
+                  <xsl:value-of select="customer/cellPhoneNumber"/>
             </td>
             <td nowrap="nowrap">
-
+              
               <xsl:value-of select="origin/organization/address/address1"/>
             </td>
             <td nowrap="nowrap">
@@ -106,27 +102,23 @@
                 <xsl:when test="status = 'Expired'">
                   <span class="StatInactive">
                     <xsl:value-of select="status"/>
-                  </span>
-                </xsl:when>
+                    </span>
+                   </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="status"/>
-                </xsl:otherwise>
+                     <xsl:value-of select="status"/>
+                   </xsl:otherwise>
               </xsl:choose>
-
+                  
             </td>
           </tr>
           <tr>
-            <xsl:attribute name="id">
-              trd_<xsl:value-of select="position()" />
-            </xsl:attribute>
+            <xsl:attribute name="id">trd_<xsl:value-of select="position()" /></xsl:attribute>
             <xsl:if test="position() &gt; $recordCount">
               <xsl:attribute name="style">display:none</xsl:attribute>
             </xsl:if>
             <td class="noBor" colspan="9">
               <div class="disNone">
-                <xsl:attribute name="id">
-                  a<xsl:value-of select="position()" />
-                </xsl:attribute>
+                <xsl:attribute name="id">a<xsl:value-of select="position()" /></xsl:attribute>
                 <table class="" width="100%" bgColor="#f2f2f2" border="0" cellspacing="0" cellpadding="0">
                   <tbody>
                     <tr class="out">
@@ -156,13 +148,13 @@
                       </td>
                       <td align="right" nowrap="nowrap">Lead record status : </td>
                       <td nowrap="nowrap">
-                        <xsl:value-of select="status" />
+                            <xsl:value-of select="status" />
                       </td>
                     </tr>
                     <tr class="out">
                       <td align="right" nowrap="nowrap">Expiration Date: </td>
                       <td nowrap="nowrap">
-                        <xsl:value-of select="expirationDate" />
+                            <xsl:value-of select="expirationDate" />
                       </td>
                       <td align="right" nowrap="nowrap">Customer Last Name : </td>
                       <td nowrap="nowrap">
@@ -176,8 +168,8 @@
                       </td>
                       <td align="right" nowrap="nowrap">Last Name Kana : </td>
                       <td nowrap="nowrap">
-                        <xsl:value-of select="customer/lastNameKana" />
-
+                            <xsl:value-of select="customer/lastNameKana" />
+                        
                       </td>
                     </tr>
                     <tr class="out">
@@ -187,7 +179,7 @@
                       </td>
                       <td align="right" nowrap="nowrap">Customer Birthdate : </td>
                       <td nowrap="nowrap">
-                        <xsl:value-of select="customer/dateOfBirth" />
+                            <xsl:value-of select="customer/dateOfBirth" />
                       </td>
                     </tr>
                     <tr class="out">
@@ -205,11 +197,11 @@
                       <td nowrap="nowrap">
                         <xsl:value-of select="customer/emailAddress" />
                       </td>
-
+                    
                       <td align="right" nowrap="nowrap">Telephone Number : </td>
                       <td nowrap="nowrap">
-                        <xsl:value-of select="customer/workPhoneNumber" />
-
+                            <xsl:value-of select="customer/workPhoneNumber" />
+                       
                       </td>
                     </tr>
                     <tr class="out">
@@ -228,17 +220,17 @@
                         <xsl:value-of select="SHOPID" />
                       </td>
                       <td align="right" nowrap="nowrap">Shop Name : </td>
-                      <td nowrap="nowrap">
+                       <td nowrap="nowrap">
                         <xsl:value-of select="SHOPNAME" />
                       </td>
                     </tr>
                     <tr class="out">
                       <td align="right" nowrap="nowrap">Shop Address : </td>
-                      <td nowrap="nowrap">
+                       <td nowrap="nowrap">
                         <xsl:value-of select="SHOPADDRESS" />
                       </td>
-                      <td align="right" nowrap="nowrap">Shop Zip Code : </td>
-                      <td nowrap="nowrap">
+                    <td align="right" nowrap="nowrap">Shop Zip Code : </td>
+                       <td nowrap="nowrap">
                         <xsl:value-of select="SHOPZIPCODE" />
                       </td>
                     </tr>
@@ -247,10 +239,10 @@
                       <td nowrap="nowrap">
                         <xsl:value-of select="SHOPTELEPHONENUMBER" />
                       </td>
-                      <td align="right" nowrap="nowrap"></td>
+                    <td align="right" nowrap="nowrap"></td>
                       <td nowrap="nowrap">
                       </td>
-                    </tr>
+                   </tr>
                   </tbody>
                 </table>
               </div>
@@ -275,21 +267,17 @@
     <xsl:param name="i" />
     <xsl:param name="count" />
     <xsl:param name="pagerPrefix" />
-    <xsl:if test="$i &lt;= $count">
-      <a>
-        <xsl:attribute name="id">
-          pg<xsl:value-of select="$pagerPrefix" />_<xsl:value-of select="$i"/>
-        </xsl:attribute>
-        <xsl:attribute name="href">
-          javascript:showHidePage(<xsl:value-of select="$i"/>,<xsl:value-of select="count(//ArrayOfSolicitDetails/SolicitDetails)"/>,<xsl:value-of select="$recordCount"/>);
-        </xsl:attribute>
-        <xsl:value-of select="$i" />
-      </a>
-      <xsl:call-template name="for.loop.pager">
-        <xsl:with-param name="i" select="$i + 1"></xsl:with-param>
-        <xsl:with-param name="count" select="$count"></xsl:with-param>
-        <xsl:with-param name="pagerPrefix" select="$pagerPrefix"></xsl:with-param>
-      </xsl:call-template>
-    </xsl:if>
+      <xsl:if test="$i &lt;= $count">
+        <a>
+          <xsl:attribute name="id">pg<xsl:value-of select="$pagerPrefix" />_<xsl:value-of select="$i"/></xsl:attribute>
+          <xsl:attribute name="href">showHidePage(<xsl:value-of select="$i"/>,<xsl:value-of select="count(//ArrayOfSolicitDetails/SolicitDetails)"/>,<xsl:value-of select="$recordCount"/>);</xsl:attribute>
+          <xsl:value-of select="$i" />
+        </a>
+        <xsl:call-template name="for.loop.pager">
+          <xsl:with-param name="i" select="$i + 1"></xsl:with-param>
+          <xsl:with-param name="count" select="$count"></xsl:with-param>
+          <xsl:with-param name="pagerPrefix" select="$pagerPrefix"></xsl:with-param>
+        </xsl:call-template>
+      </xsl:if>
   </xsl:template>
 </xsl:stylesheet>

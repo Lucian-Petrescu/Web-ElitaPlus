@@ -87,31 +87,31 @@ Namespace Certificates
         Protected WithEvents txtCustomerId As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
-        '''lblDateOfBirth control.
+        '''lblApplyDate control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblDateOfBirth As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblApplyDate As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
-        '''txtDateOfBirth control.
+        '''txtApplyDate control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents txtDateOfBirth As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents txtApplyDate As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
-        '''btnDateOfBirth control.
+        '''btnApplyDate control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnDateOfBirth As Global.System.Web.UI.WebControls.ImageButton
+        Protected WithEvents btnApplyDate As Global.System.Web.UI.WebControls.ImageButton
 
         '''<summary>
         '''lblSimPhoneNumber control.

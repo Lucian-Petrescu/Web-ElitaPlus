@@ -11,6 +11,7 @@ Imports System.Xml.Xsl
 Imports System.IO
 Imports System.Collections.Generic
 Imports System.Text
+Imports Newtonsoft.Json.Linq
 
 
 
@@ -26,7 +27,7 @@ Namespace Certificates
         Public Const NO_RECORDS_FOUND = "NO RECORDS FOUND."
         Public Const SALES_ORDER_NUMBER = "salesOrderNumber"
         Public Const CUSTOMER_ID = "customerId"
-        Public Const DATE_OF_BIRTH = "dateOfBirth"
+        Public Const APPLY_DATE = "applyDate"
         Public Const SIM_PHONE_NUMBER = "simPhoneNumber"
 #End Region
 
@@ -49,7 +50,7 @@ Namespace Certificates
             Public customerId As String
             Public dealerId As Guid
             Public dealerName As String = String.Empty
-            Public dateOfBirth As String = String.Empty
+            Public applyDate As String = String.Empty
             Public simPhoneNumber As String = String.Empty
             Public isDPO As Boolean = False
             Sub New()
@@ -87,7 +88,7 @@ Namespace Certificates
                     UpdateBreadCrum()
 
                     'TranslateGridHeader(Grid)
-                    Me.AddCalendar_New(Me.btnDateOfBirth, Me.txtDateOfBirth)
+                    Me.AddCalendar_New(Me.btnApplyDate, Me.txtApplyDate)
 
                     GetStateProperties()
                     PopulateSearchControls()
@@ -150,7 +151,7 @@ Namespace Certificates
 #Region "Button event handlers"
         Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
             Try
-                If txtInitialSalesOrder.Text = String.Empty And txtCustomerId.Text = String.Empty And txtDateOfBirth.Text = String.Empty And
+                If txtInitialSalesOrder.Text = String.Empty And txtCustomerId.Text = String.Empty And txtApplyDate.Text = String.Empty And
                     txtSimPhoneNumber.Text = String.Empty And ddlDealer.SelectedIndex = &H0 Then
                     Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Solicit), Nothing, "Search", Nothing)}
                     Throw New BOValidationException(errors, GetType(Solicit).FullName)
@@ -160,7 +161,7 @@ Namespace Certificates
                     Throw New BOValidationException(errors, GetType(Solicit).FullName)
                 End If
                 If ddlDealer.SelectedIndex > 0 Then
-                    If (txtInitialSalesOrder.Text = String.Empty AndAlso txtCustomerId.Text = String.Empty AndAlso txtDateOfBirth.Text = String.Empty AndAlso
+                    If (txtInitialSalesOrder.Text = String.Empty AndAlso txtCustomerId.Text = String.Empty AndAlso txtApplyDate.Text = String.Empty AndAlso
                     txtSimPhoneNumber.Text = String.Empty) Then
                         Dim errors() As ValidationError = {New ValidationError("Enter At Least One Search Criterion along with dealer", GetType(Solicit), Nothing, "Search", Nothing)}
                         Throw New BOValidationException(errors, GetType(Solicit).FullName)
@@ -202,7 +203,7 @@ Namespace Certificates
                 Me.State.customerId = String.Empty
                 Me.State.simPhoneNumber = String.Empty
                 Me.State.dealerId = Nothing
-                Me.State.dateOfBirth = String.Empty
+                Me.State.applyDate = String.Empty
                 Me.State.dealerName = Nothing
 
             Catch ex As Exception
@@ -216,7 +217,7 @@ Namespace Certificates
             Me.txtInitialSalesOrder.Text = String.Empty
             Me.txtCustomerId.Text = String.Empty
             Me.txtSimPhoneNumber.Text = String.Empty
-            Me.txtDateOfBirth.Text = String.Empty
+            Me.txtApplyDate.Text = String.Empty
             If Not ElitaPlusIdentity.Current.ActiveUser.IsDealer Then Me.ddlDealer.SelectedIndex = 0
 
 
@@ -312,7 +313,7 @@ Namespace Certificates
 
                     Me.txtCustomerId.Text = Me.State.customerId
 
-                    Me.txtDateOfBirth.Text = Me.State.dateOfBirth
+                    Me.txtApplyDate.Text = Me.State.applyDate
                     Me.txtSimPhoneNumber.Text = Me.State.simPhoneNumber
                 End If
 
@@ -346,27 +347,38 @@ Namespace Certificates
         Private Sub PopulateGrid()
             Try
 
-                Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE_SOLICIT_API_URL), False)
+
+                Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE_SOLICIT_API_URL), True)
 
                 If String.IsNullOrEmpty(oWebPasswd.Url) Then
                     Throw New ArgumentNullException($"Web Password entry not found or Solicit  Api Url not configured for Service Type {Codes.SERVICE_TYPE_SOLICIT_API_URL}")
                 ElseIf String.IsNullOrEmpty(oWebPasswd.UserId) Or String.IsNullOrEmpty(oWebPasswd.Password) Then
                     Throw New ArgumentNullException($"Web Password username or password not configured for Service Type {Codes.SERVICE_TYPE_SOLICIT_API_URL}")
                 End If
-                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls Or System.Net.SecurityProtocolType.Tls11 Or System.Net.SecurityProtocolType.Tls12
+                ' System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls Or System.Net.SecurityProtocolType.Tls11 Or System.Net.SecurityProtocolType.Tls12
                 Dim client As HttpClient = New HttpClient()
                 client.DefaultRequestHeaders.Accept.Clear()
                 client.DefaultRequestHeaders.Add(oWebPasswd.UserId, oWebPasswd.Password)
                 client.DefaultRequestHeaders.Accept.Add(New MediaTypeWithQualityHeaderValue("application/json"))
                 'pbi-543167 needs to revisit as currently organization code is hardcoded which evantaally gets generated using companyID+ dealer value(ddlDealer.SelectedValue)
                 Dim searchSolicit As Solicit.SolicitSearch = New Solicit.SolicitSearch()
-                searchSolicit.ownerOrganizationCode = "ASJP-AJP-RSIM" 'value hard coded for now ddlDealer.SelectedValue value should be assigned later
-                Dim locatorProperties = New Dictionary(Of String, String) From {
-                        {SALES_ORDER_NUMBER, txtInitialSalesOrder.Text.Trim},
-                        {CUSTOMER_ID, txtCustomerId.Text.Trim},
-                        {DATE_OF_BIRTH, txtDateOfBirth.Text.Trim},
-                        {SIM_PHONE_NUMBER, txtSimPhoneNumber.Text.Trim}
-                }
+                searchSolicit.OwnerOrganizationCode = "ASJP-AJP-RSIM" 'value hard coded for now ddlDealer.SelectedValue value should be assigned later
+                Dim locatorProperties As New Dictionary(Of String, String)
+                If Not String.IsNullOrEmpty(txtInitialSalesOrder.Text.Trim) Then
+                    locatorProperties.Add(SALES_ORDER_NUMBER, txtInitialSalesOrder.Text.Trim)
+                End If
+                If Not String.IsNullOrEmpty(txtCustomerId.Text.Trim) Then
+                    locatorProperties.Add(CUSTOMER_ID, txtCustomerId.Text.Trim)
+                End If
+                If Not String.IsNullOrEmpty(txtApplyDate.Text.Trim) Then
+                    Dim dateString = DateTime.Parse(txtApplyDate.Text.Trim).ToString("yyyy-mm-dd")
+                    locatorProperties.Add(APPLY_DATE, dateString)
+                End If
+
+                If Not String.IsNullOrEmpty(txtSimPhoneNumber.Text.Trim) Then
+                    locatorProperties.Add(SIM_PHONE_NUMBER, txtSimPhoneNumber.Text.Trim)
+                End If
+
                 searchSolicit.LocatorProperties = locatorProperties
 
                 Dim requestData = JsonConvert.SerializeObject(searchSolicit, Formatting.Indented)
@@ -377,23 +389,25 @@ Namespace Certificates
                 If Not response.IsSuccessStatusCode Then
                     Throw New Exception($"There is an error in displaying the SOLICIT Data. {response.ReasonPhrase}")
                 End If
-
-                ''Dim response As HttpResponseMessage = client.GetAsync("/solicitsearch").GetAwaiter().GetResult()
-
-                'If Not response.IsSuccessStatusCode Then
-                '    Throw New Exception($"There is an error in displaying the SOLICIT Data. {response.ReasonPhrase}")
-                'End If
-                'Dim json As String = response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
                 Try
-                    Dim solicitDetailsList As List(Of Solicit.SolicitDetails) = JsonConvert.DeserializeObject(Of List(Of Solicit.SolicitDetails))(json)
-                    Dim solicitDetailsListXml As String = ConvertJsonToXML(solicitDetailsList)
-                    ShowGridData(solicitDetailsListXml)
+                    Dim test As Int16 = (CType(json, Newtonsoft.Json.Linq.JArray)).Count
+                    If test = 0 Then
+                        Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
+                    End If
                 Catch ex As Exception
-                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
                 End Try
-                Session("recCount") = ""
-            Catch ex As Exception
-                Dim GetExceptionType As String = ex.GetBaseException.GetType().Name
+
+                Try
+                        Dim solicitDetailsList As List(Of Solicit.SolicitDetails) = JsonConvert.DeserializeObject(Of List(Of Solicit.SolicitDetails))(json)
+                        Dim solicitDetailsListXml As String = ConvertJsonToXML(solicitDetailsList)
+                        ShowGridData(solicitDetailsListXml)
+                    Catch ex As Exception
+                        Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    End Try
+                    Session("recCount") = ""
+                Catch ex As Exception
+                    Dim GetExceptionType As String = ex.GetBaseException.GetType().Name
 
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try

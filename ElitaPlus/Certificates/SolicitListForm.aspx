@@ -60,9 +60,9 @@
                        
                         <tr>
                             <td>
-                                <asp:Label ID="lblDateOfBirth" runat="server">DATE_OF_BIRTH</asp:Label><br />                           
-                                <asp:TextBox ID="txtDateOfBirth" TabIndex="1" runat="server" SkinID="smallTextBox"></asp:TextBox>                           
-                                <asp:ImageButton ID="btnDateOfBirth" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"
+                                <asp:Label ID="lblApplyDate" runat="server">DATE_OF_BIRTH</asp:Label><br />                           
+                                <asp:TextBox ID="txtApplyDate" TabIndex="1" runat="server" SkinID="smallTextBox"></asp:TextBox>                           
+                                <asp:ImageButton ID="btnApplyDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"
                                     valign="bottom"></asp:ImageButton>
                             </td>
                             <td>
@@ -107,95 +107,90 @@
 
     
     <!-- end new layout -->
-    <script language="javascript" type="text/javascript">
-        function resizeScroller(item)
-        {
-            var browseWidth, browseHeight;
+     <script language="javascript" type="text/javascript">
+         function resizeScroller(item) {
+             var browseWidth, browseHeight;
 
-            if (document.layers)
-            {
-                browseWidth = window.outerWidth;
-                browseHeight = window.outerHeight;
-            }
-            if (document.all)
-            {
-                browseWidth = document.body.clientWidth;
-                browseHeight = document.body.clientHeight;
-            }
+             if (document.layers) {
+                 browseWidth = window.outerWidth;
+                 browseHeight = window.outerHeight;
+             }
+             if (document.all) {
+                 browseWidth = document.body.clientWidth;
+                 browseHeight = document.body.clientHeight;
+             }
 
-            if (screen.width == "800" && screen.height == "600")
-            {
-                newHeight = browseHeight - 220;
-            }
-            else
-            {
-                newHeight = browseHeight - 975;
-            }
+             if (screen.width == "800" && screen.height == "600") {
+                 newHeight = browseHeight - 220;
+             }
+             else {
+                 newHeight = browseHeight - 975;
+             }
 
-            if (newHeight < 470)
-            {
-                newHeight = 470;
-            }
+             if (newHeight < 470) {
+                 newHeight = 470;
+             }
 
-            item.style.height = String(newHeight) + "px";
+             item.style.height = String(newHeight) + "px";
 
-            return newHeight;
-        }
-        function SelectSolicitId(theID) {
-            var selectedSolicitId = '<%=selectedSolicitId.ClientID%>';;
-            document.getElementById(selectedServiceCenterId).value = theID;
-        }
+             return newHeight;
+         }
+         function SelectSolicitId(theID) {
+             var selectedSolicitId = '<%=selectedSolicitId.ClientID%>';;
+             document.getElementById(selectedSolicitId).value = theID;
+         }
 
-        function openClose(theID) {
-            if (document.getElementById(theID).style.display == "block") {
-                document.getElementById(theID).style.display = "none";
-                document.getElementById("tick_" + theID).innerHTML = "+";
-            }
-            else {
-                document.getElementById(theID).style.display = "block";
-                document.getElementById("tick_" + theID).innerHTML = "-";
-            }
-        }
+         function openClose(theID) {
+             if (document.getElementById(theID).style.display == "block") {
+                 document.getElementById(theID).style.display = "none";
+                 document.getElementById("tick_" + theID).innerHTML = "+";
+             }
+             else {
+                 document.getElementById(theID).style.display = "block";
+                 document.getElementById("tick_" + theID).innerHTML = "-";
+             }
+         }
 
-        function showHidePage(newPageNumber, recordCount, pageSize) {
-            var newPage = parseInt(newPageNumber);
-            var currentPageId = '<%=CurrentPage.ClientID%>';
-            var currentPage = parseInt(document.getElementById(currentPageId).value);
-            var tempLocation;
-            if (newPageNumber == document.getElementById(currentPageId).value) { return; }
-            document.getElementById('pg1_' + document.getElementById(currentPageId).value).style.cursor = 'pointer';
-            document.getElementById('pg1_' + document.getElementById(currentPageId).value).setAttribute('class', '');
-            document.getElementById('pg2_' + document.getElementById(currentPageId).value).style.cursor = 'pointer';
-            document.getElementById('pg2_' + document.getElementById(currentPageId).value).setAttribute('class', '');
-            document.getElementById(currentPageId).value = newPageNumber;
-            document.getElementById('pg1_' + document.getElementById(currentPageId).value).style.cursor = 'text';
-            document.getElementById('pg1_' + document.getElementById(currentPageId).value).setAttribute('class', 'selected_page');
-            document.getElementById('pg2_' + document.getElementById(currentPageId).value).style.cursor = 'text';
-            document.getElementById('pg2_' + document.getElementById(currentPageId).value).setAttribute('class', 'selected_page');
-            for (i = 1; i <= pageSize; i++) {
-                tempLocation = (((currentPage - 1) * pageSize) + i);
-                if (tempLocation < recordCount) {
-                    document.getElementById('tr_' + tempLocation).style.display = "none";
-                    document.getElementById('trd_' + tempLocation).style.display = "none";
-                }
-                tempLocation = (((newPage - 1) * pageSize) + i);
-                if (tempLocation < recordCount) {
-                    document.getElementById('tr_' + tempLocation).style.display = "block";
-                    document.getElementById('trd_' + tempLocation).style.display = "block";
-                }
-            }
-            SelectServiceCenter('XXXX');
-        }
+         function showHidePage(newPageNumber, recordCount, pageSize) {
+             var newPage = parseInt(newPageNumber);
+             var currentPageId = '<%=CurrentPage.ClientID%>';
+             var currentPage = parseInt(document.getElementById(currentPageId).value);
+             var tempLocation;
+             if (newPage == document.getElementById(currentPageId).value) { return; }
+             document.getElementById('pg1_' + document.getElementById(currentPageId).value).style.cursor = 'pointer';
+             document.getElementById('pg1_' + document.getElementById(currentPageId).value).setAttribute('class', '');
+             document.getElementById('pg2_' + document.getElementById(currentPageId).value).style.cursor = 'pointer';
+             document.getElementById('pg2_' + document.getElementById(currentPageId).value).setAttribute('class', '');
+             document.getElementById(currentPageId).value = newPageNumber;
+             document.getElementById('pg1_' + document.getElementById(currentPageId).value).style.cursor = 'text';
+             document.getElementById('pg1_' + document.getElementById(currentPageId).value).setAttribute('class', 'selected_page');
+             document.getElementById('pg2_' + document.getElementById(currentPageId).value).style.cursor = 'text';
+             document.getElementById('pg2_' + document.getElementById(currentPageId).value).setAttribute('class', 'selected_page');
+             for (i = 1; i <= pageSize; i++) {
+                 tempLocation = (((currentPage - 1) * pageSize) + i);
+                 if (tempLocation < recordCount) {
+                     document.getElementById('tr_' + tempLocation).style.display = "none";
+                     document.getElementById('trd_' + tempLocation).style.display = "none";
+                 }
+                 tempLocation = (((newPage - 1) * pageSize) + i);
+                 if (tempLocation < recordCount) {
+                     document.getElementById('tr_' + tempLocation).style.display = "block";
+                     document.getElementById('trd_' + tempLocation).style.display = "block";
+                 }
+             }
+             //SelectSolicitId('XXXX');
+         }
 
-        if (document.getElementById('pg1_1') != null) {
-            document.getElementById('pg1_1').style.cursor = 'text';
-            document.getElementById('pg1_1').setAttribute('class', 'selected_page');
-        }
+         if (document.getElementById('pg1_1') != null) {
+             document.getElementById('pg1_1').style.cursor = 'text';
+             document.getElementById('pg1_1').setAttribute('class', 'selected_page');
+         }
 
-        if (document.getElementById('pg2_1') != null) {
-            document.getElementById('pg2_1').style.cursor = 'text';
-            document.getElementById('pg2_1').setAttribute('class', 'selected_page');
-        }
+         if (document.getElementById('pg2_1') != null) {
+             document.getElementById('pg2_1').style.cursor = 'text';
+             document.getElementById('pg2_1').setAttribute('class', 'selected_page');
+         }
+
         //resizeScroller(document.getElementById("scroller"));
     </script>
 </asp:Content>

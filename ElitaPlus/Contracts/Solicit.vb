@@ -1,6 +1,9 @@
 ﻿Imports System.Collections.Generic
 Imports Newtonsoft.Json
 Public Class Solicit
+    Inherits BusinessObjectBase
+
+
 
     Public Class Address
         <JsonProperty("address1")>
