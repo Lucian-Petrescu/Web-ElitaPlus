@@ -405,7 +405,9 @@ Namespace Tables
             Try
                 SavePlanChanges()
                 'Me.SetStateProperties()
-                ReSetStateProperties()
+                'ReSetStateProperties()
+                'PopulateDistributionList()
+                RePopulateDistributionListForPlan()
                 SetGridSourceXcdLabelFromBo()
                 ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, False)
             Catch ex As Exception
@@ -1559,7 +1561,7 @@ Namespace Tables
                     'TheDealerControl.ChangeEnabledControlProperty(False)
                     'ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, False)
                 End If
-                ReSetStateProperties()
+                'ReSetStateProperties()
             Catch ex As Exception
                 If Me.State.IsAmountAndPercentBothPresent = True Then
                     SetGridControls(moGridView, True)
@@ -1916,6 +1918,52 @@ Namespace Tables
 
                 Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(DistributionId), moGridView,
                             moGridView.PageIndex)
+                EnableForEditRateButtons(False)
+
+                moGridView.DataSource = oDataView
+                moGridView.DataBind()
+                ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, moGridView)
+
+            Catch ex As Exception
+                'moMsgControllerRate.AddError(COVERAGE_FORM004)
+                'moMsgControllerRate.AddError(ex.Message, False)
+                'moMsgControllerRate.Show()
+            End Try
+        End Sub
+
+        Private Sub RePopulateDistributionListForPlan(Optional ByVal oAction As String = ACTION_NONE)
+            Dim oDistribution As CommPlanDistribution
+            Dim oDataView As DataView
+
+            If Me.State.IsPlanNew = True And Not Me.State.IsNewWithCopy Then
+                Return ' We can not have Distribution if the plan is new
+            End If
+
+            Try
+                If Me.State.IsNewWithCopy Then
+                    
+                    oDataView = oDistribution.getPlanList(Guid.Empty)
+                    
+                    If Not oAction = ACTION_CANCEL_DELETE Then
+                        Me.LoadDistributionList()
+                    End If
+
+                    If Not Me.State.moDistributionList Is Nothing Then
+                        oDataView = getDVFromArray(Me.State.moDistributionList, oDataView.Table)
+                    End If
+                Else
+                    If Me.moGridView.Visible And Me.moGridView.Rows.Count > 0 Then
+                        oDataView = oDistribution.getPlanList(Me.State.moCommPlanId) 'TheCommPlanDist.Id)
+                        'oDataView = oDistribution.getPlanList(.CommissionPlanId) 'TheCommPlanDist.Id)
+                    End If
+                End If
+
+                If Me.moGridView.Visible And Me.moGridView.Rows.Count > 0 Then
+                    If Not String.IsNullOrWhiteSpace(DistributionId) Then
+                        Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(DistributionId), moGridView, moGridView.PageIndex)
+                        'Me.SetPageAndSelectedIndexFromGuid(oDataView, .Id, moGridView, moGridView.PageIndex)
+                    End If
+                End If
                 EnableForEditRateButtons(False)
 
                 moGridView.DataSource = oDataView
