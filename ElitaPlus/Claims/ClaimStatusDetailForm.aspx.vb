@@ -913,7 +913,7 @@ Partial Class ClaimStatusDetailForm
                     CType(Me.DataGridDropdowns.Items(gridRowIdx).Cells(Me.GRID_COL_EXTENDED_CLAIM_STATUS_IDX).FindControl(Me.GRID_CTL_EXTENDED_CLAIM_STATUS), DropDownList).SelectedValue = .ClaimStatusByGroupId.ToString()
                 End If
                 If Not .StatusDate Is Nothing Then
-                    Me.PopulateControlFromBOProperty(CType(Me.DataGridDropdowns.Items(gridRowIdx).Cells(Me.GRID_COL_STATUS_DATE_IDX).FindControl(Me.GRID_CTL_STATUS_DATE), TextBox), .StatusDate)
+                    Me.PopulateControlFromBOProperty(CType(Me.DataGridDropdowns.Items(gridRowIdx).Cells(Me.GRID_COL_STATUS_DATE_IDX).FindControl(Me.GRID_CTL_STATUS_DATE), TextBox), .StatusDate, DATE_TIME_FORMAT)
                 End If
                 If Not .Comments Is Nothing Then
                     Me.PopulateControlFromBOProperty(CType(Me.DataGridDropdowns.Items(gridRowIdx).Cells(Me.GRID_COL_COMMENT_IDX).FindControl(Me.GRID_CTL_STATUS_COMMENT), TextBox), .Comments)
