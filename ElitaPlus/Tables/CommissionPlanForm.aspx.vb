@@ -173,32 +173,7 @@ Namespace Tables
 #End Region
 
 #Region "Properties"
-        'Public ReadOnly Property HasCompanyConfigeredForSourceXcd() As Boolean
-        '    Get
-        '        Dim isCompanyConfiguredForSourceXcd As Boolean
-        '        isCompanyConfiguredForSourceXcd = False
-        '        Dim oCompany As Company
-        '        Dim oDataView As DataView = LookupListNew.GetUserCompanyLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.Id)
-        '        For Each row As DataRowView In oDataView
-        '            Dim oCompany_id As Guid = New Guid(CType(row.Item("id"), Byte()))
-        '            oCompany = New Company(oCompany_id)
-        '            isCompanyConfiguredForSourceXcd = False
-        '            If Not oCompany.AttributeValues Is Nothing Then
-        '                If oCompany.AttributeValues.Contains("NEW_COMMISSION_MODULE_CONFIGURED") Then
-        '                    'If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.EXT_YESNO_Y Then
-        '                    If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.YESNO_Y Then
-        '                        isCompanyConfiguredForSourceXcd = True
-        '                        Exit For
-        '                    End If
-        '                End If
-        '            End If
-        '        Next
-
-        '        Return isCompanyConfiguredForSourceXcd
-
-        '    End Get
-        'End Property
-
+        
         Private ReadOnly Property TheCommPlan() As CommPlan
             Get
                 If Me.State.MyBo Is Nothing Then
@@ -336,10 +311,8 @@ Namespace Tables
                     Me.TranslateGridControls(moGridView)
                     Me.SetStateProperties()
 
-                    'If HasCompanyConfigeredForSourceXcd() Then
                     'US-521672
                     Me.moGridView.Visible = True
-                    'End If
 
                     'US-521672
                     SetGridSourceXcdLabelFromBo()
@@ -352,9 +325,7 @@ Namespace Tables
                     Me.AddCalendarNewWithDisableBeforeDate(Me.BtnExpirationDate_WRITE, moExpirationText_WRITE, "", "Y", System.DateTime.Today)
 
                 Else
-                    'If HasCompanyConfigeredForSourceXcd() Then
                     Me.moGridView.Visible = True
-                    'End If
                     'US-521672
                     SetGridSourceXcdLabelFromBo()
                     CheckIfComingFromConfirm()
@@ -503,16 +474,9 @@ Namespace Tables
         Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
            Handles multipleDropControl.SelectedDropChanged
             Try
-                'If HasCompanyConfigeredForSourceXcd() Then
                 EnableDateFields()
                 Me.moGridView.Visible = True
                 BtnNewRate_WRITE.Visible = True
-                'Else
-                '    'EnableDateFields()
-                '    Me.moGridView.Visible = False
-                '    BtnNewRate_WRITE.Visible = False
-
-                'End If
                 btnBack.Visible = True
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
