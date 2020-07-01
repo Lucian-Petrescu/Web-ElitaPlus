@@ -413,7 +413,7 @@ Namespace Tables
             Catch ex As Exception
                 SetGridControls(moGridView, True)
                 'PopulateDistributionList(ACTION_CANCEL_DELETE)
-                RePopulateDistributionList()
+                RePopulateDistributionListForPlan()
                 SetGridSourceXcdLabelFromBo()
                 SetGridControls(moGridView, True)
                 EnableDisableControls(Me.moCoverageEditPanel, True)
@@ -1565,7 +1565,7 @@ Namespace Tables
             Catch ex As Exception
                 If Me.State.IsAmountAndPercentBothPresent = True Then
                     SetGridControls(moGridView, True)
-                    RePopulateDistributionList()
+                    RePopulateDistributionListForPlan()
                     'Me.LoadDistributionList()
                     'FillSourceXcdDropdownList()
                     'FillEntityDropDownList()
@@ -1579,7 +1579,7 @@ Namespace Tables
                     EnableForEditRateButtons(False)
                     'Below method reloads the data in the grid
                     'Me.LoadDistributionList()
-                    RePopulateDistributionList()
+                    RePopulateDistributionListForPlan()
                     SetGridSourceXcdLabelFromBo()
                     TheDealerControl.ChangeEnabledControlProperty(False)
                 End If
@@ -1800,7 +1800,7 @@ Namespace Tables
                     End If
                 End If
             Catch ex As Exception
-                RePopulateDistributionList()
+                RePopulateDistributionListForPlan()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
                 'moMsgControllerRate.AddError(COVERAGE_FORM005)
                 'moMsgControllerRate.AddError(ex.Message, False)
