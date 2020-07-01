@@ -379,6 +379,7 @@ Namespace Tables
                 SavePlanChanges()
                 Me.SetStateProperties()
                 SetGridSourceXcdLabelFromBo()
+                ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, False)
             Catch ex As Exception
                 SetGridControls(moGridView, True)
                 'PopulateDistributionList(ACTION_CANCEL_DELETE)
@@ -1534,6 +1535,7 @@ Namespace Tables
                     SetGridSourceXcdLabelFromBo()
 
                     TheDealerControl.ChangeEnabledControlProperty(False)
+                    ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, False)
                 End If
 
             Catch ex As Exception
