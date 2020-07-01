@@ -67,7 +67,13 @@
             <asp:Panel ID="moCoverageEditPanel" runat="server">
                 <tr>
                     <td align="center" colspan="6" class="borderLeft" width="30%">
-                        <uc1:MultipleColumnDDLabelControl ID="multipleDropControl" runat="server"></uc1:MultipleColumnDDLabelControl>
+                        <table>
+                            <tr>
+                                <td>
+                                    <uc1:MultipleColumnDDLabelControl ID="multipleDropControl" runat="server"></uc1:MultipleColumnDDLabelControl>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
                 <tr>

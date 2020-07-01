@@ -15,7 +15,6 @@ Namespace Tables
 #Region "Page State"
 
 #Region "MyState"
-
         Class MyState
             Public MyBo As CommPlan
             Public MyBoDist As CommPlanDistribution
@@ -25,6 +24,7 @@ Namespace Tables
             Public moCommPlanDistPlanId As Guid = Guid.Empty
             Public LastErrMsg As String
             Public IsCommPlanDistNew As Boolean = False
+            Public IsComingFromSavePlan As Boolean = False
             Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
             Public boChanged As Boolean = False
 
@@ -293,12 +293,13 @@ Namespace Tables
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
             'Put user code to initialize the page here
             Try
                 Me.MasterPage.MessageController.Clear_Hide()
                 ClearLabelsErrSign()
                 ClearGridHeaders(moGridView)
+                
                 If Not Page.IsPostBack Then
                     Me.MasterPage.MessageController.Clear()
                     Me.MasterPage.UsePageTabTitleInBreadCrum = False
@@ -366,7 +367,7 @@ Namespace Tables
         Private Sub SavePlanChanges()
             If ApplyPlanChanges() = True Then
                 Me.State.boChanged = True
-                ClearDistributionGrid()
+                'ClearDistributionGrid()
                 PopulatePeriod()
                 Me.State.IsCommPlanDistNew = False
                 SetPeriodButtonsState(False)
@@ -375,14 +376,9 @@ Namespace Tables
 
         Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
-                'Dim ExpirationOverlapCount As Integer = ExpirationOverlapping()
-                'If ExpirationOverlapCount = 0 Then
                 SavePlanChanges()
+                Me.SetStateProperties()
                 SetGridSourceXcdLabelFromBo()
-                'Else
-                '    Throw New GUIException(Message.MSG_EXPIRATION_DATE_IS_OVERLAPPING_WITH_OTHER_PLAN, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXPIRATION_DATE_IS_OVERLAPPING)
-                'End If
-
             Catch ex As Exception
                 SetGridControls(moGridView, True)
                 'PopulateDistributionList(ACTION_CANCEL_DELETE)
@@ -714,7 +710,8 @@ Namespace Tables
                         Throw New GUIException(Message.MSG_EXPIRATION_DATE_IS_OVERLAPPING_WITH_OTHER_PLAN, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXPIRATION_DATE_IS_OVERLAPPING)
                     End If
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    'Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    Me.MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
                 End If
                 Me.State.IsCommPlanDistNew = False
                 SetPeriodButtonsState(False)
@@ -1771,7 +1768,7 @@ Namespace Tables
                             .Delete()
                             .Save()
                             Me.State.moCommPlanDistPlanId = Guid.Empty
-                            'Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                            Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
                         End With
                     End If
                 End If
