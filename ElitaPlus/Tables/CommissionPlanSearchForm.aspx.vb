@@ -151,99 +151,6 @@ Namespace Tables
 
 #Region "Properties"
 
-        'Public ReadOnly Property TheDealerControl() As MultipleColumnDDLabelControl
-        '    Get
-        '        If multipleDropControl Is Nothing Then
-        '            multipleDropControl = CType(FindControl("multipleDropControl"), MultipleColumnDDLabelControl)
-        '        End If
-        '        Return multipleDropControl
-        '    End Get
-        'End Property
-        Public ReadOnly Property HasDealerConfigeredForSourceXcd() As Boolean
-            Get
-                Dim isDealerConfiguredForSourceXcd As Boolean
-                isDealerConfiguredForSourceXcd = False
-                If Not Me.State Is Nothing Then
-                    If (Me.State.moDealerId <> Guid.Empty) Then
-                        Dim oDealer As New Dealer(Me.State.moDealerId)
-
-                        If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
-                            If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
-                                isDealerConfiguredForSourceXcd = True
-                            Else
-                                isDealerConfiguredForSourceXcd = False
-                            End If
-                        Else
-                            isDealerConfiguredForSourceXcd = False
-                        End If
-                    Else
-                        isDealerConfiguredForSourceXcd = False
-                    End If
-                Else
-                    isDealerConfiguredForSourceXcd = False
-                End If
-                Return isDealerConfiguredForSourceXcd
-            End Get
-        End Property
-
-        Public ReadOnly Property HasCompanyConfigeredForSourceXcd1() As Boolean
-            Get
-                Dim isCompanyConfiguredForSourceXcd As Boolean
-                isCompanyConfiguredForSourceXcd = False
-                If Not Me.State Is Nothing Then
-                    If (Me.State.moDealerId <> Guid.Empty) Then
-                        Dim oDealer As New Dealer(Me.State.moDealerId)
-                        Dim oCompany As New Company(oDealer.CompanyId)
-                        If Not oCompany.AttributeValues Is Nothing Then
-                            If oCompany.AttributeValues.Contains("NEW_COMMISSION_MODULE_CONFIGURED") Then
-                                'If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.EXT_YESNO_Y Then
-                                If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.YESNO_Y Then
-                                    isCompanyConfiguredForSourceXcd = True
-                                Else
-                                    isCompanyConfiguredForSourceXcd = False
-                                End If
-                            Else
-                                isCompanyConfiguredForSourceXcd = False
-                            End If
-                        Else
-                            isCompanyConfiguredForSourceXcd = False
-                        End If
-                    Else
-                        isCompanyConfiguredForSourceXcd = False
-                    End If
-                Else
-                    isCompanyConfiguredForSourceXcd = False
-                End If
-                Return isCompanyConfiguredForSourceXcd
-            End Get
-        End Property
-
-        Public ReadOnly Property HasCompanyConfigeredForSourceXcd() As Boolean
-            Get
-                Dim isCompanyConfiguredForSourceXcd As Boolean
-                isCompanyConfiguredForSourceXcd = False
-                Dim oCompany As Company
-                Dim oDataView As DataView = LookupListNew.GetUserCompanyLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.Id)
-                For Each row As DataRowView In oDataView
-                    Dim oCompany_id As Guid = New Guid(CType(row.Item("id"), Byte()))
-                    oCompany = New Company(oCompany_id)
-                    isCompanyConfiguredForSourceXcd = False
-                    If Not oCompany.AttributeValues Is Nothing Then
-                        If oCompany.AttributeValues.Contains("NEW_COMMISSION_MODULE_CONFIGURED") Then
-                            'If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.EXT_YESNO_Y Then
-                            If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.YESNO_Y Then
-                                isCompanyConfiguredForSourceXcd = True
-                                Exit For
-                            End If
-                        End If
-                    End If
-                Next
-
-                Return isCompanyConfiguredForSourceXcd
-
-            End Get
-        End Property
-
 #End Region
 
 #Region "Handlers"
@@ -343,12 +250,10 @@ Namespace Tables
 
         Private Sub btnNew_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew.Click
             Try
-                If HasCompanyConfigeredForSourceXcd() Then
-                    Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(moDealerDrop)
-                    Me.State.moCommPlanId = Guid.Empty
-                    Me.State.mnPageIndex = GridCommPlan.PageIndex
-                    Me.callPage(CommissionPlanForm.URL, Me.State.moCommPlanId)
-                End If
+                Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(moDealerDrop)
+                Me.State.moCommPlanId = Guid.Empty
+                Me.State.mnPageIndex = GridCommPlan.PageIndex
+                Me.callPage(CommissionPlanForm.URL, Me.State.moCommPlanId)
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -479,9 +384,7 @@ Namespace Tables
         Private Sub PopulateGrid()
             Try
                 Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid
-                If HasCompanyConfigeredForSourceXcd() Then
-                    PopulateCommPlanGrid()
-                End If
+                PopulateCommPlanGrid()
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
