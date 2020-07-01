@@ -1,4 +1,5 @@
-﻿Imports Newtonsoft.Json
+﻿Imports System.Collections.Generic
+Imports Newtonsoft.Json
 Public Class Solicit
     Inherits BusinessObjectBase
 
@@ -98,20 +99,10 @@ Public Class Solicit
         <JsonProperty("expirationDate")>
         Public Property expirationDate As DateTime?
     End Class
-    Public Class LocatorProperties
-        <JsonProperty("dateOfBirth")>
-        Public Property dateOfBirth As String
-        <JsonProperty("salesOrderNumber")>
-        Public Property salesOrderNumber As String
-        <JsonProperty("customerId")>
-        Public Property customerId As String
-        <JsonProperty("simPhoneNumber")>
-        Public Property simPhoneNumber As String
-    End Class
-
     Public Class SolicitSearch
-        <JsonProperty("ownerOrganizationCode")>
-        Public Property ownerOrganizationCode As String
-
+        <JsonProperty("ownerOrganizationCode", Required:=Required.Always)>
+        Public Property OwnerOrganizationCode As String
+        <JsonProperty("locatorProperties", Required:=Required.Always)>
+        Public Property LocatorProperties As Dictionary(Of String, String)
     End Class
 End Class

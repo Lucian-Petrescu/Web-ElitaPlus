@@ -24,6 +24,10 @@ Namespace Certificates
         Public Const SEARCH_EXCEPTION As String = "Enter Correct Search Criterion(s)" 'Solicit List Search Exception
         Public Const NO_DEALER_SELECTED = "--"
         Public Const NO_RECORDS_FOUND = "NO RECORDS FOUND."
+        Public Const SALES_ORDER_NUMBER = "salesOrderNumber"
+        Public Const CUSTOMER_ID = "customerId"
+        Public Const DATE_OF_BIRTH = "dateOfBirth"
+        Public Const SIM_PHONE_NUMBER = "simPhoneNumber"
 #End Region
 
 #Region "Page State"
@@ -45,7 +49,7 @@ Namespace Certificates
             Public customerId As String
             Public dealerId As Guid
             Public dealerName As String = String.Empty
-            Public applyDate As String = String.Empty
+            Public dateOfBirth As String = String.Empty
             Public simPhoneNumber As String = String.Empty
             Public isDPO As Boolean = False
             Sub New()
@@ -83,7 +87,7 @@ Namespace Certificates
                     UpdateBreadCrum()
 
                     'TranslateGridHeader(Grid)
-                    Me.AddCalendar_New(Me.btnApplyDate, Me.txtApplyDate)
+                    Me.AddCalendar_New(Me.btnDateOfBirth, Me.txtDateOfBirth)
 
                     GetStateProperties()
                     PopulateSearchControls()
@@ -146,7 +150,7 @@ Namespace Certificates
 #Region "Button event handlers"
         Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
             Try
-                If txtInitialSalesOrder.Text = String.Empty And txtCustomerId.Text = String.Empty And txtApplyDate.Text = String.Empty And
+                If txtInitialSalesOrder.Text = String.Empty And txtCustomerId.Text = String.Empty And txtDateOfBirth.Text = String.Empty And
                     txtSimPhoneNumber.Text = String.Empty And ddlDealer.SelectedIndex = &H0 Then
                     Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Solicit), Nothing, "Search", Nothing)}
                     Throw New BOValidationException(errors, GetType(Solicit).FullName)
@@ -156,7 +160,7 @@ Namespace Certificates
                     Throw New BOValidationException(errors, GetType(Solicit).FullName)
                 End If
                 If ddlDealer.SelectedIndex > 0 Then
-                    If (txtInitialSalesOrder.Text = String.Empty AndAlso txtCustomerId.Text = String.Empty AndAlso txtApplyDate.Text = String.Empty AndAlso
+                    If (txtInitialSalesOrder.Text = String.Empty AndAlso txtCustomerId.Text = String.Empty AndAlso txtDateOfBirth.Text = String.Empty AndAlso
                     txtSimPhoneNumber.Text = String.Empty) Then
                         Dim errors() As ValidationError = {New ValidationError("Enter At Least One Search Criterion along with dealer", GetType(Solicit), Nothing, "Search", Nothing)}
                         Throw New BOValidationException(errors, GetType(Solicit).FullName)
@@ -198,7 +202,7 @@ Namespace Certificates
                 Me.State.customerId = String.Empty
                 Me.State.simPhoneNumber = String.Empty
                 Me.State.dealerId = Nothing
-                Me.State.applyDate = String.Empty
+                Me.State.dateOfBirth = String.Empty
                 Me.State.dealerName = Nothing
 
             Catch ex As Exception
@@ -212,7 +216,7 @@ Namespace Certificates
             Me.txtInitialSalesOrder.Text = String.Empty
             Me.txtCustomerId.Text = String.Empty
             Me.txtSimPhoneNumber.Text = String.Empty
-            Me.txtApplyDate.Text = String.Empty
+            Me.txtDateOfBirth.Text = String.Empty
             If Not ElitaPlusIdentity.Current.ActiveUser.IsDealer Then Me.ddlDealer.SelectedIndex = 0
 
 
@@ -308,7 +312,7 @@ Namespace Certificates
 
                     Me.txtCustomerId.Text = Me.State.customerId
 
-                    Me.txtApplyDate.Text = Me.State.applyDate
+                    Me.txtDateOfBirth.Text = Me.State.dateOfBirth
                     Me.txtSimPhoneNumber.Text = Me.State.simPhoneNumber
                 End If
 
@@ -354,29 +358,21 @@ Namespace Certificates
                 client.DefaultRequestHeaders.Accept.Clear()
                 client.DefaultRequestHeaders.Add(oWebPasswd.UserId, oWebPasswd.Password)
                 client.DefaultRequestHeaders.Accept.Add(New MediaTypeWithQualityHeaderValue("application/json"))
-
-
-                Dim searchRequestBody As Solicit.SolicitSearch = New Solicit.SolicitSearch()
-
                 'pbi-543167 needs to revisit as currently organization code is hardcoded which evantaally gets generated using companyID+ dealer value(ddlDealer.SelectedValue)
-                Dim searchOrganization As Solicit.SolicitSearch = New Solicit.SolicitSearch()
-                searchRequestBody.ownerOrganizationCode = "ASJP-AJP-RSIM" 'ddlDealer.SelectedValue
-                Dim searchLocatorProperties As Solicit.LocatorProperties = New Solicit.LocatorProperties()
-                searchLocatorProperties.salesOrderNumber = txtInitialSalesOrder.Text
-                searchLocatorProperties.customerId = txtCustomerId.Text
-                searchLocatorProperties.dateOfBirth = txtApplyDate.Text
-                searchLocatorProperties.simPhoneNumber = txtSimPhoneNumber.Text
+                Dim searchSolicit As Solicit.SolicitSearch = New Solicit.SolicitSearch()
+                searchSolicit.ownerOrganizationCode = "ASJP-AJP-RSIM" 'value hard coded for now ddlDealer.SelectedValue value should be assigned later
+                Dim locatorProperties = New Dictionary(Of String, String) From {
+                        {SALES_ORDER_NUMBER, txtInitialSalesOrder.Text.Trim},
+                        {CUSTOMER_ID, txtCustomerId.Text.Trim},
+                        {DATE_OF_BIRTH, txtDateOfBirth.Text.Trim},
+                        {SIM_PHONE_NUMBER, txtSimPhoneNumber.Text.Trim}
+                }
+                searchSolicit.LocatorProperties = locatorProperties
 
-                Dim jsonObjectA As String = JsonConvert.SerializeObject(searchOrganization)
-                Dim jsonObjectB As String = JsonConvert.SerializeObject(searchLocatorProperties)
-
-                Dim jSoNToPost As String = String.Format("""organization"": {0},""locatorproperties"":""{1}""", jsonObjectA, jsonObjectB)
-                jSoNToPost = String.Concat("{", jSoNToPost, "}")
-
-                'Dim jsonData = JsonConvert.SerializeObject(searchRequestBody)
-                Dim data = New StringContent(jSoNToPost, Encoding.UTF8, "application/json")
+                Dim requestData = JsonConvert.SerializeObject(searchSolicit, Formatting.Indented)
+                Dim requestBody = New StringContent(requestData)
                 Dim url As New Uri(oWebPasswd.Url)
-                Dim response As HttpResponseMessage = client.PostAsync(url, data).GetAwaiter().GetResult()
+                Dim response As HttpResponseMessage = client.PostAsync(url, requestBody).GetAwaiter().GetResult()
                 Dim json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
                 If Not response.IsSuccessStatusCode Then
                     Throw New Exception($"There is an error in displaying the SOLICIT Data. {response.ReasonPhrase}")
