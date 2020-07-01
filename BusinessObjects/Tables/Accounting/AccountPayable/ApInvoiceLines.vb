@@ -132,7 +132,7 @@ Public Class ApInvoiceLines
     End Property
 	
 	
-    <ValueMandatory("")> _
+    <ValueMandatory("Line Number")> _
     Public Property LineNumber() As LongType
         Get
             CheckDeleted()
@@ -149,7 +149,7 @@ Public Class ApInvoiceLines
     End Property
 	
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=400)> _
+    <ValueMandatory("Line Type"),ValidStringLength("", Max:=400)> _
     Public Property LineType() As String
         Get
             CheckDeleted()
@@ -166,7 +166,7 @@ Public Class ApInvoiceLines
     End Property
 	
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=400)> _
+    <ValueMandatoryVendorItem("Vendor Item Code"),ValidStringLength("", Max:=400)> _
     Public Property VendorItemCode() As String
         Get
             CheckDeleted()
@@ -183,7 +183,7 @@ Public Class ApInvoiceLines
     End Property
 	
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=1000)> _
+    <ValueMandatoryVendorItemDescription("Description"),ValidStringLength("", Max:=1000)> _
     Public Property Description() As String
         Get
             CheckDeleted()
@@ -200,7 +200,7 @@ Public Class ApInvoiceLines
     End Property
 	
 	
-    <ValueMandatory("")> _
+    <ValueMandatoryquantity("Quantity")> _
     Public Property Quantity() As DecimalType
         Get
             CheckDeleted()
@@ -217,7 +217,7 @@ Public Class ApInvoiceLines
     End Property
 	
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=400)> _
+    <ValueMandatoryUom("Unit of Measurement"),ValidStringLength("", Max:=400)> _
     Public Property UomXcd() As String
         Get
             CheckDeleted()
@@ -268,7 +268,7 @@ Public Class ApInvoiceLines
     End Property
 	
 	
-    <ValueMandatory("")> _
+    <ValueMandatoryUnitPrice("Unit Price")> _
     Public Property UnitPrice() As DecimalType
         Get
             CheckDeleted()
@@ -285,7 +285,7 @@ Public Class ApInvoiceLines
     End Property
 	
 	
-    <ValueMandatory("")> _
+    <ValueMandatoryTotalPrice("")> _
     Public Property TotalPrice() As DecimalType
         Get
             CheckDeleted()
@@ -465,6 +465,31 @@ Public Class ApInvoiceLines
         End Try
     End Function
 
+    public Function GetAuthorization(ByVal serviceCenterId As Guid , ByVal claimNumber As String, ByVal authorizationNumber As string) As Dataview
+        Try
+            Dim dal As New ApInvoiceLinesDAL
+            Dim ds As DataSet = New DataSet
+
+            ds = dal.GetAuthorization(serviceCenterId, claimNumber,authorizationNumber)
+            Return ds.Tables(ApInvoiceLinesDAL.TABLE_NAME).DefaultView
+
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+    Public function GetPoLines(ByVal authorizationIds As Generic.List(Of Guid)) As Dataview
+        Try
+            Dim dal As New ApInvoiceLinesDAL
+            Dim ds As DataSet = New DataSet
+
+            ds = dal.GetPoLines( authorizationIds)
+            Return ds.Tables(ApInvoiceLinesDAL.TABLE_NAME).DefaultView
+
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End function
+
 #End Region
 
 
@@ -475,7 +500,7 @@ Public Class ApInvoiceLines
         Public Const COL_INVOICE_lines_ID As String = "ap_invoice_lines_id"
         Public Const COL_LINE_NUMBER As String = "line_number"
         Public Const COL_LINE_TYPE As String = "line_type"
-        Public Const COL_VENDOR_ITEM_CODE As String = "vendor_item_code"
+        Public Const COL_ITEM_CODE As String = "item_code"
         Public Const COL_DESCRIPTION As String = "description"
         Public Const COL_QUANTITY As String = "quantity"
         Public Const COL_UNIT_PRICE As String = "unit_price"
@@ -495,6 +520,124 @@ Public Class ApInvoiceLines
 
     End Class
 #End Region
+
+#Region "Custom Validation"
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    Public NotInheritable class ValueMandatoryVendorItem
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, APInvoiceLinesDV.COL_ITEM_CODE)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj = CType(objectToValidate, ApInvoiceLines)
+            If obj.IsNew AndAlso valueToCheck Is Nothing Then
+                Return False
+            ElseIf valueToCheck.Equals(String.Empty) Then
+                Return False
+            End If
+
+            Return True
+        End Function
+    End Class
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    Public NotInheritable class ValueMandatoryVendorItemDescription
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, APInvoiceLinesDV.COL_DESCRIPTION)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj = CType(objectToValidate, ApInvoiceLines)
+            If obj.IsNew AndAlso valueToCheck Is Nothing Then
+                Return False
+            ElseIf valueToCheck.Equals(String.Empty) Then
+                Return False
+            End If
+
+            Return True
+        End Function
+    End Class
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    Public NotInheritable class ValueMandatoryQuantity
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, APInvoiceLinesDV.COL_QUANTITY)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj = CType(objectToValidate, ApInvoiceLines)
+            If obj.IsNew AndAlso valueToCheck Is Nothing Then
+                Return False
+            ElseIf valueToCheck.Equals(String.Empty) Then
+                Return False
+            End If
+
+            Return True
+        End Function
+    End Class
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    Public NotInheritable class ValueMandatoryUnitPrice
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, APInvoiceLinesDV.COL_UNIT_PRICE)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj = CType(objectToValidate, ApInvoiceLines)
+            If obj.IsNew AndAlso valueToCheck Is Nothing Then
+                Return False
+            ElseIf valueToCheck.Equals(String.Empty) Then
+                Return False
+            End If
+
+            Return True
+        End Function
+    End Class
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    Public NotInheritable class ValueMandatoryTotalPrice
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, APInvoiceLinesDV.COL_TOTAL_PRICE)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj = CType(objectToValidate, ApInvoiceLines)
+            If obj.IsNew AndAlso valueToCheck Is Nothing Then
+                Return False
+            ElseIf valueToCheck.Equals(String.Empty) Then
+                Return False
+            End If
+
+            Return True
+        End Function
+    End Class
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    Public NotInheritable class ValueMandatoryUom
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, APInvoiceLinesDV.COL_UNIT_OF_MEASUREMENT)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj = CType(objectToValidate, ApInvoiceLines)
+            If obj.IsNew AndAlso valueToCheck Is Nothing Then
+                Return False
+            ElseIf valueToCheck.Equals(String.Empty) Then
+                Return False
+            End If
+
+            Return True
+        End Function
+    End Class
+#End Region
+
 End Class
 
 

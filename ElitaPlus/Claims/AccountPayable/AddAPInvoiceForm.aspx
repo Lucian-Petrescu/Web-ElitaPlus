@@ -5,7 +5,7 @@ CodeBehind="AddAPInvoiceForm.aspx.vb"
 EnableSessionState="True"
 Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AccountPayable.AddApInvoiceForm" 
 Theme="Default" %>
-
+<%@ Register TagPrefix="Elita" TagName="UserControlApInvoiceLinesSearch" src="~/Common/UserControlApInvoiceLinesSearch.ascx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <script language="javascript" type="text/javascript" src="../../Navigation/scripts/jquery-1.12.4.min.js"> </script>  
     <script language="JavaScript" type="text/javascript">
@@ -68,17 +68,12 @@ Theme="Default" %>
             return false;
         }
 
-</script>
+    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
-        <Scripts>
-            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
-        </Scripts>
-    </asp:ScriptManager>
      <div class="dataEditBox">
         <table class="formGrid"  width="100%">
                     <tr>
@@ -138,7 +133,61 @@ Theme="Default" %>
 
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
-    <!-- new layout start -->
+<asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
+    <Scripts>
+        <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+    </Scripts>
+</asp:ScriptManager>
+<asp:HiddenField ID="HiddenFieldPoLineSearch" runat="server" Value="N" />
+
+<div id="ModalPoLineSearch" class="overlay">
+    <div id="light" class="overlay_message_content" style="left: 5%; right: 5%; top: 5%; max-height: 80%">
+        
+        <table width="100%" style="border:none;margin-bottom:10px;">
+            <tr>
+                <td>
+                    <asp:Label ID="lblNewSCError" runat="server" Visible="false" ForeColor="Red"></asp:Label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;&nbsp;
+                    <asp:Label ID="Label3" runat="server" Text="INVOICE_LINE_SEARCH" CssClass="modalTitle"></asp:Label>
+                </td>
+            </tr>
+            <tr>
+                <td><Elita:UserControlApInvoiceLinesSearch ID="ucApInvoiceLinesSearch" runat="server"/></td>
+            </tr>
+                      
+        </table>
+        
+        <div class="btnZone">
+            <table width="100%">
+                <tr>
+                    <td width="50%">
+                        <asp:Button ID="btnCancelLineSearch" runat="server" SkinID="AlternateLeftButton" Text="Cancel"
+                                    OnClientClick="hideModal('ModalPoLineSearch'); return false;"/>
+                    </td>
+            
+                    <td width="50%" align="right">
+                        <asp:Button ID="btnAddPoLines" runat="server" SkinID="PrimaryRightButton" Text="Add" />&nbsp;&nbsp;
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="fade" class="black_overlay">
+    </div>
+</div>
+<script type="text/javascript">
+
+    if ($('#<% =HiddenFieldPoLineSearch.ClientID%>').val() == "Y") {
+        revealModal("ModalPoLineSearch");
+    } else {
+        hideModal('ModalPoLineSearch');
+    };
+
+    </script>
 <div class="dataContainer">
 <h2 class="dataGridHeader">
     Invoice Line Items </h2>
@@ -188,7 +237,7 @@ Theme="Default" %>
                                                 </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField Visible="True" HeaderText="line_number">
+                                        <asp:TemplateField Visible="True" HeaderText="line_no">
                                             <ItemStyle HorizontalAlign="center" Width="5%"></ItemStyle>
                                             <ItemTemplate>
                                                 <asp:Label ID="moLineNumber"  visible="true" runat="server"> </asp:Label>
@@ -301,6 +350,7 @@ Theme="Default" %>
                     <tr>
                         <td colspan="1" width="100%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <asp:Button ID="BtnNewLine" runat="server" Visible="false" SkinID="AlternateLeftButton" Text="New"></asp:Button>
+                            <asp:Button ID="BtnSearchLines" runat="server"  Visible="false" SkinID="PrimaryRightButton" Text="Search"></asp:Button>
                             <asp:Button ID="BtnSaveLines" runat="server"  Visible="false" SkinID="PrimaryRightButton" Text="Save"></asp:Button>
                             <asp:Button ID="BtnCancelLine" runat="server"  Visible="false" SkinID="AlternateLeftButton" Text="Cancel"></asp:Button>
                            
