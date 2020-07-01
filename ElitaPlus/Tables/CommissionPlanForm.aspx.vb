@@ -323,7 +323,8 @@ Namespace Tables
                                      Me.MSG_TYPE_CONFIRM, True)
                     Me.AddCalendar(Me.BtnEffectiveDate_WRITE, Me.moEffectiveText_WRITE)
                     Me.AddCalendar(Me.BtnExpirationDate_WRITE, Me.moExpirationText_WRITE)
-                    Me.AddCalendar(Me.BtnExpirationDate_WRITE, moExpirationText_WRITE,"","N","Y")
+                    Me.AddCalendar(Me.BtnExpirationDate_WRITE, moExpirationText_WRITE,String.Empty,System.DateTime.Now.ToString,"Y")
+                    
                 Else
                     If HasCompanyConfigeredForSourceXcd() Then
                         Me.moGridView.Visible = True
