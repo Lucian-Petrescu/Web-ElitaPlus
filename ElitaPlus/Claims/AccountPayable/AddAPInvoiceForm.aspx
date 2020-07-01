@@ -237,7 +237,7 @@ Theme="Default" %>
                                                 </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField Visible="True" HeaderText="line_number">
+                                        <asp:TemplateField Visible="True" HeaderText="line_no">
                                             <ItemStyle HorizontalAlign="center" Width="5%"></ItemStyle>
                                             <ItemTemplate>
                                                 <asp:Label ID="moLineNumber"  visible="true" runat="server"> </asp:Label>

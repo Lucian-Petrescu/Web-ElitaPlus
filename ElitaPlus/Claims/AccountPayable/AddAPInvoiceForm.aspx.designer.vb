@@ -174,7 +174,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents ucApInvoiceLinesSearch As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlApInvoiceLinesSearch
+        Protected WithEvents ucApInvoiceLinesSearch As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.UserControlApInvoiceLinesSearch
 
         '''<summary>
         '''btnCancelLineSearch control.

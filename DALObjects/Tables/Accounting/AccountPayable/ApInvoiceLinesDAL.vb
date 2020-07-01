@@ -125,14 +125,13 @@ Public Class ApInvoiceLinesDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    public Function GetAuthorization(ByVal serviceCenterId As Guid , ByVal claimNumber As String, ByVal authorizationNumber As string,ByVal companyId As Guid) As Dataset
+    public Function GetAuthorization(ByVal serviceCenterId As Guid , ByVal claimNumber As String, ByVal authorizationNumber As string) As Dataset
         Try
             Dim authorizationDataSet As New DataSet
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOADAUTHS"))
                 cmd.AddParameter(PAR_I_NAME_SERVICE_CENTER_ID, OracleDbType.Raw, serviceCenterId.ToByteArray())
                 cmd.AddParameter(PAR_I_NAME_CLAIM_NUMBER, OracleDbType.Varchar2, claimNumber)
                 cmd.AddParameter(PAR_I_NAME_AUTHORIZATION_NUMBER, OracleDbType.Varchar2, authorizationNumber)
-                cmd.AddParameter(PAR_I_NAME_COMPANY_ID, OracleDbType.Raw, companyId.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
                 OracleDbHelper.Fetch(cmd, TABLE_NAME, authorizationDataSet)
                 Return authorizationDataSet
@@ -141,7 +140,7 @@ Public Class ApInvoiceLinesDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    public Function GetPoLines(ByVal claimAuthorizationIds As List(Of Guid) ,ByVal companyId As Guid) As Dataset
+    public Function GetPoLines(ByVal claimAuthorizationIds As List(Of Guid)) As Dataset
         Try
             Dim authorizationDataSet As New DataSet
 
@@ -163,8 +162,6 @@ Public Class ApInvoiceLinesDAL
                 authParamIds.Value = authorizationArrayIds
                 authParamIds.Size = authorizationArrayIds.Count
                 authParamIds.ArrayBindSize = authArrayIdsSize
-
-                cmd.AddParameter(PAR_I_NAME_COMPANY_ID, OracleDbType.Raw, companyId.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
                 OracleDbHelper.Fetch(cmd, TABLE_NAME, authorizationDataSet)
                 Return authorizationDataSet

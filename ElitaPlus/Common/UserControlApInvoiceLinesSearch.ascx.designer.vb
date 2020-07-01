@@ -10,249 +10,251 @@
 Option Strict On
 Option Explicit On
 
+Namespace Common
 
-Partial Public Class UserControlApInvoiceLinesSearch
+    Partial Public Class UserControlApInvoiceLinesSearch
 
-    '''<summary>
-    '''moServiceCenterLabel control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents moServiceCenterLabel As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''moServiceCenterLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moServiceCenterLabel As Global.System.Web.UI.WebControls.Label
 
-    '''<summary>
-    '''txtServiceCenter control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtServiceCenter As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtServiceCenter control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtServiceCenter As Global.System.Web.UI.WebControls.TextBox
 
-    '''<summary>
-    '''lblClaimNumber control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblClaimNumber As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblClaimNumber control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblClaimNumber As Global.System.Web.UI.WebControls.Label
 
-    '''<summary>
-    '''txtClaimNumber control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtClaimNumber As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtClaimNumber control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtClaimNumber As Global.System.Web.UI.WebControls.TextBox
 
-    '''<summary>
-    '''lblAuthorizationNUmber control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblAuthorizationNUmber As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblAuthorizationNUmber control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblAuthorizationNUmber As Global.System.Web.UI.WebControls.Label
 
-    '''<summary>
-    '''txtAuthorizationNumber control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtAuthorizationNumber As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtAuthorizationNumber control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtAuthorizationNumber As Global.System.Web.UI.WebControls.TextBox
 
-    '''<summary>
-    '''tdSearchButton control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents tdSearchButton As Global.System.Web.UI.HtmlControls.HtmlTableCell
+        '''<summary>
+        '''tdSearchButton control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents tdSearchButton As Global.System.Web.UI.HtmlControls.HtmlTableCell
 
-    '''<summary>
-    '''btnClearSearch control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+        '''<summary>
+        '''btnClearSearch control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
 
-    '''<summary>
-    '''btnSearch control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+        '''<summary>
+        '''btnSearch control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
 
-    '''<summary>
-    '''authGridTitle control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents authGridTitle As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+        '''<summary>
+        '''authGridTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents authGridTitle As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
-    '''<summary>
-    '''AuthGridPageSize control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents AuthGridPageSize As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+        '''<summary>
+        '''AuthGridPageSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents AuthGridPageSize As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
-    '''<summary>
-    '''trPageSize control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''trPageSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-    '''<summary>
-    '''lblPageSize control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblPageSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
 
-    '''<summary>
-    '''colonSepertor control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents colonSepertor As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''colonSepertor control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents colonSepertor As Global.System.Web.UI.WebControls.Label
 
-    '''<summary>
-    '''cboPageSize control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+        '''<summary>
+        '''cboPageSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
 
-    '''<summary>
-    '''lblRecordCount control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblRecordCount control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
 
-    '''<summary>
-    '''GridAuth control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents GridAuth As Global.System.Web.UI.WebControls.GridView
+        '''<summary>
+        '''GridAuth control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents GridAuth As Global.System.Web.UI.WebControls.GridView
 
-    '''<summary>
-    '''btnSearchLines control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents btnSearchLines As Global.System.Web.UI.WebControls.Button
+        '''<summary>
+        '''btnSearchLines control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents btnSearchLines As Global.System.Web.UI.WebControls.Button
 
-    '''<summary>
-    '''poLineGridTitle control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents poLineGridTitle As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+        '''<summary>
+        '''poLineGridTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents poLineGridTitle As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
-    '''<summary>
-    '''linesGridHeader control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents linesGridHeader As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+        '''<summary>
+        '''linesGridHeader control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents linesGridHeader As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
-    '''<summary>
-    '''PoLineGridPageSize control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents PoLineGridPageSize As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+        '''<summary>
+        '''PoLineGridPageSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents PoLineGridPageSize As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
-    '''<summary>
-    '''tr1 control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents tr1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''tr1 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents tr1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-    '''<summary>
-    '''lblPoLinePageSize control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblPoLinePageSize As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblPoLinePageSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblPoLinePageSize As Global.System.Web.UI.WebControls.Label
 
-    '''<summary>
-    '''Label2 control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''Label2 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
 
-    '''<summary>
-    '''PoLineCboPageSize control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents PoLineCboPageSize As Global.System.Web.UI.WebControls.DropDownList
+        '''<summary>
+        '''PoLineCboPageSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents PoLineCboPageSize As Global.System.Web.UI.WebControls.DropDownList
 
-    '''<summary>
-    '''lblPoLinesRecords control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblPoLinesRecords As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblPoLinesRecords control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblPoLinesRecords As Global.System.Web.UI.WebControls.Label
 
-    '''<summary>
-    '''GridPoLines control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents GridPoLines As Global.System.Web.UI.WebControls.GridView
-End Class
+        '''<summary>
+        '''GridPoLines control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents GridPoLines As Global.System.Web.UI.WebControls.GridView
+    End Class
+End Namespace

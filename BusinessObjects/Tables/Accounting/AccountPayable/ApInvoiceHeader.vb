@@ -128,7 +128,7 @@ Public Class ApInvoiceHeader
         End Get
     End Property
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=100)> _
+    <ValueMandatoryInvoiceNumber("Invoice Number"),ValidStringLength("Invoice Number", Max:=100)> _
     Public Property InvoiceNumber() As String
         Get
             CheckDeleted()
@@ -145,7 +145,7 @@ Public Class ApInvoiceHeader
     End Property
 	
 	
-    <ValueMandatory("")> _
+    <ValueMandatoryInvoiceDate("Invoice Date")> _
     Public Property InvoiceDate() As DateType
         Get
             CheckDeleted()
@@ -162,7 +162,7 @@ Public Class ApInvoiceHeader
     End Property
 	
 	
-    <ValueMandatory("")> _
+    <ValueMandatoryInvoiceAmount("Invoice Amount")> _
     Public Property InvoiceAmount() As DecimalType
         Get
             CheckDeleted()
@@ -179,7 +179,7 @@ Public Class ApInvoiceHeader
     End Property
 	
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=100)> _
+    <ValueMandatoryInvoiceTerm("Term"),ValidStringLength("", Max:=100)> _
     Public Property TermXcd() As String
         Get
             CheckDeleted()
@@ -247,7 +247,7 @@ Public Class ApInvoiceHeader
     End Property
 	
 	
-    <ValueMandatory("")> _
+    <ValueMandatoryInvoiceVendor("Vendor")> _
     Public Property VendorId() As Guid
         Get
             CheckDeleted()
@@ -263,9 +263,7 @@ Public Class ApInvoiceHeader
         End Set
     End Property
 	
-	
-    <ValueMandatory("")> _
-    Public Property VendorAddressId() As Guid
+  Public Property VendorAddressId() As Guid
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_VENDOR_ADDRESS_ID) Is DBNull.Value Then
@@ -398,9 +396,7 @@ Public Class ApInvoiceHeader
             Me.SetValue(ApInvoiceHeaderDAL.COL_NAME_POSTED, Value)
         End Set
     End Property
-	
-	
-    
+	<ValueMandatoryInvoiceDealer("")>
     Public Property DealerId() As Guid
         Get
             CheckDeleted()
@@ -564,6 +560,8 @@ Public Class ApInvoiceHeader
         Public Const COL_VENDOR_ID As String = "vendor_id"
         Public Const COL_PAYMENT_STATUS_XCD As String = "payment_status_xcd"
         Public Const COL_TOTAL_COUNT As String = "total_count"
+        Public Const COL_INVOICE_TERM As String = "Term"
+        Public Const COL_INVOICE_DELAER As String = "Dealer"
         Public Sub New(ByVal table As DataTable)
             MyBase.New(table)
         End Sub
@@ -581,6 +579,122 @@ Public Class ApInvoiceHeader
     End Class
 #End Region
 
+#Region "Custom Validation"
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    Public NotInheritable class ValueMandatoryInvoiceNumber
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, APInvoiceSearchDV.COL_INVOICE_NUMBER)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj = CType(objectToValidate, ApInvoiceHeader)
+            If obj.IsNew AndAlso valueToCheck Is Nothing Then
+                Return False
+            ElseIf valueToCheck.Equals(String.Empty) Then
+                Return False
+            End If
+
+            Return True
+        End Function
+    End Class
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    Public NotInheritable class ValueMandatoryInvoiceAmount
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, APInvoiceSearchDV.COL_INVOICE_AMOUNT)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj = CType(objectToValidate, ApInvoiceHeader)
+            If obj.IsNew AndAlso valueToCheck Is Nothing Then
+                Return False
+            ElseIf valueToCheck.Equals(String.Empty) Then
+                Return False
+            End If
+
+            Return True
+        End Function
+    End Class
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    Public NotInheritable class ValueMandatoryInvoiceDate
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, APInvoiceSearchDV.COL_INVOICE_DATE)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj = CType(objectToValidate, ApInvoiceHeader)
+            If obj.IsNew AndAlso valueToCheck Is Nothing Then
+                Return False
+            ElseIf valueToCheck.Equals(String.Empty) Then
+                Return False
+            End If
+
+            Return True
+        End Function
+    End Class
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    Public NotInheritable class ValueMandatoryInvoiceVendor
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, APInvoiceSearchDV.COL_VENDOR)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj = CType(objectToValidate, ApInvoiceHeader)
+            If obj.IsNew AndAlso valueToCheck = Guid.Empty Then
+                Return False
+            ElseIf valueToCheck = Guid.Empty Then 
+                Return False
+            End If
+
+            Return True
+        End Function
+    End Class
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    Public NotInheritable class ValueMandatoryInvoiceDealer
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, APInvoiceSearchDV.COL_INVOICE_DELAER)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj = CType(objectToValidate, ApInvoiceHeader)
+            If obj.IsNew AndAlso valueToCheck = Guid.Empty Then
+                Return False
+            ElseIf valueToCheck = Guid.Empty Then 
+                Return False
+            End If
+
+            Return True
+        End Function
+    End Class
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    Public NotInheritable class ValueMandatoryInvoiceTerm
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, APInvoiceSearchDV.COL_INVOICE_TERM)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj = CType(objectToValidate, ApInvoiceHeader)
+            If obj.IsNew AndAlso valueToCheck Is Nothing Then
+                Return False
+            ElseIf valueToCheck.Equals(String.Empty) Then
+                Return False
+            End If
+
+            Return True
+        End Function
+    End Class
+    # End Region
 End Class
 
 

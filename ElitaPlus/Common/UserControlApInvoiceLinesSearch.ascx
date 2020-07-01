@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="vb" 
 AutoEventWireup="false" 
 CodeBehind="UserControlApInvoiceLinesSearch.ascx.vb" 
-Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlApInvoiceLinesSearch" %>
+Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Common.UserControlApInvoiceLinesSearch" %>
  
 <style type="text/css">
     .checkboxLine { 
@@ -218,25 +218,13 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlApInvoiceLinesSearch" %>
         }
     }
 
-    function numericOnly(elementRef)
-    {
+    function numericOnly(elementRef) {
+        
         var keyCodeEntered = (event.which) ? event.which : (window.event.keyCode) ? window.event.keyCode : -1;
         if ((keyCodeEntered >= 48) && (keyCodeEntered <= 57)) {
             return true;
         }
-        else if (keyCodeEntered == 43) {
-            if ((elementRef.value) && (elementRef.value.indexOf('+') >= 0))
-                return false;
-            else
-                return true;
-        }
-        else if (keyCodeEntered == 45) {
-            if ((elementRef.value) && (elementRef.value.indexOf('-') >= 0))
-                return false;
-            else
-                return true;
-        }
-        else if (keyCodeEntered == 46) {
+       else if (keyCodeEntered == 46) {
             if ((elementRef.value) && (elementRef.value.indexOf('.') >= 0))
                 return false;
             else

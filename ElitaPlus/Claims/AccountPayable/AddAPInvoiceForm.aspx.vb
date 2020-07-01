@@ -141,7 +141,7 @@ Namespace Claims.AccountPayable
             End Try
             ShowMissingTranslations(MasterPage.MessageController)
         End Sub
-        Private Sub RewireUserControlHandler(userControl As UserControlApInvoiceLinesSearch)
+        Private Sub RewireUserControlHandler(userControl As Common.UserControlApInvoiceLinesSearch)
             userControl.TranslationFunc = Function(value As String)
                 Return TranslationBase.TranslateLabelOrMessage(value)
             End Function
@@ -520,7 +520,7 @@ Namespace Claims.AccountPayable
                 With State.ApInvoiceHeaderBo
                     PopulateControlFromBOProperty(moInvoiceNumber, .InvoiceNumber)
                     PopulateControlFromBOProperty(moInvoiceAmount, .InvoiceAmount)
-                    PopulateControlFromBOProperty(moInvoiceDate, .InvoiceDate)
+                    PopulateControlFromBOProperty(moInvoiceDate, If(.InvoiceDate Is Nothing, Date.Now.Date, State.ApInvoiceHeaderBo.InvoiceDate))
                     SetSelectedItem(moAPInvoiceTerm, If(String.IsNullOrEmpty(.TermXcd), "PMTTRM-INV_0D", .TermXcd))
                     SetSelectedItem(moVendorDropDown, .VendorId)
                     SetSelectedItem(moDealer, .DealerId)
@@ -675,11 +675,11 @@ Namespace Claims.AccountPayable
                             Dim upgtermUnitOfMeasureLkl As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("UNIT_OF_MEASURE", Thread.CurrentPrincipal.GetLanguageCode())
                             moUomDropDown.Populate(upgtermUnitOfMeasureLkl, New PopulateOptions() With
                                                  {
-                                                   .AddBlankItem = False,
+                                                   .AddBlankItem = True,
+                                                   .BlankItemValue = String.Empty,
                                                    .TextFunc = AddressOf PopulateOptions.GetDescription,
                                                    .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                                                   })
-                            SetSelectedItem(moUomDropDown, If(String.IsNullOrEmpty(dvRow(ApInvoiceLines.UNIT_OF_MEASUREMENT_COL).ToString), "UNIT_OF_MEASURE-EACH", dvRow(ApInvoiceLines.UNIT_OF_MEASUREMENT_COL).ToString))
                         Else
                             CType(e.Row.Cells(LineTypeCol).FindControl(LineTypeControlLabel), Label).Text = dvRow(ApInvoiceLines.LINE_TYPE_COL).ToString
                             CType(e.Row.Cells(LineNoCol).FindControl(LineNoControlLabel), Label).Text = dvRow(ApInvoiceLines.LINE_NUMBER_COL).ToString
@@ -774,7 +774,6 @@ Namespace Claims.AccountPayable
                 State.IsNewInvoiceLine = True
                 State.ApInvoiceLineId = Guid.Empty
                 PopulateApLinesGrid(ActionNew)
-                FillDropdownList()
                 State.PageIndex = InvoiceLinesGrid.PageIndex
                 SetGridControls(InvoiceLinesGrid, False)
 
@@ -823,14 +822,14 @@ Namespace Claims.AccountPayable
 
         End Sub
 
-        Private Sub BtnSearchLines_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSearchLines.Click
+        Private Sub BtnSearchLines_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles BtnSearchLines.Click
             Try
                 InitPoLinesSearch()
                 HiddenFieldPoLineSearch.Value = "Y"
 
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -852,11 +851,11 @@ Namespace Claims.AccountPayable
                 Return TranslationBase.TranslateLabelOrMessage(value)
             End Function
 
-            ucApInvoiceLinesSearch.TranslateGridHeaderFunc = Sub(grid As System.Web.UI.WebControls.GridView)
+            ucApInvoiceLinesSearch.TranslateGridHeaderFunc = Sub(grid As GridView)
                 TranslateGridHeader(grid)
             End Sub
 
-            ucApInvoiceLinesSearch.NewCurrentPageIndexFunc = Function(grid As System.Web.UI.WebControls.GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer)
+            ucApInvoiceLinesSearch.NewCurrentPageIndexFunc = Function(grid As GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer)
                 Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
             End Function
 
@@ -913,6 +912,7 @@ Namespace Claims.AccountPayable
 
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
+               
             End Try
         End Sub
 
