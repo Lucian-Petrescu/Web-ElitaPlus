@@ -281,7 +281,6 @@
     <Compile Include="Certificates\CheckReject.vb" />
     <Compile Include="Certificates\Rewards.vb" />
     <Compile Include="Certificates\CheckPayment.vb" />
-    <Compile Include="Certificates\Solicit.vb" />
     <Compile Include="Claims\CaseConseqDamage.vb" />
     <Compile Include="Claims\ClaimAgingDetails.vb" />
     <Compile Include="Claims\ClaimShipping.vb" />

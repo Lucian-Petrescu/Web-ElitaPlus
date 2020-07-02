@@ -371,8 +371,8 @@ Namespace Certificates
                     locatorProperties.Add(CUSTOMER_ID, txtCustomerId.Text.Trim)
                 End If
                 If Not String.IsNullOrEmpty(txtApplyDate.Text.Trim) Then
-                    Dim dateString = DateTime.Parse(txtApplyDate.Text.Trim).ToString("yyyy-mm-dd")
-                    locatorProperties.Add(APPLY_DATE, dateString)
+                    Dim applyDateProperFormat = DateTime.Parse(txtApplyDate.Text.Trim).ToString("yyyy-MM-dd")
+                    locatorProperties.Add(APPLY_DATE, applyDateProperFormat)
                 End If
 
                 If Not String.IsNullOrEmpty(txtSimPhoneNumber.Text.Trim) Then
@@ -386,17 +386,21 @@ Namespace Certificates
                 Dim url As New Uri(oWebPasswd.Url)
                 Dim response As HttpResponseMessage = client.PostAsync(url, requestBody).GetAwaiter().GetResult()
                 Dim json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
+
                 If Not response.IsSuccessStatusCode Then
+                    'Me.MasterPage.MessageController.AddInformation("There is an error in displaying the SOLICIT Data", True)
                     Throw New Exception($"There is an error in displaying the SOLICIT Data. {response.ReasonPhrase}")
+                Else
+                    Try
+                        Dim jsonSolicitsArray As Newtonsoft.Json.Linq.JArray = New Newtonsoft.Json.Linq.JArray(json)
+                        If jsonSolicitsArray.Count = 0 Then
+                            Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
+                            'Throw New Exception($"No Records Found for SOLICIT Data. {response.ReasonPhrase}"
+                        End If
+                    Catch ex As Exception
+                        Throw New Exception($"No Records Found for SOLICIT Data,refine your search criteria to try again. {response.ReasonPhrase}")
+                    End Try
                 End If
-                Try
-                    Dim test As Int16 = (CType(json, Newtonsoft.Json.Linq.JArray)).Count
-                    If test = 0 Then
-                        Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
-                    End If
-                Catch ex As Exception
-                    Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
-                End Try
 
                 Try
                         Dim solicitDetailsList As List(Of Solicit.SolicitDetails) = JsonConvert.DeserializeObject(Of List(Of Solicit.SolicitDetails))(json)

@@ -60,7 +60,7 @@
                        
                         <tr>
                             <td>
-                                <asp:Label ID="lblApplyDate" runat="server">DATE_OF_BIRTH</asp:Label><br />                           
+                                <asp:Label ID="lblApplyDate" runat="server">APPLY_DATE</asp:Label><br />                           
                                 <asp:TextBox ID="txtApplyDate" TabIndex="1" runat="server" SkinID="smallTextBox"></asp:TextBox>                           
                                 <asp:ImageButton ID="btnApplyDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"
                                     valign="bottom"></asp:ImageButton>
