@@ -23,6 +23,7 @@ Public Class CommPlanDistributionDAL
     Public Const COL_NAME_COMM_MODIFIED_BY As String = "MODIFIED_BY"
     Public Const COL_NAME_COMM_MODIFIED_DATE As String = "MODIFIED_DATE"
     Public Const COL_NAME_COMMISSION_SOURCE_XCD As String = "COMMISSIONS_SOURCE_XCD"
+    Public Const COL_NAME_ACT_ENT_SOURCE_XCD As String = "ACCT_FIELD_TYPE_XCD"
     
     Private Const DSNAME As String = "LIST"
 
@@ -238,6 +239,7 @@ Public Class CommPlanDistributionDAL
             .AddParameter("pi_payee_type_xcd", OracleDbType.Varchar2, sourceColumn:=COL_NAME_PAYEE_TYPE_XCD)
             .AddParameter("pi_created_by", OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY)    
             .AddParameter("pi_comm_source_xcd", OracleDbType.Varchar2, sourceColumn:=COL_NAME_COMMISSION_SOURCE_XCD)
+            .AddParameter("pi_act_ent_source_xcd", OracleDbType.Varchar2, sourceColumn:=COL_NAME_ACT_ENT_SOURCE_XCD)
             .AddParameter("po_exec_status", OracleDbType.Int32, ParameterDirection.Output)           
         End With
     End Sub
@@ -252,7 +254,8 @@ Public Class CommPlanDistributionDAL
             .AddParameter("pi_entity_id", OracleDbType.Raw, sourceColumn:=COL_NAME_ENTITY_ID)
             .AddParameter("pi_payee_type_xcd", OracleDbType.Varchar2, sourceColumn:=COL_NAME_PAYEE_TYPE_XCD)
             .AddParameter("pi_modified_by", OracleDbType.Varchar2, sourceColumn:=COL_NAME_COMM_MODIFIED_BY)
-            .AddParameter("pi_comm_source_xcd", OracleDbType.Varchar2, sourceColumn:=COL_NAME_COMMISSION_SOURCE_XCD)            
+            .AddParameter("pi_comm_source_xcd", OracleDbType.Varchar2, sourceColumn:=COL_NAME_COMMISSION_SOURCE_XCD)
+            .AddParameter("pi_act_ent_source_xcd", OracleDbType.Varchar2, sourceColumn:=COL_NAME_ACT_ENT_SOURCE_XCD)
             .AddParameter("po_exec_status", OracleDbType.Int32, ParameterDirection.Output)
         End With
     End Sub

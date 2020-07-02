@@ -204,7 +204,7 @@
                                                         <asp:TextBox ID="moLowPriceText" runat="server" Visible="True" Width="75"></asp:TextBox>
                                                     </EditItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField Visible="True" HeaderText="Commission_Percent">
+                                                <asp:TemplateField Visible="True" HeaderText="COMMISSION_PERCENT">
                                                     <ItemStyle HorizontalAlign="center"></ItemStyle>
                                                     <ItemTemplate>
                                                         <asp:Label ID="moCommission_PercentLabel" Text='<%# GetAmountFormattedDoubleString(Container.DataItem("COMMISSION_PERCENTAGE"), "N4")%>'
@@ -215,7 +215,7 @@
                                                         <asp:TextBox ID="moCommission_PercentText" runat="server" Visible="True" Width="75"></asp:TextBox>
                                                     </EditItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField Visible="true" HeaderText="COMMISSION_PERCENT_XCD">
+                                                <asp:TemplateField Visible="true" HeaderText="COMMISSION_SOURCE">
                                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblCommPercentSourceXcd" Text='<%# Container.DataItem("COMMISSIONS_SOURCE_XCD")%>' runat="server"> </asp:Label>
@@ -223,6 +223,16 @@
                                                     </ItemTemplate>
                                                     <EditItemTemplate>
                                                         <asp:DropDownList ID="cboCommPercentSourceXcd" runat="server" Visible="True" Width="100"></asp:DropDownList>
+                                                    </EditItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField Visible="true" HeaderText="FIELD_TYPE">
+                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblActEntitySourceXcd" Text='<%# Container.DataItem("ACCT_FIELD_TYPE_XCD")%>' runat="server"> </asp:Label>
+                                                        <asp:Label ID="lblActEntitySourceXcdCode" Text='<%# Container.DataItem("ACCT_FIELD_TYPE_XCD")%>' runat="server" Visible="False"> </asp:Label>
+                                                    </ItemTemplate>
+                                                    <EditItemTemplate>
+                                                        <asp:DropDownList ID="cboActEntitySourceXcd" runat="server" Visible="True" Width="100"></asp:DropDownList>
                                                     </EditItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:TemplateField Visible="True" HeaderText="POSITION">
