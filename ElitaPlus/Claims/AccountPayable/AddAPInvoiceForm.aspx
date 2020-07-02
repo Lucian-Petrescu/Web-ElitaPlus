@@ -155,7 +155,7 @@ Theme="Default" %>
                 <tr>
                     <td width="50%">
                         <asp:Button ID="btnCancelLineSearch" runat="server" SkinID="AlternateLeftButton" Text="Cancel"
-                                    OnClientClick="hideModal('ModalPoLineSearch');"/>
+                                    OnClientClick="hideModal('ModalPoLineSearch');" visible="false" />
                     </td>
             
                     <td width="50%" align="right">
