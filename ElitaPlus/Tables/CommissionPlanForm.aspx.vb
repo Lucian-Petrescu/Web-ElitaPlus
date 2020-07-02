@@ -60,14 +60,14 @@ Namespace Tables
             If Me.State.moCommPlanId.Equals(Guid.Empty) Then
                 Me.State.IsCommPlanDistNew = True
                 ClearPlan()
-                SetPeriodButtonsState(True)
-                PopulatePeriod()
+                SetPlanButtonsState(True)
+                PopulatePlanFields()
                 PopulateDistributionList()
                 TheDealerControl.ChangeEnabledControlProperty(True)
             Else
                 Me.State.IsCommPlanDistNew = False
-                SetPeriodButtonsState(False)
-                PopulatePeriod()
+                SetPlanButtonsState(False)
+                PopulatePlanFields()
                 PopulateDistributionList()
                 TheDealerControl.ChangeEnabledControlProperty(False)
             End If
@@ -80,8 +80,8 @@ Namespace Tables
             If Me.State.moCommPlanId.Equals(Guid.Empty) Then
                 Me.State.IsCommPlanDistNew = True
                 ClearPlan()
-                SetPeriodButtonsState(True)
-                PopulatePeriod()
+                SetPlanButtonsState(True)
+                PopulatePlanFields()
                 If Me.moGridView.Visible And Me.moGridView.Rows.Count > 0 Then
                     PopulateDistributionList()
                 End If
@@ -89,8 +89,8 @@ Namespace Tables
                 TheDealerControl.ChangeEnabledControlProperty(True)
             Else
                 Me.State.IsCommPlanDistNew = False
-                SetPeriodButtonsState(False)
-                PopulatePeriod()
+                SetPlanButtonsState(False)
+                PopulatePlanFields()
                 If Me.moGridView.Visible And Me.moGridView.Rows.Count > 0 Then
                     PopulateDistributionList()
                 End If
@@ -109,7 +109,6 @@ Namespace Tables
 
         ' Property Name
         Public Const NOTHING_SELECTED As Integer = 0
-        Public Const COMMISSION_PERIOD_ID_PROPERTY As String = "CommissionPeriodId"
         Public Const DEALER_ID_PROPERTY As String = "DealerId"
         Public Const EFFECTIVE_DATE_PROPERTY As String = "EffectiveDate"
         Public Const EXPIRATION_DATE_PROPERTY As String = "ExpirationDate"
@@ -122,7 +121,6 @@ Namespace Tables
         Public Const Payee_Type_Dealer As String = "2"
         Public Const Payee_Type_Comm_Entity As String = "4"
 
-        Public Const COMPUTE_METHOD_COMPUTE_ON_NET As String = "N"
         Private Const LABEL_DEALER As String = "DEALER"
 
 #End Region
@@ -176,7 +174,7 @@ Namespace Tables
 #End Region
 
 #Region "Properties"
-        
+
         Private ReadOnly Property TheCommPlan() As CommPlan
             Get
                 If Me.State.MyBo Is Nothing Then
@@ -366,9 +364,9 @@ Namespace Tables
         Private Sub SavePlanChanges()
             If ApplyPlanChanges() = True Then
                 Me.State.boChanged = True
-                PopulatePeriod()
+                PopulatePlanFields()
                 Me.State.IsCommPlanDistNew = False
-                SetPeriodButtonsState(False)
+                SetPlanButtonsState(False)
             End If
         End Sub
 
@@ -391,8 +389,9 @@ Namespace Tables
 
         Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
-                ClearPlan()
-                PopulatePeriod()
+                PopulatePlanFields()
+                RePopulateDistributionListForPlan()
+                SetGridSourceXcdLabelFromBo()
             Catch ex As Exception
                 SetGridSourceXcdLabelFromBo()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -417,8 +416,8 @@ Namespace Tables
             Me.State.moCommPlanId = Guid.Empty
             Me.State.IsCommPlanDistNew = True
             ClearPlan()
-            SetPeriodButtonsState(True)
-            PopulatePeriod()
+            SetPlanButtonsState(True)
+            PopulatePlanFields()
             TheDealerControl.ChangeEnabledControlProperty(True)
         End Sub
 
@@ -445,7 +444,7 @@ Namespace Tables
             Me.State.MyBo = newObj
 
             EnableDateFields()
-            SetPeriodButtonsState(True)
+            SetPlanButtonsState(True)
             ClearDistributionGrid()
         End Sub
 
@@ -510,7 +509,7 @@ Namespace Tables
 
 #Region "Button-Management"
 
-        Private Sub SetPeriodButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetPlanButtonsState(ByVal bIsNew As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
@@ -598,13 +597,15 @@ Namespace Tables
             Me.PopulateControlFromBOProperty(Me.TextBoxCode, TheCommPlan.Code)
             Me.PopulateControlFromBOProperty(Me.TextBoxDescription, TheCommPlan.Description)
         End Sub
-
-        Private Sub PopulatePeriod()
+        Private Sub ClearPlanDates()
+            Me.TextBoxCode.Text = String.Empty
+            Me.TextBoxDescription.Text = String.Empty
+        End Sub
+        Private Sub PopulatePlanFields()
             Try
                 PopulateDealer()
                 PopulateDatesFromBO()
                 EnableDateFields()
-                'PopulateTolerance()
                 PupulateCodeDescFromBO()
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -642,7 +643,7 @@ Namespace Tables
             End If
         End Sub
 
-        Private Sub PopulatePeriodBOFromForm(ByVal oPlan As CommPlan)
+        Private Sub PopulatePlanBOFromForm(ByVal oPlan As CommPlan)
             With oPlan
                 ' DropDowns
                 .DealerId = TheDealerControl.SelectedGuid 'Me.GetSelectedItem(moDealerDrop_WRITE)
@@ -659,7 +660,7 @@ Namespace Tables
                 Throw New PopulateBOErrorException
             End If
         End Sub
-        Private Sub PopulatePeriodBOFromForm(ByVal oPlan As CommPlanDistribution)
+        Private Sub PopulatePlanBOFromForm(ByVal oPlan As CommPlanDistribution)
             With oPlan
                 Me.PopulateBOProperty(oPlan, REFERENCE_SOURCE_PROPERTY, "ELP_DEALER")
                 Me.PopulateBOProperty(oPlan, CODE_PROPERTY, Me.TextBoxCode)
@@ -680,7 +681,7 @@ Namespace Tables
 
             oPlan = TheCommPlan
             With oPlan
-                PopulatePeriodBOFromForm(Me.State.MyBo)
+                PopulatePlanBOFromForm(Me.State.MyBo)
                 bIsDirty = .IsDirty
             End With
             Return bIsDirty
@@ -698,13 +699,13 @@ Namespace Tables
                         oPlan.Save()
                         Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                     Else
-                        Throw New GUIException(Message.MSG_EXPIRATION_DATE_IS_OVERLAPPING_WITH_OTHER_PLAN, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXPIRATION_DATE_IS_OVERLAPPING)                        
+                        Throw New GUIException(Message.MSG_EXPIRATION_DATE_IS_OVERLAPPING_WITH_OTHER_PLAN, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXPIRATION_DATE_IS_OVERLAPPING)
                     End If
                 Else
                     Me.MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
                 End If
                 Me.State.IsCommPlanDistNew = False
-                SetPeriodButtonsState(False)
+                SetPlanButtonsState(False)
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
                 bIsOk = False
@@ -770,7 +771,7 @@ Namespace Tables
 
 #Region "State-Management"
 
-#Region "Period State-Management"
+#Region "Plan State-Management"
 
         Protected Sub ComingFromSaveDistribution100PerAlert()
             Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
@@ -943,7 +944,7 @@ Namespace Tables
         Protected Sub CheckIfComingFromConfirm()
             Try
                 Select Case Me.State.ActionInProgress
-                    ' Period
+                    ' Distribution
                     Case ElitaPlusPage.DetailPageCommand.OK
                         If Me.State.IsAmountAndPercentBothPresent Then
                             ComingFromNewDistributionForEitherAmtPer()
@@ -1324,8 +1325,8 @@ Namespace Tables
             Dim AcctFieldTypeList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTFIELDTYP", languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
 
             Dim FilteredAcctFieldTypeList As DataElements.ListItem() = (From lst In AcctFieldTypeList
-                                                                    Where lst.Code.ToUpper.StartsWith("COMMISSIONS")
-                                                                    Select lst).ToArray()
+                                                                        Where lst.Code.ToUpper.StartsWith("COMMISSIONS")
+                                                                        Select lst).ToArray()
 
             oDropDownList.Populate(FilteredAcctFieldTypeList, New PopulateOptions() With
                                 {
@@ -1750,7 +1751,7 @@ Namespace Tables
 
             If mocboPayeeType.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                 Dim tempPayeeTextbox As TextBox = New TextBox
-                tempPayeeTextbox.Text = mocboPayeeType.SelectedValue 
+                tempPayeeTextbox.Text = mocboPayeeType.SelectedValue
                 Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_PAYEE_TYPE_XCD, tempPayeeTextbox)
             End If
         End Sub
@@ -1925,9 +1926,9 @@ Namespace Tables
 
             Try
                 If Me.State.IsNewWithCopy Then
-                    
+
                     oDataView = oDistribution.getPlanList(Guid.Empty)
-                    
+
                     If Not oAction = ACTION_CANCEL_DELETE Then
                         Me.LoadDistributionList()
                     End If
