@@ -27,7 +27,7 @@ Namespace Certificates
         Public Const NO_RECORDS_FOUND = "NO RECORDS FOUND."
         Public Const SALES_ORDER_NUMBER = "salesOrderNumber"
         Public Const CUSTOMER_ID = "customerId"
-        Public Const APPLY_DATE = "applyDate"
+        Public Const APPLY_DATE = "effectiveDate"
         Public Const SIM_PHONE_NUMBER = "simPhoneNumber"
 #End Region
 
@@ -403,17 +403,18 @@ Namespace Certificates
                 End If
 
                 Try
-                        Dim solicitDetailsList As List(Of Solicit.SolicitDetails) = JsonConvert.DeserializeObject(Of List(Of Solicit.SolicitDetails))(json)
-                        Dim solicitDetailsListXml As String = ConvertJsonToXML(solicitDetailsList)
-                        ShowGridData(solicitDetailsListXml)
-                    Catch ex As Exception
-                        Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                    End Try
+                    Dim solicitDetailsList As List(Of Solicit.SolicitDetails) = JsonConvert.DeserializeObject(Of List(Of Solicit.SolicitDetails))(json)
+                    Dim solicitDetailsListXml As String = ConvertJsonToXML(solicitDetailsList)
+                    ShowGridData(solicitDetailsListXml)
+                Catch ex As Exception
+                    Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
+                    'Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                End Try
                     Session("recCount") = ""
                 Catch ex As Exception
                     Dim GetExceptionType As String = ex.GetBaseException.GetType().Name
-
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
+                ' Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
         Public Function ConvertJsonToXML(ByVal solicitDetailsList As List(Of Solicit.SolicitDetails)) As String
