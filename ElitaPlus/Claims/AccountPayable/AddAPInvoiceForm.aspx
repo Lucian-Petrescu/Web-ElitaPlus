@@ -9,17 +9,7 @@ Theme="Default" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <script language="javascript" type="text/javascript" src="../../Navigation/scripts/jquery-1.12.4.min.js"> </script>  
     <script language="JavaScript" type="text/javascript">
-        window.latestClick = '';
-
-        function isNotDblClick() {
-            if (window.latestClick != "clicked") {
-                window.latestClick = "clicked";
-                return true;
-            } else {
-                return false;
-            }
-        }
-    
+       
         function GetTotalPriceAfterUnitChange(obj) {
 
             var quantity = document.getElementById(obj.id.replace('moUnitPriceText', 'moQuantityText'));

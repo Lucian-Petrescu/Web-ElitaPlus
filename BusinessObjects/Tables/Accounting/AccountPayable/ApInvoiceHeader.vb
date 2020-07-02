@@ -108,6 +108,7 @@ Public Class ApInvoiceHeader
     End Sub
 #End Region
 
+
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()        
@@ -562,6 +563,12 @@ Public Class ApInvoiceHeader
         Public Const COL_TOTAL_COUNT As String = "total_count"
         Public Const COL_INVOICE_TERM As String = "Term"
         Public Const COL_INVOICE_DELAER As String = "Dealer"
+        Public Const MSG_THE_VALUE_REQUIRED_INVOICE_NO As String = "MSG_THE_VALUE_REQUIRED_INVOICE_NO"
+        Public Const MSG_THE_VALUE_REQUIRED_INVOICE_AMOUNT As String = "MSG_THE_VALUE_REQUIRED_INVOICE_AMOUNT"
+        Public Const MSG_THE_VALUE_REQUIRED_VENDOR As String = "MSG_THE_VALUE_REQUIRED_VENDOR"
+        Public Const MSG_THE_VALUE_REQUIRED_DEALER As String = "MSG_THE_VALUE_REQUIRED_DEALER"
+        Public Const MSG_THE_VALUE_REQUIRED_INVOICE_DATE As String = "MSG_THE_VALUE_REQUIRED_INVOICE_DATE"
+        Public Const MSG_THE_VALUE_REQUIRED_INVOICE_TERM As String = "MSG_THE_VALUE_REQUIRED_INVOICE_TERM"
         Public Sub New(ByVal table As DataTable)
             MyBase.New(table)
         End Sub
@@ -585,7 +592,7 @@ Public Class ApInvoiceHeader
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, APInvoiceSearchDV.COL_INVOICE_NUMBER)
+            MyBase.New(fieldDisplayName, APInvoiceSearchDV.MSG_THE_VALUE_REQUIRED_INVOICE_NO)
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
@@ -604,7 +611,7 @@ Public Class ApInvoiceHeader
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, APInvoiceSearchDV.COL_INVOICE_AMOUNT)
+            MyBase.New(fieldDisplayName, APInvoiceSearchDV.MSG_THE_VALUE_REQUIRED_INVOICE_AMOUNT)
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
@@ -623,7 +630,7 @@ Public Class ApInvoiceHeader
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, APInvoiceSearchDV.COL_INVOICE_DATE)
+            MyBase.New(fieldDisplayName, APInvoiceSearchDV.MSG_THE_VALUE_REQUIRED_INVOICE_DATE)
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
@@ -642,7 +649,7 @@ Public Class ApInvoiceHeader
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, APInvoiceSearchDV.COL_VENDOR)
+            MyBase.New(fieldDisplayName, APInvoiceSearchDV.MSG_THE_VALUE_REQUIRED_VENDOR)
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
@@ -661,7 +668,7 @@ Public Class ApInvoiceHeader
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, APInvoiceSearchDV.COL_INVOICE_DELAER)
+            MyBase.New(fieldDisplayName, APInvoiceSearchDV.MSG_THE_VALUE_REQUIRED_DEALER)
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
@@ -680,7 +687,7 @@ Public Class ApInvoiceHeader
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, APInvoiceSearchDV.COL_INVOICE_TERM)
+            MyBase.New(fieldDisplayName,APInvoiceSearchDV.MSG_THE_VALUE_REQUIRED_INVOICE_TERM)
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean

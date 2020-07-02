@@ -513,6 +513,12 @@ Public Class ApInvoiceLines
         Public Const COL_PAYMENT_SOURCE As String = "payment_source"
         Public Const COL_PAYMENT_DATE As String = "payment_date"
         Public Const COL_UNIT_OF_MEASUREMENT As String = "UOM_XCD"
+        Public Const MSG_THE_VALUE_REQUIRED_ITEM_CODE As String = "MSG_THE_VALUE_REQUIRED_ITEM_CODE"
+        Public Const MSG_THE_VALUE_REQUIRED_DESCRIPTION As String = "MSG_THE_VALUE_REQUIRED_DESCRIPTION"
+        Public Const MSG_THE_VALUE_REQUIRED_UNIT_PRICE As String = "MSG_THE_VALUE_REQUIRED_UNIT_PRICE"
+        Public Const MSG_THE_VALUE_REQUIRED_QTY As String = "MSG_THE_VALUE_REQUIRED_QTY"
+        Public Const MSG_THE_VALUE_REQUIRED_UOM As String = "MSG_THE_VALUE_REQUIRED_UOM"
+        Public Const MSG_THE_VALUE_REQUIRED_TOTAL_PRICE As String = "MSG_THE_VALUE_REQUIRED_TOTAL_PRICE"
 
         Public Sub New(ByVal table As DataTable)
             MyBase.New(table)
@@ -527,7 +533,7 @@ Public Class ApInvoiceLines
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, APInvoiceLinesDV.COL_ITEM_CODE)
+            MyBase.New(fieldDisplayName, APInvoiceLinesDV.MSG_THE_VALUE_REQUIRED_ITEM_CODE)
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
@@ -546,7 +552,7 @@ Public Class ApInvoiceLines
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, APInvoiceLinesDV.COL_DESCRIPTION)
+            MyBase.New(fieldDisplayName, APInvoiceLinesDV.MSG_THE_VALUE_REQUIRED_DESCRIPTION)
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
@@ -565,7 +571,7 @@ Public Class ApInvoiceLines
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, APInvoiceLinesDV.COL_QUANTITY)
+            MyBase.New(fieldDisplayName, APInvoiceLinesDV.MSG_THE_VALUE_REQUIRED_QTY)
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
@@ -584,7 +590,7 @@ Public Class ApInvoiceLines
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, APInvoiceLinesDV.COL_UNIT_PRICE)
+            MyBase.New(fieldDisplayName, APInvoiceLinesDV.MSG_THE_VALUE_REQUIRED_UNIT_PRICE)
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
@@ -603,7 +609,7 @@ Public Class ApInvoiceLines
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, APInvoiceLinesDV.COL_TOTAL_PRICE)
+            MyBase.New(fieldDisplayName, APInvoiceLinesDV.MSG_THE_VALUE_REQUIRED_TOTAL_PRICE)
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
@@ -622,7 +628,7 @@ Public Class ApInvoiceLines
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, APInvoiceLinesDV.COL_UNIT_OF_MEASUREMENT)
+            MyBase.New(fieldDisplayName, APInvoiceLinesDV.MSG_THE_VALUE_REQUIRED_UOM)
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean

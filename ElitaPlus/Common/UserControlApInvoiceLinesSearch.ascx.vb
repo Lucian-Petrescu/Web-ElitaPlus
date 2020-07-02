@@ -20,7 +20,10 @@ Namespace Common
             Public Const PageSize As String = "PageSize"
             Public Const SortExpression As String = "SortExpression"
             Public Const GridColCheckBoxIdx As Integer = 0
-            Public Const GridColClaimSelectCtrl  As String = "checkBoxSelected"
+            
+            Public Const GridColAuthSelectAllCtrl  As String = "checkBoxAll"
+            Public Const GridColAuthSelectCtrl  As String = "checkBoxSelected"
+            Public Const GridColPoLineSelectAllCtrl  As String = "checkBoxLinesAll"
             Public Const GridColPoLineSelectCtrl  As String = "checkBoxLinesSelected"
             Public Const GridColAuthorizationIdx As Integer = 5
             Public Const GridColLineType As Integer = 1
@@ -201,6 +204,45 @@ Namespace Common
             txtServiceCenter.Text = ServiceCenter
         
         End Sub
+        Private Sub UserControlApInvoiceLinesSearch_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
+           
+            If GridAuth.Visible = True AndAlso Not GridAuth.datasource Is Nothing Then
+              
+                Dim chkboxAuth As WebControls.CheckBox
+                chkboxAuth = CType(GridAuth.HeaderRow.FindControl(PageConstant.GridColAuthSelectAllCtrl), WebControls.CheckBox)
+                If (Not chkboxAuth Is Nothing) Then
+                    chkboxAuth.InputAttributes("class") = "checkboxHeader"
+                End If
+
+                For Each row As GridViewRow In GridAuth.Rows
+                    If row.RowType = DataControlRowType.DataRow Then
+                        chkboxAuth = CType(row.Cells(PageConstant.GridColCheckBoxIdx).FindControl(PageConstant.GridColAuthSelectCtrl),  WebControls.CheckBox)
+                        If (Not chkboxAuth Is Nothing) Then
+                            chkboxAuth.InputAttributes("class") = "checkboxLine"
+                        End If
+                    End If
+                Next
+          End If
+
+            If GridPoLines.Visible = True AndAlso Not GridPoLines.datasource Is Nothing Then
+              
+                Dim chkboxPoLine As WebControls.CheckBox
+                chkboxPoLine = CType(GridPoLines.HeaderRow.FindControl(PageConstant.GridColPoLineSelectAllCtrl), WebControls.CheckBox)
+                If (Not chkboxPoLine Is Nothing) Then
+                    chkboxPoLine.InputAttributes("class") = "checkboxHeader"
+                End If
+
+                For Each row As GridViewRow In GridPoLines.Rows
+                    If row.RowType = DataControlRowType.DataRow Then
+                        chkboxPoLine = CType(row.Cells(PageConstant.GridColCheckBoxIdx).FindControl(PageConstant.GridColPoLineSelectCtrl),  WebControls.CheckBox)
+                        If (Not chkboxPoLine Is Nothing) Then
+                            chkboxPoLine.InputAttributes("class") = "checkboxLine"
+                        End If
+                    End If
+                Next
+            End If
+
+        End Sub
 #End Region
 
 #Region "Page Internal"
@@ -252,7 +294,7 @@ Namespace Common
 
             For Each row As GridViewRow In GridAuth.Rows
                 If row.RowType = DataControlRowType.DataRow Then
-                    chkbox = CType(row.Cells(PageConstant.GridColCheckBoxIdx).FindControl(PageConstant.GridColClaimSelectCtrl), WebControls.CheckBox)
+                    chkbox = CType(row.Cells(PageConstant.GridColCheckBoxIdx).FindControl(PageConstant.GridColAuthSelectCtrl), WebControls.CheckBox)
                     If chkbox.Checked Then
                         claimIdStr = row.Cells(PageConstant.GridColAuthorizationIdx).Text.Trim
                         If String.IsNullOrEmpty(claimIdStr) = False Then
@@ -262,6 +304,18 @@ Namespace Common
                 End If
             Next
             Return selectedAuth
+        End Function
+        Private Function PoLineSelected() As Boolean
+            Dim chkbox As WebControls.CheckBox
+            For Each row As GridViewRow In GridPoLines.Rows
+                If row.RowType = DataControlRowType.DataRow Then
+                    chkbox = CType(row.Cells(PageConstant.GridColCheckBoxIdx).FindControl(PageConstant.GridColPoLineSelectCtrl), WebControls.CheckBox)
+                    If chkbox.Checked Then
+                      Return True
+                    End If
+                End If
+            Next
+            Return False
         End Function
         public Function AddSelectedPoLines() As Integer 
             Dim chkbox As WebControls.CheckBox
@@ -463,8 +517,15 @@ Namespace Common
         Protected Sub btnAddSelectedPoLines_Click(sender As Object, e As EventArgs) Handles btnAddSelectedPoLines.Click
            Try
                ControlMgr.SetVisibleControl(ElitaHostPage, divAddLinesStatus, false) 
-               AddSelectedPoLines()
-               ClearResultList()
+               If PoLineSelected Then
+                   AddSelectedPoLines()
+                   ClearResultList()
+               Else 
+                   lblSearchError.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_SELECT_PO_LINES)
+                   ControlMgr.SetVisibleControl(ElitaHostPage, divSearchError, true)
+                   Return
+               End If
+              
            Catch ex As Exception
                HandleLocalException(ex)
            End Try

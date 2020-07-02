@@ -460,6 +460,8 @@ Public Class Message
     Public Const MSG_AUTHORIZATION_NUMBER_REQUIRED As String = "MSG_AUTHORIZATION_NUMBER_REQUIRED"
     Public Const MSG_SELECT_PO_LINES As String = "MSG_SELECT_PO_LINES"
     Public Const MSG_PO_LINES_ADDED As String = "MSG_PO_LINES_ADDED"
+    
+
 
 #End Region
 End Class
