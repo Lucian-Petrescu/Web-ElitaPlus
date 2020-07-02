@@ -1816,17 +1816,22 @@ Partial Class NewClaimForm
     End Sub
 
     Sub PopulateClaimedEnrolledDetails()
-        With Me.State.MyBO
+        Dim allowEnrolledDeviceUpdate As AttributeValue = State.MyBO.Dealer.AttributeValues.FirstOrDefault(Function(attributeValue) attributeValue.Attribute.UiProgCode = Codes.DLR_ATTR_ALLOW_MODIFY_CLAIMED_DEVICE)
+        With State.MyBO
             If Not .EnrolledEquipment Is Nothing Or Not .ClaimedEquipment Is Nothing Then
-                With Me.ucClaimDeviceInfo
+                With ucClaimDeviceInfo
                     .thisPage = Me
-                    .ClaimBO = CType(Me.State.MyBO, ClaimBase)
-                    For Each i As ClaimIssue In Me.State.MyBO.ClaimIssuesList
-                        If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS And (i.StatusCode = Codes.CLAIMISSUE_STATUS__RESOLVED Or i.StatusCode = Codes.CLAIMISSUE_STATUS__REJECTED Or i.StatusCode = Codes.CLAIMISSUE_STATUS__WAIVED) Then
-                            .ShowDeviceEditImg = False
-                            Exit For
-                        End If
-                    Next
+                    .ClaimBO = CType(State.MyBO, ClaimBase)
+                    If Not allowEnrolledDeviceUpdate Is Nothing AndAlso allowEnrolledDeviceUpdate.Value = Codes.YESNO_Y Then
+                        For Each i As ClaimIssue In State.MyBO.ClaimIssuesList
+                            If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS And (i.StatusCode = Codes.CLAIMISSUE_STATUS__RESOLVED Or i.StatusCode = Codes.CLAIMISSUE_STATUS__REJECTED Or i.StatusCode = Codes.CLAIMISSUE_STATUS__WAIVED) Then
+                                .ShowDeviceEditImg = False
+                                Exit For
+                            End If
+                        Next
+                    Else 
+                        .ShowDeviceEditImg = False
+                    End If
                 End With
             End If
         End With
