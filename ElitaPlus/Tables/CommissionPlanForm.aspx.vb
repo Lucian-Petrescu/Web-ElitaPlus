@@ -136,13 +136,15 @@ Namespace Tables
         Private Const COL_COMMISSION_AMOUNT_IDX As Integer = 6
         Private Const COL_COMMISSION_PERCENTAGE_IDX As Integer = 7
         Private Const COL_COMMISSIONS_SOURCE_XCD_IDX As Integer = 8
-        Private Const COL_POSITION_IDX As Integer = 9
+        Private Const COL_ACT_ENT_SOURCE_XCD_IDX As Integer = 9
+        Private Const COL_POSITION_IDX As Integer = 10
 
         Private Const PROPERTY_PAYEE_TYPE_XCD As String = "PayeeTypeXcd"
         Private Const PROPERTY_ENTITY_ID As String = "EntityId"
         Private Const PROPERTY_COMM_AMT As String = "CommissionAmount"
         Private Const PROPERTY_COMM_PER As String = "CommissionPercent"
         Private Const PROPERTY_COMMISSIONS_XCD As String = "CommissionsPercentSourceXcd"
+        Private Const PROPERTY_ACT_ENT_XCD As String = "ActEntitySourceXcd"
         Private Const PROPERTY_POSITION As String = "Position"
 
         'Actions
@@ -160,7 +162,8 @@ Namespace Tables
         Private Const DB_COMM_AMT As Integer = 4
         Private Const DB_COMM_PER As Integer = 5
         Private Const DB_COMM_SRC_XCD As Integer = 6
-        Private Const DB_POSITION As Integer = 7
+        Private Const DB_AMT_ENTITY_SRC_XCD As Integer = 7
+        Private Const DB_POSITION As Integer = 8
 
 #End Region
 
@@ -293,7 +296,7 @@ Namespace Tables
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
+        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load', Me.Load
             'Put user code to initialize the page here
             Try
                 Me.MasterPage.MessageController.Clear_Hide()
@@ -308,7 +311,7 @@ Namespace Tables
                     Me.SetFormTab(PAGETAB)
                     Me.SetGridItemStyleColor(moGridView)
                     Me.TranslateGridHeader(Me.moGridView)
-                    Me.TranslateGridControls(moGridView)
+                    'Me.TranslateGridControls(moGridView)
                     Me.SetStateProperties()
 
                     'US-521672
@@ -700,14 +703,11 @@ Namespace Tables
                     datesOverlapFlag = oPlan.CheckDatesOverLap(oPlan.DealerId, oPlan.ExpirationDate)
                     If datesOverlapFlag = "N" Then
                         oPlan.Save()
-                        'Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
                         Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                     Else
-                        Throw New GUIException(Message.MSG_EXPIRATION_DATE_IS_OVERLAPPING_WITH_OTHER_PLAN, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXPIRATION_DATE_IS_OVERLAPPING)
-                        'Me.MasterPage.MessageController.AddError(Message.MSG_EXPIRATION_DATE_IS_OVERLAPPING_WITH_OTHER_PLAN, True)
+                        Throw New GUIException(Message.MSG_EXPIRATION_DATE_IS_OVERLAPPING_WITH_OTHER_PLAN, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXPIRATION_DATE_IS_OVERLAPPING)                        
                     End If
                 Else
-                    'Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
                     Me.MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
                 End If
                 Me.State.IsCommPlanDistNew = False
@@ -716,7 +716,6 @@ Namespace Tables
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
                 bIsOk = False
             End Try
-            'SaveDistributionChanges()
             Return bIsOk
         End Function
 
@@ -730,7 +729,6 @@ Namespace Tables
                 commPaymentExists = oPlan.CommPaymentExist(oPlan.Id)
                 If commPaymentExists = "N" Then
                     Throw New GUIException(Message.MSG_EXTRACT_LINKED_WITH_PLAN_DELETE_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXTRACT_LINKED_WITH_OTHER_PLAN_DELETE_NOT_ALLOWED)
-                    'Me.MasterPage.MessageController.AddError(Message.MSG_EXTRACT_LINKED_WITH_PLAN_DELETE_NOT_ALLOWED, True)
                 Else
                     With oPlan
                         .Delete()
@@ -795,6 +793,7 @@ Namespace Tables
                         'Do not save data
                         SetGridControls(moGridView, True)
                         FillSourceXcdDropdownList()
+                        FillActEntSourceXcdDropdownList()
                         FillEntityDropDownList()
                         FillPayeeTypeDropDownList()
                         SetGridSourceXcdDropdownFromBo()
@@ -880,6 +879,7 @@ Namespace Tables
                             PopulateDistributionList(ACTION_NEW)
                             'SetGridControls(moGridView, True)
                             FillSourceXcdDropdownList()
+                            FillActEntSourceXcdDropdownList()
                             FillEntityDropDownList()
                             FillPayeeTypeDropDownList()
                             SetGridSourceXcdDropdownFromBo()
@@ -894,6 +894,7 @@ Namespace Tables
                 ' SetStateProperties()
                 FillSourceXcdDropdownList()
                 FillEntityDropDownList()
+                FillActEntSourceXcdDropdownList()
                 FillPayeeTypeDropDownList()
                 SetGridSourceXcdDropdownFromBo()
                 SetGridSourceXcdLabelFromBo()
@@ -916,6 +917,7 @@ Namespace Tables
                         Case Me.MSG_BTN_OK
                             SetGridControls(moGridView, True)
                             FillSourceXcdDropdownList()
+                            FillActEntSourceXcdDropdownList()
                             FillEntityDropDownList()
                             FillPayeeTypeDropDownList()
                             SetGridSourceXcdDropdownFromBo()
@@ -929,6 +931,7 @@ Namespace Tables
             Catch ex As Exception
                 ' SetStateProperties()
                 FillSourceXcdDropdownList()
+                FillActEntSourceXcdDropdownList()
                 FillEntityDropDownList()
                 FillPayeeTypeDropDownList()
                 SetGridSourceXcdDropdownFromBo()
@@ -1100,8 +1103,8 @@ Namespace Tables
                         Dim molblCommPer As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("moCommission_PercentLabel"), Label)
                         Dim motextBoxCommPer As TextBox = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("moCommission_PercentText"), TextBox)
 
-                        Dim molblAmt As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("moLowPriceLabel"), Label)
-                        Dim motextBoxAmt As TextBox = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("moLowPriceText"), TextBox)
+                        Dim molblAmt As Label = DirectCast(gRow.Cells(COL_COMMISSION_AMOUNT_IDX).FindControl("moLowPriceLabel"), Label)
+                        Dim motextBoxAmt As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_AMOUNT_IDX).FindControl("moLowPriceText"), TextBox)
 
                         If Not motextBoxCommPer Is Nothing Then
                             If Not String.IsNullOrWhiteSpace(motextBoxCommPer.Text) Then
@@ -1160,9 +1163,11 @@ Namespace Tables
                     Dim gRow As GridViewRow = moGridView.Rows(i)
                     If gRow.RowType = DataControlRowType.DataRow Then
                         Dim mollblCommPercentSourceXcd As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblCommPercentSourceXcd"), Label)
-                        Dim mollblCommPercentSourceXcdCode As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblCommPercentSourceXcdCode"), Label)
-                        Dim molblPayeeType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblPayeeType"), Label)
-                        Dim molblEntityType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblEntityType"), Label)
+
+                        Dim molblActEntSourceXcd As Label = DirectCast(gRow.Cells(COL_ACT_ENT_SOURCE_XCD_IDX).FindControl("lblActEntitySourceXcd"), Label)
+
+                        Dim molblPayeeType As Label = DirectCast(gRow.Cells(COL_PAYEE_TYPE_XCD_IDX).FindControl("lblPayeeType"), Label)
+                        Dim molblEntityType As Label = DirectCast(gRow.Cells(COL_ENTITY_ID_IDX).FindControl("lblEntityType"), Label)
 
                         If Not molblPayeeType Is Nothing Then
                             If molblPayeeType.Visible Then
@@ -1176,6 +1181,14 @@ Namespace Tables
                             If mollblCommPercentSourceXcd.Visible Then
                                 If (Not mollblCommPercentSourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(mollblCommPercentSourceXcd.Text)) Then
                                     mollblCommPercentSourceXcd.Text = GetDescFromExtCode(mollblCommPercentSourceXcd.Text)
+                                End If
+                            End If
+                        End If
+
+                        If Not molblActEntSourceXcd Is Nothing Then
+                            If molblActEntSourceXcd.Visible Then
+                                If (Not molblActEntSourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblActEntSourceXcd.Text)) Then
+                                    molblActEntSourceXcd.Text = GetDescFromExtCodeForActEnt(molblActEntSourceXcd.Text)
                                 End If
                             End If
                         End If
@@ -1203,6 +1216,19 @@ Namespace Tables
 
             If Not mocboCommPercentSourceXcd Is Nothing Then
                 PoupulateSourceOptionDropdownlist(mocboCommPercentSourceXcd)
+            End If
+        End Sub
+
+        Private Sub FillActEntSourceXcdDropdownList()
+
+            'fill the drop downs
+            If moGridView.EditIndex = -1 Then Exit Sub
+
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim mocboActEntitySourceXcd As DropDownList = DirectCast(gRow.Cells(COL_ACT_ENT_SOURCE_XCD_IDX).FindControl("cboActEntitySourceXcd"), DropDownList)
+
+            If Not mocboActEntitySourceXcd Is Nothing Then
+                PoupulateActEntSourceOptionDropdownlist(mocboActEntitySourceXcd)
             End If
         End Sub
 
@@ -1307,6 +1333,21 @@ Namespace Tables
                                 })
         End Sub
 
+        Private Sub PoupulateActEntSourceOptionDropdownlist(ByVal oDropDownList As DropDownList)
+            Dim AcctFieldTypeList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTFIELDTYP", languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
+
+            Dim FilteredAcctFieldTypeList As DataElements.ListItem() = (From lst In AcctFieldTypeList
+                                                                    Where lst.Code.ToUpper.StartsWith("COMMISSIONS")
+                                                                    Select lst).ToArray()
+
+            oDropDownList.Populate(FilteredAcctFieldTypeList, New PopulateOptions() With
+                                {
+                                .AddBlankItem = False,
+                                .TextFunc = AddressOf PopulateOptions.GetDescription,
+                                .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
+                                })
+        End Sub
+
         Public Function GetDescFromExtCode(ByVal desc As String) As String
             Dim sGetCodeSourceOptionDesc As String
             Try
@@ -1319,6 +1360,20 @@ Namespace Tables
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Function
+
+        Public Function GetDescFromExtCodeForActEnt(ByVal desc As String) As String
+            Dim sGetCodeSourceOptionDesc As String
+            Try
+                sGetCodeSourceOptionDesc = String.Empty
+                If Not desc Is Nothing And Not String.IsNullOrWhiteSpace(desc) Then
+                    sGetCodeSourceOptionDesc = LookupListNew.GetDescriptionFromExtCode("ACCTFIELDTYP", ElitaPlusIdentity.Current.ActiveUser.LanguageId, desc)
+                End If
+                Return sGetCodeSourceOptionDesc
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Function
+
         Public Function GetDescOfExtCodePayeeTypeXcdOption(ByVal desc As String) As String
             Dim sGetDescOfExtCodeFromPayeeTypeXcd As String
             Try
@@ -1392,6 +1447,12 @@ Namespace Tables
                         Me.PopulateBOProperty(oDistribution(i), PROPERTY_COMMISSIONS_XCD, CType(moGridView.Rows(i).Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).Controls(1), DropDownList).SelectedValue)
                     End If
 
+                    If moGridView.Rows(i).Cells(COL_ACT_ENT_SOURCE_XCD_IDX).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                        Me.PopulateBOProperty(oDistribution(i), PROPERTY_ACT_ENT_XCD, CType(moGridView.Rows(i).Cells(COL_ACT_ENT_SOURCE_XCD_IDX).Controls(0), Label).Text)
+                    Else
+                        Me.PopulateBOProperty(oDistribution(i), PROPERTY_ACT_ENT_XCD, CType(moGridView.Rows(i).Cells(COL_ACT_ENT_SOURCE_XCD_IDX).Controls(1), DropDownList).SelectedValue)
+                    End If
+
                     If moGridView.Rows(i).Cells(COL_POSITION_IDX).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
                         Me.PopulateBOProperty(oDistribution(i), PROPERTY_POSITION, CType(moGridView.Rows(i).Cells(COL_POSITION_IDX).Controls(1), Label).Text)
                     Else
@@ -1430,6 +1491,7 @@ Namespace Tables
             Me.BindBOPropertyToGridHeader(TheCommPlanDist, PROPERTY_COMM_AMT, moGridView.Columns(COL_COMMISSION_AMOUNT_IDX))
             Me.BindBOPropertyToGridHeader(TheCommPlanDist, PROPERTY_COMM_PER, moGridView.Columns(COL_COMMISSION_PERCENTAGE_IDX))
             Me.BindBOPropertyToGridHeader(TheCommPlanDist, PROPERTY_COMMISSIONS_XCD, moGridView.Columns(COL_COMMISSIONS_SOURCE_XCD_IDX))
+            Me.BindBOPropertyToGridHeader(TheCommPlanDist, PROPERTY_ACT_ENT_XCD, moGridView.Columns(COL_ACT_ENT_SOURCE_XCD_IDX))
             Me.BindBOPropertyToGridHeader(TheCommPlanDist, PROPERTY_POSITION, moGridView.Columns(COL_POSITION_IDX))
         End Sub
 
@@ -1464,6 +1526,7 @@ Namespace Tables
                     PopulateDistributionList(ACTION_EDIT)
 
                     Me.FillSourceXcdDropdownList()
+                    FillActEntSourceXcdDropdownList()
                     FillEntityDropDownList()
                     FillPayeeTypeDropDownList()
                     SetGridSourceXcdDropdownFromBo()
@@ -1581,6 +1644,7 @@ Namespace Tables
                     PopulateDistributionList(ACTION_NEW)
                     'SetGridControls(moGridView, True)
                     FillSourceXcdDropdownList()
+                    FillActEntSourceXcdDropdownList()
                     FillEntityDropDownList()
                     FillPayeeTypeDropDownList()
                     SetGridSourceXcdDropdownFromBo()
@@ -1595,6 +1659,7 @@ Namespace Tables
                 ' SetStateProperties()
                 SetGridControls(moGridView, True)
                 FillSourceXcdDropdownList()
+                FillActEntSourceXcdDropdownList()
                 FillEntityDropDownList()
                 FillPayeeTypeDropDownList()
                 SetGridSourceXcdDropdownFromBo()
@@ -1685,9 +1750,10 @@ Namespace Tables
             Dim mocboPayeeType As DropDownList = DirectCast(gRow.Cells(COL_PAYEE_TYPE_XCD_IDX).FindControl("cboPayeeType"), DropDownList)
             Dim mocboEntityType As DropDownList = DirectCast(gRow.Cells(COL_ENTITY_ID_IDX).FindControl("cboEntityType"), DropDownList)
             Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboCommPercentSourceXcd"), DropDownList)
+            Dim mocboActEntitySourceXcd As DropDownList = DirectCast(gRow.Cells(COL_ACT_ENT_SOURCE_XCD_IDX).FindControl("cboActEntitySourceXcd"), DropDownList)
             Dim moTextmoLowPriceText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_AMOUNT_IDX).FindControl("moLowPriceText"), TextBox)
             Dim moTextmoCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
-            Dim moTextmoRenewal_NumberText As TextBox = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("moRenewal_NumberText"), TextBox)
+            Dim moTextmoRenewal_NumberText As TextBox = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("moRenewal_NumberText"), TextBox)
 
             If (mocboCommPercentSourceXcd.Items.Count > 0) Then
                 If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
@@ -1719,9 +1785,16 @@ Namespace Tables
                 Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMMISSIONS_XCD, mocboCommPercentSourceXcd, False, True)
             End If
 
+            If mocboActEntitySourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ACT_ENT_XCD, mocboActEntitySourceXcd, False, True)
+            End If
+
             If mocboPayeeType.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                moTextmoRenewal_NumberText.Text = mocboPayeeType.SelectedValue   'PayeeTypeCode 
-                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_PAYEE_TYPE_XCD, moTextmoRenewal_NumberText)
+                Dim tempPayeeTextbox As TextBox = New TextBox
+                tempPayeeTextbox.Text = mocboPayeeType.SelectedValue 
+                'moTextmoRenewal_NumberText.Text = mocboPayeeType.SelectedValue   'PayeeTypeCode 
+                'Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_PAYEE_TYPE_XCD, moTextmoRenewal_NumberText)
+                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_PAYEE_TYPE_XCD, tempPayeeTextbox)
             End If
         End Sub
         Private Function GetDropDownControlFromGrid(ByVal oDataGrid As GridView, ByVal cellPosition As Integer) As Control
@@ -1990,6 +2063,7 @@ Namespace Tables
                     Me.SetSelectedGridText(moGridView, COL_COMMISSION_AMOUNT_IDX, .CommissionAmount.ToString)
                     Me.SetSelectedGridText(moGridView, COL_COMMISSION_PERCENTAGE_IDX, .CommissionPercent.ToString)
                     Me.SetSelectedGridText(moGridView, COL_COMMISSIONS_SOURCE_XCD_IDX, .CommissionsPercentSourceXcd.ToString)
+                    Me.SetSelectedGridText(moGridView, COL_ACT_ENT_SOURCE_XCD_IDX, .ActEntitySourceXcd.ToString)
                     Me.SetSelectedGridText(moGridView, COL_POSITION_IDX, .Position.ToString)
                 End With
             Else
@@ -1999,6 +2073,7 @@ Namespace Tables
                     Me.SetSelectedGridText(moGridView, COL_COMMISSION_AMOUNT_IDX, .CommissionAmount.ToString)
                     Me.SetSelectedGridText(moGridView, COL_COMMISSION_PERCENTAGE_IDX, .CommissionPercent.ToString)
                     Me.SetSelectedGridText(moGridView, COL_COMMISSIONS_SOURCE_XCD_IDX, .CommissionsPercentSourceXcd.ToString)
+                    Me.SetSelectedGridText(moGridView, COL_ACT_ENT_SOURCE_XCD_IDX, .ActEntitySourceXcd.ToString)
                     Me.SetSelectedGridText(moGridView, COL_POSITION_IDX, .Position.ToString)
                 End With
             End If

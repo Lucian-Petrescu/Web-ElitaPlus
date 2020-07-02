@@ -234,6 +234,22 @@ Public Class CommPlanDistribution
             Me.SetValue(CommPlanDistributionDAL.COL_NAME_PAYEE_TYPE_XCD, Value)
         End Set
     End Property
+
+    <ValidStringLength("", Max:=35, Message:="Account Entity Source Xcd should be between 1 to 35 chars.")>
+    Public Property ActEntitySourceXcd() As String
+        Get
+            CheckDeleted()
+            If Row(CommPlanDistributionDAL.COL_NAME_ACT_ENT_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CommPlanDistributionDAL.COL_NAME_ACT_ENT_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CommPlanDistributionDAL.COL_NAME_ACT_ENT_SOURCE_XCD, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Public Members"
