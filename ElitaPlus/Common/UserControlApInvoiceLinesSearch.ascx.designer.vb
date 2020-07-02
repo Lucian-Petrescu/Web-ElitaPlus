@@ -15,6 +15,42 @@ Namespace Common
     Partial Public Class UserControlApInvoiceLinesSearch
 
         '''<summary>
+        '''divSearchError control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents divSearchError As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+        '''<summary>
+        '''lblSearchError control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblSearchError As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''divAddLinesStatus control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents divAddLinesStatus As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+        '''<summary>
+        '''lblAddLinesStatus control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblAddLinesStatus As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
         '''moServiceCenterLabel control.
         '''</summary>
         '''<remarks>
@@ -256,5 +292,14 @@ Namespace Common
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents GridPoLines As Global.System.Web.UI.WebControls.GridView
+
+        '''<summary>
+        '''btnAddSelectedPoLines control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents btnAddSelectedPoLines As Global.System.Web.UI.WebControls.Button
     End Class
 End Namespace
