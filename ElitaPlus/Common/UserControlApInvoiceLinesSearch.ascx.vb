@@ -1,9 +1,10 @@
 ﻿Imports System.Collections.Generic
+Imports System.Windows.Forms
 
 Namespace Common
 
     Public Class UserControlApInvoiceLinesSearch
-        Inherits UserControl
+        Inherits UI.UserControl
 
 #Region "Constant"
         Public Class PageConstant
@@ -14,18 +15,25 @@ Namespace Common
             Public Const CompanyCode As String = "CompanyCode"
             Public Const CountryCode As String = "CountryCode"
             Public Const Dealer As String = "Dealer"
+            Public Const TotalInvoiceLines As String = "TotalLines"
             Public Const PageIndex As String = "PageIndex"
             Public Const PageSize As String = "PageSize"
             Public Const SortExpression As String = "SortExpression"
             Public Const GridColCheckBoxIdx As Integer = 0
             Public Const GridColClaimSelectCtrl  As String = "checkBoxSelected"
-            Public Const GridColClaimIdx As Integer = 5
+            Public Const GridColPoLineSelectCtrl  As String = "checkBoxLinesSelected"
             Public Const GridColAuthorizationIdx As Integer = 5
+            Public Const GridColLineType As Integer = 1
+            Public Const GridColVendorItemCode As Integer = 2
+            Public Const GridColDescription As Integer = 3
+            Public Const GridColQty As Integer = 4
+            Public Const GridColUnitPrice As Integer = 5
+            Public Const GridColUomXcd As Integer = 6
+            Public Const GridColPoNumber As Integer = 7
             public Const GridColAuthorizationDataField As string = "Claim_Authorization_id"
         End Class
         Private ReadOnly DefaultPageSize As Integer = 5
-   
-
+      
 #End Region
 
 #Region "Properties"
@@ -116,6 +124,14 @@ Namespace Common
                 ViewState(PageConstant.ServiceCenterId) = value
             End Set
         End Property
+        Public Property TotalInvoiceLines As Integer
+            Get
+                Return DirectCast(ViewState(PageConstant.TotalInvoiceLines), Integer)
+            End Get
+            Set(value As Integer)
+                ViewState(PageConstant.TotalInvoiceLines) = value
+            End Set
+        End Property
         Public Property TranslateGridHeaderFunc As Action(Of GridView)
         Public Property TranslationFunc As Func(Of String, String)
         Public Property NewCurrentPageIndexFunc As Func(Of GridView, Integer, Integer, Integer)
@@ -127,7 +143,7 @@ Namespace Common
         Private Sub SetControlState(ByVal isVisible As Boolean)
             ControlMgr.SetVisibleControl(ElitaHostPage, linesGridHeader, isVisible)
             ControlMgr.SetVisibleControl(ElitaHostPage, btnSearchLines, isVisible)
-
+            ControlMgr.SetVisibleControl(ElitaHostPage, btnAddSelectedPoLines, isVisible)
         End Sub
         Private sub SetControlForPoLineSearchResult()
             ControlMgr.SetVisibleControl(ElitaHostPage, linesGridHeader, True)
@@ -138,6 +154,7 @@ Namespace Common
             ControlMgr.SetVisibleControl(ElitaHostPage, PoLineGridPageSize, true)
             ControlMgr.SetVisibleControl(ElitaHostPage, poLineGridTitle, true)
             ControlMgr.SetVisibleControl(ElitaHostPage, btnSearchLines, False)
+          
         End sub
 
 
@@ -154,11 +171,27 @@ Namespace Common
                 SetTranslations()
                 txtServiceCenter.Text = ServiceCenter
                 ControlMgr.SetVisibleControl(ElitaHostPage, PoLineGridPageSize, False)
+                ControlMgr.SetVisibleControl(ElitaHostPage, divSearchError, false)
+                ControlMgr.SetVisibleControl(ElitaHostPage, divSearchError, false)
 
             Catch ex As Exception
                 HandleLocalException(ex)
             End Try
         End Sub
+        sub CancelAndClearSearchResult()
+            Try
+                GridAuth.DataSource = nothing
+                GridAuth.DataBind()
+                UpdateRecordCount(0)
+                GridPoLines.DataSource = nothing
+                GridPoLines.DataBind()
+                UpdatePoLinesRecordCount(0)
+                ControlMgr.SetVisibleControl(ElitaHostPage, divSearchError, false)
+                ControlMgr.SetVisibleControl(ElitaHostPage, divAddLinesStatus, false)
+            Catch ex As Exception
+
+            End Try
+        End sub
         Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
             Dim parentControl = Parent
             While (Not TypeOf parentControl Is ElitaPlusPage And parentControl IsNot Nothing)
@@ -197,31 +230,29 @@ Namespace Common
             ControlMgr.SetVisibleControl(ElitaHostPage, AuthGridPageSize, true)
             ControlMgr.SetVisibleControl(ElitaHostPage, poLineGridTitle, false)
             ControlMgr.SetVisibleControl(ElitaHostPage, PoLineGridPageSize, false)
+            ControlMgr.SetVisibleControl(ElitaHostPage, divSearchError, false)
+            ControlMgr.SetVisibleControl(ElitaHostPage, btnAddSelectedPoLines, false)
             GridAuth.DataSource = Nothing
             GridAuth.DataBind()
             GridPoLines.DataSource = Nothing
             GridPoLines.DataBind()
             UpdateRecordCount(0)
+            UpdatePoLinesRecordCount(0)
         End Sub
         Private Sub UpdateRecordCount(records As Integer)
-            If GridAuth.Visible Then
                 lblRecordCount.Text = $"{records} {TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)}"
-          
-            End If
         End Sub
         Private Sub UpdatePoLinesRecordCount(records As Integer)
-            If GridAuth.Visible Then
                 lblPoLinesRecords.Text = $"{records} {TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)}"
-            End If
         End Sub
 
         Private Function GetSelectedAuthorizationIds() As List(Of Guid)
-            Dim chkbox As CheckBox, claimIdStr As String
+            Dim chkbox As WebControls.CheckBox, claimIdStr As String
             Dim selectedAuth As List(Of Guid) = New List(Of Guid)
 
             For Each row As GridViewRow In GridAuth.Rows
                 If row.RowType = DataControlRowType.DataRow Then
-                    chkbox = CType(row.Cells(PageConstant.GridColCheckBoxIdx).FindControl(PageConstant.GridColClaimSelectCtrl), CheckBox)
+                    chkbox = CType(row.Cells(PageConstant.GridColCheckBoxIdx).FindControl(PageConstant.GridColClaimSelectCtrl), WebControls.CheckBox)
                     If chkbox.Checked Then
                         claimIdStr = row.Cells(PageConstant.GridColAuthorizationIdx).Text.Trim
                         If String.IsNullOrEmpty(claimIdStr) = False Then
@@ -232,6 +263,56 @@ Namespace Common
             Next
             Return selectedAuth
         End Function
+        public Function AddSelectedPoLines() As Integer 
+            Dim chkbox As WebControls.CheckBox
+            Dim lineAdded as Integer = 0
+            Dim lastLineNUmber as Integer = TotalInvoiceLines
+            Dim apInvoiceLinesBo 
+           Try
+               For Each row As GridViewRow In GridPoLines.Rows
+                   If row.RowType = DataControlRowType.DataRow Then
+                       chkbox = CType(row.Cells(PageConstant.GridColCheckBoxIdx).FindControl(PageConstant.GridColPoLineSelectCtrl), WebControls.CheckBox)
+                       If chkbox.Checked Then
+                           apInvoiceLinesBo = new ApInvoiceLines
+
+                           With   apInvoiceLinesBo
+                               .ApInvoiceHeaderId = ApInvoiceHeaderId
+                               .PaidQuantity = If(.PaidQuantity, 0)
+                               .MatchedQuantity = If(.MatchedQuantity, 0)
+                               .LineNumber = lastLineNUmber + lineAdded + 1
+                               .LineType = row.Cells(PageConstant.GridColLineType ).Text.Trim
+                               .VendorItemCode = row.Cells(PageConstant.GridColVendorItemCode).Text.Trim
+                               .Description = row.Cells(PageConstant.GridColDescription).Text.Trim
+                               .Quantity = 0
+                               .UnitPrice = row.Cells(PageConstant.GridColUnitPrice).Text.Trim
+                               .TotalPrice = 0
+                               .UomXcd = row.Cells(PageConstant.GridColUomXcd).Text.Trim
+                               .PoNumber = row.Cells(PageConstant.GridColPoNumber).Text.Trim
+                               .Save()
+                           end With
+                           lineAdded += 1
+                       End If
+                   End If
+               Next
+               lblAddLinesStatus.Text = lineAdded.ToString() + " " + TranslationBase.TranslateLabelOrMessage(Message.MSG_PO_LINES_ADDED)
+               ControlMgr.SetVisibleControl(ElitaHostPage, divAddLinesStatus, true) 
+               TotalInvoiceLines +=lineAdded
+               Return lineAdded
+           Catch ex As Exception
+               HandleLocalException(ex)
+               TotalInvoiceLines +=lineAdded
+               Return lineAdded
+           End Try
+        End Function
+
+        private function ValidAuthorizationSearchCriteria() As Boolean
+            If  String.IsNullOrEmpty(txtClaimNumber.Text.Trim()) AndAlso String.IsNullOrEmpty(txtAuthorizationNumber.Text.Trim()) Then
+                lblSearchError.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_NUMBER_OR_AUTHORIZATION_NUMBER_REQUIRED)
+                ControlMgr.SetVisibleControl(ElitaHostPage, divSearchError, true)
+                return false
+            End If
+            Return true
+        End function
 #End Region
 
 #Region "Authorization Grid"
@@ -243,18 +324,16 @@ Namespace Common
             GridAuth.PageSize = PageSize
             GridAuth.DataBind()
             Session("authRecCount") = authDv.Count
+            if Not authDv is Nothing AndAlso authDv.Count > 0 then
+                ControlMgr.SetVisibleControl(ElitaHostPage, btnSearchLines, True)
+            End If
+
+           
         End Sub
         Private Function GetAuthorizationGridDataView() As DataView
             Dim apInvoiceLinesBo As New ApInvoiceLines
             Return apInvoiceLinesBo.GetAuthorization(ServiceCenterId, txtClaimNumber.Text, txtAuthorizationNumber.Text)
         End Function
-
-        Private Function GetPoLinesGridDataView() As DataView
-            Dim apInvoiceLinesBo As New ApInvoiceLines
-            Dim selectedAuthIds As List(Of Guid) = GetSelectedAuthorizationIds()
-            Return apInvoiceLinesBo.GetPoLines(selectedAuthIds)
-        End Function
-
         Private Sub GridAuth_PageIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles GridAuth.PageIndexChanged
             Try
                 PageIndex = GridAuth.PageIndex
@@ -310,12 +389,29 @@ Namespace Common
 #Region "Po Line Grid"
         Private Sub PopulatePoLinesGrid()
             Dim poLinesDv As DataView = GetPoLinesGridDataView()
-            UpdatePoLinesRecordCount(poLinesDv.Count)
-            GridPoLines.DataSource = poLinesDv
-            GridPoLines.PageSize = PageSize
-            GridPoLines.DataBind()
-            Session("PoLineRecCount") = poLinesDv.Count
+            If Not poLinesDv Is Nothing Then
+                UpdatePoLinesRecordCount(poLinesDv.Count)
+                GridPoLines.DataSource = poLinesDv
+                GridPoLines.PageSize = PageSize
+                GridPoLines.DataBind()
+                Session("PoLineRecCount") = poLinesDv.Count
+                if poLinesDv.Count > 0 then
+                    ControlMgr.SetVisibleControl(ElitaHostPage, btnAddSelectedPoLines, True)
+                End If
+            End If
+            
         End Sub
+        Private Function GetPoLinesGridDataView() As DataView
+            Dim apInvoiceLinesBo As New ApInvoiceLines
+            Dim selectedAuthIds As List(Of Guid) = GetSelectedAuthorizationIds()
+            If selectedAuthIds.Count = 0 Then
+                lblSearchError.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_AUTHORIZATION_NUMBER_REQUIRED)
+                ControlMgr.SetVisibleControl(ElitaHostPage, divSearchError, true)
+                Return nothing
+
+            End If
+            Return apInvoiceLinesBo.GetPoLines(selectedAuthIds)
+        End Function
         Private Sub GridPoLines_PageIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles GridPoLines.PageIndexChanged
             Try
                 PageIndex = GridPoLines.PageIndex
@@ -347,10 +443,13 @@ Namespace Common
 #Region "Button Event"
 
         Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
-            PopulateAuthorizationGrid()
-            ControlMgr.SetVisibleControl(ElitaHostPage, btnSearchLines, True)
-            ControlMgr.SetVisibleControl(ElitaHostPage, GridAuth, True)
-        
+           
+            ControlMgr.SetVisibleControl(ElitaHostPage, divSearchError, false)
+            ControlMgr.SetVisibleControl(ElitaHostPage, divAddLinesStatus, false)
+            If ValidAuthorizationSearchCriteria Then
+                PopulateAuthorizationGrid()
+                ControlMgr.SetVisibleControl(ElitaHostPage, GridAuth, True)
+            End If
         End Sub
 
         Protected Sub btnSearchLines_Click(sender As Object, e As EventArgs) Handles btnSearchLines.Click
@@ -361,9 +460,21 @@ Namespace Common
                 HandleLocalException(ex)
             End Try
         End Sub
+        Protected Sub btnAddSelectedPoLines_Click(sender As Object, e As EventArgs) Handles btnAddSelectedPoLines.Click
+           Try
+               ControlMgr.SetVisibleControl(ElitaHostPage, divAddLinesStatus, false) 
+               AddSelectedPoLines()
+               ClearResultList()
+           Catch ex As Exception
+               HandleLocalException(ex)
+           End Try
+        End Sub
         Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
             ClearResultList
         End Sub
+
+
+        
 
 #End Region
     End Class

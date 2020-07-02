@@ -19,6 +19,12 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Common.UserControlApInvoiceLinesSea
 
 
 <div class="dataContainer">
+    <div ID="divSearchError" class="errorMsg" runat="server" style="width: 99.5%" Visible="False" >
+        <asp:Label ID="lblSearchError" runat="server"  ForeColor="Red"></asp:Label>
+    </div>
+    <div ID="divAddLinesStatus" class="successMsg" runat="server" style="width: 99.5%" Visible="False">
+        <asp:Label ID="lblAddLinesStatus" runat="server"  ForeColor="Green"></asp:Label>
+    </div>
     <div class="dataGridHeader">
         <table border="0" class="searchGrid" runat="server" width="100%">
             <tbody>
@@ -87,7 +93,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Common.UserControlApInvoiceLinesSea
         </table>
     </div>
     <div id="divAuthorizationList" style="width: 100%">
-        <asp:GridView ID="GridAuth" runat="server" Width="99%"  Height = "100px" AutoGenerateColumns="False" AllowPaging="True"
+        <asp:GridView ID="GridAuth" runat="server" Width="99%"  AutoGenerateColumns="False" AllowPaging="True"
                 SkinID="DetailPageGridView" AllowSorting="false">
                 <SelectedRowStyle Wrap="True" />
                 <EditRowStyle Wrap="True" />
@@ -155,7 +161,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Common.UserControlApInvoiceLinesSea
         </table>
     </div>
     <div id="divPoLinesList" style="width: 100%">
-        <asp:GridView ID="GridPoLines" runat="server" Width="100%"  Height = "250px" AutoGenerateColumns="False" AllowPaging="True"
+        <asp:GridView ID="GridPoLines" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True"
                       SkinID="DetailPageGridView" AllowSorting="false">
             <SelectedRowStyle Wrap="True" />
             <EditRowStyle Wrap="True" />
@@ -181,6 +187,16 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Common.UserControlApInvoiceLinesSea
             <PagerSettings PageButtonCount="5" Mode="Numeric" Position="TopAndBottom" />
             <PagerStyle />
         </asp:GridView>
+    </div>
+    <div >
+        <table width="100%">
+            <tr><td></td></tr>
+            <tr>
+                <td width="100%" align="right" >
+                    <asp:Button ID="btnAddSelectedPoLines" runat="server" SkinID="PrimaryRightButton" Text="Add_Lines"/>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 <script type="text/javascript">

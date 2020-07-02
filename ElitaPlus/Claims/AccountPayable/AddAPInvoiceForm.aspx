@@ -94,10 +94,10 @@ Theme="Default" %>
                     </tr>
                     <tr>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moServiceCenterLabel" Text="VENDOR" />
+                            <asp:Label runat="server" ID="moDealerLabel">DEALER</asp:Label>:
                         </td>
                         <td nowrap="noWrap">
-                             <asp:DropDownList runat="server" ID="moVendorDropDown" SkinID="MediumDropDown">
+                            <asp:DropDownList ID="moDealer" runat="server" SkinID="MediumDropDown" >
                             </asp:DropDownList>
                         </td>
 						<td align="right" nowrap="noWrap">
@@ -111,14 +111,14 @@ Theme="Default" %>
                         
                     </tr>
                     <tr>
-                        
                         <td align="right" nowrap="noWrap">
-                           <asp:Label runat="server" ID="moDealerLabel">DEALER</asp:Label>:
+                            <asp:Label runat="server" ID="moServiceCenterLabel" Text="VENDOR" />
                         </td>
                         <td nowrap="noWrap">
-                           <asp:DropDownList ID="moDealer" runat="server" SkinID="MediumDropDown" >
-                           </asp:DropDownList>
+                            <asp:DropDownList runat="server" ID="moVendorDropDown" SkinID="MediumDropDown">
+                            </asp:DropDownList>
                         </td>
+                        
                         <td align="right" nowrap="noWrap">
                             <asp:Label runat="server" ID="moTermLabel" Text="TERM" />
                         </td>
@@ -151,7 +151,7 @@ Theme="Default" %>
             </tr>
             <tr>
                 <td>
-                    &nbsp;&nbsp;
+                    &nbsp;
                     <asp:Label ID="Label3" runat="server" Text="INVOICE_LINE_SEARCH" CssClass="modalTitle"></asp:Label>
                 </td>
             </tr>
@@ -160,21 +160,21 @@ Theme="Default" %>
             </tr>
                       
         </table>
-        
         <div class="btnZone">
             <table width="100%">
                 <tr>
                     <td width="50%">
                         <asp:Button ID="btnCancelLineSearch" runat="server" SkinID="AlternateLeftButton" Text="Cancel"
-                                    OnClientClick="hideModal('ModalPoLineSearch'); return false;"/>
+                                    OnClientClick="hideModal('ModalPoLineSearch');"/>
                     </td>
             
                     <td width="50%" align="right">
-                        <asp:Button ID="btnAddPoLines" runat="server" SkinID="PrimaryRightButton" Text="Add" />&nbsp;&nbsp;
+                        <asp:Button ID="btnAddPoLines" runat="server" SkinID="PrimaryRightButton" Text="Done" />&nbsp;&nbsp;
                     </td>
                 </tr>
             </table>
         </div>
+    
     </div>
     <div id="fade" class="black_overlay">
     </div>

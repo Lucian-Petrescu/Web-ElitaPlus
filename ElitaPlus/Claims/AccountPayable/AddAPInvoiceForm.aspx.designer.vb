@@ -51,22 +51,22 @@ Namespace Claims.AccountPayable
         Protected WithEvents moInvoiceAmount As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
-        '''moServiceCenterLabel control.
+        '''moDealerLabel control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moServiceCenterLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moDealerLabel As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
-        '''moVendorDropDown control.
+        '''moDealer control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moVendorDropDown As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents moDealer As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
         '''moInvoiceDateLabel control.
@@ -96,22 +96,22 @@ Namespace Claims.AccountPayable
         Protected WithEvents btnInvoiceDate As Global.System.Web.UI.WebControls.ImageButton
 
         '''<summary>
-        '''moDealerLabel control.
+        '''moServiceCenterLabel control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moDealerLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moServiceCenterLabel As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
-        '''moDealer control.
+        '''moVendorDropDown control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moDealer As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents moVendorDropDown As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
         '''moTermLabel control.

@@ -197,6 +197,7 @@ Namespace Claims.AccountPayable
             Public SelectedPageSize As Integer = DEFAULT_PAGE_SIZE
             Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
             Public BnoRow As Boolean = False
+            Public TotalLines As integer
             Sub New()
 
             End Sub
@@ -376,7 +377,7 @@ Namespace Claims.AccountPayable
                 End If
                 State.SearchDv.Sort = SortDirection
                 State.IsGridVisible = True
-
+                State.TotalLines = State.SearchDv.Count
                 Select Case oAction
                     Case ActionNone
                         State.BnoRow = False
@@ -680,6 +681,9 @@ Namespace Claims.AccountPayable
                                                    .TextFunc = AddressOf PopulateOptions.GetDescription,
                                                    .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                                                   })
+                            if Not State.IsNewInvoiceLine Then
+                                SetSelectedItem(moUomDropDown, If(String.IsNullOrEmpty(dvRow(ApInvoiceLines.UNIT_OF_MEASUREMENT_COL).ToString), "UNIT_OF_MEASURE-EACH", dvRow(ApInvoiceLines.UNIT_OF_MEASUREMENT_COL).ToString))
+                            End If
                         Else
                             CType(e.Row.Cells(LineTypeCol).FindControl(LineTypeControlLabel), Label).Text = dvRow(ApInvoiceLines.LINE_TYPE_COL).ToString
                             CType(e.Row.Cells(LineNoCol).FindControl(LineNoControlLabel), Label).Text = dvRow(ApInvoiceLines.LINE_NUMBER_COL).ToString
@@ -692,6 +696,7 @@ Namespace Claims.AccountPayable
                             CType(e.Row.Cells(PoNumberCol).FindControl(PoNumberControlLabel), Label).Text = dvRow(ApInvoiceLines.PO_NUMBER_COL).ToString
                         End If
                     End If
+                   
                 End If
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
@@ -753,6 +758,7 @@ Namespace Claims.AccountPayable
         End Sub
         Private Sub btnFinalize_Click(sender As Object, e As EventArgs) Handles btnFinalize.Click
             Try
+                HiddenFieldPoLineSearch.Value = "N"
                 If (MatchInvoice()) Then
                     PopulateBoFromForm()
                     State.ApInvoiceHeaderBo.PaymentStatusXcd = InvoiceStatusComplete
@@ -821,23 +827,33 @@ Namespace Claims.AccountPayable
             SetButtonsState()
 
         End Sub
+        Private Sub btnAddPoLines_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnAddPoLines.Click
+            Try
+              
+                HiddenFieldPoLineSearch.Value = "N"
+                State.SearchDv = Nothing
+                PopulateApLinesGrid(ActionSave)
 
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+        Private Sub btnCancelLineSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancelLineSearch.Click
+            Try
+                HiddenFieldPoLineSearch.Value = "N"
+                ucApInvoiceLinesSearch.CancelAndClearSearchResult()
+                State.SearchDv = Nothing
+                PopulateApLinesGrid(ActionSave)
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
         Private Sub BtnSearchLines_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles BtnSearchLines.Click
             Try
                 InitPoLinesSearch()
                 HiddenFieldPoLineSearch.Value = "Y"
 
             Catch ex As ThreadAbortException
-            Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
-            End Try
-        End Sub
-
-        Private Sub btnAddPoLines_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnAddPoLines.Click
-
-            Try
-                HiddenFieldPoLineSearch.Value = "N"
-
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
@@ -858,11 +874,11 @@ Namespace Claims.AccountPayable
             ucApInvoiceLinesSearch.NewCurrentPageIndexFunc = Function(grid As GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer)
                 Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
             End Function
-
             ucApInvoiceLinesSearch.CompanyId = State.CompanyId
             ucApInvoiceLinesSearch.ServiceCenterId =  New Guid(moVendorDropDown.SelectedItem.Value)
             ucApInvoiceLinesSearch.ServiceCenter = moVendorDropDown.SelectedItem.Text
             ucApInvoiceLinesSearch.ApInvoiceHeaderId= State.ApInvoiceHeaderBo.Id
+            ucApInvoiceLinesSearch.TotalInvoiceLines= State.TotalLines
             ucApInvoiceLinesSearch.InitializeComponent()
             
         End Sub
