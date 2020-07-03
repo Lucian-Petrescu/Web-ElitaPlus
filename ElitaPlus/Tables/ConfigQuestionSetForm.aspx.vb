@@ -14,7 +14,7 @@ Namespace Tables
 #Region "Constants"
         Public Const URL As String = "ConfigQuestionSetForm.aspx"
         Public Const PAGETITLE As String = "CONFIG_QUESTION_SET"
-        Public Const PAGETAB As String = "ADMIN"
+        Public Const PAGETAB As String = "TABLES"
         Public Const SUMMARYTITLE As String = "CONFIG_QUESTION_SET"
 #End Region
 
