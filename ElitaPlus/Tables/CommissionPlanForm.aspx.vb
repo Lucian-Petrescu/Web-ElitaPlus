@@ -27,7 +27,7 @@ Namespace Tables
             Public IsComingFromSavePlan As Boolean = False
             Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
             Public boChanged As Boolean = False
-
+            Public IsNewCloneCopyClicked As Boolean = False
             Public IsCommPerGreaterThanHundred As Boolean
             Public IsPmComCombination As Boolean
             Public IsAmountAndPercentBothPresent As Boolean
@@ -302,6 +302,7 @@ Namespace Tables
                 ClearGridHeaders(moGridView)
 
                 If Not Page.IsPostBack Then
+                    Me.State.IsNewCloneCopyClicked = False
                     Me.MasterPage.MessageController.Clear()
                     Me.MasterPage.UsePageTabTitleInBreadCrum = False
                     Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
@@ -418,7 +419,7 @@ Namespace Tables
             ClearPlan()
             SetPlanButtonsState(True)
             PopulatePlanFields()
-            TheDealerControl.ChangeEnabledControlProperty(True)
+            TheDealerControl.ChangeEnabledControlProperty(True)            
         End Sub
 
         Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
@@ -446,6 +447,7 @@ Namespace Tables
             EnableDateFields()
             SetPlanButtonsState(True)
             ClearDistributionGrid()
+            Me.State.IsNewCloneCopyClicked = True
         End Sub
 
         Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
@@ -1819,7 +1821,15 @@ Namespace Tables
                         oDataView = getDVFromArray(Me.State.moDistributionList, oDataView.Table)
                     End If
                 Else
+                    If Me.State.IsNewCloneCopyClicked = True Then
+                        If Not TheCommPlan Is Nothing Then
+                            Me.State.moCommPlanId = TheCommPlan.Id
+                            Me.State.IsNewCloneCopyClicked = False
+                        End If
+                    End If
+
                     oDataView = oDistribution.getPlanList(Me.State.moCommPlanId) 'TheCommPlanDist.Id)
+
                 End If
 
                 Select Case oAction
