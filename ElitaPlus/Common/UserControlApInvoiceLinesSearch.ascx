@@ -20,10 +20,10 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Common.UserControlApInvoiceLinesSea
 
 <div class="dataContainer">
     <div ID="divSearchError" class="errorMsg" runat="server" style="width: 99.5%" Visible="False" >
-        <asp:Label ID="lblSearchError" runat="server"  ForeColor="Red"></asp:Label>
+        &nbsp;<asp:Label ID="lblSearchError" runat="server"  ForeColor="Red"></asp:Label>
     </div>
     <div ID="divAddLinesStatus" class="successMsg" runat="server" style="width: 99.5%" Visible="False">
-        <asp:Label ID="lblAddLinesStatus" runat="server"  ForeColor="Green"></asp:Label>
+        &nbsp;<asp:Label ID="lblAddLinesStatus" runat="server"  ForeColor="Green"></asp:Label>
     </div>
     <div class="dataGridHeader">
         <table border="0" class="searchGrid" runat="server" width="100%">
@@ -94,7 +94,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Common.UserControlApInvoiceLinesSea
     </div>
     <div id="divAuthorizationList" style="width: 100%">
         <asp:GridView ID="GridAuth" runat="server" Width="99%"  AutoGenerateColumns="False" AllowPaging="True"
-                SkinID="DetailPageGridView" AllowSorting="false">
+                SkinID="DetailPageGridView" AllowSorting="True">
                 <SelectedRowStyle Wrap="True" />
                 <EditRowStyle Wrap="True" />
                 <AlternatingRowStyle Wrap="True" />
@@ -112,7 +112,6 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Common.UserControlApInvoiceLinesSea
                     <asp:BoundField DataField="Authorization_Number" HeaderText="Authorization_Number" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="Authorized_Amount" HeaderText="Authorized_Amount" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="Authorization_Status" HeaderText="Authorization_Status" HtmlEncode="false"></asp:BoundField>
-                 <%--   <asp:BoundField DataField="Claim_Id" HeaderText="claim_id" HtmlEncode="false" Visible="true"></asp:BoundField>--%>
                     <asp:BoundField DataField="Claim_Authorization_id" HeaderText="Authorization_Id" HtmlEncode="true" Visible="false"></asp:BoundField>
                 </Columns>
                 <PagerSettings PageButtonCount="5" Mode="Numeric" Position="TopAndBottom" />
@@ -162,7 +161,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Common.UserControlApInvoiceLinesSea
     </div>
     <div id="divPoLinesList" style="width: 100%">
         <asp:GridView ID="GridPoLines" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True"
-                      SkinID="DetailPageGridView" AllowSorting="false">
+                      SkinID="DetailPageGridView" AllowSorting="true">
             <SelectedRowStyle Wrap="True" />
             <EditRowStyle Wrap="True" />
             <AlternatingRowStyle Wrap="True" />
