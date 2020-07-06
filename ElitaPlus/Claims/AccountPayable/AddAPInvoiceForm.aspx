@@ -213,7 +213,7 @@ Theme="Default" %>
                         <td colspan="1">
                             <div id="scroller" style="overflow: auto; width: 100%; height: 200px" align="center">
                                 <asp:GridView ID="InvoiceLinesGrid" runat="server" OnRowCreated="ItemCreated" OnRowCommand="ItemCommand"
-                                    AllowPaging="False" PageSize="50" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"
+                                    AllowPaging="True" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"
                                     SkinID="DetailPageGridView" Width="100%">
                                     <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                                     <EditRowStyle Wrap="False"></EditRowStyle>
@@ -227,7 +227,7 @@ Theme="Default" %>
                                                 </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField Visible="True" HeaderText="line_no">
+                                        <asp:TemplateField Visible="True" HeaderText="line_number">
                                             <ItemStyle HorizontalAlign="center" Width="5%"></ItemStyle>
                                             <ItemTemplate>
                                                 <asp:Label ID="moLineNumber"  visible="true" runat="server"> </asp:Label>
@@ -331,8 +331,7 @@ Theme="Default" %>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
-                                    <PagerStyle HorizontalAlign="Center" CssClass="PAGER"></PagerStyle>
-                                    <PagerSettings PageButtonCount="15" Mode="Numeric" />
+                                    <PagerSettings PageButtonCount="10" Mode="Numeric" Position="Bottom" />
                                 </asp:GridView>
                             </div>
                         </td>

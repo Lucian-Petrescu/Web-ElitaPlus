@@ -105,6 +105,7 @@ Namespace Claims.AccountPayable
                     Dim tempGuid As Guid = callingPar
                     State.ApInvoiceHeaderBo = New ApInvoiceHeader(tempGuid)
                     State.ApInvoiceLinesBo = New ApInvoiceLines
+                    State.IsGridVisible=true
                     If Not State.ApInvoiceHeaderBo.PaymentStatusXcd = InvoiceStatusIncomplete Then
                         SetFinalizedInvoiceControls()
                     End If
@@ -127,13 +128,10 @@ Namespace Claims.AccountPayable
 
                     PopulateDropDown()
                     PopulateFormFromBo()
-                    GetDv()
-                    PopulateApLinesGrid()
                     SetButtonsState()
-                    SetGridPageSize()
-                    SetGridItemStyleColor(InvoiceLinesGrid)
                     BindBoPropertiesToGridHeaders()
-
+                    TranslateGridHeader(InvoiceLinesGrid)
+                    SetGridPageSize()
                 End If
                 SetStateProperties()
             Catch ex As Exception
@@ -153,6 +151,11 @@ Namespace Claims.AccountPayable
                 Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
             End Function
             userControl.HostMessageController = MasterPage.MessageController
+
+            userControl.SortAndHighlightGridHeaderFunc = sub (grid as GridView,gridSortDirection as string)
+                HighLightSortColumn(grid, gridSortDirection)
+            End sub
+            
         End Sub
 
 #End Region
@@ -250,7 +253,9 @@ Namespace Claims.AccountPayable
                     cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
                     InvoiceLinesGrid.PageSize = State.SelectedPageSize
                 End If
-
+                GetDv()
+                PopulateApLinesGrid()
+                SetGridItemStyleColor(InvoiceLinesGrid)
             End If
 
             If State.IsNewInvoice Then
@@ -350,24 +355,6 @@ Namespace Claims.AccountPayable
 
         End Sub
 
-        Private Sub FillDropdownList()
-
-            If InvoiceLinesGrid.EditIndex = -1 Then Exit Sub
-            Dim gRow As GridViewRow = InvoiceLinesGrid.Rows(InvoiceLinesGrid.EditIndex)
-            Dim moUnitOfMeasure As DropDownList = DirectCast(gRow.Cells(UnitOfMeasurementCol).FindControl(UnitOfMeasurementControlName), DropDownList)
-            If Not moUnitOfMeasure Is Nothing Then
-                Dim upgtermUnitOfMeasureLkl As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("UNIT_OF_MEASURE", Thread.CurrentPrincipal.GetLanguageCode())
-                moUnitOfMeasure.Populate(upgtermUnitOfMeasureLkl, New PopulateOptions() With
-                                                 {
-                                                   .AddBlankItem = False,
-                                                   .TextFunc = AddressOf PopulateOptions.GetDescription,
-                                                   .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
-                                                  })
-            End If
-
-
-        End Sub
-
         Private Sub PopulateApLinesGrid(Optional ByVal oAction As String = ActionNone)
 
             Try
@@ -378,39 +365,39 @@ Namespace Claims.AccountPayable
                 State.SearchDv.Sort = SortDirection
                 State.IsGridVisible = True
                 State.TotalLines = State.SearchDv.Count
-                Select Case oAction
-                    Case ActionNone
-                        State.BnoRow = False
-                        State.ApInvoiceLineId = Guid.Empty
-                        SetPageAndSelectedIndexFromGuid(State.SearchDv, Guid.Empty, InvoiceLinesGrid, 0)
-                        SetGridButtonState(True)
-                    Case ActionSave
-                        State.BnoRow = False
-                        State.ApInvoiceLineId = Guid.Empty
-                        SetPageAndSelectedIndexFromGuid(State.SearchDv, State.ApInvoiceLineId, InvoiceLinesGrid, InvoiceLinesGrid.PageIndex)
-                        SetGridButtonState(True)
-                    Case ActionCancelDelete
-                        State.BnoRow = False
-                        State.ApInvoiceLineId = Guid.Empty
-                        SetPageAndSelectedIndexFromGuid(State.SearchDv, Guid.Empty, InvoiceLinesGrid, InvoiceLinesGrid.PageIndex)
-                        SetGridButtonState(True)
-                    Case ActionEdit
-                        State.BnoRow = False
-                        SetPageAndSelectedIndexFromGuid(State.SearchDv, State.ApInvoiceLineId, InvoiceLinesGrid, State.PageIndex, True)
-                        SetGridButtonState(False)
-                    Case ActionNew
-                        If State.IsNewInvoiceLine Then State.SearchDv.Table.DefaultView.Sort() = Nothing
-                        Dim oRow As DataRow = State.SearchDv.Table.NewRow
-                        State.ApInvoiceLinesBo = New ApInvoiceLines
-                        oRow(ZeroRowIndex) = State.ApInvoiceLinesBo.Id.ToByteArray
-                        oRow(ApInvoiceLines.APInvoiceLinesDV.COL_LINE_NUMBER) = State.SearchDv.Count + 1
-                        State.ApInvoiceLineId = State.ApInvoiceLinesBo.Id
-                        State.SearchDv.Table.Rows.Add(oRow)
-                        SetPageAndSelectedIndexFromGuid(State.SearchDv, State.ApInvoiceLinesBo.Id, InvoiceLinesGrid, InvoiceLinesGrid.PageIndex, True)
-                        SetGridButtonState(False)
-                        State.BnoRow = True
+                  Select Case oAction
+                        Case ActionNone
+                            State.BnoRow = False
+                            State.ApInvoiceLineId = Guid.Empty
+                            SetPageAndSelectedIndexFromGuid(State.SearchDv, Guid.Empty, InvoiceLinesGrid, 0)
+                            SetGridButtonState(True)
+                        Case ActionSave
+                            State.BnoRow = False
+                            State.ApInvoiceLineId = Guid.Empty
+                            SetPageAndSelectedIndexFromGuid(State.SearchDv, State.ApInvoiceLineId, InvoiceLinesGrid, InvoiceLinesGrid.PageIndex)
+                            SetGridButtonState(True)
+                        Case ActionCancelDelete
+                            State.BnoRow = False
+                            State.ApInvoiceLineId = Guid.Empty
+                            SetPageAndSelectedIndexFromGuid(State.SearchDv, Guid.Empty, InvoiceLinesGrid, InvoiceLinesGrid.PageIndex)
+                            SetGridButtonState(True)
+                        Case ActionEdit
+                            State.BnoRow = False
+                            SetPageAndSelectedIndexFromGuid(State.SearchDv, State.ApInvoiceLineId, InvoiceLinesGrid, State.PageIndex, True)
+                            SetGridButtonState(False)
+                        Case ActionNew
+                            If State.IsNewInvoiceLine Then State.SearchDv.Table.DefaultView.Sort() = Nothing
+                            Dim oRow As DataRow = State.SearchDv.Table.NewRow
+                            State.ApInvoiceLinesBo = New ApInvoiceLines
+                            oRow(ZeroRowIndex) = State.ApInvoiceLinesBo.Id.ToByteArray
+                            oRow(ApInvoiceLines.APInvoiceLinesDV.COL_LINE_NUMBER) = State.SearchDv.Count + 1
+                            State.ApInvoiceLineId = State.ApInvoiceLinesBo.Id
+                            State.SearchDv.Table.Rows.Add(oRow)
+                            SetPageAndSelectedIndexFromGuid(State.SearchDv, State.ApInvoiceLinesBo.Id, InvoiceLinesGrid, InvoiceLinesGrid.PageIndex, True)
+                            SetGridButtonState(False)
+                            State.BnoRow = True
 
-                End Select
+                    End Select
 
                 InvoiceLinesGrid.AutoGenerateColumns = False
                 InvoiceLinesGrid.Columns(ItemCodeCol).SortExpression = ApInvoiceLines.ITEM_CODE_COL
@@ -616,35 +603,42 @@ Namespace Claims.AccountPayable
         End Sub
 
         Private Sub SortAndBindGrid()
-            TranslateGridHeader(InvoiceLinesGrid)
             If (State.SearchDv.Count = 0) Then
 
                 CreateHeaderForEmptyGrid(InvoiceLinesGrid, SortDirection)
 
             Else
                 InvoiceLinesGrid.Enabled = True
+                InvoiceLinesGrid.PageSize = State.SelectedPageSize
+                HighLightSortColumn(InvoiceLinesGrid, SortDirection)
                 InvoiceLinesGrid.DataSource = State.SearchDv
                 InvoiceLinesGrid.DataBind()
             End If
-            If Not InvoiceLinesGrid.BottomPagerRow Is Nothing AndAlso Not InvoiceLinesGrid.BottomPagerRow.Visible Then InvoiceLinesGrid.BottomPagerRow.Visible = True
+            lblRecordCount.Text = $"{State.SearchDv.Count} {TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)}"
             ControlMgr.SetVisibleControl(Me, InvoiceLinesGrid, State.IsGridVisible)
             Session("recCount") = State.SearchDv.Count
-
+           
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, InvoiceLinesGrid)
         End Sub
-        Private Sub POGrid_PageIndexChanged(ByVal pageSource As Object, ByVal e As GridViewPageEventArgs) Handles InvoiceLinesGrid.PageIndexChanging
+        Private Sub InvoiceLinesGrid_PageIndexChanging(ByVal pageSource As Object, ByVal e As GridViewPageEventArgs) Handles InvoiceLinesGrid.PageIndexChanging
 
             Try
                 If (Not (State.IsEditMode)) Then
                     State.PageIndex = e.NewPageIndex
                     InvoiceLinesGrid.PageIndex = State.PageIndex
-                    PopulateApLinesGrid()
-                    InvoiceLinesGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
-                End If
+                   End If
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
 
+        End Sub
+        Private Sub InvoiceLinesGrid_PageIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles InvoiceLinesGrid.PageIndexChanged
+            Try
+                State.PageIndex  = NewCurrentPageIndex(InvoiceLinesGrid,CType(Session("RecCount"), Integer),CType(CboPageSize.SelectedValue, Integer))
+                PopulateApLinesGrid(ActionSave)
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+           End Try
         End Sub
 
         Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles InvoiceLinesGrid.RowDataBound
@@ -743,7 +737,7 @@ Namespace Claims.AccountPayable
         Protected Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles btnApply_WRITE.Click
             Try
                 PopulateBoFromForm()
-                SaveInvoiceHeader()
+                SaveInvoiceHeader(true)
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
@@ -762,11 +756,12 @@ Namespace Claims.AccountPayable
                 If (MatchInvoice()) Then
                     PopulateBoFromForm()
                     State.ApInvoiceHeaderBo.PaymentStatusXcd = InvoiceStatusComplete
-                    SaveInvoiceHeader()
-                    SetFinalizedInvoiceControls()
+                    SaveInvoiceHeader(false)
                     MasterPage.MessageController.AddSuccess(Message.MSG_ERR_INVOICE_AMOUNT_MATCHED_WITH_LINES)
+                    RunInvoiceMatching()
+                    SetFinalizedInvoiceControls()
                 Else
-                    MasterPage.MessageController.AddInformation(Message.MSG_ERR_INVOICE_AMOUNT_NOT_MATCHED_WITH_LINES)
+                    MasterPage.MessageController.AddError(Message.MSG_ERR_INVOICE_AMOUNT_NOT_MATCHED_WITH_LINES)
                 End If
 
             Catch ex As Exception
@@ -874,6 +869,11 @@ Namespace Claims.AccountPayable
             ucApInvoiceLinesSearch.NewCurrentPageIndexFunc = Function(grid As GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer)
                 Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
             End Function
+
+            ucApInvoiceLinesSearch.SortAndHighlightGridHeaderFunc = sub (grid as GridView,gridSortDirection as string)
+                HighLightSortColumn(grid, gridSortDirection)
+            End sub
+
             ucApInvoiceLinesSearch.CompanyId = State.CompanyId
             ucApInvoiceLinesSearch.ServiceCenterId =  New Guid(moVendorDropDown.SelectedItem.Value)
             ucApInvoiceLinesSearch.ServiceCenter = moVendorDropDown.SelectedItem.Text
@@ -912,15 +912,17 @@ Namespace Claims.AccountPayable
 
         End Function
 
-        Private Sub SaveInvoiceHeader()
+        Private Sub SaveInvoiceHeader(ByVal showStatus As Boolean)
             Try
 
                 If (State.ApInvoiceHeaderBo.IsDirty) Then
                     State.ApInvoiceHeaderBo.SaveInvoiceHeader()
                     State.IsAfterSave = True
                     State.IsNewInvoice = False
-                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
-                    ReturnFromEditing()
+                    if showStatus Then
+                        MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    End If
+                   ReturnFromEditing()
                 Else
                     MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                     ReturnFromEditing()
@@ -951,7 +953,17 @@ Namespace Claims.AccountPayable
             End If
             Return bIsOk
         End Function
+       private sub RunInvoiceMatching()
+           Try
+               Dim matchedCnt As Integer = ApInvoiceHeader.MatchInvoice(State.ApInvoiceHeaderBo.Id)
+               Dim strSuccessMsg As String = TranslationBase.TranslateLabelOrMessage("AP_INVOICE_MATCH_SUCCESS") & ": " & matchedCnt
+               MasterPage.MessageController.AddSuccess(strSuccessMsg, False)
 
+           Catch ex As Exception
+               HandleErrors(ex, MasterPage.MessageController)
+           End Try
+       End sub
+       
 #End Region
 
     End Class
