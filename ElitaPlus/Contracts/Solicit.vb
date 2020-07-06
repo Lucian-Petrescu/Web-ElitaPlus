@@ -111,7 +111,7 @@ Public Class Solicit
         <JsonProperty("customerId")>
         Public Property CUSTOMER_ID As String
         <JsonProperty("applyDate")>
-        Public Property APPY_DATE_SOLICITATION_DATE As String
+        Public Property APPLY_DATE_SOLICITATION_DATE As String
         <JsonProperty("openDateFromLeadFile")>
         Public Property OPEN_DATE_FROM_LEAD_FILE As String
         <JsonProperty("source")>

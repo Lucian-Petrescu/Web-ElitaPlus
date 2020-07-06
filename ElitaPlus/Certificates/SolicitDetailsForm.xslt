@@ -22,29 +22,30 @@
           </tr>
         </xsl:if>
         <tr>
-          <th>
-            <a href="#">Initial Sales Order Number</a>
+          <th nowrap="nowrap">
+            <a href="#"><xsl:value-of select="ArrayOfSolicitDetails/SolicitDetails/labelTranslation/INITIAL_SALES_ORDER" />
+</a>
           </th>
-          <th>
-            <a href="#">Customer ID</a>
+          <th nowrap="nowrap">
+            <a href="#"><xsl:value-of select="ArrayOfSolicitDetails/SolicitDetails/labelTranslation/CUSTOMER_ID" /> </a>
           </th>
-          <th>
-            <a href="#">Customer Last Name</a>
+          <th nowrap="nowrap">
+            <a href="#"><xsl:value-of select="ArrayOfSolicitDetails/SolicitDetails/labelTranslation/CUSTOMER_LAST_NAME" /></a>
           </th>
-          <th>
-            <a href="#">Customer First Name</a>
+          <th nowrap="nowrap">
+            <a href="#"><xsl:value-of select="ArrayOfSolicitDetails/SolicitDetails/labelTranslation/CUSTOMER_FIRST_NAME" /></a>
           </th>
-          <th>
-            <a href="#">Apply Date/Solicitation Date</a>
+          <th nowrap="nowrap">
+            <a href="#"><xsl:value-of select="ArrayOfSolicitDetails/SolicitDetails/labelTranslation/APPLY_DATE_SOLICITATION_DATE" /></a>
+          </th >
+          <th nowrap="nowrap">
+            <a href="#"><xsl:value-of select="ArrayOfSolicitDetails/SolicitDetails/labelTranslation/SIM_HOME_PHONE_NUMBER" /></a>
           </th>
-          <th>
-            <a href="#">SIM Phone Number</a>
+          <th nowrap="nowrap">
+            <a href="#"><xsl:value-of select="ArrayOfSolicitDetails/SolicitDetails/labelTranslation/SOURCE" /></a>
           </th>
-          <th>
-            <a href="#">Source</a>
-          </th>
-          <th>
-            <a href="#">Lead record status</a>
+          <th nowrap="nowrap">
+            <a href="#"><xsl:value-of select="ArrayOfSolicitDetails/SolicitDetails/labelTranslation/LEAD_RECORD_STATUS" /></a>
           </th>
         </tr>
         <xsl:for-each select="ArrayOfSolicitDetails/SolicitDetails">
@@ -122,120 +123,120 @@
                 <table class="" width="100%" bgColor="#f2f2f2" border="0" cellspacing="0" cellpadding="0">
                   <tbody>
                     <tr class="out">
-                      <td align="right" nowrap="nowrap">Initial Sales Order Number :</td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/INITIAL_SALES_ORDER" />:</td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="origin/salesOrderNumber"/>
                       </td>
-                      <td align="right" nowrap="nowrap">Customer ID :</td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/CUSTOMER_ID" />:</td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="customer/id" />
                       </td>
                     </tr>
                     <tr class="out">
-                      <td align="right" nowrap="nowrap">Apply Date from Lead file : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/APPLY_DATE_SOLICITATION_DATE" />:</td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="effectiveDate" />
                       </td>
-                      <td align="right" nowrap="nowrap">Open Date from Lead file : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/OPEN_DATE_FROM_LEAD_FILE" />: </td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="effectiveDate" />
                       </td>
                     </tr>
                     <tr class="out">
-                      <td align="right" nowrap="nowrap">Source : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/SOURCE" />: </td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="creationSourceName" />
                       </td>
-                      <td align="right" nowrap="nowrap">Lead record status : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/LEAD_RECORD_STATUS" /> : </td>
                       <td nowrap="nowrap">
                             <xsl:value-of select="status" />
                       </td>
                     </tr>
                     <tr class="out">
-                      <td align="right" nowrap="nowrap">Expiration Date: </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/EXPIRATION_DATE" /> : </td>
                       <td nowrap="nowrap">
                             <xsl:value-of select="expirationDate" />
                       </td>
-                      <td align="right" nowrap="nowrap">Customer Last Name : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/CUSTOMER_LAST_NAME" /> : </td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="customer/lastName" />
                       </td>
                     </tr>
                     <tr class="out">
-                      <td align="right" nowrap="nowrap">Customer Last Name : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/CUSTOMER_FIRST_NAME" /> : </td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="customer/firstName" />
                       </td>
-                      <td align="right" nowrap="nowrap">Last Name Kana : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/LAST_NAME_KANA" /> : </td>
                       <td nowrap="nowrap">
                             <xsl:value-of select="customer/lastNameKana" />
                         
                       </td>
                     </tr>
                     <tr class="out">
-                      <td align="right" nowrap="nowrap">First Name Kana : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/FIRST_NAME_KANA" /> : </td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="customer/firstNameKana" />
                       </td>
-                      <td align="right" nowrap="nowrap">Customer Birthdate : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/CUSTOMER_BIRTH_DATE" /> : </td>
                       <td nowrap="nowrap">
                             <xsl:value-of select="customer/dateOfBirth" />
                       </td>
                     </tr>
                     <tr class="out">
-                      <td align="right" nowrap="nowrap">Address : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/ADDRESS" /> : </td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="customer/address/address1" />
                       </td>
-                      <td align="right" nowrap="nowrap">Postal Code : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/POSTAL_CODE" /> : </td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="customer/address/zipCode" />
                       </td>
                     </tr>
                     <tr class="out">
-                      <td align="right" nowrap="nowrap">Email : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/E_MAIL" /> : </td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="customer/emailAddress" />
                       </td>
                     
-                      <td align="right" nowrap="nowrap">Telephone Number : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/TEL_MOB_PHONE_NUMBER" /> : </td>
                       <td nowrap="nowrap">
                             <xsl:value-of select="customer/workPhoneNumber" />
                        
                       </td>
                     </tr>
                     <tr class="out">
-                      <td align="right" nowrap="nowrap">SIM Phone Number: </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/SIM_HOME_PHONE_NUMBER" /> : </td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="customer/cellPhoneNumber" />
                       </td>
-                      <td align="right" nowrap="nowrap">Sales Channel : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/SALES_CHANNEL" /> : </td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="origin/channelCode" />
                       </td>
                     </tr>
                     <tr class="out">
-                      <td align="right" nowrap="nowrap">Shop ID : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/SHOP_ID" /> : </td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="origin/organization/code" />
                       </td>
-                      <td align="right" nowrap="nowrap">Shop Name : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/SHOP_NAME" /> : </td>
                        <td nowrap="nowrap">
                         <xsl:value-of select="origin/organization/name" />
                       </td>
                     </tr>
                     <tr class="out">
-                      <td align="right" nowrap="nowrap">Shop Address : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/SHOP_NAME" /> : </td>
                        <td nowrap="nowrap">
                         <xsl:value-of select="origin/organization/address/address1" />
                       </td>
-                    <td align="right" nowrap="nowrap">Shop Zip Code : </td>
+                    <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/SHOP_ZIP_CODE" /> : </td>
                        <td nowrap="nowrap">
                         <xsl:value-of select="origin/organization/address/zipCode" />
                       </td>
                     </tr>
                     <tr class="out">
-                      <td align="right" nowrap="nowrap">Shop Telephone Number : </td>
+                      <td align="right" nowrap="nowrap"><xsl:value-of select="labelTranslation/SHOP_TELE_PHONE_NUMBER" /> : </td>
                       <td nowrap="nowrap">
                         <xsl:value-of select="origin/organization/workPhoneNumber" />
                       </td>
