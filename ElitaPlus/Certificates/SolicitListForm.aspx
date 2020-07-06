@@ -156,13 +156,11 @@
              var currentPage = parseInt(document.getElementById(currentPageId).value);
              var tempLocation;
              if (newPage == document.getElementById(currentPageId).value) { return; }
-             //document.getElementById('pg1_' + document.getElementById(currentPageId).value).style.cursor = 'pointer';
-             //document.getElementById('pg1_' + document.getElementById(currentPageId).value).setAttribute('class', '');
+          
              document.getElementById('pg2_' + document.getElementById(currentPageId).value).style.cursor = 'pointer';
              document.getElementById('pg2_' + document.getElementById(currentPageId).value).setAttribute('class', '');
              document.getElementById(currentPageId).value = newPageNumber;
-            // document.getElementById('pg1_' + document.getElementById(currentPageId).value).style.cursor = 'text';
-             //document.getElementById('pg1_' + document.getElementById(currentPageId).value).setAttribute('class', 'selected_page');
+           
              document.getElementById('pg2_' + document.getElementById(currentPageId).value).style.cursor = 'text';
              document.getElementById('pg2_' + document.getElementById(currentPageId).value).setAttribute('class', 'selected_page');
              for (i = 1; i <= pageSize; i++) {
@@ -177,7 +175,7 @@
                      document.getElementById('trd_' + tempLocation).style.display = "block";
                  }
              }
-             //SelectSolicitId('XXXX');
+            
          }
 
          if (document.getElementById('pg1_1') != null) {
@@ -190,6 +188,6 @@
              document.getElementById('pg2_1').setAttribute('class', 'selected_page');
          }
 
-        //resizeScroller(document.getElementById("scroller"));
+        
     </script>
 </asp:Content>
