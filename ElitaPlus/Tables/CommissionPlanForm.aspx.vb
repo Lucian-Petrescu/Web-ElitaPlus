@@ -696,7 +696,7 @@ Namespace Tables
             Try
                 If IsDirtyPlanBO() = True Then
                     oPlan = TheCommPlan
-                    datesOverlapFlag = oPlan.CheckDatesOverLap(oPlan.DealerId, oPlan.ExpirationDate)
+                    datesOverlapFlag = oPlan.CheckDatesOverLap(oPlan.DealerId, oPlan.ExpirationDate, oPlan.Id)
                     If datesOverlapFlag = "N" Then
                         oPlan.Save()
                         Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
