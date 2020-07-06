@@ -732,7 +732,9 @@ Namespace Tables
                     End With
                 End If
             Catch ex As Exception
-                Me.LoadDistributionList()
+                'Me.LoadDistributionList()
+                RePopulateDistributionListForPlan()
+                SetGridSourceXcdLabelFromBo()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
                 bIsOk = False
             End Try
@@ -1659,6 +1661,7 @@ Namespace Tables
             If moGridView.EditIndex < 0 Then Return False ' Distribution is not in edit mode
             If Me.State.IsNewWithCopy Then
                 Me.LoadDistributionList()
+                'RePopulateDistributionListForPlan()
                 Me.State.moDistributionList(moGridView.SelectedIndex).Validate()
                 Return bIsOk
             End If
@@ -1778,6 +1781,7 @@ Namespace Tables
                 If Me.State.IsNewWithCopy Then
                     If Me.State.moDistributionList Is Nothing Then
                         Me.LoadDistributionList()
+                        'RePopulateDistributionListForPlan()
                     End If
                     Me.State.moDistributionList(nIndex) = Nothing
                 Else
@@ -1816,6 +1820,7 @@ Namespace Tables
                     oDataView = oDistribution.getPlanList(Guid.Empty)
                     If Not oAction = ACTION_CANCEL_DELETE Then
                         Me.LoadDistributionList()
+                        'RePopulateDistributionListForPlan()
                     End If
                     If Not Me.State.moDistributionList Is Nothing Then
                         oDataView = getDVFromArray(Me.State.moDistributionList, oDataView.Table)
@@ -1906,6 +1911,7 @@ Namespace Tables
                     oDataView = oDistribution.getPlanList(Guid.Empty)
                     If Not oAction = ACTION_CANCEL_DELETE Then
                         Me.LoadDistributionList()
+                        'RePopulateDistributionListForPlan()
                     End If
                     If Not Me.State.moDistributionList Is Nothing Then
                         oDataView = getDVFromArray(Me.State.moDistributionList, oDataView.Table)
