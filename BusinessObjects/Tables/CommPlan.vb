@@ -311,11 +311,11 @@ Public Class CommPlan
     End Function
 
     'Public Shared Function CheckDatesOverLap(ByVal pi_dealer_id As Guid, byval pi_effective_date As Date, pi_expiration_date as Date ) As String
-    Public Shared Function CheckDatesOverLap(ByVal pi_dealer_id As Guid, ByVal pi_expiration_date as Date ) As String
+    Public Shared Function CheckDatesOverLap(ByVal pi_dealer_id As Guid, ByVal pi_expiration_date as Date, ByVal pi_commmission_plan_id As Guid ) As String
         Try
             Dim dal As New CommPlanDAL
             'Return dal.CheckDatesOverLap(pi_dealer_id ,pi_effective_date , pi_expiration_date )
-            Return dal.CheckDatesOverLap(pi_dealer_id, pi_expiration_date )
+            Return dal.CheckDatesOverLap(pi_dealer_id, pi_expiration_date, pi_commmission_plan_id )
        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try

@@ -696,7 +696,7 @@ Namespace Tables
             Try
                 If IsDirtyPlanBO() = True Then
                     oPlan = TheCommPlan
-                    datesOverlapFlag = oPlan.CheckDatesOverLap(oPlan.DealerId, oPlan.ExpirationDate)
+                    datesOverlapFlag = oPlan.CheckDatesOverLap(oPlan.DealerId, oPlan.ExpirationDate, oPlan.Id)
                     If datesOverlapFlag = "N" Then
                         oPlan.Save()
                         Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
@@ -883,7 +883,7 @@ Namespace Tables
                             SetGridSourceXcdLabelFromBo()
                             SetGridControls(moGridView, True)
                             EnableDisableControls(Me.moCoverageEditPanel, True)
-                            setbuttons(False)
+                            setbuttons(True)
                             btnBack.Visible = True
                     End Select
                 End If
@@ -896,7 +896,7 @@ Namespace Tables
                 SetGridSourceXcdLabelFromBo()
                 SetGridControls(moGridView, True)
                 EnableDisableControls(Me.moCoverageEditPanel, True)
-                setbuttons(False)
+                setbuttons(True)
                 btnBack.Visible = True
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -920,7 +920,7 @@ Namespace Tables
                             SetGridSourceXcdLabelFromBo()
                             SetGridControls(moGridView, True)
                             EnableDisableControls(Me.moCoverageEditPanel, True)
-                            setbuttons(False)
+                            setbuttons(True)
                             btnBack.Visible = True
                     End Select
                 End If
@@ -933,7 +933,7 @@ Namespace Tables
                 SetGridSourceXcdLabelFromBo()
                 SetGridControls(moGridView, True)
                 EnableDisableControls(Me.moCoverageEditPanel, True)
-                setbuttons(False)
+                setbuttons(True)
                 btnBack.Visible = True
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -1583,7 +1583,7 @@ Namespace Tables
                     TheDealerControl.ChangeEnabledControlProperty(False)
                 End If
 
-                setbuttons(False)
+                setbuttons(True)
                 btnBack.Visible = True
                 btnSave_WRITE.Visible = False
                 BtnSaveRate_WRITE.Visible = True
@@ -1621,7 +1621,7 @@ Namespace Tables
                     SetGridSourceXcdLabelFromBo()
                     SetGridControls(moGridView, True)
                     EnableDisableControls(Me.moCoverageEditPanel, True)
-                    setbuttons(False)
+                    setbuttons(True)
                     btnBack.Visible = True
                 End If
 
@@ -1638,7 +1638,7 @@ Namespace Tables
         End Sub
 
         Private Sub setbuttons(ByVal enable As Boolean)
-            ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enable)
+            ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enable)            
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, enable)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, enable)
             ControlMgr.SetEnableControl(Me, btnUndo_WRITE, enable)

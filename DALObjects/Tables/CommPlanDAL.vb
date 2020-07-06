@@ -180,7 +180,7 @@ Public Class CommPlanDAL
     End Function
 
     'Public Function CheckDatesOverLap(ByVal pi_dealer_id As Guid, ByVal pi_effective_date As Date, pi_expiration_date As Date) As String
-    Public Function CheckDatesOverLap(ByVal pi_dealer_id As Guid, ByVal pi_expiration_date As Date) As String
+    Public Function CheckDatesOverLap(ByVal pi_dealer_id As Guid, ByVal pi_expiration_date As Date, ByVal pi_commmission_plan_id As Guid) As String
         Try
             Dim selectStmt As String = Me.Config("/SQL/CHECK_FOR_DATES_OVERLAP")
 
@@ -188,7 +188,8 @@ Public Class CommPlanDAL
             '                                                                                     New DBHelper.DBHelperParameter("pi_effective_date", pi_effective_date),
             '                                                                                     New DBHelper.DBHelperParameter("pi_expiration_date", pi_expiration_date)}
             Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_dealer_id", pi_dealer_id.ToByteArray),                                                                                                 
-                                                                                                 New DBHelper.DBHelperParameter("pi_expiration_date", pi_expiration_date)}
+                                                                                                 New DBHelper.DBHelperParameter("pi_expiration_date", pi_expiration_date),
+                                                                                                 New DBHelper.DBHelperParameter("pi_Commmission_Plan_id", pi_commmission_plan_id.ToByteArray)}
 
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_status", GetType(String))}
 
