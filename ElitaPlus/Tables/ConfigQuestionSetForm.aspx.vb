@@ -159,7 +159,13 @@ Namespace Tables
                             Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                             Me.CreateNewWithCopy()
                         Case ElitaPlusPage.DetailPageCommand.Delete
-                            DoDelete()
+                            Try
+                                Dim bal As New ConfigQuestionSet
+                                bal.DeleteConfiguration(Me.State.MyBO.Id)
+                                Me.ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+                            Catch ex As Exception
+                                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                            End Try
                         Case ElitaPlusPage.DetailPageCommand.BackOnErr
                             Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
                     End Select
@@ -436,17 +442,6 @@ Namespace Tables
             End If
         End Sub
 
-        Private Sub DoDelete()
-            Try
-                Me.State.MyBO.DeleteAndSave()
-                Me.State.HasDataChanged = True
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
-            Catch ex As Threading.ThreadAbortException
-            Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
-
 #End Region
 
 #Region "Button event handlers"
@@ -509,7 +504,12 @@ Namespace Tables
                     Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                     Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
-                    Me.CreateNew()
+                    Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+                    Me.State.MyBO = New ConfigQuestionSet
+                    PopulateDropdowns()
+                    Me.PopulateFormFromBOs()
+                    Me.EnableDisableFields()
+                    AddLabelDecorations(Me.State.MyBO)
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)

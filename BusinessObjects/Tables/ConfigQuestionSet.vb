@@ -285,20 +285,12 @@
         End Try
     End Sub
 
-    Public Sub DeleteAndSave()
-        Me.BeginEdit()
-
+    Public Sub DeleteConfiguration(ByVal configQuestionSetId As Guid)
         Try
-            Me.Delete()
-            Me.Save()
+            Dim dal As New ConfigQuestionSetDAL
+            dal.DeleteConfiguration(configQuestionSetId)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Me.cancelEdit()
             Throw New DataBaseAccessException(ex.ErrorType, ex)
-        Catch ex As RowNotInTableException
-            ex = Nothing
-        Catch ex As Exception
-            Me.cancelEdit()
-            Throw ex
         End Try
     End Sub
 

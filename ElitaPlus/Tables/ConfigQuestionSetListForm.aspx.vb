@@ -404,8 +404,8 @@ Namespace Tables
         Private Function GetProductListByDealer() As ListItem()
             Dim oListContext As New ListContext
             oListContext.DealerId = Guid.Parse(ddlSearchDealer.SelectedValue)
-            Dim oProductListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByDealer", context:=oListContext)
-            Return oProductListForCompany.ToArray()
+            Dim oProductListForDealer As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByDealer", context:=oListContext)
+            Return oProductListForDealer.ToArray()
         End Function
 
         Private Function GetProductCodeListByCompanyForUser() As ListItem()
@@ -606,7 +606,7 @@ Namespace Tables
 
             If ddlSearchDealer.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
 
-                If ddlSearchCompany.SelectedIndex = BLANK_ITEM_SELECTED Then
+                If ddlSearchDealer.SelectedIndex = BLANK_ITEM_SELECTED Then
                     Exit Sub
                 End If
 
