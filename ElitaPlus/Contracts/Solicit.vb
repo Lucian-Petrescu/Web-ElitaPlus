@@ -2,6 +2,7 @@
 Imports Newtonsoft.Json
 Public Class Solicit
 
+
     Public Class Address
         <JsonProperty("address1")>
         Public Property address1 As String
@@ -95,11 +96,62 @@ Public Class Solicit
         Public Property conversionDate As DateTime?
         <JsonProperty("expirationDate")>
         Public Property expirationDate As DateTime?
+        <JsonProperty("labelTranslation")>
+        Public Property labelTranslation As SolicitLabelTranslation
     End Class
     Public Class SolicitSearch
         <JsonProperty("ownerOrganizationCode", Required:=Required.Always)>
         Public Property OwnerOrganizationCode As String
         <JsonProperty("locatorProperties", Required:=Required.Always)>
         Public Property LocatorProperties As Dictionary(Of String, String)
+    End Class
+    Public Class SolicitLabelTranslation
+        <JsonProperty("initialSalesOrder")>
+        Public Property INITIAL_SALES_ORDER As String
+        <JsonProperty("customerId")>
+        Public Property CUSTOMER_ID As String
+        <JsonProperty("applyDate")>
+        Public Property APPY_DATE_SOLICITATION_DATE As String
+        <JsonProperty("openDateFromLeadFile")>
+        Public Property OPEN_DATE_FROM_LEAD_FILE As String
+        <JsonProperty("source")>
+        Public Property SOURCE As String
+        <JsonProperty("leadRecordStatus")>
+        Public Property LEAD_RECORD_STATUS As String
+        <JsonProperty("expirationDate")>
+        Public Property EXPIRATION_DATE As String
+        <JsonProperty("customerLastName")>
+        Public Property CUSTOMER_LAST_NAME As String
+        <JsonProperty("customerFirstName")>
+        Public Property CUSTOMER_FIRST_NAME As String
+        <JsonProperty("lastNameKana")>
+        Public Property LAST_NAME_KANA As String
+        <JsonProperty("firstNameKana")>
+        Public Property FIRST_NAME_KANA As String
+        <JsonProperty("customerBirthDate")>
+        Public Property CUSTOMER_BIRTH_DATE As String
+        <JsonProperty("address")>
+        Public Property ADDRESS As String
+        <JsonProperty("postalCode")>
+        Public Property POSTAL_CODE As String
+        <JsonProperty("email")>
+        Public Property E_MAIL As String
+        <JsonProperty("telMobPhoneNumber")>
+        Public Property TEL_MOB_PHONE_NUMBER As String
+        <JsonProperty("simMHomePhoneNumber")>
+        Public Property SIM_HOME_PHONE_NUMBER As String
+        <JsonProperty("shopId")>
+        Public Property SHOP_ID As String
+        <JsonProperty("shopChannel")>
+        Public Property SALES_CHANNEL As String
+        <JsonProperty("shopName")>
+        Public Property SHOP_NAME As String
+        <JsonProperty("shopZipCode")>
+        Public Property SHOP_ZIP_CODE As String
+        <JsonProperty("shopAddress")>
+        Public Property SHOP_ADDRESS As String
+        <JsonProperty("shopTelephoneNumber")>
+        Public Property SHOP_TELE_PHONE_NUMBER As String
+
     End Class
 End Class

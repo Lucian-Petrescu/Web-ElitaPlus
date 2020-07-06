@@ -139,7 +139,6 @@
              var selectedSolicitId = '<%=selectedSolicitId.ClientID%>';;
              document.getElementById(selectedSolicitId).value = theID;
          }
-
          function openClose(theID) {
              if (document.getElementById(theID).style.display == "block") {
                  document.getElementById(theID).style.display = "none";
@@ -157,13 +156,13 @@
              var currentPage = parseInt(document.getElementById(currentPageId).value);
              var tempLocation;
              if (newPage == document.getElementById(currentPageId).value) { return; }
-             document.getElementById('pg1_' + document.getElementById(currentPageId).value).style.cursor = 'pointer';
-             document.getElementById('pg1_' + document.getElementById(currentPageId).value).setAttribute('class', '');
+             //document.getElementById('pg1_' + document.getElementById(currentPageId).value).style.cursor = 'pointer';
+             //document.getElementById('pg1_' + document.getElementById(currentPageId).value).setAttribute('class', '');
              document.getElementById('pg2_' + document.getElementById(currentPageId).value).style.cursor = 'pointer';
              document.getElementById('pg2_' + document.getElementById(currentPageId).value).setAttribute('class', '');
              document.getElementById(currentPageId).value = newPageNumber;
-             document.getElementById('pg1_' + document.getElementById(currentPageId).value).style.cursor = 'text';
-             document.getElementById('pg1_' + document.getElementById(currentPageId).value).setAttribute('class', 'selected_page');
+            // document.getElementById('pg1_' + document.getElementById(currentPageId).value).style.cursor = 'text';
+             //document.getElementById('pg1_' + document.getElementById(currentPageId).value).setAttribute('class', 'selected_page');
              document.getElementById('pg2_' + document.getElementById(currentPageId).value).style.cursor = 'text';
              document.getElementById('pg2_' + document.getElementById(currentPageId).value).setAttribute('class', 'selected_page');
              for (i = 1; i <= pageSize; i++) {

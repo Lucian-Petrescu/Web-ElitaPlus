@@ -10,6 +10,7 @@ Imports System.Xml.Serialization
 Imports System.Xml.Xsl
 Imports System.IO
 Imports System.Collections.Generic
+Imports System.Reflection
 Imports System.Text
 Imports Newtonsoft.Json.Linq
 
@@ -21,7 +22,7 @@ Namespace Certificates
 #Region "Constants"
         ' Public Const URL As String = "Certificates/CertificateListForm.aspx"
         'Public Const PAGETITLE As String = "CERTIFICATE_SEARCH"
-        Public Const PAGETAB As String = "SOLICITES"
+        Public Const PAGETAB As String = "SOLICITATION"
         Public Const SEARCH_EXCEPTION As String = "Enter Correct Search Criterion(s)" 'Solicit List Search Exception
         Public Const NO_DEALER_SELECTED = "--"
         Public Const NO_RECORDS_FOUND = "NO RECORDS FOUND."
@@ -29,11 +30,12 @@ Namespace Certificates
         Public Const CUSTOMER_ID = "customerId"
         Public Const APPLY_DATE = "effectiveDate"
         Public Const SIM_PHONE_NUMBER = "simPhoneNumber"
-#End Region
 
+#End Region
 #Region "Page State"
         Private IsReturningFromChild As Boolean = False
         Private Shared searchTypeItems() As String = {"SOLICITNUM"}
+        Public DEALER_CODE As String = System.Configuration.ConfigurationManager.AppSettings("DealerCode")
 
         Class MyState
 
@@ -85,6 +87,7 @@ Namespace Certificates
                     Me.MasterPage.UsePageTabTitleInBreadCrum = False
                     ' Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("")
                     Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Solicites")
+
                     UpdateBreadCrum()
 
                     'TranslateGridHeader(Grid)
@@ -103,22 +106,35 @@ Namespace Certificates
                     If objPrincipal.PrivacyUserType = AppConfig.DataProtectionPrivacyLevel.Privacy_DataProtection Then
                         Me.State.isDPO = True
                     End If
-
+                    If ddlDealer.Items.Count = 0 Then
+                        ddlDealer.Enabled = False
+                        btnSearch.Enabled = False
+                        btnClearSearch.Enabled = False
+                        Dim errors() As ValidationError = {New ValidationError("No dealers found for Solicitation", GetType(Solicit), Nothing, "Search", Nothing)}
+                        Throw New BOValidationException(errors, GetType(Solicit).FullName)
+                    Else
+                        ddlDealer.Enabled = True
+                        btnSearch.Enabled = True
+                        btnClearSearch.Enabled = True
+                    End If
                 End If
-                Me.DisplayNewProgressBarOnClick(Me.btnSearch, "Loading Solicit")
+
+                Me.DisplayNewProgressBarOnClick(Me.btnSearch, "Loading Solicit(s)")
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
             Me.ShowMissingTranslations(Me.MasterPage.MessageController)
         End Sub
+        Protected Sub Page_LoadComplete(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LoadComplete
 
+        End Sub
 
         Private Sub UpdateBreadCrum()
             If (Not Me.State Is Nothing) Then
                 If (Not Me.State Is Nothing) Then
                     Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
-                        TranslationBase.TranslateLabelOrMessage("SOLICIT SEARCH")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("SOLICIT SEARCH")
+                        TranslationBase.TranslateLabelOrMessage("SOLICITATION SEARCH")
+                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("SOLICITATION SEARCH")
                 End If
             End If
         End Sub
@@ -157,7 +173,7 @@ Namespace Certificates
                     Throw New BOValidationException(errors, GetType(Solicit).FullName)
                 End If
                 If ddlDealer.SelectedIndex = &H0 Or ddlDealer.SelectedValue Is Nothing Then
-                    Dim errors() As ValidationError = {New ValidationError("DEALER_NAME_CANT_BE_EMPTY", GetType(Solicit), Nothing, "Search", Nothing)}
+                    Dim errors() As ValidationError = {New ValidationError("Dealer name cannot be empty", GetType(Solicit), Nothing, "Search", Nothing)}
                     Throw New BOValidationException(errors, GetType(Solicit).FullName)
                 End If
                 If ddlDealer.SelectedIndex > 0 Then
@@ -269,6 +285,8 @@ Namespace Certificates
                 If setvalue <> Guid.Empty Then
                     Me.SetSelectedItem(dealerDropDownList, setvalue)
                 End If
+
+
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -295,9 +313,12 @@ Namespace Certificates
 
                 End If
             Next
-
-            Return oDealerList.ToArray()
-
+            If DEALER_CODE <> String.Empty Then
+                oDealerList = oDealerList.Where(Function(o) o.Code = DEALER_CODE).ToList
+                Return oDealerList.ToArray()
+            Else
+                Return oDealerList.ToArray()
+            End If
         End Function
 
         Private Sub GetStateProperties()
@@ -351,7 +372,7 @@ Namespace Certificates
                 Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE_SOLICIT_API_URL), True)
 
                 If String.IsNullOrEmpty(oWebPasswd.Url) Then
-                    Throw New ArgumentNullException($"Web Password entry not found or Solicit  Api Url not configured for Service Type {Codes.SERVICE_TYPE_SOLICIT_API_URL}")
+                    Throw New ArgumentNullException($"Web Password entry not found or Solicitation  Api Url not configured for Service Type {Codes.SERVICE_TYPE_SOLICIT_API_URL}")
                 ElseIf String.IsNullOrEmpty(oWebPasswd.UserId) Or String.IsNullOrEmpty(oWebPasswd.Password) Then
                     Throw New ArgumentNullException($"Web Password username or password not configured for Service Type {Codes.SERVICE_TYPE_SOLICIT_API_URL}")
                 End If
@@ -362,6 +383,8 @@ Namespace Certificates
                 client.DefaultRequestHeaders.Accept.Add(New MediaTypeWithQualityHeaderValue("application/json"))
                 'pbi-543167 needs to revisit as currently organization code is hardcoded which evantaally gets generated using companyID+ dealer value(ddlDealer.SelectedValue)
                 Dim searchSolicit As Solicit.SolicitSearch = New Solicit.SolicitSearch()
+                'Form Organization code dynamically
+                'searchSolicit.OwnerOrganizationCode = policyInfo.WorkSpace.Workgroup.CompanyGroupCode & "-" + policyInfo.WorkSpace.Company.Code & "-" + dealerCode
                 searchSolicit.OwnerOrganizationCode = "ASJP-AJP-RSIM" 'value hard coded for now ddlDealer.SelectedValue value should be assigned later
                 Dim locatorProperties As New Dictionary(Of String, String)
                 If Not String.IsNullOrEmpty(txtInitialSalesOrder.Text.Trim) Then
@@ -386,10 +409,10 @@ Namespace Certificates
                 Dim url As New Uri(oWebPasswd.Url)
                 Dim response As HttpResponseMessage = client.PostAsync(url, requestBody).GetAwaiter().GetResult()
                 Dim json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
-
+                Dim solicitLabel As Solicit.SolicitLabelTranslation = GetAllLabelTranslation()
                 If Not response.IsSuccessStatusCode Then
                     'Me.MasterPage.MessageController.AddInformation("There is an error in displaying the SOLICIT Data", True)
-                    Throw New Exception($"There is an error in displaying the SOLICIT Data. {response.ReasonPhrase}")
+                    Throw New Exception($"There is an error in displaying the SOLICITATION Data. {response.ReasonPhrase}")
                 Else
                     Try
                         Dim jsonSolicitsArray As Newtonsoft.Json.Linq.JArray = New Newtonsoft.Json.Linq.JArray(json)
@@ -398,7 +421,7 @@ Namespace Certificates
                             'Throw New Exception($"No Records Found for SOLICIT Data. {response.ReasonPhrase}"
                         End If
                     Catch ex As Exception
-                        Throw New Exception($"No Records Found for SOLICIT Data,refine your search criteria to try again. {response.ReasonPhrase}")
+                        Throw New Exception($"No Records Found for SOLICITATION Data,refine your search criteria to try again. {response.ReasonPhrase}")
                     End Try
                 End If
 
@@ -406,6 +429,7 @@ Namespace Certificates
                     Dim solicitDetailsList As List(Of Solicit.SolicitDetails) = JsonConvert.DeserializeObject(Of List(Of Solicit.SolicitDetails))(json)
                     Dim solicitDetailsListXml As String = ConvertJsonToXML(solicitDetailsList)
                     ShowGridData(solicitDetailsListXml)
+
                 Catch ex As Exception
                     Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
                     'Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -417,20 +441,55 @@ Namespace Certificates
                 ' Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
+        Private Function GetAllLabelTranslation() As Solicit.SolicitLabelTranslation
+            Dim solicitLabel As Solicit.SolicitLabelTranslation = New Solicit.SolicitLabelTranslation()
+            solicitLabel.INITIAL_SALES_ORDER = TranslationBase.TranslateLabelOrMessage("INTIAL_SALES_ORDER")
+            solicitLabel.CUSTOMER_ID = TranslationBase.TranslateLabelOrMessage("CUSTOMER_ID")
+            solicitLabel.APPY_DATE_SOLICITATION_DATE = TranslationBase.TranslateLabelOrMessage("APPY_DATE_SOLICITATION_DATE")
+            solicitLabel.OPEN_DATE_FROM_LEAD_FILE = TranslationBase.TranslateLabelOrMessage("OPEN_DATE_FROM_LEAD_FILE")
+            solicitLabel.LEAD_RECORD_STATUS = TranslationBase.TranslateLabelOrMessage("LEAD_RECORD_STATUS")
+            solicitLabel.SOURCE = TranslationBase.TranslateLabelOrMessage("SOURCE")
+            solicitLabel.EXPIRATION_DATE = TranslationBase.TranslateLabelOrMessage("EXPIRATION_DATE")
+            solicitLabel.CUSTOMER_LAST_NAME = TranslationBase.TranslateLabelOrMessage("CUSTOMER_LAST_NAME")
+            solicitLabel.CUSTOMER_FIRST_NAME = TranslationBase.TranslateLabelOrMessage("CUSTOMER_FIRST_NAME")
+            solicitLabel.LAST_NAME_KANA = TranslationBase.TranslateLabelOrMessage("LAST_NAME_KANA")
+            solicitLabel.FIRST_NAME_KANA = TranslationBase.TranslateLabelOrMessage("FIRST_NAME_KANA")
+            solicitLabel.CUSTOMER_BIRTH_DATE = TranslationBase.TranslateLabelOrMessage("CUSTOMER_BIRTH_DATE")
+            solicitLabel.ADDRESS = TranslationBase.TranslateLabelOrMessage("ADDRESS")
+            solicitLabel.POSTAL_CODE = TranslationBase.TranslateLabelOrMessage("POSTAL_CODE")
+            solicitLabel.E_MAIL = TranslationBase.TranslateLabelOrMessage("E_MAIL")
+            solicitLabel.TEL_MOB_PHONE_NUMBER = TranslationBase.TranslateLabelOrMessage("TEL_MOB_PHONE_NUMBER")
+            solicitLabel.SIM_HOME_PHONE_NUMBER = TranslationBase.TranslateLabelOrMessage("SIM_HOME_PHONE_NUMBER")
+            solicitLabel.SALES_CHANNEL = TranslationBase.TranslateLabelOrMessage("SALES_CHANNEL")
+            solicitLabel.SHOP_ID = TranslationBase.TranslateLabelOrMessage("SHOP_ID")
+            solicitLabel.SHOP_NAME = TranslationBase.TranslateLabelOrMessage("SHOP_NAME")
+            solicitLabel.SHOP_ZIP_CODE = TranslationBase.TranslateLabelOrMessage("SHOP_ADDRESS")
+            solicitLabel.SHOP_ADDRESS = TranslationBase.TranslateLabelOrMessage("SHOP_ADDRESS")
+            solicitLabel.SHOP_TELE_PHONE_NUMBER = TranslationBase.TranslateLabelOrMessage("SHOP_TELE_PHONE_NUMBER")
+            'Dim jsonD As Dictionary(Of String, String) = JsonConvert.DeserializeObject(json1)
+            Return solicitLabel
+        End Function
+
         Public Function ConvertJsonToXML(ByVal solicitDetailsList As List(Of Solicit.SolicitDetails)) As String
             Dim solicitStringWriter As StringWriter = New StringWriter()
             Dim solicitSerializer As New XmlSerializer(solicitDetailsList.GetType())
             solicitSerializer.Serialize(solicitStringWriter, solicitDetailsList)
             Return solicitStringWriter.ToString()
         End Function
-
+        Public Function ConvertJsonToXML(ByVal solicitDetailsLabelList As Dictionary(Of String, String)) As String
+            Dim solicitStringWriter As StringWriter = New StringWriter()
+            Dim solicitSerializer As New XmlSerializer(solicitDetailsLabelList.GetType())
+            solicitSerializer.Serialize(solicitStringWriter, solicitDetailsLabelList)
+            Return solicitStringWriter.ToString()
+        End Function
         Private Sub ShowGridData(ByVal solicitListXml As String)
             Try
                 Dim xdoc As New System.Xml.XmlDocument
                 xdoc.LoadXml(solicitListXml)
+                'xdoc.AppendChild()
                 xmlSource.TransformSource = HttpContext.Current.Server.MapPath("~/Certificates/SolicitDetailsForm.xslt")
                 xmlSource.TransformArgumentList = New XsltArgumentList
-                xmlSource.TransformArgumentList.AddParam("recordCount", String.Empty, 30)
+                'xmlSource.TransformArgumentList.AddParam("recordCount", String.Empty, 30)
                 xmlSource.Document = xdoc
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)

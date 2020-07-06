@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:param name="recordCount" />
   <xsl:template match="/">
-    <h2 class="dataGridHeader">Search Results for Solicit</h2>
+    <h2 class="dataGridHeader">Search Results for Solicitation</h2>
     <table width="100%" class="dataGrid" border="0" cellSpacing="0" cellPadding="0">
       <tbody>
         <tr>
@@ -95,7 +95,7 @@
             </td>
             <td nowrap="nowrap">
               
-              <xsl:value-of select="origin/organization/address/address1"/>
+              <xsl:value-of select="creationSourceName"/>
             </td>
             <td nowrap="nowrap">
               <xsl:choose>
@@ -144,7 +144,7 @@
                     <tr class="out">
                       <td align="right" nowrap="nowrap">Source : </td>
                       <td nowrap="nowrap">
-                        <xsl:value-of select="origin/organization/address/address1" />
+                        <xsl:value-of select="creationSourceName" />
                       </td>
                       <td align="right" nowrap="nowrap">Lead record status : </td>
                       <td nowrap="nowrap">
@@ -185,7 +185,7 @@
                     <tr class="out">
                       <td align="right" nowrap="nowrap">Address : </td>
                       <td nowrap="nowrap">
-                        <xsl:value-of select="address/address1" />
+                        <xsl:value-of select="customer/address/address1" />
                       </td>
                       <td align="right" nowrap="nowrap">Postal Code : </td>
                       <td nowrap="nowrap">
@@ -217,27 +217,27 @@
                     <tr class="out">
                       <td align="right" nowrap="nowrap">Shop ID : </td>
                       <td nowrap="nowrap">
-                        <xsl:value-of select="SHOPID" />
+                        <xsl:value-of select="origin/organization/code" />
                       </td>
                       <td align="right" nowrap="nowrap">Shop Name : </td>
                        <td nowrap="nowrap">
-                        <xsl:value-of select="SHOPNAME" />
+                        <xsl:value-of select="origin/organization/name" />
                       </td>
                     </tr>
                     <tr class="out">
                       <td align="right" nowrap="nowrap">Shop Address : </td>
                        <td nowrap="nowrap">
-                        <xsl:value-of select="SHOPADDRESS" />
+                        <xsl:value-of select="origin/organization/address/address1" />
                       </td>
                     <td align="right" nowrap="nowrap">Shop Zip Code : </td>
                        <td nowrap="nowrap">
-                        <xsl:value-of select="SHOPZIPCODE" />
+                        <xsl:value-of select="origin/organization/address/zipCode" />
                       </td>
                     </tr>
                     <tr class="out">
                       <td align="right" nowrap="nowrap">Shop Telephone Number : </td>
                       <td nowrap="nowrap">
-                        <xsl:value-of select="SHOPTELEPHONENUMBER" />
+                        <xsl:value-of select="origin/organization/workPhoneNumber" />
                       </td>
                     <td align="right" nowrap="nowrap"></td>
                       <td nowrap="nowrap">
@@ -268,9 +268,10 @@
     <xsl:param name="count" />
     <xsl:param name="pagerPrefix" />
       <xsl:if test="$i &lt;= $count">
+
         <a>
           <xsl:attribute name="id">pg<xsl:value-of select="$pagerPrefix" />_<xsl:value-of select="$i"/></xsl:attribute>
-          <xsl:attribute name="href">showHidePage(<xsl:value-of select="$i"/>,<xsl:value-of select="count(//ArrayOfSolicitDetails/SolicitDetails)"/>,<xsl:value-of select="$recordCount"/>);</xsl:attribute>
+          <xsl:attribute name="href">javascript:showHidePage(<xsl:value-of select="$i"/>,<xsl:value-of select="count(//ArrayOfSolicitDetails/SolicitDetails)"/>,<xsl:value-of select="$recordCount"/>);</xsl:attribute>
           <xsl:value-of select="$i" />
         </a>
         <xsl:call-template name="for.loop.pager">
