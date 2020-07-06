@@ -1,4 +1,4 @@
-
+Imports System.Linq
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
@@ -427,25 +427,43 @@ Namespace Certificates
 
                 Try
                     Dim solicitDetailsList As List(Of Solicit.SolicitDetails) = JsonConvert.DeserializeObject(Of List(Of Solicit.SolicitDetails))(json)
-                    Dim solicitDetailsListXml As String = ConvertJsonToXML(solicitDetailsList)
+                    Dim solicitLableTranslation As Solicit.SolicitLabelTranslation = GetAllLabelTranslation()
+                    Dim solicitDetails As List(Of Solicit.SolicitDetails) =
+                    (From solicit In solicitDetailsList
+                     Select New Solicit.SolicitDetails With {
+                        .campaignCode = solicit.campaignCode,
+                        .conversionDate = solicit.conversionDate,
+                        .creationSourceName = solicit.creationSourceName,
+                        .creationSourceType = solicit.creationSourceType,
+                        .customer = solicit.customer,
+                        .effectiveDate = solicit.effectiveDate,
+                        .expirationDate = solicit.expirationDate,
+                        .id = solicit.id,
+                        .origin = solicit.origin,
+                        .owner = solicit.owner,
+                        .status = solicit.status,
+                        .labelTranslation = solicitLableTranslation
+                        }).ToList()
+
+                    Dim solicitDetailsListXml As String = ConvertJsonToXML(solicitDetails)
                     ShowGridData(solicitDetailsListXml)
 
                 Catch ex As Exception
                     Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
                     'Me.HandleErrors(ex, Me.MasterPage.MessageController)
                 End Try
-                    Session("recCount") = ""
-                Catch ex As Exception
-                    Dim GetExceptionType As String = ex.GetBaseException.GetType().Name
+                Session("recCount") = ""
+            Catch ex As Exception
+                Dim GetExceptionType As String = ex.GetBaseException.GetType().Name
                 Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
                 ' Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
         Private Function GetAllLabelTranslation() As Solicit.SolicitLabelTranslation
             Dim solicitLabel As Solicit.SolicitLabelTranslation = New Solicit.SolicitLabelTranslation()
-            solicitLabel.INITIAL_SALES_ORDER = TranslationBase.TranslateLabelOrMessage("INTIAL_SALES_ORDER")
+            solicitLabel.INITIAL_SALES_ORDER = TranslationBase.TranslateLabelOrMessage("INITIAL_SALES_ORDER")
             solicitLabel.CUSTOMER_ID = TranslationBase.TranslateLabelOrMessage("CUSTOMER_ID")
-            solicitLabel.APPY_DATE_SOLICITATION_DATE = TranslationBase.TranslateLabelOrMessage("APPY_DATE_SOLICITATION_DATE")
+            solicitLabel.APPLY_DATE_SOLICITATION_DATE = TranslationBase.TranslateLabelOrMessage("APPLY_DATE")
             solicitLabel.OPEN_DATE_FROM_LEAD_FILE = TranslationBase.TranslateLabelOrMessage("OPEN_DATE_FROM_LEAD_FILE")
             solicitLabel.LEAD_RECORD_STATUS = TranslationBase.TranslateLabelOrMessage("LEAD_RECORD_STATUS")
             solicitLabel.SOURCE = TranslationBase.TranslateLabelOrMessage("SOURCE")
@@ -463,10 +481,10 @@ Namespace Certificates
             solicitLabel.SALES_CHANNEL = TranslationBase.TranslateLabelOrMessage("SALES_CHANNEL")
             solicitLabel.SHOP_ID = TranslationBase.TranslateLabelOrMessage("SHOP_ID")
             solicitLabel.SHOP_NAME = TranslationBase.TranslateLabelOrMessage("SHOP_NAME")
-            solicitLabel.SHOP_ZIP_CODE = TranslationBase.TranslateLabelOrMessage("SHOP_ADDRESS")
+            solicitLabel.SHOP_ZIP_CODE = TranslationBase.TranslateLabelOrMessage("SHOP_ZIP_CODE")
             solicitLabel.SHOP_ADDRESS = TranslationBase.TranslateLabelOrMessage("SHOP_ADDRESS")
             solicitLabel.SHOP_TELE_PHONE_NUMBER = TranslationBase.TranslateLabelOrMessage("SHOP_TELE_PHONE_NUMBER")
-            'Dim jsonD As Dictionary(Of String, String) = JsonConvert.DeserializeObject(json1)
+
             Return solicitLabel
         End Function
 

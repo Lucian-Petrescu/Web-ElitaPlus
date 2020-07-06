@@ -34,13 +34,13 @@
                     <asp:Panel ID="SOLICITNUM" runat="server" Visible="true">
                         <tr>
                             <td>
-                                <asp:Label ID="lblddlDealer" runat="server">Dealer</asp:Label><br />
+                                <asp:Label ID="lblddlDealer" runat="server">DEALER</asp:Label><br />
                                 <asp:DropDownList ID="ddlDealer" runat="server" SkinID="MediumDropDown" AutoPostBack="False">
                                 </asp:DropDownList>
                             </td>
                             <td>
                                 
-                                <asp:Label ID="lblInitialSalesOrder" runat="server">INTIAL_SALES_ORDER</asp:Label><br />
+                                <asp:Label ID="lblInitialSalesOrder" runat="server">INITIAL_SALES_ORDER</asp:Label><br />
                                 <asp:TextBox ID="txtInitialSalesOrder" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
                             </td>
                             <%--<td>
@@ -66,7 +66,7 @@
                                     valign="bottom"></asp:ImageButton>
                             </td>
                             <td>
-                                <asp:Label ID="lblSimPhoneNumber" runat="server">SIM_PHONE_NUMBER</asp:Label><br />
+                                <asp:Label ID="lblSimPhoneNumber" runat="server">SIM_HOME_PHONE_NUMBER</asp:Label><br />
                                 <asp:TextBox ID="txtSimPhoneNumber" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
                             </td>
                         </tr>
