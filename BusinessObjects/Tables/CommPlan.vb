@@ -128,7 +128,9 @@ Public Class CommPlan
             Me.SetValue(CommPlanDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
-     Public Property Code() As String
+    
+    <ValueMandatory("")> _
+    Public Property Code() As String
         Get
             CheckDeleted()
             If Row(CommPlanDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -142,8 +144,9 @@ Public Class CommPlan
             Me.SetValue(CommPlanDAL.COL_NAME_CODE, Value)
         End Set
     End Property
-
-     Public Property Description() As String
+    
+    <ValueMandatory("")> _
+    Public Property Description() As String
         Get
             CheckDeleted()
             If Row(CommPlanDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
