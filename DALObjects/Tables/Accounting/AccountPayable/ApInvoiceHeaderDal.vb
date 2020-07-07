@@ -50,6 +50,7 @@ Public Class ApInvoiceHeaderDAL
     Public Const PAR_I_NAME_POSTED As String = "pi_posted"
     Public Const PAR_I_NAME_DEALER_ID As String = "pi_dealer_id"
     Public Const PAR_I_NAME_COMPANY_ID As String = "pi_company_id"
+    Public Const PAR_O_AP_INVOICE_CUR As String = "po_ResultCursor"
 
 #End Region
 
@@ -296,6 +297,27 @@ Public Class ApInvoiceHeaderDAL
 
             da = New OracleDataAdapter(cmd)
             da.Fill(searchResult, "AP_INVOICE_HEADER_EXT")
+            searchResult.Locale = Globalization.CultureInfo.InvariantCulture
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Sub
+    Public Sub LoadApInvoice(ByVal apInvoiceNumber As String, ByVal apInvoiceVendorId As Guid,ByRef searchResult As DataSet) 
+
+        Dim selectStmt As String = Config("/SQL/LOADINVOICE")
+        Dim da As OracleDataAdapter
+
+        Try
+            Dim cmd As OracleCommand = DB_OracleCommand(selectStmt, CommandType.StoredProcedure)
+            cmd.BindByName = True
+            cmd.Parameters.Add(PAR_O_AP_INVOICE_CUR, OracleDbType.RefCursor, ParameterDirection.Output)
+
+            cmd.Parameters.Add(PAR_I_NAME_INVOICE_NUMBER, OracleDbType.Varchar2).Value = apInvoiceNumber
+            cmd.Parameters.Add(PAR_I_NAME_VENDOR_ID, OracleDbType.Raw).Value = apInvoiceVendorId.ToByteArray
+            da = New OracleDataAdapter(cmd)
+            da.Fill(searchResult, TABLE_NAME)
             searchResult.Locale = Globalization.CultureInfo.InvariantCulture
 
         Catch ex As Exception

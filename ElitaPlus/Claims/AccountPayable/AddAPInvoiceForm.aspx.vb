@@ -736,8 +736,18 @@ Namespace Claims.AccountPayable
 #Region "Button Click Events"
         Protected Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles btnApply_WRITE.Click
             Try
+                Dim dvInvoice as DataView
                 PopulateBoFromForm()
-                SaveInvoiceHeader(true)
+                If State.IsNewInvoice Then
+                    dvInvoice = State.ApInvoiceHeaderBo.GetApInvoice(State.ApInvoiceHeaderBo.InvoiceNumber,State.ApInvoiceHeaderBo.VendorId)
+                End If
+               
+                If Not dvInvoice Is Nothing AndAlso dvInvoice.Count > 0 Then
+                    MasterPage.MessageController.AddError(Message.MSG_ERR_DUPLICATE_INVOICE)
+                Else 
+                    SaveInvoiceHeader(true)
+                End If
+              
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try

@@ -537,7 +537,14 @@ Public Class ApInvoiceHeader
         Return New ApInvoiceLines.APInvoiceLinesDV(dsResults.Tables(0))
 
     End Function
+    Public Function GetApInvoice(ByVal apInvoiceNumber As String, ByVal apInvoiceVendorId As Guid) As Dataview
+        
+        Dim dal As New ApInvoiceHeaderDAL
+        Dim dsResults As New DataSet
+        dal.LoadAPInvoice(apInvoiceNumber,apInvoiceVendorId, dsResults)
+        Return dsResults.Tables(0).DefaultView
 
+    End Function
 #End Region
 
 #Region "Invoice search view class"
