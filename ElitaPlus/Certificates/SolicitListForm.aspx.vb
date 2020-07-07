@@ -84,8 +84,9 @@ Namespace Certificates
                     Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Solicites")
 
                     UpdateBreadCrum()
-                    Dim code As String = GetCode()
-                    If Not code = "ASJP-AJP" Then
+
+                    'Check for company group code should be ASJP and Company code AJP
+                    If Not GetFormattedCompanyCode() = "ASJP-AJP" Then
                         Dim errors() As ValidationError = {New ValidationError(NO_RECORDS_FOUND, GetType(Solicit), Nothing, "Search", Nothing)}
                         Throw New BOValidationException(errors, GetType(Solicit).FullName)
                     End If
@@ -306,12 +307,11 @@ Namespace Certificates
             End Try
         End Sub
 
-        Private Function GetCode() As String
+        Private Function GetFormattedCompanyCode() As String
             Dim UserCompanyGroup As CompanyGroup = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup
             Dim company As Company = ElitaPlusIdentity.Current.ActiveUser.Company
             Return UserCompanyGroup.Code & "-" & company.Code
         End Function
-
         Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
             Dim Index As Integer
             Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
