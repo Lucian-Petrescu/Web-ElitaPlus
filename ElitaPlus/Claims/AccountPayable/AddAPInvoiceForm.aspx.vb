@@ -132,7 +132,6 @@ Namespace Claims.AccountPayable
                     BindBoPropertiesToGridHeaders()
                     TranslateGridHeader(InvoiceLinesGrid)
                     SetGridPageSize()
-                    AddLabelDecorations(Me.State.ApInvoiceHeaderBo)
                 End If
                 SetStateProperties()
                 BindBoPropertiesToLabels
