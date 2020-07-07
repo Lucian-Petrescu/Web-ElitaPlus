@@ -10,10 +10,6 @@ Imports System.Xml.Serialization
 Imports System.Xml.Xsl
 Imports System.IO
 Imports System.Collections.Generic
-Imports System.Reflection
-Imports System.Text
-Imports Newtonsoft.Json.Linq
-
 
 
 Namespace Certificates
@@ -35,7 +31,6 @@ Namespace Certificates
 #Region "Page State"
         Private IsReturningFromChild As Boolean = False
         Private Shared searchTypeItems() As String = {"SOLICITNUM"}
-        Public DEALER_CODE As String = System.Configuration.ConfigurationManager.AppSettings("DealerCode")
 
         Class MyState
 
@@ -89,7 +84,11 @@ Namespace Certificates
                     Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Solicites")
 
                     UpdateBreadCrum()
-
+                    Dim code As String = GetCode()
+                    If Not code = "ASJP-AJP" Then
+                        Dim errors() As ValidationError = {New ValidationError(NO_RECORDS_FOUND, GetType(Solicit), Nothing, "Search", Nothing)}
+                        Throw New BOValidationException(errors, GetType(Solicit).FullName)
+                    End If
                     'TranslateGridHeader(Grid)
                     Me.AddCalendar_New(Me.btnApplyDate, Me.txtApplyDate)
 
@@ -106,6 +105,7 @@ Namespace Certificates
                     If objPrincipal.PrivacyUserType = AppConfig.DataProtectionPrivacyLevel.Privacy_DataProtection Then
                         Me.State.isDPO = True
                     End If
+
                     If ddlDealer.Items.Count = 0 Then
                         ddlDealer.Enabled = False
                         btnSearch.Enabled = False
@@ -176,6 +176,20 @@ Namespace Certificates
                     Dim errors() As ValidationError = {New ValidationError("Dealer name cannot be empty", GetType(Solicit), Nothing, "Search", Nothing)}
                     Throw New BOValidationException(errors, GetType(Solicit).FullName)
                 End If
+                Dim selectedDealer As Assurant.Elita.CommonConfiguration.DataElements.ListItem
+                If Authentication.CurrentUser.IsDealerGroup Then
+                    Dim oDealerList As New Collections.Generic.List(Of Assurant.Elita.CommonConfiguration.DataElements.ListItem)
+                    selectedDealer = oDealerList.Where(Function(x) x.ListItemId.ToString() = ddlDealer.SelectedValue).FirstOrDefault()
+                Else
+                    Dim oDealerList() As Assurant.Elita.CommonConfiguration.DataElements.ListItem = GetDealerListByCompanyForUser()
+                    selectedDealer = oDealerList.Where(Function(x) x.ListItemId.ToString() = ddlDealer.SelectedValue).FirstOrDefault()
+                End If
+                If selectedDealer.Code <> "RSIM" Then
+                    Dim errors() As ValidationError = {New ValidationError(NO_RECORDS_FOUND, GetType(Solicit), Nothing, "Search", Nothing)}
+                    Throw New BOValidationException(errors, GetType(Solicit).FullName)
+                End If
+
+
                 If ddlDealer.SelectedIndex > 0 Then
                     If (txtInitialSalesOrder.Text = String.Empty AndAlso txtCustomerId.Text = String.Empty AndAlso txtApplyDate.Text = String.Empty AndAlso
                     txtSimPhoneNumber.Text = String.Empty) Then
@@ -292,6 +306,12 @@ Namespace Certificates
             End Try
         End Sub
 
+        Private Function GetCode() As String
+            Dim UserCompanyGroup As CompanyGroup = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup
+            Dim company As Company = ElitaPlusIdentity.Current.ActiveUser.Company
+            Return UserCompanyGroup.Code & "-" & company.Code
+        End Function
+
         Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
             Dim Index As Integer
             Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
@@ -313,12 +333,10 @@ Namespace Certificates
 
                 End If
             Next
-            If DEALER_CODE <> String.Empty Then
-                oDealerList = oDealerList.Where(Function(o) o.Code = DEALER_CODE).ToList
-                Return oDealerList.ToArray()
-            Else
-                Return oDealerList.ToArray()
-            End If
+
+            Return oDealerList.ToArray()
+
+
         End Function
 
         Private Sub GetStateProperties()
@@ -504,7 +522,6 @@ Namespace Certificates
             Try
                 Dim xdoc As New System.Xml.XmlDocument
                 xdoc.LoadXml(solicitListXml)
-                'xdoc.AppendChild()
                 xmlSource.TransformSource = HttpContext.Current.Server.MapPath("~/Certificates/SolicitDetailsForm.xslt")
                 xmlSource.TransformArgumentList = New XsltArgumentList
                 'xmlSource.TransformArgumentList.AddParam("recordCount", String.Empty, 30)
