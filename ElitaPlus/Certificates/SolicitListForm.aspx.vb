@@ -312,6 +312,7 @@ Namespace Certificates
             Dim company As Company = ElitaPlusIdentity.Current.ActiveUser.Company
             Return UserCompanyGroup.Code & "-" & company.Code
         End Function
+
         Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
             Dim Index As Integer
             Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
@@ -427,7 +428,7 @@ Namespace Certificates
                 Dim url As New Uri(oWebPasswd.Url)
                 Dim response As HttpResponseMessage = client.PostAsync(url, requestBody).GetAwaiter().GetResult()
                 Dim json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
-                Dim solicitLabel As Solicit.SolicitLabelTranslation = GetAllLabelTranslation()
+
                 If Not response.IsSuccessStatusCode Then
                     'Me.MasterPage.MessageController.AddInformation("There is an error in displaying the SOLICIT Data", True)
                     Throw New Exception($"There is an error in displaying the SOLICITATION Data. {response.ReasonPhrase}")
@@ -477,6 +478,7 @@ Namespace Certificates
                 ' Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
+
         Private Function GetAllLabelTranslation() As Solicit.SolicitLabelTranslation
             Dim solicitLabel As Solicit.SolicitLabelTranslation = New Solicit.SolicitLabelTranslation()
             solicitLabel.INITIAL_SALES_ORDER = TranslationBase.TranslateLabelOrMessage("INITIAL_SALES_ORDER")
