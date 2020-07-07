@@ -1,4 +1,6 @@
-﻿Public Class ConfigQuestionSetDAL
+﻿Imports Assurant.ElitaPlus.DALObjects.DBHelper
+
+Public Class ConfigQuestionSetDAL
     Inherits OracleDALBase
 
 #Region "Constants"
@@ -191,6 +193,20 @@
         If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
             MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
         End If
+    End Sub
+
+    Public Sub DeleteConfiguration(ByVal configQuestionSetId As Guid)
+        Dim selectStmt As String = Me.Config("/SQL/DELETE")
+        Dim inputParameters(0) As DBHelperParameter
+
+        inputParameters(0) = New DBHelperParameter(Me.COL_NAME_CONFIG_QUESTION_SET_ID, configQuestionSetId, GetType(Guid))
+
+        Try
+            ' Call DBHelper Store Procedure
+            DBHelper.ExecuteSp(selectStmt, inputParameters, Nothing)
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
     End Sub
 
     Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
