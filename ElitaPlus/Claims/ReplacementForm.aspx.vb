@@ -512,7 +512,8 @@ Namespace Claims
         End Function
 
         Private Sub HandleChildObj(oCertItem As CertItem)
-            If Me.State.supportsImei AndAlso Not (Me.OldImeiNumberTextBox.Text.Equals(Me.NewImeiNumberTextBox.Text)) Then
+            If (Me.State.supportsImei AndAlso Not (Me.OldImeiNumberTextBox.Text.Equals(Me.NewImeiNumberTextBox.Text))) Or
+                    (Not Me.State.supportsImei AndAlso Not (Me.OldSerialNumberTextBox.Text.Equals(Me.NewSerialNumberTextBox.Text))) Then
                 Dim blnCreateExtendedStatus As Boolean = False
                 Dim blnAnyStatusFound As Boolean = False
                 'check if action status "Replacement IMEI Changed" is configured
