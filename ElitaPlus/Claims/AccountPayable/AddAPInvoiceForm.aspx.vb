@@ -134,6 +134,8 @@ Namespace Claims.AccountPayable
                     SetGridPageSize()
                 End If
                 SetStateProperties()
+                BindBoPropertiesToLabels
+                AddLabelDecorations(Me.State.ApInvoiceHeaderBo)
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
@@ -156,6 +158,17 @@ Namespace Claims.AccountPayable
                 HighLightSortColumn(grid, gridSortDirection)
             End sub
             
+        End Sub
+        Protected Sub BindBoPropertiesToLabels()
+
+            Me.BindBOPropertyToLabel(State.ApInvoiceHeaderBo, "InvoiceNumber", moInvoiceNumberLabel)
+            Me.BindBOPropertyToLabel(State.ApInvoiceHeaderBo, "InvoiceAmount", moInvoiceAmountLabel)
+            Me.BindBOPropertyToLabel(State.ApInvoiceHeaderBo, "DealerId", moDealerLabel)
+            Me.BindBOPropertyToLabel(State.ApInvoiceHeaderBo, "InvoiceDate", moInvoiceDateLabel)
+            Me.BindBOPropertyToLabel(State.ApInvoiceHeaderBo, "VendorId", moServiceCenterLabel)
+            Me.BindBOPropertyToLabel(State.ApInvoiceHeaderBo, "TermXcd", moTermLabel)
+            Me.ClearGridViewHeadersAndLabelsErrorSign()
+
         End Sub
 
 #End Region

@@ -84,7 +84,7 @@ Theme="Default" %>
                     </tr>
                     <tr>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moDealerLabel">DEALER</asp:Label>:
+                            <asp:Label runat="server" ID="moDealerLabel">DEALER</asp:Label>
                         </td>
                         <td nowrap="noWrap">
                             <asp:DropDownList ID="moDealer" runat="server" SkinID="MediumDropDown" >
