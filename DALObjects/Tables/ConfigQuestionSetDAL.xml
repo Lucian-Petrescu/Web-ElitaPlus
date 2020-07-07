@@ -26,4 +26,9 @@
       elp_tbl_config_question_set.CheckForDuplicateConfiguration
 		]]>
   </VALIDATE>
+  <DELETE>
+    <![CDATA[
+      elp_tbl_config_question_set.DeleteConfigQuestionSet
+		]]>
+  </DELETE>
 </SQL>
