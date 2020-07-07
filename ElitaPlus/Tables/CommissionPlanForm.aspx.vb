@@ -64,12 +64,14 @@ Namespace Tables
                 PopulatePlanFields()
                 PopulateDistributionList()
                 TheDealerControl.ChangeEnabledControlProperty(True)
+                EnableNewDistributionButtons(False)
             Else
                 Me.State.IsCommPlanDistNew = False
                 SetPlanButtonsState(False)
                 PopulatePlanFields()
                 PopulateDistributionList()
                 TheDealerControl.ChangeEnabledControlProperty(False)
+                EnableNewDistributionButtons(True)
             End If
             If Not TheDealerControl.SelectedGuid.Equals(Guid.Empty) Then
             End If
@@ -323,14 +325,14 @@ Namespace Tables
                     Me.AddCalendar(Me.BtnEffectiveDate_WRITE, Me.moEffectiveText_WRITE)
                     Me.AddCalendar(Me.BtnExpirationDate_WRITE, Me.moExpirationText_WRITE)
                     Me.AddCalendarNewWithDisableBeforeDate(Me.BtnExpirationDate_WRITE, moExpirationText_WRITE, "", "Y", System.DateTime.Today)
-
                 Else
                     Me.moGridView.Visible = True
                     'US-521672
                     SetGridSourceXcdLabelFromBo()
                     CheckIfComingFromConfirm()
-                End If
-                btnBack.Visible = True
+                End If               
+
+                ControlMgr.SetVisibleControl(Me, btnBack, True)
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -377,6 +379,12 @@ Namespace Tables
                 RePopulateDistributionListForPlan()
                 SetGridSourceXcdLabelFromBo()
                 ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, False)
+
+                If (String.IsNullOrWhiteSpace(TextBoxCode.Text) Or String.IsNullOrWhiteSpace(TextBoxDescription.Text)) Then
+                    EnableNewDistributionButtons(False)
+                Else
+                    EnableNewDistributionButtons(True)
+                End If
             Catch ex As Exception
                 SetGridControls(moGridView, True)
                 RePopulateDistributionListForPlan()
@@ -419,7 +427,7 @@ Namespace Tables
             ClearPlan()
             SetPlanButtonsState(True)
             PopulatePlanFields()
-            TheDealerControl.ChangeEnabledControlProperty(True)            
+            TheDealerControl.ChangeEnabledControlProperty(True)
         End Sub
 
         Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
@@ -473,7 +481,7 @@ Namespace Tables
             Try
                 EnableDateFields()
                 Me.moGridView.Visible = True
-                BtnNewRate_WRITE.Visible = True
+                'BtnNewRate_WRITE.Visible = True
                 btnBack.Visible = True
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -700,6 +708,7 @@ Namespace Tables
                     If datesOverlapFlag = "N" Then
                         oPlan.Save()
                         Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                        EnableNewDistributionButtons(True)
                     Else
                         Throw New GUIException(Message.MSG_EXPIRATION_DATE_IS_OVERLAPPING_WITH_OTHER_PLAN, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXPIRATION_DATE_IS_OVERLAPPING)
                     End If
@@ -1638,7 +1647,7 @@ Namespace Tables
         End Sub
 
         Private Sub setbuttons(ByVal enable As Boolean)
-            ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enable)            
+            ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enable)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, enable)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, enable)
             ControlMgr.SetEnableControl(Me, btnUndo_WRITE, enable)
@@ -1692,13 +1701,7 @@ Namespace Tables
             End If
             Return bIsOk
         End Function
-        Private Sub ClearDistribution()
-            If Not Me.State.IsNewWithCopy Then
-                EnableRateButtons(False)
-                moGridView.DataBind()
-            End If
-        End Sub
-
+        
         Private Sub PopulateRateBOFromForm()
             With TheCommPlanDist
                 .CommissionPlanId = Me.State.moCommPlanId 'TheCommPlanDist.CommissionPlanId
@@ -1995,23 +1998,18 @@ Namespace Tables
 
         End Function
 
-        Private Sub EnableEditRateButtons(ByVal bIsReadWrite As Boolean)
+        Private Sub EnableEditDistributionButtons(ByVal bIsReadWrite As Boolean)
             ControlMgr.SetEnableControl(Me, BtnSaveRate_WRITE, bIsReadWrite)
             ControlMgr.SetEnableControl(Me, BtnCancelRate, bIsReadWrite)
         End Sub
 
-        Private Sub EnableNewRateButtons(ByVal bIsReadWrite As Boolean)
+        Private Sub EnableNewDistributionButtons(ByVal bIsReadWrite As Boolean)
             ControlMgr.SetEnableControl(Me, BtnNewRate_WRITE, bIsReadWrite)
         End Sub
 
-        Private Sub EnableRateButtons(ByVal bIsReadWrite As Boolean)
-            EnableNewRateButtons(bIsReadWrite)
-            EnableEditRateButtons(bIsReadWrite)
-        End Sub
-
         Private Sub EnableForEditRateButtons(ByVal bIsReadWrite As Boolean)
-            EnableNewRateButtons(Not bIsReadWrite)
-            EnableEditRateButtons(bIsReadWrite)
+            EnableNewDistributionButtons(Not bIsReadWrite)
+            EnableEditDistributionButtons(bIsReadWrite)
         End Sub
 
         Private Sub PopulateDistribution()
