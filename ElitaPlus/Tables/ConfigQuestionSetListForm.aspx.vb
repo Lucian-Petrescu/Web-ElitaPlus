@@ -12,16 +12,12 @@ Namespace Tables
 
 #Region "Constants"
         Public Const URL As String = "Tables/ConfigQuestionSetListForm.aspx"
-        Public Const PAGETITLE As String = "CONFIG_QUESTION_SET"
-        Public Const PAGETAB As String = "ADMIN"
+        Public Const PAGETITLE As String = "CONFIG_QUESTION_SET_LIST"
+        Public Const PAGETAB As String = "TABLES"
         Public Const SUMMARYTITLE As String = "SEARCH"
-
         Private Const GRID_COL_CONFIG_QUESTION_SET_ID_IDX As Integer = 0
-
         Private Const GRID_CTRL_NAME_LABLE_CONFIG_QUESTION_SET_ID As String = "lblConfigQuestionSetID"
-
         Private Const SELECT_COMMAND As String = "SelectAction"
-        Private Const NO_ROW_SELECTED_INDEX As Integer = -1
 #End Region
 
 #Region "Page State"
@@ -404,8 +400,8 @@ Namespace Tables
         Private Function GetProductListByDealer() As ListItem()
             Dim oListContext As New ListContext
             oListContext.DealerId = Guid.Parse(ddlSearchDealer.SelectedValue)
-            Dim oProductListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByDealer", context:=oListContext)
-            Return oProductListForCompany.ToArray()
+            Dim oProductListForDealer As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByDealer", context:=oListContext)
+            Return oProductListForDealer.ToArray()
         End Function
 
         Private Function GetProductCodeListByCompanyForUser() As ListItem()
@@ -606,7 +602,7 @@ Namespace Tables
 
             If ddlSearchDealer.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
 
-                If ddlSearchCompany.SelectedIndex = BLANK_ITEM_SELECTED Then
+                If ddlSearchDealer.SelectedIndex = BLANK_ITEM_SELECTED Then
                     Exit Sub
                 End If
 
