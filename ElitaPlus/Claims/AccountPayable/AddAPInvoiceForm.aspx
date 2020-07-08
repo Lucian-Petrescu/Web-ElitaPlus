@@ -295,7 +295,7 @@ Theme="Default" %>
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="moTotalPriceText" runat="server" Visible="True" Width="100%" onkeypress="return numericOnly(this)"></asp:TextBox>
+                                                <asp:TextBox ID="moTotalPriceText" runat="server" Visible="True" Width="100%" Enabled ="False"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
 										 <asp:TemplateField Visible ="true" HeaderText="unit_of_measurement">
