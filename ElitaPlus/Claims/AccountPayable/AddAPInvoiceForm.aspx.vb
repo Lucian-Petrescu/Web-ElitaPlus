@@ -314,7 +314,7 @@ Namespace Claims.AccountPayable
                                                                       .CountryId = countryId
                                                                     })
                     For lstIndex As Integer = 0 To serviceCenters.Count-1
-                        if Not serviceCenters(lstIndex).ToString().Contains(serviceCenters(lstIndex).Code.ToString()) Then
+                        if Not serviceCenters(lstIndex).Translation.Contains(serviceCenters(lstIndex).Code) Then
                             serviceCenters(lstIndex).Translation = serviceCenters(lstIndex).Translation +" - " + serviceCenters(lstIndex).Code
                         End If
                     Next
