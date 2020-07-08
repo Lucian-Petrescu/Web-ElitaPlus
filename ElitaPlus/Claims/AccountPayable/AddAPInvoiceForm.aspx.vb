@@ -2,7 +2,6 @@
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.Web.Forms
-Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports Assurant.ElitaPlus.Security
 
 Namespace Claims.AccountPayable
