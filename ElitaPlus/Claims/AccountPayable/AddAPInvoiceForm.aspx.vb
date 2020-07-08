@@ -313,7 +313,14 @@ Namespace Claims.AccountPayable
                                                                     {
                                                                       .CountryId = countryId
                                                                     })
-
+                    For lstIndex As Integer = 0 To serviceCenters.Count-1
+                        if Not serviceCenters(lstIndex).Translation.Contains(serviceCenters(lstIndex).Code) Then
+                            serviceCenters(lstIndex).Translation = serviceCenters(lstIndex).Translation +" - " + serviceCenters(lstIndex).Code
+                        End If
+                    Next
+                    
+                    
+                    
                     If serviceCenters.Count > 0 Then
                         If Not serviceCenterList Is Nothing Then
                             serviceCenterList.AddRange(serviceCenters)
@@ -459,10 +466,10 @@ Namespace Claims.AccountPayable
                     PopulateBOProperty(State.ApInvoiceLinesBo, "Description", CType(GetSelectedGridControl(InvoiceLinesGrid, ItemCodeCol), TextBox))
                     PopulateBOProperty(State.ApInvoiceLinesBo, "Quantity", CType(GetSelectedGridControl(InvoiceLinesGrid, QuantityCol), TextBox))
                     PopulateBOProperty(State.ApInvoiceLinesBo, "UnitPrice", CType(GetSelectedGridControl(InvoiceLinesGrid, UnitPriceCol), TextBox))
-                    PopulateBOProperty(State.ApInvoiceLinesBo, "TotalPrice", CType(GetSelectedGridControl(InvoiceLinesGrid, TotalPriceCol), TextBox))
+                   .TotalPrice = Convert.ToDecimal(.Quantity.ToString)* Convert.ToDecimal(.UnitPrice.ToString())
                     PopulateBOProperty(State.ApInvoiceLinesBo, "UomXcd", CType(GetDropDownControlFromGrid(InvoiceLinesGrid, UnitOfMeasurementCol), DropDownList), False, True)
                     PopulateBOProperty(State.ApInvoiceLinesBo, "PoNumber", CType(GetSelectedGridControl(InvoiceLinesGrid, PoNumberCol), TextBox))
-
+                    
                 End With
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
