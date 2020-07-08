@@ -17,10 +17,10 @@ Public Class WebPasswd
     Public Sub New(ByVal isEnvCmpGp As Boolean)
         MyBase.New()
 
-        Dim env As String = EnvironmentContext.Current.EnvironmentName
+        Dim env As String = "TEST"
         Dim cmpGpId As Guid = Authentication.CompanyGroupId
         'Fix for Def-2229 
-        Dim hub As String = ElitaPlusIdentity.Current.ConnectionType
+        Dim hub As String ="P1"
 
         Me.Dataset = New DataSet
         Me.Load(env, cmpGpId, hub)
