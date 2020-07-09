@@ -1592,7 +1592,7 @@ Namespace Tables
                     TheDealerControl.ChangeEnabledControlProperty(False)
                 End If
 
-                PopulatePlanFields()
+                'PopulatePlanFields()
                 setbuttons(True)
                 btnBack.Visible = True
                 btnSave_WRITE.Visible = False
