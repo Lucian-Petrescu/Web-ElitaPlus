@@ -877,6 +877,13 @@
       <DependentUpon>ChangeCompany.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Claims\AccountPayable\AddAPInvoiceForm.aspx.designer.vb">
+      <DependentUpon>AddAPInvoiceForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\AccountPayable\AddAPInvoiceForm.aspx.vb">
+      <DependentUpon>AddAPInvoiceForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Claims\AccountPayable\APInvoiceDetailForm.aspx.designer.vb">
       <DependentUpon>APInvoiceDetailForm.aspx</DependentUpon>
     </Compile>
@@ -955,6 +962,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Common\ServiceCenterSelected.vb" />
+    <Compile Include="Common\UserControlApInvoiceLinesSearch.ascx.designer.vb">
+      <DependentUpon>UserControlApInvoiceLinesSearch.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UserControlApInvoiceLinesSearch.ascx.vb">
+      <DependentUpon>UserControlApInvoiceLinesSearch.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Common\UserControlCallerInfo.ascx.designer.vb">
       <DependentUpon>UserControlCallerInfo.ascx</DependentUpon>
     </Compile>
@@ -5812,6 +5826,7 @@
     <Content Include="Certificates\UserControlServiceCenterInfo.ascx" />
     <Content Include="Certificates\VSCCertificateListForm.aspx" />
     <Content Include="Change_Company\ChangeCompany.aspx" />
+    <Content Include="Claims\AccountPayable\AddAPInvoiceForm.aspx" />
     <Content Include="Claims\AccountPayable\APInvoiceDetailForm.aspx" />
     <Content Include="Claims\AccountPayable\APInvoiceListForm.aspx" />
     <Content Include="Claims\PoAdjustmentForm.aspx" />
@@ -5823,6 +5838,7 @@
     <Content Include="Claims\ClaimReimbursementForm.aspx" />
     <Content Include="Claims\UserControlConsequentialDamage.ascx" />
     <Content Include="Common\DynamicFulfillmentUI.ascx" />
+    <Content Include="Common\UserControlApInvoiceLinesSearch.ascx" />
     <Content Include="Common\UserControlCallerInfo.ascx" />
     <Content Include="Common\UserControlCaseHeaderInfo.ascx" />
     <Content Include="Common\UserControlDealerInflation.ascx" />
