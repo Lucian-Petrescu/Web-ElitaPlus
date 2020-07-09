@@ -1579,11 +1579,11 @@ Namespace Tables
                 End If
             Catch ex As Exception
                 If Me.State.IsAmountAndPercentBothPresent = True Then
-                    SetGridControls(moGridView, True)
+                    Me.State.IsCommPlanDistNew = False
+                    EnableForEditRateButtons(False)
                     RePopulateDistributionListForPlan()
                     SetGridSourceXcdLabelFromBo()
-                    SetGridControls(moGridView, True)
-                    EnableDisableControls(Me.moCoverageEditPanel, True)
+                    TheDealerControl.ChangeEnabledControlProperty(False)
                 Else
                     Me.State.IsCommPlanDistNew = False
                     EnableForEditRateButtons(False)
@@ -1592,6 +1592,7 @@ Namespace Tables
                     TheDealerControl.ChangeEnabledControlProperty(False)
                 End If
 
+                'PopulatePlanFields()
                 setbuttons(True)
                 btnBack.Visible = True
                 btnSave_WRITE.Visible = False
