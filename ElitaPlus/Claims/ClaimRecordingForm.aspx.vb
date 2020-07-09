@@ -41,6 +41,7 @@ Public Class ClaimRecordingForm
 
     Public Const Url As String = "~/Claims/ClaimRecordingForm.aspx"
     Public Const Url2 As String = "/Claims/ClaimRecordingForm.aspx"
+    Public Const CertUrl As String = "/Certificates/CertificateForm.aspx"
 
     Private Const UserName = "CLAIM_RECSERVICE_USERNAME"
     Private Const Password = "CLAIM_RECSERVICE_PASSWORD"
