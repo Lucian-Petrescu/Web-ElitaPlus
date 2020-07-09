@@ -79,15 +79,15 @@
                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                     </asp:TemplateField>
                     <asp:TemplateField SortExpression="DEALER_NAME" HeaderText="DEALER_NAME">
-                        <HeaderStyle HorizontalAlign="Center" Width="40%"></HeaderStyle>
+                        <HeaderStyle HorizontalAlign="Center" Width="15%"></HeaderStyle>
                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                     </asp:TemplateField>
                     <asp:TemplateField SortExpression="CODE" HeaderText="CODE">
-                        <HeaderStyle HorizontalAlign="Center" Width="10%"></HeaderStyle>
+                        <HeaderStyle HorizontalAlign="Center" Width="15%"></HeaderStyle>
                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                     </asp:TemplateField>
                     <asp:TemplateField SortExpression="DESCRIPTION" HeaderText="DESCRIPTION">
-                        <HeaderStyle HorizontalAlign="Center" Width="10%"></HeaderStyle>
+                        <HeaderStyle HorizontalAlign="Center" Width="15%"></HeaderStyle>
                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                     </asp:TemplateField>
                     <asp:TemplateField SortExpression="EFFECTIVE_DATE" HeaderText="EFFECTIVE_DATE">
