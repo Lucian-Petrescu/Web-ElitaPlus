@@ -63,10 +63,10 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <div class="dataContainer">
 
-        <table id="Table3" cellspacing="0" cellpadding="0" width="100%" border="0" class="formGrid" style="padding: 0px; margin: 0px">
+        <table id="Table3" cellspacing="0" cellpadding="0" width="100%" class="formGrid" border="0" style="padding: 0px; margin: 0px">
             <asp:Panel ID="moCoverageEditPanel" runat="server">
                 <tr>
-                    <td align="center" colspan="6" class="borderLeft" width="30%">
+                    <td align="center" colspan="6" class="" width="30%">
                         <table>
                             <tr>
                                 <td>
@@ -77,7 +77,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td align="right" class="borderLeft" width="10%">*
+                    <td align="right" class="" width="10%">*
                         <asp:Label ID="LabelCode" runat="server">Code</asp:Label>:&nbsp;
                     </td>
                     <td width="20%">&nbsp;
@@ -92,7 +92,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td align="right" class="borderLeft" width="10%">*
+                    <td align="right" class="" width="10%">*
                         <asp:Label ID="moEffectiveLabel" runat="server">Effective</asp:Label>:&nbsp;
                     </td>
                     <td width="20%">&nbsp;
@@ -109,7 +109,6 @@
                             ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                     </td>
                 </tr>
-
                 <tr>
                     <td>
                         <asp:Label ID="moCoverageIdLabel" runat="server" Visible="False"></asp:Label>
@@ -129,7 +128,7 @@
             <tr>
                 <td>
                     <div id="tabsCommPlanDist">
-                        <table id="tblOpportunities" class="dataGrid" border="0" rules="cols" width="98%">
+                        <table id="tblOpportunities" border="0" rules="cols" width="98%">
                             <tr>
                                 <td colspan="2">
                                     <%--<Elita:MessageController runat="server" ID="moMsgControllerRate" Visible="false" />--%>
