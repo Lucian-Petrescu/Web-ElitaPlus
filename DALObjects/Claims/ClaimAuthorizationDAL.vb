@@ -105,7 +105,7 @@ Public Class ClaimAuthorizationDAL
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_id", claimId.ToByteArray)}
         Try
-            dynamicWhereCondition = familyDS.ToLoadExclusionClause(Me.TABLE_NAME, Me.TABLE_KEY_NAME, Me.TABLE_NAME, Me.COL_NAME_CLAIM_ID, claimId, parameters)
+            dynamicWhereCondition = familyDS.ToLoadExclusionClause("ca", Me.TABLE_KEY_NAME, Me.TABLE_NAME, Me.COL_NAME_CLAIM_ID, claimId, parameters)
             selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, dynamicWhereCondition)
             DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
         Catch ex As Exception
