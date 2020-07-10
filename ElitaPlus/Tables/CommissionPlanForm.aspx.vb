@@ -681,6 +681,11 @@ Namespace Tables
                 ' DropDowns
                 .DealerId = TheDealerControl.SelectedGuid 'Me.GetSelectedItem(moDealerDrop_WRITE)
                 Me.PopulateBOProperty(oPlan, REFERENCE_SOURCE_PROPERTY, "ELP_DEALER")
+                
+                If Not String.IsNullOrWhiteSpace(Me.TextBoxCode.Text) Then
+                    Me.TextBoxCode.Text = Me.TextBoxCode.Text.ToUpper()
+                End If
+                
                 Me.PopulateBOProperty(oPlan, CODE_PROPERTY, Me.TextBoxCode)
                 Me.PopulateBOProperty(oPlan, DESCRIPTION_PROPERTY, Me.TextBoxDescription)
                 ' Texts
@@ -693,21 +698,7 @@ Namespace Tables
                 Throw New PopulateBOErrorException
             End If
         End Sub
-        Private Sub PopulatePlanBOFromForm(ByVal oPlan As CommPlanDistribution)
-            With oPlan
-                Me.PopulateBOProperty(oPlan, REFERENCE_SOURCE_PROPERTY, "ELP_DEALER")
-                Me.PopulateBOProperty(oPlan, CODE_PROPERTY, Me.TextBoxCode)
-                Me.PopulateBOProperty(oPlan, DESCRIPTION_PROPERTY, Me.TextBoxDescription)
-                ' Texts
-                Me.PopulateBOProperty(oPlan, EFFECTIVE_DATE_PROPERTY, moEffectiveText_WRITE)
-                Me.PopulateBOProperty(oPlan, EXPIRATION_DATE_PROPERTY, moExpirationText_WRITE)
-
-            End With
-
-            If Me.ErrCollection.Count > 0 Then
-                Throw New PopulateBOErrorException
-            End If
-        End Sub
+        
         Private Function IsDirtyPlanBO() As Boolean
             Dim bIsDirty As Boolean = True
             Dim oPlan As CommPlan
