@@ -148,7 +148,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.Common.Ftp, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Elita.Assurant.Common.Ftp.2.0.0\lib\net40\Assurant.Common.Ftp.dll</HintPath>
+      <HintPath>..\packages\Elita.Assurant.Common.Ftp.2.0.1\lib\net462\Assurant.Common.Ftp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.Common.Localization, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
