@@ -450,7 +450,7 @@ Namespace Tables
             ClearPlan()
             SetPlanButtonsState(True)
             PopulatePlanFields()
-            TheDealerControl.ChangeEnabledControlProperty(True)
+            TheDealerControl.ChangeEnabledControlProperty(True)            
         End Sub
 
         Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
@@ -459,8 +459,9 @@ Namespace Tables
                     Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
                     Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
-                    CreateNew()
+                    CreateNew()                    
                 End If
+                EnableNewDistributionButtons(False)
             Catch ex As Exception
                 SetGridSourceXcdLabelFromBo()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -1008,6 +1009,7 @@ Namespace Tables
                         ComingFromBack()
                     Case ElitaPlusPage.DetailPageCommand.New_
                         ComingFromNewCopy()
+                        EnableNewDistributionButtons(False)
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
                         ComingFromNewCopy()
 
