@@ -37,6 +37,8 @@ Namespace Tables
             Public IsDealerConfiguredForSourceXcd As Boolean = False
             Public IsCompanyConfiguredForSourceXcd As Boolean = False
             Public IsIgnorePremiumSetYesForContract As Boolean = False
+            Public IsComingFromPlanCodeDuplicate As Boolean = False
+            Public IsComingFromDateOverLap As Boolean = False
 
             Public IsPlanNew As Boolean = False
             Public IsNewWithCopy As Boolean = False
@@ -330,7 +332,7 @@ Namespace Tables
                     'US-521672
                     SetGridSourceXcdLabelFromBo()
                     CheckIfComingFromConfirm()
-                End If               
+                End If
 
                 ControlMgr.SetVisibleControl(Me, btnBack, True)
             Catch ex As Exception
@@ -385,6 +387,14 @@ Namespace Tables
                 Else
                     EnableNewDistributionButtons(True)
                 End If
+
+
+                If Me.State.IsComingFromPlanCodeDuplicate = True Or Me.State.IsComingFromDateOverLap = True Then
+                    EnableNewDistributionButtons(False)
+                    Me.State.IsComingFromPlanCodeDuplicate = False
+                    Me.State.IsComingFromDateOverLap = False
+                End If
+
             Catch ex As Exception
                 SetGridControls(moGridView, True)
                 RePopulateDistributionListForPlan()
@@ -398,7 +408,10 @@ Namespace Tables
 
         Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
-                PopulatePlanFields()
+                'PopulatePlanFields()
+                Me.State.MyBo = New CommPlan
+                Me.State.moCommPlanId = Me.State.MyBo.Id
+                ClearPlanDates()
                 RePopulateDistributionListForPlan()
                 SetGridSourceXcdLabelFromBo()
             Catch ex As Exception
@@ -710,6 +723,7 @@ Namespace Tables
                         Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                         EnableNewDistributionButtons(True)
                     Else
+                        Me.State.IsComingFromDateOverLap = True
                         Throw New GUIException(Message.MSG_EXPIRATION_DATE_IS_OVERLAPPING_WITH_OTHER_PLAN, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXPIRATION_DATE_IS_OVERLAPPING)
                     End If
                 Else
@@ -718,8 +732,19 @@ Namespace Tables
                 Me.State.IsCommPlanDistNew = False
                 SetPlanButtonsState(False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                bIsOk = False
+                If ex.Message.ToUpper = "ERR_BO_DATA_NOT_FOUND" Then ' ErrorTypes.ERROR_BO Then
+                    Try
+                        Me.State.IsComingFromPlanCodeDuplicate = True
+                        Throw New GUIException(Message.MSG_DUPLICATE_PLAN_CODE_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_PLAN_CODE_NOT_ALLOWED)
+                    Catch ex1 As Exception
+                        Me.HandleErrors(ex1, Me.MasterPage.MessageController)
+                        bIsOk = False
+                    End Try
+                Else
+                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    bIsOk = False
+                End If
+
             End Try
             Return bIsOk
         End Function
@@ -1702,7 +1727,7 @@ Namespace Tables
             End If
             Return bIsOk
         End Function
-        
+
         Private Sub PopulateRateBOFromForm()
             With TheCommPlanDist
                 .CommissionPlanId = Me.State.moCommPlanId 'TheCommPlanDist.CommissionPlanId
