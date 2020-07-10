@@ -721,7 +721,7 @@ Namespace Tables
                     datesOverlapFlag = oPlan.CheckDatesOverLap(oPlan.DealerId, oPlan.ExpirationDate, oPlan.Id)
                     If datesOverlapFlag = "N" Then
                         oPlan.Save()
-                        If Me.TextBoxCode.Text.ToUpper().Equals(oPlan.Code) Then
+                        If Me.TextBoxCode.Text.ToUpper().Equals(oPlan.Code.ToUpper()) Then
                             Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                         Else
                             'Me.MasterPage.MessageController.AddError(Message.MSG_DUPLICATE_PLAN_CODE_NOT_ALLOWED, True)
