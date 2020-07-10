@@ -681,11 +681,11 @@ Namespace Tables
                 ' DropDowns
                 .DealerId = TheDealerControl.SelectedGuid 'Me.GetSelectedItem(moDealerDrop_WRITE)
                 Me.PopulateBOProperty(oPlan, REFERENCE_SOURCE_PROPERTY, "ELP_DEALER")
-                
+
                 If Not String.IsNullOrWhiteSpace(Me.TextBoxCode.Text) Then
                     Me.TextBoxCode.Text = Me.TextBoxCode.Text.ToUpper()
                 End If
-                
+
                 Me.PopulateBOProperty(oPlan, CODE_PROPERTY, Me.TextBoxCode)
                 Me.PopulateBOProperty(oPlan, DESCRIPTION_PROPERTY, Me.TextBoxDescription)
                 ' Texts
@@ -698,7 +698,7 @@ Namespace Tables
                 Throw New PopulateBOErrorException
             End If
         End Sub
-        
+
         Private Function IsDirtyPlanBO() As Boolean
             Dim bIsDirty As Boolean = True
             Dim oPlan As CommPlan
@@ -721,7 +721,12 @@ Namespace Tables
                     datesOverlapFlag = oPlan.CheckDatesOverLap(oPlan.DealerId, oPlan.ExpirationDate, oPlan.Id)
                     If datesOverlapFlag = "N" Then
                         oPlan.Save()
-                        Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                        If Me.TextBoxCode.Text.ToUpper().Equals(oPlan.Code) Then
+                            Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                        Else
+                            'Me.MasterPage.MessageController.AddError(Message.MSG_DUPLICATE_PLAN_CODE_NOT_ALLOWED, True)
+                            Throw New DataNotFoundException
+                        End If
                         EnableNewDistributionButtons(True)
                     Else
                         Me.State.IsComingFromDateOverLap = True
@@ -742,7 +747,7 @@ Namespace Tables
                         RebindPlanMyBo()
                         bIsOk = False
                     End Try
-                Else                    
+                Else
                     Me.HandleErrors(ex, Me.MasterPage.MessageController)
                     RebindPlanMyBo()
                     bIsOk = False
