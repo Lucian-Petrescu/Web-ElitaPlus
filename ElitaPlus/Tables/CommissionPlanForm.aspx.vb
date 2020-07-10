@@ -549,7 +549,7 @@ Namespace Tables
         End Sub
 
         Private Sub EnableEffective(ByVal bIsEnable As Boolean)
-            ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, bIsEnable)
+            'ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, bIsEnable)
             ControlMgr.SetVisibleControl(Me, BtnEffectiveDate_WRITE, bIsEnable)
         End Sub
 
@@ -574,7 +574,7 @@ Namespace Tables
                         moEffectiveText_WRITE.Text = MaxExpiration.AddDays(1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
                         ' Next Year after MaxExpiration 
                         moExpirationText_WRITE.Text = MaxExpiration.AddYears(1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
-                        EnableEffective(False)
+                        'EnableEffective(False)
                     Else
                         ' Modify the only record
                         EnableEffective(True)
@@ -596,7 +596,7 @@ Namespace Tables
                             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
                         End If
                     End If
-                    EnableEffective(False)
+                    'EnableEffective(False)
             End Select
         End Sub
 
@@ -630,6 +630,12 @@ Namespace Tables
             Me.PopulateControlFromBOProperty(Me.TextBoxCode, TheCommPlan.Code)
             Me.PopulateControlFromBOProperty(Me.TextBoxDescription, TheCommPlan.Description)
         End Sub
+
+        Private Sub EnablePlanCodeDescFields(IsEnable As Boolean)
+            ControlMgr.SetEnableControl(Me, Me.TextBoxCode, IsEnable)
+            ControlMgr.SetEnableControl(Me, Me.TextBoxDescription, IsEnable)
+        End Sub
+
         Private Sub ClearPlanCodeDescription()
             Me.TextBoxCode.Text = String.Empty
             Me.TextBoxDescription.Text = String.Empty
@@ -640,6 +646,7 @@ Namespace Tables
                 PopulateDatesFromBO()
                 EnableDateFields()
                 PupulateCodeDescFromBO()
+                EnablePlanCodeDescFields(True)
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -1611,6 +1618,8 @@ Namespace Tables
                     SetGridSourceXcdLabelFromBo()
                     SetGridControls(moGridView, True)
                 End If
+                
+                EnablePlanCodeDescFields(True)
             Catch ex As Exception
                 If Me.State.IsAmountAndPercentBothPresent = True Then
                     Me.State.IsCommPlanDistNew = False
