@@ -505,8 +505,9 @@ Namespace Tables
             Try
                 EnableDateFields()
                 Me.moGridView.Visible = True
-                'BtnNewRate_WRITE.Visible = True
                 btnBack.Visible = True
+                EnablePlanCodeDescFields(True)
+                EnableExpiration(True)
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -557,6 +558,11 @@ Namespace Tables
         Private Sub EnableExpiration(ByVal bIsEnable As Boolean)
             ControlMgr.SetEnableControl(Me, moExpirationText_WRITE, bIsEnable)
             ControlMgr.SetVisibleControl(Me, BtnExpirationDate_WRITE, bIsEnable)
+        End Sub
+        
+        Private Sub EnablePlanCodeDescFields(IsEnable As Boolean)
+            ControlMgr.SetEnableControl(Me, Me.TextBoxCode, IsEnable)
+            ControlMgr.SetEnableControl(Me, Me.TextBoxDescription, IsEnable)
         End Sub
 
         Private Sub EnableDateFields()
@@ -630,12 +636,7 @@ Namespace Tables
         Private Sub PupulateCodeDescFromBO()
             Me.PopulateControlFromBOProperty(Me.TextBoxCode, TheCommPlan.Code)
             Me.PopulateControlFromBOProperty(Me.TextBoxDescription, TheCommPlan.Description)
-        End Sub
-
-        Private Sub EnablePlanCodeDescFields(IsEnable As Boolean)
-            ControlMgr.SetEnableControl(Me, Me.TextBoxCode, IsEnable)
-            ControlMgr.SetEnableControl(Me, Me.TextBoxDescription, IsEnable)
-        End Sub
+        End Sub        
 
         Private Sub ClearPlanCodeDescription()
             Me.TextBoxCode.Text = String.Empty
