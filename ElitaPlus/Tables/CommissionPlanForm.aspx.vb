@@ -450,7 +450,7 @@ Namespace Tables
             ClearPlan()
             SetPlanButtonsState(True)
             PopulatePlanFields()
-            TheDealerControl.ChangeEnabledControlProperty(True)            
+            TheDealerControl.ChangeEnabledControlProperty(True)
         End Sub
 
         Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
@@ -459,9 +459,11 @@ Namespace Tables
                     Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
                     Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
-                    CreateNew()                    
+                    CreateNew()
                 End If
                 EnableNewDistributionButtons(False)
+                EnableExpiration(True)
+                EnablePlanCodeDescFields(True)
             Catch ex As Exception
                 SetGridSourceXcdLabelFromBo()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -508,6 +510,7 @@ Namespace Tables
                 btnBack.Visible = True
                 EnablePlanCodeDescFields(True)
                 EnableExpiration(True)
+                EnableDisableControls(Me.moCoverageEditPanel, False)
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -559,7 +562,7 @@ Namespace Tables
             ControlMgr.SetEnableControl(Me, moExpirationText_WRITE, bIsEnable)
             ControlMgr.SetVisibleControl(Me, BtnExpirationDate_WRITE, bIsEnable)
         End Sub
-        
+
         Private Sub EnablePlanCodeDescFields(IsEnable As Boolean)
             ControlMgr.SetEnableControl(Me, Me.TextBoxCode, IsEnable)
             ControlMgr.SetEnableControl(Me, Me.TextBoxDescription, IsEnable)
@@ -636,7 +639,7 @@ Namespace Tables
         Private Sub PupulateCodeDescFromBO()
             Me.PopulateControlFromBOProperty(Me.TextBoxCode, TheCommPlan.Code)
             Me.PopulateControlFromBOProperty(Me.TextBoxDescription, TheCommPlan.Description)
-        End Sub        
+        End Sub
 
         Private Sub ClearPlanCodeDescription()
             Me.TextBoxCode.Text = String.Empty
@@ -1011,6 +1014,8 @@ Namespace Tables
                     Case ElitaPlusPage.DetailPageCommand.New_
                         ComingFromNewCopy()
                         EnableNewDistributionButtons(False)
+                        EnableExpiration(True)
+                        EnablePlanCodeDescFields(True)
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
                         ComingFromNewCopy()
 
@@ -1621,7 +1626,7 @@ Namespace Tables
                     SetGridSourceXcdLabelFromBo()
                     SetGridControls(moGridView, True)
                 End If
-                
+
                 EnablePlanCodeDescFields(True)
             Catch ex As Exception
                 If Me.State.IsAmountAndPercentBothPresent = True Then
