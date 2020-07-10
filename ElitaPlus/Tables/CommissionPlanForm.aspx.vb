@@ -396,7 +396,6 @@ Namespace Tables
                 End If
 
             Catch ex As Exception
-                SetGridControls(moGridView, True)
                 RePopulateDistributionListForPlan()
                 SetGridSourceXcdLabelFromBo()
                 SetGridControls(moGridView, True)
@@ -408,12 +407,14 @@ Namespace Tables
 
         Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
-                'PopulatePlanFields()
-                Me.State.MyBo = New CommPlan
-                Me.State.moCommPlanId = Me.State.MyBo.Id
-                ClearPlanDates()
+                'RebindPlanMyBo()
+                PopulatePlanFields()
+                'ClearPlanCodeDescription()
                 RePopulateDistributionListForPlan()
                 SetGridSourceXcdLabelFromBo()
+                If Not moGridView.Rows.Count > 0 Then
+                    EnableNewDistributionButtons(False)
+                End If
             Catch ex As Exception
                 SetGridSourceXcdLabelFromBo()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -432,7 +433,16 @@ Namespace Tables
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
-
+        Private Sub RebindPlanMyBo()
+            If Me.State.IsCommPlanDistNew = True Then
+                ' For creating, inserting
+                Me.State.MyBo = New CommPlan
+                Me.State.moCommPlanId = Me.State.MyBo.Id
+            Else
+                ' For updating, deleting
+                Me.State.MyBo = New CommPlan(Me.State.moCommPlanId)
+            End If
+        End Sub
         Private Sub CreateNew()
             Me.State.MyBo = Nothing
             Me.State.moCommPlanId = Guid.Empty
@@ -620,7 +630,7 @@ Namespace Tables
             Me.PopulateControlFromBOProperty(Me.TextBoxCode, TheCommPlan.Code)
             Me.PopulateControlFromBOProperty(Me.TextBoxDescription, TheCommPlan.Description)
         End Sub
-        Private Sub ClearPlanDates()
+        Private Sub ClearPlanCodeDescription()
             Me.TextBoxCode.Text = String.Empty
             Me.TextBoxDescription.Text = String.Empty
         End Sub
@@ -738,10 +748,12 @@ Namespace Tables
                         Throw New GUIException(Message.MSG_DUPLICATE_PLAN_CODE_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_PLAN_CODE_NOT_ALLOWED)
                     Catch ex1 As Exception
                         Me.HandleErrors(ex1, Me.MasterPage.MessageController)
+                        RebindPlanMyBo()
                         bIsOk = False
                     End Try
-                Else
+                Else                    
                     Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    RebindPlanMyBo()
                     bIsOk = False
                 End If
 
@@ -915,7 +927,7 @@ Namespace Tables
                             FillPayeeTypeDropDownList()
                             SetGridSourceXcdDropdownFromBo()
                             SetGridSourceXcdLabelFromBo()
-                            SetGridControls(moGridView, True)
+                            SetGridControls(moGridView, False)
                             EnableDisableControls(Me.moCoverageEditPanel, True)
                             setbuttons(True)
                             btnBack.Visible = True
@@ -1601,6 +1613,7 @@ Namespace Tables
                 Else
                     SaveDistributionChanges()
                     SetGridSourceXcdLabelFromBo()
+                    SetGridControls(moGridView, True)
                 End If
             Catch ex As Exception
                 If Me.State.IsAmountAndPercentBothPresent = True Then
@@ -1654,7 +1667,7 @@ Namespace Tables
                     FillPayeeTypeDropDownList()
                     SetGridSourceXcdDropdownFromBo()
                     SetGridSourceXcdLabelFromBo()
-                    SetGridControls(moGridView, True)
+                    SetGridControls(moGridView, False)
                     EnableDisableControls(Me.moCoverageEditPanel, True)
                     setbuttons(True)
                     btnBack.Visible = True
