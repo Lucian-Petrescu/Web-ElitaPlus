@@ -550,7 +550,7 @@ Namespace Tables
 
         Private Sub EnableEffective(ByVal bIsEnable As Boolean)
             'ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, bIsEnable)
-            ControlMgr.SetVisibleControl(Me, BtnEffectiveDate_WRITE, bIsEnable)
+            'ControlMgr.SetVisibleControl(Me, BtnEffectiveDate_WRITE, bIsEnable)
         End Sub
 
         Private Sub EnableExpiration(ByVal bIsEnable As Boolean)
@@ -561,7 +561,7 @@ Namespace Tables
         Private Sub EnableDateFields()
             Select Case ExpirationCount
                 Case 0  ' New Record
-                    EnableEffective(True)
+                    'EnableEffective(True)
                     EnableExpiration(True)
                     'Yesterday
                     moEffectiveText_WRITE.Text = Date.Now().AddDays(-1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
@@ -577,7 +577,7 @@ Namespace Tables
                         'EnableEffective(False)
                     Else
                         ' Modify the only record
-                        EnableEffective(True)
+                        'EnableEffective(True)
                     End If
                     ControlMgr.SetEnableControl(Me, BtnExpirationDate_WRITE, True)
                 Case Else   ' There is more than one record
