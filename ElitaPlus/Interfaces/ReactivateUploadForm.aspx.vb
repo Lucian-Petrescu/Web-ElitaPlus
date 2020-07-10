@@ -7,7 +7,7 @@ Public Class ReactivateUploadForm
 #Region "Constants"
     Public Const URL As String = "Interfaces/ReactivateUploadForm.aspx"
     'Public Const PAGETITLE As String = "REACTIVATEUPLOADTYPE"
-    Public Const PAGETITLE As String = "UPLOADTYPE"
+    Public Const PAGETITLE As String = "UPLOAD_TYPE"
     Public Const FORMCODE As String = "REACTIVATEUPLOADFORM"
     Public Const PAGETAB As String = "INTERFACES"
 #End Region
@@ -184,6 +184,11 @@ Public Class ReactivateUploadForm
             If InputFile.PostedFile.FileName.Trim = String.Empty Then
                 ErrList.Add("FILE_NAME_IS_REQUIRED")
             End If
+
+            If (System.IO.Path.GetFileName(InputFile.PostedFile.FileName.ToString()).Length() > 31) Then
+                ErrList.Add("FILE NAME CAN NOT BE LONGER THAN 30 CHARACTERS")
+            End If
+
             If ddlUploadType.SelectedValue.Trim = String.Empty Then
                 ErrList.Add("UPLOAD_TYPE_IS_REQUIRED")
             End If
