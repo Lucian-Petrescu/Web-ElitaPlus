@@ -12,12 +12,16 @@ Namespace Tables
 
 #Region "Constants"
         Public Const URL As String = "Tables/ConfigQuestionSetListForm.aspx"
-        Public Const PAGETITLE As String = "CONFIG_QUESTION_SET_LIST"
-        Public Const PAGETAB As String = "TABLES"
+        Public Const PAGETITLE As String = "CONFIG_QUESTION_SET"
+        Public Const PAGETAB As String = "ADMIN"
         Public Const SUMMARYTITLE As String = "SEARCH"
+
         Private Const GRID_COL_CONFIG_QUESTION_SET_ID_IDX As Integer = 0
+
         Private Const GRID_CTRL_NAME_LABLE_CONFIG_QUESTION_SET_ID As String = "lblConfigQuestionSetID"
+
         Private Const SELECT_COMMAND As String = "SelectAction"
+        Private Const NO_ROW_SELECTED_INDEX As Integer = -1
 #End Region
 
 #Region "Page State"
@@ -564,34 +568,54 @@ Namespace Tables
                                                                     End Function
 
             If ddlSearchCompany.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-
                 If ddlSearchCompany.SelectedIndex = BLANK_ITEM_SELECTED Then
-                    Exit Sub
+                    'DealerGroup
+                    Dim oDealerGroupList = GetDealerGroupListByCompanyForUser()
+                    Me.ddlSearchDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
+                    {
+                        .AddBlankItem = True,
+                        .SortFunc = AddressOf .GetCode
+                    })
+
+                    'Dealer
+                    Dim oDealerList = GetDealerListByCompanyForUser()
+                    Me.ddlSearchDealer.Populate(oDealerList, New PopulateOptions() With
+                    {
+                        .AddBlankItem = True
+                    })
+
+                    'ProductCode
+                    Dim oProductCodeList = GetProductCodeListByCompanyForUser()
+                    Me.ddlSearchProductCode.Populate(oProductCodeList, New PopulateOptions() With
+                    {
+                        .AddBlankItem = True,
+                        .TextFunc = textFun
+                    })
+                Else
+                    'DealerGroup
+                    Dim oDealerGroupList = GetDealerGroupListByCompany()
+                    Me.ddlSearchDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
+                    {
+                        .AddBlankItem = True,
+                        .SortFunc = AddressOf .GetCode
+                    })
+
+                    'Dealer
+                    Dim oDealerList = GetDealerListByCompany()
+                    Me.ddlSearchDealer.Populate(oDealerList, New PopulateOptions() With
+                    {
+                        .AddBlankItem = True
+                    })
+
+                    'ProductCode
+                    Dim oProductCodeList = GetProductListByCompany()
+                    Me.ddlSearchProductCode.Populate(oProductCodeList, New PopulateOptions() With
+                    {
+                        .AddBlankItem = True,
+                        .TextFunc = textFun
+                    })
+
                 End If
-
-                'DealerGroup
-                Dim oDealerGroupList = GetDealerGroupListByCompany()
-                Me.ddlSearchDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
-                {
-                    .AddBlankItem = True,
-                    .SortFunc = AddressOf .GetCode
-                })
-
-                'Dealer
-                Dim oDealerList = GetDealerListByCompany()
-                Me.ddlSearchDealer.Populate(oDealerList, New PopulateOptions() With
-                {
-                    .AddBlankItem = True
-                })
-
-                'ProductCode
-                Dim oProductCodeList = GetProductListByCompany()
-                Me.ddlSearchProductCode.Populate(oProductCodeList, New PopulateOptions() With
-                {
-                    .AddBlankItem = True,
-                    .TextFunc = textFun
-                })
-
             End If
         End Sub
 
@@ -601,19 +625,23 @@ Namespace Tables
                                                                     End Function
 
             If ddlSearchDealer.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-
                 If ddlSearchDealer.SelectedIndex = BLANK_ITEM_SELECTED Then
-                    Exit Sub
+                    'ProductCode
+                    Dim oProductCodeList = GetProductCodeListByCompanyForUser()
+                    Me.ddlSearchProductCode.Populate(oProductCodeList, New PopulateOptions() With
+                    {
+                        .AddBlankItem = True,
+                        .TextFunc = textFun
+                    })
+                Else
+                    'ProductCode
+                    Dim oProductCodeList = GetProductListByDealer()
+                    Me.ddlSearchProductCode.Populate(oProductCodeList, New PopulateOptions() With
+                    {
+                        .AddBlankItem = True,
+                        .TextFunc = textFun
+                    })
                 End If
-
-                'ProductCode
-                Dim oProductCodeList = GetProductListByDealer()
-                Me.ddlSearchProductCode.Populate(oProductCodeList, New PopulateOptions() With
-                {
-                    .AddBlankItem = True,
-                    .TextFunc = textFun
-                })
-
             End If
         End Sub
 
