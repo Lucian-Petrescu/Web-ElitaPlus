@@ -18,10 +18,10 @@ Namespace Certificates
 #Region "Constants"
         ' Public Const URL As String = "Certificates/CertificateListForm.aspx"
         'Public Const PAGETITLE As String = "CERTIFICATE_SEARCH"
-        Public Const PAGETAB As String = "SOLICITATION"
-        Public Const SEARCH_EXCEPTION As String = "Enter Correct Search Criterion(s)" 'Solicit List Search Exception
+
+        Public Const SEARCH_EXCEPTION As String = "NOTE_SEARCH_CRITERIA_REQUIRED" 'Solicit List Search Exception
         Public Const NO_DEALER_SELECTED = "--"
-        Public Const NO_RECORDS_FOUND = "NO RECORDS FOUND."
+        Public Const NO_RECORDS_FOUND = "MSG_NO_RECORDS_FOUND"
         Public Const SALES_ORDER_NUMBER = "salesOrderNumber"
         Public Const CUSTOMER_ID = "customerId"
         Public Const APPLY_DATE = "effectiveDate"
@@ -81,7 +81,7 @@ Namespace Certificates
                     ' Populate the header and bredcrumb
                     Me.MasterPage.UsePageTabTitleInBreadCrum = False
                     ' Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Solicites")
+                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Solicitations")
 
                     UpdateBreadCrum()
 
@@ -134,8 +134,8 @@ Namespace Certificates
             If (Not Me.State Is Nothing) Then
                 If (Not Me.State Is Nothing) Then
                     Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
-                        TranslationBase.TranslateLabelOrMessage("SOLICITATION SEARCH")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("SOLICITATION SEARCH")
+                        TranslationBase.TranslateLabelOrMessage("SOLICITATION_SEARCH")
+                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("SOLICITATION_SEARCH")
                 End If
             End If
         End Sub
@@ -170,12 +170,14 @@ Namespace Certificates
             Try
                 If txtInitialSalesOrder.Text = String.Empty And txtCustomerId.Text = String.Empty And txtApplyDate.Text = String.Empty And
                     txtSimPhoneNumber.Text = String.Empty And ddlDealer.SelectedIndex = &H0 Then
-                    Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Solicit), Nothing, "Search", Nothing)}
-                    Throw New BOValidationException(errors, GetType(Solicit).FullName)
+
+                    Me.MasterPage.MessageController.AddErrorAndShow(SEARCH_EXCEPTION, True)
+                    Return
                 End If
                 If ddlDealer.SelectedIndex = &H0 Or ddlDealer.SelectedValue Is Nothing Then
-                    Dim errors() As ValidationError = {New ValidationError("Dealer name cannot be empty", GetType(Solicit), Nothing, "Search", Nothing)}
-                    Throw New BOValidationException(errors, GetType(Solicit).FullName)
+
+                    Me.MasterPage.MessageController.AddErrorAndShow("SELECT_DEALER", True)
+                    Return
                 End If
                 Dim selectedDealer As Assurant.Elita.CommonConfiguration.DataElements.ListItem
                 If Authentication.CurrentUser.IsDealerGroup Then
@@ -186,8 +188,8 @@ Namespace Certificates
                     selectedDealer = oDealerList.Where(Function(x) x.ListItemId.ToString() = ddlDealer.SelectedValue).FirstOrDefault()
                 End If
                 If selectedDealer.Code <> "RSIM" Then
-                    Dim errors() As ValidationError = {New ValidationError(NO_RECORDS_FOUND, GetType(Solicit), Nothing, "Search", Nothing)}
-                    Throw New BOValidationException(errors, GetType(Solicit).FullName)
+                    Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
+                    Return
                 End If
 
 
@@ -469,13 +471,13 @@ Namespace Certificates
 
                 Catch ex As Exception
                     Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
-                    'Me.HandleErrors(ex, Me.MasterPage.MessageController)
+
                 End Try
                 Session("recCount") = ""
             Catch ex As Exception
                 Dim GetExceptionType As String = ex.GetBaseException.GetType().Name
                 Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
-                ' Me.HandleErrors(ex, Me.MasterPage.MessageController)
+
             End Try
         End Sub
 
