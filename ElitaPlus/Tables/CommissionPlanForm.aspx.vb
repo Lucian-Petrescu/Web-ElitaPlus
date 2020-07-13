@@ -37,6 +37,8 @@ Namespace Tables
             Public IsDealerConfiguredForSourceXcd As Boolean = False
             Public IsCompanyConfiguredForSourceXcd As Boolean = False
             Public IsIgnorePremiumSetYesForContract As Boolean = False
+            Public IsComingFromPlanCodeDuplicate As Boolean = False
+            Public IsComingFromDateOverLap As Boolean = False
 
             Public IsPlanNew As Boolean = False
             Public IsNewWithCopy As Boolean = False
@@ -330,7 +332,7 @@ Namespace Tables
                     'US-521672
                     SetGridSourceXcdLabelFromBo()
                     CheckIfComingFromConfirm()
-                End If               
+                End If
 
                 ControlMgr.SetVisibleControl(Me, btnBack, True)
             Catch ex As Exception
@@ -385,8 +387,15 @@ Namespace Tables
                 Else
                     EnableNewDistributionButtons(True)
                 End If
+
+
+                If Me.State.IsComingFromPlanCodeDuplicate = True Or Me.State.IsComingFromDateOverLap = True Then
+                    EnableNewDistributionButtons(False)
+                    Me.State.IsComingFromPlanCodeDuplicate = False
+                    Me.State.IsComingFromDateOverLap = False
+                End If
+
             Catch ex As Exception
-                SetGridControls(moGridView, True)
                 RePopulateDistributionListForPlan()
                 SetGridSourceXcdLabelFromBo()
                 SetGridControls(moGridView, True)
@@ -398,9 +407,14 @@ Namespace Tables
 
         Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
+                'RebindPlanMyBo()
                 PopulatePlanFields()
+                'ClearPlanCodeDescription()
                 RePopulateDistributionListForPlan()
                 SetGridSourceXcdLabelFromBo()
+                If Not moGridView.Rows.Count > 0 Then
+                    EnableNewDistributionButtons(False)
+                End If
             Catch ex As Exception
                 SetGridSourceXcdLabelFromBo()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -419,7 +433,16 @@ Namespace Tables
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
-
+        Private Sub RebindPlanMyBo()
+            If Me.State.IsCommPlanDistNew = True Then
+                ' For creating, inserting
+                Me.State.MyBo = New CommPlan
+                Me.State.moCommPlanId = Me.State.MyBo.Id
+            Else
+                ' For updating, deleting
+                Me.State.MyBo = New CommPlan(Me.State.moCommPlanId)
+            End If
+        End Sub
         Private Sub CreateNew()
             Me.State.MyBo = Nothing
             Me.State.moCommPlanId = Guid.Empty
@@ -438,6 +461,9 @@ Namespace Tables
                 Else
                     CreateNew()
                 End If
+                EnableNewDistributionButtons(False)
+                EnableExpiration(True)
+                EnablePlanCodeDescFields(True)
             Catch ex As Exception
                 SetGridSourceXcdLabelFromBo()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -481,8 +507,10 @@ Namespace Tables
             Try
                 EnableDateFields()
                 Me.moGridView.Visible = True
-                'BtnNewRate_WRITE.Visible = True
                 btnBack.Visible = True
+                EnablePlanCodeDescFields(True)
+                EnableExpiration(True)
+                EnableDisableControls(Me.moCoverageEditPanel, False)
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -526,8 +554,8 @@ Namespace Tables
         End Sub
 
         Private Sub EnableEffective(ByVal bIsEnable As Boolean)
-            ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, bIsEnable)
-            ControlMgr.SetVisibleControl(Me, BtnEffectiveDate_WRITE, bIsEnable)
+            'ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, bIsEnable)
+            'ControlMgr.SetVisibleControl(Me, BtnEffectiveDate_WRITE, bIsEnable)
         End Sub
 
         Private Sub EnableExpiration(ByVal bIsEnable As Boolean)
@@ -535,10 +563,15 @@ Namespace Tables
             ControlMgr.SetVisibleControl(Me, BtnExpirationDate_WRITE, bIsEnable)
         End Sub
 
+        Private Sub EnablePlanCodeDescFields(IsEnable As Boolean)
+            ControlMgr.SetEnableControl(Me, Me.TextBoxCode, IsEnable)
+            ControlMgr.SetEnableControl(Me, Me.TextBoxDescription, IsEnable)
+        End Sub
+
         Private Sub EnableDateFields()
             Select Case ExpirationCount
                 Case 0  ' New Record
-                    EnableEffective(True)
+                    'EnableEffective(True)
                     EnableExpiration(True)
                     'Yesterday
                     moEffectiveText_WRITE.Text = Date.Now().AddDays(-1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
@@ -551,10 +584,10 @@ Namespace Tables
                         moEffectiveText_WRITE.Text = MaxExpiration.AddDays(1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
                         ' Next Year after MaxExpiration 
                         moExpirationText_WRITE.Text = MaxExpiration.AddYears(1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
-                        EnableEffective(False)
+                        'EnableEffective(False)
                     Else
                         ' Modify the only record
-                        EnableEffective(True)
+                        'EnableEffective(True)
                     End If
                     ControlMgr.SetEnableControl(Me, BtnExpirationDate_WRITE, True)
                 Case Else   ' There is more than one record
@@ -573,7 +606,7 @@ Namespace Tables
                             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
                         End If
                     End If
-                    EnableEffective(False)
+                    'EnableEffective(False)
             End Select
         End Sub
 
@@ -607,7 +640,8 @@ Namespace Tables
             Me.PopulateControlFromBOProperty(Me.TextBoxCode, TheCommPlan.Code)
             Me.PopulateControlFromBOProperty(Me.TextBoxDescription, TheCommPlan.Description)
         End Sub
-        Private Sub ClearPlanDates()
+
+        Private Sub ClearPlanCodeDescription()
             Me.TextBoxCode.Text = String.Empty
             Me.TextBoxDescription.Text = String.Empty
         End Sub
@@ -617,6 +651,7 @@ Namespace Tables
                 PopulateDatesFromBO()
                 EnableDateFields()
                 PupulateCodeDescFromBO()
+                EnablePlanCodeDescFields(True)
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -658,6 +693,11 @@ Namespace Tables
                 ' DropDowns
                 .DealerId = TheDealerControl.SelectedGuid 'Me.GetSelectedItem(moDealerDrop_WRITE)
                 Me.PopulateBOProperty(oPlan, REFERENCE_SOURCE_PROPERTY, "ELP_DEALER")
+
+                If Not String.IsNullOrWhiteSpace(Me.TextBoxCode.Text) Then
+                    Me.TextBoxCode.Text = Me.TextBoxCode.Text.ToUpper()
+                End If
+
                 Me.PopulateBOProperty(oPlan, CODE_PROPERTY, Me.TextBoxCode)
                 Me.PopulateBOProperty(oPlan, DESCRIPTION_PROPERTY, Me.TextBoxDescription)
                 ' Texts
@@ -670,21 +710,7 @@ Namespace Tables
                 Throw New PopulateBOErrorException
             End If
         End Sub
-        Private Sub PopulatePlanBOFromForm(ByVal oPlan As CommPlanDistribution)
-            With oPlan
-                Me.PopulateBOProperty(oPlan, REFERENCE_SOURCE_PROPERTY, "ELP_DEALER")
-                Me.PopulateBOProperty(oPlan, CODE_PROPERTY, Me.TextBoxCode)
-                Me.PopulateBOProperty(oPlan, DESCRIPTION_PROPERTY, Me.TextBoxDescription)
-                ' Texts
-                Me.PopulateBOProperty(oPlan, EFFECTIVE_DATE_PROPERTY, moEffectiveText_WRITE)
-                Me.PopulateBOProperty(oPlan, EXPIRATION_DATE_PROPERTY, moExpirationText_WRITE)
 
-            End With
-
-            If Me.ErrCollection.Count > 0 Then
-                Throw New PopulateBOErrorException
-            End If
-        End Sub
         Private Function IsDirtyPlanBO() As Boolean
             Dim bIsDirty As Boolean = True
             Dim oPlan As CommPlan
@@ -707,9 +733,15 @@ Namespace Tables
                     datesOverlapFlag = oPlan.CheckDatesOverLap(oPlan.DealerId, oPlan.ExpirationDate, oPlan.Id)
                     If datesOverlapFlag = "N" Then
                         oPlan.Save()
-                        Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                        If Me.TextBoxCode.Text.ToUpper().Equals(oPlan.Code.ToUpper()) Then
+                            Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                        Else
+                            'Me.MasterPage.MessageController.AddError(Message.MSG_DUPLICATE_PLAN_CODE_NOT_ALLOWED, True)
+                            Throw New DataNotFoundException
+                        End If
                         EnableNewDistributionButtons(True)
                     Else
+                        Me.State.IsComingFromDateOverLap = True
                         Throw New GUIException(Message.MSG_EXPIRATION_DATE_IS_OVERLAPPING_WITH_OTHER_PLAN, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXPIRATION_DATE_IS_OVERLAPPING)
                     End If
                 Else
@@ -718,8 +750,21 @@ Namespace Tables
                 Me.State.IsCommPlanDistNew = False
                 SetPlanButtonsState(False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                bIsOk = False
+                If ex.Message.ToUpper = "ERR_BO_DATA_NOT_FOUND" Then ' ErrorTypes.ERROR_BO Then
+                    Try
+                        Me.State.IsComingFromPlanCodeDuplicate = True
+                        Throw New GUIException(Message.MSG_DUPLICATE_PLAN_CODE_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_PLAN_CODE_NOT_ALLOWED)
+                    Catch ex1 As Exception
+                        Me.HandleErrors(ex1, Me.MasterPage.MessageController)
+                        RebindPlanMyBo()
+                        bIsOk = False
+                    End Try
+                Else
+                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    RebindPlanMyBo()
+                    bIsOk = False
+                End If
+
             End Try
             Return bIsOk
         End Function
@@ -890,7 +935,7 @@ Namespace Tables
                             FillPayeeTypeDropDownList()
                             SetGridSourceXcdDropdownFromBo()
                             SetGridSourceXcdLabelFromBo()
-                            SetGridControls(moGridView, True)
+                            SetGridControls(moGridView, False)
                             EnableDisableControls(Me.moCoverageEditPanel, True)
                             setbuttons(True)
                             btnBack.Visible = True
@@ -968,6 +1013,9 @@ Namespace Tables
                         ComingFromBack()
                     Case ElitaPlusPage.DetailPageCommand.New_
                         ComingFromNewCopy()
+                        EnableNewDistributionButtons(False)
+                        EnableExpiration(True)
+                        EnablePlanCodeDescFields(True)
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
                         ComingFromNewCopy()
 
@@ -1576,7 +1624,10 @@ Namespace Tables
                 Else
                     SaveDistributionChanges()
                     SetGridSourceXcdLabelFromBo()
+                    SetGridControls(moGridView, True)
                 End If
+
+                EnablePlanCodeDescFields(True)
             Catch ex As Exception
                 If Me.State.IsAmountAndPercentBothPresent = True Then
                     Me.State.IsCommPlanDistNew = False
@@ -1629,7 +1680,7 @@ Namespace Tables
                     FillPayeeTypeDropDownList()
                     SetGridSourceXcdDropdownFromBo()
                     SetGridSourceXcdLabelFromBo()
-                    SetGridControls(moGridView, True)
+                    SetGridControls(moGridView, False)
                     EnableDisableControls(Me.moCoverageEditPanel, True)
                     setbuttons(True)
                     btnBack.Visible = True
@@ -1702,7 +1753,7 @@ Namespace Tables
             End If
             Return bIsOk
         End Function
-        
+
         Private Sub PopulateRateBOFromForm()
             With TheCommPlanDist
                 .CommissionPlanId = Me.State.moCommPlanId 'TheCommPlanDist.CommissionPlanId

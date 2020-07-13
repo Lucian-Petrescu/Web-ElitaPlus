@@ -96,8 +96,8 @@
                         <asp:Label ID="moEffectiveLabel" runat="server">Effective</asp:Label>:&nbsp;
                     </td>
                     <td width="20%">&nbsp;
-                        <asp:TextBox ID="moEffectiveText_WRITE" TabIndex="10" runat="server" SkinID="MediumTextBox" Width="150px"></asp:TextBox>
-                        <asp:ImageButton ID="BtnEffectiveDate_WRITE" runat="server" ImageAlign="AbsMiddle" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
+                        <asp:TextBox ID="moEffectiveText_WRITE" TabIndex="10" runat="server" SkinID="MediumTextBox" Width="150px" Enabled="false"></asp:TextBox>
+                        <asp:ImageButton ID="BtnEffectiveDate_WRITE" runat="server" ImageAlign="AbsMiddle" ImageUrl="~/App_Themes/Default/Images/calendar.png" Enabled="false"></asp:ImageButton>
                     </td>
                     <td width="10%" align="right">*
                         <asp:Label ID="moExpirationLabel" runat="server">Expiration</asp:Label>:&nbsp;
