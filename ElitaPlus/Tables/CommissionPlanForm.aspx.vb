@@ -40,7 +40,7 @@ Namespace Tables
             Public IsComingFromPlanCodeDuplicate As Boolean = False
             Public IsComingFromDateOverLap As Boolean = False
             Public PlaListDV As DataView = Nothing
-            Public IsDealerExistForSelectedPlan As Boolean = False
+            Public IsDealerExistForSelectedPlan As Boolean = True
             Public IsPlanNew As Boolean = False
             Public IsNewWithCopy As Boolean = False
             Public IsUndo As Boolean = False
