@@ -41,6 +41,7 @@ Public Class ClaimRecordingForm
 
     Public Const Url As String = "~/Claims/ClaimRecordingForm.aspx"
     Public Const Url2 As String = "/Claims/ClaimRecordingForm.aspx"
+    Public Const CertUrl As String = "/Certificates/CertificateForm.aspx"
 
     Private Const UserName = "CLAIM_RECSERVICE_USERNAME"
     Private Const Password = "CLAIM_RECSERVICE_PASSWORD"
@@ -238,6 +239,11 @@ Public Class ClaimRecordingForm
 #Region "Page Events"
     Private Sub Page_PageCall(ByVal callFromUrl As String, ByVal callingPar As Object) Handles MyBase.PageCall
         Try
+            If callFromUrl.Contains(ClaimRecordingForm.CertUrl) Then
+                ' Remove the Claim Recording page from the stack(return path flow)
+                MyBase.SetPageOutOfNavigation()
+            End If
+
             If Not CallingParameters Is Nothing Then
                 State.InputParameters = CType(CallingParameters, Parameters)
                 State.CertificateId = State.InputParameters.CertificateId
