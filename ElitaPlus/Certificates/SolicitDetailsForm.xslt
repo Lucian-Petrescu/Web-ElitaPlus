@@ -256,10 +256,10 @@
                         <xsl:value-of select="origin/organization/address/zipCode" />
                       </td>
                       <td align="right" nowrap="nowrap">
-                        <xsl:value-of select="labelTranslation/SHOP_TELE_PHONE_NUMBER" /> :
+                        <xsl:value-of select="labelTranslation/TEL_MOB_PHONE_NUMBER" /> :
                       </td>
                       <td nowrap="nowrap">
-                        <xsl:value-of select="origin/organization/workPhoneNumber" />
+                        <xsl:value-of select="customer/workPhoneNumber" />
                       </td>
                     </tr>
                     <tr class="out">
@@ -280,10 +280,10 @@
                     <tr class="out">
 
                       <td align="right" nowrap="nowrap">
-                        <xsl:value-of select="labelTranslation/TEL_MOB_PHONE_NUMBER" /> :
+                        <xsl:value-of select="labelTranslation/SHOP_TELE_PHONE_NUMBER" /> :
                       </td>
                       <td nowrap="nowrap">
-                        <xsl:value-of select="customer/workPhoneNumber" />
+                        <xsl:value-of select="origin/organization/workPhoneNumber" />
 
                       </td>
                       <td></td>
