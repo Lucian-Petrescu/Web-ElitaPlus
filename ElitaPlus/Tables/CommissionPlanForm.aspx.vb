@@ -40,7 +40,7 @@ Namespace Tables
             Public IsComingFromPlanCodeDuplicate As Boolean = False
             Public IsComingFromDateOverLap As Boolean = False
             Public PlaListDV As DataView = Nothing
-            Public IsDealerExistForSelectedPlan As Boolean = False
+            Public IsDealerExistForSelectedPlan As Boolean = True
             Public IsPlanNew As Boolean = False
             Public IsNewWithCopy As Boolean = False
             Public IsUndo As Boolean = False
@@ -381,7 +381,7 @@ Namespace Tables
                 SavePlanChanges()
                 RePopulateDistributionListForPlan()
                 SetGridSourceXcdLabelFromBo()
-                ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, False)
+                'ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, False)
 
                 If (String.IsNullOrWhiteSpace(TextBoxCode.Text) Or String.IsNullOrWhiteSpace(TextBoxDescription.Text)) Then
                     EnableNewDistributionButtons(False)
@@ -583,7 +583,7 @@ Namespace Tables
         End Sub
 
         Private Sub EnableEffective(ByVal bIsEnable As Boolean)
-            ControlMgr.SetVisibleControl(Me, moEffectiveText_WRITE, bIsEnable)
+            'ControlMgr.SetVisibleControl(Me, moEffectiveText_WRITE, bIsEnable)
             ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, bIsEnable)
 
             ControlMgr.SetVisibleControl(Me, BtnEffectiveDate_WRITE, bIsEnable)
