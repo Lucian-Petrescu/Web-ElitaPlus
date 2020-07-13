@@ -415,6 +415,26 @@ Namespace Tables
                 If Not moGridView.Rows.Count > 0 Then
                     EnableNewDistributionButtons(False)
                 End If
+
+                If Me.State.IsNewCloneCopyClicked = True Then
+                    Me.State.moCommPlanId = CType(Me.CallingParameters, Guid)
+
+                    If Me.State.moCommPlanId.Equals(Guid.Empty) Then
+                        Me.State.IsCommPlanDistNew = True
+                    Else
+                        Me.State.IsCommPlanDistNew = False
+                    End If
+
+                    TheDealerControl.ChangeEnabledControlProperty(True)
+                    Me.moGridView.Visible = True
+                    btnBack.Visible = True
+                    EnableDisableControls(Me.moCoverageEditPanel, False)
+                    EnableDateFields()
+                    EnablePlanCodeDescFields(True)
+                    EnableExpiration(True)                    
+                    Me.State.IsNewCloneCopyClicked = False
+                End If
+
             Catch ex As Exception
                 SetGridSourceXcdLabelFromBo()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -737,6 +757,7 @@ Namespace Tables
                             Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                         Else
                             'Me.MasterPage.MessageController.AddError(Message.MSG_DUPLICATE_PLAN_CODE_NOT_ALLOWED, True)
+                            Me.State.IsComingFromPlanCodeDuplicate = True
                             Throw New DataNotFoundException
                         End If
                         EnableNewDistributionButtons(True)
