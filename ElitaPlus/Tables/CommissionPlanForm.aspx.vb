@@ -39,7 +39,8 @@ Namespace Tables
             Public IsIgnorePremiumSetYesForContract As Boolean = False
             Public IsComingFromPlanCodeDuplicate As Boolean = False
             Public IsComingFromDateOverLap As Boolean = False
-
+            Public PlaListDV As DataView = Nothing
+            Public IsDealerExistForSelectedPlan As Boolean = False
             Public IsPlanNew As Boolean = False
             Public IsNewWithCopy As Boolean = False
             Public IsUndo As Boolean = False
@@ -431,7 +432,7 @@ Namespace Tables
                     EnableDisableControls(Me.moCoverageEditPanel, False)
                     EnableDateFields()
                     EnablePlanCodeDescFields(True)
-                    EnableExpiration(True)                    
+                    EnableExpiration(True)
                     Me.State.IsNewCloneCopyClicked = False
                 End If
 
@@ -531,6 +532,14 @@ Namespace Tables
                 EnablePlanCodeDescFields(True)
                 EnableExpiration(True)
                 EnableDisableControls(Me.moCoverageEditPanel, False)
+
+                If CheckDealerExistForCommissionPlan() = "N" Then
+                    Me.State.IsDealerExistForSelectedPlan = False
+                    EnableEffective(True)
+                Else
+                    Me.State.IsDealerExistForSelectedPlan = True
+                    EnableEffective(False)
+                End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -574,8 +583,11 @@ Namespace Tables
         End Sub
 
         Private Sub EnableEffective(ByVal bIsEnable As Boolean)
-            'ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, bIsEnable)
-            'ControlMgr.SetVisibleControl(Me, BtnEffectiveDate_WRITE, bIsEnable)
+            ControlMgr.SetVisibleControl(Me, moEffectiveText_WRITE, bIsEnable)
+            ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, bIsEnable)
+
+            ControlMgr.SetVisibleControl(Me, BtnEffectiveDate_WRITE, bIsEnable)
+            ControlMgr.SetEnableControl(Me, BtnEffectiveDate_WRITE, bIsEnable)
         End Sub
 
         Private Sub EnableExpiration(ByVal bIsEnable As Boolean)
@@ -783,11 +795,38 @@ Namespace Tables
                 Else
                     Me.HandleErrors(ex, Me.MasterPage.MessageController)
                     RebindPlanMyBo()
+
+                    If Me.State.IsDealerExistForSelectedPlan = False Then
+                        EnableEffective(True)
+                    Else
+                        EnableEffective(False)
+                    End If
                     bIsOk = False
                 End If
 
             End Try
             Return bIsOk
+        End Function
+
+        Private Function CheckDealerExistForCommissionPlan() As String
+            Dim oPlan As CommPlan
+            Dim dealerExistFlag As String = "Y"
+            Try
+                oPlan = TheCommPlan
+                'dealerExistFlag = oPlan.CheckDealerExistForPlan(multipleDropControl.SelectedGuid)
+                Me.State.PlaListDV = CommPlan.getList(GetSearchParmDealerPlanList)
+
+                If Not Me.State.PlaListDV Is Nothing Then
+                    If Me.State.PlaListDV.Count = 0 Then
+                        dealerExistFlag = "N"
+                    End If
+                End If
+            Catch ex As Exception
+                dealerExistFlag = "Y"
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+
+            Return dealerExistFlag
         End Function
 
         Private Function DeletePlan() As Boolean
@@ -2108,6 +2147,18 @@ Namespace Tables
                 End With
             End If
         End Sub
+
+        Private Function GetSearchParmDealerPlanList() As CommPlanData
+            Dim oCommPlanData As CommPlanData = New CommPlanData
+
+            With oCommPlanData
+                .companyIds = ElitaPlusIdentity.Current.ActiveUser.Companies
+                .dealerId = multipleDropControl.SelectedGuid
+            End With
+
+            Return oCommPlanData
+
+        End Function
 #End Region
 #End Region
     End Class
