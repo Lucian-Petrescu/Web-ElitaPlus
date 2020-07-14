@@ -120,7 +120,7 @@ Namespace Certificates
                     End If
                 End If
 
-                Me.DisplayNewProgressBarOnClick(Me.btnSearch, "Loading_Solicitations")
+                Me.DisplayNewProgressBarOnClick(Me.btnSearch, "LOADING_SOLICITATIONS")
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -452,7 +452,7 @@ Namespace Certificates
                     (From solicit In solicitDetailsList
                      Select New Solicit.SolicitDetails With {
                         .campaignCode = solicit.campaignCode,
-                        .conversionDate = solicit.conversionDate, 'convertDateFrmt(solicit.conversionDate),
+                        .conversionDate = solicit.conversionDate,
                     .creationSourceName = solicit.creationSourceName,
                         .creationSourceType = solicit.creationSourceType,
                         .customer = solicit.customer,
