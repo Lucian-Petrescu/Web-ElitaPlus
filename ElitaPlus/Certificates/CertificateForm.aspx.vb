@@ -3098,7 +3098,8 @@ Namespace Certificates
                 End If
 
                 Me.AddressCtr.PopulateBOFromControl(True, blnUpdateZipLocator)
-                If ((Me.AddressCtr.MyBO.IsDeleted = False) AndAlso
+                If (Not Me.AddressCtr.MyBO Is Nothing AndAlso
+                    (Me.AddressCtr.MyBO.IsDeleted = False) AndAlso
                     (Me.AddressCtr.MyBO.IsEmpty = False)) Then
                     Me.State.MyBO.AddressId = Me.AddressCtr.MyBO.Id
                 End If
