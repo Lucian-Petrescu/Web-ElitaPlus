@@ -79,7 +79,7 @@
       <xsl:when test="$dd = '12'">12</xsl:when>
       <xsl:when test="$dd = '13'">13</xsl:when>
       <xsl:when test="$dd = '14'">14</xsl:when>
-      <xsl:when test="$dd = '14'">15</xsl:when>
+      <xsl:when test="$dd = '15'">15</xsl:when>
       <xsl:when test="$dd = '16'">16</xsl:when>
       <xsl:when test="$dd = '17'">17</xsl:when>
       <xsl:when test="$dd = '18'">18</xsl:when>
