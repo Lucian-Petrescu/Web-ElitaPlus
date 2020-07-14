@@ -154,7 +154,7 @@ Public Class Solicit
         Public Property SHOP_ADDRESS As String
         <JsonProperty("shopTelephoneNumber")>
         Public Property SHOP_TELE_PHONE_NUMBER As String
-        <JsonProperty("date Separator")>
+        <JsonProperty("dateSeparator")>
         Public Property DATE_SEPARATOR As String
 
     End Class
