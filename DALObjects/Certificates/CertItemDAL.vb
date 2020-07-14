@@ -173,6 +173,11 @@ Public Class CertItemDAL
             'certDAL.Update(familyDataset, tr, DataRowState.Modified)
             certDAL.UpdateFamily(familyDataset, tr)
 
+            If Not familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
+                Dim ClaimStatusDAL As New ClaimStatusDAL
+                ClaimStatusDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
+            End If
+
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection
                 DBHelper.Commit(tr)
