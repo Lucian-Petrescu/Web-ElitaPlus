@@ -1,4 +1,4 @@
-Imports System.Linq
+﻿Imports System.Linq
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
@@ -25,7 +25,7 @@ Namespace Certificates
         Public Const SALES_ORDER_NUMBER = "salesOrderNumber"
         Public Const CUSTOMER_ID = "customerId"
         Public Const APPLY_DATE = "effectiveDate"
-        Public Const SIM_PHONE_NUMBER = "simPhoneNumber"
+        Public Const SIM_PHONE_NUMBER = "phoneNumber"
 
 #End Region
 #Region "Page State"
@@ -120,7 +120,7 @@ Namespace Certificates
                     End If
                 End If
 
-                Me.DisplayNewProgressBarOnClick(Me.btnSearch, "Loading Solicit(s)")
+                Me.DisplayNewProgressBarOnClick(Me.btnSearch, "Loading_Solicitations")
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -187,11 +187,11 @@ Namespace Certificates
                     Dim oDealerList() As Assurant.Elita.CommonConfiguration.DataElements.ListItem = GetDealerListByCompanyForUser()
                     selectedDealer = oDealerList.Where(Function(x) x.ListItemId.ToString() = ddlDealer.SelectedValue).FirstOrDefault()
                 End If
+
                 If selectedDealer.Code <> "RSIM" Then
                     Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
                     Return
                 End If
-
 
                 If ddlDealer.SelectedIndex > 0 Then
                     If (txtInitialSalesOrder.Text = String.Empty AndAlso txtCustomerId.Text = String.Empty AndAlso txtApplyDate.Text = String.Empty AndAlso
@@ -211,7 +211,6 @@ Namespace Certificates
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
-
 
         Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
             Try
@@ -453,8 +452,8 @@ Namespace Certificates
                     (From solicit In solicitDetailsList
                      Select New Solicit.SolicitDetails With {
                         .campaignCode = solicit.campaignCode,
-                        .conversionDate = solicit.conversionDate,
-                        .creationSourceName = solicit.creationSourceName,
+                        .conversionDate = solicit.conversionDate, 'convertDateFrmt(solicit.conversionDate),
+                    .creationSourceName = solicit.creationSourceName,
                         .creationSourceType = solicit.creationSourceType,
                         .customer = solicit.customer,
                         .effectiveDate = solicit.effectiveDate,
@@ -490,6 +489,7 @@ Namespace Certificates
             solicitLabel.LEAD_RECORD_STATUS = TranslationBase.TranslateLabelOrMessage("LEAD_RECORD_STATUS")
             solicitLabel.SOURCE = TranslationBase.TranslateLabelOrMessage("SOURCE")
             solicitLabel.EXPIRATION_DATE = TranslationBase.TranslateLabelOrMessage("EXPIRATION_DATE")
+            solicitLabel.CONVERSION_DATE = TranslationBase.TranslateLabelOrMessage("SOLICIT_CONVERSION_DATE")
             solicitLabel.CUSTOMER_LAST_NAME = TranslationBase.TranslateLabelOrMessage("CUSTOMER_LAST_NAME")
             solicitLabel.CUSTOMER_FIRST_NAME = TranslationBase.TranslateLabelOrMessage("CUSTOMER_FIRST_NAME")
             solicitLabel.LAST_NAME_KANA = TranslationBase.TranslateLabelOrMessage("LAST_NAME_KANA")
@@ -506,6 +506,8 @@ Namespace Certificates
             solicitLabel.SHOP_ZIP_CODE = TranslationBase.TranslateLabelOrMessage("SHOP_ZIP_CODE")
             solicitLabel.SHOP_ADDRESS = TranslationBase.TranslateLabelOrMessage("SHOP_ADDRESS")
             solicitLabel.SHOP_TELE_PHONE_NUMBER = TranslationBase.TranslateLabelOrMessage("SHOP_TELE_PHONE_NUMBER")
+            solicitLabel.DATE_SEPARATOR = "年-月-日"
+
 
             Return solicitLabel
         End Function

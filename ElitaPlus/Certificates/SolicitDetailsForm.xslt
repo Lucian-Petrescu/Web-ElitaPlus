@@ -1,13 +1,113 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="html"  encoding="UTF-8"/>
   <xsl:param name="recordCount" />
+
+  <xsl:template name="formatdate">
+    <xsl:param name="DateTimeStr" />
+    <xsl:param name="DateFormatStr" />
+    <xsl:param name="DateMasking" />
+    <xsl:variable name="datestr">
+      <xsl:value-of select="substring-before($DateTimeStr,'T')" />
+    </xsl:variable>
+
+    
+    <xsl:variable name="mm">
+      <xsl:value-of select="substring($datestr,6,2)" />
+    </xsl:variable>
+    <xsl:variable name="mmf">
+      <xsl:value-of select="substring($DateFormatStr,3,1)" />
+    </xsl:variable>
+
+    <xsl:variable name="dd">
+      <xsl:value-of select="substring($datestr,9,2)" />
+    </xsl:variable>
+    
+     <xsl:variable name="ddf">
+      <xsl:value-of select="substring($DateFormatStr,5,1)" />
+    </xsl:variable>
+     
+
+    <xsl:variable name="yyyy">
+      <xsl:value-of select="substring($datestr,1,4)" />
+    </xsl:variable>
+    <xsl:variable name="yyyyf">
+      <xsl:value-of select="substring($DateFormatStr,1,1)" />
+    </xsl:variable>
+    
+    
+    <xsl:choose>
+      
+     
+    <xsl:when test="$DateMasking = 'Yes'">
+                         ****
+                           </xsl:when>
+                         <xsl:otherwise>
+                             <xsl:value-of select="$yyyy"/>
+                        </xsl:otherwise>
+                        </xsl:choose>
+    
+    
+    <xsl:value-of select="$yyyyf"/>
+      <xsl:choose>
+      <xsl:when test="$mm = '01'">1</xsl:when>
+      <xsl:when test="$mm = '02'">2</xsl:when>
+      <xsl:when test="$mm = '03'">3</xsl:when>
+      <xsl:when test="$mm = '04'">4</xsl:when>
+      <xsl:when test="$mm = '05'">5</xsl:when>
+      <xsl:when test="$mm = '06'">6</xsl:when>
+      <xsl:when test="$mm = '07'">7</xsl:when>
+      <xsl:when test="$mm = '08'">8</xsl:when>
+      <xsl:when test="$mm = '09'">9</xsl:when>
+      <xsl:when test="$mm = '10'">10</xsl:when>
+      <xsl:when test="$mm = '11'">11</xsl:when>
+      <xsl:when test="$mm = '12'">12</xsl:when>
+    </xsl:choose>
+    <xsl:value-of select="$mmf"/>
+    <xsl:choose>
+      <xsl:when test="$dd = '01'">1</xsl:when>
+      <xsl:when test="$dd = '02'">2</xsl:when>
+      <xsl:when test="$dd = '03'">3</xsl:when>
+      <xsl:when test="$dd = '04'">4</xsl:when>
+      <xsl:when test="$dd = '05'">5</xsl:when>
+      <xsl:when test="$dd = '06'">6</xsl:when>
+      <xsl:when test="$dd = '07'">7</xsl:when>
+      <xsl:when test="$dd = '08'">8</xsl:when>
+      <xsl:when test="$dd = '09'">9</xsl:when>
+      <xsl:when test="$dd = '10'">10</xsl:when>
+      <xsl:when test="$dd = '11'">11</xsl:when>
+      <xsl:when test="$dd = '12'">12</xsl:when>
+      <xsl:when test="$dd = '13'">13</xsl:when>
+      <xsl:when test="$dd = '14'">14</xsl:when>
+      <xsl:when test="$dd = '14'">15</xsl:when>
+      <xsl:when test="$dd = '16'">16</xsl:when>
+      <xsl:when test="$dd = '17'">17</xsl:when>
+      <xsl:when test="$dd = '18'">18</xsl:when>
+      <xsl:when test="$dd = '19'">19</xsl:when>
+      <xsl:when test="$dd = '20'">20</xsl:when>
+      <xsl:when test="$dd = '21'">21</xsl:when>
+      <xsl:when test="$dd = '22'">22</xsl:when>
+      <xsl:when test="$dd = '23'">23</xsl:when>
+      <xsl:when test="$dd = '24'">24</xsl:when>
+      <xsl:when test="$dd = '25'">25</xsl:when>
+      <xsl:when test="$dd = '26'">26</xsl:when>
+      <xsl:when test="$dd = '27'">27</xsl:when>
+      <xsl:when test="$dd = '28'">28</xsl:when>
+      <xsl:when test="$dd = '29'">29</xsl:when>
+      <xsl:when test="$dd = '30'">30</xsl:when>
+      <xsl:when test="$dd = '31'">31</xsl:when>
+    
+    </xsl:choose>
+     <xsl:value-of select="$ddf"/>
+
+  </xsl:template>
   <xsl:template match="/">
-    <h2 class="dataGridHeader">Search Results for Solicitation</h2>
+    <h2 class="dataGridHeader">Search Results for Solicitations</h2>
     <table width="100%" class="dataGrid" border="0" cellSpacing="0" cellPadding="0">
       <tbody>
         <tr>
           <td align="right" class="bor" colSpan="9">
-            <xsl:value-of select="count(ArrayOfSolicitDetails/SolicitDetails)" /> Solicit(s) found
+            <xsl:value-of select="count(ArrayOfSolicitDetails/SolicitDetails)" /> Solicitations found
           </td>
         </tr>
         <xsl:if test="(ceiling(count(//ArrayOfSolicitDetails/SolicitDetails) div $recordCount)) &gt; 1">
@@ -87,7 +187,10 @@
             </td>
             <td>
 
-              <xsl:value-of select="effectiveDate" />
+               <xsl:call-template name="formatdate">
+                          <xsl:with-param name="DateTimeStr"  select="effectiveDate"/>
+                          <xsl:with-param name="DateFormatStr"  select="labelTranslation/DATE_SEPARATOR"/>                         
+                         </xsl:call-template> 
             </td>
             <td nowrap="nowrap">
 
@@ -139,7 +242,11 @@
                         <xsl:value-of select="labelTranslation/APPLY_DATE_SOLICITATION_DATE" />:
                       </td>
                       <td nowrap="nowrap">
-                        <xsl:value-of select="effectiveDate" />
+                         <xsl:call-template name="formatdate">
+                          <xsl:with-param name="DateTimeStr"  select="effectiveDate"/>
+                          <xsl:with-param name="DateFormatStr"  select="labelTranslation/DATE_SEPARATOR"/>                         
+                         </xsl:call-template>               
+                       
                       </td>
                       <td align="right" nowrap="nowrap">
                         <xsl:value-of select="labelTranslation/CUSTOMER_LAST_NAME" /> :
@@ -153,7 +260,18 @@
                         <xsl:value-of select="labelTranslation/OPEN_DATE_FROM_LEAD_FILE" />:
                       </td>
                       <td nowrap="nowrap">
-                        <xsl:value-of select="conversionDate" />
+                        
+                          <xsl:choose>
+                            <xsl:when test="origin/salesOrderDate != ''">
+                               <xsl:call-template name="formatdate">
+                                 <xsl:with-param name="DateTimeStr"  select="origin/SalesOrderDate"/>
+                                 <xsl:with-param name="DateFormatStr"  select="labelTranslation/DATE_SEPARATOR"/>                         
+                               </xsl:call-template>  
+                           </xsl:when>
+                         
+                        </xsl:choose>
+                          
+                       
                       </td>
                       <td align="right" nowrap="nowrap">
                         <xsl:value-of select="labelTranslation/CUSTOMER_FIRST_NAME" /> :
@@ -194,16 +312,48 @@
                     </tr>
                     <tr class="out">
                       <td align="right" nowrap="nowrap">
-                        <xsl:value-of select="labelTranslation/EXPIRATION_DATE" /> :
+                         <xsl:choose>
+                            <xsl:when test="status = 'Converted'">
+                              <xsl:value-of select="labelTranslation/CONVERSION_DATE" /> :
+                           </xsl:when>
+                         <xsl:otherwise>
+                              <xsl:value-of select="labelTranslation/EXPIRATION_DATE" /> :
+                        </xsl:otherwise>
+                        </xsl:choose>
+                        
                       </td>
                       <td nowrap="nowrap">
-                        <xsl:value-of select="expirationDate" />
+                         <xsl:choose>
+                            <xsl:when test="status = 'Converted'">
+                               <xsl:call-template name="formatdate">
+                                 <xsl:with-param name="DateTimeStr"  select="conversionDate"/>
+                                 <xsl:with-param name="DateFormatStr"  select="labelTranslation/DATE_SEPARATOR"/>                         
+                               </xsl:call-template>                               
+                             
+                           </xsl:when>
+                         <xsl:otherwise>
+                               <xsl:call-template name="formatdate">
+                                 <xsl:with-param name="DateTimeStr"  select="expirationDate"/>
+                                 <xsl:with-param name="DateFormatStr"  select="labelTranslation/DATE_SEPARATOR"/>                         
+                               </xsl:call-template>                             
+                            
+                        </xsl:otherwise>
+                        </xsl:choose>
+                        
+                      
                       </td>
                       <td align="right" nowrap="nowrap">
                         <xsl:value-of select="labelTranslation/CUSTOMER_BIRTH_DATE" /> :
                       </td>
                       <td nowrap="nowrap">
-                        ****<xsl:value-of select="substring(customer/dateOfBirth,5)" />
+                        <xsl:variable name="DateMasking">Yes</xsl:variable>
+                       <xsl:call-template name="formatdate">
+                         
+                                 <xsl:with-param name="DateTimeStr"  select="customer/dateOfBirth"/>
+                                 <xsl:with-param name="DateFormatStr"  select="labelTranslation/DATE_SEPARATOR"/>  
+                        <xsl:with-param name="DateMasking"  select="$DateMasking"/>
+                               </xsl:call-template> 
+                     
                       </td>
                     </tr>
                     <tr class="out">
