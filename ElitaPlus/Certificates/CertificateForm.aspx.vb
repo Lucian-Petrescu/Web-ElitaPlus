@@ -839,10 +839,13 @@ Namespace Certificates
 
             Try
                 ' This is an scenario where Dynamic Claim Recording is called from Certificate form
-                If Not NavController Is Nothing AndAlso Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd) AndAlso NavController.CurrentFlow.Name = "CREATE_CLAIM_FROM_CERTIFICATE" _
+                If Not Me.IsPostBack Then
+                    If Not NavController Is Nothing AndAlso Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd) AndAlso NavController.CurrentFlow.Name = "CREATE_CLAIM_FROM_CERTIFICATE" _
                     AndAlso (Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) OrElse Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_BOTH)) Then
-                    Me.Navigator.SetCurrentPage(mobjPage, mobjState)
+                        Me.Navigator.SetCurrentPage(mobjPage, mobjState)
+                    End If
                 End If
+
 
                 If (Not Me.NavController Is Nothing) AndAlso (Not Me.NavController.PrevNavState Is Nothing) AndAlso (Me.NavController.PrevNavState.Name = "CERT_ITEM") Then
                     Dim ciParamObj As Object = Me.NavController.ParametersPassed
