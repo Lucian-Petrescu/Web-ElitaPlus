@@ -120,6 +120,8 @@ Public Class Solicit
         Public Property LEAD_RECORD_STATUS As String
         <JsonProperty("expirationDate")>
         Public Property EXPIRATION_DATE As String
+        <JsonProperty("conversionDate")>
+        Public Property CONVERSION_DATE As String
         <JsonProperty("customerLastName")>
         Public Property CUSTOMER_LAST_NAME As String
         <JsonProperty("customerFirstName")>
@@ -152,6 +154,8 @@ Public Class Solicit
         Public Property SHOP_ADDRESS As String
         <JsonProperty("shopTelephoneNumber")>
         Public Property SHOP_TELE_PHONE_NUMBER As String
+        <JsonProperty("dateSeparator")>
+        Public Property DATE_SEPARATOR As String
 
     End Class
 End Class
