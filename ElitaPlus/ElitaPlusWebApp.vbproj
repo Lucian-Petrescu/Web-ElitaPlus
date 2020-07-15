@@ -5828,9 +5828,7 @@
     <Content Include="Certificates\RewardDetailsForm.aspx" />
     <Content Include="Certificates\RewardSearchForm.aspx" />
     <Content Include="Certificates\SerialNumberListForm.aspx" />
-    <Content Include="Certificates\SolicitDetailsForm.xslt">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Certificates\SolicitDetailsForm.xslt" />
     <Content Include="Certificates\SolicitListForm.aspx" />
     <Content Include="Certificates\UserControlCertificateInfo.ascx" />
     <Content Include="Certificates\UserControlCertificateInfo_New.ascx" />
