@@ -264,7 +264,7 @@
                           <xsl:choose>
                             <xsl:when test="origin/salesOrderDate != ''">
                                <xsl:call-template name="formatdate">
-                                 <xsl:with-param name="DateTimeStr"  select="origin/SalesOrderDate"/>
+                                 <xsl:with-param name="DateTimeStr"  select="origin/salesOrderDate"/>
                                  <xsl:with-param name="DateFormatStr"  select="labelTranslation/DATE_SEPARATOR"/>                         
                                </xsl:call-template>  
                            </xsl:when>
