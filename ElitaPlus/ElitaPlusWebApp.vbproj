@@ -1032,6 +1032,7 @@
       <DependentUpon>UserControlServiceCenterSelection.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Contracts\Solicit.vb" />
     <Compile Include="DataProtection\CustomerReportForm.aspx.designer.vb">
       <DependentUpon>CustomerReportForm.aspx</DependentUpon>
     </Compile>
