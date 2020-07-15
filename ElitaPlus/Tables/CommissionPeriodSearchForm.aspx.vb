@@ -27,7 +27,6 @@ Namespace Tables
         Public Const GRID_COL_CM_EFFECTIVE_IDX As Integer = 5
         Public Const GRID_COL_CM_EXPIRATION_IDX As Integer = 6
 
-
         Private Const GRID_CTRL_NAME_COMM_PERIOD_ID As String = "moCommissionPeriodId_NO_TRANSLATE"
 
         Private Const LABEL_DEALER As String = "DEALER"
@@ -186,7 +185,7 @@ Namespace Tables
         '        End If
         '        Return multipleDropControl
         '    End Get
-        'End Property
+        'End Property       
 
 #End Region
 
@@ -213,7 +212,6 @@ Namespace Tables
 #End Region
 
 #Region "Handlers-Init"
-
 
         Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
@@ -707,7 +705,6 @@ Namespace Tables
         End Sub
 
 #End Region
-
     End Class
 
 

@@ -394,6 +394,8 @@
     <Compile Include="Tables\ClaimFulfillmentOrderDetail.vb" />
     <Compile Include="Tables\ClaimBonusSettings.vb" />
     <Compile Include="Tables\ClaimStage.vb" />
+    <Compile Include="Tables\CommPlan.vb" />
+    <Compile Include="Tables\CommPlanDistribution.vb" />
     <Compile Include="Tables\CommPlanExtract.vb" />
     <Compile Include="Tables\CompanyRuleList.vb" />
     <Compile Include="Tables\CompensationPlan.vb" />
