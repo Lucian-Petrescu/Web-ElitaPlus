@@ -1794,7 +1794,7 @@ Namespace Tables
             With TheCommPlanDist
                 PopulateRateBOFromForm()
                 commPaymentExists = oPlanDist.CommPaymentExist(.CommissionPlanId)
-                If commPaymentExists = "N" Then
+                If commPaymentExists = "Y" Then
                     Me.State.moCommPlanDistPlanId = Guid.Empty
                     Throw New GUIException(Message.MSG_EXTRACT_LINKED_WITH_PLAN_SAVE_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXTRACT_LINKED_WITH_OTHER_PLAN_SAVE_NOT_ALLOWED)
                 Else
@@ -1902,7 +1902,7 @@ Namespace Tables
                 Else
                     commPaymentExists = oPlanDist.CommPaymentExist(Me.State.moCommPlanDistPlanId)
 
-                    If commPaymentExists = "N" Then
+                    If commPaymentExists = "Y" Then
                         Me.State.moCommPlanDistPlanId = Guid.Empty
                         Throw New GUIException(Message.MSG_EXTRACT_LINKED_WITH_PLAN_DELETE_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EXTRACT_LINKED_WITH_OTHER_PLAN_DELETE_NOT_ALLOWED)
                     Else
