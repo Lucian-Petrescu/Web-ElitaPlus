@@ -69,6 +69,8 @@ Public Class Solicit
         Public Property channelCode As String
         <JsonProperty("salesOrderNumber")>
         Public Property salesOrderNumber As String
+        <JsonProperty("salesOrderDate")>
+        Public Property salesOrderDate As String
         <JsonProperty("disconnectionReason")>
         Public Property disconnectionReason As String
     End Class
