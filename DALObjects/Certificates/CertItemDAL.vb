@@ -171,7 +171,7 @@ Public Class CertItemDAL
             'Updates
             Me.Update(familyDataset, tr, DataRowState.Modified)
             'certDAL.Update(familyDataset, tr, DataRowState.Modified)
-            'certDAL.UpdateFamily(familyDataset, tr)
+            certDAL.UpdateFamily(familyDataset, tr)
 
             If Not familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim ClaimStatusDAL As New ClaimStatusDAL
