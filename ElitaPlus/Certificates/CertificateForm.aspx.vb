@@ -832,18 +832,25 @@ Namespace Certificates
                 Return
             End If
 
+            Try
+                ' This is an scenario where Dynamic Claim Recording is called from Certificate form
+                If Not Me.IsPostBack Then
+                    If (Not Me.NavController Is Nothing) AndAlso (Not Me.NavController.PrevNavState Is Nothing) AndAlso (Me.NavController.PrevNavState.Name = "SEND_SERVICE_ORDER") AndAlso
+                        (Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd)) AndAlso (Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) OrElse Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_BOTH)) Then
+                        MyBase.SetPageOutOfNavigation()
+                        Me.Navigator.SetCurrentPage(mobjPage, mobjState)
+                    End If
+                End If
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+
             Me.MasterPage.UsePageTabTitleInBreadCrum = False
             Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificates")
 
             UpdateBreadCrum()
 
             Try
-                ' This is an scenario where Dynamic Claim Recording is called from Certificate form
-                If Not NavController Is Nothing AndAlso Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd) AndAlso NavController.CurrentFlow.Name = "CREATE_CLAIM_FROM_CERTIFICATE" _
-                    AndAlso (Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) OrElse Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_BOTH)) Then
-                    Me.Navigator.SetCurrentPage(mobjPage, mobjState)
-                End If
-
                 If (Not Me.NavController Is Nothing) AndAlso (Not Me.NavController.PrevNavState Is Nothing) AndAlso (Me.NavController.PrevNavState.Name = "CERT_ITEM") Then
                     Dim ciParamObj As Object = Me.NavController.ParametersPassed
                     Dim ciRetObj As Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.CertItemForm.ReturnType = CType(ciParamObj, Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.CertItemForm.ReturnType)
@@ -3098,7 +3105,8 @@ Namespace Certificates
                 End If
 
                 Me.AddressCtr.PopulateBOFromControl(True, blnUpdateZipLocator)
-                If ((Me.AddressCtr.MyBO.IsDeleted = False) AndAlso
+                If (Not Me.AddressCtr.MyBO Is Nothing AndAlso
+                    (Me.AddressCtr.MyBO.IsDeleted = False) AndAlso
                     (Me.AddressCtr.MyBO.IsEmpty = False)) Then
                     Me.State.MyBO.AddressId = Me.AddressCtr.MyBO.Id
                 End If

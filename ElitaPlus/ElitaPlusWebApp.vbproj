@@ -835,6 +835,13 @@
       <DependentUpon>SerialNumberListForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Certificates\SolicitListForm.aspx.designer.vb">
+      <DependentUpon>SolicitListForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\SolicitListForm.aspx.vb">
+      <DependentUpon>SolicitListForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Certificates\UserControlCertificateInfo.ascx.designer.vb">
       <DependentUpon>UserControlCertificateInfo.ascx</DependentUpon>
     </Compile>
@@ -1025,6 +1032,7 @@
       <DependentUpon>UserControlServiceCenterSelection.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Contracts\Solicit.vb" />
     <Compile Include="DataProtection\CustomerReportForm.aspx.designer.vb">
       <DependentUpon>CustomerReportForm.aspx</DependentUpon>
     </Compile>
@@ -1465,6 +1473,20 @@
     <Compile Include="Tables\BenefitProductCodeSearchForm.aspx.vb">
       <DependentUpon>BenefitProductCodeSearchForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Tables\CommissionPlanForm.aspx.designer.vb">
+      <DependentUpon>CommissionPlanForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tables\CommissionPlanForm.aspx.vb">
+      <DependentUpon>CommissionPlanForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tables\CommissionPlanSearchForm.aspx.designer.vb">
+      <DependentUpon>CommissionPlanSearchForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tables\CommissionPlanSearchForm.aspx.vb">
+      <DependentUpon>CommissionPlanSearchForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Tables\ProducerForm.aspx.designer.vb">
       <DependentUpon>ProducerForm.aspx</DependentUpon>
@@ -5806,6 +5828,8 @@
     <Content Include="Certificates\RewardDetailsForm.aspx" />
     <Content Include="Certificates\RewardSearchForm.aspx" />
     <Content Include="Certificates\SerialNumberListForm.aspx" />
+    <Content Include="Certificates\SolicitDetailsForm.xslt" />
+    <Content Include="Certificates\SolicitListForm.aspx" />
     <Content Include="Certificates\UserControlCertificateInfo.ascx" />
     <Content Include="Certificates\UserControlCertificateInfo_New.ascx" />
     <Content Include="Certificates\UserControlSelectServiceCenter.ascx" />
@@ -6324,6 +6348,8 @@
     </None>
     <Content Include="Tables\BenefitProductCodeForm.aspx" />
     <Content Include="Tables\BenefitProductCodeSearchForm.aspx" />
+    <Content Include="Tables\CommissionPlanForm.aspx" />
+    <Content Include="Tables\CommissionPlanSearchForm.aspx" />
     <Content Include="Tables\ProducerForm.aspx" />
     <Content Include="Tables\ClaimFulfillmentOrderDetailForm.aspx" />
     <Content Include="Tables\ClaimFulfillmentOrderListForm.aspx" />
@@ -7924,6 +7950,7 @@
       <DependentUpon>SerialNumberListForm.aspx.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Certificates\SolicitListForm.aspx.resx" />
     <EmbeddedResource Include="Certificates\UserControlCertificateInfo.ascx.resx">
       <DependentUpon>UserControlCertificateInfo.ascx.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -8593,6 +8620,12 @@
     <EmbeddedResource Include="Tables\AccountingSettingPopup.aspx.resx">
       <DependentUpon>AccountingSettingPopup.aspx.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CommissionPlanForm.aspx.resx">
+      <DependentUpon>CommissionPlanForm.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CommissionPlanSearchForm.aspx.resx">
+      <DependentUpon>CommissionPlanSearchForm.aspx.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tables\ProducerForm.aspx.resx">
       <DependentUpon>ProducerForm.aspx.vb</DependentUpon>
