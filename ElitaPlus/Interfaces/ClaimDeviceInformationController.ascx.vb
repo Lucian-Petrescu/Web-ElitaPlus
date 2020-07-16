@@ -55,7 +55,6 @@ Public Class ClaimDeviceInformationController
     Private Const DATA_TEXT_FIELD_NAME_MODEL = "MODEL"
     Private Const GRID_CTRL_COMMAND_NAME_EDIT As String = "Edit"
     Private Const GRID_COL_NAME_EQUIPMENT_TYPE As String = "EquipmentType"
-    Private Const GRID_DATA_EQUIPMENT_TYPE_VALUE As String = "Claimed"
     Private Const GRID_CTRL_NAME_LBL_EQUIPMENT_TYPE As String = "lblEquipmentType"
     Private Const GRID_CTRL_NAME_IMG_EDIT = "ImgBtnEdit"
     Private Const GRID_CTRL_NAME_DDL_MAKE = "ddlMake"
@@ -70,6 +69,8 @@ Public Class ClaimDeviceInformationController
     Private Const EDIT_COMMAND_NAME As String = "EditRecord"
     Private Const SAVE_COMMAND_NAME As String = "SaveRecord"
     Private Const CANCEL_COMMAND_NAME As String = "CancelRecord"
+    Private Const DATA_TEXT_CLAIM_EQUIP_TYPE As String ="CLAIM_EQUIP_TYPE"
+    Private Const DATA_TEXT_CLAIM_EQUIP_TYPE_CLAIMED As String ="CLAIM_EQUIP_TYPE-C"
 #End Region
 
 #Region "Page Events"
@@ -106,9 +107,10 @@ Public Class ClaimDeviceInformationController
 
     Private Sub GvClaimDeviceInformation_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GvClaimDeviceInformation.RowDataBound
         Try
+            Dim sEquipTypeClaimed As String = LookupListNew.GetDescriptionFromExtCode(DATA_TEXT_CLAIM_EQUIP_TYPE, Authentication.LangId, DATA_TEXT_CLAIM_EQUIP_TYPE_CLAIMED)
             'im dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             If Not e.Row.DataItem Is Nothing And e.Row.RowType = DataControlRowType.DataRow Then
-                If CType(e.Row.FindControl(GRID_CTRL_NAME_LBL_EQUIPMENT_TYPE), Label).Text = GRID_DATA_EQUIPMENT_TYPE_VALUE Then
+                If CType(e.Row.FindControl(GRID_CTRL_NAME_LBL_EQUIPMENT_TYPE), Label).Text = sEquipTypeClaimed Then
                     If Not e.Row.FindControl(GRID_CTRL_NAME_IMG_EDIT) Is Nothing Then
                         CType(e.Row.FindControl(GRID_CTRL_NAME_IMG_EDIT), ImageButton).Visible = ShowDeviceEditImg
                     End If
@@ -116,7 +118,7 @@ Public Class ClaimDeviceInformationController
             End If
 
             If e.Row.RowType = DataControlRowType.DataRow AndAlso GvClaimDeviceInformation.EditIndex = e.Row.RowIndex Then
-                If CType(e.Row.FindControl(GRID_CTRL_NAME_LBL_EQUIPMENT_TYPE), Label).Text = GRID_DATA_EQUIPMENT_TYPE_VALUE Then
+                If CType(e.Row.FindControl(GRID_CTRL_NAME_LBL_EQUIPMENT_TYPE), Label).Text = sEquipTypeClaimed Then
 
                     'Dim lblDealerCode As Label = CType(e.Row.FindControl(GRID_CTRL_NAME_LBL_DEALER_CODE), Label)
                     Dim ddlMake As DropDownList = CType(e.Row.FindControl(GRID_CTRL_NAME_DDL_MAKE), DropDownList)
