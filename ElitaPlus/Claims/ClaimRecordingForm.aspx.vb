@@ -239,11 +239,6 @@ Public Class ClaimRecordingForm
 #Region "Page Events"
     Private Sub Page_PageCall(ByVal callFromUrl As String, ByVal callingPar As Object) Handles MyBase.PageCall
         Try
-            If callFromUrl.Contains(ClaimRecordingForm.CertUrl) Then
-                ' Remove the Claim Recording page from the stack(return path flow)
-                MyBase.SetPageOutOfNavigation()
-            End If
-
             If Not CallingParameters Is Nothing Then
                 State.InputParameters = CType(CallingParameters, Parameters)
                 State.CertificateId = State.InputParameters.CertificateId
