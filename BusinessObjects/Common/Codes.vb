@@ -675,6 +675,7 @@ Public Class Codes
     Public Const SERVICE_TYPE_DF_API_URL As String = "DF_UI_API"
     Public Const SERVICE_TYPE__UTILTY_SERVICE As String = "UTILITY_SERVICE"
     Public Const SERVICE_TYPE_GROUP_NAME As String = "Services"
+    Public Const SERVICE_TYPE_SOLICIT_API_URL = "SOLICITATION_API"
 
 
     'REQ-6230
