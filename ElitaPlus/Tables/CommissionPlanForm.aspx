@@ -57,48 +57,46 @@
                             </tr>
                         </table>
                     </td>
-                </tr>
+                </tr>               
                 <tr>
                     <td>
-                        <table width="100%" border="0" class="searchGrid" style="padding-top: 20px;">
+                        <table width="100%" border="0" class="searchGrid" id="Table1" runat="server" style="padding-top:20px;">
                             <tr>
-                                <td style="padding-left:72px;width:255px">*
+                                <td align="right" class="" width="10%">*
                                     <asp:Label ID="LabelCode" runat="server">Code</asp:Label>:&nbsp;
                                 </td>
-                                <td>*
+                                <td width="20%">&nbsp;
+                                    <asp:TextBox ID="TextBoxCode" TabIndex="10" runat="server" MaxLength="20" SkinID="MediumTextBox" Width="250px"></asp:TextBox>
+                                </td>
+                                <td width="10%" align="right">*
                                     <asp:Label ID="LabelDescription" runat="server">Description</asp:Label>:&nbsp;
                                 </td>
-                            </tr>
-                            <tr>                                
-                                <td style="padding-left:68px;">&nbsp;
-                                    <asp:TextBox ID="TextBoxCode" TabIndex="1" runat="server" MaxLength="20" SkinID="MediumTextBox" Width="150px"></asp:TextBox>
-                                </td>
-
-                                <td>&nbsp;
-                                    <asp:TextBox ID="TextBoxDescription" TabIndex="2" runat="server" MaxLength="50" SkinID="MediumTextBox"
-                                        Width="300px"></asp:TextBox>
-                                </td>
-                            </tr>
-                            <tr>                                
-                                <td style="padding-left:72px;">*
-                                        <asp:Label ID="moEffectiveLabel" runat="server">Effective</asp:Label>:&nbsp;
-                                </td>
-                                <td>*
-                                        <asp:Label ID="moExpirationLabel" runat="server">Expiration</asp:Label>:&nbsp;
+                                <td width="20%">&nbsp;
+                                    <asp:TextBox ID="TextBoxDescription" TabIndex="10" runat="server" MaxLength="50" SkinID="MediumTextBox"
+                                        Width="250px"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding-left:68px;">&nbsp;
-                                        <asp:TextBox ID="moEffectiveText_WRITE" TabIndex="3" runat="server" SkinID="MediumTextBox" Width="150px" Enabled="false"></asp:TextBox>
+                                <td align="right" class="" width="10%">*
+                                        <asp:Label ID="moEffectiveLabel" runat="server">Effective</asp:Label>:&nbsp;
+                                </td>
+                                <td width="20%">&nbsp;
+                                        <asp:TextBox ID="moEffectiveText_WRITE" TabIndex="10" runat="server" SkinID="MediumTextBox" Width="250px" Enabled="false"></asp:TextBox>
                                     <asp:ImageButton ID="BtnEffectiveDate_WRITE" runat="server" ImageAlign="AbsMiddle" ImageUrl="~/App_Themes/Default/Images/calendar.png" Enabled="false"></asp:ImageButton>
                                 </td>
-                                <td>&nbsp;
-                                        <asp:TextBox ID="moExpirationText_WRITE" TabIndex="4" runat="server" SkinID="MediumTextBox"
-                                            Width="300px"></asp:TextBox>
+                                <td width="10%" align="right">*
+                                        <asp:Label ID="moExpirationLabel" runat="server">Expiration</asp:Label>:&nbsp;
+                                </td>
+                                <td width="20%">&nbsp;
+                                        <asp:TextBox ID="moExpirationText_WRITE" TabIndex="10" runat="server" SkinID="MediumTextBox"
+                                            Width="250px"></asp:TextBox>
                                     <asp:ImageButton ID="BtnExpirationDate_WRITE" runat="server" ImageAlign="AbsMiddle"
                                         ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                                 </td>
-                            </tr>                            
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                            </tr>
                             <tr>
                                 <td>
                                     <asp:Label ID="moCoverageIdLabel" runat="server" Visible="False"></asp:Label>
