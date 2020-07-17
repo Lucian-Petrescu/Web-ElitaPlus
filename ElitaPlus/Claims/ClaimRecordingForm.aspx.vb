@@ -1429,6 +1429,11 @@ Public Class ClaimRecordingForm
                                 claimdevice.Manufacturer = txtDvcMake.Text
                             End If
 
+                            If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
+
+                                claimdevice.Manufacturer = moProtectionEvtDtl.EnrolledMake
+                            End If
+
                             If ddlDvcModel.Items.Count > 0 Then
                                 claimdevice.Model = ddlDvcModel.SelectedItem.Text
                             Else
