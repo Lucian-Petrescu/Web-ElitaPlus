@@ -409,9 +409,11 @@ Public Class ElitaPlusSearchPage
             'Jump to the Right Page
             Dim i As Integer
             For i = 0 To dv.Count - 1
-                If (New Guid(CType(dv(i)(SELECTED_GUID_COL), Byte())).Equals(selectedGuid)) Then
-                    selectedRowIndex = i
-                    Return (selectedRowIndex)
+                If Not String.IsNullOrEmpty(dv(i)(SELECTED_GUID_COL).ToString) then
+                    If (New Guid(CType(dv(i)(SELECTED_GUID_COL), Byte())).Equals(selectedGuid)) Then
+                        selectedRowIndex = i
+                        Return (selectedRowIndex)
+                    End If
                 End If
             Next
         End If
