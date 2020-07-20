@@ -597,8 +597,16 @@ Public Class CoverageRate
         Dim isDealerConfiguredForAcctBucket As Boolean = False
 
         If (pCoverage.DealerId <> Guid.Empty) Then
-            If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
-                isDealerConfiguredForAcctBucket = True
+            If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
+                If Not String.IsNullOrWhiteSpace(oDealer.AcctBucketsWithSourceXcd) Then
+                    If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
+                        isDealerConfiguredForAcctBucket = True
+                    Else
+                        isDealerConfiguredForAcctBucket = False
+                    End If
+                Else
+                    isDealerConfiguredForAcctBucket = False
+                End If
             Else
                 isDealerConfiguredForAcctBucket = False
             End If
