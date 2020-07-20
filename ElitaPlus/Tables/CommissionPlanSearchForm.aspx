@@ -19,7 +19,7 @@
             </td>
         </tr>
     </table>
-    
+
     <table width="100%" border="0" class="searchGrid" id="Table2" runat="server" style="padding: 0px; margin: 0px">
         <tr>
             <td style="text-align: right" colspan="2">
@@ -32,7 +32,9 @@
 
 <asp:Content ID="Body" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <div class="dataContainer">
-        <h2 class="dataGridHeader">Search results for Commission Plan</h2>
+        <h2 class="dataGridHeader">
+            <asp:Label ID="lblActiveSearchResults" runat="server" Text="SEARCH_RESULTS_FOR_COMMPLAN" Visible="true"></asp:Label>
+        </h2>
         <div>
             <table width="100%" class="dataGrid">
                 <tr id="trPageSize" runat="server">

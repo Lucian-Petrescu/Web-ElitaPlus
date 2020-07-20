@@ -120,7 +120,7 @@ Namespace Tables
         Public Const REFERENCE_SOURCE_PROPERTY As String = "ReferenceSource"
         Public Const CODE_PROPERTY As String = "Code"
         Public Const DESCRIPTION_PROPERTY As String = "Description"
-        Public Const PAGETITLE As String = "COMMISSION_BREAKDOWN"
+        Public Const PAGETITLE As String = "COMMISSION_PLAN"
         Public Const PAGETAB As String = "TABLES"
         Public Const Payee_Type_Dealer_Group As String = "1"
         Public Const Payee_Type_Dealer As String = "2"
