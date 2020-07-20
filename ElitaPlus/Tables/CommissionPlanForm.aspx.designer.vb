@@ -33,15 +33,6 @@ Namespace Tables
         Protected WithEvents LabelCode As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
-        '''TextBoxCode control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxCode As Global.System.Web.UI.WebControls.TextBox
-
-        '''<summary>
         '''LabelDescription control.
         '''</summary>
         '''<remarks>
@@ -49,6 +40,15 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents LabelDescription As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''TextBoxCode control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents TextBoxCode As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
         '''TextBoxDescription control.
@@ -69,6 +69,15 @@ Namespace Tables
         Protected WithEvents moEffectiveLabel As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
+        '''moExpirationLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moExpirationLabel As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
         '''moEffectiveText_WRITE control.
         '''</summary>
         '''<remarks>
@@ -85,15 +94,6 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents BtnEffectiveDate_WRITE As Global.System.Web.UI.WebControls.ImageButton
-
-        '''<summary>
-        '''moExpirationLabel control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents moExpirationLabel As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
         '''moExpirationText_WRITE control.
@@ -175,6 +175,24 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moCoverageConseqDamageIdLabel As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''ScriptManager2 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ScriptManager2 As Global.System.Web.UI.ScriptManager
+
+        '''<summary>
+        '''lblActiveSearchResults control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblActiveSearchResults As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
         '''moGridView control.
