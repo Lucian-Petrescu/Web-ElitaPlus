@@ -1108,6 +1108,7 @@ Namespace Tables
             State.IsNewWithCopy = True
             SetGridControls(moGridView, True)
 
+            ClearCoverageRateGrid()
             'REQ
             SetGridControls(moGridViewConseqDamage, True)
 
@@ -1121,6 +1122,11 @@ Namespace Tables
             ControlMgr.SetVisibleControl(Me, currLabelDiv, False)
             ControlMgr.SetVisibleControl(Me, currTextBoxDiv, False)
             SetLabelColor(moAgentCodeLabel)
+        End Sub
+
+        Private Sub ClearCoverageRateGrid()
+            Me.moGridView.DataSource = Nothing
+            Me.moGridView.DataBind()
         End Sub
 
         Private Sub LoadCoverageRateList()
@@ -1155,11 +1161,11 @@ Namespace Tables
                         PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmountPercent), CType(moGridView.Rows(i).Cells(ColIndexGrossAmountPercent).Controls(1), TextBox).Text)
                     End If
                     If CoveragePricingCode = NoCoveragePricing Then
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercent), GetAmountFormattedDoubleString("0"))
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.MarketingPercent), GetAmountFormattedDoubleString("0"))
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.AdminExpense), GetAmountFormattedDoubleString("0"))
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.ProfitExpense), GetAmountFormattedDoubleString("0"))
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LossCostPercent), GetAmountFormattedDoubleString("0"))
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CommissionsPercent), GetAmountFormattedDoubleString("0"))
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.MarketingPercent), GetAmountFormattedDoubleString("0"))
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.AdminExpense), GetAmountFormattedDoubleString("0"))
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.ProfitExpense), GetAmountFormattedDoubleString("0"))
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LossCostPercent), GetAmountFormattedDoubleString("0"))
                     Else
                         If TypeOf moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1) Is Label Then
                             PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercent), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1), Label).Text)
