@@ -1198,7 +1198,7 @@
             L.code = 'DNDREASON'
 			and L.list_id = LI.list_id
 			and LI.extended_code = M.DENIAL_REASON_XCD
-            and M.dealer_id = D.dealer_id
+      and (M.dealer_id = D.dealer_id or M.dealer_group_id = D.dealer_group_id)
 			ORDER BY UPPER(code)
 		</DEALER_DENIED_REASON>
 		<LOANER_CENTERS>
