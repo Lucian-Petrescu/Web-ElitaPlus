@@ -340,26 +340,14 @@ Partial Class ClaimAuthorizationDetailForm
       
         Dim dt As DataTable = New DataTable()
         Dim iServiceClass as Integer = 0 
-        
-        For Each claimAuthItem As ClaimAuthItem In Me.State.MyBO.ClaimAuthorizationItemChildren
-           if  claimAuthItem.ServiceClassCode = "REPAIR"
-               iServiceClass = iServiceClass  + 1
-           End If
-        Next
+     
+        If State.MyBO.ClaimAuthorizationItemChildren.Any(Function(i) i.ServiceClassCode=  "REPAIR") Then
+            iServiceClass = iServiceClass  + 1
+        End If
 
-        dt=  State.FulFillmentStatusHistoryTable
-        Dim iRepairCodeAccepted as Integer = 0 
+        Dim iRepairCodeAccepted = State.FulFillmentStatusHistoryTable.AsEnumerable().Any(Function(x) x.Field(Of String)("SubStatusDescription") = "Repair Quote Accepted")
 
-        with dt
-            For i As Integer  = 0 To .Rows.Count - 1
-                if .Rows(i).Item(1).ToString().Contains("Repair Quote Accepted")
-                    iRepairCodeAccepted = iRepairCodeAccepted + 1
-                End If
-                
-            Next
-        End With
-
-        if iServiceClass >= 1 And iRepairCodeAccepted = 0 And _ 
+        if iServiceClass >= 1 And iRepairCodeAccepted = False And _ 
            (lblClaimAuthStatusValue.Text = "Authorized"  Or lblClaimAuthStatusValue.Text = "Sent") And _ 
            lblClaimStatusValue.Text = "Active"
             btnRepairCodeProcess.Visible = true
@@ -597,11 +585,17 @@ Partial Class ClaimAuthorizationDetailForm
 
 #Region "Claim Authorization - Fulfillment Authorization Data"
     Private Shared Function GetClient() As FulfillmentServiceClient
-        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIMS_FULFILLMENT_SERVICE), False)
-        Dim client = New FulfillmentServiceClient("CustomBinding_IFulfillmentService", oWebPasswd.Url)
-        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
-        client.ClientCredentials.UserName.Password = oWebPasswd.Password 
+        'Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIMS_FULFILLMENT_SERVICE), False)
+        'Dim client = New FulfillmentServiceClient("CustomBinding_IFulfillmentService", oWebPasswd.Url)
+        'client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        'client.ClientCredentials.UserName.Password = oWebPasswd.Password 
 
+        'Return client
+
+     
+        Dim client = New FulfillmentServiceClient("CustomBinding_IFulfillmentService",  "http://localhost/ElitaFulfillmentService/FulfillmentService.svc")
+        client.ClientCredentials.UserName.UserName = "elita1"
+        client.ClientCredentials.UserName.Password = "elita1"
         Return client
     End Function
     Private Sub GetAuthorizationFulfillmentData()
