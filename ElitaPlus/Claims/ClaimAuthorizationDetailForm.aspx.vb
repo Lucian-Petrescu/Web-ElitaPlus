@@ -587,18 +587,13 @@ Partial Class ClaimAuthorizationDetailForm
 
 #Region "Claim Authorization - Fulfillment Authorization Data"
     Private Shared Function GetClient() As FulfillmentServiceClient
-        'Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIMS_FULFILLMENT_SERVICE), False)
-        'Dim client = New FulfillmentServiceClient("CustomBinding_IFulfillmentService", oWebPasswd.Url)
-        'client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
-        'client.ClientCredentials.UserName.Password = oWebPasswd.Password 
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIMS_FULFILLMENT_SERVICE), False)
+        Dim client = New FulfillmentServiceClient("CustomBinding_IFulfillmentService", oWebPasswd.Url)
+        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        client.ClientCredentials.UserName.Password = oWebPasswd.Password
 
-        'Return client
-
-     
-        Dim client = New FulfillmentServiceClient("CustomBinding_IFulfillmentService",  "http://localhost/ElitaFulfillmentService/FulfillmentService.svc")
-        client.ClientCredentials.UserName.UserName = "elita1"
-        client.ClientCredentials.UserName.Password = "elita1"
         Return client
+
     End Function
     Private Sub GetAuthorizationFulfillmentData()
         
