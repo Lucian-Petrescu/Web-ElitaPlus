@@ -676,7 +676,7 @@
                                         <asp:TemplateField Visible="True" HeaderText="Commission_Percent">
                                             <ItemStyle HorizontalAlign="center"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moCommission_PercentLabel" Text='<%# GetAmountFormattedDoubleString(Container.DataItem("COMMISSION_PERCENT"), "N4")%>'
+                                                <asp:Label ID="moCommission_PercentLabel" Text='<%# GetAmountFormattedDoubleString(Container.DataItem("COMMISSIONS_PERCENT"), "N4")%>'
                                                     runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
