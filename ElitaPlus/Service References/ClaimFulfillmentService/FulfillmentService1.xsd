@@ -228,6 +228,7 @@
       <xs:enumeration value="Tax" />
       <xs:enumeration value="Handset" />
       <xs:enumeration value="Markup" />
+      <xs:enumeration value="RepairCost" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="CostType" nillable="true" type="tns:CostType" />
