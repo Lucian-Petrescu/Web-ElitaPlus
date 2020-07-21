@@ -345,7 +345,9 @@ Partial Class ClaimAuthorizationDetailForm
             iServiceClass = iServiceClass  + 1
         End If
 
-        Dim iRepairCodeAccepted = State.FulFillmentStatusHistoryTable.AsEnumerable().Any(Function(x) x.Field(Of String)("SubStatusDescription") = "Repair Quote Accepted")
+        'CLM_AUTH_SUBSTAT-RQAPT
+        Dim iRepairCodeAccepted = State.FulFillmentStatusHistoryTable.AsEnumerable().Any(Function(x) x.Field(Of String)("SubStatusCode").Contains("RQAPT"))
+        
 
         if iServiceClass >= 1 And iRepairCodeAccepted = False And _ 
            (lblClaimAuthStatusValue.Text = "Authorized"  Or lblClaimAuthStatusValue.Text = "Sent") And _ 
@@ -750,6 +752,8 @@ Partial Class ClaimAuthorizationDetailForm
         dtFulFillmentStatusHistory.Columns.Add("SubStatusDescription", GetType(String))
         dtFulFillmentStatusHistory.Columns.Add("SubStatusDate", GetType(String))
         dtFulFillmentStatusHistory.Columns.Add("SubStatusReasonDescription", GetType(String))
+
+        dtFulFillmentStatusHistory.Columns.Add("SubStatusCode", GetType(String))
         Return dtFulFillmentStatusHistory
     End Function
     Private Sub LoadFulFillmentStatusHistory(ByVal wsResponseList As GetAuthorizationDetailsResponse)
@@ -758,6 +762,7 @@ Partial Class ClaimAuthorizationDetailForm
             Dim tableRow As DataRow = State.FulFillmentStatusHistoryTable.NewRow()
             tableRow("StatusDescription") = itemStatusHistory.StatusDescription
             tableRow("SubStatusDescription") = itemStatusHistory.SubStatusDescription
+            tableRow("SubStatusCode") = itemStatusHistory.SubStatusCode
             tableRow("SubStatusDate") = GetLongDateFormattedStringNullable(If(itemStatusHistory.SubStatusDate Is Nothing, itemStatusHistory.StatusDate, itemStatusHistory.SubStatusDate))
             Dim builder As New StringBuilder
             For Each SubStatusReason As ClaimFulfillmentService.Reason In itemStatusHistory.SubStatusReasons
