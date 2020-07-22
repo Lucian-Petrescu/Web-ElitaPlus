@@ -593,7 +593,6 @@ Partial Class ClaimAuthorizationDetailForm
         client.ClientCredentials.UserName.Password = oWebPasswd.Password
 
         Return client
-
     End Function
     Private Sub GetAuthorizationFulfillmentData()
         
@@ -633,68 +632,7 @@ Partial Class ClaimAuthorizationDetailForm
     End Sub
 
 
-    Private Sub UpdateRepairCodeProcess()
-        'Ref 
-
-        Dim wsRequest As OrderStatusRequest  = New OrderStatusRequest()
-        
-        wsRequest.CompanyCode= State.ClaimBO.Company.Code
-        wsRequest.ClaimNumber= State.MyBO.ClaimNumber
-        wsRequest.AuthNumber=State.MyBO.AuthorizationNumber
-
-        If State.MyBO.ServiceCenterReferenceNumber Is Nothing 
-            wsRequest.OrderNumber= State.MyBO.AuthorizationNumber
-            wsRequest.ExternalOrderNumber=State.MyBO.AuthorizationNumber
-
-        else
-            wsRequest.OrderNumber= State.MyBO.ServiceCenterReferenceNumber
-            wsRequest.ExternalOrderNumber=State.MyBO.ServiceCenterReferenceNumber
-
-        End If
-        
-        wsRequest.OrderStatus=rdbRepairQuoteStatus.SelectedValue
-      
-        Dim costlist As New List(Of costInfo)
-
-        costlist.Add(New costInfo() With {.Type = CostType.RepairCost, .Amount = CDbl(txtRepairQuote.Text)})
-
-        wsRequest.AdditionalInfo = new ClaimFulfillmentService.AdditionalInfo()
-        wsRequest.AdditionalInfo.FinancialInfo = costlist.ToArray() 
-        
-        Try
-            Dim wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService,OrderStatusResponse )(
-                GetClient(),
-                New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                Function(ByVal c As FulfillmentServiceClient)
-                    Return c.UpdateOrderStatus(wsRequest)
-                End Function)
-
-            If wsResponse IsNot Nothing Then
-                If wsResponse.GetType() Is GetType(OrderStatusResponse) Then
-                    Dim wsResponseList As OrderStatusResponse = DirectCast(wsResponse, OrderStatusResponse)
-                    If wsResponseList.ResponseStatus.Equals("Failure") Then
-                        Me.MasterPage.MessageController.AddError(wsResponseList.Error.ErrorCode & " - " & wsResponseList.Error.ErrorMessage, False)
-                        lblRepairCodeProcessStatus.Visible = False
-                        lblRepairCodeProcessError.Text = wsResponseList.Error.ErrorMessage
-                        Exit Sub
-                    else
-                        lblRepairCodeProcessError.Visible = False
-                        lblRepairCodeProcessStatus.Text = wsResponseList.ResponseStatus
-
-                        if rdbRepairQuoteStatus.SelectedValue = "RQAPT"
-                            btnRepairCodeProcess.Visible = false    
-                        End If
-                    End If
-                    
-                End If
-            End If
-        Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
-            Throw
-        End Try
-    '
-
-    End Sub
+   
 
 
 
@@ -1546,5 +1484,90 @@ Partial Class ClaimAuthorizationDetailForm
 
     Private Sub btnRepairCodeProcessSave_Click(sender As Object, e As EventArgs) Handles btnRepairCodeProcessSave.Click
         UpdateRepairCodeProcess()
+    End Sub
+
+     Private Sub UpdateRepairCodeProcess()
+
+            divRepairCodeProcessStatus.Visible = False
+            divRepairCodeProcessError.Visible = False
+     
+            Try
+
+                Dim wsRequest As OrderStatusRequest  = New OrderStatusRequest()
+                Dim costlist As New List(Of costInfo)
+
+                With wsRequest
+                    .CompanyCode= State.ClaimBO.Company.Code
+                    .ClaimNumber= State.MyBO.ClaimNumber
+                    .AuthNumber=State.MyBO.AuthorizationNumber
+
+                    If State.MyBO.ServiceCenterReferenceNumber Is Nothing 
+                        .OrderNumber= State.MyBO.AuthorizationNumber
+                        .ExternalOrderNumber=State.MyBO.AuthorizationNumber
+
+                    else
+                        .OrderNumber= State.MyBO.ServiceCenterReferenceNumber
+                        .ExternalOrderNumber=State.MyBO.ServiceCenterReferenceNumber
+
+                    End If
+        
+                    .OrderStatus=rdbRepairQuoteStatus.SelectedValue
+      
+                    costlist.Add(New costInfo() With {.Type = CostType.RepairCost, .Amount = CDbl(txtRepairQuote.Text)})
+
+                    .AdditionalInfo = new ClaimFulfillmentService.AdditionalInfo()
+                    .AdditionalInfo.FinancialInfo = costlist.ToArray() 
+
+                End With
+
+
+                Dim wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService,OrderStatusResponse )(
+                    GetClient(),
+                    New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                    Function(ByVal c As FulfillmentServiceClient)
+                        Return c.UpdateOrderStatus(wsRequest)
+                    End Function)
+
+                If wsResponse IsNot Nothing Then
+                    If wsResponse.GetType() Is GetType(OrderStatusResponse) Then
+                        Dim wsResponseList As OrderStatusResponse = DirectCast(wsResponse, OrderStatusResponse)
+                        If wsResponseList.ResponseStatus.Equals("Failure") Then
+                            Me.MasterPage.MessageController.AddError(wsResponseList.Error.ErrorCode & " - " & wsResponseList.Error.ErrorMessage, False)
+                          
+                            lblRepairCodeProcessError.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_FAILURE & wsResponseList.Error.ErrorCode & " - " & wsResponseList.Error.ErrorMessage)
+                            divRepairCodeProcessError.Visible = True
+
+                            HiddenFieldRepairCodeProcess.Value = "N"
+                            Me.MasterPage.MessageController.AddError(Message.MSG_REPAIR_QUOTE_FAILURE)
+                            Exit Sub
+                        else
+                           
+                            if rdbRepairQuoteStatus.SelectedValue = "RQAPT"
+
+                                lblRepairCodeProcessStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_ACCEPT)
+                                divRepairCodeProcessStatus.Visible = True
+
+                                
+                                Me.MasterPage.MessageController.AddSuccess(Message.MSG_REPAIR_QUOTE_ACCEPT)
+                            
+                                btnRepairCodeProcess.Visible = false    
+
+                                else
+                                    lblRepairCodeProcessStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_REJECT)
+                                    divRepairCodeProcessStatus.Visible = True
+
+                                
+                                    Me.MasterPage.MessageController.AddSuccess(Message.MSG_REPAIR_QUOTE_REJECT)
+
+                            End If
+
+                            HiddenFieldRepairCodeProcess.Value = "N"
+                        End If
+                    End If
+                End If
+            Catch ex As Exception
+                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+                Throw
+            End Try
     End Sub
 End Class

@@ -365,6 +365,15 @@ Partial Public Class ClaimAuthorizationDetailForm
     Protected WithEvents divRepairCodeProcessStatus As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
+    '''lblRepairCodeProcessStatus control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblRepairCodeProcessStatus As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''divRepairCodeProcessError control.
     '''</summary>
     '''<remarks>
@@ -372,6 +381,15 @@ Partial Public Class ClaimAuthorizationDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents divRepairCodeProcessError As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''lblRepairCodeProcessError control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblRepairCodeProcessError As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''Label11 control.
@@ -417,24 +435,6 @@ Partial Public Class ClaimAuthorizationDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents RegularExpressionValidator1 As Global.System.Web.UI.WebControls.RegularExpressionValidator
-
-    '''<summary>
-    '''lblRepairCodeProcessStatus control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblRepairCodeProcessStatus As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''lblRepairCodeProcessError control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblRepairCodeProcessError As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''btnRepairCodeProcessSave control.
