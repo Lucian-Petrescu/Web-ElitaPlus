@@ -95,7 +95,7 @@ Namespace Claims
             'Put user code to initialize the page here
             Me.MasterPage.MessageController.Clear()
             Try
-                ClearLabelsErrSign()
+                ClearAll()
                 If Not Page.IsPostBack Then
                     Me.SetStateProperties()
                     UpdateBreadCrum()
@@ -106,10 +106,11 @@ Namespace Claims
             Me.ShowMissingTranslations(Me.MasterPage.MessageController)
         End Sub
 
-        Private Sub ClearLabelsErrSign()
+        Private Sub ClearAll()
             Try
                 Me.ClearLabelErrSign(lblNewSCError)
                 lblNewSCError.Visible = False
+                ucSelectServiceCenter.SelectedServiceCenter = Nothing
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -165,7 +166,7 @@ Namespace Claims
                 moProtectionEvtDtl.ClaimedModel = claimInfo.ClaimedEquipment.Model
                 moProtectionEvtDtl.ClaimedMake = claimInfo.ClaimedEquipment.Manufacturer
                 moProtectionEvtDtl.CustomerName = claimInfo.Certificate.CustomerName
-                moProtectionEvtDtl.EnrolledMake= NoData
+                moProtectionEvtDtl.EnrolledMake = NoData
                 moProtectionEvtDtl.EnrolledModel = NoData
                 moProtectionEvtDtl.CallerName = NoData
                 moProtectionEvtDtl.ProtectionStatus = LookupListNew.GetClaimStatusFromCode(langId, claimInfo.Certificate.StatusCode)
