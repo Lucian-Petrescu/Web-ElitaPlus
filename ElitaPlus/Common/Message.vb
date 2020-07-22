@@ -462,6 +462,9 @@ Public Class Message
     Public Const MSG_PO_LINES_ADDED As String = "MSG_PO_LINES_ADDED"
     
 
+    'PBI 544820
+    Public Const MSG_REPAIR_QUOTE_SUCCESS As String = "MSG_REPAIR_QUOTE_SUCCESS"
+    Public Const MSG_REPAIR_QUOTE_FAILURE As String = "MSG_REPAIR_QUOTE_FAILURE"
 
 #End Region
 End Class

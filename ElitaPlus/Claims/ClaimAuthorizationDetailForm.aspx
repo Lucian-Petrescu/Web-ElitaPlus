@@ -159,7 +159,6 @@
                  
                 <tr>
                     <td align="right" nowrap="nowrap" style=" width:20%">
-                        
                         <asp:Label runat="server" ID="lblVoidComment" Text="Comment"  />&nbsp;:&nbsp;
                     </td>   
                     <td align="left" nowrap="nowrap" style=" width:80%">
@@ -193,21 +192,21 @@
             </h2>
             
             <div ID="divRepairCodeProcessStatus" class="successMsg" runat="server" style="width: 99.5%" Visible="False">
-                &nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp; <asp:Label ID="lblRepairCodeProcessStatus" runat="server"  ForeColor="Green"></asp:Label>
             </div>
             <div ID="divRepairCodeProcessError" class="errorMsg" runat="server" style="width: 99.5%" Visible="False">
-                &nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;<asp:Label ID="lblRepairCodeProcessError" runat="server"  ForeColor="Red"></asp:Label>
             </div>
             <table width="95%" style="border:none;margin-bottom:10px;">
                 <tr>
                     <td align="right" nowrap="nowrap" style=" width:20%">
-                        <asp:Label runat="server" ID="Label11" Text="Quote Status"  />&nbsp;:&nbsp;
+                        <asp:Label runat="server" ID="Label11" Text="QUOTE_STATUS"  />&nbsp;:&nbsp;
                     </td>   
                     <td align="left" nowrap="nowrap" style=" width:80%">
                         
                         <asp:RadioButtonList ID="rdbRepairQuoteStatus" runat="server" 
                                              RepeatDirection="Horizontal">
-                            <asp:ListItem Text="REPAIR_CODE_PROCESS_ACCEPTED " Value="RQAPT"></asp:ListItem>
+                            <asp:ListItem Text="REPAIR_CODE_PROCESS_ACCEPTED" Value="RQAPT"></asp:ListItem>
                             <asp:ListItem Text="REPAIR_CODE_PROCESS_REJECTED" Value="RQRJT"></asp:ListItem>
                         </asp:RadioButtonList>
                     </td>
@@ -224,14 +223,6 @@
                                                         ValidationExpression="^[1-9]\d*(\.\d+)?$">
                         </asp:RegularExpressionValidator>
                         
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <asp:Label ID="lblRepairCodeProcessStatus" runat="server"  ForeColor="Green"></asp:Label>
-                    </td>
-                    <td>
-                        <asp:Label ID="lblRepairCodeProcessError" runat="server"  ForeColor="Red"></asp:Label>
                     </td>
                 </tr>
                 <tr style="padding-bottom:20px;">
