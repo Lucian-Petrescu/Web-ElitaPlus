@@ -1538,19 +1538,30 @@ Partial Class ClaimAuthorizationDetailForm
                             divRepairCodeProcessError.Visible = True
 
                             HiddenFieldRepairCodeProcess.Value = "N"
-                            Me.MasterPage.MessageController.AddSuccess(Message.MSG_REPAIR_QUOTE_FAILURE)
+                            Me.MasterPage.MessageController.AddError(Message.MSG_REPAIR_QUOTE_FAILURE)
                             Exit Sub
                         else
                            
-                            lblRepairCodeProcessStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_SUCCESS)
-                            divRepairCodeProcessStatus.Visible = True
+                            if rdbRepairQuoteStatus.SelectedValue = "RQAPT"
+
+                                lblRepairCodeProcessStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_ACCEPT)
+                                divRepairCodeProcessStatus.Visible = True
+
+                                
+                                Me.MasterPage.MessageController.AddSuccess(Message.MSG_REPAIR_QUOTE_ACCEPT)
+                            
+                                btnRepairCodeProcess.Visible = false    
+
+                                else
+                                    lblRepairCodeProcessStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_REJECT)
+                                    divRepairCodeProcessStatus.Visible = True
+
+                                
+                                    Me.MasterPage.MessageController.AddSuccess(Message.MSG_REPAIR_QUOTE_REJECT)
+
+                            End If
 
                             HiddenFieldRepairCodeProcess.Value = "N"
-                            Me.MasterPage.MessageController.AddSuccess(Message.MSG_REPAIR_QUOTE_SUCCESS)
-
-                            if rdbRepairQuoteStatus.SelectedValue = "RQAPT"
-                                btnRepairCodeProcess.Visible = false    
-                            End If
                         End If
                     End If
                 End If
