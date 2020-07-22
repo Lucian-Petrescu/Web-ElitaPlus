@@ -12,8 +12,8 @@ Namespace Tables
 
 #Region "Constants"
         Public Const URL As String = "Tables/ConfigQuestionSetListForm.aspx"
-        Public Const PAGETITLE As String = "CONFIG_QUESTION_SET"
-        Public Const PAGETAB As String = "ADMIN"
+        Public Const PAGETITLE As String = "CONFIG_QUESTION_SET_LIST"
+        Public Const PAGETAB As String = "TABLES"
         Public Const SUMMARYTITLE As String = "SEARCH"
 
         Private Const GRID_COL_CONFIG_QUESTION_SET_ID_IDX As Integer = 0
