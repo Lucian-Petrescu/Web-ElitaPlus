@@ -294,7 +294,9 @@ Namespace Tables
                     End If
 
                     ' Validate Email Address
-                    Dim emailExpression As New Regex("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$")
+                    'Dim emailExpression As New Regex("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$")
+                    Dim emailExpression As New Regex("^[_a-z0-9-]+(.[a-z0-9-]+)+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$")
+
                     If Not emailExpression.IsMatch(Me.State.SelectedRecipientAddress) Then
                         Me.moMessageController.Clear()
                         Me.moMessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
@@ -357,7 +359,7 @@ Namespace Tables
                             Me.State.MessageAttemptsGrid_DV = Nothing
                             Me.State.MessageParametersGrid_DV = Nothing
                             MessageParametersGrid_Populate()
-                            MessageAttemptsGrid_Populate()
+                            MessageAttemptsGrid_Populate(True)
                         End If
                     End If
                 End If
@@ -683,6 +685,7 @@ Namespace Tables
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
                 If Not dvRow Is Nothing And Me.State.MessageAttemptsGrid_DV.Count > 0 Then
+
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then
                         If (Me.State.MessageAttemptsGrid_IsInEditMode = True AndAlso Me.State.MessageAttemptsGrid_OcMessageAttemptId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(OcMessageAttempts.MessageAttemptsDV.COL_OC_MESSAGE_ATTEMPS_ID), Byte())))) Then
                             CType(e.Row.Cells(1).FindControl("btnSelect"), ImageButton).Visible = False
@@ -690,18 +693,22 @@ Namespace Tables
                             CType(e.Row.Cells(3).FindControl("txtRecipientDescription"), TextBox).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_RECIPIENT_DESCRIPTION).ToString
                             CType(e.Row.Cells(6).FindControl("lblStatus"), Label).Text = "In-Progress"
                         Else
-                            If dvRow(OcMessageAttempts.MessageAttemptsDV.COL_PROCESS_STATUS_XCD).ToString.ToUpper() = "TASK_STATUS-C" Or
-                               dvRow(OcMessageAttempts.MessageAttemptsDV.COL_PROCESS_STATUS_XCD).ToString.ToUpper() = "TASK_STATUS-F" Then
-                                CType(e.Row.Cells(1).FindControl("btnSelect"), ImageButton).Visible = True
-                            Else
-                                CType(e.Row.Cells(1).FindControl("btnSelect"), ImageButton).Visible = False
+                            If Not String.IsNullOrEmpty(dvRow(OcMessageAttempts.MessageAttemptsDV.COL_RECIPIENT_ADDRESS).ToString) Then
+                                If dvRow(OcMessageAttempts.MessageAttemptsDV.COL_PROCESS_STATUS_XCD).ToString.ToUpper() = "TASK_STATUS-C" Or
+                                   dvRow(OcMessageAttempts.MessageAttemptsDV.COL_PROCESS_STATUS_XCD).ToString.ToUpper() = "TASK_STATUS-F" Then
+                                    CType(e.Row.Cells(1).FindControl("btnSelect"), ImageButton).Visible = True
+                                Else
+                                    CType(e.Row.Cells(1).FindControl("btnSelect"), ImageButton).Visible = False
+                                End If
+                                CType(e.Row.Cells(2).FindControl("lblRecipientAddress"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_RECIPIENT_ADDRESS).ToString
+                                CType(e.Row.Cells(3).FindControl("lblRecipientDescription"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_RECIPIENT_DESCRIPTION).ToString
+                                If Not String.IsNullOrEmpty(dvRow(OcMessageAttempts.MessageAttemptsDV.COL_MESSAGE_ATTEMPTED_ON).ToString) Then
+                                    CType(e.Row.Cells(4).FindControl("lblAttemptedOn"), Label).Text = GetLongDate12FormattedStringNullable(CType(dvRow(OcMessageAttempts.MessageAttemptsDV.COL_MESSAGE_ATTEMPTED_ON), Date))
+                                End If
+                                CType(e.Row.Cells(5).FindControl("lblAttemptedBy"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_MESSAGE_ATTEMPTED_BY).ToString
+                                CType(e.Row.Cells(6).FindControl("lblStatus"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_PROCESS_STATUS_DESCRIPTION).ToString
+                                CType(e.Row.Cells(7).FindControl("lblErrorMessage"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_MESSAGE_ERROR).ToString
                             End If
-                            CType(e.Row.Cells(2).FindControl("lblRecipientAddress"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_RECIPIENT_ADDRESS).ToString
-                            CType(e.Row.Cells(3).FindControl("lblRecipientDescription"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_RECIPIENT_DESCRIPTION).ToString
-                            CType(e.Row.Cells(4).FindControl("lblAttemptedOn"), Label).Text = GetLongDate12FormattedStringNullable(CType(dvRow(OcMessageAttempts.MessageAttemptsDV.COL_MESSAGE_ATTEMPTED_ON), Date))
-                            CType(e.Row.Cells(5).FindControl("lblAttemptedBy"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_MESSAGE_ATTEMPTED_BY).ToString
-                            CType(e.Row.Cells(6).FindControl("lblStatus"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_PROCESS_STATUS_DESCRIPTION).ToString
-                            CType(e.Row.Cells(7).FindControl("lblErrorMessage"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_MESSAGE_ERROR).ToString
                         End If
                     End If
                 End If
@@ -710,12 +717,12 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Sub MessageAttemptsGrid_Populate()
+        Private Sub MessageAttemptsGrid_Populate(Optional ByVal clean As Boolean = False)
             Try
                 With TheMessage
                     If Not .Id.Equals(Guid.Empty) Then
                         If Me.State.MessageAttemptsGrid_DV Is Nothing Then
-                            Me.State.MessageAttemptsGrid_DV = MessageAttemptsGrid_GetDV()
+                            Me.State.MessageAttemptsGrid_DV = MessageAttemptsGrid_GetDV(clean)
                         End If
                     End If
                 End With
@@ -753,16 +760,16 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Function MessageAttemptsGrid_GetDV() As OcMessageAttempts.MessageAttemptsDV
+        Private Function MessageAttemptsGrid_GetDV(Optional ByVal clean As Boolean = False) As OcMessageAttempts.MessageAttemptsDV
             Dim dv As OcMessageAttempts.MessageAttemptsDV
-            dv = MessageAttemptsGrid_GetDataView()
+            dv = MessageAttemptsGrid_GetDataView(clean)
             dv.Sort = Me.MessageAttemptsGrid.DataMember()
             Me.MessageAttemptsGrid.DataSource = dv
             Return (dv)
         End Function
 
-        Private Function MessageAttemptsGrid_GetDataView() As OcMessageAttempts.MessageAttemptsDV
-            Dim dt As DataTable = TheMessage.MessageAttemptsList.Table
+        Private Function MessageAttemptsGrid_GetDataView(Optional ByVal clean As Boolean = False) As OcMessageAttempts.MessageAttemptsDV
+            Dim dt As DataTable = TheMessage.MessageAttemptsList(clean).Table
             Return New OcMessageAttempts.MessageAttemptsDV(dt)
         End Function
 
