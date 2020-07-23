@@ -4,10 +4,8 @@
 
 <%@ Register TagPrefix="Elita" TagName="ProtectionAndEventDetails" Src="~/Common/ProtectionAndEventDetails.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlSelectServiceCenter" Src="../Common/UserControlServiceCenterSelection.ascx" %>
-<%@ Register Assembly="Microsoft.Web.UI.WebControls" Namespace="Microsoft.Web.UI.WebControls" TagPrefix="iewc" %>
 
-<asp:Content ID="content1" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
-    <%--<Elita:UserControlClaimInfo ID="moClaimInfoController" runat="server" align="center"></Elita:UserControlClaimInfo>--%>
+<asp:Content ID="content1" ContentPlaceHolderID="SummaryPlaceHolder" runat="server" >
     <div>
         <asp:Label ID="lblNewSCError" runat="server" Visible="false" ForeColor="Red"></asp:Label>
     </div>

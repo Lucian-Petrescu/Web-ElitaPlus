@@ -9,6 +9,7 @@ Namespace Claims
 
 #Region "Page State"
 
+
 #Region "Parameters"
 
         Public Class Parameters
@@ -65,7 +66,7 @@ Namespace Claims
 
 #Region "Constants"
 
-        Public Const URL As String = "ClaimReplacementQuoteForm.aspx"
+        Public Const URL As String = "~/Claims/ClaimReplacementQuoteForm.aspx"
         Private Const NoData As String = " - "
 
 #End Region
@@ -215,7 +216,7 @@ Namespace Claims
             ucSelectServiceCenter.Make = State.ClaimBO.ClaimedEquipment.Manufacturer
             ucSelectServiceCenter.RiskTypeEnglish = State.ClaimBO.RiskType
             ucSelectServiceCenter.MethodOfRepairXcd = "METHR-" + State.ClaimBO.MethodOfRepairCode
-            ucSelectServiceCenter.InitializeComponent()
+            ucSelectServiceCenter.ShowControl = True
         End Sub
 
         Private Sub SendReplacementQuote()
