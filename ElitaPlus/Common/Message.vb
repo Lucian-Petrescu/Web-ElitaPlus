@@ -466,7 +466,7 @@ Public Class Message
     Public Const MSG_REPAIR_QUOTE_ACCEPT As String = "MSG_REPAIR_QUOTE_ACCEPT"
     Public Const MSG_REPAIR_QUOTE_REJECT As String = "MSG_REPAIR_QUOTE_REJECT"
     Public Const MSG_REPAIR_QUOTE_FAILURE As String = "MSG_REPAIR_QUOTE_FAILURE"
-    
+    Public Const MSG_REPAIR_QUOTE_NOT_SELECTED As String = "MSG_REPAIR_QUOTE_NOT_SELECTED"
 
 #End Region
 End Class
