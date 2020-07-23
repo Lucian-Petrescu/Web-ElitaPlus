@@ -111,7 +111,6 @@ Namespace Claims
             Try
                 Me.ClearLabelErrSign(lblNewSCError)
                 lblNewSCError.Visible = False
-                ucSelectServiceCenter.SelectedServiceCenter = Nothing
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -252,6 +251,7 @@ Namespace Claims
                 Else
                     lblNewSCError.Visible = True
                     lblNewSCError.Text = String.Empty
+                    lblNewSCError.ForeColor = Color.Red
                     If String.IsNullOrEmpty(strErrMsg) = False Then
                         lblNewSCError.Text = TranslationBase.TranslateLabelOrMessage(strErrMsg) + ". "
                     End If
