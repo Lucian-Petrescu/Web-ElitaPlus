@@ -41,6 +41,7 @@ Public Class ClaimRecordingForm
 
     Public Const Url As String = "~/Claims/ClaimRecordingForm.aspx"
     Public Const Url2 As String = "/Claims/ClaimRecordingForm.aspx"
+    Public Const CertUrl As String = "/Certificates/CertificateForm.aspx"
 
     Private Const UserName = "CLAIM_RECSERVICE_USERNAME"
     Private Const Password = "CLAIM_RECSERVICE_PASSWORD"
@@ -1426,6 +1427,11 @@ Public Class ClaimRecordingForm
                                 claimdevice.Manufacturer = ddlDvcMake.SelectedItem.Text
                             Else
                                 claimdevice.Manufacturer = txtDvcMake.Text
+                            End If
+
+                            If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
+
+                                claimdevice.Manufacturer = moProtectionEvtDtl.EnrolledMake
                             End If
 
                             If ddlDvcModel.Items.Count > 0 Then

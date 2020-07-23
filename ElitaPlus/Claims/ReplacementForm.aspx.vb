@@ -48,6 +48,7 @@ Namespace Claims
             Public IsReplacementNew As Boolean = False
             Public IsDirty As Boolean = False
             Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
+            Public supportsImei As Boolean = False
         End Class
 #End Region
 
@@ -335,7 +336,7 @@ Namespace Claims
 
         Private Sub PopulateFormFromBo()
             Try
-                Dim supportsImei As Boolean = False
+
 
                 moClaimInfoController.InitController(Me.State.ClaimBO)
 
@@ -349,8 +350,8 @@ Namespace Claims
                     EnableDisableControls(OldRiskTypeTextBox, True)
                     OldSerialNumberTextBox.Text = .CertificateItem.SerialNumber
                     EnableDisableControls(OldSerialNumberTextBox, True)
-                    supportsImei = (Not Me.State.ClaimBO.Dealer.ImeiUseXcd.Equals("IMEI_USE_LST-NOTINUSE"))
-                    If (supportsImei) Then
+                    Me.State.supportsImei = (Not Me.State.ClaimBO.Dealer.ImeiUseXcd.Equals("IMEI_USE_LST-NOTINUSE"))
+                    If (Me.State.supportsImei) Then
                         OldImeiNumberTextBox.Text = .CertificateItem.IMEINumber
                         EnableDisableControls(OldImeiNumberTextBox, True)
 
@@ -361,11 +362,11 @@ Namespace Claims
                         NewSerialNumberLabel.Text = OldSerialNumberLabel.Text
                     End If
 
-                    OldImeiNumberLabel.Visible = supportsImei
-                    OldImeiNumberTextBox.Visible = supportsImei
+                    OldImeiNumberLabel.Visible = Me.State.supportsImei
+                    OldImeiNumberTextBox.Visible = Me.State.supportsImei
 
-                    NewImeiNumberLabel.Visible = supportsImei
-                    NewImeiNumberTextBox.Visible = supportsImei
+                    NewImeiNumberLabel.Visible = Me.State.supportsImei
+                    NewImeiNumberTextBox.Visible = Me.State.supportsImei
                 End With
 
                 ' Populate New Item
@@ -477,12 +478,13 @@ Namespace Claims
                     oCertItem = New CertItem(Me.State.ClaimBO.CertificateItem.Id)
                     populateCertItemBOFromForm(oCertItem)
                     BindBoPropertiesToLabels(replacedEquipment, Me.State.ClaimBO)
+                    HandleChildObj(oCertItem)
                     oCertItem.Save()
                     replacedEquipment.Save()
                     Me.State.IsDirty = False
                     Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                 Else
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                        Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                 End If
                 Me.State.IsReplacementNew = False
                 SetButtonsState(False)
@@ -508,6 +510,60 @@ Namespace Claims
             End Try
             Return bIsOk
         End Function
+
+        Private Sub HandleChildObj(oCertItem As CertItem)
+            If (Me.State.supportsImei AndAlso Not (Me.OldImeiNumberTextBox.Text.Equals(Me.NewImeiNumberTextBox.Text))) Or
+                    (Not Me.State.supportsImei AndAlso Not (Me.OldSerialNumberTextBox.Text.Equals(Me.NewSerialNumberTextBox.Text))) Then
+                Dim blnCreateExtendedStatus As Boolean = False
+                Dim blnAnyStatusFound As Boolean = False
+                'check if action status "Replacement IMEI Changed" is configured
+                Dim dv As DataView = Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction.LoadList()
+                If dv.Count > 0 Then
+                    Dim dvAction As DataView = LookupListNew.GetClaimStatsActionLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                    Dim actionCode As String
+                    Dim action_current_status_id As Guid
+                    Dim action_next_status_id As Guid
+                    Dim dr As DataRow
+                    For Each dr In dv.Table.Rows
+                        actionCode = LookupListNew.GetCodeFromId(dvAction, New Guid(CType(dr("AcTION_ID"), Byte())))
+                        If actionCode.Equals("REP_IMEI_CHANGE") Then
+                            ' Dim dvExtendedStatus As New DataView(ClaimStatusByGroup.LoadListByCompanyGroup(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id).Tables(0))
+                            action_current_status_id = New Guid(CType(dr("CURRENT_STATUS_ID"), Byte()))
+                            action_next_status_id = New Guid(CType(dr("NEXT_STATUS_ID"), Byte()))
+                            'check if action current status is "ANY_STATUS"
+                            Dim listcontext As ListContext = New ListContext()
+                            listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
+                            Dim claimStatusList As ListItem() = CommonConfigManager.Current.ListManager.GetList("ExtendedStatusByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
+                            For Each li As ListItem In claimStatusList
+                                If li.ListItemId.Equals(action_current_status_id) AndAlso li.Code.ToUpper.Equals("ANY_STATUS") Then
+                                    blnAnyStatusFound = True
+                                    Exit For
+                                End If
+                            Next
+
+                            If blnAnyStatusFound Then
+                                blnCreateExtendedStatus = True
+                            Else
+                                Dim claim_leatest_status As Guid = Me.State.ClaimBO.LatestClaimStatus.ClaimStatusByGroupId
+                                If action_current_status_id.Equals(claim_leatest_status) Then
+                                    blnCreateExtendedStatus = True
+                                End If
+                            End If
+                            Exit For
+                        End If
+                    Next
+                    If blnCreateExtendedStatus Then
+                        Dim newclaimStatus As ClaimStatus = oCertItem.AddClaimExtendedStatus(Guid.Empty)
+                        newclaimStatus.ClaimId = Me.State.ClaimBO.Id
+                        newclaimStatus.ClaimStatusByGroupId = action_next_status_id
+                        newclaimStatus.StatusDate = Date.Now
+
+                    End If
+                End If
+
+            End If
+
+        End Sub
 
 #End Region
 

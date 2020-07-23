@@ -256,9 +256,11 @@ Public Class OcMessage
         End Get
     End Property
 
-    Public ReadOnly Property MessageAttemptsList() As OcMessageAttemptsList
+  
+
+    Public ReadOnly Property MessageAttemptsList(Optional ByVal clean As Boolean = False) As OcMessageAttemptsList
         Get
-            Return New OcMessageAttemptsList(Me)
+            Return New OcMessageAttemptsList(Me, clean)
         End Get
     End Property
 
