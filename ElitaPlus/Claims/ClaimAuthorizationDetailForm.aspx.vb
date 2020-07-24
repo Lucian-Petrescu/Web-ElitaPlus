@@ -593,6 +593,8 @@ Partial Class ClaimAuthorizationDetailForm
         client.ClientCredentials.UserName.Password = oWebPasswd.Password
 
         Return client
+
+      
     End Function
     Private Sub GetAuthorizationFulfillmentData()
         
@@ -1483,7 +1485,7 @@ Partial Class ClaimAuthorizationDetailForm
      Private Sub UpdateRepairCodeProcess()
 
 
-         if rdbRepairQuoteStatus.SelectedValue <>""
+         if rdbRepairQuoteStatus.SelectedValue <>"" and txtRepairQuote.Text <> "" and txtRepairQuote.Text  <> nothing
          
             
             divRepairCodeProcessStatus.Visible = False
