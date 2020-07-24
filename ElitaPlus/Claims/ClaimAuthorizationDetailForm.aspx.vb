@@ -593,6 +593,8 @@ Partial Class ClaimAuthorizationDetailForm
         client.ClientCredentials.UserName.Password = oWebPasswd.Password
 
         Return client
+
+      
     End Function
     Private Sub GetAuthorizationFulfillmentData()
         
@@ -630,13 +632,7 @@ Partial Class ClaimAuthorizationDetailForm
         End Try
 
     End Sub
-
-
-   
-
-
-
-
+    
 #End Region
 
 #Region "Claim Authorization - Resend Shipping Label"
@@ -1488,6 +1484,10 @@ Partial Class ClaimAuthorizationDetailForm
 
      Private Sub UpdateRepairCodeProcess()
 
+
+         if rdbRepairQuoteStatus.SelectedValue <>"" and txtRepairQuote.Text <> "" and txtRepairQuote.Text  <> nothing
+         
+            
             divRepairCodeProcessStatus.Visible = False
             divRepairCodeProcessError.Visible = False
      
@@ -1555,8 +1555,7 @@ Partial Class ClaimAuthorizationDetailForm
                                 else
                                     lblRepairCodeProcessStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_REJECT)
                                     divRepairCodeProcessStatus.Visible = True
-
-                                
+                            
                                     Me.MasterPage.MessageController.AddSuccess(Message.MSG_REPAIR_QUOTE_REJECT)
 
                             End If
@@ -1569,5 +1568,9 @@ Partial Class ClaimAuthorizationDetailForm
                 MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
                 Throw
             End Try
+
+         else
+             Me.MasterPage.MessageController.AddError(Message.MSG_REPAIR_QUOTE_NOT_SELECTED)
+         End If
     End Sub
 End Class
