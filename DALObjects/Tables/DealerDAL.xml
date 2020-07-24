@@ -839,7 +839,8 @@
   <GET_DEALER_CERTIFICATES_COUNT>
     <![CDATA[
 			SELECT 	count(*) as Dealer_Certificates_Count
-			FROM elp_cert WHERE dealer_id = :dealer_id
+			FROM elp_cert WHERE dealer_id = hextoraw(:dealer_id)
+      and rownum = 1
 		]]>
   </GET_DEALER_CERTIFICATES_COUNT>
   <GET_DUPLICATE_DEALER_COUNT>
