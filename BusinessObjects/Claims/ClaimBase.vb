@@ -22,6 +22,7 @@ Public MustInherit Class ClaimBase
     Public Const COMPLIANCE_ISSUE_CODE As String = "CMPLARG"
     Public Const m_NewClaimRepairDedPercent As Integer = 30
     Public Const m_NewClaimOrigReplDedPercent As Integer = 50
+    Private Const CLAIM_DOC_UPLD_DETAILS as String ="Claim Document Upload Details"
 
 #End Region
 
@@ -2919,8 +2920,8 @@ Public MustInherit Class ClaimBase
         End If
 
         Dim oClaimImage As ClaimImage
-        oClaimImage = DirectCast(Me.ClaimImagesList.GetNewChild(Me.Id), ClaimImage)
-
+    oClaimImage = DirectCast(Me.ClaimImagesList.GetNewChild(Me.Id), ClaimImage)
+        
         With oClaimImage
             .DocumentTypeId = pDocumentTypeId.Value
             .ImageStatusId = pImageStatusId.Value
@@ -2951,6 +2952,18 @@ Public MustInherit Class ClaimBase
             oClaimImage.ImageId = doc.Id
 
             oClaimImage.Save()
+          
+            PublishedTask.AddEvent(companyGroupId:=Me.Company.CompanyGroupId,
+                                   companyId:=Me.Dealer.Company.id,
+                                   countryId:=Me.Company.CountryId,
+                                   dealerId:= Me.Dealer.Id,
+                                   productCode:=String.Empty,
+                                   coverageTypeId:=Guid.Empty,
+                                   sender:= CLAIM_DOC_UPLD_DETAILS,
+                                   arguments:="ClaimId:" & DALBase.GuidToSQLString(Me.Id) & ";DocumentTypeId:" & DALBase.GuidToSQLString(oClaimImage.DocumentTypeId) & "",
+                                   eventDate:=DateTime.UtcNow,
+                                   eventTypeId:=LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP__CLAIM_DOCUMENT_UPLOAD),
+                                   eventArgumentId:=Nothing)
 
             Return doc.Id
         Catch ex As Exception
