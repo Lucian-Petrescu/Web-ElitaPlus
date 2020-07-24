@@ -68,6 +68,7 @@ Namespace Claims
 
         Public Const URL As String = "~/Claims/ClaimReplacementQuoteForm.aspx"
         Private Const NoData As String = " - "
+        Private Const MethodOfRepairXcd As String="METHR-R"
 
 #End Region
 
@@ -214,7 +215,7 @@ Namespace Claims
             ucSelectServiceCenter.Dealer = State.ClaimBO.Certificate.Dealer.Dealer
             ucSelectServiceCenter.Make = State.ClaimBO.ClaimedEquipment.Manufacturer
             ucSelectServiceCenter.RiskTypeEnglish = State.ClaimBO.RiskType
-            ucSelectServiceCenter.MethodOfRepairXcd = "METHR-" + State.ClaimBO.MethodOfRepairCode
+            ucSelectServiceCenter.MethodOfRepairXcd = MethodOfRepairXcd
             ucSelectServiceCenter.ShowControl = True
         End Sub
 
