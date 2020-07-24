@@ -27,7 +27,7 @@ Partial Class ClaimAuthorizationDetailForm
     Class BaseState
         Public NavCtrl As INavigationController
     End Class
-
+    
 
     Class MyState
         Public ClaimBO As MultiAuthClaim
@@ -150,6 +150,7 @@ Partial Class ClaimAuthorizationDetailForm
                 TranslateGridHeader(GridViewDeviceSelection)
                 TranslateGridHeader(GridViewBestDeviceSelection)
                 CheckPayCashStatus()
+                HandleRepairCodeProcessButton()
             End If
             BindBoPropertiesToLabels()
             'Bind Claim Auth Item 
@@ -331,9 +332,34 @@ Partial Class ClaimAuthorizationDetailForm
         'Me.btnrefundFee.Visible =  Me.State.MyBO.ClaimAuthStatus  =  ClaimAuthorizationStatus.Authorized 'ClaimAuthorizationStatus.Collected  
         Me.btnRefundFee.Visible = Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso State.MyBO.AuthTypeXcd.Equals(AuthType_SalesOrder)
         Me.btnVoidAuthorization.Visible = Me.State.MyBO.CanVoidClaimAuthorization  AndAlso (ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CLAIMS_MANAGER) OrElse
-                                                                                            ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CSR2) OrElse
+                                                                                           ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CSR2) OrElse
                                                                                             ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CSR))
     End Sub
+    
+    private sub HandleRepairCodeProcessButton
+      
+        Dim dt As DataTable = New DataTable()
+        Dim iServiceClass as Integer = 0 
+     
+        If State.MyBO.ClaimAuthorizationItemChildren.Any(Function(i) i.ServiceClassCode=  "REPAIR") Then
+            iServiceClass = iServiceClass  + 1
+        End If
+
+        'CLM_AUTH_SUBSTAT-RQAPT
+        Dim iRepairCodeAccepted = State.FulFillmentStatusHistoryTable.AsEnumerable().Any(Function(x) x.Field(Of String)("SubStatusCode").Contains("RQAPT"))
+        
+
+        if iServiceClass >= 1 And iRepairCodeAccepted = False And _ 
+           (lblClaimAuthStatusValue.Text = "Authorized"  Or lblClaimAuthStatusValue.Text = "Sent") And _ 
+           lblClaimStatusValue.Text = "Active"
+            btnRepairCodeProcess.Visible = true
+
+        Else
+            btnRepairCodeProcess.Visible = False
+
+        End If
+    End sub
+
 
     Private Sub PopulateDropDowns()
         Dim ocboWhoPays As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("WPAYS", Thread.CurrentPrincipal.GetLanguageCode())
@@ -569,13 +595,14 @@ Partial Class ClaimAuthorizationDetailForm
         Return client
     End Function
     Private Sub GetAuthorizationFulfillmentData()
+        
         Dim wsRequest As GetAuthorizationDetailsRequest = New GetAuthorizationDetailsRequest()
 
         wsRequest.CompanyCode = State.ClaimBO.Company.Code
         wsRequest.ClaimNumber = State.MyBO.ClaimNumber
         wsRequest.CultureCode = Threading.Thread.CurrentThread.CurrentCulture.Name
         wsRequest.AuthorizationNumber = State.MyBO.AuthorizationNumber
-
+        
         Dim wsAuthDetailOptions() As AuthDetailOptions = {AuthDetailOptions.HistoryFlat, AuthDetailOptions.Issues}
         wsRequest.AuthDetails = wsAuthDetailOptions
 
@@ -601,7 +628,15 @@ Partial Class ClaimAuthorizationDetailForm
             MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
             Throw
         End Try
+
     End Sub
+
+
+   
+
+
+
+
 #End Region
 
 #Region "Claim Authorization - Resend Shipping Label"
@@ -650,6 +685,8 @@ Partial Class ClaimAuthorizationDetailForm
         dtFulFillmentStatusHistory.Columns.Add("SubStatusDescription", GetType(String))
         dtFulFillmentStatusHistory.Columns.Add("SubStatusDate", GetType(String))
         dtFulFillmentStatusHistory.Columns.Add("SubStatusReasonDescription", GetType(String))
+
+        dtFulFillmentStatusHistory.Columns.Add("SubStatusCode", GetType(String))
         Return dtFulFillmentStatusHistory
     End Function
     Private Sub LoadFulFillmentStatusHistory(ByVal wsResponseList As GetAuthorizationDetailsResponse)
@@ -658,6 +695,7 @@ Partial Class ClaimAuthorizationDetailForm
             Dim tableRow As DataRow = State.FulFillmentStatusHistoryTable.NewRow()
             tableRow("StatusDescription") = itemStatusHistory.StatusDescription
             tableRow("SubStatusDescription") = itemStatusHistory.SubStatusDescription
+            tableRow("SubStatusCode") = itemStatusHistory.SubStatusCode
             tableRow("SubStatusDate") = GetLongDateFormattedStringNullable(If(itemStatusHistory.SubStatusDate Is Nothing, itemStatusHistory.StatusDate, itemStatusHistory.SubStatusDate))
             Dim builder As New StringBuilder
             For Each SubStatusReason As ClaimFulfillmentService.Reason In itemStatusHistory.SubStatusReasons
@@ -1195,6 +1233,17 @@ Partial Class ClaimAuthorizationDetailForm
         End Try
     End Sub
 
+    Private Sub btnRepairCodeProcess_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRepairCodeProcess.Click
+        Try
+            InitRepairCodeProcess()
+            HiddenFieldRepairCodeProcess.Value = "Y"
+
+        Catch ex As Threading.ThreadAbortException
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
 
     Private Sub btnNewSCSave_Click(sender As Object, e As EventArgs) Handles btnNewSCSave.Click
         Dim blnValid As Boolean = True, strErrMsg As String = String.Empty
@@ -1287,11 +1336,20 @@ Partial Class ClaimAuthorizationDetailForm
 
         divVoidAuthStatus.Visible = False
         divVoidAuthError.Visible = False
-        ControlMgr.SetVisibleControl(Me,btnVoidAuthSave,True)
-        ControlMgr.SetVisibleControl(Me,btnVoidAuthClose,False)
-      End Sub
+        ControlMgr.SetVisibleControl(Me, btnVoidAuthSave, True)
+        ControlMgr.SetVisibleControl(Me, btnVoidAuthClose, False)
+    End Sub
 
-    private sub btnVoidAuthSave_Click (sender As Object, e As EventArgs) Handles btnVoidAuthSave.Click
+
+    Private Sub InitRepairCodeProcess()
+
+        divRepairCodeProcessStatus.Visible = False
+        divRepairCodeProcessError.Visible = False
+        ControlMgr.SetVisibleControl(Me, btnRepairCodeProcessSave, True)
+        ControlMgr.SetVisibleControl(Me, btnRepairCodeProcessClose, False)
+    End Sub
+
+    Private sub btnVoidAuthSave_Click (sender As Object, e As EventArgs) Handles btnVoidAuthSave.Click
         Try
            
             divVoidAuthStatus.Visible = False
@@ -1424,5 +1482,92 @@ Partial Class ClaimAuthorizationDetailForm
         End Try
     End Sub
 
-    
+    Private Sub btnRepairCodeProcessSave_Click(sender As Object, e As EventArgs) Handles btnRepairCodeProcessSave.Click
+        UpdateRepairCodeProcess()
+    End Sub
+
+     Private Sub UpdateRepairCodeProcess()
+
+            divRepairCodeProcessStatus.Visible = False
+            divRepairCodeProcessError.Visible = False
+     
+            Try
+
+                Dim wsRequest As OrderStatusRequest  = New OrderStatusRequest()
+                Dim costlist As New List(Of costInfo)
+
+                With wsRequest
+                    .CompanyCode= State.ClaimBO.Company.Code
+                    .ClaimNumber= State.MyBO.ClaimNumber
+                    .AuthNumber=State.MyBO.AuthorizationNumber
+
+                    If State.MyBO.ServiceCenterReferenceNumber Is Nothing 
+                        .OrderNumber= State.MyBO.AuthorizationNumber
+                        .ExternalOrderNumber=State.MyBO.AuthorizationNumber
+
+                    else
+                        .OrderNumber= State.MyBO.ServiceCenterReferenceNumber
+                        .ExternalOrderNumber=State.MyBO.ServiceCenterReferenceNumber
+
+                    End If
+        
+                    .OrderStatus=rdbRepairQuoteStatus.SelectedValue
+      
+                    costlist.Add(New costInfo() With {.Type = CostType.RepairCost, .Amount = CDbl(txtRepairQuote.Text)})
+
+                    .AdditionalInfo = new ClaimFulfillmentService.AdditionalInfo()
+                    .AdditionalInfo.FinancialInfo = costlist.ToArray() 
+
+                End With
+
+
+                Dim wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService,OrderStatusResponse )(
+                    GetClient(),
+                    New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                    Function(ByVal c As FulfillmentServiceClient)
+                        Return c.UpdateOrderStatus(wsRequest)
+                    End Function)
+
+                If wsResponse IsNot Nothing Then
+                    If wsResponse.GetType() Is GetType(OrderStatusResponse) Then
+                        Dim wsResponseList As OrderStatusResponse = DirectCast(wsResponse, OrderStatusResponse)
+                        If wsResponseList.ResponseStatus.Equals("Failure") Then
+                            Me.MasterPage.MessageController.AddError(wsResponseList.Error.ErrorCode & " - " & wsResponseList.Error.ErrorMessage, False)
+                          
+                            lblRepairCodeProcessError.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_FAILURE & wsResponseList.Error.ErrorCode & " - " & wsResponseList.Error.ErrorMessage)
+                            divRepairCodeProcessError.Visible = True
+
+                            HiddenFieldRepairCodeProcess.Value = "N"
+                            Me.MasterPage.MessageController.AddError(Message.MSG_REPAIR_QUOTE_FAILURE)
+                            Exit Sub
+                        else
+                           
+                            if rdbRepairQuoteStatus.SelectedValue = "RQAPT"
+
+                                lblRepairCodeProcessStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_ACCEPT)
+                                divRepairCodeProcessStatus.Visible = True
+
+                                
+                                Me.MasterPage.MessageController.AddSuccess(Message.MSG_REPAIR_QUOTE_ACCEPT)
+                            
+                                btnRepairCodeProcess.Visible = false    
+
+                                else
+                                    lblRepairCodeProcessStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_REJECT)
+                                    divRepairCodeProcessStatus.Visible = True
+
+                                
+                                    Me.MasterPage.MessageController.AddSuccess(Message.MSG_REPAIR_QUOTE_REJECT)
+
+                            End If
+
+                            HiddenFieldRepairCodeProcess.Value = "N"
+                        End If
+                    End If
+                End If
+            Catch ex As Exception
+                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+                Throw
+            End Try
+    End Sub
 End Class
