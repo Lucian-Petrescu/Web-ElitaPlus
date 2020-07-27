@@ -1,27 +1,26 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BOEditingWebFormCodeBehind.cst (11/2/2004)  ********************
-Imports Microsoft.VisualBasic
-Imports Codes = Assurant.ElitaPlus.BusinessObjectsNew.Codes
-Imports Assurant.ElitaPlus.DALObjects
 Imports System.Collections.Generic
-Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentService
-Imports Assurant.Elita.ClientIntegration
-Imports Assurant.Elita.ClientIntegration.Headers
-Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService
-
-Imports Assurant.ElitaPlus.Security
-Imports Assurant.Elita.CommonConfiguration
-Imports Assurant.Elita.CommonConfiguration.DataElements
-Imports Assurant.Elita.Web.Forms
-Imports System.Threading
 Imports System.Net
-
-Imports RestSharp
-Imports Newtonsoft.Json
 Imports System.Net.Http
 Imports System.Net.Http.Headers
-Imports Newtonsoft.Json.Linq
-Imports Assurant.Elita.ExternalKeyHandler.DynamicFulfillment
+Imports System.Threading
+Imports Assurant.Elita.ClientIntegration
+Imports Assurant.Elita.ClientIntegration.Headers
+Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Configuration
+Imports Assurant.Elita.ExternalKeyHandler.DynamicFulfillment
+Imports Assurant.Elita.Web.Forms
+Imports Assurant.ElitaPlus.DALObjects
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentService
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService
+Imports Assurant.ElitaPlus.Security
+Imports Microsoft.VisualBasic
+Imports Newtonsoft.Json
+Imports Newtonsoft.Json.Linq
+Imports RestSharp
+Imports ClientEventPayLoad = Assurant.ElitaPlus.DataEntities.DFEventPayLoad
+Imports Codes = Assurant.ElitaPlus.BusinessObjectsNew.Codes
 
 Partial Class ClaimForm
     Inherits ElitaPlusSearchPage
@@ -3461,12 +3460,12 @@ Partial Class ClaimForm
     End Sub
 
     Private Sub btnChangeFulfillment_Click(sender As Object, e As EventArgs) Handles btnChangeFulfillment.Click
-        Try
-            NavController.Navigate(Me, FlowEvents.EventClaimRecordingChangeFulfillment, New ClaimRecordingForm.Parameters(State.MyBO.Certificate.Id, State.MyBO.Id, Nothing, Codes.CasePurposeChangeFulfillment, Me.State.IsCallerAuthenticated))
-        Catch ex As Threading.ThreadAbortException
-        Catch ex As Exception
-            HandleErrors(ex, MasterPage.MessageController)
-        End Try
+
+        ChangeFulfillmentAction(State.MyBO.Certificate.Id,
+                                State.MyBO.Id,
+                                Nothing,
+                                Codes.CasePurposeChangeFulfillment,
+                                Me.State.IsCallerAuthenticated)
     End Sub
 
 #End Region
@@ -4078,17 +4077,32 @@ Partial Class ClaimForm
             dvClaimFulfillmentDetails.Visible = False
 
         Catch ex As Exception
-
+            
         End Try
     End Sub
     Private Function getClaimKey(ByVal companyCode As String, ByVal claimNumber As String) As String
         Dim handler As New DynamicFulfillmentKeyHandler()
         Dim keys As New Dictionary(Of String, String)
-        Dim tenant As String = $"{ElitaConfig.Current.General.Environment}-{ElitaConfig.Current.General.Hub}"
+        Dim tenant As String = $"{GetTenant(ElitaConfig.Current.General.Environment)}-{ElitaConfig.Current.General.Hub}"
         keys.Add("Tenant", tenant)
         keys.Add("CompanyCode", companyCode)
         keys.Add("ClaimNumber", claimNumber)
         Return handler.Encode(keys)
+    End Function
+
+    Private Function GetTenant(value As Environments) As String
+        Select Case value
+            Case Environments.Development
+                Return "dev"
+            Case Environments.Model
+                Return "modl"
+            Case Environments.Production
+                Return "prod"
+            Case Environments.Test
+                Return "test"
+            Case Else
+                Throw New ArgumentException($"Environment value {value}, not implemented")
+        End Select
     End Function
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
@@ -4134,6 +4148,45 @@ Partial Class ClaimForm
         End Try
 
     End Function
+#End Region
+
+#Region "Change Fulfillment"
+    Protected Sub btnContinue_Click(sender As Object, e As EventArgs) Handles btnContinue.Click
+
+
+        Try
+            Dim payLoad As ClientEventPayLoad = JsonConvert.DeserializeObject(Of ClientEventPayLoad)(hdnData.Value)
+
+            ChangeFulfillmentAction(State.MyBO.Certificate.Id,
+                                    State.MyBO.Id,
+                                    Nothing,
+                                    Codes.CasePurposeChangeFulfillment,
+                                    Me.State.IsCallerAuthenticated)
+        Catch ex As Threading.ThreadAbortException
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+
+    End Sub
+
+    Private Sub ChangeFulfillmentAction(certificateId As Guid,
+                                        claimId As Guid,
+                                        caseId As Guid,
+                                        casePurpose As String,
+                                        isCallerAuthenticated As Boolean)
+        Try
+            Dim claimRecordingParameters = New ClaimRecordingForm.Parameters(certificateId,
+                                                                             claimId,
+                                                                             caseId,
+                                                                             casePurpose,
+                                                                             isCallerAuthenticated)
+
+            NavController.Navigate(Me, FlowEvents.EventClaimRecordingChangeFulfillment, claimRecordingParameters)
+        Catch ex As Threading.ThreadAbortException
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
 #End Region
 End Class
 

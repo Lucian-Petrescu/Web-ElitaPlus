@@ -1045,7 +1045,17 @@
                                     </table>
                                 </div>
                                 <script type="text/javascript" src="../Scripts/df_ui.js"></script>
-                                <asp:PlaceHolder runat="server" ID="phDynamicFulfillmentUI"></asp:PlaceHolder>
+                                <div class="dataContainer">
+                                    <asp:PlaceHolder runat="server" ID="phDynamicFulfillmentUI"></asp:PlaceHolder>
+                                </div>
+                                <div class="btnZone">
+                                    <div style="visibility:hidden">
+                                        <asp:Button runat="server" ID="btnContinue" SkinID="PrimaryRightButton" Text="Continue"/>
+                                        <asp:Button runat="server" ID="btnLegacyContinue" SkinID="PrimaryRightButton" Text="Continue"/>
+                                        <input type="hidden" id="hdnInput" value="<%=hdnData.ClientID %>"/>
+                                        <asp:HiddenField ID="hdnData" runat="server" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
