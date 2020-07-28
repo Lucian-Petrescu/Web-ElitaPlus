@@ -133,7 +133,7 @@ Namespace Claims
 
                 For Each dtClaimInfo As DataTable In dtClaimsInfo
                     Dim extendedStatusList As New List(Of String)
-                    Dim FulfillmentDate As DateTime? = Nothing
+                    Dim fulfillmentDate As DateTime? = Nothing
                     Dim extendedStatusCount As Integer = 0
                     Dim returnClaimStatuses = New List(Of ExtendedStatus)()
 
@@ -148,8 +148,8 @@ Namespace Claims
                             extendedStatusList.Add(row.Field(Of String)("EXTENDED_STATUS"))
                         End If
 
-                        If Not FulfillmentDate.HasValue Then
-                            FulfillmentDate = row.Field(Of Date?)("CLAIM_FULLFILLMENT_DATE")
+                        If Not fulfillmentDate.HasValue Then
+                            fulfillmentDate = row.Field(Of Date?)("CLAIM_FULLFILLMENT_DATE")
                         End If
 
                         If extendedStatusCount = dtClaimInfo.Rows.Count Then
@@ -161,7 +161,7 @@ Namespace Claims
                                   .ClaimStatus = row.Field(Of String)("CLAIM_STATUS"),
                                   .DealerCode = row.Field(Of String)("DEALER_CODE"),
                                   .ProblemDescription = row.Field(Of String)("PROBLEM_DESCRIPTION"),
-                                  .ClaimFullFillmentDate = FulfillmentDate,
+                                  .ClaimFullFillmentDate = fulfillmentDate,
                                   .CoverageType = DirectCast([Enum].Parse(GetType(CoverageTypes), row.Field(Of String)("Coverage_Type").Replace(" ", "")), CoverageTypes),
                                   .ExtendedStatuses = returnClaimStatuses
                                 })
