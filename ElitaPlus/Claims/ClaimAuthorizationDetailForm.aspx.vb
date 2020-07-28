@@ -144,7 +144,7 @@ Partial Class ClaimAuthorizationDetailForm
                 CheckCancelStatus()
                 PopulateDropDowns()
                 PopulateReshipmentReason()
-                PopulateFormFromBO()
+                PopulateFormFromBO() 
                 EnableDisablePageControls()
                 InitializeFulfillmentIssueStatusUI()
                 TranslateGridHeader(GridViewDeviceSelection)
@@ -330,8 +330,9 @@ Partial Class ClaimAuthorizationDetailForm
         Me.ActionButton.Visible = Not Me.State.IsEditMode AndAlso Not Me.State.ShowHistory
         Me.btnNewServiceCenter.Visible = Not Me.State.IsEditMode AndAlso State.ClaimBO.Status = BasicClaimStatus.Active AndAlso Me.State.MyBO.CanVoidClaimAuthorization AndAlso Not Me.State.ShowHistory AndAlso Not (State.ClaimBO.Dealer.DealerFulfillmentProviderClassCode = Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS)
         'Me.btnrefundFee.Visible =  Me.State.MyBO.ClaimAuthStatus  =  ClaimAuthorizationStatus.Authorized 'ClaimAuthorizationStatus.Collected  
+
         Me.btnRefundFee.Visible = Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso State.MyBO.AuthTypeXcd.Equals(AuthType_SalesOrder)
-        Me.btnVoidAuthorization.Visible = Me.State.MyBO.CanVoidClaimAuthorization  AndAlso (ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CLAIMS_MANAGER) OrElse
+        Me.btnVoidAuthorization.Visible = Me.State.MyBO.CanVoidClaimAuthorization AndAlso (ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CLAIMS_MANAGER) OrElse
                                                                                            ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CSR2) OrElse
                                                                                             ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CSR))
     End Sub
@@ -593,8 +594,6 @@ Partial Class ClaimAuthorizationDetailForm
         client.ClientCredentials.UserName.Password = oWebPasswd.Password
 
         Return client
-
-      
     End Function
     Private Sub GetAuthorizationFulfillmentData()
         
@@ -1483,11 +1482,9 @@ Partial Class ClaimAuthorizationDetailForm
     End Sub
 
      Private Sub UpdateRepairCodeProcess()
-
-
-         if rdbRepairQuoteStatus.SelectedValue <>"" and txtRepairQuote.Text <> "" and txtRepairQuote.Text  <> nothing
-         
-            
+        
+         if rdbRepairQuoteStatus.SelectedValue <>"" AND txtRepairQuote.Text <> "" AND txtRepairQuote.Text  <>   nothing AND CDbl(txtRepairQuote.Text ) > 0 
+        
             divRepairCodeProcessStatus.Visible = False
             divRepairCodeProcessError.Visible = False
      
@@ -1559,8 +1556,13 @@ Partial Class ClaimAuthorizationDetailForm
                                     Me.MasterPage.MessageController.AddSuccess(Message.MSG_REPAIR_QUOTE_REJECT)
 
                             End If
-
                             HiddenFieldRepairCodeProcess.Value = "N"
+                            State.MyBO = New ClaimAuthorization(State.MyBO.Id)
+                            PopulateFormFromBO()
+                            GetAuthorizationFulfillmentData()
+                            InitializeFulfillmentIssueStatusUI()
+                           
+                            
                         End If
                     End If
                 End If
