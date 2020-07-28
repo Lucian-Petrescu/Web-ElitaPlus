@@ -1483,7 +1483,7 @@ Partial Class ClaimAuthorizationDetailForm
 
      Private Sub UpdateRepairCodeProcess()
         
-         if rdbRepairQuoteStatus.SelectedValue <>"" and txtRepairQuote.Text <> "" and txtRepairQuote.Text  <> nothing
+         if rdbRepairQuoteStatus.SelectedValue <>"" AND txtRepairQuote.Text <> "" AND txtRepairQuote.Text  <>   nothing AND CDbl(txtRepairQuote.Text ) > 0 
         
             divRepairCodeProcessStatus.Visible = False
             divRepairCodeProcessError.Visible = False
