@@ -1559,8 +1559,9 @@ Partial Class ClaimAuthorizationDetailForm
                             HiddenFieldRepairCodeProcess.Value = "N"
                             State.MyBO = New ClaimAuthorization(State.MyBO.Id)
                             PopulateFormFromBO()
-                            InitializeFulfillmentIssueStatusUI()
                             GetAuthorizationFulfillmentData()
+                            InitializeFulfillmentIssueStatusUI()
+                           
                             
                         End If
                     End If
