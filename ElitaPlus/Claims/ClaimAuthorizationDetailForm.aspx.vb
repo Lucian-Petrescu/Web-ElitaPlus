@@ -1556,10 +1556,12 @@ Partial Class ClaimAuthorizationDetailForm
                                     Me.MasterPage.MessageController.AddSuccess(Message.MSG_REPAIR_QUOTE_REJECT)
 
                             End If
+                            HiddenFieldRepairCodeProcess.Value = "N"
+                            State.MyBO = New ClaimAuthorization(State.MyBO.Id)
                             PopulateFormFromBO()
                             InitializeFulfillmentIssueStatusUI()
                             GetAuthorizationFulfillmentData()
-                            HiddenFieldRepairCodeProcess.Value = "N"
+                            
                         End If
                     End If
                 End If
