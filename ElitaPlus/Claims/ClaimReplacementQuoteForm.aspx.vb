@@ -68,7 +68,8 @@ Namespace Claims
 
         Public Const URL As String = "~/Claims/ClaimReplacementQuoteForm.aspx"
         Private Const NoData As String = " - "
-        Private Const MethodOfRepairXcd As String="METHR-R"
+        Private Const MethodOfRepairXcd As String = "METHR-R"
+        Private Const ClaimExtendedStatusCode = "REPMTQT"
 
 #End Region
 
@@ -101,6 +102,11 @@ Namespace Claims
                 If Not Page.IsPostBack Then
                     Me.SetStateProperties()
                     UpdateBreadCrum()
+                    Dim claimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(ClaimExtendedStatusCode)
+                    If claimStatusByGroupId = Guid.Empty Then
+                        Dim strErrMsg = "CLM_REP_QT_EXT_STATUS_NOT_CONFIGURED"
+                        DisplayErrorMessage(strErrMsg)
+                    End If
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -219,6 +225,28 @@ Namespace Claims
             ucSelectServiceCenter.ShowControl = True
         End Sub
 
+        Private Sub AddClaimExtendedStatus(oClaim As ClaimBase)
+            Dim oClaimStatus As ClaimStatus, claimStatusByGroupId As Guid
+            claimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(ClaimExtendedStatusCode)
+            If Not claimStatusByGroupId = Guid.Empty Then
+                oClaimStatus = New ClaimStatus With {
+                    .ClaimId = oClaim.Id,
+                    .ClaimStatusByGroupId = claimStatusByGroupId,
+                    .StatusDate = DateTime.UtcNow,
+                    .Comments = TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_NAME") + " : " + New ServiceCenter(ucSelectServiceCenter.SelectedServiceCenter.ServiceCenterId).Description + " " + TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_CODE") + " : " + ucSelectServiceCenter.SelectedServiceCenter.ServiceCenterCode
+                }
+                oClaimStatus.Save()
+            End If
+        End Sub
+
+        Private Sub DisplayErrorMessage(strErrMsg As String)
+            lblNewSCError.Visible = True
+            lblNewSCError.Text = String.Empty
+            lblNewSCError.ForeColor = Color.Red
+            lblNewSCError.Text = TranslationBase.TranslateLabelOrMessage(strErrMsg) + ". "
+        End Sub
+
+
         Private Sub SendReplacementQuote()
             Dim blnValid As Boolean = True, strErrMsg As String = String.Empty
             Dim claimDetails As ClaimBase = Me.State.ClaimBO
@@ -248,14 +276,10 @@ Namespace Claims
                                                eventTypeId:=LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP_CLM_REPLACEMNT_QUOTE),
                                                eventArgumentId:=Nothing)
                     End With
+                    AddClaimExtendedStatus(claimDetails)
                     GoBack()
                 Else
-                    lblNewSCError.Visible = True
-                    lblNewSCError.Text = String.Empty
-                    lblNewSCError.ForeColor = Color.Red
-                    If String.IsNullOrEmpty(strErrMsg) = False Then
-                        lblNewSCError.Text = TranslationBase.TranslateLabelOrMessage(strErrMsg) + ". "
-                    End If
+                    DisplayErrorMessage(strErrMsg)
                 End If
 
             Catch ex As Exception
