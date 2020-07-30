@@ -233,7 +233,7 @@ Namespace Claims
                     .ClaimId = oClaim.Id,
                     .ClaimStatusByGroupId = claimStatusByGroupId,
                     .StatusDate = DateTime.UtcNow,
-                    .Comments = TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_NAME") + " : " + New ServiceCenter(ucSelectServiceCenter.SelectedServiceCenter.ServiceCenterId).Description + " " + TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_CODE") + " : " + ucSelectServiceCenter.SelectedServiceCenter.ServiceCenterCode
+                    .Comments = ucSelectServiceCenter.SelectedServiceCenter.ServiceCenterCode + " : " + New ServiceCenter(ucSelectServiceCenter.SelectedServiceCenter.ServiceCenterId).Description
                 }
                 oClaimStatus.Save()
             End If
