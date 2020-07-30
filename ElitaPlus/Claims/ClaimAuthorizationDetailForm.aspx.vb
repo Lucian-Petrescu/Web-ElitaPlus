@@ -1560,11 +1560,8 @@ Partial Class ClaimAuthorizationDetailForm
                         State.ClaimBO = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(State.ClaimBO.Id)
                         
                         PopulateFormFromBO()
-                        GetAuthorizationFulfillmentData()
                         InitializeFulfillmentIssueStatusUI()
                         GetAuthorizationFulfillmentData()
-
-
                     End If
                 End If
 
