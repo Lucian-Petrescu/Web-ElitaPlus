@@ -1517,7 +1517,6 @@ Partial Class ClaimAuthorizationDetailForm
 
                 End With
 
-
                 Dim wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService,OrderStatusResponse )(
                     GetClient(),
                     New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
@@ -1548,7 +1547,7 @@ Partial Class ClaimAuthorizationDetailForm
                                 Me.MasterPage.MessageController.AddSuccess(Message.MSG_REPAIR_QUOTE_ACCEPT)
                             
                                 btnRepairCodeProcess.Visible = false    
-
+                             
                                 else
                                     lblRepairCodeProcessStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_REJECT)
                                     divRepairCodeProcessStatus.Visible = True
@@ -1556,16 +1555,21 @@ Partial Class ClaimAuthorizationDetailForm
                                     Me.MasterPage.MessageController.AddSuccess(Message.MSG_REPAIR_QUOTE_REJECT)
 
                             End If
-                            HiddenFieldRepairCodeProcess.Value = "N"
-                            State.MyBO = New ClaimAuthorization(State.MyBO.Id)
-                            PopulateFormFromBO()
-                            GetAuthorizationFulfillmentData()
-                            InitializeFulfillmentIssueStatusUI()
-                           
-                            
                         End If
+                        
+                        HiddenFieldRepairCodeProcess.Value = "N"
+                        State.MyBO = New ClaimAuthorization(State.MyBO.Id)
+                        State.ClaimBO = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(State.ClaimBO.Id)
+                        
+                        PopulateFormFromBO()
+                        GetAuthorizationFulfillmentData()
+                        InitializeFulfillmentIssueStatusUI()
+
                     End If
                 End If
+
+           
+
             Catch ex As Exception
                 MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
                 Throw
