@@ -1542,10 +1542,12 @@ Partial Class ClaimAuthorizationDetailForm
 
                                 lblRepairCodeProcessStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_ACCEPT)
                                 divRepairCodeProcessStatus.Visible = True
+
                                 
                                 Me.MasterPage.MessageController.AddSuccess(Message.MSG_REPAIR_QUOTE_ACCEPT)
+                            
                                 btnRepairCodeProcess.Visible = false    
-                              
+                             
                                 else
                                     lblRepairCodeProcessStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_REJECT)
                                     divRepairCodeProcessStatus.Visible = True
@@ -1560,8 +1562,9 @@ Partial Class ClaimAuthorizationDetailForm
                         State.ClaimBO = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(State.ClaimBO.Id)
                         
                         PopulateFormFromBO()
-                        InitializeFulfillmentIssueStatusUI()
                         GetAuthorizationFulfillmentData()
+                        InitializeFulfillmentIssueStatusUI()
+
                     End If
                 End If
 
