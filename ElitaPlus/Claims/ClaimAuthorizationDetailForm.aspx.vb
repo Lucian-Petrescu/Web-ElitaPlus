@@ -1340,6 +1340,11 @@ Partial Class ClaimAuthorizationDetailForm
 
         divRepairCodeProcessStatus.Visible = False
         divRepairCodeProcessError.Visible = False
+        rdbRepairQuoteStatus.ClearSelection()
+        txtRepairQuote.Text = ""
+        lblRepairCodeProcessStatus.Text = ""
+        lblRepairCodeProcessError.Text = ""
+
         ControlMgr.SetVisibleControl(Me, btnRepairCodeProcessSave, True)
         ControlMgr.SetVisibleControl(Me, btnRepairCodeProcessClose, False)
     End Sub
@@ -1482,8 +1487,21 @@ Partial Class ClaimAuthorizationDetailForm
     End Sub
 
      Private Sub UpdateRepairCodeProcess()
-        
-         if rdbRepairQuoteStatus.SelectedValue <>"" AND txtRepairQuote.Text <> "" AND txtRepairQuote.Text  <>  nothing AND CDbl(txtRepairQuote.Text) > 0 
+'      
+ 
+         IF  (rdbRepairQuoteStatus.SelectedValue = "RQAPT" OR rdbRepairQuoteStatus.SelectedValue = "RQRJT" OR rdbRepairQuoteStatus.SelectedValue = "") AND _
+             (txtRepairQuote.Text = "" OR txtRepairQuote.Text  is nothing OR String.IsNullOrWhiteSpace(txtRepairQuote.Text))
+             
+             divRepairCodeProcessError.Visible = true
+             lblRepairCodeProcessError.Text =TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_NOT_SELECTED)
+            
+         ElseIf CDbl(txtRepairQuote.Text)  <= 0
+            
+
+             divRepairCodeProcessError.Visible = true
+             lblRepairCodeProcessError.Text =TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_NOT_SELECTED)
+
+         ElseIf (rdbRepairQuoteStatus.SelectedValue = "RQAPT" OR rdbRepairQuoteStatus.SelectedValue = "RQRJT") And CDbl(txtRepairQuote.Text) > 0 
         
             divRepairCodeProcessStatus.Visible = False
             divRepairCodeProcessError.Visible = False
@@ -1575,13 +1593,10 @@ Partial Class ClaimAuthorizationDetailForm
                 Throw
             End Try
 
-         elseif  (rdbRepairQuoteStatus.SelectedValue = "RQAPT" Or rdbRepairQuoteStatus.SelectedValue = "RQRJT") AND _
-              txtRepairQuote.Text = "" And txtRepairQuote.Text  is nothing And cint(txtRepairQuote.Text) = 0
-
-             Me.MasterPage.MessageController.AddError(Message.MSG_REPAIR_QUOTE_NOT_SELECTED)
-
          else
-             Me.MasterPage.MessageController.AddError(Message.MSG_REPAIR_QUOTE_NOT_SELECTED)
+             
+             divRepairCodeProcessError.Visible = true
+             lblRepairCodeProcessError.Text =TranslationBase.TranslateLabelOrMessage(Message.MSG_REPAIR_QUOTE_NOT_SELECTED)
          End If
     End Sub
 End Class
