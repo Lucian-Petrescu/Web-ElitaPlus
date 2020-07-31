@@ -334,7 +334,7 @@ Partial Class ClaimAuthorizationDetailForm
         Me.btnRefundFee.Visible = Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso State.MyBO.AuthTypeXcd.Equals(AuthType_SalesOrder)
         Me.btnVoidAuthorization.Visible = Me.State.MyBO.CanVoidClaimAuthorization AndAlso (ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CLAIMS_MANAGER) OrElse
                                                                                            ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CSR2) OrElse
-                                                                                            ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CSR))
+                                                                                           ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CSR))
     End Sub
     
     private sub HandleRepairCodeProcessButton
@@ -1483,7 +1483,7 @@ Partial Class ClaimAuthorizationDetailForm
 
      Private Sub UpdateRepairCodeProcess()
         
-         if rdbRepairQuoteStatus.SelectedValue <>"" AND txtRepairQuote.Text <> "" AND txtRepairQuote.Text  <>   nothing AND CDbl(txtRepairQuote.Text ) > 0 
+         if rdbRepairQuoteStatus.SelectedValue <>"" AND txtRepairQuote.Text <> "" AND txtRepairQuote.Text  <>  nothing AND CDbl(txtRepairQuote.Text) > 0 
         
             divRepairCodeProcessStatus.Visible = False
             divRepairCodeProcessError.Visible = False
@@ -1574,6 +1574,11 @@ Partial Class ClaimAuthorizationDetailForm
                 MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
                 Throw
             End Try
+
+         elseif  (rdbRepairQuoteStatus.SelectedValue = "RQAPT" Or rdbRepairQuoteStatus.SelectedValue = "RQRJT") AND _
+              txtRepairQuote.Text = "" And txtRepairQuote.Text  is nothing And cint(txtRepairQuote.Text) = 0
+
+             Me.MasterPage.MessageController.AddError(Message.MSG_REPAIR_QUOTE_NOT_SELECTED)
 
          else
              Me.MasterPage.MessageController.AddError(Message.MSG_REPAIR_QUOTE_NOT_SELECTED)
