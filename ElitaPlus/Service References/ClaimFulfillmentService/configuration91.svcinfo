@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="34g9vEDhFSSksinudosmv2WVHOY=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="0H/yy+bETU5yomy7Un2325q5SM/o3i9xxrsNG0qAxMU=">
   <bindingConfigurations>
-    <bindingConfiguration bindingType="customBinding" name="CustomBinding_IFulfillmentService">
+    <bindingConfiguration bindingType="customBinding" name="CustomBinding_IFulfillmentService1">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomBinding_IFulfillmentService</serializedValue>
+          <serializedValue>CustomBinding_IFulfillmentService1</serializedValue>
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -719,7 +719,7 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="CustomBinding_IFulfillmentService" contract="ClaimFulfillmentService.IFulfillmentService" bindingType="customBinding" address="http://localhost/ElitaFulfillmentService/FulfillmentService.svc" bindingConfiguration="CustomBinding_IFulfillmentService">
+    <endpoint name="CustomBinding_IFulfillmentService2" contract="ClaimFulfillmentService.IFulfillmentService" bindingType="customBinding" address="http://localhost/ElitaFulfillmentService/FulfillmentService.svc" bindingConfiguration="CustomBinding_IFulfillmentService1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://localhost/ElitaFulfillmentService/FulfillmentService.svc</serializedValue>
@@ -731,7 +731,7 @@
           <serializedValue>customBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomBinding_IFulfillmentService</serializedValue>
+          <serializedValue>CustomBinding_IFulfillmentService1</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>ClaimFulfillmentService.IFulfillmentService</serializedValue>
@@ -794,7 +794,7 @@
           <serializedValue>False</serializedValue>
         </property>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomBinding_IFulfillmentService</serializedValue>
+          <serializedValue>CustomBinding_IFulfillmentService2</serializedValue>
         </property>
         <property path="/kind" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -804,7 +804,7 @@
         </property>
       </properties>
     </endpoint>
-    <endpoint name="CustomBinding_IFulfillmentService1" contract="ClaimFulfillmentService.IFulfillmentService" bindingType="customBinding" address="http://localhost/ElitaFulfillmentService/FulfillmentService.svc/Secure" bindingConfiguration="CustomBinding_IFulfillmentService">
+    <endpoint name="CustomBinding_IFulfillmentService12" contract="ClaimFulfillmentService.IFulfillmentService" bindingType="customBinding" address="http://localhost/ElitaFulfillmentService/FulfillmentService.svc/Secure" bindingConfiguration="CustomBinding_IFulfillmentService1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://localhost/ElitaFulfillmentService/FulfillmentService.svc/Secure</serializedValue>
@@ -816,7 +816,7 @@
           <serializedValue>customBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomBinding_IFulfillmentService</serializedValue>
+          <serializedValue>CustomBinding_IFulfillmentService1</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>ClaimFulfillmentService.IFulfillmentService</serializedValue>
@@ -879,7 +879,7 @@
           <serializedValue>False</serializedValue>
         </property>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomBinding_IFulfillmentService1</serializedValue>
+          <serializedValue>CustomBinding_IFulfillmentService12</serializedValue>
         </property>
         <property path="/kind" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

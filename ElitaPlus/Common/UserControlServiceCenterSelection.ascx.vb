@@ -61,7 +61,9 @@ Public Class UserControlServiceCenterSelection
             parentControl = parentControl.Parent
         End While
         ElitaHostPage = DirectCast(parentControl, ElitaPlusPage)
-
+        If ShowControl Then
+            InitializeComponent()
+        End If
     End Sub
 #Region "Properties"
     Public Property HostMessageController As IMessageController
@@ -71,6 +73,8 @@ Public Class UserControlServiceCenterSelection
     Public Property HighLightSortColumnFunc As Action(Of System.Web.UI.WebControls.GridView, String)
     Public Property NewCurrentPageIndexFunc As Func(Of System.Web.UI.WebControls.GridView, Integer, Integer, Integer)
     Public Property ElitaHostPage As ElitaPlusPage
+    Public Property ShowControl As Boolean = False
+
     Public Property CountryId As Guid
         Get
             Return DirectCast(ViewState(ViewStateItems.CountryId), Guid)
@@ -262,7 +266,7 @@ Public Class UserControlServiceCenterSelection
             HostMessageController.AddError(errorMessage, True)
         End If
     End Sub
-    Sub ShowMessage(message As string)
+    Sub ShowMessage(message As String)
         If HostMessageController IsNot Nothing Then
             HostMessageController.AddError(message, True)
         End If
@@ -461,19 +465,19 @@ Public Class UserControlServiceCenterSelection
                 GridServiceCenter.DataSource = wsResponse
                 '
                 Try
-                    if not string.IsNullOrWhiteSpace(SortExpression) then
+                    If Not String.IsNullOrWhiteSpace(SortExpression) Then
                         HighLightSortColumnFunc.Invoke(GridServiceCenter, SortExpression)
                     End If
                 Catch ex As Exception
                     'do nothing, ignore the sorting error
                 End Try
-                
+
                 '
                 GridServiceCenter.DataBind()
                 PageIndex = GridServiceCenter.PageIndex
 
             End If
-        Catch notFoundEx As FaultException(of ServiceCenterNotFoundFault)
+        Catch notFoundEx As FaultException(Of ServiceCenterNotFoundFault)
             ShowMessage($"No Services Center found for RiskType: {RiskTypeEnglish}, Method: {MethodOfRepairXcd}, Make: {Make}")
         Catch fex As FaultException
             ShowMessage($"No Services Center found for RiskType: {RiskTypeEnglish}, Method: {MethodOfRepairXcd}, Make: {Make}")
@@ -510,10 +514,10 @@ Public Class UserControlServiceCenterSelection
 
                     SelectedServiceCenter = oServiceCenter
 
-                    if not ServiceCenterSelectedFunc is Nothing Then
+                    If Not ServiceCenterSelectedFunc Is Nothing Then
                         ServiceCenterSelectedFunc.Invoke(selected)
                     End If
-                    
+
                 End If
             End If
         Next
@@ -524,11 +528,11 @@ Public Class UserControlServiceCenterSelection
         GridServiceCenter.DataBind()
         UpdateRecordCount(0)
     End Sub
-    Private sub UpdateRecordCount(records As Integer)
+    Private Sub UpdateRecordCount(records As Integer)
         If Me.GridServiceCenter.Visible Then
             Me.lblRecordCount.Text = $"{records} {TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)}"
         End If
-    End sub
+    End Sub
 #End Region
 
 #Region "Web Service"

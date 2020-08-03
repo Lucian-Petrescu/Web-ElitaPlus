@@ -1240,7 +1240,6 @@ Partial Class ClaimForm
             btnReplaceItem.Enabled = False
             ControlMgr.SetVisibleControl(Me, btnReplaceItem, False)
         End If
-
     End Sub
 
     Private Sub EnableDisableButtonsConditionally()
@@ -1390,6 +1389,9 @@ Partial Class ClaimForm
 
         btnChangeFulfillment.Enabled = isFlag
         ControlMgr.SetVisibleControl(Me, Me.btnChangeFulfillment, isFlag)
+
+        btnReplacementQuote.Enabled = isFlag
+        ControlMgr.SetVisibleControl(Me, Me.btnReplacementQuote, isFlag)
     End Sub
     Protected Sub DisableButtonsForClaimSystem()
         If Not Me.State.MyBO.CertificateId.Equals(Guid.Empty) Or Me.State.MyBO.IsClaimChild = Codes.YESNO_Y Then
@@ -3469,6 +3471,14 @@ Partial Class ClaimForm
         End Try
     End Sub
 
+    Private Sub btnReplacementQuote_Click(sender As Object, e As EventArgs) Handles btnReplacementQuote.Click
+        Try
+            Me.callPage(Claims.ClaimReplacementQuoteForm.URL, New Claims.ClaimReplacementQuoteForm.Parameters(Me.State.MyBO.Id))
+        Catch ex As Threading.ThreadAbortException
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
 #End Region
 
 #Region "Page Control Events"
