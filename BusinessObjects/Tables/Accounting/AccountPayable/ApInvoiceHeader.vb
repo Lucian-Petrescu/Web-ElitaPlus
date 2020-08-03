@@ -11,6 +11,11 @@ Public Class ApInvoiceHeader
         Me.Dataset = New DataSet
         Me.Load(id)
     End Sub
+    Public Sub New(ByVal invoiceNumber As String)
+        MyBase.New()
+        Me.Dataset = New DataSet
+        Me.Load(invoiceNumber)
+    End Sub
 
     'New BO
     Public Sub New()
@@ -55,9 +60,9 @@ Public Class ApInvoiceHeader
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(ByVal id As Guid)
         Try
-            Dim dal As New ApInvoiceHeaderDAL            
+            Dim dal As New ApInvoiceHeaderDAL
             If Me._isDSCreator Then
                 If Not Me.Row Is Nothing Then
                     Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
@@ -78,10 +83,34 @@ Public Class ApInvoiceHeader
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
+    Protected Sub Load(ByVal accountPayableInvoiceNumber As String)
+        Try
+            Dim dal As New ApInvoiceHeaderDAL
+            If Me._isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(ApInvoiceHeaderDAL.TABLE_NAME).Rows.Remove(Me.Row)
+                End If
+            End If
+            Me.Row = Nothing
+            If Dataset.Tables.IndexOf(ApInvoiceHeaderDAL.TABLE_NAME) >= 0 Then
+                Me.Row = FindRow(Id, ApInvoiceHeaderDAL.TABLE_KEY_NAME, Me.Dataset.Tables(ApInvoiceHeaderDAL.TABLE_NAME))
+            End If
+            If Me.Row Is Nothing Then
+                dal.Load(Me.Dataset, accountPayableInvoiceNumber)
+                Me.Row = FindRow(Id, ApInvoiceHeaderDAL.TABLE_KEY_NAME, Me.Dataset.Tables(ApInvoiceHeaderDAL.TABLE_NAME))
+            End If
+            If Me.Row Is Nothing Then
+                Throw New DataNotFoundException
+            End If
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
 #End Region
 
+
 #Region "Private Members"
-	'Initialization code for new objects
+    'Initialization code for new objects
     Private Sub Initialize()        
     End Sub
 #End Region
@@ -100,7 +129,7 @@ Public Class ApInvoiceHeader
         End Get
     End Property
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=100)> _
+    <ValueMandatory(""),ValidStringLength("Invoice Number", Max:=100)> _
     Public Property InvoiceNumber() As String
         Get
             CheckDeleted()
@@ -235,9 +264,7 @@ Public Class ApInvoiceHeader
         End Set
     End Property
 	
-	
-    <ValueMandatory("")> _
-    Public Property VendorAddressId() As Guid
+  Public Property VendorAddressId() As Guid
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_VENDOR_ADDRESS_ID) Is DBNull.Value Then
@@ -370,9 +397,7 @@ Public Class ApInvoiceHeader
             Me.SetValue(ApInvoiceHeaderDAL.COL_NAME_POSTED, Value)
         End Set
     End Property
-	
-	
-    
+	<ValueMandatory("")>
     Public Property DealerId() As Guid
         Get
             CheckDeleted()
@@ -404,14 +429,14 @@ Public Class ApInvoiceHeader
             Me.SetValue(ApInvoiceHeaderDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
-	
-	
-   
+
+
+
 
 #End Region
 
 #Region "Public Members"
-    Public Overrides Sub Save()         
+    Public Overrides Sub Save()
         Try
             MyBase.Save()
             If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
@@ -423,6 +448,24 @@ Public Class ApInvoiceHeader
                     Me.Dataset = New DataSet
                     Me.Row = Nothing
                     Me.Load(objId)
+                End If
+            End If
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
+    Public Sub SaveInvoiceHeader()
+        Try
+            MyBase.Save()
+            If _isDSCreator AndAlso Me.IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
+                Dim dal As New ApInvoiceHeaderDAL
+                dal.SaveInvoiceHeader(Row)
+
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -449,10 +492,10 @@ Public Class ApInvoiceHeader
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetAPInvoices(ByVal vendorCode As String, ByVal invoiceNum As string,
+    Public Shared Function GetAPInvoices(ByVal vendorCode As String, ByVal invoiceNum As String,
                                          ByVal source As String, ByVal invoiceDate As Date?,
                                          ByVal dueDateFrom As Date?, ByVal dueDateTo As Date?,
-                                         ByVal rowCount As Integer   
+                                         ByVal rowCount As Integer
                                          ) As APInvoiceSearchDV
 
         Dim dal As New ApInvoiceHeaderDAL
@@ -466,12 +509,11 @@ Public Class ApInvoiceHeader
             languageId = .LanguageId
         End With
 
-        dal.SearchAPInvoices(vendorCode,invoiceNum, source, invoiceDate, dueDateFrom, dueDateTo, rowCount, userId,searchResults)
+        dal.SearchAPInvoices(vendorCode, invoiceNum, source, invoiceDate, dueDateFrom, dueDateTo, rowCount, userId, searchResults)
 
         Return New APInvoiceSearchDV(searchResults.Tables(0))
-        
-    End Function
 
+    End Function
     Public Function GetInvoiceExtendedInfo() As DataView
 
         Dim dal As New ApInvoiceHeaderDAL
@@ -479,7 +521,7 @@ Public Class ApInvoiceHeader
 
         dal.LoadAPInvoiceExtendedInfo(Me.Id, dsResults)
 
-        Return dsResults.Tables(0).DefaultView        
+        Return dsResults.Tables(0).DefaultView
     End Function
 
     Public Function GetInvoiceLines(ByVal minLineNum  As Integer,
@@ -495,8 +537,16 @@ Public Class ApInvoiceHeader
         Return New ApInvoiceLines.APInvoiceLinesDV(dsResults.Tables(0))
 
     End Function
-    
+    Public Function GetApInvoice(ByVal apInvoiceNumber As String, ByVal apInvoiceVendorId As Guid) As Dataview
+        
+        Dim dal As New ApInvoiceHeaderDAL
+        Dim dsResults As New DataSet
+        dal.LoadAPInvoice(apInvoiceNumber,apInvoiceVendorId, dsResults)
+        Return dsResults.Tables(0).DefaultView
+
+    End Function
 #End Region
+
 #Region "Invoice search view class"
 
     Public Class APInvoiceSearchDV
@@ -516,8 +566,16 @@ Public Class ApInvoiceHeader
         Public Const COL_VENDOR As String = "vendor"
         Public Const COL_VENDOR_ADDRESS As String = "vendor_address"
         Public Const COL_VENDOR_ID As String = "vendor_id"
-
+        Public Const COL_PAYMENT_STATUS_XCD As String = "payment_status_xcd"
         Public Const COL_TOTAL_COUNT As String = "total_count"
+        Public Const COL_INVOICE_TERM As String = "Term"
+        Public Const COL_INVOICE_DELAER As String = "Dealer"
+        Public Const MSG_THE_VALUE_REQUIRED_INVOICE_NO As String = "MSG_THE_VALUE_REQUIRED_INVOICE_NO"
+        Public Const MSG_THE_VALUE_REQUIRED_INVOICE_AMOUNT As String = "MSG_THE_VALUE_REQUIRED_INVOICE_AMOUNT"
+        Public Const MSG_THE_VALUE_REQUIRED_VENDOR As String = "MSG_THE_VALUE_REQUIRED_VENDOR"
+        Public Const MSG_THE_VALUE_REQUIRED_DEALER As String = "MSG_THE_VALUE_REQUIRED_DEALER"
+        Public Const MSG_THE_VALUE_REQUIRED_INVOICE_DATE As String = "MSG_THE_VALUE_REQUIRED_INVOICE_DATE"
+        Public Const MSG_THE_VALUE_REQUIRED_INVOICE_TERM As String = "MSG_THE_VALUE_REQUIRED_INVOICE_TERM"
         Public Sub New(ByVal table As DataTable)
             MyBase.New(table)
         End Sub

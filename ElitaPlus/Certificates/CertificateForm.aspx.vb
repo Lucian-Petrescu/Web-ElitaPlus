@@ -833,10 +833,13 @@ Namespace Certificates
             End If
 
             Try
-                If (Not Me.NavController Is Nothing) AndAlso (Not Me.NavController.PrevNavState Is Nothing) AndAlso (Me.NavController.PrevNavState.Name = "SEND_SERVICE_ORDER") AndAlso
-                        (Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd)) AndAlso (Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS)) Then
-                    Navigator.RemovePageFromNavigation()
-                    Me.Navigator.SetCurrentPage(mobjPage, mobjState)
+                ' This is an scenario where Dynamic Claim Recording is called from Certificate form
+                If Not Me.IsPostBack Then
+                    If (Not Me.NavController Is Nothing) AndAlso (Not Me.NavController.PrevNavState Is Nothing) AndAlso (Me.NavController.PrevNavState.Name = "SEND_SERVICE_ORDER") AndAlso
+                        (Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd)) AndAlso (Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) OrElse Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_BOTH)) Then
+                        MyBase.SetPageOutOfNavigation()
+                        Me.Navigator.SetCurrentPage(mobjPage, mobjState)
+                    End If
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -3102,7 +3105,8 @@ Namespace Certificates
                 End If
 
                 Me.AddressCtr.PopulateBOFromControl(True, blnUpdateZipLocator)
-                If ((Me.AddressCtr.MyBO.IsDeleted = False) AndAlso
+                If (Not Me.AddressCtr.MyBO Is Nothing AndAlso
+                    (Me.AddressCtr.MyBO.IsDeleted = False) AndAlso
                     (Me.AddressCtr.MyBO.IsEmpty = False)) Then
                     Me.State.MyBO.AddressId = Me.AddressCtr.MyBO.Id
                 End If

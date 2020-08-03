@@ -150,9 +150,14 @@ Public MustInherit Class OracleDALBase : Inherits DALBase
         End Using
 
         '''TODO: Check weather explicit AcceptChanegs are Required
-        row.AcceptChanges()
+        Try
+            row.AcceptChanges()
+        Catch ex As RowNotInTableException
+            ex = Nothing
+        End Try
 
         LookupListCache.ClearFromCache(Me.GetType.ToString)
+
     End Sub
 
 #End Region

@@ -140,11 +140,19 @@
 													</ItemTemplate>
 												</asp:TemplateColumn>
 												<asp:BoundColumn SortExpression="POLICE_STATION_NAME" HeaderText="Police_Station_Name">
-													<HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="65%"></HeaderStyle>
+													<HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="35%"></HeaderStyle>
 													<ItemStyle HorizontalAlign="Left"></ItemStyle>
 												</asp:BoundColumn>
 												<asp:BoundColumn SortExpression="POLICE_STATION_CODE" HeaderText="Police_Station_Code">
-													<HeaderStyle HorizontalAlign="Center" Width="30%"></HeaderStyle>
+													<HeaderStyle HorizontalAlign="Center" Width="13%"></HeaderStyle>
+													<ItemStyle HorizontalAlign="Center"></ItemStyle>
+												</asp:BoundColumn>
+                                                <asp:BoundColumn SortExpression="POLICE_STATION_DISTRICT_NAME" HeaderText="Police_Station_District_Name">
+													<HeaderStyle HorizontalAlign="Center" ForeColor="#12135B"  Width="35%"></HeaderStyle>
+													<ItemStyle HorizontalAlign="Left"></ItemStyle>
+												</asp:BoundColumn>
+                                                <asp:BoundColumn SortExpression="POLICE_STATION_DISTRICT_CODE" HeaderText="Police_Station_District_Code">
+													<HeaderStyle HorizontalAlign="Center" Width="12%"></HeaderStyle>
 													<ItemStyle HorizontalAlign="Center"></ItemStyle>
 												</asp:BoundColumn>
 												<asp:BoundColumn Visible="False" HeaderText="police_station_id"></asp:BoundColumn>

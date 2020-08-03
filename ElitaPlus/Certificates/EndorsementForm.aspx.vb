@@ -822,6 +822,11 @@ Namespace Certificates
                         Me.PopulateBOProperty(Me.State.MyBO, "TaxIDNumbPost", Me.moNewTaxIdText)
                         Me.PopulateBOProperty(Me.State.MyBO, "RgNumberPost", Me.moRGNumberText)
                         Me.PopulateBOProperty(Me.State.MyBO, "DocumentIssueDatePost", Me.moDocumentIssueDateText)
+                        If Me.moCustomerFirstNameText.Visible = True And Me.moCustomerMiddleNameText.Visible = True And Me.moCustomerLastNameText.Visible = True Then
+                            Me.PopulateBOProperty(Me.State.MyBO, "CustNamePost", Me.moCustomerFirstNameText.Text + " " + Me.moCustomerMiddleNameText.Text + " " + Me.moCustomerLastNameText.Text)
+                        ElseIf Me.TextboxCustomerName.Visible = True Then
+                            Me.PopulateBOProperty(Me.State.MyBO, "CustNamePost", Me.TextboxCustomerName)
+                        End If
 
                     End If
                 End With
