@@ -8,7 +8,7 @@
     Public Const CaseInteractionGridColInteractionDateIdx As Integer = 9
     Public Const CaseQuestionAnswerGridColCreationDateIdx As Integer = 3
     Public Const CaseDeniedReasonsGridColCreatedDateIdx As Integer = 2
-    Public Const CaseActionGridColCreationDateIdx As Integer = 3
+    Public Const CaseActionGridColCreationDateIdx As Integer = 4
     Public Const CaseQuestionAnswerGridColAnswerIdx As Integer = 2
     Public Const CaseNotesGridColCreatedDateIdx As Integer = 1
 
