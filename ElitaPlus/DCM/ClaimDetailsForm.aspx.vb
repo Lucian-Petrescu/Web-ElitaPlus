@@ -7,7 +7,7 @@
     Public Const GridColCaseOpenDateIdx As Integer = 2
     Public Const GridColCaseStatusCodeIdx As Integer = 3
     Public Const GridColCaseCloseDateIdx As Integer = 4
-    Public Const GridColCreatedDateIdx As Integer = 3
+    Public Const GridColCreatedDateIdx As Integer = 4
 
     Public Const ClaimCaseGridColCaseNumberCtrl As String = "btnSelectCase"
     Public Const SelectActionCommand As String = "SelectAction"
