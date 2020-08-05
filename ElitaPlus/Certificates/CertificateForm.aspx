@@ -2332,7 +2332,10 @@
                     <asp:BoundColumn SortExpression="Begin_Date" HeaderText="Begin_Date" ItemStyle-Wrap="false" />
                     <asp:BoundColumn SortExpression="End_Date" HeaderText="End_Date" ItemStyle-Wrap="false" />
                     <asp:BoundColumn SortExpression="Coverage_duration" HeaderText="Coverage_Term" HeaderStyle-Wrap="false" />
+                    <asp:BoundColumn SortExpression="Coverage_Expiration_Date" HeaderText="Coverage_Expiration_Date" ItemStyle-Wrap="false" />
+                    <asp:BoundColumn SortExpression="Max_Renewal_Duration" HeaderText="Max_Renewal_Duration" HeaderStyle-Wrap="false" />
                     <asp:BoundColumn SortExpression="No_of_Renewals" HeaderText="No_Of_Renewals" HeaderStyle-Wrap="false" />
+                    <asp:BoundColumn SortExpression="No_of_Renewals_Remaining" HeaderText="No_of_Renewals_Remaining" HeaderStyle-Wrap="false" />
                     <asp:BoundColumn SortExpression="Renewal_Date" HeaderText="Renewal_Date" HeaderStyle-Wrap="false" ItemStyle-Wrap="false" />
                     <asp:BoundColumn HeaderText="COVERAGE_TOTAL_PAID_AMOUNT" HeaderStyle-Width="150" />
                     <asp:BoundColumn HeaderText="COVERAGE_REMAIN_LIABILITY_LIMIT" HeaderStyle-Width="150" />
