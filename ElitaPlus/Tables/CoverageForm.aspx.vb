@@ -1140,26 +1140,26 @@ Namespace Tables
                     oCoverageRate(i) = New CoverageRate
                     oCoverageRate(i).CoverageId = TheCoverage.Id
                     If TypeOf moGridView.Rows(i).Cells(ColIndexLowPrice).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LowPrice), CType(moGridView.Rows(i).Cells(ColIndexLowPrice).Controls(1), Label).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LowPrice), CType(moGridView.Rows(i).Cells(ColIndexLowPrice).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LowPrice), CType(moGridView.Rows(i).Cells(ColIndexLowPrice).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LowPrice), CType(moGridView.Rows(i).Cells(ColIndexLowPrice).Controls(1), TextBox).Text)
                     End If
                     If TypeOf moGridView.Rows(i).Cells(ColIndexHighPrice).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.HighPrice), CType(moGridView.Rows(i).Cells(ColIndexHighPrice).Controls(1), Label).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.HighPrice), CType(moGridView.Rows(i).Cells(ColIndexHighPrice).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.HighPrice), CType(moGridView.Rows(i).Cells(ColIndexHighPrice).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.HighPrice), CType(moGridView.Rows(i).Cells(ColIndexHighPrice).Controls(1), TextBox).Text)
                     End If
                     If TypeOf moGridView.Rows(i).Cells(ColIndexGrossAmt).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmt), CType(moGridView.Rows(i).Cells(ColIndexGrossAmt).Controls(1), Label).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.GrossAmt), CType(moGridView.Rows(i).Cells(ColIndexGrossAmt).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmt), CType(moGridView.Rows(i).Cells(ColIndexGrossAmt).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.GrossAmt), CType(moGridView.Rows(i).Cells(ColIndexGrossAmt).Controls(1), TextBox).Text)
                     End If
 
-                    PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmountPercent), GetAmountFormattedDoubleString("0"))
+                    PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.GrossAmountPercent), GetAmountFormattedDoubleString("0"))
                     If TypeOf moGridView.Rows(i).Cells(ColIndexGrossAmountPercent).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmountPercent), CType(moGridView.Rows(i).Cells(ColIndexGrossAmountPercent).Controls(1), Label).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.GrossAmountPercent), CType(moGridView.Rows(i).Cells(ColIndexGrossAmountPercent).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmountPercent), CType(moGridView.Rows(i).Cells(ColIndexGrossAmountPercent).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.GrossAmountPercent), CType(moGridView.Rows(i).Cells(ColIndexGrossAmountPercent).Controls(1), TextBox).Text)
                     End If
                     If CoveragePricingCode = NoCoveragePricing Then
                         PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CommissionsPercent), GetAmountFormattedDoubleString("0"))
@@ -1169,80 +1169,80 @@ Namespace Tables
                         PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LossCostPercent), GetAmountFormattedDoubleString("0"))
                     Else
                         If TypeOf moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1) Is Label Then
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercent), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1), Label).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CommissionsPercent), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1), Label).Text)
                         Else
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercent), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CommissionsPercent), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1), TextBox).Text)
                         End If
                         If TypeOf moGridView.Rows(i).Cells(ColIndexMarketingPercent).Controls(1) Is Label Then
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.MarketingPercent), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercent).Controls(1), Label).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.MarketingPercent), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercent).Controls(1), Label).Text)
                         Else
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.MarketingPercent), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercent).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.MarketingPercent), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercent).Controls(1), TextBox).Text)
                         End If
                         If TypeOf moGridView.Rows(i).Cells(ColIndexAdminExpense).Controls(1) Is Label Then
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.AdminExpense), CType(moGridView.Rows(i).Cells(ColIndexAdminExpense).Controls(1), Label).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.AdminExpense), CType(moGridView.Rows(i).Cells(ColIndexAdminExpense).Controls(1), Label).Text)
                         Else
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.AdminExpense), CType(moGridView.Rows(i).Cells(ColIndexAdminExpense).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.AdminExpense), CType(moGridView.Rows(i).Cells(ColIndexAdminExpense).Controls(1), TextBox).Text)
                         End If
                         If TypeOf moGridView.Rows(i).Cells(ColIndexProfitExpense).Controls(1) Is Label Then
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.ProfitExpense), CType(moGridView.Rows(i).Cells(ColIndexProfitExpense).Controls(1), Label).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.ProfitExpense), CType(moGridView.Rows(i).Cells(ColIndexProfitExpense).Controls(1), Label).Text)
                         Else
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.ProfitExpense), CType(moGridView.Rows(i).Cells(ColIndexProfitExpense).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.ProfitExpense), CType(moGridView.Rows(i).Cells(ColIndexProfitExpense).Controls(1), TextBox).Text)
                         End If
                         If TypeOf moGridView.Rows(i).Cells(ColIndexLossCostPercent).Controls(1) Is Label Then
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LossCostPercent), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercent).Controls(1), Label).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LossCostPercent), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercent).Controls(1), Label).Text)
                         Else
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LossCostPercent), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercent).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LossCostPercent), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercent).Controls(1), TextBox).Text)
                         End If
 
                         'US-521697
                         If State.IsDealerConfiguredForSourceXcd Then
                             If TypeOf moGridView.Rows(i).Cells(ColIndexCommissionsPercentXcd).Controls(0) Is Label Then
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercentXcd).Controls(0), Label).Text)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CommissionsPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercentXcd).Controls(0), Label).Text)
                             Else
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercentXcd).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CommissionsPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercentXcd).Controls(1), DropDownList).SelectedValue)
                             End If
 
                             If TypeOf moGridView.Rows(i).Cells(ColIndexMarketingPercentXcd).Controls(0) Is Label Then
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.MarketingPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercentXcd).Controls(0), Label).Text)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.MarketingPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercentXcd).Controls(0), Label).Text)
                             Else
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.MarketingPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercentXcd).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.MarketingPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercentXcd).Controls(1), DropDownList).SelectedValue)
                             End If
 
                             If TypeOf moGridView.Rows(i).Cells(ColIndexAdminExpenseXcd).Controls(0) Is Label Then
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.AdminExpenseSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexAdminExpenseXcd).Controls(0), Label).Text)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.AdminExpenseSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexAdminExpenseXcd).Controls(0), Label).Text)
                             Else
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.AdminExpenseSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexAdminExpenseXcd).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.AdminExpenseSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexAdminExpenseXcd).Controls(1), DropDownList).SelectedValue)
                             End If
 
                             If TypeOf moGridView.Rows(i).Cells(ColIndexProfitExpenseXcd).Controls(0) Is Label Then
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.ProfitPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexProfitExpenseXcd).Controls(0), Label).Text)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.ProfitPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexProfitExpenseXcd).Controls(0), Label).Text)
                             Else
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.ProfitPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexProfitExpenseXcd).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.ProfitPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexProfitExpenseXcd).Controls(1), DropDownList).SelectedValue)
                             End If
 
                             If TypeOf moGridView.Rows(i).Cells(ColIndexLossCostPercentXcd).Controls(0) Is Label Then
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LossCostPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercentXcd).Controls(0), Label).Text)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LossCostPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercentXcd).Controls(0), Label).Text)
                             Else
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LossCostPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercentXcd).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LossCostPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercentXcd).Controls(1), DropDownList).SelectedValue)
                             End If
                         End If
                     End If
                     If TypeOf moGridView.Rows(i).Cells(ColIndexRenewalNumber).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.RenewalNumber), CType(moGridView.Rows(i).Cells(ColIndexRenewalNumber).Controls(1), Label).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.RenewalNumber), CType(moGridView.Rows(i).Cells(ColIndexRenewalNumber).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.RenewalNumber), CType(moGridView.Rows(i).Cells(ColIndexRenewalNumber).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.RenewalNumber), CType(moGridView.Rows(i).Cells(ColIndexRenewalNumber).Controls(1), TextBox).Text)
                     End If
 
                     If TypeOf moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.TaxRegion), CType(moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1), Label).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.TaxRegion), CType(moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.TaxRegion), CType(moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1), DropDownList).SelectedValue)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.TaxRegion), CType(moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1), DropDownList).SelectedValue)
                     End If
 
                     If TypeOf moGridView.Rows(i).Cells(ColIndexLiabilityLimit).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexLiabilityLimit).Controls(1), Label).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexLiabilityLimit).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexLiabilityLimit).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexLiabilityLimit).Controls(1), TextBox).Text)
                     End If
                 Next
                 State.CoverageRateList = oCoverageRate
@@ -3400,7 +3400,6 @@ Namespace Tables
                     SetSelectedGridText(moGridView, ColIndexLowPrice, .LowPrice.ToString)
                     SetSelectedGridText(moGridView, ColIndexGrossAmountPercent, .GrossAmountPercent.ToString)
                     SetSelectedGridText(moGridView, ColIndexRenewalNumber, .RenewalNumber.ToString)
-                    SetSelectedGridText(moGridView, ColIndexLiabilityLimit, .LiabilityLimit.ToString)
                 End With
             Else
                 With TheCoverageRate
@@ -3415,9 +3414,9 @@ Namespace Tables
                     SetSelectedGridText(moGridView, ColIndexLowPrice, .LowPrice.ToString)
                     SetSelectedGridText(moGridView, ColIndexGrossAmountPercent, .GrossAmountPercent.ToString)
                     SetSelectedGridText(moGridView, ColIndexRenewalNumber, .RenewalNumber.ToString)
-                    SetSelectedGridText(moGridView, ColIndexLiabilityLimit, .LiabilityLimit.ToString)
                 End With
             End If
+            PopulateCoverageRateLiabilityLimitFromBO()
             PopulateTaxRegionFromCoverageRateBo()
         End Sub
 
@@ -3635,7 +3634,8 @@ Namespace Tables
                 End If
                 PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.RenewalNumber), CType(GetSelectedGridControl(moGridView, ColIndexRenewalNumber), TextBox))
                 PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.RegionId), CType(GetDropDownControlFromGrid(moGridView, ColIndexRegionId), DropDownList))
-                PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LiabilityLimit), CType(GetSelectedGridControl(moGridView, ColIndexLiabilityLimit), TextBox))
+
+                PopulateCoverageRateLiabilityLimitBOFromForm()
 
                 CommonSourceOptionLogic()
             End With
@@ -4844,12 +4844,71 @@ Namespace Tables
         End Function
 
 #End Region
+
+#Region "Coverage Rate Liability Limit US-489838"
+        Protected Function CheckNull(ByVal objGrid As Object) As String
+            If Object.ReferenceEquals(objGrid, DBNull.Value) Then
+                Return String.Empty
+            ElseIf TypeOf objGrid Is Byte() Then
+                Return GetGuidStringFromByteArray(objGrid)
+            Else
+                If objGrid.ToString().Equals(Guid.Empty.ToString()) Then
+                    Return String.Empty
+                End If
+
+                Return objGrid.ToString()
+            End If
+        End Function
+
+        Private Sub PopulateCoverageRateLiabilityLimitBOFromForm()
+            If moGridView.EditIndex = -1 Then Exit Sub
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim TextBoxLiabilityLimit As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
+
+            If Not TextBoxLiabilityLimit Is Nothing Then
+                If (String.IsNullOrWhiteSpace(TextBoxLiabilityLimit.Text)) Then
+                    Dim tempTextBoxLiabilityLimit As TextBox = New TextBox
+                    tempTextBoxLiabilityLimit.Text = String.Empty
+                    Me.PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LiabilityLimit), tempTextBoxLiabilityLimit)
+                Else
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LiabilityLimit), CType(GetSelectedGridControl(moGridView, ColIndexLiabilityLimit), TextBox))
+                End If
+            End If
+        End Sub
+
+        Private Sub PopulateCoverageRateLiabilityLimitFromBO()
+            'ensure that grid's edit index is set before this gets a call
+            If moGridView.EditIndex = -1 Then Exit Sub
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim TextBoxLiabilityLimit As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
+
+            If State.IsNewWithCopy Then
+                With State.CoverageRateList(moGridView.SelectedIndex)
+                    If Not .LiabilityLimit Is Nothing Then
+                        If Not String.IsNullOrWhiteSpace(.LiabilityLimit) Then
+                            PopulateControlFromBOProperty(TextBoxLiabilityLimit, .LiabilityLimit)
+                        End If
+                    End If
+                End With
+            Else
+                With TheCoverageRate
+                    If Not .LiabilityLimit Is Nothing Then
+                        If Not String.IsNullOrWhiteSpace(.LiabilityLimit) Then
+                            PopulateControlFromBOProperty(TextBoxLiabilityLimit, .LiabilityLimit)
+                        End If
+                    End If
+                End With
+            End If
+        End Sub
+#End Region
+
+
         Private Function CurrentUser() As User
             Return ElitaPlusIdentity.Current.ActiveUser
         End Function
 
         Private Function GetLanguageId() As Guid
-            Return  ElitaPlusIdentity.Current.ActiveUser.LanguageId
+            Return ElitaPlusIdentity.Current.ActiveUser.LanguageId
         End Function
     End Class
 End Namespace

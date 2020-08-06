@@ -115,7 +115,7 @@
         Marketing_Percent_Source_Xcd = :Marketing_Percent_Source_Xcd,
         Admin_Expense_Source_Xcd = :Admin_Expense_Source_Xcd,
         Profit_Percent_Source_Xcd = :Profit_Percent_Source_Xcd,
-        Loss_Cost_Percent_Source_Xcd = :Loss_Cost_Percent_Source_Xcd
+        Loss_Cost_Percent_Source_Xcd = :Loss_Cost_Percent_Source_Xcd,
         liability_limit = :liability_limit
 			WHERE
 				coverage_rate_id = :coverage_rate_id
