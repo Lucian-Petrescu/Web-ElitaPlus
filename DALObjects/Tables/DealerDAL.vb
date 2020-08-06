@@ -706,7 +706,7 @@ Public Class DealerDAL
         Dim selectStmt As String = Me.Config("/SQL/GET_DEALER_CERTIFICATES_COUNT")
         Dim parameters(TOTAL_PARAM_DEALER_CERTIFICATES_COUNT) As DBHelper.DBHelperParameter
 
-        parameters(DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerID.ToByteArray())
+        parameters(DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, DALBase.GuidToSQLString(dealerID))
 
         Try
             Dim ds As New DataSet

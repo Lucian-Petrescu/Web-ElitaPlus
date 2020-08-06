@@ -69,6 +69,7 @@
     <asp:ScriptManager ID="ScriptManagerMaster" runat="server" />
     <asp:HiddenField ID="HiddenFieldShowNewSC" runat="server" Value="N" />
     <asp:HiddenField ID="HiddenFieldVoidAuth" runat="server" Value="N" />
+    <asp:HiddenField ID="HiddenFieldRepairCodeProcess" runat="server" Value="N" />
     <script type="text/javascript">
         function SetShowNewSCValue(newValue) {
             $('#<% =HiddenFieldShowNewSC.ClientID%>').val(newValue); 
@@ -76,6 +77,10 @@
 
         function SetShowVoidAuthValue(newValue) {
             $('#<% =HiddenFieldVoidAuth.ClientID%>').val(newValue);
+        }    
+
+        function SetShowRepairCodeProcess(newValue) {
+            $('#<% =HiddenFieldRepairCodeProcess.ClientID%>').val(newValue);
         }    
 
         function Count(text, length) {
@@ -89,6 +94,13 @@
                 return false;
             }
             return true;
+        }
+
+        function checkDec(el) {
+            var ex = /^[0-9]+\.?[0-9]*$/;
+            if (ex.test(el.value) == false) {
+                el.value = el.value.substring(0, el.value.length - 1);
+            }
         }
     </script>
     <div id="ModalServiceCenter" class="overlay">
@@ -147,7 +159,6 @@
                  
                 <tr>
                     <td align="right" nowrap="nowrap" style=" width:20%">
-                        
                         <asp:Label runat="server" ID="lblVoidComment" Text="Comment"  />&nbsp;:&nbsp;
                     </td>   
                     <td align="left" nowrap="nowrap" style=" width:80%">
@@ -171,7 +182,64 @@
         <div id="fade" class="black_overlay">
         </div>
     </div>
+    
 
+    <div id="ModalRepairCodeProcess" class="overlay">
+        <div id="light" class="overlay_message_content" style="left: 20%; top: 5%; width: 60%; max-height: 80%">
+          
+            <h2 class="dataGridHeader" runat="server">
+                <asp:Label runat="server" ID="moRepairCodeProcessLabel" Text="REPAIR_CODE_PROCESS" />
+            </h2>
+            
+            <div ID="divRepairCodeProcessStatus" class="successMsg" runat="server" style="width: 99.5%" Visible="False">
+                &nbsp;&nbsp;&nbsp; <asp:Label ID="lblRepairCodeProcessStatus" runat="server"  ForeColor="Green"></asp:Label>
+            </div>
+            <div ID="divRepairCodeProcessError" class="errorMsg" runat="server" style="width: 99.5%" Visible="False">
+                &nbsp;&nbsp;&nbsp;<asp:Label ID="lblRepairCodeProcessError" runat="server"  ForeColor="Red"></asp:Label>
+            </div>
+            <table width="95%" style="border:none;margin-bottom:10px;">
+                <tr>
+                    <td align="right" nowrap="nowrap" style=" width:20%">
+                        <asp:Label runat="server" ID="Label11" Text="QUOTE_STATUS"  />&nbsp;:&nbsp;
+                    </td>   
+                    <td align="left" nowrap="nowrap" style=" width:80%">
+                        
+                        <asp:RadioButtonList ID="rdbRepairQuoteStatus" runat="server" 
+                                             RepeatDirection="Horizontal">
+                            <asp:ListItem Text="REPAIR_CODE_PROCESS_ACCEPTED" Value="RQAPT"></asp:ListItem>
+                            <asp:ListItem Text="REPAIR_CODE_PROCESS_REJECTED" Value="RQRJT"></asp:ListItem>
+                        </asp:RadioButtonList>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" nowrap="nowrap" style=" width:20%">
+                        <asp:Label runat="server" ID="lblRepairQuote" Text="REPAIR_QUOTE"  />&nbsp;:&nbsp;
+                    </td>   
+                    <td align="left" nowrap="nowrap" style=" width:80%">
+                        <asp:TextBox ID="txtRepairQuote" runat="server" ForeColor="black" SkinID="SmallTextBox" MaxLength="10"  onkeyup="checkDec(this);"></asp:TextBox>
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator1"
+                                                        ControlToValidate="txtRepairQuote" runat="server"
+                                                        ErrorMessage="Only Numbers allowed"
+                                                        ValidationExpression="^[1-9]\d*(\.\d+)?$">
+                        </asp:RegularExpressionValidator>
+                        
+                    </td>
+                </tr>
+                <tr style="padding-bottom:20px;">
+                    <td align="right" colspan="2">
+                        <asp:Button ID="btnRepairCodeProcessSave" runat="server" SkinID="SearchButton" Text="Save" /> &nbsp;
+                        <asp:Button ID="btnRepairCodeProcessCancel" runat="server" SkinID="SearchButton" Text="Cancel"
+                                    OnClientClick="SetShowRepairCodeProcess('N'); hideModal('ModalRepairCodeProcess'); return false;"/> &nbsp;
+                        <asp:Button ID="btnRepairCodeProcessClose" runat="server" Visible="False" SkinID="SearchButton" Text="Close" /> &nbsp;
+                                              
+                    </td>
+                </tr>                
+            </table>
+                
+        </div>
+        <div id="fade" class="black_overlay">
+        </div>
+    </div>
 
     <script type="text/javascript">
         //debugger;
@@ -185,6 +253,12 @@
             revealModal("ModalVoidAuthorization");
         } else {
             hideModal('ModalVoidAuthorization');
+        };
+
+        if ($('#<% =HiddenFieldRepairCodeProcess.ClientID%>').val() == "Y") {
+            revealModal("ModalRepairCodeProcess");
+        } else {
+            hideModal('ModalRepairCodeProcess');
         };
     </script>
 
@@ -566,9 +640,11 @@
                 <asp:Button ID="btnPrint" runat="server" Text="SO_PRINT" SkinID="PopMenuButton" />
                 <asp:Button ID="btnReshipment" runat="server" Text="RESHIPMENT" SkinID="PopMenuButton" />
                 <asp:Button ID="btnPayCash" runat="server" Text="PAY_CASH" SkinID="PopMenuButton" />
-                
+                <asp:Button ID="btnRepairCodeProcess" runat="server" Text="REPAIR_CODE_PROCESS" SkinID="PopMenuButton" />
             </asp:Panel>
         </div>
     </div>
     <input type="hidden" id="HiddenSaveChangesPromptResponse" runat="server" />
+
+
 </asp:Content>
