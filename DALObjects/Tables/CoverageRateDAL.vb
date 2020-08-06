@@ -31,6 +31,9 @@ Public Class CoverageRateDAL
     Public Const COL_NAME_PROFIT_PERCENT_SOURCE_XCD As String = "profit_percent_source_xcd"
     Public Const COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD As String = "loss_cost_percent_source_xcd"
 
+    'US - 489838
+    Public Const COL_NAME_LIABILITY_LIMIT As String = "liability_limit"
+
     Public Const COL_NAME_PRODUCT_CODE_ID As String = "product_code_id"
     Public Const COL_NAME_WARRANTY_SALES_DATE As String = "warranty_sales_date"
     Public Const COL_NAME_DEALER_ID As String = "dealer_id"

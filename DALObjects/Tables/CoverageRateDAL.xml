@@ -28,7 +28,8 @@
         Marketing_Percent_Source_Xcd,
         Admin_Expense_Source_Xcd,
         Profit_Percent_Source_Xcd,
-        Loss_Cost_Percent_Source_Xcd
+        Loss_Cost_Percent_Source_Xcd,
+        liability_limit
 			FROM elp_coverage_rate cr
       Left Outer Join elp_region r on cr.region_id=r.region_id
 			WHERE
@@ -46,7 +47,8 @@
         Marketing_Percent_Source_Xcd,
         Admin_Expense_Source_Xcd,
         Profit_Percent_Source_Xcd,
-        Loss_Cost_Percent_Source_Xcd
+        Loss_Cost_Percent_Source_Xcd,
+        liability_limit
         FROM    elp_coverage_rate cr
         LEFT OUTER JOIN  elp_region r on cr.region_id=r.region_id
         WHERE COVERAGE_ID = :COVERAGE_ID
@@ -64,7 +66,8 @@
         Marketing_Percent_Source_Xcd,
         Admin_Expense_Source_Xcd,
         Profit_Percent_Source_Xcd,
-        Loss_Cost_Percent_Source_Xcd
+        Loss_Cost_Percent_Source_Xcd,
+        liability_limit
 				FROM	elp_coverage_rate
 				WHERE	COVERAGE_ID = :COVERAGE_ID
 				order by LOW_PRICE asc,RENEWAL_NUMBER desc
@@ -113,6 +116,7 @@
         Admin_Expense_Source_Xcd = :Admin_Expense_Source_Xcd,
         Profit_Percent_Source_Xcd = :Profit_Percent_Source_Xcd,
         Loss_Cost_Percent_Source_Xcd = :Loss_Cost_Percent_Source_Xcd
+        liability_limit = :liability_limit
 			WHERE
 				coverage_rate_id = :coverage_rate_id
 		]]>
@@ -138,7 +142,8 @@
     Marketing_Percent_Source_Xcd,
     Admin_Expense_Source_Xcd,
     Profit_Percent_Source_Xcd,
-    Loss_Cost_Percent_Source_Xcd
+    Loss_Cost_Percent_Source_Xcd,
+    liability_limit
     )
     VALUES
     (
@@ -160,7 +165,8 @@
     :Marketing_Percent_Source_Xcd,
     :Admin_Expense_Source_Xcd,
     :Profit_Percent_Source_Xcd,
-    :Loss_Cost_Percent_Source_Xcd
+    :Loss_Cost_Percent_Source_Xcd,
+    :liability_limit
     )
   </INSERT>
   <DELETE>

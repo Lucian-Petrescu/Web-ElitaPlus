@@ -431,7 +431,21 @@ Public Class CoverageRate
             Me.SetValue(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
-
+    '<ValueMandatory(""), ValidNumericRange("", Min:=MIN_OFFSET, Max:=NEW_MAX_LONG, Message:=Common.ErrorCodes.COVERAGEBO_006)>
+    Public Property LiabilityLimit() As LongType
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_LIABILITY_LIMIT) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New LongType(CType(Row(CoverageRateDAL.COL_NAME_LIABILITY_LIMIT), Long))
+            End If
+        End Get
+        Set(ByVal Value As LongType)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_LIABILITY_LIMIT, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Public Members"

@@ -804,6 +804,17 @@
                                                 <asp:DropDownList ID="ddlTax_Region" runat="server" Visible="True" Width="75"></asp:DropDownList>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
+                                        <asp:TemplateField Visible="True" HeaderText="LIABILITY_LIMIT">
+                                            <ItemStyle HorizontalAlign="center"></ItemStyle>
+                                            <ItemTemplate>
+                                                <asp:Label ID="moLiability_LimitLabel" Text='<%# GetAmountFormattedToString(Container.DataItem("LIABILITY_LIMIT"))%>'
+                                                    runat="server">
+                                                </asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="moLiability_LimitText" runat="server" Visible="True" Width="75" MaxLength="3" Text="0"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                     <PagerStyle HorizontalAlign="Center" CssClass="PAGER"></PagerStyle>
                                 </asp:GridView>

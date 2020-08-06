@@ -158,6 +158,7 @@ Namespace Tables
         Private Const ColIndexGrossAmountPercent As Integer = 16
         Private Const ColIndexRenewalNumber As Integer = 17
         Private Const ColIndexRegionId As Integer = 18
+        Private Const ColIndexLiabilityLimit As Integer = 19
 
         ' DataView Elements
         Private Const DbCoverageRateId As Integer = 0
@@ -1238,6 +1239,11 @@ Namespace Tables
                         PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.TaxRegion), CType(moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1), DropDownList).SelectedValue)
                     End If
 
+                    If TypeOf moGridView.Rows(i).Cells(ColIndexLiabilityLimit).Controls(1) Is Label Then
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexLiabilityLimit).Controls(1), Label).Text)
+                    Else
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexLiabilityLimit).Controls(1), TextBox).Text)
+                    End If
                 Next
                 State.CoverageRateList = oCoverageRate
             End If
@@ -1451,6 +1457,7 @@ Namespace Tables
             BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.GrossAmountPercent), moGridView.Columns(ColIndexGrossAmountPercent))
             BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.RenewalNumber), moGridView.Columns(ColIndexRenewalNumber))
             BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.RegionId), moGridView.Columns(ColIndexRegionId))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.LiabilityLimit), moGridView.Columns(ColIndexLiabilityLimit))
 
             If State.IsDealerConfiguredForSourceXcd Then
                 BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CommissionsPercentSourceXcd), moGridView.Columns(ColIndexCommissionsPercentXcd))
@@ -3393,7 +3400,7 @@ Namespace Tables
                     SetSelectedGridText(moGridView, ColIndexLowPrice, .LowPrice.ToString)
                     SetSelectedGridText(moGridView, ColIndexGrossAmountPercent, .GrossAmountPercent.ToString)
                     SetSelectedGridText(moGridView, ColIndexRenewalNumber, .RenewalNumber.ToString)
-
+                    SetSelectedGridText(moGridView, ColIndexLiabilityLimit, .LiabilityLimit.ToString)
                 End With
             Else
                 With TheCoverageRate
@@ -3408,7 +3415,7 @@ Namespace Tables
                     SetSelectedGridText(moGridView, ColIndexLowPrice, .LowPrice.ToString)
                     SetSelectedGridText(moGridView, ColIndexGrossAmountPercent, .GrossAmountPercent.ToString)
                     SetSelectedGridText(moGridView, ColIndexRenewalNumber, .RenewalNumber.ToString)
-
+                    SetSelectedGridText(moGridView, ColIndexLiabilityLimit, .LiabilityLimit.ToString)
                 End With
             End If
             PopulateTaxRegionFromCoverageRateBo()
@@ -3628,6 +3635,7 @@ Namespace Tables
                 End If
                 PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.RenewalNumber), CType(GetSelectedGridControl(moGridView, ColIndexRenewalNumber), TextBox))
                 PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.RegionId), CType(GetDropDownControlFromGrid(moGridView, ColIndexRegionId), DropDownList))
+                PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LiabilityLimit), CType(GetSelectedGridControl(moGridView, ColIndexLiabilityLimit), TextBox))
 
                 CommonSourceOptionLogic()
             End With
