@@ -189,6 +189,8 @@
                                     </asp:BoundField>
                                     <asp:BoundField HeaderText="action_type"  DataField="action_type" SortExpression="action_type"  HtmlEncode="false">
                                     </asp:BoundField>
+                                    <asp:BoundField HeaderText="document_type_descr"  DataField="document_type_descr" SortExpression="document_type_descr"  HtmlEncode="false">
+                                    </asp:BoundField>
                                     <asp:BoundField HeaderText="status"  DataField="status" SortExpression="status"  HtmlEncode="false">
                                     </asp:BoundField>
                                     <asp:BoundField HeaderText="created_date"  DataField="created_date" SortExpression="created_date"  HtmlEncode="false">
