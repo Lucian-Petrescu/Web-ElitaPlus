@@ -84,16 +84,25 @@
         Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
             Try
                 Me.ErrControllerMaster.Clear_Hide()
-                If Not Page.IsPostBack Then
+                If Not Me.IsPostBack Then
                     Me.SetFormTitle(PAGETITLE)
                     Me.SetFormTab(PAGETAB)
-                    ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SetDefaultButton(Me.txtSearchTrans, Me.btnSearch)
-                    Me.SetGridItemStyleColor(Me.moDictionaryGrid)
-                    Me.State.PageIndex = 0
+
+                    If Not Me.IsReturningFromChild Then
+                        ControlMgr.SetVisibleControl(Me, trPageSize, False)
+                        Me.SetDefaultButton(Me.txtSearchTrans, Me.btnSearch)
+                        Me.SetGridItemStyleColor(Me.moDictionaryGrid)
+                        Me.State.PageIndex = 0
+                    End If
+
+                    GetStateProperties()
+
                     If Me.State.IsGridVisible Then
                         PopulateTranslationGrid()
                     End If
+
+                    'Set page size
+                    cboPageSize.SelectedValue = Me.State.selectedPageSize.ToString()
 
                 Else
                     If Not Me.State.searchDV Is Nothing Then
@@ -201,6 +210,10 @@
                 Me.moDictionaryGrid.Columns(Me.GRID_COL_UI_PROG_CODE_ALIAS).SortExpression = Me.State.MyBO.LabelSearchDV.GRID_COL_UI_PROG_CODE
                 Me.moDictionaryGrid.Columns(Me.GRID_COL_ENGLIS_ALIAS).SortExpression = Me.State.MyBO.LabelSearchDV.GRID_COL_ENGLISH
 
+                If Me.IsReturningFromChild Then
+                    Me.moDictionaryGrid.PageSize = Me.State.selectedPageSize
+                End If
+
                 SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.DictItemId, Me.moDictionaryGrid, Me.State.PageIndex)
 
                 SortAndBindGrid()
@@ -244,6 +257,15 @@
 
         End Sub
 
+        Private Sub GetStateProperties()
+            Try
+                Me.txtSearchTrans.Text = Me.State.DescriptionMask
+                cboPageSize.SelectedValue = Me.State.selectedPageSize.ToString()
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+
         Private Sub moDictionaryGrid_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles moDictionaryGrid.ItemCommand
             Try
                 If e.CommandName = "SelectAction" Then
@@ -275,7 +297,9 @@
 
         Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
-                moDictionaryGrid.CurrentPageIndex = NewCurrentPageIndex(moDictionaryGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+                State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                Me.State.PageIndex = NewCurrentPageIndex(moDictionaryGrid, State.searchDV.Count, State.selectedPageSize)
+                Me.moDictionaryGrid.CurrentPageIndex = Me.State.PageIndex
                 Me.PopulateTranslationGrid()
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.ErrControllerMaster)

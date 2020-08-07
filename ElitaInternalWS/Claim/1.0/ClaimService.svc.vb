@@ -7,7 +7,7 @@ Imports Assurant.ElitaPlus.BusinessObjectsNew
 Imports System.ComponentModel.DataAnnotations
 
 Namespace Claims
-    <ServiceBehavior(Namespace:="http://elita.assurant.com/Claim")> _
+    <ServiceBehavior(Namespace:="http://elita.assurant.com/Claim")>
     Public Class ClaimServiceV1
         Implements IClaimServiceV1
 
@@ -132,18 +132,24 @@ Namespace Claims
                 Dim dtClaimsInfo As List(Of DataTable) = ClaimsInfo.Tables(0).AsEnumerable().GroupBy(Function(i) i.Field(Of System.String)("claim_number")).Select(Function(g) g.CopyToDataTable()).ToList()
 
                 For Each dtClaimInfo As DataTable In dtClaimsInfo
+                    Dim extendedStatusList As New List(Of String)
+                    Dim fulfillmentDate As DateTime? = Nothing
                     Dim extendedStatusCount As Integer = 0
                     Dim returnClaimStatuses = New List(Of ExtendedStatus)()
 
                     For Each row As DataRow In dtClaimInfo.Rows
                         extendedStatusCount = extendedStatusCount + 1
-
-                        If Not row.Field(Of String)("EXTENDED_STATUS") Is Nothing Then
+                        If Not row.Field(Of String)("EXTENDED_STATUS") Is Nothing And (Not extendedStatusList.Contains(row.Field(Of String)("EXTENDED_STATUS"))) Then
                             returnClaimStatuses.Add(New ExtendedStatus() With
                                 {
                                   .Code = row.Field(Of String)("EXTENDED_STATUS"),
                                   .CreatedDate = row.Field(Of Date?)("CREATED_DATE")
                                 })
+                            extendedStatusList.Add(row.Field(Of String)("EXTENDED_STATUS"))
+                        End If
+
+                        If Not fulfillmentDate.HasValue Then
+                            fulfillmentDate = row.Field(Of Date?)("CLAIM_FULLFILLMENT_DATE")
                         End If
 
                         If extendedStatusCount = dtClaimInfo.Rows.Count Then
@@ -155,7 +161,7 @@ Namespace Claims
                                   .ClaimStatus = row.Field(Of String)("CLAIM_STATUS"),
                                   .DealerCode = row.Field(Of String)("DEALER_CODE"),
                                   .ProblemDescription = row.Field(Of String)("PROBLEM_DESCRIPTION"),
-                                  .ClaimFullFillmentDate = row.Field(Of Date?)("CLAIM_FULLFILLMENT_DATE"),
+                                  .ClaimFullFillmentDate = fulfillmentDate,
                                   .CoverageType = DirectCast([Enum].Parse(GetType(CoverageTypes), row.Field(Of String)("Coverage_Type").Replace(" ", "")), CoverageTypes),
                                   .ExtendedStatuses = returnClaimStatuses
                                 })
