@@ -1046,15 +1046,15 @@ Public Class ClaimDAL
         End Try
     End Function
 
-    Public Function LoadPreviousInProgressClaimCount(ByVal claimId As guid) As Integer
+    Public Function LoadPreviousInProgressClaimCount(ByVal claimId As Guid) As Integer
         Dim selectStmt As String = Me.Config("/SQL/PreviousInProgressClaimCount")
-        Dim parameters = New DBHelperParameter(){New DBHelperParameter("claim_id", claimId.ToByteArray()),
+        Dim parameters = New DBHelperParameter() {New DBHelperParameter("claim_id", claimId.ToByteArray()),
                                                  New DBHelperParameter("claim_id", claimId.ToByteArray()),
                                                  New DBHelperParameter("claim_id", claimId.ToByteArray())
                                                 }
         Dim ds As New DataSet
         DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
-        return ds.Tables(0).Rows(0)("claim_count")
+        Return ds.Tables(0).Rows(0)("claim_count")
     End Function
 
     Public Function LoadListforImageIndexing(ByVal compIds As ArrayList, ByVal claimStatus As String, ByVal claimNumber As String, ByVal customerName As String,
@@ -1295,18 +1295,18 @@ Public Class ClaimDAL
     Public Function GetClaimCaseDeviceInfo(ByVal claimId As Guid, ByVal languageId As Guid) As DataSet
 
         Dim ds As New DataSet
-        
+
         Dim cmd As OracleCommand = DB_OracleCommand("elita.ELP_TBL_CLAIM_EQUIPMENT.GetClaimCaseDeviceInfo", CommandType.StoredProcedure)
         cmd.BindByName = True
         cmd.Parameters.Add("pi_claim_id", OracleDbType.Raw).Value = claimId.ToByteArray
         cmd.Parameters.Add("pi_language_id", OracleDbType.Raw).Value = languageId.ToByteArray
         cmd.Parameters.Add("po_device_info_cursor", OracleDbType.RefCursor, ParameterDirection.Output)
 
-        dim da As OracleDataAdapter = New OracleDataAdapter(cmd)
+        Dim da As OracleDataAdapter = New OracleDataAdapter(cmd)
         da.Fill(ds, "DeviceInfo")
         ds.Locale = Globalization.CultureInfo.InvariantCulture
         Return ds
-        
+
     End Function
 
     Public Function GetClaimsByMasterClaimNumber(ByVal compIds As ArrayList, ByVal masterClaimNumber As String) As DataSet
@@ -4210,22 +4210,28 @@ Public Class ClaimDAL
                                              ByVal dealerCode As String,
                                              ByVal serialNumber As String,
                                              ByVal userId As Guid) As DataSet
-        Dim ds As New DataSet
+
         Dim selectStmt As String = Me.Config("/SQL/WS_CLAIMS_GET_CLAIMS")
 
-        Try
-            Dim parameters = New OracleParameter() _
-                             {New OracleParameter(COL_NAME_DEALER_CODE, dealerCode),
-                                 New OracleParameter(COL_NAME_COMPANY_CODE, companyCode),
-                                 New OracleParameter(COL_NAME_COUNTRY_CODE, countryCode),
-                                 New OracleParameter(COL_NAME_SERIAL_NUMBER, serialNumber),
-                                 New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray()),
-                                 New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray())
-                             }
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+            New DBHelper.DBHelperParameter("pi_country_code", countryCode),
+            New DBHelper.DBHelperParameter("pi_company_code", companyCode),
+            New DBHelper.DBHelperParameter("pi_dealer_code", dealerCode),
+            New DBHelper.DBHelperParameter("pi_serial_number", serialNumber),
+            New DBHelper.DBHelperParameter("pi_user_id", userId.ToByteArray())}
 
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelperParameter() {
+            New DBHelper.DBHelperParameter("po_claims_data", GetType(DataSet))}
+
+        Try
+            Dim ds As New DataSet
+            DBHelper.FetchSp(selectStmt, inputParameters, outputParameters, ds, Me.TABLE_NAME)
+
+            Return ds
+
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+
         End Try
     End Function
 
@@ -4328,14 +4334,14 @@ Public Class ClaimDAL
                                                 ByVal languageId As Guid,
                                                 ByVal serviceCenterCode As String,
                                                 ByVal countryIsoCode As String,
-                                                ByVal fromDate As date,
-                                                ByVal endDate As date,
+                                                ByVal fromDate As Date,
+                                                ByVal endDate As Date,
                                                 ByVal extendedStatusCode As String,
                                                 ByVal dealerCode As String,
-                                                Byval pageSize As Integer,
-                                                ByRef batchId as guid,
-                                                ByRef totalRecordCount as Integer,
-                                                ByRef totalRecordsInQueue as Integer,
+                                                ByVal pageSize As Integer,
+                                                ByRef batchId As Guid,
+                                                ByRef totalRecordCount As Integer,
+                                                ByRef totalRecordsInQueue As Integer,
                                                 ByRef errorCode As String,
                                                 ByRef errorMessage As String) As DataSet
 
@@ -4354,7 +4360,7 @@ Public Class ClaimDAL
                                 New DBHelper.DBHelperParameter("pi_page_size", pageSize)}
 
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                                New DBHelper.DBHelperParameter("po_batch_id", GetType(guid)),
+                                New DBHelper.DBHelperParameter("po_batch_id", GetType(Guid)),
                                 New DBHelper.DBHelperParameter("po_total_record_cnt", GetType(Integer)),
                                 New DBHelper.DBHelperParameter("po_queued_record_cnt", GetType(Integer)),
                                 New DBHelper.DBHelperParameter("po_claim_list", GetType(DataSet)),
@@ -4364,22 +4370,22 @@ Public Class ClaimDAL
         Dim ds As New DataSet
 
         Try
-            DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, "ClaimList", true)
+            DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, "ClaimList", True)
 
             If String.IsNullOrEmpty(outParameters(4).Value) Then
-                If ds.Tables.Count > 0 then
+                If ds.Tables.Count > 0 Then
                     ds.Tables(0).TableName = "ClaimList"
                 End If
-                
+
                 batchId = outParameters(0).Value
                 totalRecordCount = outParameters(1).Value
                 totalRecordsInQueue = outParameters(2).Value
             Else
-                batchId = guid.Empty
+                batchId = Guid.Empty
                 totalRecordCount = 0
                 totalRecordsInQueue = 0
-                ErrorCode = outParameters(4).Value
-                ErrorMessage = outParameters(5).Value
+                errorCode = outParameters(4).Value
+                errorMessage = outParameters(5).Value
             End If
             Return ds
         Catch ex As Exception
@@ -4390,9 +4396,9 @@ Public Class ClaimDAL
 
     Public Function WS_SNMPORTAL_SA_CLAIMREPORT_NextPage(ByVal batchId As Guid,
                                                          ByVal languageId As Guid,
-                                                         Byval pageSize As Integer,
-                                                         ByRef totalRecordCount as Integer,
-                                                         ByRef totalRecordsInQueue as Integer,
+                                                         ByVal pageSize As Integer,
+                                                         ByRef totalRecordCount As Integer,
+                                                         ByRef totalRecordsInQueue As Integer,
                                                          ByRef errorCode As String,
                                                          ByRef errorMessage As String) As DataSet
 
@@ -4413,20 +4419,20 @@ Public Class ClaimDAL
         Dim ds As New DataSet
 
         Try
-            DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, "ClaimList", true)
+            DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, "ClaimList", True)
 
             If String.IsNullOrEmpty(outParameters(3).Value) Then
-                If ds.Tables.Count > 0 then
+                If ds.Tables.Count > 0 Then
                     ds.Tables(0).TableName = "ClaimList"
                 End If
-                
+
                 totalRecordCount = outParameters(0).Value
                 totalRecordsInQueue = outParameters(1).Value
             Else
                 totalRecordCount = 0
                 totalRecordsInQueue = 0
-                ErrorCode = outParameters(3).Value
-                ErrorMessage = outParameters(4).Value
+                errorCode = outParameters(3).Value
+                errorMessage = outParameters(4).Value
             End If
             Return ds
         Catch ex As Exception
