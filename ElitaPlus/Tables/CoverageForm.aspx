@@ -810,7 +810,16 @@
                                                 <asp:Label ID="lblLiabilityLimit" Text='<%# CheckNull(Eval("LIABILITY_LIMIT"))%>' runat="server"></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="moLiability_LimitText" runat="server" Visible="True" Width="75" MaxLength="3" Text="0"></asp:TextBox>
+                                                <asp:TextBox ID="moLiability_LimitText" runat="server" Visible="True" Width="75" MaxLength="3"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField Visible="True" HeaderText="LIABILITY_LIMIT_PERCENT">
+                                            <ItemStyle HorizontalAlign="center"></ItemStyle>
+                                            <ItemTemplate>                                                
+                                                <asp:Label ID="lblLiabilityLimitPercent" Text='<%# CheckNull(Eval("LIABILITY_LIMIT_PERCENT"))%>' runat="server"></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="moLiability_LimitPercentText" runat="server" Visible="True" Width="75"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>

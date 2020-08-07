@@ -446,6 +446,21 @@ Public Class CoverageRate
             Me.SetValue(CoverageRateDAL.COL_NAME_LIABILITY_LIMIT, Value)
         End Set
     End Property
+    '<ValidNumericRange("", Min:=MIN_DOUBLE, Max:=MAX_DOUBLE, Message:=COVERAGE_RATE_FORM013), ValidGrossAmountPercent(""), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
+    Public Property LiabilityLimitPercent() As DecimalType
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_LIABILITY_LIMIT_PERCENT) Is DBNull.Value Then
+                Return MIN_DOUBLE
+            Else
+                Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_LIABILITY_LIMIT_PERCENT), Decimal))
+            End If
+        End Get
+        Set(ByVal Value As DecimalType)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_LIABILITY_LIMIT_PERCENT, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Public Members"

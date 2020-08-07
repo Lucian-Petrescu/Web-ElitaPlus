@@ -33,6 +33,7 @@ Public Class CoverageRateDAL
 
     'US - 489838
     Public Const COL_NAME_LIABILITY_LIMIT As String = "liability_limit"
+    Public Const COL_NAME_LIABILITY_LIMIT_PERCENT As String = "liability_limit_percent"
 
     Public Const COL_NAME_PRODUCT_CODE_ID As String = "product_code_id"
     Public Const COL_NAME_WARRANTY_SALES_DATE As String = "warranty_sales_date"

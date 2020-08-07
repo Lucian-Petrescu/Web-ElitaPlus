@@ -159,6 +159,7 @@ Namespace Tables
         Private Const ColIndexRenewalNumber As Integer = 17
         Private Const ColIndexRegionId As Integer = 18
         Private Const ColIndexLiabilityLimit As Integer = 19
+        Private Const ColIndexLiabilityLimitPercent As Integer = 20
 
         ' DataView Elements
         Private Const DbCoverageRateId As Integer = 0
@@ -1244,6 +1245,12 @@ Namespace Tables
                     Else
                         PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexLiabilityLimit).Controls(1), TextBox).Text)
                     End If
+
+                    If TypeOf moGridView.Rows(i).Cells(ColIndexLiabilityLimitPercent).Controls(1) Is Label Then
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LiabilityLimitPercent), CType(moGridView.Rows(i).Cells(ColIndexLiabilityLimitPercent).Controls(1), Label).Text)
+                    Else
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LiabilityLimitPercent), CType(moGridView.Rows(i).Cells(ColIndexLiabilityLimitPercent).Controls(1), TextBox).Text)
+                    End If
                 Next
                 State.CoverageRateList = oCoverageRate
             End If
@@ -1458,6 +1465,7 @@ Namespace Tables
             BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.RenewalNumber), moGridView.Columns(ColIndexRenewalNumber))
             BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.RegionId), moGridView.Columns(ColIndexRegionId))
             BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.LiabilityLimit), moGridView.Columns(ColIndexLiabilityLimit))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.LiabilityLimitPercent), moGridView.Columns(ColIndexLiabilityLimitPercent))
 
             If State.IsDealerConfiguredForSourceXcd Then
                 BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CommissionsPercentSourceXcd), moGridView.Columns(ColIndexCommissionsPercentXcd))
@@ -4864,6 +4872,7 @@ Namespace Tables
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
             Dim TextBoxLiabilityLimit As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
+            Dim TextBoxLiabilityLimitPercent As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
 
             If Not TextBoxLiabilityLimit Is Nothing Then
                 If (String.IsNullOrWhiteSpace(TextBoxLiabilityLimit.Text)) Then
@@ -4874,6 +4883,16 @@ Namespace Tables
                     PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LiabilityLimit), CType(GetSelectedGridControl(moGridView, ColIndexLiabilityLimit), TextBox))
                 End If
             End If
+
+            If Not TextBoxLiabilityLimitPercent Is Nothing Then
+                If (String.IsNullOrWhiteSpace(TextBoxLiabilityLimitPercent.Text)) Then
+                    Dim tempTextBoxLiabilityLimitPercent As TextBox = New TextBox
+                    tempTextBoxLiabilityLimitPercent.Text = String.Empty
+                    Me.PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LiabilityLimitPercent), tempTextBoxLiabilityLimitPercent)
+                Else
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LiabilityLimitPercent), CType(GetSelectedGridControl(moGridView, ColIndexLiabilityLimitPercent), TextBox))
+                End If
+            End If
         End Sub
 
         Private Sub PopulateCoverageRateLiabilityLimitFromBO()
@@ -4881,12 +4900,19 @@ Namespace Tables
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
             Dim TextBoxLiabilityLimit As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
+            Dim TextBoxLiabilityLimitPercent As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
 
             If State.IsNewWithCopy Then
                 With State.CoverageRateList(moGridView.SelectedIndex)
                     If Not .LiabilityLimit Is Nothing Then
                         If Not String.IsNullOrWhiteSpace(.LiabilityLimit) Then
                             PopulateControlFromBOProperty(TextBoxLiabilityLimit, .LiabilityLimit)
+                        End If
+                    End If
+
+                    If Not .LiabilityLimitPercent Is Nothing Then
+                        If Not String.IsNullOrWhiteSpace(.LiabilityLimitPercent) Then
+                            PopulateControlFromBOProperty(TextBoxLiabilityLimitPercent, .LiabilityLimitPercent)
                         End If
                     End If
                 End With
@@ -4897,12 +4923,16 @@ Namespace Tables
                             PopulateControlFromBOProperty(TextBoxLiabilityLimit, .LiabilityLimit)
                         End If
                     End If
+
+                    If Not .LiabilityLimitPercent Is Nothing Then
+                        If Not String.IsNullOrWhiteSpace(.LiabilityLimitPercent) Then
+                            PopulateControlFromBOProperty(TextBoxLiabilityLimitPercent, .LiabilityLimitPercent)
+                        End If
+                    End If
                 End With
             End If
         End Sub
 #End Region
-
-
         Private Function CurrentUser() As User
             Return ElitaPlusIdentity.Current.ActiveUser
         End Function
