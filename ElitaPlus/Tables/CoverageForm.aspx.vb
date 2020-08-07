@@ -69,6 +69,10 @@ Namespace Tables
             Public IsDealerConfiguredForSourceXcd As Boolean = False
             Public IsIgnorePremiumSetYesForContract As Boolean = False
 
+            'US 489838
+            Public IsRateLimitAndPercentBothPresent As Boolean
+            Public IsRateRenewalNoNotInSequence As Boolean
+            Public IsRateFirstRenewalNoIsNotZero As Boolean
         End Class
 #End Region
 
@@ -2990,8 +2994,15 @@ Namespace Tables
                 If moRecoverDeciveDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then PopulateBOProperty(TheCoverage, "RecoverDeviceId", moRecoverDeciveDrop)
                 PopulateBOProperty(TheCoverage, "TaxTypeXCD", moTaxTypeDrop, False, True)
 
+                'US-489839
+                PopulateCoverageRateLiabilityLimitBOFromForm()
+
                 'US-521697
                 CommonSourceOptionLogic()
+
+                'US-489839
+                ValidateRateRenewalNo()
+                ValidateRateLimitAndPercent()
             End With
 
             If ErrCollection.Count > 0 Then
@@ -3646,6 +3657,10 @@ Namespace Tables
                 PopulateCoverageRateLiabilityLimitBOFromForm()
 
                 CommonSourceOptionLogic()
+
+                'US-489839            
+                ValidateRateRenewalNo()
+                ValidateRateLimitAndPercent()
             End With
 
             ValidateCoverage()
@@ -4932,7 +4947,175 @@ Namespace Tables
                 End With
             End If
         End Sub
+
+        Private Sub CheckRenewalNumberNotInSequence()
+            Dim LastRenewalNo As Int16
+            Dim isNotSequence As Boolean = False
+            Dim isFirstRenewalNoNotZero As Boolean = False
+
+            For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
+                Me.moGridView.PageIndex = pageIndexk
+                Dim rowNum As Integer = Me.moGridView.Rows.Count
+                For i As Integer = 0 To rowNum - 1
+                    Dim gRow As GridViewRow = moGridView.Rows(i)
+                    If gRow.RowType = DataControlRowType.DataRow Then
+                        Dim lblLimitPer As Label = DirectCast(gRow.Cells(ColIndexLiabilityLimitPercent).FindControl("moRenewal_NumberLabel"), Label)
+                        Dim textBoxLimitPer As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimitPercent).FindControl("moRenewal_NumberText"), TextBox)
+
+                        If i <> 0 Then
+                            If Not textBoxLimitPer Is Nothing Then
+                                If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
+                                    Dim renewalNo As Int16 = Convert.ToInt16(textBoxLimitPer.Text)
+                                    LastRenewalNo = renewalNo
+
+                                    If renewalNo <> LastRenewalNo+1 Then
+                                        isNotSequence = True
+                                        Exit For
+                                    End If
+                                End If
+                            End If
+
+                            If Not lblLimitPer Is Nothing Then
+                                If Not String.IsNullOrWhiteSpace(lblLimitPer.Text) Then
+                                    Dim renewalNo As Int16 = Convert.ToInt16(lblLimitPer.Text)
+                                    LastRenewalNo = renewalNo
+
+                                    If renewalNo <> LastRenewalNo+1 Then
+                                        isNotSequence = True
+                                        Exit For
+                                    End If
+                                End If
+                            End If
+                        Else
+                            If Not textBoxLimitPer Is Nothing Then
+                                If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
+                                    Dim renewalNo As Int16 = Convert.ToInt16(textBoxLimitPer.Text)
+                                    LastRenewalNo = renewalNo
+
+                                    If renewalNo <> 0 Then
+                                        isFirstRenewalNoNotZero = True
+                                        Exit For
+                                    End If
+                                End If
+                            End If
+
+                            If Not lblLimitPer Is Nothing Then
+                                If Not String.IsNullOrWhiteSpace(lblLimitPer.Text) Then
+                                    Dim renewalNo As Int16 = Convert.ToInt16(lblLimitPer.Text)
+                                    LastRenewalNo = renewalNo
+
+                                    If renewalNo <> 0 Then
+                                        isFirstRenewalNoNotZero = True
+                                        Exit For
+                                    End If
+                                End If
+                            End If
+                        End If
+                    End If
+                Next                
+            Next
+
+            If isFirstRenewalNoNotZero Then
+                Me.State.IsRateFirstRenewalNoIsNotZero = True
+            Else
+                Me.State.IsRateFirstRenewalNoIsNotZero = False
+            End If
+
+            If isNotSequence Then
+                Me.State.IsRateRenewalNoNotInSequence = True
+            Else
+                Me.State.IsRateRenewalNoNotInSequence = False
+            End If
+        End Sub
+
+        Private Sub ValidateRateRenewalNo()
+            CheckRenewalNumberNotInSequence()
+
+            If Me.State.IsRateFirstRenewalNoIsNotZero Then
+                Me.State.IsRateFirstRenewalNoIsNotZero = False
+                Throw New GUIException(Message.MSG_FIRST_RENEWAL_NOT_ZERO, Assurant.ElitaPlus.Common.ErrorCodes.MSG_FIRST_RENEWAL_SHOULD_BE_ZERO)
+            End If
+
+            If Me.State.IsRateRenewalNoNotInSequence Then
+                Me.State.IsRateRenewalNoNotInSequence = False
+                Throw New GUIException(Message.MSG_RENEWAL_NOT_SEQUENCE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_RENEWAL_SHOULD_ALWAYS_BE_IN_SEQUENCE)
+            End If
+
+        End Sub
+
+        Private Sub CheckRateLimitAndPercentBothPresent()
+            Dim countLimitPer As Int16 = 0
+            Dim countLimit As Int16 = 0
+
+            For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
+                Me.moGridView.PageIndex = pageIndexk
+                Dim rowNum As Integer = Me.moGridView.Rows.Count
+                For i As Integer = 0 To rowNum - 1
+                    Dim gRow As GridViewRow = moGridView.Rows(i)
+                    If gRow.RowType = DataControlRowType.DataRow Then
+                        Dim lblLimitPer As Label = DirectCast(gRow.Cells(ColIndexLiabilityLimitPercent).FindControl("lblLiabilityLimitPercent"), Label)
+                        Dim textBoxLimitPer As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
+
+                        Dim lblLimit As Label = DirectCast(gRow.Cells(ColIndexLiabilityLimit).FindControl("lblLiabilityLimit"), Label)
+                        Dim textBoxLimit As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
+
+                        If Not textBoxLimitPer Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
+                                Dim cPer As Decimal = Convert.ToDecimal(textBoxLimitPer.Text)
+                                If cPer > 0 Then
+                                    countLimitPer = countLimitPer + 1
+                                End If
+                            End If
+                        End If
+
+                        If Not lblLimitPer Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(lblLimitPer.Text) Then
+                                Dim cPer As Decimal = Convert.ToDecimal(lblLimitPer.Text)
+                                countLimitPer = countLimitPer + 1
+                            End If
+                        End If
+
+                        If Not textBoxLimit Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(textBoxLimit.Text) Then
+                                Dim cAmt As Decimal = Convert.ToDecimal(textBoxLimit.Text)
+                                If cAmt > 0 Then
+                                    countLimit = countLimit + 1
+                                End If
+                            End If
+                        End If
+
+                        If Not lblLimit Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(lblLimit.Text) Then
+                                Dim cAmt As Decimal = Convert.ToDecimal(lblLimit.Text)
+                                If cAmt > 0 Then
+                                    countLimit = countLimit + 1
+                                End If
+                            End If
+                        End If
+
+                    End If
+                Next
+            Next
+
+            If ((countLimitPer = 1 Or countLimitPer > 1) And (countLimit = 1 Or countLimit > 1)) Then
+                Me.State.IsRateLimitAndPercentBothPresent = True
+            Else
+                Me.State.IsRateLimitAndPercentBothPresent = False
+            End If
+        End Sub
+
+        Private Sub ValidateRateLimitAndPercent()
+            CheckRateLimitAndPercentBothPresent()
+
+            If Me.State.IsRateLimitAndPercentBothPresent Then
+                Me.State.IsRateLimitAndPercentBothPresent = False
+                Throw New GUIException(Message.MSG_EITHER_LIMIT_OR_PERCENT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_ONLY_EITHER_LIMIT_OR_PERCENT_ALLOWED)
+            End If
+        End Sub
+
 #End Region
+
+#Region "Get Current User and Language"
         Private Function CurrentUser() As User
             Return ElitaPlusIdentity.Current.ActiveUser
         End Function
@@ -4940,5 +5123,7 @@ Namespace Tables
         Private Function GetLanguageId() As Guid
             Return ElitaPlusIdentity.Current.ActiveUser.LanguageId
         End Function
+#End Region
+
     End Class
 End Namespace
