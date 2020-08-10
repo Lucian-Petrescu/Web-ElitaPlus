@@ -840,7 +840,9 @@ Namespace Certificates
                 If Not Me.IsPostBack Then
                     If (Not Me.NavController Is Nothing) AndAlso (Not Me.NavController.PrevNavState Is Nothing) AndAlso (Me.NavController.PrevNavState.Name = "SEND_SERVICE_ORDER") AndAlso
                         (Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd)) AndAlso (Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) OrElse Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_BOTH)) Then
-                        MyBase.SetPageOutOfNavigation()
+                        If (Me.Navigator.NavStackCount > 1) Then
+                            MyBase.SetPageOutOfNavigation()
+                        End If
                         Me.Navigator.SetCurrentPage(mobjPage, mobjState)
                     End If
                 End If
