@@ -7,7 +7,7 @@ Imports Assurant.ElitaPlus.BusinessObjectsNew
 Imports System.ComponentModel.DataAnnotations
 
 Namespace Claims
-    <ServiceBehavior(Namespace:="http://elita.assurant.com/Claim")> _
+    <ServiceBehavior(Namespace:="http://elita.assurant.com/Claim")>
     Public Class ClaimServiceV1
         Implements IClaimServiceV1
 

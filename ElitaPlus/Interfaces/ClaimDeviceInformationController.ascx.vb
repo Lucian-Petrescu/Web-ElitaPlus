@@ -49,7 +49,7 @@ Public Class ClaimDeviceInformationController
 #End Region
 
 #Region "Constants"
-    Private showGridEditImg As Boolean = True
+    Private showGridEditImg As Boolean = False
     Private Const UtiliutyEndPointName = "CustomBinding_IUtilityWcf"
     Private Const DATA_TEXT_FIELD_NAME_MANUFACTURER = "MANUFACTURER"
     Private Const DATA_TEXT_FIELD_NAME_MODEL = "MODEL"
