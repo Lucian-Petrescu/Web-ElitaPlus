@@ -354,6 +354,9 @@ Public Class UserControlQuestion
                             End If
                         End If
                     Else
+                        If (Not String.IsNullOrWhiteSpace(DirectCast(e.Row.DataItem, Question).Length)) Then
+                            txt.MaxLength = DirectCast(e.Row.DataItem, Question).Length
+                        End If
                         If (Not source Is Nothing) Then
                             Dim da As TextAnswer = CType(source.First(Function(f) f.Code = DirectCast(e.Row.DataItem, Question).Code).Answer, TextAnswer)
 
