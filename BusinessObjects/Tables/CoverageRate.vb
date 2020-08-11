@@ -432,33 +432,33 @@ Public Class CoverageRate
         End Set
     End Property
     '<ValueMandatory(""), ValidNumericRange("", Min:=MIN_OFFSET, Max:=NEW_MAX_LONG, Message:=Common.ErrorCodes.COVERAGEBO_006)>
-    Public Property LiabilityLimit() As LongType
+    Public Property CovLiabilityLimit() As LongType
         Get
             CheckDeleted()
-            If Row(CoverageRateDAL.COL_NAME_LIABILITY_LIMIT) Is DBNull.Value Then
+            If Row(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New LongType(CType(Row(CoverageRateDAL.COL_NAME_LIABILITY_LIMIT), Long))
+                Return New LongType(CType(Row(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT), Long))
             End If
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_LIABILITY_LIMIT, Value)
+            Me.SetValue(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT, Value)
         End Set
     End Property
     '<ValidNumericRange("", Min:=MIN_DOUBLE, Max:=MAX_DOUBLE, Message:=COVERAGE_RATE_FORM013), ValidGrossAmountPercent(""), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
-    Public Property LiabilityLimitPercent() As DecimalType
+    Public Property CovLiabilityLimitPercent() As DecimalType
         Get
             CheckDeleted()
-            If Row(CoverageRateDAL.COL_NAME_LIABILITY_LIMIT_PERCENT) Is DBNull.Value Then
+            If Row(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT_PERCENT) Is DBNull.Value Then
                 Return MIN_DOUBLE
             Else
-                Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_LIABILITY_LIMIT_PERCENT), Decimal))
+                Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT_PERCENT), Decimal))
             End If
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_LIABILITY_LIMIT_PERCENT, Value)
+            Me.SetValue(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT_PERCENT, Value)
         End Set
     End Property
 #End Region
@@ -847,7 +847,9 @@ Public Class CoverageRate
 
                     If (oLow = oNewLow AndAlso oHigh = oNewHigh AndAlso If(IsNothing(oCoverageRate.RegionId), Guid.Empty, oCoverageRate.RegionId).Equals(oTaxRegionId)) Then
                         If oCoverageRate.Id.Equals(oCoverageRateId) Then
+                            
                             If (oNewRenewalNo > 0 And oRenewalNo = 0) Then
+                            'If (oNewRenewalNo <> oRenewalNo+1 And oRenewalNo = 0) Then
                                 bValid = False
                                 Exit For
                             End If

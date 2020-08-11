@@ -162,8 +162,8 @@ Namespace Tables
         Private Const ColIndexGrossAmountPercent As Integer = 16
         Private Const ColIndexRenewalNumber As Integer = 17
         Private Const ColIndexRegionId As Integer = 18
-        Private Const ColIndexLiabilityLimit As Integer = 19
-        Private Const ColIndexLiabilityLimitPercent As Integer = 20
+        Private Const ColIndexCovLiabilityLimit As Integer = 19
+        Private Const ColIndexCovLiabilityLimitPercent As Integer = 20
 
         ' DataView Elements
         Private Const DbCoverageRateId As Integer = 0
@@ -288,6 +288,29 @@ Namespace Tables
                     End If
                 End With
                 Return isIgnorePremiumYesForContract
+            End Get
+        End Property
+
+        Private ReadOnly Property HasProductConfiguredForSequentialNoValidation() As Boolean
+            Get
+                Dim isProductConfiguredForSequentialNoValidation As Boolean = False
+
+                If Not oProduct Is Nothing AndAlso oProduct.AttributeValues.Contains(Codes.SEQUENTIAL_RENEWAL_NUMBER_VALIDATION) Then
+                    If oProduct.AttributeValues.Value(Codes.SEQUENTIAL_RENEWAL_NUMBER_VALIDATION) = Codes.YESNO_Y Then
+                        isProductConfiguredForSequentialNoValidation = True
+                    End If
+                End If
+
+                Return isProductConfiguredForSequentialNoValidation
+            End Get
+        End Property
+        Private _Product As ProductCode
+        Public ReadOnly Property oProduct() As ProductCode
+            Get
+                If _Product Is Nothing Then
+                    _Product = New ProductCode(State.Coverage.ProductCodeId)
+                End If
+                Return _Product
             End Get
         End Property
 
@@ -1244,16 +1267,16 @@ Namespace Tables
                         PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.TaxRegion), CType(moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1), DropDownList).SelectedValue)
                     End If
 
-                    If TypeOf moGridView.Rows(i).Cells(ColIndexLiabilityLimit).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexLiabilityLimit).Controls(1), Label).Text)
+                    If TypeOf moGridView.Rows(i).Cells(ColIndexCovLiabilityLimit).Controls(1) Is Label Then
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimit).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexLiabilityLimit).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimit).Controls(1), TextBox).Text)
                     End If
 
-                    If TypeOf moGridView.Rows(i).Cells(ColIndexLiabilityLimitPercent).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LiabilityLimitPercent), CType(moGridView.Rows(i).Cells(ColIndexLiabilityLimitPercent).Controls(1), Label).Text)
+                    If TypeOf moGridView.Rows(i).Cells(ColIndexCovLiabilityLimitPercent).Controls(1) Is Label Then
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimitPercent), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimitPercent).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LiabilityLimitPercent), CType(moGridView.Rows(i).Cells(ColIndexLiabilityLimitPercent).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimitPercent), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimitPercent).Controls(1), TextBox).Text)
                     End If
                 Next
                 State.CoverageRateList = oCoverageRate
@@ -1468,8 +1491,8 @@ Namespace Tables
             BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.GrossAmountPercent), moGridView.Columns(ColIndexGrossAmountPercent))
             BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.RenewalNumber), moGridView.Columns(ColIndexRenewalNumber))
             BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.RegionId), moGridView.Columns(ColIndexRegionId))
-            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.LiabilityLimit), moGridView.Columns(ColIndexLiabilityLimit))
-            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.LiabilityLimitPercent), moGridView.Columns(ColIndexLiabilityLimitPercent))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CovLiabilityLimit), moGridView.Columns(ColIndexCovLiabilityLimit))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CovLiabilityLimitPercent), moGridView.Columns(ColIndexCovLiabilityLimitPercent))
 
             If State.IsDealerConfiguredForSourceXcd Then
                 BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CommissionsPercentSourceXcd), moGridView.Columns(ColIndexCommissionsPercentXcd))
@@ -4886,16 +4909,16 @@ Namespace Tables
         Private Sub PopulateCoverageRateLiabilityLimitBOFromForm()
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim TextBoxLiabilityLimit As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
-            Dim TextBoxLiabilityLimitPercent As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
+            Dim TextBoxLiabilityLimit As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
+            Dim TextBoxLiabilityLimitPercent As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
 
             If Not TextBoxLiabilityLimit Is Nothing Then
                 If (String.IsNullOrWhiteSpace(TextBoxLiabilityLimit.Text)) Then
                     Dim tempTextBoxLiabilityLimit As TextBox = New TextBox
                     tempTextBoxLiabilityLimit.Text = String.Empty
-                    Me.PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LiabilityLimit), tempTextBoxLiabilityLimit)
+                    Me.PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimit), tempTextBoxLiabilityLimit)
                 Else
-                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LiabilityLimit), CType(GetSelectedGridControl(moGridView, ColIndexLiabilityLimit), TextBox))
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimit), CType(GetSelectedGridControl(moGridView, ColIndexCovLiabilityLimit), TextBox))
                 End If
             End If
 
@@ -4903,9 +4926,9 @@ Namespace Tables
                 If (String.IsNullOrWhiteSpace(TextBoxLiabilityLimitPercent.Text)) Then
                     Dim tempTextBoxLiabilityLimitPercent As TextBox = New TextBox
                     tempTextBoxLiabilityLimitPercent.Text = String.Empty
-                    Me.PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LiabilityLimitPercent), tempTextBoxLiabilityLimitPercent)
+                    Me.PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimitPercent), tempTextBoxLiabilityLimitPercent)
                 Else
-                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LiabilityLimitPercent), CType(GetSelectedGridControl(moGridView, ColIndexLiabilityLimitPercent), TextBox))
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimitPercent), CType(GetSelectedGridControl(moGridView, ColIndexCovLiabilityLimitPercent), TextBox))
                 End If
             End If
         End Sub
@@ -4914,34 +4937,34 @@ Namespace Tables
             'ensure that grid's edit index is set before this gets a call
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim TextBoxLiabilityLimit As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
-            Dim TextBoxLiabilityLimitPercent As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
+            Dim TextBoxLiabilityLimit As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
+            Dim TextBoxLiabilityLimitPercent As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
 
             If State.IsNewWithCopy Then
                 With State.CoverageRateList(moGridView.SelectedIndex)
-                    If Not .LiabilityLimit Is Nothing Then
-                        If Not String.IsNullOrWhiteSpace(.LiabilityLimit) Then
-                            PopulateControlFromBOProperty(TextBoxLiabilityLimit, .LiabilityLimit)
+                    If Not .CovLiabilityLimit Is Nothing Then
+                        If Not String.IsNullOrWhiteSpace(.CovLiabilityLimit) Then
+                            PopulateControlFromBOProperty(TextBoxLiabilityLimit, .CovLiabilityLimit)
                         End If
                     End If
 
-                    If Not .LiabilityLimitPercent Is Nothing Then
-                        If Not String.IsNullOrWhiteSpace(.LiabilityLimitPercent) Then
-                            PopulateControlFromBOProperty(TextBoxLiabilityLimitPercent, .LiabilityLimitPercent)
+                    If Not .CovLiabilityLimitPercent Is Nothing Then
+                        If Not String.IsNullOrWhiteSpace(.CovLiabilityLimitPercent) Then
+                            PopulateControlFromBOProperty(TextBoxLiabilityLimitPercent, .CovLiabilityLimitPercent)
                         End If
                     End If
                 End With
             Else
                 With TheCoverageRate
-                    If Not .LiabilityLimit Is Nothing Then
-                        If Not String.IsNullOrWhiteSpace(.LiabilityLimit) Then
-                            PopulateControlFromBOProperty(TextBoxLiabilityLimit, .LiabilityLimit)
+                    If Not .CovLiabilityLimit Is Nothing Then
+                        If Not String.IsNullOrWhiteSpace(.CovLiabilityLimit) Then
+                            PopulateControlFromBOProperty(TextBoxLiabilityLimit, .CovLiabilityLimit)
                         End If
                     End If
 
-                    If Not .LiabilityLimitPercent Is Nothing Then
-                        If Not String.IsNullOrWhiteSpace(.LiabilityLimitPercent) Then
-                            PopulateControlFromBOProperty(TextBoxLiabilityLimitPercent, .LiabilityLimitPercent)
+                    If Not .CovLiabilityLimitPercent Is Nothing Then
+                        If Not String.IsNullOrWhiteSpace(.CovLiabilityLimitPercent) Then
+                            PopulateControlFromBOProperty(TextBoxLiabilityLimitPercent, .CovLiabilityLimitPercent)
                         End If
                     End If
                 End With
@@ -4959,52 +4982,51 @@ Namespace Tables
                 For i As Integer = 0 To rowNum - 1
                     Dim gRow As GridViewRow = moGridView.Rows(i)
                     If gRow.RowType = DataControlRowType.DataRow Then
-                        Dim lblLimitPer As Label = DirectCast(gRow.Cells(ColIndexLiabilityLimitPercent).FindControl("moRenewal_NumberLabel"), Label)
-                        Dim textBoxLimitPer As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimitPercent).FindControl("moRenewal_NumberText"), TextBox)
+                        Dim lblLimitPer As Label = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moRenewal_NumberLabel"), Label)
+                        Dim textBoxLimitPer As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moRenewal_NumberText"), TextBox)
 
                         If i <> 0 Then
-                            If Not textBoxLimitPer Is Nothing Then
-                                If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
-                                    Dim renewalNo As Int16 = Convert.ToInt16(textBoxLimitPer.Text)
-                                    LastRenewalNo = renewalNo
+                            If Not lblLimitPer Is Nothing Then
+                                If Not String.IsNullOrWhiteSpace(lblLimitPer.Text) Then
+                                    Dim existingRenewalNo As Int16 = Convert.ToInt16(lblLimitPer.Text)
+                                    LastRenewalNo = existingRenewalNo
 
-                                    If renewalNo <> LastRenewalNo+1 Then
+                                    If existingRenewalNo <> LastRenewalNo + 1 Then
                                         isNotSequence = True
                                         Exit For
                                     End If
                                 End If
                             End If
 
-                            If Not lblLimitPer Is Nothing Then
-                                If Not String.IsNullOrWhiteSpace(lblLimitPer.Text) Then
-                                    Dim renewalNo As Int16 = Convert.ToInt16(lblLimitPer.Text)
-                                    LastRenewalNo = renewalNo
+                            If Not textBoxLimitPer Is Nothing Then
+                                If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
+                                    Dim enteredRenewalNo As Int16 = Convert.ToInt16(textBoxLimitPer.Text)
+                                    'LastRenewalNo = enteredRenewalNo
 
-                                    If renewalNo <> LastRenewalNo+1 Then
+                                    If enteredRenewalNo <> LastRenewalNo + 1 Then
                                         isNotSequence = True
                                         Exit For
                                     End If
                                 End If
                             End If
                         Else
-                            If Not textBoxLimitPer Is Nothing Then
-                                If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
-                                    Dim renewalNo As Int16 = Convert.ToInt16(textBoxLimitPer.Text)
-                                    LastRenewalNo = renewalNo
+                            If Not lblLimitPer Is Nothing Then
+                                If Not String.IsNullOrWhiteSpace(lblLimitPer.Text) Then
+                                    Dim existingRenewalNo As Int16 = Convert.ToInt16(lblLimitPer.Text)
+                                    LastRenewalNo = existingRenewalNo
 
-                                    If renewalNo <> 0 Then
+                                    If existingRenewalNo <> 0 Then
                                         isFirstRenewalNoNotZero = True
                                         Exit For
                                     End If
                                 End If
                             End If
+                            If Not textBoxLimitPer Is Nothing Then
+                                If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
+                                    Dim enteredRenewalNo As Int16 = Convert.ToInt16(textBoxLimitPer.Text)
+                                    'LastRenewalNo = enteredRenewalNo
 
-                            If Not lblLimitPer Is Nothing Then
-                                If Not String.IsNullOrWhiteSpace(lblLimitPer.Text) Then
-                                    Dim renewalNo As Int16 = Convert.ToInt16(lblLimitPer.Text)
-                                    LastRenewalNo = renewalNo
-
-                                    If renewalNo <> 0 Then
+                                    If enteredRenewalNo <> 0 Then
                                         isFirstRenewalNoNotZero = True
                                         Exit For
                                     End If
@@ -5012,7 +5034,7 @@ Namespace Tables
                             End If
                         End If
                     End If
-                Next                
+                Next
             Next
 
             If isFirstRenewalNoNotZero Then
@@ -5053,11 +5075,11 @@ Namespace Tables
                 For i As Integer = 0 To rowNum - 1
                     Dim gRow As GridViewRow = moGridView.Rows(i)
                     If gRow.RowType = DataControlRowType.DataRow Then
-                        Dim lblLimitPer As Label = DirectCast(gRow.Cells(ColIndexLiabilityLimitPercent).FindControl("lblLiabilityLimitPercent"), Label)
-                        Dim textBoxLimitPer As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
+                        Dim lblLimitPer As Label = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("lblLiabilityLimitPercent"), Label)
+                        Dim textBoxLimitPer As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
 
-                        Dim lblLimit As Label = DirectCast(gRow.Cells(ColIndexLiabilityLimit).FindControl("lblLiabilityLimit"), Label)
-                        Dim textBoxLimit As TextBox = DirectCast(gRow.Cells(ColIndexLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
+                        Dim lblLimit As Label = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("lblLiabilityLimit"), Label)
+                        Dim textBoxLimit As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
 
                         If Not textBoxLimitPer Is Nothing Then
                             If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
