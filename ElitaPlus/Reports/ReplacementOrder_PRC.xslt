@@ -25,8 +25,12 @@
           <tr>
             <td>
               <table cellpadding="0" cellspacing="0" border="0" style="WIDTH:100%">
-                <tr>                  
-                  <td rowspan="5" style="vertical-align:top;text-align:right;">
+                <tr>
+                  <td>
+                    <span class="bold">To:&#160;</span>
+                    <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SVC_NAME" />
+                  </td>
+                  <td rowspan="4" style="vertical-align:top;text-align:right;">
                     <xsl:element name="img">
                       <xsl:attribute name="src">
                         <xsl:choose>
@@ -43,18 +47,16 @@
                 </tr>
                 <tr>
                   <td colspan="2">
-                    <span class="bold">To:&#160;</span>
-                    <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SVC_NAME" />
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2">
                     <span class="bold">Date:&#160;</span>
                     <xsl:value-of select="substring(a:ServiceOrderReport/a:ServiceOrder/a:DATE_CREATED,6,2)" />
                     <xsl:text>/</xsl:text>
                     <xsl:value-of select="substring(a:ServiceOrderReport/a:ServiceOrder/a:DATE_CREATED, 9, 2)" />
                     <xsl:text>/</xsl:text>
                     <xsl:value-of select="substring(a:ServiceOrderReport/a:ServiceOrder/a:DATE_CREATED, 1, 4)" />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">&#160;
                   </td>
                 </tr>
                 <tr>
