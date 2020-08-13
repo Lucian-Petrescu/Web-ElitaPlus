@@ -941,8 +941,9 @@ Partial Class ClaimAuthorizationDetailForm
     End Sub
     Private Sub CheckResendShippingLabelStatus()
         If (Not Me.State.MyBO Is Nothing AndAlso Me.State.ClaimBO.Status = BasicClaimStatus.Active _
-            AndAlso (Me.State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPAIR) _
-            AndAlso (Me.State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_AWR) _
+            AndAlso (Me.State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPAIR _
+                     Or Me.State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SWRPR _
+                     Or Me.State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SWRPL) _
             AndAlso (State.ClaimBO.Dealer.DealerFulfillmentProviderClassCode = Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS)) Then
             btnResendShippingLabel.Visible = True
             ControlMgr.SetVisibleControl(Me, btnResendShippingLabel, True)
