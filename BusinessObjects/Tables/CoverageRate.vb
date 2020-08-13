@@ -124,6 +124,8 @@ Public Class CoverageRate
     Private Const GROSS_AMOUNT_PERCENT As Integer = 13
     Private Const RENEWAL_NUMBER As Integer = 10
     Private Const REGION_ID As Integer = 11
+
+    Private IsProductCodeSetForSequenceRenewalNo As Boolean
 #End Region
 
 #Region "Properties"
@@ -462,7 +464,14 @@ Public Class CoverageRate
         End Set
     End Property
 #End Region
-
+    Public Property IsProductSetForSequenceRenewalNo() As Boolean
+        Get
+            Return IsProductCodeSetForSequenceRenewalNo
+        End Get
+        Set(ByVal value As Boolean)
+            IsProductCodeSetForSequenceRenewalNo = value
+        End Set
+    End Property
 #Region "Public Members"
     Public Overrides Sub Save()
         Try
@@ -646,6 +655,33 @@ Public Class CoverageRate
         Return isDealerConfiguredForAcctBucket
     End Function
 
+    Public Function HasProductConfiguredForSequentialRenewalNo(ByVal coverageId As Guid) As Boolean
+
+        Dim pCoverage As New Coverage(coverageId)
+        Dim oDealer As New Dealer(pCoverage.DealerId)
+        Dim isDealerConfiguredForAcctBucket As Boolean = False
+
+        If (pCoverage.DealerId <> Guid.Empty) Then
+            If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
+                If Not String.IsNullOrWhiteSpace(oDealer.AcctBucketsWithSourceXcd) Then
+                    If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
+                        isDealerConfiguredForAcctBucket = True
+                    Else
+                        isDealerConfiguredForAcctBucket = False
+                    End If
+                Else
+                    isDealerConfiguredForAcctBucket = False
+                End If
+            Else
+                isDealerConfiguredForAcctBucket = False
+            End If
+        Else
+            isDealerConfiguredForAcctBucket = False
+        End If
+
+        Return isDealerConfiguredForAcctBucket
+    End Function
+
 #Region "Custom Validation"
 
     <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
@@ -801,9 +837,11 @@ Public Class CoverageRate
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As CoverageRate = CType(objectToValidate, CoverageRate)
             If obj IsNot Nothing AndAlso obj.LowPrice IsNot Nothing AndAlso obj.HighPrice IsNot Nothing AndAlso obj.RenewalNumber IsNot Nothing Then
-                If CheckRenewalNumber(obj.LowPrice, obj.HighPrice, obj.RenewalNumber, obj) = False Then
-                    Me.Message = COVERAGE_RATE_FORM015
-                    Return False
+                If Not obj.IsProductSetForSequenceRenewalNo Then
+                    If CheckRenewalNumber(obj.LowPrice, obj.HighPrice, obj.RenewalNumber, obj) = False Then
+                        Me.Message = COVERAGE_RATE_FORM015
+                        Return False
+                    End If                
                 End If
             End If
             Return True
@@ -847,13 +885,74 @@ Public Class CoverageRate
 
                     If (oLow = oNewLow AndAlso oHigh = oNewHigh AndAlso If(IsNothing(oCoverageRate.RegionId), Guid.Empty, oCoverageRate.RegionId).Equals(oTaxRegionId)) Then
                         If oCoverageRate.Id.Equals(oCoverageRateId) Then
-                            
+
                             If (oNewRenewalNo > 0 And oRenewalNo = 0) Then
-                            'If (oNewRenewalNo <> oRenewalNo+1 And oRenewalNo = 0) Then
                                 bValid = False
                                 Exit For
                             End If
                         ElseIf (oNewRenewalNo = oRenewalNo) Then
+                            bValid = False
+                            Exit For
+                        End If
+                    Else
+                        oCount = oCount + 1
+                    End If
+                Next
+
+                If bValid = True And oRows.Count = oCount Then
+                    If oNewRenewalNo <> 0 Then
+                        bValid = False
+                    End If
+                End If
+
+            End If
+            Return bValid
+        End Function
+
+        Private Function CheckRenewalNumberForProduct(ByVal sNewLow As Assurant.Common.Types.DecimalType, ByVal sNewHigh As Assurant.Common.Types.DecimalType, ByVal sNewRenewalNumber As Assurant.Common.Types.LongType, ByVal oCoverageRate As CoverageRate) As Boolean
+
+            Dim bValid As Boolean = True
+            Dim oNewLow As Double = Math.Round(Convert.ToDouble(sNewLow.Value), 2)
+            Dim oNewHigh As Double = Math.Round(Convert.ToDouble(sNewHigh.Value), 2)
+            Dim oCoverageRateId As Guid = oCoverageRate.Id
+            Dim oTaxRegionId As Guid = Guid.Empty
+            Dim oLow, oHigh As Double
+
+            Dim oCoverageRates As DataView = oCoverageRate.GetList(oCoverageRate.CoverageId)
+            Dim oRows As DataRowCollection = oCoverageRates.Table.Rows
+            Dim oRow As DataRow
+            Dim oCount As Integer = 0
+
+            Dim oNewRenewalNo As Integer
+            Dim oRenewalNo As Integer
+
+            If sNewRenewalNumber Is Nothing Then
+                oNewRenewalNo = 0
+            Else
+                oNewRenewalNo = Convert.ToInt32(sNewRenewalNumber.Value)
+            End If
+
+            If oRows.Count = 0 Then
+                'Inserting only one record
+                If oNewRenewalNo <> 0 Then
+                    bValid = False
+                End If
+            Else
+                For Each oRow In oRows
+                    oCoverageRateId = New Guid(CType(oRow(COVERAGE_RATE_ID), Byte()))
+                    oLow = Math.Round(Convert.ToDouble(oRow(LOW_PRICE)), 2)
+                    oHigh = Math.Round(Convert.ToDouble(oRow(HIGH_PRICE)), 2)
+                    oRenewalNo = Convert.ToInt32(oRow(RENEWAL_NUMBER))
+                    oTaxRegionId = If(IsDBNull(oRow(REGION_ID)), Guid.Empty, New Guid(CType(oRow(REGION_ID), Byte())))
+
+                    If (oLow = oNewLow AndAlso oHigh = oNewHigh AndAlso If(IsNothing(oCoverageRate.RegionId), Guid.Empty, oCoverageRate.RegionId).Equals(oTaxRegionId)) Then
+                        If oCoverageRate.Id.Equals(oCoverageRateId) Then
+                            'If (oNewRenewalNo > 0 And oRenewalNo = 0) Then
+                             If (oNewRenewalNo <> oRenewalNo+1 And oRenewalNo = 0) Then
+                                bValid = False
+                                Exit For
+                            End If
+                        ElseIf (oNewRenewalNo <> oRenewalNo+1) Then
                             bValid = False
                             Exit For
                         End If

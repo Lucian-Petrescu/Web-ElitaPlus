@@ -68,6 +68,7 @@ Namespace Tables
             Public IsBucketIncomingSelected As Boolean
             Public IsDealerConfiguredForSourceXcd As Boolean = False
             Public IsIgnorePremiumSetYesForContract As Boolean = False
+            Public IsProductConfiguredForRenewalNo As Boolean = False
 
             'US 489838
             Public IsRateLimitAndPercentBothPresent As Boolean
@@ -503,8 +504,6 @@ Namespace Tables
 
         End Property
 
-
-
         Private Property CoverageConseqDamageId() As String
             Get
                 Return moCoverageConseqDamageIdLabel.Text
@@ -528,11 +527,6 @@ Namespace Tables
 
 #Region "Handlers-Init, page events"
 
-        'Protected WithEvents moPanel As Panel
-        'Protected WithEvents moRateLabel As Label
-        'Protected WithEvents BtnDeleteRate As Button
-        'Protected WithEvents EditPanel_WRITE As Panel
-        'Protected WithEvents Button1 As Button
         Protected WithEvents moCoverageEditPanel As Panel
         Protected WithEvents multipleDropControl As MultipleColumnDDLabelControl
 
@@ -603,10 +597,12 @@ Namespace Tables
                 If Not IsPostBack Then
                     State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
                     State.IsIgnorePremiumSetYesForContract = HasIgnorePremiumSetForContractForSIncomingSource()
+                    SetSequenceFlag()
                 Else
                     SetGridSourceXcdTextBoxFromBo()
                 End If
 
+                DisplayHideCovLiabilityColumn()
                 DisplayHideSourceColumn()
                 SetGridSourceXcdLabelFromBo()
 
@@ -615,7 +611,9 @@ Namespace Tables
             End Try
             ShowMissingTranslations(MasterPage.MessageController)
         End Sub
-
+        Private Sub SetSequenceFlag()
+            State.IsProductConfiguredForRenewalNo = HasProductConfiguredForSequentialNoValidation()
+        End Sub
         Private Sub GetDisabledTabs()
             Dim disabledTabs As Array = hdnDisabledTab.Value.Split(",")
             If disabledTabs.Length > 0 AndAlso disabledTabs(0) IsNot String.Empty Then
@@ -1267,16 +1265,18 @@ Namespace Tables
                         PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.TaxRegion), CType(moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1), DropDownList).SelectedValue)
                     End If
 
-                    If TypeOf moGridView.Rows(i).Cells(ColIndexCovLiabilityLimit).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimit).Controls(1), Label).Text)
-                    Else
-                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimit).Controls(1), TextBox).Text)
-                    End If
+                    If State.IsProductConfiguredForRenewalNo Then
+                        If TypeOf moGridView.Rows(i).Cells(ColIndexCovLiabilityLimit).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimit).Controls(1), Label).Text)
+                        Else
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimit).Controls(1), TextBox).Text)
+                        End If
 
-                    If TypeOf moGridView.Rows(i).Cells(ColIndexCovLiabilityLimitPercent).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimitPercent), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimitPercent).Controls(1), Label).Text)
-                    Else
-                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimitPercent), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimitPercent).Controls(1), TextBox).Text)
+                        If TypeOf moGridView.Rows(i).Cells(ColIndexCovLiabilityLimitPercent).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimitPercent), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimitPercent).Controls(1), Label).Text)
+                        Else
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimitPercent), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimitPercent).Controls(1), TextBox).Text)
+                        End If
                     End If
                 Next
                 State.CoverageRateList = oCoverageRate
@@ -1491,8 +1491,11 @@ Namespace Tables
             BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.GrossAmountPercent), moGridView.Columns(ColIndexGrossAmountPercent))
             BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.RenewalNumber), moGridView.Columns(ColIndexRenewalNumber))
             BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.RegionId), moGridView.Columns(ColIndexRegionId))
-            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CovLiabilityLimit), moGridView.Columns(ColIndexCovLiabilityLimit))
-            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CovLiabilityLimitPercent), moGridView.Columns(ColIndexCovLiabilityLimitPercent))
+
+            If State.IsProductConfiguredForRenewalNo Then
+                BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CovLiabilityLimit), moGridView.Columns(ColIndexCovLiabilityLimit))
+                BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CovLiabilityLimitPercent), moGridView.Columns(ColIndexCovLiabilityLimitPercent))
+            End If
 
             If State.IsDealerConfiguredForSourceXcd Then
                 BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CommissionsPercentSourceXcd), moGridView.Columns(ColIndexCommissionsPercentXcd))
@@ -1619,6 +1622,10 @@ Namespace Tables
 
         Private Sub BtnSaveRate_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnSaveRate_WRITE.Click
             Try
+                If Not TheCoverageRate Is Nothing Then
+                    TheCoverageRate.IsProductSetForSequenceRenewalNo = State.IsProductConfiguredForRenewalNo
+                End If
+
                 SaveRateChanges()
 
                 'US-521697
@@ -3252,6 +3259,17 @@ Namespace Tables
                 moGridView.Columns(ColIndexLossCostPercentXcd).Visible = False
             End If
         End Sub
+
+        Private Sub DisplayHideCovLiabilityColumn()
+            'US-489838
+            If State.IsProductConfiguredForRenewalNo Then
+                moGridView.Columns(ColIndexCovLiabilityLimit).Visible = True
+                moGridView.Columns(ColIndexCovLiabilityLimitPercent).Visible = True
+            Else
+                moGridView.Columns(ColIndexCovLiabilityLimit).Visible = False
+                moGridView.Columns(ColIndexCovLiabilityLimitPercent).Visible = False
+            End If
+        End Sub
 #End Region
 
 #Region "Populate"
@@ -3314,6 +3332,17 @@ Namespace Tables
                 moGridView.DataSource = oDataView
                 moGridView.DataBind()
                 ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, moGridView)
+
+                'US 489838
+                SetSequenceFlag()
+
+                If State.IsProductConfiguredForRenewalNo Then
+                    moGridView.Columns(ColIndexCovLiabilityLimit).Visible = True
+                    moGridView.Columns(ColIndexCovLiabilityLimitPercent).Visible = True
+                Else
+                    moGridView.Columns(ColIndexCovLiabilityLimit).Visible = False
+                    moGridView.Columns(ColIndexCovLiabilityLimitPercent).Visible = False
+                End If
 
             Catch ex As Exception
                 moMsgControllerRate.AddError(CoverageForm004)
@@ -4907,162 +4936,243 @@ Namespace Tables
         End Function
 
         Private Sub PopulateCoverageRateLiabilityLimitBOFromForm()
-            If moGridView.EditIndex = -1 Then Exit Sub
-            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim TextBoxLiabilityLimit As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
-            Dim TextBoxLiabilityLimitPercent As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
+            If State.IsProductConfiguredForRenewalNo Then
+                If moGridView.EditIndex = -1 Then Exit Sub
+                Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+                Dim TextBoxLiabilityLimit As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
+                Dim TextBoxLiabilityLimitPercent As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
 
-            If Not TextBoxLiabilityLimit Is Nothing Then
-                If (String.IsNullOrWhiteSpace(TextBoxLiabilityLimit.Text)) Then
-                    Dim tempTextBoxLiabilityLimit As TextBox = New TextBox
-                    tempTextBoxLiabilityLimit.Text = String.Empty
-                    Me.PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimit), tempTextBoxLiabilityLimit)
-                Else
-                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimit), CType(GetSelectedGridControl(moGridView, ColIndexCovLiabilityLimit), TextBox))
+                If Not TextBoxLiabilityLimit Is Nothing Then
+                    If (String.IsNullOrWhiteSpace(TextBoxLiabilityLimit.Text)) Then
+                        Dim tempTextBoxLiabilityLimit As TextBox = New TextBox
+                        tempTextBoxLiabilityLimit.Text = String.Empty
+                        Me.PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimit), tempTextBoxLiabilityLimit)
+                    Else
+                        PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimit), CType(GetSelectedGridControl(moGridView, ColIndexCovLiabilityLimit), TextBox))
+                    End If
                 End If
-            End If
 
-            If Not TextBoxLiabilityLimitPercent Is Nothing Then
-                If (String.IsNullOrWhiteSpace(TextBoxLiabilityLimitPercent.Text)) Then
-                    Dim tempTextBoxLiabilityLimitPercent As TextBox = New TextBox
-                    tempTextBoxLiabilityLimitPercent.Text = String.Empty
-                    Me.PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimitPercent), tempTextBoxLiabilityLimitPercent)
-                Else
-                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimitPercent), CType(GetSelectedGridControl(moGridView, ColIndexCovLiabilityLimitPercent), TextBox))
+                If Not TextBoxLiabilityLimitPercent Is Nothing Then
+                    If (String.IsNullOrWhiteSpace(TextBoxLiabilityLimitPercent.Text)) Then
+                        Dim tempTextBoxLiabilityLimitPercent As TextBox = New TextBox
+                        tempTextBoxLiabilityLimitPercent.Text = String.Empty
+                        Me.PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimitPercent), tempTextBoxLiabilityLimitPercent)
+                    Else
+                        PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimitPercent), CType(GetSelectedGridControl(moGridView, ColIndexCovLiabilityLimitPercent), TextBox))
+                    End If
                 End If
             End If
         End Sub
 
         Private Sub PopulateCoverageRateLiabilityLimitFromBO()
-            'ensure that grid's edit index is set before this gets a call
-            If moGridView.EditIndex = -1 Then Exit Sub
-            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim TextBoxLiabilityLimit As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
-            Dim TextBoxLiabilityLimitPercent As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
+            If State.IsProductConfiguredForRenewalNo Then
+                'ensure that grid's edit index is set before this gets a call
+                If moGridView.EditIndex = -1 Then Exit Sub
+                Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+                Dim TextBoxLiabilityLimit As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
+                Dim TextBoxLiabilityLimitPercent As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
 
-            If State.IsNewWithCopy Then
-                With State.CoverageRateList(moGridView.SelectedIndex)
-                    If Not .CovLiabilityLimit Is Nothing Then
-                        If Not String.IsNullOrWhiteSpace(.CovLiabilityLimit) Then
-                            PopulateControlFromBOProperty(TextBoxLiabilityLimit, .CovLiabilityLimit)
+                If State.IsNewWithCopy Then
+                    With State.CoverageRateList(moGridView.SelectedIndex)
+                        If Not .CovLiabilityLimit Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(.CovLiabilityLimit) Then
+                                PopulateControlFromBOProperty(TextBoxLiabilityLimit, .CovLiabilityLimit)
+                            End If
                         End If
-                    End If
 
-                    If Not .CovLiabilityLimitPercent Is Nothing Then
-                        If Not String.IsNullOrWhiteSpace(.CovLiabilityLimitPercent) Then
-                            PopulateControlFromBOProperty(TextBoxLiabilityLimitPercent, .CovLiabilityLimitPercent)
+                        If Not .CovLiabilityLimitPercent Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(.CovLiabilityLimitPercent) Then
+                                PopulateControlFromBOProperty(TextBoxLiabilityLimitPercent, .CovLiabilityLimitPercent)
+                            End If
                         End If
-                    End If
-                End With
-            Else
-                With TheCoverageRate
-                    If Not .CovLiabilityLimit Is Nothing Then
-                        If Not String.IsNullOrWhiteSpace(.CovLiabilityLimit) Then
-                            PopulateControlFromBOProperty(TextBoxLiabilityLimit, .CovLiabilityLimit)
+                    End With
+                Else
+                    With TheCoverageRate
+                        If Not .CovLiabilityLimit Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(.CovLiabilityLimit) Then
+                                PopulateControlFromBOProperty(TextBoxLiabilityLimit, .CovLiabilityLimit)
+                            End If
                         End If
-                    End If
 
-                    If Not .CovLiabilityLimitPercent Is Nothing Then
-                        If Not String.IsNullOrWhiteSpace(.CovLiabilityLimitPercent) Then
-                            PopulateControlFromBOProperty(TextBoxLiabilityLimitPercent, .CovLiabilityLimitPercent)
+                        If Not .CovLiabilityLimitPercent Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(.CovLiabilityLimitPercent) Then
+                                PopulateControlFromBOProperty(TextBoxLiabilityLimitPercent, .CovLiabilityLimitPercent)
+                            End If
                         End If
-                    End If
-                End With
+                    End With
+                End If
             End If
         End Sub
 
         Private Sub CheckRenewalNumberNotInSequence()
-            Dim LastRenewalNo As Int16
-            Dim isNotSequence As Boolean = False
-            Dim isFirstRenewalNoNotZero As Boolean = False
+            If State.IsProductConfiguredForRenewalNo Then
+                Dim LastRenewalNo As Decimal
+                Dim LastLowPrice As Decimal
+                Dim LastHighPrice As Decimal
 
-            For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
-                Me.moGridView.PageIndex = pageIndexk
-                Dim rowNum As Integer = Me.moGridView.Rows.Count
-                For i As Integer = 0 To rowNum - 1
-                    Dim gRow As GridViewRow = moGridView.Rows(i)
-                    If gRow.RowType = DataControlRowType.DataRow Then
-                        Dim lblLimitPer As Label = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moRenewal_NumberLabel"), Label)
-                        Dim textBoxLimitPer As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moRenewal_NumberText"), TextBox)
+                Dim enteredRenewalNo As Decimal
+                Dim enteredLowPrice As Decimal
+                Dim enteredHighPrice As Decimal
 
-                        If i <> 0 Then
-                            If Not lblLimitPer Is Nothing Then
-                                If Not String.IsNullOrWhiteSpace(lblLimitPer.Text) Then
-                                    Dim existingRenewalNo As Int16 = Convert.ToInt16(lblLimitPer.Text)
-                                    LastRenewalNo = existingRenewalNo
+                Dim isSameLowHighExist As Boolean = False
+                Dim isNotSequence As Boolean = False
+                Dim isFirstRenewalNoNotZero As Boolean = False
 
-                                    If existingRenewalNo <> LastRenewalNo + 1 Then
-                                        isNotSequence = True
-                                        Exit For
+                For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
+                    Me.moGridView.PageIndex = pageIndexk
+                    Dim rowNum As Integer = Me.moGridView.Rows.Count
+                    For i As Integer = 0 To rowNum - 1
+                        Dim gRow As GridViewRow = moGridView.Rows(i)
+                        If gRow.RowType = DataControlRowType.DataRow Then
+
+                            Dim lblLowPrice As Label = DirectCast(gRow.Cells(ColIndexLowPrice).FindControl("moLowPriceLabel"), Label)
+                            Dim textBoxLowPrice As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moLowPriceText"), TextBox)
+
+                            Dim lblHighPrice As Label = DirectCast(gRow.Cells(ColIndexHighPrice).FindControl("moHigh_PriceLabel"), Label)
+                            Dim textBoxHighPrice As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moHigh_PriceText"), TextBox)
+
+                            Dim lblRenewalNo As Label = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moRenewal_NumberLabel"), Label)
+                            Dim textBoxRenewalNo As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moRenewal_NumberText"), TextBox)
+
+                            If i <> 0 Then
+                                If Not lblRenewalNo Is Nothing And Not lblLowPrice Is Nothing And Not lblHighPrice Is Nothing Then
+                                    If Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) And Not String.IsNullOrWhiteSpace(lblLowPrice.Text) And Not String.IsNullOrWhiteSpace(lblHighPrice.Text) Then
+                                        Dim existingRenewalNo As Decimal = Convert.ToDecimal(lblRenewalNo.Text)
+                                        Dim existingLowPrice As Decimal = Convert.ToDecimal(lblLowPrice.Text)
+                                        Dim existingHighPrice As Decimal = Convert.ToDecimal(lblHighPrice.Text)
+
+                                        'If LastLowPrice = existingLowPrice And LastHighPrice = existingHighPrice Then
+                                        '    If existingRenewalNo <> LastRenewalNo + 1 Then
+                                        '        isNotSequence = True
+                                        '        Exit For
+                                        '    End If
+                                        'End If
+                                        If Not TheCoverageRate Is Nothing Then
+                                            If Not TheCoverageRate.LowPrice Is Nothing And Not TheCoverageRate.HighPrice Is Nothing And Not TheCoverageRate.RenewalNumber Is Nothing Then
+                                                If Not String.IsNullOrWhiteSpace(TheCoverageRate.LowPrice.ToString()) And Not String.IsNullOrWhiteSpace(TheCoverageRate.HighPrice.ToString()) And Not String.IsNullOrWhiteSpace(TheCoverageRate.RenewalNumber.ToString()) Then
+                                                    If TheCoverageRate.LowPrice = existingLowPrice And TheCoverageRate.HighPrice = existingHighPrice Then
+                                                        isSameLowHighExist = True
+
+                                                        enteredRenewalNo = TheCoverageRate.RenewalNumber
+                                                        enteredLowPrice = TheCoverageRate.LowPrice
+                                                        enteredHighPrice = TheCoverageRate.HighPrice
+                                                        LastRenewalNo = existingRenewalNo
+                                                        LastLowPrice = existingLowPrice
+                                                        LastHighPrice = existingHighPrice
+                                                    End If
+                                                End If
+                                            End If
+                                        End If
+
                                     End If
                                 End If
-                            End If
 
-                            If Not textBoxLimitPer Is Nothing Then
-                                If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
-                                    Dim enteredRenewalNo As Int16 = Convert.ToInt16(textBoxLimitPer.Text)
-                                    'LastRenewalNo = enteredRenewalNo
+                                If Not textBoxRenewalNo Is Nothing And Not textBoxLowPrice Is Nothing And Not textBoxHighPrice Is Nothing Then
+                                    If Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) And Not String.IsNullOrWhiteSpace(textBoxLowPrice.Text) And Not String.IsNullOrWhiteSpace(textBoxHighPrice.Text) Then
+                                        enteredRenewalNo = Convert.ToDecimal(textBoxRenewalNo.Text)
+                                        enteredLowPrice = Convert.ToDecimal(textBoxLowPrice.Text)
+                                        enteredHighPrice = Convert.ToDecimal(textBoxHighPrice.Text)
+                                        'LastRenewalNo = enteredRenewalNo
 
-                                    If enteredRenewalNo <> LastRenewalNo + 1 Then
-                                        isNotSequence = True
-                                        Exit For
+                                        'If LastLowPrice = enteredLowPrice And LastHighPrice = enteredHighPrice Then
+                                        '    If enteredRenewalNo <> LastRenewalNo + 1 Then
+                                        '        isNotSequence = True
+                                        '        Exit For
+                                        '    End If
+                                        'End If
+
                                     End If
                                 End If
-                            End If
-                        Else
-                            If Not lblLimitPer Is Nothing Then
-                                If Not String.IsNullOrWhiteSpace(lblLimitPer.Text) Then
-                                    Dim existingRenewalNo As Int16 = Convert.ToInt16(lblLimitPer.Text)
-                                    LastRenewalNo = existingRenewalNo
+                            Else
+                                If Not lblRenewalNo Is Nothing And Not lblLowPrice Is Nothing And Not lblHighPrice Is Nothing Then
+                                    If Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) And Not String.IsNullOrWhiteSpace(lblLowPrice.Text) And Not String.IsNullOrWhiteSpace(lblHighPrice.Text) Then
 
-                                    If existingRenewalNo <> 0 Then
-                                        isFirstRenewalNoNotZero = True
-                                        Exit For
+                                        Dim existingRenewalNo As Decimal = Convert.ToDecimal(lblRenewalNo.Text)
+                                        Dim existingLowPrice As Decimal = Convert.ToDecimal(lblLowPrice.Text)
+                                        Dim existingHighPrice As Decimal = Convert.ToDecimal(lblHighPrice.Text)
+
+                                        If existingRenewalNo <> 0 Then
+                                            isFirstRenewalNoNotZero = True
+                                            Exit For
+                                        End If
+
+                                        LastRenewalNo = existingRenewalNo
+                                        LastLowPrice = existingLowPrice
+                                        LastHighPrice = existingHighPrice
+
+                                        If Not TheCoverageRate Is Nothing Then
+                                            If Not TheCoverageRate.LowPrice Is Nothing And Not TheCoverageRate.HighPrice Is Nothing And Not TheCoverageRate.RenewalNumber Is Nothing Then
+                                                If Not String.IsNullOrWhiteSpace(TheCoverageRate.LowPrice.ToString()) And Not String.IsNullOrWhiteSpace(TheCoverageRate.HighPrice.ToString()) And Not String.IsNullOrWhiteSpace(TheCoverageRate.RenewalNumber.ToString()) Then
+                                                    If TheCoverageRate.LowPrice = existingLowPrice And TheCoverageRate.HighPrice = existingHighPrice Then
+                                                        isSameLowHighExist = True
+
+                                                        enteredRenewalNo = TheCoverageRate.RenewalNumber
+                                                        enteredLowPrice = TheCoverageRate.LowPrice
+                                                        enteredHighPrice = TheCoverageRate.HighPrice
+                                                        LastRenewalNo = existingRenewalNo
+                                                        LastLowPrice = existingLowPrice
+                                                        LastHighPrice = existingHighPrice
+                                                    End If
+                                                End If
+                                            End If
+                                        End If
+
                                     End If
                                 End If
-                            End If
-                            If Not textBoxLimitPer Is Nothing Then
-                                If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
-                                    Dim enteredRenewalNo As Int16 = Convert.ToInt16(textBoxLimitPer.Text)
-                                    'LastRenewalNo = enteredRenewalNo
 
-                                    If enteredRenewalNo <> 0 Then
-                                        isFirstRenewalNoNotZero = True
-                                        Exit For
+                                If Not textBoxRenewalNo Is Nothing And Not textBoxLowPrice Is Nothing And Not textBoxHighPrice Is Nothing Then
+                                    If Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) And Not String.IsNullOrWhiteSpace(textBoxLowPrice.Text) And Not String.IsNullOrWhiteSpace(textBoxHighPrice.Text) Then
+
+                                        enteredRenewalNo = Convert.ToDecimal(textBoxRenewalNo.Text)
+                                        enteredLowPrice = Convert.ToDecimal(textBoxLowPrice.Text)
+                                        enteredHighPrice = Convert.ToDecimal(textBoxHighPrice.Text)
+                                        'LastRenewalNo = enteredRenewalNo
+
+                                        If enteredRenewalNo <> 0 Then
+                                            isFirstRenewalNoNotZero = True
+                                            Exit For
+                                        End If
                                     End If
                                 End If
                             End If
                         End If
-                    End If
+                    Next
                 Next
-            Next
 
-            If isFirstRenewalNoNotZero Then
-                Me.State.IsRateFirstRenewalNoIsNotZero = True
-            Else
-                Me.State.IsRateFirstRenewalNoIsNotZero = False
-            End If
+                If isSameLowHighExist Then
+                    If enteredRenewalNo <> LastRenewalNo + 1 Then
+                        isNotSequence = True
+                    End If
+                End If
 
-            If isNotSequence Then
-                Me.State.IsRateRenewalNoNotInSequence = True
-            Else
-                Me.State.IsRateRenewalNoNotInSequence = False
+                If isFirstRenewalNoNotZero Then
+                    Me.State.IsRateFirstRenewalNoIsNotZero = True
+                Else
+                    Me.State.IsRateFirstRenewalNoIsNotZero = False
+                End If
+
+                If isNotSequence Then
+                    Me.State.IsRateRenewalNoNotInSequence = True
+                Else
+                    Me.State.IsRateRenewalNoNotInSequence = False
+                End If
             End If
         End Sub
 
         Private Sub ValidateRateRenewalNo()
-            CheckRenewalNumberNotInSequence()
+            If State.IsProductConfiguredForRenewalNo Then
+                CheckRenewalNumberNotInSequence()
 
-            If Me.State.IsRateFirstRenewalNoIsNotZero Then
-                Me.State.IsRateFirstRenewalNoIsNotZero = False
-                Throw New GUIException(Message.MSG_FIRST_RENEWAL_NOT_ZERO, Assurant.ElitaPlus.Common.ErrorCodes.MSG_FIRST_RENEWAL_SHOULD_BE_ZERO)
+                If Me.State.IsRateFirstRenewalNoIsNotZero Then
+                    Me.State.IsRateFirstRenewalNoIsNotZero = False
+                    Throw New GUIException(Message.MSG_FIRST_RENEWAL_NOT_ZERO, Assurant.ElitaPlus.Common.ErrorCodes.MSG_FIRST_RENEWAL_SHOULD_BE_ZERO)
+                End If
+
+                If Me.State.IsRateRenewalNoNotInSequence Then
+                    Me.State.IsRateRenewalNoNotInSequence = False
+                    Throw New GUIException(Message.MSG_RENEWAL_NOT_SEQUENCE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_RENEWAL_SHOULD_ALWAYS_BE_IN_SEQUENCE)
+                End If
             End If
-
-            If Me.State.IsRateRenewalNoNotInSequence Then
-                Me.State.IsRateRenewalNoNotInSequence = False
-                Throw New GUIException(Message.MSG_RENEWAL_NOT_SEQUENCE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_RENEWAL_SHOULD_ALWAYS_BE_IN_SEQUENCE)
-            End If
-
         End Sub
 
         Private Sub CheckRateLimitAndPercentBothPresent()
@@ -5083,35 +5193,35 @@ Namespace Tables
 
                         If Not textBoxLimitPer Is Nothing Then
                             If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
-                                Dim cPer As Decimal = Convert.ToDecimal(textBoxLimitPer.Text)
-                                If cPer > 0 Then
+                                'Dim cPer As Decimal = Convert.ToDecimal(textBoxLimitPer.Text)
+                                'If cPer > 0 Then
                                     countLimitPer = countLimitPer + 1
-                                End If
+                                'End If
                             End If
                         End If
 
                         If Not lblLimitPer Is Nothing Then
                             If Not String.IsNullOrWhiteSpace(lblLimitPer.Text) Then
-                                Dim cPer As Decimal = Convert.ToDecimal(lblLimitPer.Text)
+                                'Dim cPer As Decimal = Convert.ToDecimal(lblLimitPer.Text)
                                 countLimitPer = countLimitPer + 1
                             End If
                         End If
 
                         If Not textBoxLimit Is Nothing Then
                             If Not String.IsNullOrWhiteSpace(textBoxLimit.Text) Then
-                                Dim cAmt As Decimal = Convert.ToDecimal(textBoxLimit.Text)
-                                If cAmt > 0 Then
+                                'Dim cAmt As Decimal = Convert.ToDecimal(textBoxLimit.Text)
+                                'If cAmt > 0 Then
                                     countLimit = countLimit + 1
-                                End If
+                                'End If
                             End If
                         End If
 
                         If Not lblLimit Is Nothing Then
                             If Not String.IsNullOrWhiteSpace(lblLimit.Text) Then
-                                Dim cAmt As Decimal = Convert.ToDecimal(lblLimit.Text)
-                                If cAmt > 0 Then
+                                'Dim cAmt As Decimal = Convert.ToDecimal(lblLimit.Text)
+                                'If cAmt > 0 Then
                                     countLimit = countLimit + 1
-                                End If
+                                'End If
                             End If
                         End If
 
@@ -5127,11 +5237,13 @@ Namespace Tables
         End Sub
 
         Private Sub ValidateRateLimitAndPercent()
-            CheckRateLimitAndPercentBothPresent()
+            If State.IsProductConfiguredForRenewalNo Then
+                CheckRateLimitAndPercentBothPresent()
 
-            If Me.State.IsRateLimitAndPercentBothPresent Then
-                Me.State.IsRateLimitAndPercentBothPresent = False
-                Throw New GUIException(Message.MSG_EITHER_LIMIT_OR_PERCENT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_ONLY_EITHER_LIMIT_OR_PERCENT_ALLOWED)
+                If Me.State.IsRateLimitAndPercentBothPresent Then
+                    Me.State.IsRateLimitAndPercentBothPresent = False
+                    Throw New GUIException(Message.MSG_EITHER_LIMIT_OR_PERCENT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_ONLY_EITHER_LIMIT_OR_PERCENT_ALLOWED)
+                End If
             End If
         End Sub
 

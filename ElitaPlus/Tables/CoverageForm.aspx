@@ -14,8 +14,25 @@
     </script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"></script>
 
-    <script type="text/javascript">
+    <script type="text/javascript">        
         $(function () {
+
+            $("[id*=moLiability_LimitText]").change(function () {
+                var row = $(this).closest("tr");
+                var value = $(this).val();
+                if (value > 0) {
+                    row.find("[id*=moLiability_LimitPercentText]").val("");
+                }
+            });
+
+            $("[id*=moLiability_LimitPercentText]").change(function () {
+                var row = $(this).closest("tr");
+                var value = $(this).val();
+                if (value > 0) {
+                    row.find("[id*=moLiability_LimitText]").val("");
+                }
+            });
+
             $("[id*=cboCommPercentSourceXcd]").change(function () {
                 var row = $(this).closest("tr");
                 var value = $(this).val();
