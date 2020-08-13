@@ -19,18 +19,18 @@
 
             $("[id*=moLiability_LimitText]").change(function () {
                 var row = $(this).closest("tr");
-                var value = $(this).val();
-                if (value > 0) {
+                //var value = $(this).val();
+                //if (value > 0) {
                     row.find("[id*=moLiability_LimitPercentText]").val("");
-                }
+                //}
             });
 
             $("[id*=moLiability_LimitPercentText]").change(function () {
                 var row = $(this).closest("tr");
-                var value = $(this).val();
-                if (value > 0) {
+                //var value = $(this).val();
+                //if (value > 0) {
                     row.find("[id*=moLiability_LimitText]").val("");
-                }
+                //}
             });
 
             $("[id*=cboCommPercentSourceXcd]").change(function () {
