@@ -111,6 +111,9 @@ Public Class CoverageRate
     Private Const MAX_PERCENT As Double = 99.9999
     Private Const MIM_DECIMAL_NUMBERS As Integer = 4
     Private Const THRESHOLD As Double = 0.01
+    Public Const MIN_OFFSET As Integer = 0
+    Public Const MAX_LIABILITY As Integer = 99999
+    Public Const MIN_OFFSET_LIABLIMIT_PERCENT As Integer = 50
 
     Private Const COVERAGE_RATE_ID As Integer = 0
     Private Const LOW_PRICE As Integer = 1
@@ -433,7 +436,7 @@ Public Class CoverageRate
             Me.SetValue(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
-    '<ValueMandatory(""), ValidNumericRange("", Min:=MIN_OFFSET, Max:=NEW_MAX_LONG, Message:=Common.ErrorCodes.COVERAGEBO_006)>
+    <ValidNumericRange("", Min:=MIN_OFFSET, Max:=NEW_MAX_LONG, Message:=Common.ErrorCodes.COVERAGEBO_006)>
     Public Property CovLiabilityLimit() As LongType
         Get
             CheckDeleted()
@@ -448,7 +451,8 @@ Public Class CoverageRate
             Me.SetValue(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT, Value)
         End Set
     End Property
-    '<ValidNumericRange("", Min:=MIN_DOUBLE, Max:=MAX_DOUBLE, Message:=COVERAGE_RATE_FORM013), ValidGrossAmountPercent(""), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
+
+    <ValidNumericRange("", Max:=MAX_PERCENT, MaxExclusive:=False)>
     Public Property CovLiabilityLimitPercent() As DecimalType
         Get
             CheckDeleted()
