@@ -68,7 +68,12 @@ Namespace Tables
             Public IsBucketIncomingSelected As Boolean
             Public IsDealerConfiguredForSourceXcd As Boolean = False
             Public IsIgnorePremiumSetYesForContract As Boolean = False
+            Public IsProductConfiguredForRenewalNo As Boolean = False
 
+            'US 489838
+            Public IsRateLimitAndPercentBothPresent As Boolean
+            Public IsRateRenewalNoNotInSequence As Boolean
+            Public IsRateFirstRenewalNoIsNotZero As Boolean
         End Class
 #End Region
 
@@ -158,6 +163,8 @@ Namespace Tables
         Private Const ColIndexGrossAmountPercent As Integer = 16
         Private Const ColIndexRenewalNumber As Integer = 17
         Private Const ColIndexRegionId As Integer = 18
+        Private Const ColIndexCovLiabilityLimit As Integer = 19
+        Private Const ColIndexCovLiabilityLimitPercent As Integer = 20
 
         ' DataView Elements
         Private Const DbCoverageRateId As Integer = 0
@@ -282,6 +289,29 @@ Namespace Tables
                     End If
                 End With
                 Return isIgnorePremiumYesForContract
+            End Get
+        End Property
+
+        Private ReadOnly Property HasProductConfiguredForSequentialNoValidation() As Boolean
+            Get
+                Dim isProductConfiguredForSequentialNoValidation As Boolean = False
+
+                If Not oProduct Is Nothing AndAlso oProduct.AttributeValues.Contains(Codes.SEQUENTIAL_RENEWAL_NUMBER_VALIDATION) Then
+                    If oProduct.AttributeValues.Value(Codes.SEQUENTIAL_RENEWAL_NUMBER_VALIDATION) = Codes.YESNO_Y Then
+                        isProductConfiguredForSequentialNoValidation = True
+                    End If
+                End If
+
+                Return isProductConfiguredForSequentialNoValidation
+            End Get
+        End Property
+        Private _Product As ProductCode
+        Public ReadOnly Property oProduct() As ProductCode
+            Get
+                If _Product Is Nothing Then
+                    _Product = New ProductCode(State.Coverage.ProductCodeId)
+                End If
+                Return _Product
             End Get
         End Property
 
@@ -474,8 +504,6 @@ Namespace Tables
 
         End Property
 
-
-
         Private Property CoverageConseqDamageId() As String
             Get
                 Return moCoverageConseqDamageIdLabel.Text
@@ -499,11 +527,6 @@ Namespace Tables
 
 #Region "Handlers-Init, page events"
 
-        'Protected WithEvents moPanel As Panel
-        'Protected WithEvents moRateLabel As Label
-        'Protected WithEvents BtnDeleteRate As Button
-        'Protected WithEvents EditPanel_WRITE As Panel
-        'Protected WithEvents Button1 As Button
         Protected WithEvents moCoverageEditPanel As Panel
         Protected WithEvents multipleDropControl As MultipleColumnDDLabelControl
 
@@ -574,10 +597,12 @@ Namespace Tables
                 If Not IsPostBack Then
                     State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
                     State.IsIgnorePremiumSetYesForContract = HasIgnorePremiumSetForContractForSIncomingSource()
+                    SetSequenceFlag()
                 Else
                     SetGridSourceXcdTextBoxFromBo()
                 End If
 
+                DisplayHideCovLiabilityColumn()
                 DisplayHideSourceColumn()
                 SetGridSourceXcdLabelFromBo()
 
@@ -586,7 +611,9 @@ Namespace Tables
             End Try
             ShowMissingTranslations(MasterPage.MessageController)
         End Sub
-
+        Private Sub SetSequenceFlag()
+            State.IsProductConfiguredForRenewalNo = HasProductConfiguredForSequentialNoValidation()
+        End Sub
         Private Sub GetDisabledTabs()
             Dim disabledTabs As Array = hdnDisabledTab.Value.Split(",")
             If disabledTabs.Length > 0 AndAlso disabledTabs(0) IsNot String.Empty Then
@@ -1139,26 +1166,26 @@ Namespace Tables
                     oCoverageRate(i) = New CoverageRate
                     oCoverageRate(i).CoverageId = TheCoverage.Id
                     If TypeOf moGridView.Rows(i).Cells(ColIndexLowPrice).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LowPrice), CType(moGridView.Rows(i).Cells(ColIndexLowPrice).Controls(1), Label).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LowPrice), CType(moGridView.Rows(i).Cells(ColIndexLowPrice).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LowPrice), CType(moGridView.Rows(i).Cells(ColIndexLowPrice).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LowPrice), CType(moGridView.Rows(i).Cells(ColIndexLowPrice).Controls(1), TextBox).Text)
                     End If
                     If TypeOf moGridView.Rows(i).Cells(ColIndexHighPrice).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.HighPrice), CType(moGridView.Rows(i).Cells(ColIndexHighPrice).Controls(1), Label).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.HighPrice), CType(moGridView.Rows(i).Cells(ColIndexHighPrice).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.HighPrice), CType(moGridView.Rows(i).Cells(ColIndexHighPrice).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.HighPrice), CType(moGridView.Rows(i).Cells(ColIndexHighPrice).Controls(1), TextBox).Text)
                     End If
                     If TypeOf moGridView.Rows(i).Cells(ColIndexGrossAmt).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmt), CType(moGridView.Rows(i).Cells(ColIndexGrossAmt).Controls(1), Label).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.GrossAmt), CType(moGridView.Rows(i).Cells(ColIndexGrossAmt).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmt), CType(moGridView.Rows(i).Cells(ColIndexGrossAmt).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.GrossAmt), CType(moGridView.Rows(i).Cells(ColIndexGrossAmt).Controls(1), TextBox).Text)
                     End If
 
-                    PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmountPercent), GetAmountFormattedDoubleString("0"))
+                    PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.GrossAmountPercent), GetAmountFormattedDoubleString("0"))
                     If TypeOf moGridView.Rows(i).Cells(ColIndexGrossAmountPercent).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmountPercent), CType(moGridView.Rows(i).Cells(ColIndexGrossAmountPercent).Controls(1), Label).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.GrossAmountPercent), CType(moGridView.Rows(i).Cells(ColIndexGrossAmountPercent).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmountPercent), CType(moGridView.Rows(i).Cells(ColIndexGrossAmountPercent).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.GrossAmountPercent), CType(moGridView.Rows(i).Cells(ColIndexGrossAmountPercent).Controls(1), TextBox).Text)
                     End If
                     If CoveragePricingCode = NoCoveragePricing Then
                         PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CommissionsPercent), GetAmountFormattedDoubleString("0"))
@@ -1168,76 +1195,89 @@ Namespace Tables
                         PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LossCostPercent), GetAmountFormattedDoubleString("0"))
                     Else
                         If TypeOf moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1) Is Label Then
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercent), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1), Label).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CommissionsPercent), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1), Label).Text)
                         Else
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercent), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CommissionsPercent), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1), TextBox).Text)
                         End If
                         If TypeOf moGridView.Rows(i).Cells(ColIndexMarketingPercent).Controls(1) Is Label Then
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.MarketingPercent), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercent).Controls(1), Label).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.MarketingPercent), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercent).Controls(1), Label).Text)
                         Else
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.MarketingPercent), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercent).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.MarketingPercent), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercent).Controls(1), TextBox).Text)
                         End If
                         If TypeOf moGridView.Rows(i).Cells(ColIndexAdminExpense).Controls(1) Is Label Then
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.AdminExpense), CType(moGridView.Rows(i).Cells(ColIndexAdminExpense).Controls(1), Label).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.AdminExpense), CType(moGridView.Rows(i).Cells(ColIndexAdminExpense).Controls(1), Label).Text)
                         Else
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.AdminExpense), CType(moGridView.Rows(i).Cells(ColIndexAdminExpense).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.AdminExpense), CType(moGridView.Rows(i).Cells(ColIndexAdminExpense).Controls(1), TextBox).Text)
                         End If
                         If TypeOf moGridView.Rows(i).Cells(ColIndexProfitExpense).Controls(1) Is Label Then
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.ProfitExpense), CType(moGridView.Rows(i).Cells(ColIndexProfitExpense).Controls(1), Label).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.ProfitExpense), CType(moGridView.Rows(i).Cells(ColIndexProfitExpense).Controls(1), Label).Text)
                         Else
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.ProfitExpense), CType(moGridView.Rows(i).Cells(ColIndexProfitExpense).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.ProfitExpense), CType(moGridView.Rows(i).Cells(ColIndexProfitExpense).Controls(1), TextBox).Text)
                         End If
                         If TypeOf moGridView.Rows(i).Cells(ColIndexLossCostPercent).Controls(1) Is Label Then
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LossCostPercent), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercent).Controls(1), Label).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LossCostPercent), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercent).Controls(1), Label).Text)
                         Else
-                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LossCostPercent), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercent).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LossCostPercent), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercent).Controls(1), TextBox).Text)
                         End If
 
                         'US-521697
                         If State.IsDealerConfiguredForSourceXcd Then
                             If TypeOf moGridView.Rows(i).Cells(ColIndexCommissionsPercentXcd).Controls(0) Is Label Then
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercentXcd).Controls(0), Label).Text)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CommissionsPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercentXcd).Controls(0), Label).Text)
                             Else
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercentXcd).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CommissionsPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercentXcd).Controls(1), DropDownList).SelectedValue)
                             End If
 
                             If TypeOf moGridView.Rows(i).Cells(ColIndexMarketingPercentXcd).Controls(0) Is Label Then
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.MarketingPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercentXcd).Controls(0), Label).Text)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.MarketingPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercentXcd).Controls(0), Label).Text)
                             Else
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.MarketingPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercentXcd).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.MarketingPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercentXcd).Controls(1), DropDownList).SelectedValue)
                             End If
 
                             If TypeOf moGridView.Rows(i).Cells(ColIndexAdminExpenseXcd).Controls(0) Is Label Then
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.AdminExpenseSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexAdminExpenseXcd).Controls(0), Label).Text)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.AdminExpenseSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexAdminExpenseXcd).Controls(0), Label).Text)
                             Else
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.AdminExpenseSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexAdminExpenseXcd).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.AdminExpenseSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexAdminExpenseXcd).Controls(1), DropDownList).SelectedValue)
                             End If
 
                             If TypeOf moGridView.Rows(i).Cells(ColIndexProfitExpenseXcd).Controls(0) Is Label Then
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.ProfitPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexProfitExpenseXcd).Controls(0), Label).Text)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.ProfitPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexProfitExpenseXcd).Controls(0), Label).Text)
                             Else
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.ProfitPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexProfitExpenseXcd).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.ProfitPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexProfitExpenseXcd).Controls(1), DropDownList).SelectedValue)
                             End If
 
                             If TypeOf moGridView.Rows(i).Cells(ColIndexLossCostPercentXcd).Controls(0) Is Label Then
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LossCostPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercentXcd).Controls(0), Label).Text)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LossCostPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercentXcd).Controls(0), Label).Text)
                             Else
-                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LossCostPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercentXcd).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.LossCostPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercentXcd).Controls(1), DropDownList).SelectedValue)
                             End If
                         End If
                     End If
                     If TypeOf moGridView.Rows(i).Cells(ColIndexRenewalNumber).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.RenewalNumber), CType(moGridView.Rows(i).Cells(ColIndexRenewalNumber).Controls(1), Label).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.RenewalNumber), CType(moGridView.Rows(i).Cells(ColIndexRenewalNumber).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.RenewalNumber), CType(moGridView.Rows(i).Cells(ColIndexRenewalNumber).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.RenewalNumber), CType(moGridView.Rows(i).Cells(ColIndexRenewalNumber).Controls(1), TextBox).Text)
                     End If
 
                     If TypeOf moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1) Is Label Then
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.TaxRegion), CType(moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1), Label).Text)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.TaxRegion), CType(moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1), Label).Text)
                     Else
-                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.TaxRegion), CType(moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1), DropDownList).SelectedValue)
+                        PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.TaxRegion), CType(moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1), DropDownList).SelectedValue)
                     End If
 
+                    If State.IsProductConfiguredForRenewalNo Then
+                        If TypeOf moGridView.Rows(i).Cells(ColIndexCovLiabilityLimit).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimit).Controls(1), Label).Text)
+                        Else
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimit), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimit).Controls(1), TextBox).Text)
+                        End If
+
+                        If TypeOf moGridView.Rows(i).Cells(ColIndexCovLiabilityLimitPercent).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimitPercent), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimitPercent).Controls(1), Label).Text)
+                        Else
+                            PopulateBOProperty(oCoverageRate(i), NameOf(CoverageRate.CovLiabilityLimitPercent), CType(moGridView.Rows(i).Cells(ColIndexCovLiabilityLimitPercent).Controls(1), TextBox).Text)
+                        End If
+                    End If
                 Next
                 State.CoverageRateList = oCoverageRate
             End If
@@ -1452,6 +1492,11 @@ Namespace Tables
             BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.RenewalNumber), moGridView.Columns(ColIndexRenewalNumber))
             BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.RegionId), moGridView.Columns(ColIndexRegionId))
 
+            If State.IsProductConfiguredForRenewalNo Then
+                BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CovLiabilityLimit), moGridView.Columns(ColIndexCovLiabilityLimit))
+                BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CovLiabilityLimitPercent), moGridView.Columns(ColIndexCovLiabilityLimitPercent))
+            End If
+
             If State.IsDealerConfiguredForSourceXcd Then
                 BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CommissionsPercentSourceXcd), moGridView.Columns(ColIndexCommissionsPercentXcd))
                 BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.MarketingPercentSourceXcd), moGridView.Columns(ColIndexMarketingPercentXcd))
@@ -1577,6 +1622,10 @@ Namespace Tables
 
         Private Sub BtnSaveRate_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnSaveRate_WRITE.Click
             Try
+                If Not TheCoverageRate Is Nothing Then
+                    TheCoverageRate.IsProductSetForSequenceRenewalNo = State.IsProductConfiguredForRenewalNo
+                End If
+
                 SaveRateChanges()
 
                 'US-521697
@@ -2975,8 +3024,15 @@ Namespace Tables
                 If moRecoverDeciveDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then PopulateBOProperty(TheCoverage, "RecoverDeviceId", moRecoverDeciveDrop)
                 PopulateBOProperty(TheCoverage, "TaxTypeXCD", moTaxTypeDrop, False, True)
 
+                'US-489839
+                PopulateCoverageRateLiabilityLimitBOFromForm()
+
                 'US-521697
                 CommonSourceOptionLogic()
+
+                'US-489839
+                ValidateRateRenewalNo()
+                ValidateRateLimitAndPercent()
             End With
 
             If ErrCollection.Count > 0 Then
@@ -3203,6 +3259,17 @@ Namespace Tables
                 moGridView.Columns(ColIndexLossCostPercentXcd).Visible = False
             End If
         End Sub
+
+        Private Sub DisplayHideCovLiabilityColumn()
+            'US-489838
+            If State.IsProductConfiguredForRenewalNo Then
+                moGridView.Columns(ColIndexCovLiabilityLimit).Visible = True
+                moGridView.Columns(ColIndexCovLiabilityLimitPercent).Visible = True
+            Else
+                moGridView.Columns(ColIndexCovLiabilityLimit).Visible = False
+                moGridView.Columns(ColIndexCovLiabilityLimitPercent).Visible = False
+            End If
+        End Sub
 #End Region
 
 #Region "Populate"
@@ -3265,6 +3332,17 @@ Namespace Tables
                 moGridView.DataSource = oDataView
                 moGridView.DataBind()
                 ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, moGridView)
+
+                'US 489838
+                SetSequenceFlag()
+
+                If State.IsProductConfiguredForRenewalNo Then
+                    moGridView.Columns(ColIndexCovLiabilityLimit).Visible = True
+                    moGridView.Columns(ColIndexCovLiabilityLimitPercent).Visible = True
+                Else
+                    moGridView.Columns(ColIndexCovLiabilityLimit).Visible = False
+                    moGridView.Columns(ColIndexCovLiabilityLimitPercent).Visible = False
+                End If
 
             Catch ex As Exception
                 moMsgControllerRate.AddError(CoverageForm004)
@@ -3393,7 +3471,6 @@ Namespace Tables
                     SetSelectedGridText(moGridView, ColIndexLowPrice, .LowPrice.ToString)
                     SetSelectedGridText(moGridView, ColIndexGrossAmountPercent, .GrossAmountPercent.ToString)
                     SetSelectedGridText(moGridView, ColIndexRenewalNumber, .RenewalNumber.ToString)
-
                 End With
             Else
                 With TheCoverageRate
@@ -3408,9 +3485,9 @@ Namespace Tables
                     SetSelectedGridText(moGridView, ColIndexLowPrice, .LowPrice.ToString)
                     SetSelectedGridText(moGridView, ColIndexGrossAmountPercent, .GrossAmountPercent.ToString)
                     SetSelectedGridText(moGridView, ColIndexRenewalNumber, .RenewalNumber.ToString)
-
                 End With
             End If
+            PopulateCoverageRateLiabilityLimitFromBO()
             PopulateTaxRegionFromCoverageRateBo()
         End Sub
 
@@ -3629,7 +3706,13 @@ Namespace Tables
                 PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.RenewalNumber), CType(GetSelectedGridControl(moGridView, ColIndexRenewalNumber), TextBox))
                 PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.RegionId), CType(GetDropDownControlFromGrid(moGridView, ColIndexRegionId), DropDownList))
 
+                PopulateCoverageRateLiabilityLimitBOFromForm()
+
                 CommonSourceOptionLogic()
+
+                'US-489839            
+                ValidateRateRenewalNo()
+                ValidateRateLimitAndPercent()
             End With
 
             ValidateCoverage()
@@ -4836,12 +4919,345 @@ Namespace Tables
         End Function
 
 #End Region
+
+#Region "Coverage Rate Liability Limit US-489838"
+        Protected Function CheckNull(ByVal objGrid As Object) As String
+            If Object.ReferenceEquals(objGrid, DBNull.Value) Then
+                Return String.Empty
+            ElseIf TypeOf objGrid Is Byte() Then
+                Return GetGuidStringFromByteArray(objGrid)
+            Else
+                If objGrid.ToString().Equals(Guid.Empty.ToString()) Then
+                    Return String.Empty
+                End If
+
+                Return objGrid.ToString()
+            End If
+        End Function
+
+        Private Sub PopulateCoverageRateLiabilityLimitBOFromForm()
+            If State.IsProductConfiguredForRenewalNo Then
+                If moGridView.EditIndex = -1 Then Exit Sub
+                Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+                Dim TextBoxLiabilityLimit As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
+                Dim TextBoxLiabilityLimitPercent As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
+
+                If Not TextBoxLiabilityLimit Is Nothing Then
+                    If (String.IsNullOrWhiteSpace(TextBoxLiabilityLimit.Text)) Then
+                        Dim tempTextBoxLiabilityLimit As TextBox = New TextBox
+                        tempTextBoxLiabilityLimit.Text = String.Empty
+                        Me.PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimit), tempTextBoxLiabilityLimit)
+                    Else
+                        PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimit), CType(GetSelectedGridControl(moGridView, ColIndexCovLiabilityLimit), TextBox))
+                    End If
+                End If
+
+                If Not TextBoxLiabilityLimitPercent Is Nothing Then
+                    If (String.IsNullOrWhiteSpace(TextBoxLiabilityLimitPercent.Text)) Then
+                        Dim tempTextBoxLiabilityLimitPercent As TextBox = New TextBox
+                        tempTextBoxLiabilityLimitPercent.Text = String.Empty
+                        Me.PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimitPercent), tempTextBoxLiabilityLimitPercent)
+                    Else
+                        PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CovLiabilityLimitPercent), CType(GetSelectedGridControl(moGridView, ColIndexCovLiabilityLimitPercent), TextBox))
+                    End If
+                End If
+            End If
+        End Sub
+
+        Private Sub PopulateCoverageRateLiabilityLimitFromBO()
+            If State.IsProductConfiguredForRenewalNo Then
+                'ensure that grid's edit index is set before this gets a call
+                If moGridView.EditIndex = -1 Then Exit Sub
+                Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+                Dim TextBoxLiabilityLimit As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
+                Dim TextBoxLiabilityLimitPercent As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
+
+                If State.IsNewWithCopy Then
+                    With State.CoverageRateList(moGridView.SelectedIndex)
+                        If Not .CovLiabilityLimit Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(.CovLiabilityLimit) Then
+                                PopulateControlFromBOProperty(TextBoxLiabilityLimit, .CovLiabilityLimit)
+                            End If
+                        End If
+
+                        If Not .CovLiabilityLimitPercent Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(.CovLiabilityLimitPercent) Then
+                                PopulateControlFromBOProperty(TextBoxLiabilityLimitPercent, .CovLiabilityLimitPercent)
+                            End If
+                        End If
+                    End With
+                Else
+                    With TheCoverageRate
+                        If Not .CovLiabilityLimit Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(.CovLiabilityLimit) Then
+                                PopulateControlFromBOProperty(TextBoxLiabilityLimit, .CovLiabilityLimit)
+                            End If
+                        End If
+
+                        If Not .CovLiabilityLimitPercent Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(.CovLiabilityLimitPercent) Then
+                                PopulateControlFromBOProperty(TextBoxLiabilityLimitPercent, .CovLiabilityLimitPercent)
+                            End If
+                        End If
+                    End With
+                End If
+            End If
+        End Sub
+
+        Private Sub CheckRenewalNumberNotInSequence()
+            If State.IsProductConfiguredForRenewalNo Then
+                Dim LastRenewalNo As Decimal
+                Dim LastLowPrice As Decimal
+                Dim LastHighPrice As Decimal
+
+                Dim enteredRenewalNo As Decimal
+                Dim enteredLowPrice As Decimal
+                Dim enteredHighPrice As Decimal
+
+                Dim isSameLowHighExist As Boolean = False
+                Dim isNotSequence As Boolean = False
+                Dim isFirstRenewalNoNotZero As Boolean = False
+
+                For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
+                    Me.moGridView.PageIndex = pageIndexk
+                    Dim rowNum As Integer = Me.moGridView.Rows.Count
+                    For i As Integer = 0 To rowNum - 1
+                        Dim gRow As GridViewRow = moGridView.Rows(i)
+                        If gRow.RowType = DataControlRowType.DataRow Then
+
+                            Dim lblLowPrice As Label = DirectCast(gRow.Cells(ColIndexLowPrice).FindControl("moLowPriceLabel"), Label)
+                            Dim textBoxLowPrice As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moLowPriceText"), TextBox)
+
+                            Dim lblHighPrice As Label = DirectCast(gRow.Cells(ColIndexHighPrice).FindControl("moHigh_PriceLabel"), Label)
+                            Dim textBoxHighPrice As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moHigh_PriceText"), TextBox)
+
+                            Dim lblRenewalNo As Label = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moRenewal_NumberLabel"), Label)
+                            Dim textBoxRenewalNo As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moRenewal_NumberText"), TextBox)
+
+                            If i <> 0 Then
+                                If Not lblRenewalNo Is Nothing And Not lblLowPrice Is Nothing And Not lblHighPrice Is Nothing Then
+                                    If Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) And Not String.IsNullOrWhiteSpace(lblLowPrice.Text) And Not String.IsNullOrWhiteSpace(lblHighPrice.Text) Then
+                                        Dim existingRenewalNo As Decimal = Convert.ToDecimal(lblRenewalNo.Text)
+                                        Dim existingLowPrice As Decimal = Convert.ToDecimal(lblLowPrice.Text)
+                                        Dim existingHighPrice As Decimal = Convert.ToDecimal(lblHighPrice.Text)
+
+                                        'If LastLowPrice = existingLowPrice And LastHighPrice = existingHighPrice Then
+                                        '    If existingRenewalNo <> LastRenewalNo + 1 Then
+                                        '        isNotSequence = True
+                                        '        Exit For
+                                        '    End If
+                                        'End If
+                                        If Not TheCoverageRate Is Nothing Then
+                                            If Not TheCoverageRate.LowPrice Is Nothing And Not TheCoverageRate.HighPrice Is Nothing And Not TheCoverageRate.RenewalNumber Is Nothing Then
+                                                If Not String.IsNullOrWhiteSpace(TheCoverageRate.LowPrice.ToString()) And Not String.IsNullOrWhiteSpace(TheCoverageRate.HighPrice.ToString()) And Not String.IsNullOrWhiteSpace(TheCoverageRate.RenewalNumber.ToString()) Then
+                                                    If TheCoverageRate.LowPrice = existingLowPrice And TheCoverageRate.HighPrice = existingHighPrice Then
+                                                        isSameLowHighExist = True
+
+                                                        enteredRenewalNo = TheCoverageRate.RenewalNumber
+                                                        enteredLowPrice = TheCoverageRate.LowPrice
+                                                        enteredHighPrice = TheCoverageRate.HighPrice
+                                                        LastRenewalNo = existingRenewalNo
+                                                        LastLowPrice = existingLowPrice
+                                                        LastHighPrice = existingHighPrice
+                                                    End If
+                                                End If
+                                            End If
+                                        End If
+
+                                    End If
+                                End If
+
+                                If Not textBoxRenewalNo Is Nothing And Not textBoxLowPrice Is Nothing And Not textBoxHighPrice Is Nothing Then
+                                    If Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) And Not String.IsNullOrWhiteSpace(textBoxLowPrice.Text) And Not String.IsNullOrWhiteSpace(textBoxHighPrice.Text) Then
+                                        enteredRenewalNo = Convert.ToDecimal(textBoxRenewalNo.Text)
+                                        enteredLowPrice = Convert.ToDecimal(textBoxLowPrice.Text)
+                                        enteredHighPrice = Convert.ToDecimal(textBoxHighPrice.Text)
+                                        'LastRenewalNo = enteredRenewalNo
+
+                                        'If LastLowPrice = enteredLowPrice And LastHighPrice = enteredHighPrice Then
+                                        '    If enteredRenewalNo <> LastRenewalNo + 1 Then
+                                        '        isNotSequence = True
+                                        '        Exit For
+                                        '    End If
+                                        'End If
+
+                                    End If
+                                End If
+                            Else
+                                If Not lblRenewalNo Is Nothing And Not lblLowPrice Is Nothing And Not lblHighPrice Is Nothing Then
+                                    If Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) And Not String.IsNullOrWhiteSpace(lblLowPrice.Text) And Not String.IsNullOrWhiteSpace(lblHighPrice.Text) Then
+
+                                        Dim existingRenewalNo As Decimal = Convert.ToDecimal(lblRenewalNo.Text)
+                                        Dim existingLowPrice As Decimal = Convert.ToDecimal(lblLowPrice.Text)
+                                        Dim existingHighPrice As Decimal = Convert.ToDecimal(lblHighPrice.Text)
+
+                                        If existingRenewalNo <> 0 Then
+                                            isFirstRenewalNoNotZero = True
+                                            Exit For
+                                        End If
+
+                                        LastRenewalNo = existingRenewalNo
+                                        LastLowPrice = existingLowPrice
+                                        LastHighPrice = existingHighPrice
+
+                                        If Not TheCoverageRate Is Nothing Then
+                                            If Not TheCoverageRate.LowPrice Is Nothing And Not TheCoverageRate.HighPrice Is Nothing And Not TheCoverageRate.RenewalNumber Is Nothing Then
+                                                If Not String.IsNullOrWhiteSpace(TheCoverageRate.LowPrice.ToString()) And Not String.IsNullOrWhiteSpace(TheCoverageRate.HighPrice.ToString()) And Not String.IsNullOrWhiteSpace(TheCoverageRate.RenewalNumber.ToString()) Then
+                                                    If TheCoverageRate.LowPrice = existingLowPrice And TheCoverageRate.HighPrice = existingHighPrice Then
+                                                        isSameLowHighExist = True
+
+                                                        enteredRenewalNo = TheCoverageRate.RenewalNumber
+                                                        enteredLowPrice = TheCoverageRate.LowPrice
+                                                        enteredHighPrice = TheCoverageRate.HighPrice
+                                                        LastRenewalNo = existingRenewalNo
+                                                        LastLowPrice = existingLowPrice
+                                                        LastHighPrice = existingHighPrice
+                                                    End If
+                                                End If
+                                            End If
+                                        End If
+
+                                    End If
+                                End If
+
+                                If Not textBoxRenewalNo Is Nothing And Not textBoxLowPrice Is Nothing And Not textBoxHighPrice Is Nothing Then
+                                    If Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) And Not String.IsNullOrWhiteSpace(textBoxLowPrice.Text) And Not String.IsNullOrWhiteSpace(textBoxHighPrice.Text) Then
+
+                                        enteredRenewalNo = Convert.ToDecimal(textBoxRenewalNo.Text)
+                                        enteredLowPrice = Convert.ToDecimal(textBoxLowPrice.Text)
+                                        enteredHighPrice = Convert.ToDecimal(textBoxHighPrice.Text)
+                                        'LastRenewalNo = enteredRenewalNo
+
+                                        If enteredRenewalNo <> 0 Then
+                                            isFirstRenewalNoNotZero = True
+                                            Exit For
+                                        End If
+                                    End If
+                                End If
+                            End If
+                        End If
+                    Next
+                Next
+
+                If isSameLowHighExist Then
+                    If enteredRenewalNo <> LastRenewalNo + 1 Then
+                        isNotSequence = True
+                    End If
+                End If
+
+                If isFirstRenewalNoNotZero Then
+                    Me.State.IsRateFirstRenewalNoIsNotZero = True
+                Else
+                    Me.State.IsRateFirstRenewalNoIsNotZero = False
+                End If
+
+                If isNotSequence Then
+                    Me.State.IsRateRenewalNoNotInSequence = True
+                Else
+                    Me.State.IsRateRenewalNoNotInSequence = False
+                End If
+            End If
+        End Sub
+
+        Private Sub ValidateRateRenewalNo()
+            If State.IsProductConfiguredForRenewalNo Then
+                CheckRenewalNumberNotInSequence()
+
+                If Me.State.IsRateFirstRenewalNoIsNotZero Then
+                    Me.State.IsRateFirstRenewalNoIsNotZero = False
+                    Throw New GUIException(Message.MSG_FIRST_RENEWAL_NOT_ZERO, Assurant.ElitaPlus.Common.ErrorCodes.MSG_FIRST_RENEWAL_SHOULD_BE_ZERO)
+                End If
+
+                If Me.State.IsRateRenewalNoNotInSequence Then
+                    Me.State.IsRateRenewalNoNotInSequence = False
+                    Throw New GUIException(Message.MSG_RENEWAL_NOT_SEQUENCE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_RENEWAL_SHOULD_ALWAYS_BE_IN_SEQUENCE)
+                End If
+            End If
+        End Sub
+
+        Private Sub CheckRateLimitAndPercentBothPresent()
+            Dim countLimitPer As Int16 = 0
+            Dim countLimit As Int16 = 0
+
+            For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
+                Me.moGridView.PageIndex = pageIndexk
+                Dim rowNum As Integer = Me.moGridView.Rows.Count
+                For i As Integer = 0 To rowNum - 1
+                    Dim gRow As GridViewRow = moGridView.Rows(i)
+                    If gRow.RowType = DataControlRowType.DataRow Then
+                        Dim lblLimitPer As Label = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("lblLiabilityLimitPercent"), Label)
+                        Dim textBoxLimitPer As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
+
+                        Dim lblLimit As Label = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("lblLiabilityLimit"), Label)
+                        Dim textBoxLimit As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
+
+                        If Not textBoxLimitPer Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
+                                'Dim cPer As Decimal = Convert.ToDecimal(textBoxLimitPer.Text)
+                                'If cPer > 0 Then
+                                    countLimitPer = countLimitPer + 1
+                                'End If
+                            End If
+                        End If
+
+                        If Not lblLimitPer Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(lblLimitPer.Text) Then
+                                'Dim cPer As Decimal = Convert.ToDecimal(lblLimitPer.Text)
+                                countLimitPer = countLimitPer + 1
+                            End If
+                        End If
+
+                        If Not textBoxLimit Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(textBoxLimit.Text) Then
+                                'Dim cAmt As Decimal = Convert.ToDecimal(textBoxLimit.Text)
+                                'If cAmt > 0 Then
+                                    countLimit = countLimit + 1
+                                'End If
+                            End If
+                        End If
+
+                        If Not lblLimit Is Nothing Then
+                            If Not String.IsNullOrWhiteSpace(lblLimit.Text) Then
+                                'Dim cAmt As Decimal = Convert.ToDecimal(lblLimit.Text)
+                                'If cAmt > 0 Then
+                                    countLimit = countLimit + 1
+                                'End If
+                            End If
+                        End If
+
+                    End If
+                Next
+            Next
+
+            If ((countLimitPer = 1 Or countLimitPer > 1) And (countLimit = 1 Or countLimit > 1)) Then
+                Me.State.IsRateLimitAndPercentBothPresent = True
+            Else
+                Me.State.IsRateLimitAndPercentBothPresent = False
+            End If
+        End Sub
+
+        Private Sub ValidateRateLimitAndPercent()
+            If State.IsProductConfiguredForRenewalNo Then
+                CheckRateLimitAndPercentBothPresent()
+
+                If Me.State.IsRateLimitAndPercentBothPresent Then
+                    Me.State.IsRateLimitAndPercentBothPresent = False
+                    Throw New GUIException(Message.MSG_EITHER_LIMIT_OR_PERCENT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_ONLY_EITHER_LIMIT_OR_PERCENT_ALLOWED)
+                End If
+            End If
+        End Sub
+
+#End Region
+
+#Region "Get Current User and Language"
         Private Function CurrentUser() As User
             Return ElitaPlusIdentity.Current.ActiveUser
         End Function
 
         Private Function GetLanguageId() As Guid
-            Return  ElitaPlusIdentity.Current.ActiveUser.LanguageId
+            Return ElitaPlusIdentity.Current.ActiveUser.LanguageId
         End Function
+#End Region
+
     End Class
 End Namespace
