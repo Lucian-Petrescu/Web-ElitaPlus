@@ -2503,9 +2503,11 @@ Public Class ClaimWizardForm
                     .ClaimBO = CType(State.ClaimBO, ClaimBase)
                     If Not allowEnrolledDeviceUpdate Is Nothing AndAlso allowEnrolledDeviceUpdate.Value = Codes.YESNO_Y Then
                         For Each i As ClaimIssue In State.ClaimBO.ClaimIssuesList
-                            If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS And (i.StatusCode = Codes.CLAIMISSUE_STATUS__RESOLVED Or i.StatusCode = Codes.CLAIMISSUE_STATUS__REJECTED Or i.StatusCode = Codes.CLAIMISSUE_STATUS__WAIVED) Then
-                                .ShowDeviceEditImg = False
+                            If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS and i.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Then
+                                .ShowDeviceEditImg = True
                                 Exit For
+                            Else 
+                                .ShowDeviceEditImg = False
                             End If
                         Next
                     else
