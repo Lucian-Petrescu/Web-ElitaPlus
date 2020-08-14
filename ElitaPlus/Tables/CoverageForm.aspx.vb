@@ -5035,6 +5035,7 @@ Namespace Tables
                             Dim textBoxRenewalNo As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moRenewal_NumberText"), TextBox)
 
                             If i <> 0 Then
+                                'If label and row is greater than 1
                                 If Not lblRenewalNo Is Nothing And Not lblLowPrice Is Nothing And Not lblHighPrice Is Nothing Then
                                     If Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) And Not String.IsNullOrWhiteSpace(lblLowPrice.Text) And Not String.IsNullOrWhiteSpace(lblHighPrice.Text) Then
                                         Dim existingRenewalNo As Decimal = Convert.ToDecimal(lblRenewalNo.Text)
@@ -5067,11 +5068,35 @@ Namespace Tables
                                     End If
                                 End If
 
+                                'If textbox and row is greater than 1
                                 If Not textBoxRenewalNo Is Nothing And Not textBoxLowPrice Is Nothing And Not textBoxHighPrice Is Nothing Then
                                     If Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) And Not String.IsNullOrWhiteSpace(textBoxLowPrice.Text) And Not String.IsNullOrWhiteSpace(textBoxHighPrice.Text) Then
                                         enteredRenewalNo = Convert.ToDecimal(textBoxRenewalNo.Text)
                                         enteredLowPrice = Convert.ToDecimal(textBoxLowPrice.Text)
                                         enteredHighPrice = Convert.ToDecimal(textBoxHighPrice.Text)
+                                        
+                                        If TheCoverageRate.LowPrice = LastLowPrice And TheCoverageRate.HighPrice = LastHighPrice Then
+                                            isSameLowHighExist = True
+                                            
+                                            enteredRenewalNo = TheCoverageRate.RenewalNumber
+                                            enteredLowPrice = TheCoverageRate.LowPrice
+                                            enteredHighPrice = TheCoverageRate.HighPrice
+                                           
+                                            LastRenewalNo = TheCoverageRate.RenewalNumber
+                                            LastLowPrice = TheCoverageRate.LowPrice
+                                            LastHighPrice = TheCoverageRate.HighPrice
+
+                                            If enteredRenewalNo <> LastRenewalNo + 1 Then
+                                                isNotSequence = True
+                                                Exit For
+                                            End If
+                                        Else
+                                            If enteredRenewalNo <> 0 Then
+                                                isNotSequence = True
+                                                Exit For
+                                            End If
+                                        End If
+
                                         'LastRenewalNo = enteredRenewalNo
 
                                         'If LastLowPrice = enteredLowPrice And LastHighPrice = enteredHighPrice Then
@@ -5084,6 +5109,7 @@ Namespace Tables
                                     End If
                                 End If
                             Else
+                                'If lable and first row
                                 If Not lblRenewalNo Is Nothing And Not lblLowPrice Is Nothing And Not lblHighPrice Is Nothing Then
                                     If Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) And Not String.IsNullOrWhiteSpace(lblLowPrice.Text) And Not String.IsNullOrWhiteSpace(lblHighPrice.Text) Then
 
@@ -5120,6 +5146,7 @@ Namespace Tables
                                     End If
                                 End If
 
+                                'If textbox and first row
                                 If Not textBoxRenewalNo Is Nothing And Not textBoxLowPrice Is Nothing And Not textBoxHighPrice Is Nothing Then
                                     If Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) And Not String.IsNullOrWhiteSpace(textBoxLowPrice.Text) And Not String.IsNullOrWhiteSpace(textBoxHighPrice.Text) Then
 
@@ -5191,11 +5218,18 @@ Namespace Tables
                         Dim lblLimit As Label = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("lblLiabilityLimit"), Label)
                         Dim textBoxLimit As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
 
+                        Dim lblRenewalNo As Label = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moRenewal_NumberLabel"), Label)
+                        Dim textBoxRenewalNo As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moRenewal_NumberText"), TextBox)
+
                         If Not textBoxLimitPer Is Nothing Then
                             If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
                                 'Dim cPer As Decimal = Convert.ToDecimal(textBoxLimitPer.Text)
                                 'If cPer > 0 Then
-                                    countLimitPer = countLimitPer + 1
+                                If Not textBoxRenewalNo Is Nothing And Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) Then
+                                    If Convert.ToDecimal(textBoxRenewalNo.Text) > 0 Then
+                                        countLimitPer = countLimitPer + 1
+                                    End If
+                                End If
                                 'End If
                             End If
                         End If
@@ -5203,7 +5237,11 @@ Namespace Tables
                         If Not lblLimitPer Is Nothing Then
                             If Not String.IsNullOrWhiteSpace(lblLimitPer.Text) Then
                                 'Dim cPer As Decimal = Convert.ToDecimal(lblLimitPer.Text)
-                                countLimitPer = countLimitPer + 1
+                                If Not lblRenewalNo Is Nothing And Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) Then
+                                    If Convert.ToDecimal(lblRenewalNo.Text) > 0 Then
+                                        countLimitPer = countLimitPer + 1
+                                    End If
+                                End If
                             End If
                         End If
 
@@ -5211,7 +5249,11 @@ Namespace Tables
                             If Not String.IsNullOrWhiteSpace(textBoxLimit.Text) Then
                                 'Dim cAmt As Decimal = Convert.ToDecimal(textBoxLimit.Text)
                                 'If cAmt > 0 Then
-                                    countLimit = countLimit + 1
+                                If Not textBoxRenewalNo Is Nothing And Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) Then
+                                    If Convert.ToDecimal(textBoxRenewalNo.Text) > 0 Then
+                                        countLimit = countLimit + 1
+                                    End If
+                                End If
                                 'End If
                             End If
                         End If
@@ -5220,7 +5262,11 @@ Namespace Tables
                             If Not String.IsNullOrWhiteSpace(lblLimit.Text) Then
                                 'Dim cAmt As Decimal = Convert.ToDecimal(lblLimit.Text)
                                 'If cAmt > 0 Then
-                                    countLimit = countLimit + 1
+                                If Not lblRenewalNo Is Nothing And Not String.IsNullOrWhiteSpace(lblRenewalNo.Text) Then
+                                    If Convert.ToDecimal(lblRenewalNo.Text) > 0 Then
+                                        countLimit = countLimit + 1
+                                    End If
+                                End If
                                 'End If
                             End If
                         End If
