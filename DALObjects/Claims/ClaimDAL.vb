@@ -2022,13 +2022,11 @@ Public Class ClaimDAL
         Dim ds As New DataSet
         Dim selectStmt As String = Me.Config("/SQL/VALIDATE_SERVICE_WARRANTY")
 
-        Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray) _
-                                               , New OracleParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray)}
+        Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray)}
 
+        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
 
-        Dim dsSvcWty As DataSet = DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
-
-        If CInt(dsSvcWty.Tables(0).Rows(0).Item(0)) > 0 Then
+        If ds.Tables(0).Rows(0).Item(0) > 0 Then
             Return True
         Else
             Return False

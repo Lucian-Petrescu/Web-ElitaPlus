@@ -2443,24 +2443,7 @@ select claim.claim_number,
   </GET_REGISTERED_ITEM_INDIXID>
 
   <VALIDATE_SERVICE_WARRANTY>
-    <![CDATA[
-	   with tmp as (select max(claim_id) claim_id,max(sub_status_date) sub_status_date,max(auth_fulfillment_type_xcd) auth_fulfillment_type_xcd
-					  from(
-					  select ca.claim_id,ca.auth_fulfillment_type_xcd,ca.sub_status_date
-					  from elp_claim_authorization ca
-					  where sub_status_xcd='CLM_AUTH_SUBSTAT-DSH'
-					   and ca.claim_id=:claim_id
-					  union
-					  select ca.claim_id,ca.auth_fulfillment_type_xcd,ca.sub_status_date
-					  from elp_claim_auth_history ca
-					  where sub_status_xcd='CLM_AUTH_SUBSTAT-DSH'
-					   and ca.claim_id=:claim_id))
-       select count(*)
- 	     from elp_claim_extended_mv c
-	     inner join elp_serv_center_meth_repair scmr on c.service_center_id = scmr.service_center_id and c.method_of_repair_id = scmr.serv_center_mor_id
-	     inner join  tmp on c.claim_id=tmp.claim_id
-	   where sysdate <= (tmp.sub_status_date + scmr.service_warranty_days)
-    ]]>
+    select elita.elp_claims.IsServiceWarrantyValid(:claim_id) from dual
   </VALIDATE_SERVICE_WARRANTY>
       
   <LOAD_LIST_BY_ISSUE>
