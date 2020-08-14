@@ -230,12 +230,7 @@ Namespace Tables
                 })
 
                 'ProductCode
-                Dim oProductCodeList = GetProductCodeListByCompanyForUser()
-                Me.ddlProductCode.Populate(oProductCodeList, New PopulateOptions() With
-                {
-                    .AddBlankItem = True,
-                    .TextFunc = textFun
-                })
+                ddlProductCode.Enabled = False
 
                 'Device Type
                 Me.ddlDeviceType.Populate(CommonConfigManager.Current.ListManager.GetList("DEVICE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
@@ -602,12 +597,15 @@ Namespace Tables
                 End If
 
                 'ProductCode
+                ddlProductCode.Enabled = True
                 Dim oProductCodeList = GetProductListByDealer()
                 Me.ddlProductCode.Populate(oProductCodeList, New PopulateOptions() With
                 {
                     .AddBlankItem = True,
                     .TextFunc = textFun
                 })
+            Else
+                ddlProductCode.Enabled = False
 
             End If
         End Sub
@@ -639,6 +637,10 @@ Namespace Tables
             Dim oProductListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByDealer", context:=oListContext)
             Return oProductListForCompany.ToArray()
         End Function
+
+        Private Sub ddlProductCode_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlProductCode.SelectedIndexChanged
+
+        End Sub
 
 #End Region
 
