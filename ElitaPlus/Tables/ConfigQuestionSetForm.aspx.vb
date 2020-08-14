@@ -638,10 +638,6 @@ Namespace Tables
             Return oProductListForCompany.ToArray()
         End Function
 
-        Private Sub ddlProductCode_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlProductCode.SelectedIndexChanged
-
-        End Sub
-
 #End Region
 
     End Class
