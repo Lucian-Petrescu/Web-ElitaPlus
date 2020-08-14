@@ -2397,6 +2397,10 @@ select claim.claim_number,
     and rownum = 1
   </GET_REGISTERED_ITEM_INDIXID>
 
+  <VALIDATE_SERVICE_WARRANTY>
+    select elita.elp_claims.is_equip_cover_by_srv_warranty(:claim_id) from dual
+  </VALIDATE_SERVICE_WARRANTY>
+      
   <LOAD_LIST_BY_ISSUE>
     elita.elp_tbl_entity_issue.SearchClaimsByIssue
   </LOAD_LIST_BY_ISSUE>
