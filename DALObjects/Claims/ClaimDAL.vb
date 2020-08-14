@@ -2026,7 +2026,7 @@ Public Class ClaimDAL
 
         DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
 
-        If ds.Tables(0).Rows(0).Item(0) > 0 Then
+        If (ds.Tables(0).Rows(0).Item(0).ToString) = "Y" Then
             Return True
         Else
             Return False
