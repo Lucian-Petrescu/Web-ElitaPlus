@@ -27,8 +27,8 @@
               <table cellpadding="0" cellspacing="0" border="0" style="WIDTH:100%">
                 <tr>
                   <td>
-                    <span class="bold">From:</span> Federal Warranty Service Corporation
-                    <br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Caribbean American Property Insurance Company
+                    <span class="bold">To:&#160;</span>
+                    <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SVC_NAME" />
                   </td>
                   <td rowspan="4" style="vertical-align:top;text-align:right;">
                     <xsl:element name="img">
@@ -47,18 +47,16 @@
                 </tr>
                 <tr>
                   <td colspan="2">
-                    <span class="bold">To:&#160;</span>
-                    <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SVC_NAME" />
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2">
                     <span class="bold">Date:&#160;</span>
                     <xsl:value-of select="substring(a:ServiceOrderReport/a:ServiceOrder/a:DATE_CREATED,6,2)" />
                     <xsl:text>/</xsl:text>
                     <xsl:value-of select="substring(a:ServiceOrderReport/a:ServiceOrder/a:DATE_CREATED, 9, 2)" />
                     <xsl:text>/</xsl:text>
                     <xsl:value-of select="substring(a:ServiceOrderReport/a:ServiceOrder/a:DATE_CREATED, 1, 4)" />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">&#160;
                   </td>
                 </tr>
                 <tr>
@@ -86,36 +84,39 @@
                 <tr>
                   <td>(NUMERO DE AUTORIZACION)</td>
                   <td>(FECHA PROCESADA)</td>
-
+                
                 </tr>
                 <tr>
                   <td>&#160;</td>
                   <td></td>
-
+                
                 </tr>
                 <tr>
                   <td>
                     <span class="bold">CLIENT:&#160;</span><xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:DEALER_NAME" />
                   </td>
                   <td>
-                    <span class="bold">COVERAGE TYPE:&#160;</span><xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:REPAIR_METHOD" />
+                    <span class="bold">COVERAGE TYPE:&#160;</span><xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:COVERAGE_TYPE" />
                   </td>
-
+                
                 </tr>
                 <tr>
                   <td>(CLIENTE)</td>
                   <td>(TIPO DE SERVICIO)</td>
-
+                
                 </tr>
                 <tr>
                   <td>&#160;</td>
                   <td></td>
-
                 </tr>
                 <tr>
                   <td>&#160;</td>
+                  <td><span class="bold">METHOD OF REPAIR:&#160;</span><xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:REPAIR_METHOD" /></td>
+                </tr>                
+                <tr>
+                  <td>&#160;</td>
                   <td></td>
-
+                
                 </tr>
                 <tr>
                   <td id="title" colspan="2">

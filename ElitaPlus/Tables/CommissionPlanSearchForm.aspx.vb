@@ -26,7 +26,7 @@ Namespace Tables
         Private Const GRID_CTRL_NAME_COMM_PERIOD_ID As String = "moCommissionPeriodId_NO_TRANSLATE"
 
         Private Const LABEL_DEALER As String = "DEALER"
-        Public Const PAGETITLE As String = "COMMISSION_BREAKDOWN"
+        Public Const PAGETITLE As String = "COMMISSION_PLAN"
         Public Const PAGETAB As String = "TABLES"
 #End Region
 
