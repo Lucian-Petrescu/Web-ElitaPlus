@@ -1073,20 +1073,6 @@
       <DependentUpon>ClaimDetailsForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
-    <Compile Include="GlobalConfig\QuestionSetForm.aspx.designer.vb">
-      <DependentUpon>QuestionSetForm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GlobalConfig\QuestionSetForm.aspx.vb">
-      <DependentUpon>QuestionSetForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GlobalConfig\QuestionSetListForm.aspx.designer.vb">
-      <DependentUpon>QuestionSetListForm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GlobalConfig\QuestionSetListForm.aspx.vb">
-      <DependentUpon>QuestionSetListForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Helpers\ceHelperParameter.vb" />
     <Compile Include="Helpers\ExtensionHelper.vb" />
     <Compile Include="Helpers\ListHelper.vb" />
@@ -1453,11 +1439,6 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\GiftCardService\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\QuestionService\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -5877,8 +5858,6 @@
     <Content Include="ElitaSecurity.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="GlobalConfig\QuestionSetForm.aspx" />
-    <Content Include="GlobalConfig\QuestionSetListForm.aspx" />
     <Content Include="Interfaces\AppleGBIFileForm.aspx" />
     <Content Include="Interfaces\AppleGBIFileFormDetail.aspx" />
     <Content Include="Interfaces\ARInvoiceReconWrkForm.aspx" />
@@ -6321,12 +6300,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
-    <Content Include="Service References\QuestionService\Assurant.ElitaPlus.ElitaPlusWebApp.QuestionService.QuestionSet.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\QuestionService\Assurant.ElitaPlus.ElitaPlusWebApp.QuestionService.QuestionSetInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <None Include="Service References\GiftCardService\GiftCardService.wsdl" />
     <None Include="Service References\GiftCardService\GiftCardService.xsd">
       <SubType>Designer</SubType>
@@ -6340,13 +6313,6 @@
     </None>
     <None Include="Service References\GiftCardService\GiftCardService3.xsd">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\QuestionService\QuestionService.disco" />
-    <None Include="Service References\QuestionService\configuration91.svcinfo" />
-    <None Include="Service References\QuestionService\configuration.svcinfo" />
-    <None Include="Service References\QuestionService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
     <None Include="Service References\UtilityService\UtilityWcf.disco" />
     <None Include="Service References\UtilityService\configuration91.svcinfo" />
@@ -7667,14 +7633,6 @@
     <None Include="Service References\GalaxyWcfRef\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
-    <None Include="Service References\QuestionService\QuestionService.wsdl" />
-    <None Include="Service References\QuestionService\QuestionService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\QuestionService\QuestionService1.wsdl" />
-    <None Include="Service References\QuestionService\QuestionService1.xsd">
-      <SubType>Designer</SubType>
     </None>
     <None Include="Service References\TestWcfRef\WcfTest.disco" />
     <None Include="Service References\TestWcfRef\configuration.svcinfo" />
@@ -9091,7 +9049,6 @@
     <WCFMetadataStorage Include="Service References\GalaxyWcfRef\" />
     <WCFMetadataStorage Include="Service References\GiftCardService\" />
     <WCFMetadataStorage Include="Service References\OlitaWcfRef\" />
-    <WCFMetadataStorage Include="Service References\QuestionService\" />
     <WCFMetadataStorage Include="Service References\TestWcfRef\" />
     <WCFMetadataStorage Include="Service References\UtilityService\" />
   </ItemGroup>
