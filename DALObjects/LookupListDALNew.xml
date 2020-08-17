@@ -1190,17 +1190,24 @@
 			ORDER BY UPPER(description)
 		</DENIED_REASON>
 		<DEALER_DENIED_REASON>
-			SELECT
-			LI.list_item_id id, rawtohex(M.language_id) language_id, D.dealer, LI.code, li.extended_code, M.denial_title description
-			FROM
-			ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DENIAL_REASON_MSG M, ELITA.ELP_DEALER D
-			WHERE
-            L.code = 'DNDREASON'
-			and L.list_id = LI.list_id
-			and LI.extended_code = M.DENIAL_REASON_XCD
-            and M.dealer_id = D.dealer_id
-			ORDER BY UPPER(code)
-		</DEALER_DENIED_REASON>
+      SELECT *
+      FROM ( SELECT
+      LI.list_item_id id, rawtohex(M.language_id) as language_id, D.dealer, LI.code, li.extended_code, M.denial_title description
+      FROM
+      ELITA.ELP_LIST L
+      INNER JOIN ELITA.ELP_LIST_ITEM LI ON L.LIST_ID = LI.LIST_ID
+      INNER JOIN ELITA.ELP_DENIAL_REASON_MSG M ON LI.EXTENDED_CODE = M.DENIAL_REASON_XCD
+      INNER JOIN ELITA.ELP_DEALER D ON M.DEALER_ID = D.DEALER_ID
+      UNION
+      SELECT
+      LI.list_item_id id, rawtohex(M.language_id) as language_id, D.dealer, LI.code, li.extended_code, M.denial_title description
+      FROM
+      ELITA.ELP_LIST L
+      INNER JOIN ELITA.ELP_LIST_ITEM LI ON L.LIST_ID = LI.LIST_ID
+      INNER JOIN ELITA.ELP_DENIAL_REASON_MSG M ON LI.EXTENDED_CODE = M.DENIAL_REASON_XCD
+      INNER JOIN ELITA.ELP_DEALER D ON M.DEALER_GROUP_ID = D.DEALER_GROUP_ID)
+      ORDER BY UPPER(CODE)
+    </DEALER_DENIED_REASON>
 		<LOANER_CENTERS>
 			SELECT
 			distinct(SC.service_center_id) id, rawtohex(country_id) country_id, SC.code code, SC.description description
