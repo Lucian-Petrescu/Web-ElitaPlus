@@ -35,6 +35,7 @@ Partial Class ClaimAuthorizationDetailForm
         Public oServiceCenter As ServiceCenter
         Public InputParameters As Parameters
         Public IsEditMode As Boolean = False
+        public IsUpdateRepairDate as Boolean = False
         Public ShowHistory As Boolean = False
         Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
         Public LastErrMsg As String
@@ -237,14 +238,20 @@ Partial Class ClaimAuthorizationDetailForm
         Me.SetEnabledForControlFamily(Me.TextboxSource, Me.State.IsEditMode, True)
         'Me.SetEnabledForControlFamily(Me.txtPartyReference, Me.State.IsEditMode, True)
         Me.SetEnabledForControlFamily(Me.TextboxVisitDate, Me.State.IsEditMode, True)
-        Me.SetEnabledForControlFamily(Me.TextboxRepairDate, Me.State.IsEditMode, True)
+        if state.IsUpdateRepairDate then
+            SetEnabledForControlFamily(TextboxRepairDate, True, True)
+            ControlMgr.SetVisibleForControlFamily(Me, ImageButtonRepairDate, true, True)
+        Else 
+            SetEnabledForControlFamily(TextboxRepairDate, state.IsEditMode, True)
+            ControlMgr.SetVisibleForControlFamily(Me, ImageButtonRepairDate, state.IsEditMode, True)
+        End If
+
         Me.SetEnabledForControlFamily(Me.TextboxInvoiceDate, Me.State.IsEditMode, True)
         Me.SetEnabledForControlFamily(Me.TextboxPickupDate, Me.State.IsEditMode, True)
         Me.SetEnabledForControlFamily(Me.TextboxSpecialInstruction, Me.State.IsEditMode, True)
         Me.SetEnabledForControlFamily(Me.TextboxBatchNumber, Me.State.IsEditMode, True)
 
         ControlMgr.SetVisibleForControlFamily(Me, Me.ImageButtonVisitDate, Me.State.IsEditMode, True)
-        ControlMgr.SetVisibleForControlFamily(Me, Me.ImageButtonRepairDate, Me.State.IsEditMode, True)
         ControlMgr.SetVisibleForControlFamily(Me, Me.ImageButtonPickupDate, Me.State.IsEditMode, True)
         ControlMgr.SetVisibleForControlFamily(Me, Me.ImageButtonVisitDate, Me.State.IsEditMode, True)
 
@@ -322,13 +329,19 @@ Partial Class ClaimAuthorizationDetailForm
         PopulateGridClaimAuthStatusHistory()
     End Sub
     Private Sub HandleButtons()
-        Me.btnBack.Visible = Not Me.State.IsEditMode
-        Me.btnSave_WRITE.Visible = Me.State.IsEditMode AndAlso Not Me.State.ShowHistory
-        Me.btnUndo_Write.Visible = Me.State.IsEditMode AndAlso Not Me.State.ShowHistory
-        Me.btnEdit_WRITE.Visible = Not Me.State.IsEditMode AndAlso Me.State.MyBO.CanVoidClaimAuthorization AndAlso Not Me.State.ShowHistory
-        Me.PanButtonsHidden.Visible = Not Me.State.IsEditMode AndAlso Not Me.State.ShowHistory
-        Me.ActionButton.Visible = Not Me.State.IsEditMode AndAlso Not Me.State.ShowHistory
-        Me.btnNewServiceCenter.Visible = Not Me.State.IsEditMode AndAlso State.ClaimBO.Status = BasicClaimStatus.Active AndAlso Me.State.MyBO.CanVoidClaimAuthorization AndAlso Not Me.State.ShowHistory AndAlso Not (State.ClaimBO.Dealer.DealerFulfillmentProviderClassCode = Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS)
+        Me.btnBack.Visible = Not Me.State.IsEditMode AndAlso Not state.IsUpdateRepairDate
+        Me.btnSave_WRITE.Visible = (Me.State.IsEditMode OrElse state.IsUpdateRepairDate) AndAlso Not Me.State.ShowHistory
+        Me.btnUndo_Write.Visible = (Me.State.IsEditMode OrElse state.IsUpdateRepairDate) AndAlso Not Me.State.ShowHistory
+
+        if IsUpdateRepairDateAllowed AndAlso Not State.IsUpdateRepairDate Then
+            btnEdit_WRITE.Visible = True
+        Else 
+            btnEdit_WRITE.Visible = Not state.IsEditMode AndAlso state.MyBO.CanVoidClaimAuthorization AndAlso Not state.ShowHistory 
+        End If
+
+        Me.PanButtonsHidden.Visible = Not Me.State.IsEditMode AndAlso Not Me.State.ShowHistory AndAlso Not State.IsUpdateRepairDate
+        Me.ActionButton.Visible = Not Me.State.IsEditMode AndAlso Not Me.State.ShowHistory AndAlso Not State.IsUpdateRepairDate
+        Me.btnNewServiceCenter.Visible = Not Me.State.IsEditMode AndAlso Not State.IsUpdateRepairDate AndAlso State.ClaimBO.Status = BasicClaimStatus.Active AndAlso Me.State.MyBO.CanVoidClaimAuthorization AndAlso Not Me.State.ShowHistory AndAlso Not (State.ClaimBO.Dealer.DealerFulfillmentProviderClassCode = Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS)
         'Me.btnrefundFee.Visible =  Me.State.MyBO.ClaimAuthStatus  =  ClaimAuthorizationStatus.Authorized 'ClaimAuthorizationStatus.Collected  
 
         Me.btnRefundFee.Visible = Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso State.MyBO.AuthTypeXcd.Equals(AuthType_SalesOrder)
@@ -450,6 +463,7 @@ Partial Class ClaimAuthorizationDetailForm
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
             Me.State.IsEditMode = False
+            State.IsUpdateRepairDate = False
             PopulateBOFromForm()
 
             If Me.State.MyBO.IsFamilyDirty Then
@@ -473,9 +487,23 @@ Partial Class ClaimAuthorizationDetailForm
         Me.ShowMissingTranslations(Me.MasterPage.MessageController)
     End Sub
 
+    Private Function IsUpdateRepairDateAllowed() As Boolean
+        With State
+            If .MyBO IsNot Nothing AndAlso .MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Paid AndAlso .MyBO.RepairDate is Nothing Then
+                Return True
+            Else 
+                Return False
+            End If
+        End With
+    End Function
+
     Private Sub btnEdit__Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEdit_WRITE.Click
         Try
-            Me.State.IsEditMode = True
+            if IsUpdateRepairDateAllowed then
+                state.IsUpdateRepairDate = True
+            else
+                state.IsEditMode = True
+            End If
             Me.EnableDisablePageControls()
             Me.PopulateFormFromBO()
         Catch ex As Exception
@@ -487,6 +515,7 @@ Partial Class ClaimAuthorizationDetailForm
     Private Sub btnUndo__Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
         Try
             Me.State.IsEditMode = False
+            state.IsUpdateRepairDate = False
             Me.UndoChanges()
             Me.PopulateFormFromBO()
             Me.EnableDisablePageControls()
