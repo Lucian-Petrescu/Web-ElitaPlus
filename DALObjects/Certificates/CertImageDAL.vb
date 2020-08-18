@@ -18,6 +18,7 @@ Public Class CertImageDAL
     Public Const COL_NAME_FILE_SIZE_BYTES As String = "file_size_bytes"
     Public Const COL_NAME_COMMENTS As String = "comments"
     Public Const COL_NAME_USER_NAME As String = "user_name"
+    Public Const COL_NAME_DELETE_FLAG As String = "delete_flag"
 
 #End Region
 
@@ -49,10 +50,24 @@ Public Class CertImageDAL
         Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal familyDS As DataSet, ByVal id As Guid) As DataSet
+    Public Function LoadList(ByVal familyDS As DataSet, ByVal id As Guid, Optional ByVal loadAllFiles As Boolean = False) As DataSet
         Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_CERT_ID")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_id", id.ToByteArray)}
-        Return DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+        Dim loadAllFilesStr As String
+        Dim referenceTypeStr As String
+        
+        if loadAllFiles
+            loadAllFilesStr = "Y"
+        Else
+            loadAllFilesStr = "N"
+        End If
+
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
+            New DBHelper.DBHelperParameter("pi_reference_id", id.ToByteArray),
+            New DBHelper.DBHelperParameter("pi_referenceType", Me.TABLE_NAME),
+            New DBHelper.DBHelperParameter("pi_LoadAllFiles", loadAllFilesStr)
+            }
+        Dim outputParameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_files_list", GetType(DataSet))}
+        DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, familyDS, Me.TABLE_NAME)
     End Function
 
 #End Region
@@ -65,6 +80,15 @@ Public Class CertImageDAL
         If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
             MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
         End If
+    End Sub
+
+    Public Sub UpdateDocumentDeleteFlag(imageId As Guid, deleteFlag As String, modifiedById As String)
+        Dim selectStmt As String = Me.Config("/SQL/UPDATE_DOCUMENT_DELETE_FLAG")
+        
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_document_id", imageId.ToByteArray),
+                                                                                                New DBHelper.DBHelperParameter("pi_modified_by", modifiedById),
+                                                                                                New DBHelper.DBHelperParameter("pi_deleteFlag", deleteFlag)}                   
+        DBHelper.ExecuteSp(selectStmt, inputParameters,Nothing)
     End Sub
 #End Region
 

@@ -221,6 +221,15 @@ Partial Public Class CertificateDocumentForm
     Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
+    '''HiddenIsDeleteImagesAllowed control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents HiddenIsDeleteImagesAllowed As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+
+    '''<summary>
     '''CertificateDocumentsGridView control.
     '''</summary>
     '''<remarks>
