@@ -12,11 +12,14 @@ Public Class ClaimDocumentForm
     Public Const GRID_COL_FILE_SIZE_IDX As Integer = 2
     Public Const GRID_COL_IMAGE_STATUS_IDX As Integer = 6
     Public Const GRID_COL_SCAN_DATE_IDX As Integer = 3
+    Public Const GRID_COL_DELETE_ACTION_IDX As Integer = 8
     Public Const NO_DATA As String = " - "
 
     Public Const ATTRIB_SRC As String = "src"
     Public Const PDF_URL As String = "DisplayPdf.aspx?ImageId="
     Public Const SELECT_ACTION_IMAGE As String = "SelectActionImage"
+    Public Const DELETE_IMAGE As String = "DeleteImage"
+    Public Const UNDO_DELETE_IMAGE As String = "UndoDeleteImage"
 #End Region
 
 #Region "Page Return Type"
@@ -47,7 +50,7 @@ Public Class ClaimDocumentForm
         Public PageSize As Integer = DEFAULT_PAGE_SIZE
         Public IsGridVisible As Boolean = True
         Public ClaimImagesView As Claim.ClaimImagesView
-
+        Public AllowDeleteOfImage As Boolean = True
     End Class
 
     Public Sub New()
@@ -99,6 +102,8 @@ Public Class ClaimDocumentForm
             If Not Me.IsPostBack Then
                 Me.TranslateGridHeader(Me.ClaimDocumentsGridView)
                 PopulateFormFromBO()
+                'check if the user has access to delete the images 
+                Me.State.AllowDeleteOfImage = Me.CanSetControlEnabled(HiddenIsDeleteImagesAllowed.ID)
                 Me.PopulateGrid()
                 Dim oDocumentTypeDropDown As ListItem() = CommonConfigManager.Current.ListManager.GetList("DTYP", Thread.CurrentPrincipal.GetLanguageCode())
                 DocumentTypeDropDown.Populate(oDocumentTypeDropDown, New PopulateOptions() With
@@ -162,8 +167,7 @@ Public Class ClaimDocumentForm
 
         Try
             If (Me.State.ClaimImagesView Is Nothing) Then
-                Me.State.ClaimImagesView = Me.State.ClaimBO.GetClaimImagesView()
-
+                Me.State.ClaimImagesView = Me.State.ClaimBO.GetClaimImagesView(Me.State.AllowDeleteOfImage)
             End If
 
 
@@ -185,6 +189,11 @@ Public Class ClaimDocumentForm
             ControlMgr.SetVisibleControl(Me, ClaimDocumentsGridView, Me.State.IsGridVisible)
             If Me.ClaimDocumentsGridView.Visible Then
                 Me.lblRecordCount.Text = Me.State.claimImagesView.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Me.State.AllowDeleteOfImage Then
+                    Me.ClaimDocumentsGridView.Columns(GRID_COL_DELETE_ACTION_IDX).Visible = True
+                Else
+                    Me.ClaimDocumentsGridView.Columns(GRID_COL_DELETE_ACTION_IDX).Visible = False
+                End If
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -203,6 +212,7 @@ Public Class ClaimDocumentForm
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim btnLinkImage As LinkButton
+            Dim btnAddRemoveImage As LinkButton
             If (e.Row.RowType = DataControlRowType.DataRow) OrElse (e.Row.RowType = DataControlRowType.Separator) Then
                 'Link to the image 
                 If (Not e.Row.Cells(GRID_COL_IMAGE_ID_IDX).FindControl("btnImageLink") Is Nothing) Then
@@ -229,6 +239,21 @@ Public Class ClaimDocumentForm
 
                 If (Not e.Row.Cells(GRID_COL_SCAN_DATE_IDX).Text Is Nothing) Then
                     e.Row.Cells(GRID_COL_SCAN_DATE_IDX).Text = GetLongDate12FormattedString(e.Row.Cells(GRID_COL_SCAN_DATE_IDX).Text)
+                End If
+
+                btnAddRemoveImage = CType(e.Row.Cells(0).FindControl("btnAddRemoveImage"), LinkButton)
+
+                If Me.State.AllowDeleteOfImage Then
+                    btnAddRemoveImage.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimImagesView.COL_CLAIM_IMAGE_ID), Byte()))
+                    If CType(dvRow(Claim.ClaimImagesView.COL_DELETE_FLAG), String) = "Y" Then
+                        btnAddRemoveImage.Text = TranslationBase.TranslateLabelOrMessage("UNDO_DELETE_IMAGE")
+                        btnAddRemoveImage.CommandName = UNDO_DELETE_IMAGE
+                    Else
+                        btnAddRemoveImage.Text = TranslationBase.TranslateLabelOrMessage("DELETE_IMAGE")
+                        btnAddRemoveImage.CommandName = DELETE_IMAGE
+                    End If
+                Else
+                    btnAddRemoveImage.Visible = False
                 End If
 
                 If (dvRow(Claim.ClaimImagesView.COL_STATUS_CODE).ToString = Codes.CLAIM_IMAGE_PROCESSED) Then
@@ -259,6 +284,24 @@ Public Class ClaimDocumentForm
 
                 Dim x As String = "<script language='JavaScript'> revealModal('modalClaimImages') </script>"
                 Me.RegisterStartupScript("Startup", x)
+            End If
+        ElseIf (e.CommandName = DELETE_IMAGE OrElse e.CommandName = UNDO_DELETE_IMAGE) Then
+            If Not e.CommandArgument.ToString().Equals(String.Empty) Then
+                Dim claimImageIdString As String = CType(e.CommandArgument, String)
+                Dim claimImageID As Guid = GetGuidFromString(claimImageIdString)
+                Dim oClaimImage As ClaimImage =  DirectCast(Me.State.ClaimBO.ClaimImagesList.GetChild(claimImageID), ClaimImage)  
+
+                ' delete the document or reactivate the document
+                If e.CommandName = DELETE_IMAGE Then
+                    oClaimImage.DeleteFlag = "Y" 
+                Else
+                    oClaimImage.DeleteFlag = "N" 
+                End If  
+                oClaimImage.UpdateDocumentDeleteFlag(ElitaPlusIdentity.Current.ActiveUser.NetworkId)  
+                Me.State.ClaimImagesView = Nothing
+                Me.ClearForm()
+                Me.PopulateGrid()
+                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
             End If
         End If
     End Sub
@@ -381,7 +424,6 @@ Public Class ClaimDocumentForm
                 fileData)
 
             Me.State.ClaimBO.Save()
-
             Me.State.ClaimImagesView = Nothing
             Me.ClearForm()
             Me.PopulateGrid()

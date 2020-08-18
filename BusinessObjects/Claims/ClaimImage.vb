@@ -268,15 +268,30 @@ Public Class ClaimImage
         End Set
     End Property
 
+    Public Property DeleteFlag() As String
+        Get
+            CheckDeleted()
+            If Row(ClaimImageDAL.COL_NAME_DELETE_FLAG) Is DBNull.Value Then
+                Return "N"
+            Else
+                Return CType(Row(ClaimImageDAL.COL_NAME_DELETE_FLAG), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ClaimImageDAL.COL_NAME_DELETE_FLAG, Value)
+        End Set
+    End Property
+
 #End Region
 
 #Region "Public Members"
     Public Overrides Sub Save()
         Try
-            MyBase.Save()
+            MyBase.Save()            
             If _isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimImageDAL
-                dal.Update(Me.Row)
+                dal.Update(Me.Row)                
                 'Reload the Data from the DB
                 If Me.Row.RowState <> DataRowState.Detached Then
                     Dim objId As Guid = Me.Id
@@ -289,6 +304,16 @@ Public Class ClaimImage
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+
+     Public Sub UpdateDocumentDeleteFlag(modifiedById As String)
+        Try
+            Dim dal As New ClaimImageDAL
+            dal.UpdateDocumentDeleteFlag(Me.imageId, Me.deleteFlag, modifiedById)                
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
+    
 #End Region
 
 
@@ -296,19 +321,19 @@ Public Class ClaimImage
     Public Class ClaimImagesList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As ClaimBase)
-            MyBase.New(LoadTable(parent), GetType(ClaimImage), parent)
+        Public Sub New(ByVal parent As ClaimBase, Optional ByVal loadAllFiles As Boolean = False)
+            MyBase.New(LoadTable(parent, loadAllFiles), GetType(ClaimImage), parent)
         End Sub
 
         Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
             Return CType(bo, ClaimImage).ClaimId.Equals(CType(Parent, ClaimBase).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As ClaimBase) As DataTable
+        Private Shared Function LoadTable(ByVal parent As ClaimBase, Optional ByVal loadAllFiles As Boolean = False) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ClaimImagesList)) Then
                     Dim dal As New ClaimImageDAL
-                    dal.LoadList(parent.Dataset, parent.Id)
+                    dal.LoadList(parent.Dataset, parent.Id, loadAllFiles)
                     parent.AddChildrenCollection(GetType(ClaimImagesList))
                 End If
                 Return parent.Dataset.Tables(ClaimImageDAL.TABLE_NAME)
