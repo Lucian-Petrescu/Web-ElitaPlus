@@ -3,7 +3,7 @@
 	<LOGGING>
 		<publishingConfiguration mode="on">
 			<publisher mode ="on" classTypeName="Assurant.Common.MessagePublishing.WindowsEventLogPublisher" logName = "ElitaPlus" applicationName = "Web" typeFilter = "ERROR*"/>
-			<publisher mode ="on" classTypeName="Assurant.Common.MessagePublishing.DBMessagePublisher"  typeFilter="ERROR_UNEXPECTED,ERROR_DATABASE,DEBUG,MESSAGE" />
+			<publisher mode ="on" classTypeName="Assurant.Common.MessagePublishing.DBMessagePublisher"  typeFilter="ERROR,ERROR_UNEXPECTED,ERROR_DATABASE,DEBUG,MESSAGE" />
 		</publishingConfiguration>
 	</LOGGING>
 	<!--<HI> 
