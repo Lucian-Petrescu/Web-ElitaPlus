@@ -129,6 +129,10 @@ Public Class ServiceOrderReportHandler
                 soRow.ADDRESS3 = Address.Address3
                 soRow.CITY = Address.City
                 soRow.ZIP = Address.PostalCode
+                If Not Address.RegionId.Equals(Guid.Empty) Then
+                    soRow.STATE_PROVINCE = New Region(Address.RegionId).Description
+                    soRow.STATE_PROVINCE_CODE = New Region(Address.RegionId).ShortDesc
+                End If
 
             End If
             End If
