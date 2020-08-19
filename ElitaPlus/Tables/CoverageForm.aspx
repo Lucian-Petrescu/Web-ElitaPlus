@@ -17,6 +17,22 @@
     <script type="text/javascript">        
         $(function () {
 
+            $("[id*=moRenewal_NumberText]").change(function () {
+                var row = $(this).closest("tr");
+                var value = $(this).val();
+                if (value == 0) {
+                    row.find("[id*=moLiability_LimitText]").val("");
+                    row.find("[id*=moLiability_LimitText]").attr("disabled", "true");
+
+                    row.find("[id*=moLiability_LimitPercentText]").val("");
+                    row.find("[id*=moLiability_LimitPercentText]").attr("disabled", "true");
+                }
+                else {                    
+                    row.find("[id*=moLiability_LimitText]").removeAttr("disabled");
+                    row.find("[id*=moLiability_LimitPercentText]").removeAttr("disabled");                   
+                }
+            });
+
             $("[id*=moLiability_LimitText]").change(function () {
                 var row = $(this).closest("tr");
                 //var value = $(this).val();
@@ -24,7 +40,7 @@
                     row.find("[id*=moLiability_LimitPercentText]").val("");
                 //}
             });
-
+            
             $("[id*=moLiability_LimitPercentText]").change(function () {
                 var row = $(this).closest("tr");
                 //var value = $(this).val();
