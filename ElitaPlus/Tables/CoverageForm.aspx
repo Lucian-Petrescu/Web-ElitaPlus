@@ -20,7 +20,7 @@
             $("[id*=moRenewal_NumberText]").change(function () {
                 var row = $(this).closest("tr");
                 var value = $(this).val();
-                if (value == 0) {
+                if (value == "0") {
                     row.find("[id*=moLiability_LimitText]").val("");
                     row.find("[id*=moLiability_LimitText]").attr("disabled", "true");
 
