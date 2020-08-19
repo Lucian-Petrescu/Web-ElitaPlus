@@ -27,7 +27,7 @@
                     row.find("[id*=moLiability_LimitPercentText]").val("");
                     row.find("[id*=moLiability_LimitPercentText]").attr("disabled", "true");
                 }
-                else {                    
+                else {
                     row.find("[id*=moLiability_LimitText]").removeAttr("disabled");
                     row.find("[id*=moLiability_LimitPercentText]").removeAttr("disabled");                   
                 }
