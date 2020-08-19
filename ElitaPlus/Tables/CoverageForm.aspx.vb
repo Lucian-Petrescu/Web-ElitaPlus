@@ -5020,6 +5020,7 @@ Namespace Tables
                 Dim isSameLowHighExist As Boolean = False
                 Dim isNotSequence As Boolean = False
                 Dim isFirstRenewalNoNotZero As Boolean = False
+                Dim isFirstRowForEdit As Boolean = False
 
                 For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
                     Me.moGridView.PageIndex = pageIndexk
@@ -5134,7 +5135,7 @@ Namespace Tables
                                 'If textbox and first row
                                 If Not textBoxRenewalNo Is Nothing And Not textBoxLowPrice Is Nothing And Not textBoxHighPrice Is Nothing Then
                                     If Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) And Not String.IsNullOrWhiteSpace(textBoxLowPrice.Text) And Not String.IsNullOrWhiteSpace(textBoxHighPrice.Text) Then
-
+                                        isFirstRowForEdit = True
                                         enteredRenewalNo = Convert.ToDecimal(textBoxRenewalNo.Text)
                                         enteredLowPrice = Convert.ToDecimal(textBoxLowPrice.Text)
                                         enteredHighPrice = Convert.ToDecimal(textBoxHighPrice.Text)
@@ -5151,8 +5152,10 @@ Namespace Tables
                 Next
 
                 If isSameLowHighExist Then
-                    If enteredRenewalNo <> LastRenewalNo + 1 Then
-                        isNotSequence = True
+                    If Not isFirstRowForEdit Then
+                        If enteredRenewalNo <> LastRenewalNo + 1 Then
+                            isNotSequence = True
+                        End If
                     End If
                 End If
 
