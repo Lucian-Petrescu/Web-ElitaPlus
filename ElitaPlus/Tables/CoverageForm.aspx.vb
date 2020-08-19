@@ -1666,15 +1666,22 @@ Namespace Tables
                 CoverageRateId = Guid.Empty.ToString
                 PopulateCoverageRateList(ActionNew)
                 FillDropdownList()
+                
+                'US-521697
                 FillSourceXcdDropdownList()
+
                 SetGridControls(moGridView, False)
                 SetFocusInGrid(moGridView, moGridView.SelectedIndex, ColIndexLowPrice)
+                
                 'US-521697
                 SetGridSourceXcdLabelFromBo()
                 SetGridSourceXcdTextBoxForNewCoverage()
 
                 EnableDisableControls(moCoverageEditPanel, True)
                 Setbuttons(False)
+
+                'US-489838
+                DisableLimitWhenRenewalIsZero()
             Catch ex As Exception
                 HandleErrors(ex, moMsgControllerRate)
             End Try
