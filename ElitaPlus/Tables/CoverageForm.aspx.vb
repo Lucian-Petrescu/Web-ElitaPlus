@@ -5042,12 +5042,6 @@ Namespace Tables
                                         Dim existingLowPrice As Decimal = Convert.ToDecimal(lblLowPrice.Text)
                                         Dim existingHighPrice As Decimal = Convert.ToDecimal(lblHighPrice.Text)
 
-                                        'If LastLowPrice = existingLowPrice And LastHighPrice = existingHighPrice Then
-                                        '    If existingRenewalNo <> LastRenewalNo + 1 Then
-                                        '        isNotSequence = True
-                                        '        Exit For
-                                        '    End If
-                                        'End If
                                         If Not TheCoverageRate Is Nothing Then
                                             If Not TheCoverageRate.LowPrice Is Nothing And Not TheCoverageRate.HighPrice Is Nothing And Not TheCoverageRate.RenewalNumber Is Nothing Then
                                                 If Not String.IsNullOrWhiteSpace(TheCoverageRate.LowPrice.ToString()) And Not String.IsNullOrWhiteSpace(TheCoverageRate.HighPrice.ToString()) And Not String.IsNullOrWhiteSpace(TheCoverageRate.RenewalNumber.ToString()) Then
@@ -5057,6 +5051,7 @@ Namespace Tables
                                                         enteredRenewalNo = TheCoverageRate.RenewalNumber
                                                         enteredLowPrice = TheCoverageRate.LowPrice
                                                         enteredHighPrice = TheCoverageRate.HighPrice
+
                                                         LastRenewalNo = existingRenewalNo
                                                         LastLowPrice = existingLowPrice
                                                         LastHighPrice = existingHighPrice
@@ -5074,38 +5069,24 @@ Namespace Tables
                                         enteredRenewalNo = Convert.ToDecimal(textBoxRenewalNo.Text)
                                         enteredLowPrice = Convert.ToDecimal(textBoxLowPrice.Text)
                                         enteredHighPrice = Convert.ToDecimal(textBoxHighPrice.Text)
-                                        
+
                                         If TheCoverageRate.LowPrice = LastLowPrice And TheCoverageRate.HighPrice = LastHighPrice Then
                                             isSameLowHighExist = True
-                                            
+
                                             enteredRenewalNo = TheCoverageRate.RenewalNumber
                                             enteredLowPrice = TheCoverageRate.LowPrice
                                             enteredHighPrice = TheCoverageRate.HighPrice
-                                           
-                                            LastRenewalNo = TheCoverageRate.RenewalNumber
-                                            LastLowPrice = TheCoverageRate.LowPrice
-                                            LastHighPrice = TheCoverageRate.HighPrice
-
+                                            
                                             If enteredRenewalNo <> LastRenewalNo + 1 Then
                                                 isNotSequence = True
                                                 Exit For
-                                            End If
+                                            End If                                            
                                         Else
                                             If enteredRenewalNo <> 0 Then
                                                 isNotSequence = True
                                                 Exit For
                                             End If
                                         End If
-
-                                        'LastRenewalNo = enteredRenewalNo
-
-                                        'If LastLowPrice = enteredLowPrice And LastHighPrice = enteredHighPrice Then
-                                        '    If enteredRenewalNo <> LastRenewalNo + 1 Then
-                                        '        isNotSequence = True
-                                        '        Exit For
-                                        '    End If
-                                        'End If
-
                                     End If
                                 End If
                             Else
@@ -5135,6 +5116,7 @@ Namespace Tables
                                                         enteredRenewalNo = TheCoverageRate.RenewalNumber
                                                         enteredLowPrice = TheCoverageRate.LowPrice
                                                         enteredHighPrice = TheCoverageRate.HighPrice
+
                                                         LastRenewalNo = existingRenewalNo
                                                         LastLowPrice = existingLowPrice
                                                         LastHighPrice = existingHighPrice
@@ -5153,7 +5135,6 @@ Namespace Tables
                                         enteredRenewalNo = Convert.ToDecimal(textBoxRenewalNo.Text)
                                         enteredLowPrice = Convert.ToDecimal(textBoxLowPrice.Text)
                                         enteredHighPrice = Convert.ToDecimal(textBoxHighPrice.Text)
-                                        'LastRenewalNo = enteredRenewalNo
 
                                         If enteredRenewalNo <> 0 Then
                                             isFirstRenewalNoNotZero = True
