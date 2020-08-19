@@ -1577,6 +1577,9 @@ Namespace Tables
                     SetFocusInGrid(moGridView, nIndex, ColIndexLowPrice)
                     EnableDisableControls(moCoverageEditPanel, True)
                     Setbuttons(False)
+
+                    'US-489838
+                    DisableLimitWhenRenewalIsZero()
                 ElseIf (e.CommandName = DELETE_COMMAND_NAME) Then
                     'nIndex = e.Item.ItemIndex
                     CoverageRateId = GetGridText(moGridView, nIndex, ColIndexCoverageRateId)
@@ -5076,11 +5079,11 @@ Namespace Tables
                                             enteredRenewalNo = TheCoverageRate.RenewalNumber
                                             enteredLowPrice = TheCoverageRate.LowPrice
                                             enteredHighPrice = TheCoverageRate.HighPrice
-                                            
+
                                             If enteredRenewalNo <> LastRenewalNo + 1 Then
                                                 isNotSequence = True
                                                 Exit For
-                                            End If                                            
+                                            End If
                                         Else
                                             If enteredRenewalNo <> 0 Then
                                                 isNotSequence = True
@@ -5274,6 +5277,31 @@ Namespace Tables
             End If
         End Sub
 
+        Private Sub DisableLimitWhenRenewalIsZero()
+            If moGridView.EditIndex = -1 Then Exit Sub
+            If State.IsProductConfiguredForRenewalNo Then
+
+                Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+                Dim textBoxLimitPer As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moLiability_LimitPercentText"), TextBox)
+                Dim textBoxLimit As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimit).FindControl("moLiability_LimitText"), TextBox)
+                Dim textBoxRenewalNo As TextBox = DirectCast(gRow.Cells(ColIndexCovLiabilityLimitPercent).FindControl("moRenewal_NumberText"), TextBox)
+
+                If Not textBoxRenewalNo Is Nothing And Not textBoxLimit Is Nothing And Not textBoxLimitPer Is Nothing Then
+                    If Not String.IsNullOrWhiteSpace(textBoxRenewalNo.Text) Then
+                        If Convert.ToDecimal(textBoxRenewalNo.Text) = 0 Then
+                            textBoxLimit.Text = String.Empty
+                            textBoxLimitPer.Text = String.Empty
+
+                            textBoxLimit.Enabled = False
+                            textBoxLimitPer.Enabled = False
+                        Else
+                            textBoxLimit.Enabled = True
+                            textBoxLimitPer.Enabled = True
+                        End If
+                    End If
+                End If
+            End If
+        End Sub
 #End Region
 
 #Region "Get Current User and Language"
