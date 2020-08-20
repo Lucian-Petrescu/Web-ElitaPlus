@@ -2180,10 +2180,17 @@ Partial Class ClaimForm
             ucClaimConsequentialDamage.PopulateConsequentialDamage(Me.State.MyBO)
         End If
 
+        ControlMgr.SetVisibleControl(Me, Me.LabelMethodOfRepair, Not IsDfFulfillment())
+        ControlMgr.SetVisibleControl(Me, Me.TextboxMethodOfRepair, Not IsDfFulfillment())
+
         PopulateRefurbReplaceClaimEquipment()
         PopulateClaimShipping()
 
     End Sub
+
+    Private Function IsDfFulfillment() As Boolean
+        Return Me.State.MyBO.FulfillmentProviderType = FulfillmentProviderType.DynamicFulfillment
+    End Function
 
     Protected Sub PopulateClaimDetailContactInfoBOsFromForm()
 
@@ -4087,7 +4094,7 @@ Partial Class ClaimForm
             dvClaimFulfillmentDetails.Visible = False
 
         Catch ex As Exception
-            
+
         End Try
     End Sub
     Private Function getClaimKey(ByVal companyCode As String, ByVal claimNumber As String) As String
