@@ -592,11 +592,12 @@ Namespace Tables
                 'BindBoPropertiesToDeductibleGridHeader()
                 CheckIfComingFromConfirm()
                 moUseCoverageStartDateLable.ForeColor = moReplacementDiscountPrcLabel.ForeColor
-
-                'US-521697
+                
                 If Not IsPostBack Then
-                    State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
-                    State.IsIgnorePremiumSetYesForContract = HasIgnorePremiumSetForContractForSIncomingSource()
+                    'US-521697
+                    SetDealerContractFlag()
+
+                    'US-489838
                     SetSequenceFlag()
                 Else
                     SetGridSourceXcdTextBoxFromBo()
@@ -614,6 +615,12 @@ Namespace Tables
         Private Sub SetSequenceFlag()
             State.IsProductConfiguredForRenewalNo = HasProductConfiguredForSequentialNoValidation()
         End Sub
+
+        Private Sub SetDealerContractFlag()
+            State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
+            State.IsIgnorePremiumSetYesForContract = HasIgnorePremiumSetForContractForSIncomingSource()
+        End Sub
+
         Private Sub GetDisabledTabs()
             Dim disabledTabs As Array = hdnDisabledTab.Value.Split(",")
             If disabledTabs.Length > 0 AndAlso disabledTabs(0) IsNot String.Empty Then
@@ -3342,6 +3349,9 @@ Namespace Tables
                 moGridView.DataSource = oDataView
                 moGridView.DataBind()
                 ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, moGridView)
+                
+                'US-521697
+                SetDealerContractFlag()
 
                 'US 489838
                 SetSequenceFlag()
@@ -3352,6 +3362,21 @@ Namespace Tables
                 Else
                     moGridView.Columns(ColIndexCovLiabilityLimit).Visible = False
                     moGridView.Columns(ColIndexCovLiabilityLimitPercent).Visible = False
+                End If
+
+                'US-521697
+                If State.IsDealerConfiguredForSourceXcd Then
+                    moGridView.Columns(ColIndexCommissionsPercentXcd).Visible = True
+                    moGridView.Columns(ColIndexMarketingPercentXcd).Visible = True
+                    moGridView.Columns(ColIndexAdminExpenseXcd).Visible = True
+                    moGridView.Columns(ColIndexProfitExpenseXcd).Visible = True
+                    moGridView.Columns(ColIndexLossCostPercentXcd).Visible = True
+                Else
+                    moGridView.Columns(ColIndexCommissionsPercentXcd).Visible = False
+                    moGridView.Columns(ColIndexMarketingPercentXcd).Visible = False
+                    moGridView.Columns(ColIndexAdminExpenseXcd).Visible = False
+                    moGridView.Columns(ColIndexProfitExpenseXcd).Visible = False
+                    moGridView.Columns(ColIndexLossCostPercentXcd).Visible = False
                 End If
 
             Catch ex As Exception
@@ -5317,7 +5342,7 @@ Namespace Tables
 
                             'If percent value is not zero then set non percent value empty
                             If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
-                                If Convert.ToDecimal(textBoxLimitPer.Text) <> 0 Then                                    
+                                If Convert.ToDecimal(textBoxLimitPer.Text) <> 0 Then
                                     textBoxLimit.Text = String.Empty
                                 End If
                             End If
