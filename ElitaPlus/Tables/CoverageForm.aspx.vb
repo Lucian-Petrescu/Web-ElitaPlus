@@ -592,7 +592,7 @@ Namespace Tables
                 'BindBoPropertiesToDeductibleGridHeader()
                 CheckIfComingFromConfirm()
                 moUseCoverageStartDateLable.ForeColor = moReplacementDiscountPrcLabel.ForeColor
-                
+
                 If Not IsPostBack Then
                     'US-521697
                     SetDealerContractFlag()
@@ -604,7 +604,6 @@ Namespace Tables
                 End If
 
                 DisplayHideCovLiabilityColumn()
-                DisplayHideSourceColumn()
                 SetGridSourceXcdLabelFromBo()
 
             Catch ex As Exception
@@ -617,8 +616,13 @@ Namespace Tables
         End Sub
 
         Private Sub SetDealerContractFlag()
-            State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
-            State.IsIgnorePremiumSetYesForContract = HasIgnorePremiumSetForContractForSIncomingSource()
+            If Not State.IsDealerConfiguredForSourceXcd Then
+                State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
+            End If
+
+            If Not State.IsIgnorePremiumSetYesForContract Then
+                State.IsIgnorePremiumSetYesForContract = HasIgnorePremiumSetForContractForSIncomingSource()
+            End If
         End Sub
 
         Private Sub GetDisabledTabs()
@@ -3045,7 +3049,9 @@ Namespace Tables
                 PopulateCoverageRateLiabilityLimitBOFromForm()
 
                 'US-521697
-                CommonSourceOptionLogic()
+                If CoveragePricingCode <> NoCoveragePricing Then
+                    CommonSourceOptionLogic()
+                End If
 
                 'US-489839
                 ValidateRateRenewalNo()
@@ -3246,13 +3252,17 @@ Namespace Tables
             moGridView.Columns(ColIndexLossCostPercent).Visible = bIsReadWrite
 
             'US-521697
+            SetDealerContractFlag()
             If State.IsDealerConfiguredForSourceXcd Then
+                DisplayHideSourceColumn(bIsReadWrite)
+
                 moGridView.Columns(ColIndexCommissionsPercentXcd).Visible = bIsReadWrite
                 moGridView.Columns(ColIndexMarketingPercentXcd).Visible = bIsReadWrite
                 moGridView.Columns(ColIndexAdminExpenseXcd).Visible = bIsReadWrite
                 moGridView.Columns(ColIndexProfitExpenseXcd).Visible = bIsReadWrite
                 moGridView.Columns(ColIndexLossCostPercentXcd).Visible = bIsReadWrite
             Else
+                DisplayHideSourceColumn(False)
                 moGridView.Columns(ColIndexCommissionsPercentXcd).Visible = False
                 moGridView.Columns(ColIndexMarketingPercentXcd).Visible = False
                 moGridView.Columns(ColIndexAdminExpenseXcd).Visible = False
@@ -3260,14 +3270,14 @@ Namespace Tables
                 moGridView.Columns(ColIndexLossCostPercentXcd).Visible = False
             End If
         End Sub
-        Private Sub DisplayHideSourceColumn()
+        Private Sub DisplayHideSourceColumn(ByVal bIsReadWrite As Boolean)
             'US-521697
             If State.IsDealerConfiguredForSourceXcd Then
-                moGridView.Columns(ColIndexCommissionsPercentXcd).Visible = True
-                moGridView.Columns(ColIndexMarketingPercentXcd).Visible = True
-                moGridView.Columns(ColIndexAdminExpenseXcd).Visible = True
-                moGridView.Columns(ColIndexProfitExpenseXcd).Visible = True
-                moGridView.Columns(ColIndexLossCostPercentXcd).Visible = True
+                moGridView.Columns(ColIndexCommissionsPercentXcd).Visible = bIsReadWrite
+                moGridView.Columns(ColIndexMarketingPercentXcd).Visible = bIsReadWrite
+                moGridView.Columns(ColIndexAdminExpenseXcd).Visible = bIsReadWrite
+                moGridView.Columns(ColIndexProfitExpenseXcd).Visible = bIsReadWrite
+                moGridView.Columns(ColIndexLossCostPercentXcd).Visible = bIsReadWrite
             Else
                 moGridView.Columns(ColIndexCommissionsPercentXcd).Visible = False
                 moGridView.Columns(ColIndexMarketingPercentXcd).Visible = False
@@ -3349,9 +3359,6 @@ Namespace Tables
                 moGridView.DataSource = oDataView
                 moGridView.DataBind()
                 ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, moGridView)
-                
-                'US-521697
-                SetDealerContractFlag()
 
                 'US 489838
                 SetSequenceFlag()
@@ -3362,21 +3369,6 @@ Namespace Tables
                 Else
                     moGridView.Columns(ColIndexCovLiabilityLimit).Visible = False
                     moGridView.Columns(ColIndexCovLiabilityLimitPercent).Visible = False
-                End If
-
-                'US-521697
-                If State.IsDealerConfiguredForSourceXcd Then
-                    moGridView.Columns(ColIndexCommissionsPercentXcd).Visible = True
-                    moGridView.Columns(ColIndexMarketingPercentXcd).Visible = True
-                    moGridView.Columns(ColIndexAdminExpenseXcd).Visible = True
-                    moGridView.Columns(ColIndexProfitExpenseXcd).Visible = True
-                    moGridView.Columns(ColIndexLossCostPercentXcd).Visible = True
-                Else
-                    moGridView.Columns(ColIndexCommissionsPercentXcd).Visible = False
-                    moGridView.Columns(ColIndexMarketingPercentXcd).Visible = False
-                    moGridView.Columns(ColIndexAdminExpenseXcd).Visible = False
-                    moGridView.Columns(ColIndexProfitExpenseXcd).Visible = False
-                    moGridView.Columns(ColIndexLossCostPercentXcd).Visible = False
                 End If
 
             Catch ex As Exception
@@ -3725,6 +3717,7 @@ Namespace Tables
                 End If
                 hdnGrossAmtOrPercent.Value = String.Empty
                 hdnGrossAmtOrPercentValue.Value = String.Empty
+
                 If CoveragePricingCode = NoCoveragePricing Then
                     PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CommissionsPercent), GetAmountFormattedDoubleString("0"))
                     PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.MarketingPercent), GetAmountFormattedDoubleString("0"))
@@ -3737,13 +3730,15 @@ Namespace Tables
                     PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.AdminExpense), CType(GetSelectedGridControl(moGridView, ColIndexAdminExpense), TextBox))
                     PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.ProfitExpense), CType(GetSelectedGridControl(moGridView, ColIndexProfitExpense), TextBox))
                     PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LossCostPercent), CType(GetSelectedGridControl(moGridView, ColIndexLossCostPercent), TextBox))
+
+                    'US-521697
+                    CommonSourceOptionLogic()
                 End If
+
                 PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.RenewalNumber), CType(GetSelectedGridControl(moGridView, ColIndexRenewalNumber), TextBox))
                 PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.RegionId), CType(GetDropDownControlFromGrid(moGridView, ColIndexRegionId), DropDownList))
 
                 PopulateCoverageRateLiabilityLimitBOFromForm()
-
-                CommonSourceOptionLogic()
 
                 'US-489839            
                 ValidateRateRenewalNo()
@@ -4336,14 +4331,14 @@ Namespace Tables
         Private Sub CommonSourceOptionLogic()
 
             If moGridView.EditIndex = -1 Then Exit Sub
-            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexCommissionsPercentXcd).FindControl("cboCommPercentSourceXcd"), DropDownList)
-            Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexMarketingPercentXcd).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
-            Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexAdminExpenseXcd).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
-            Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexProfitExpenseXcd).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
-            Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexLossCostPercentXcd).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
 
             If State.IsDealerConfiguredForSourceXcd Then
+                Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+                Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexCommissionsPercentXcd).FindControl("cboCommPercentSourceXcd"), DropDownList)
+                Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexMarketingPercentXcd).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
+                Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexAdminExpenseXcd).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
+                Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexProfitExpenseXcd).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
+                Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexLossCostPercentXcd).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
 
                 If mocboLossCostPercentSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                     PopulateBOProperty(TheCoverageRate, "LossCostPercentSourceXcd", mocboLossCostPercentSourceXcd, False, True)
