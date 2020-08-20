@@ -1666,13 +1666,13 @@ Namespace Tables
                 CoverageRateId = Guid.Empty.ToString
                 PopulateCoverageRateList(ActionNew)
                 FillDropdownList()
-                
+
                 'US-521697
                 FillSourceXcdDropdownList()
 
                 SetGridControls(moGridView, False)
                 SetFocusInGrid(moGridView, moGridView.SelectedIndex, ColIndexLowPrice)
-                
+
                 'US-521697
                 SetGridSourceXcdLabelFromBo()
                 SetGridSourceXcdTextBoxForNewCoverage()
@@ -5307,6 +5307,20 @@ Namespace Tables
                         Else
                             textBoxLimit.Enabled = True
                             textBoxLimitPer.Enabled = True
+
+                            'If non % value is not zero then set percent value empty
+                            If Not String.IsNullOrWhiteSpace(textBoxLimit.Text) Then
+                                If Convert.ToDecimal(textBoxLimit.Text) <> 0 Then
+                                    textBoxLimitPer.Text = String.Empty
+                                End If
+                            End If
+
+                            'If percent value is not zero then set non percent value empty
+                            If Not String.IsNullOrWhiteSpace(textBoxLimitPer.Text) Then
+                                If Convert.ToDecimal(textBoxLimitPer.Text) <> 0 Then                                    
+                                    textBoxLimit.Text = String.Empty
+                                End If
+                            End If
                         End If
                     End If
                 End If
