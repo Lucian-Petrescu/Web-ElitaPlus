@@ -997,6 +997,13 @@
       <DependentUpon>UserControlCaseHeaderInfo.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Common\UserControlClaimAddress.ascx.designer.vb">
+      <DependentUpon>UserControlClaimAddress.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UserControlClaimAddress.ascx.vb">
+      <DependentUpon>UserControlClaimAddress.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Common\UserControlDealerInflation.ascx.designer.vb">
       <DependentUpon>UserControlDealerInflation.ascx</DependentUpon>
     </Compile>
@@ -5859,6 +5866,7 @@
     <Content Include="Common\UserControlApInvoiceLinesSearch.ascx" />
     <Content Include="Common\UserControlCallerInfo.ascx" />
     <Content Include="Common\UserControlCaseHeaderInfo.ascx" />
+    <Content Include="Common\UserControlClaimAddress.ascx" />
     <Content Include="Common\UserControlDealerInflation.ascx" />
     <Content Include="Common\UserControlDeliverySlot.ascx" />
     <Content Include="Common\UserControlInvoiceRegionTaxes.ascx" />

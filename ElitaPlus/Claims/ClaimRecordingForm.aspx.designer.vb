@@ -1022,6 +1022,78 @@ Partial Public Class ClaimRecordingForm
     Protected WithEvents LinkButtonShippingAddressCancel As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
+    '''vCustomerClaimAddress control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents vCustomerClaimAddress As Global.System.Web.UI.WebControls.View
+
+    '''<summary>
+    '''dvStep8 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents dvStep8 As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''UserClaimAddress control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents UserClaimAddress As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''LabelUserClaimAddress control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents LabelUserClaimAddress As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''UserControlClaimAddress1 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents UserControlClaimAddress1 As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlClaimAddress
+
+    '''<summary>
+    '''ButtonUserClaimAddressContinue control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ButtonUserClaimAddressContinue As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''ButtonUserClaimAddressSaveExit control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ButtonUserClaimAddressSaveExit As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''LinkButtonUserClaimAddressCancel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents LinkButtonUserClaimAddressCancel As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
     '''vDynamicFulfillment control.
     '''</summary>
     '''<remarks>

@@ -1024,9 +1024,15 @@ Public Class UserControlQuestion
 
     End Sub
     Private Function GetClient() As ClaimRecordingServiceClient
-        Dim client = New ClaimRecordingServiceClient(ServiceEndPointNameSetting, ConfigurationManager.AppSettings(ServiceUrlSetting))
-        client.ClientCredentials.UserName.UserName = ConfigurationManager.AppSettings(UserNameSetting)
-        client.ClientCredentials.UserName.Password = ConfigurationManager.AppSettings(PasswordSetting)
+        'Dim client = New ClaimRecordingServiceClient(ServiceEndPointNameSetting, ConfigurationManager.AppSettings(ServiceUrlSetting))
+        'client.ClientCredentials.UserName.UserName = ConfigurationManager.AppSettings(UserNameSetting)
+        'client.ClientCredentials.UserName.Password = ConfigurationManager.AppSettings(PasswordSetting)
+        'Return client
+
+
+        Dim client = New ClaimRecordingServiceClient("CustomBinding_IClaimRecordingService",  "http://localhost/ElitaClaimService/ClaimRecordingService.svc")
+        client.ClientCredentials.UserName.UserName = "elita1"
+        client.ClientCredentials.UserName.Password = "elita1"
         Return client
     End Function
 

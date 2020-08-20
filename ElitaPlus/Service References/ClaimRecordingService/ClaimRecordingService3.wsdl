@@ -724,6 +724,18 @@
         </xs:complexContent>
       </xs:complexType>
       <xs:element name="FulfillmentOptionsRequest" nillable="true" type="tns:FulfillmentOptionsRequest" />
+      <xs:complexType name="UsedLoyaltyPointsRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingRequest">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="QuestionVersion" type="xs:int" />
+              <xs:element minOccurs="0" name="Questions" nillable="true" type="tns:ArrayOfQuestion" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="UsedLoyaltyPointsRequest" nillable="true" type="tns:UsedLoyaltyPointsRequest" />
       <xs:complexType name="CreateCaseRequest">
         <xs:sequence>
           <xs:element name="Reference" nillable="true" type="tns:BaseReference" />
@@ -921,6 +933,7 @@
           <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="StandardCode" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="DisplayOption" type="tns:FulfillmentDisplayOptionTypes" />
+          <xs:element minOccurs="0" name="AlternateCode" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
       <xs:element name="FulfillmentOption" nillable="true" type="tns:FulfillmentOption" />
@@ -1412,6 +1425,17 @@
       </xs:complexType>
       <xs:element name="ValidationFaultItem" nillable="true" type="tns:ValidationFaultItem" />
     </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Faults" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Faults" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://elita.assurant.com/Elita/ClaimService/Faults" />
+      <xs:complexType name="FmipApiNotConfiguredFault">
+        <xs:complexContent mixed="false">
+          <xs:extension xmlns:q1="http://elita.assurant.com/Elita/ClaimService/Faults" base="q1:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="FmipApiNotConfiguredFault" nillable="true" type="tns:FmipApiNotConfiguredFault" />
+    </xs:schema>
     <xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.BusinessRulesEngineInterface.Contracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.BusinessRulesEngineInterface.Contracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xs:complexType name="PolicyInfo">
@@ -1464,6 +1488,7 @@
           <xs:element minOccurs="0" name="ClaimClosedDate" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" name="ClaimConsequentialDamages" nillable="true" type="tns:ArrayOfClaimConsequentialDamage" />
           <xs:element minOccurs="0" name="ClaimEquipment" nillable="true" type="tns:ClaimEquipment" />
+          <xs:element minOccurs="0" name="ClaimEquipmentList" nillable="true" type="tns:ArrayOfClaimEquipment" />
           <xs:element minOccurs="0" name="ClaimId" type="ser:guid" />
           <xs:element minOccurs="0" name="ClaimNumber" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="ClosedReasonCode" nillable="true" type="xs:string" />
@@ -1488,6 +1513,7 @@
           <xs:element minOccurs="0" name="PaymentAmountSpecified" type="xs:boolean" />
           <xs:element minOccurs="0" name="PaymentAmountWithoutConseqDamage" type="xs:decimal" />
           <xs:element minOccurs="0" name="ProblemDescription" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RepairDate" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" name="ReportedDate" type="xs:dateTime" />
           <xs:element minOccurs="0" name="RiskType" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="ServiceCenterCode" nillable="true" type="xs:string" />
@@ -1542,6 +1568,8 @@
           <xs:enumeration value="Claimed" />
           <xs:enumeration value="Enrolled" />
           <xs:enumeration value="R" />
+          <xs:enumeration value="ReplacementOptions" />
+          <xs:enumeration value="ReceivedDevice" />
         </xs:restriction>
       </xs:simpleType>
       <xs:element name="ClaimEquipmentTypes" nillable="true" type="tns:ClaimEquipmentTypes" />
@@ -1566,6 +1594,12 @@
         </xs:sequence>
       </xs:complexType>
       <xs:element name="Item" nillable="true" type="tns:Item" />
+      <xs:complexType name="ArrayOfClaimEquipment">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ClaimEquipment" nillable="true" type="tns:ClaimEquipment" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfClaimEquipment" nillable="true" type="tns:ArrayOfClaimEquipment" />
       <xs:complexType name="CertificateItemCoverage">
         <xs:sequence>
           <xs:element minOccurs="0" name="BeginDate" type="xs:dateTime" />
@@ -1732,8 +1766,11 @@
   <wsdl:message name="IClaimRecordingService_Submit_TranslationNotFoundFaultFault_FaultMessage">
     <wsdl:part xmlns:q25="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q25:TranslationNotFoundFault" />
   </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Submit_FmipApiNotConfiguredFaultFault_FaultMessage">
+    <wsdl:part xmlns:q26="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Faults" name="detail" element="q26:FmipApiNotConfiguredFault" />
+  </wsdl:message>
   <wsdl:message name="IClaimRecordingService_Submit_ValidationFaultFault_FaultMessage">
-    <wsdl:part xmlns:q26="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q26:ValidationFault" />
+    <wsdl:part xmlns:q27="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q27:ValidationFault" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_Save_InputMessage">
     <wsdl:part name="parameters" element="tns:Save" />
@@ -1742,7 +1779,7 @@
     <wsdl:part name="parameters" element="tns:SaveResponse" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_Save_ValidationFaultFault_FaultMessage">
-    <wsdl:part xmlns:q27="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q27:ValidationFault" />
+    <wsdl:part xmlns:q28="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q28:ValidationFault" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_GetClaimSummary_InputMessage">
     <wsdl:part name="parameters" element="tns:GetClaimSummary" />
@@ -1751,7 +1788,7 @@
     <wsdl:part name="parameters" element="tns:GetClaimSummaryResponse" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_GetClaimSummary_ValidationFaultFault_FaultMessage">
-    <wsdl:part xmlns:q28="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q28:ValidationFault" />
+    <wsdl:part xmlns:q29="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q29:ValidationFault" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_ReEvaluateQuestions_InputMessage">
     <wsdl:part name="parameters" element="tns:ReEvaluateQuestions" />
@@ -1760,7 +1797,7 @@
     <wsdl:part name="parameters" element="tns:ReEvaluateQuestionsResponse" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_ReEvaluateQuestions_ValidationFaultFault_FaultMessage">
-    <wsdl:part xmlns:q29="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q29:ValidationFault" />
+    <wsdl:part xmlns:q30="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q30:ValidationFault" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_UpdateCaseAction_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateCaseAction" />
@@ -1769,7 +1806,7 @@
     <wsdl:part name="parameters" element="tns:UpdateCaseActionResponse" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_UpdateCaseAction_ValidationFaultFault_FaultMessage">
-    <wsdl:part xmlns:q30="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q30:ValidationFault" />
+    <wsdl:part xmlns:q31="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q31:ValidationFault" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_GetPolicySummaryInfo_InputMessage">
     <wsdl:part name="parameters" element="tns:GetPolicySummaryInfo" />
@@ -1790,13 +1827,13 @@
     <wsdl:part name="parameters" element="tns:ChangeFulfillmentResponse" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_ChangeFulfillment_InvalidCompanyCodeFaultFault_FaultMessage">
-    <wsdl:part xmlns:q31="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q31:InvalidCompanyCodeFault" />
+    <wsdl:part xmlns:q32="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q32:InvalidCompanyCodeFault" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_ChangeFulfillment_InvalidClaimNumberFaultFault_FaultMessage">
-    <wsdl:part xmlns:q32="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q32:InvalidClaimNumberFault" />
+    <wsdl:part xmlns:q33="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q33:InvalidClaimNumberFault" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_ChangeFulfillment_ValidationFaultFault_FaultMessage">
-    <wsdl:part xmlns:q33="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q33:ValidationFault" />
+    <wsdl:part xmlns:q34="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q34:ValidationFault" />
   </wsdl:message>
   <wsdl:portType name="IClaimRecordingService">
     <wsdl:operation name="BeginClaim">
@@ -1835,6 +1872,7 @@
       <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitCallerAuthenticationFailedFaultFault" name="CallerAuthenticationFailedFaultFault" message="tns:IClaimRecordingService_Submit_CallerAuthenticationFailedFaultFault_FaultMessage" />
       <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitFulfillmentServiceFaultFault" name="FulfillmentServiceFaultFault" message="tns:IClaimRecordingService_Submit_FulfillmentServiceFaultFault_FaultMessage" />
       <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitTranslationNotFoundFaultFault" name="TranslationNotFoundFaultFault" message="tns:IClaimRecordingService_Submit_TranslationNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitFmipApiNotConfiguredFaultFault" name="FmipApiNotConfiguredFaultFault" message="tns:IClaimRecordingService_Submit_FmipApiNotConfiguredFaultFault_FaultMessage" />
       <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitValidationFaultFault" name="ValidationFaultFault" message="tns:IClaimRecordingService_Submit_ValidationFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="Save">
@@ -2001,6 +2039,10 @@
       <wsdl:fault name="TranslationNotFoundFaultFault">
         <soap:fault use="literal" name="TranslationNotFoundFaultFault" namespace="" />
         <soap:fault use="literal" name="TranslationNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="FmipApiNotConfiguredFaultFault">
+        <soap:fault use="literal" name="FmipApiNotConfiguredFaultFault" namespace="" />
+        <soap:fault use="literal" name="FmipApiNotConfiguredFaultFault" namespace="" />
       </wsdl:fault>
       <wsdl:fault name="ValidationFaultFault">
         <soap:fault use="literal" name="ValidationFaultFault" namespace="" />

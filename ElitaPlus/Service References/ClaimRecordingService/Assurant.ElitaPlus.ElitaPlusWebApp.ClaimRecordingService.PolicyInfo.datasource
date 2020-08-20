@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="PolicyInfo" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService.PolicyInfo, Service References.ClaimRecordingService.Reference.vb.dll, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
+   <TypeInfo>Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService.PolicyInfo</TypeInfo>
 </GenericObjectDataSource>

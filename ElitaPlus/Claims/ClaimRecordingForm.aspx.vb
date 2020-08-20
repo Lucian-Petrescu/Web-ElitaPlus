@@ -52,6 +52,10 @@ Public Class ClaimRecordingForm
 
     Dim _relationlist As ListItem()
 
+
+
+    Private Const ClaimRecordingViewIndexUserClaimAddress = 8
+
     Private Const ClaimRecordingViewIndexDevice = 1
     Private Const ClaimRecordingViewIndexQuestion = 2
     Private Const ClaimRecordingViewIndexTroubleShooting = 3
@@ -59,8 +63,9 @@ Public Class ClaimRecordingForm
     Private Const ClaimRecordingViewIndexFulfillmentOptions = 5
     Private Const ClaimRecordingViewIndexLogisticsOptions = 6
     Private Const ClaimRecordingViewIndexShippingAddress = 7
-    Private Const ClaimRecordingViewIndexDynamicFulfillment = 8
+    Private Const ClaimRecordingViewIndexDynamicFulfillment = 9
     Private Const gridItemDeviceInfoPurchasedDate = 4
+    
 
     Private Const DoubleSpaceString As String = "  "
     Private Const NoData As String = " - "
@@ -232,6 +237,22 @@ Public Class ClaimRecordingForm
             Return ucPrevCallerInfo
         End Get
     End Property
+
+
+
+    Protected WithEvents MoUserClaimControlAddress As UserControlClaimAddress
+
+    Public ReadOnly Property UserControlClaimAddr() As UserControlClaimAddress
+        Get
+            If MoUserClaimControlAddress Is Nothing Then
+                MoUserClaimControlAddress = DirectCast(Master.FindControl("BodyPlaceHolder").FindControl("UserControlClaimAddress1"), UserControlClaimAddress)
+            End If
+            Return MoUserClaimControlAddress
+        End Get
+    End Property
+
+
+  
 #End Region
 
 
@@ -314,6 +335,7 @@ Public Class ClaimRecordingForm
         End If
     End Sub
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+
         MasterPage.MessageController.Clear()
 
         AddHandler UcExistingCallerInfo.GridSelectionHandler, AddressOf UcExistingCallerInfo_GridSelectionHandler
@@ -322,6 +344,7 @@ Public Class ClaimRecordingForm
 
         Try
             If Not (IsPostBack) Then
+              
                 lblCancelMessage.Text = TranslationBase.TranslateLabelOrMessage("MSG_CONFIRM_CANCEL")
 
                 SetUpQuestionUserControl()
@@ -450,6 +473,7 @@ Public Class ClaimRecordingForm
 
             Dim oCertificate As Certificate = New Certificate(certId)
             If Not oCertificate Is Nothing Then
+               
                 Dim exclSecFieldsDt As DataTable
                 Dim objList As List(Of CaseBase.ExclSecFields)
                 If State.ExclSecFieldsDt Is Nothing Then
@@ -556,11 +580,18 @@ Public Class ClaimRecordingForm
     ''' </summary>
     ''' <returns>Instance of <see cref="ClaimRecordingServiceClient"/></returns>
     Private Shared Function GetClient() As ClaimRecordingServiceClient
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-        Dim client = New ClaimRecordingServiceClient(EndPointName, ConfigurationManager.AppSettings(ServiceUrl))
-        client.ClientCredentials.UserName.UserName = ConfigurationManager.AppSettings(UserName)
-        client.ClientCredentials.UserName.Password = ConfigurationManager.AppSettings(Password)
+        'ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+        'Dim client = New ClaimRecordingServiceClient(EndPointName, ConfigurationManager.AppSettings(ServiceUrl))
+        'client.ClientCredentials.UserName.UserName = ConfigurationManager.AppSettings(UserName)
+        'client.ClientCredentials.UserName.Password = ConfigurationManager.AppSettings(Password)
+        'Return client
+
+
+        Dim client = New ClaimRecordingServiceClient("CustomBinding_IClaimRecordingService",  "http://localhost/ElitaClaimService/ClaimRecordingService.svc")
+        client.ClientCredentials.UserName.UserName = "elita1"
+        client.ClientCredentials.UserName.Password = "elita1"
         Return client
+
     End Function
 
     Private Shared Function GetMakesAndModels(dealer As String) As Object
@@ -595,12 +626,40 @@ Public Class ClaimRecordingForm
                     Dim questionResponse As QuestionResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, QuestionResponse)
                     questionUserControl.QuestionDataSource = questionResponse.Questions.Where(Function(q) q.Applicable = True).ToArray()
                     questionUserControl.QuestionDataBind()
+
+                    '' Code will come here for address check 
+                    '''''
+               ' Case GetType(CustomerAddressResponse)
+
+
+                    'Note: FulfillmentOptionsResponse is the response recieved to QuestionSetRequest
+                    '' New Change - QuestionSetRequest will have one more new response /
+                    ' 1. CustomerAddress 
+                    ' 2. FulfillmentOptionsResponse
+                    '
+
+             
+
                 Case GetType(CallerAuthenticationResponse)
                     ' Caller Authentication response object
-                    ShowCallerAuthenticationView()
+                  ShowCallerAuthenticationView() ' Commented to load User Claim Address
+                   
+                    
+                    
+                   
+                    'ShowShippingAddressView()
+
                 Case GetType(TroubleShootingResponse)
                     ' TroubleShooting response object
                     ShowTroubleShootingView()
+
+
+                    '' CHanges - Nadir Firfire
+                'Case GetType(ShippingAddressResponse)
+                '    ' Caller Authentication response object
+                '    ShowUserClaimAddressView()
+
+
                 Case GetType(FulfillmentOptionsResponse)
                     ' TroubleShooting response object
                     ShowFulfillmentOptionsView()
@@ -611,7 +670,29 @@ Public Class ClaimRecordingForm
                     ShowBestReplacementDeviceView()
                 Case GetType(ShippingAddressResponse)
                     'ShippingAddressResponse response object
-                    ShowShippingAddressView()
+                   ' ShowShippingAddressView()
+
+                  '  ShowUserClaimAddressView()
+
+                    ''' If x = 1
+                    ''' show show claim addresss 
+                    ''' ekse new codnition
+                    ''' show shipping address
+                    ''' ShowUserClaimAddressView()
+                 
+
+
+                    
+                    Dim oCertificate As Certificate = New Certificate(State.CertificateId)
+                    If oCertificate.Dealer.AttributeValues.Contains(Codes.DLR_ATTR_ALLOW_CUSTOMER_ADDRESS_UPDATE) _
+                       AndAlso oCertificate.Dealer.AttributeValues.Value(Codes.DLR_ATTR_ALLOW_CUSTOMER_ADDRESS_UPDATE) = Codes.YESNO_Y Then
+                        ShowUserClaimAddressView()
+                    Else 
+                        ShowShippingAddressView()
+                    End If
+
+
+
                 Case GetType(DecisionResponse)
                     'Decision  response object
                     ShowDecisionView()
@@ -621,7 +702,10 @@ Public Class ClaimRecordingForm
                     GridItems.DataSource = item.RegisteredItems
                     GridItems.DataBind()
 
-                    ShowHideModifyDeviceInfoControl()
+                    ShowHideModifyDeviceInfoControl()  
+
+
+
                 Case GetType(ActionResponse)
                     MoveToNextPage()
                 Case GetType(DynamicFulfillmentResponse)
@@ -3446,6 +3530,139 @@ Public Class ClaimRecordingForm
         End Try
     End Sub
 
+   
+    Private Sub ShowUserClaimAddressView()
+        mvClaimsRecording.ActiveViewIndex = ClaimRecordingViewIndexUserClaimAddress
+       
+
+        Dim certId As Guid
+        If (Not State.CertificateId.Equals(Guid.Empty)) Then
+            certId = State.CertificateId
+        ElseIf (Not State.CaseId.Equals(Guid.Empty)) Then
+            Dim oCase As CaseBase = New CaseBase(State.CaseId)
+            certId = oCase.CertId
+        End If
+
+        Dim oCertificate As Certificate = New Certificate(certId)
+        If Not oCertificate Is Nothing Then
+
+            with oCertificate
+                UserControlClaimAddr.Bind(.AddressChild)
+            End With
+        End If
+
+
+      '  oCertificate.Dealer.ManualEnrollmentAllowedId
+
+
+        UserControlClaimAddress1.Visible = True
+
+      
+    End Sub
+
+
+
+    Private Sub ButtonUserClaimAddressContinue_Click(sender As Object, e As EventArgs) Handles ButtonUserClaimAddressContinue.Click
+         
+        Try
+
+            Dim userClaimAddressRequest As ShippingAddressRequest = New ShippingAddressRequest()
+            Dim userClaimAddressInfo As AddressInfo
+
+            If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing AndAlso State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(ShippingAddressResponse) Then
+                userClaimAddressRequest.CompanyCode = State.SubmitWsBaseClaimRecordingResponse.CompanyCode
+                userClaimAddressRequest.CaseNumber = State.SubmitWsBaseClaimRecordingResponse.CaseNumber
+                userClaimAddressRequest.InteractionNumber = State.SubmitWsBaseClaimRecordingResponse.InteractionNumber
+
+                ' Populate user selected address
+                userClaimAddressInfo = PopulateUserClaimAddress()
+
+                UserClaimAddressRequest.ShippingAddress = userClaimAddressInfo
+                
+                Try
+                    Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
+                        GetClient(),
+                        New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                        Function(ByVal c As ClaimRecordingServiceClient)
+                            Return c.Submit(userClaimAddressRequest)
+                        End Function)
+
+                    If wsResponse IsNot Nothing Then
+                        State.SubmitWsBaseClaimRecordingResponse = wsResponse
+                    End If
+                Catch ex As FaultException
+                    ThrowWsFaultExceptions(ex)
+                    Exit Sub
+                End Try
+                DisplayNextView()
+            End If
+        Catch ex As ThreadAbortException
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+
+    End Sub
+ 
+
+    Private Function PopulateUserClaimAddress() As AddressInfo
+        Dim userClaimAddressInfo As AddressInfo = New AddressInfo()
+        Dim txt As TextBox
+        Dim txtPostalCode As TextBox
+        Dim ddl As DropDownList
+
+        'If (RadioButtonOtherAddress.Checked) Then
+
+          
+        'Else
+            
+        '    userClaimAddressInfo.Address1 = State.PolicyAddressBo.Address1
+        '    userClaimAddressInfo.Address2 = State.PolicyAddressBo.Address2
+        '    userClaimAddressInfo.Address3 = State.PolicyAddressBo.Address3
+        '    userClaimAddressInfo.City = State.PolicyAddressBo.City
+        '    userClaimAddressInfo.PostalCode = State.PolicyAddressBo.PostalCode
+        '    If Not State.PolicyAddressBo.CountryId.IsEmpty Then
+        '        Dim countryBo As New Country(State.PolicyAddressBo.CountryId)
+        '        userClaimAddressInfo.Country = countryBo.Code
+        '    End If
+        '    userClaimAddressInfo.State = UserControlClaimAddr.RegionText
+
+        'End If
+
+
+
+
+
+
+        txt = CType(UserControlClaimAddr.FindControl("moAddress1Text"), TextBox)
+        userClaimAddressInfo.Address1 = txt.Text
+
+        txt = CType(UserControlClaimAddr.FindControl("moAddress2Text"), TextBox)
+        userClaimAddressInfo.Address2 = txt.Text
+
+        txt = CType(UserControlClaimAddr.FindControl("moAddress3Text"), TextBox)
+        userClaimAddressInfo.Address3 = txt.Text
+
+        txt = CType(UserControlClaimAddr.FindControl("moCityText"), TextBox)
+        userClaimAddressInfo.City = txt.Text
+
+        ' Country value
+        ddl = CType(UserControlClaimAddr.FindControl("moCountryDrop_WRITE"), DropDownList)
+        If (ddl.Items.Count > 0 AndAlso ddl.SelectedIndex > -1) Then
+            userClaimAddressInfo.Country = LookupListNew.GetCodeFromId(LookupListNew.LK_COUNTRIES, New Guid(ddl.SelectedValue.ToString()))
+        End If
+
+        txtPostalCode = CType(UserControlClaimAddr.FindControl("moPostalText"), TextBox)
+          
+        userClaimAddressInfo.PostalCode = txtPostalCode.Text
+
+        ' Region/ State Drop down value
+        ddl = CType(UserControlClaimAddr.FindControl("moRegionDrop_WRITE"), DropDownList)
+        If (ddl.Items.Count > 0 AndAlso ddl.SelectedIndex > -1) Then
+            userClaimAddressInfo.State = ddl.SelectedItem.ToString()
+        End If
+
+        Return userClaimAddressInfo
+    End Function
 
 #End Region
 

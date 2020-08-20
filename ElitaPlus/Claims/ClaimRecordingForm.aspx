@@ -10,6 +10,8 @@
 <%@ Register TagPrefix="Elita" TagName="UserControlDeliverySlot" Src="../Common/UserControlDeliverySlot.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlDynamicFulfillment" Src="../Common/DynamicFulfillmentUI.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlServiceCenterSelection" Src="../Common/UserControlServiceCenterSelection.ascx" %>
+<%@ Register TagPrefix="Elita" TagName="UserControlClaimAddress" Src="../Common/UserControlClaimAddress.ascx" %>
+
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://*.core.windows.net/ 'unsafe-eval'; style-src 'self' https://*.core.windows.net/ 'unsafe-inline'; script-src 'self' https://*.core.windows.net/ 'unsafe-inline' 'unsafe-eval';  media-src *" />
@@ -31,8 +33,6 @@
             opacity: .75;
             filter: alpha(opacity=90);
         }
-
-
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
@@ -267,102 +267,103 @@
                         </tbody>
                     </table>
                     <br />
-                    <div  runat="server" id="divDeviceInfoContainer">
-                     <div class="dataContainer">
-                         <h2 class="dataGridHeader" runat="server" id="headerDeviceInfo">
-                            <asp:Label runat="server" ID="lblModifyDvcInfo" Text="MODIFY_DEVICE_INFORMATION"></asp:Label></h2>
-                    <div class="stepformZone">
-                    <table id="tblModifyDeviceInfo" style="width: 100%; height: 100%" class="formGrid">
-                        <tr>
-                            <td width="70%" align="left">
-                                <table style="width: 100%; height: 100%">
-                                    <tbody>
-                                        <tr>
-                                            <td width="20%"></td>
-                                            <td align="left">
-                                                <asp:Label ID="lblDvcSelected" runat="server" Font-Bold="true" Text="CLAIM_DEVICE_ENROLLED"></asp:Label>
-                                            </td>
-                                            <td align="left">
-                                                <asp:Label ID="lblDvcCorrected" runat="server"  Font-Bold="true" Text="CLAIM_DEVICE_MODIFIED"></asp:Label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" width="20%">
-                                                <asp:Label ID="lblDvcMake"  runat="server">Make</asp:Label>:
-                                            </td>
-                                            <td align="left">
-                                                <asp:Label ID="lblDvcMakeValue" runat="server"></asp:Label>
-                                            </td>
-                                            <td align="left">
-                                                <asp:DropDownList ID="ddlDvcMake" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
-                                                <asp:TextBox ID="txtDvcMake" Visible="false" runat="server" MaxLength="225" SkinID="MediumTextBox"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" width="20%">
-                                                <asp:Label ID="lblDvcModel"  runat="server">Model</asp:Label>:
-                                            </td>
-                                            <td align="left">
-                                                <asp:Label ID="lblDvcModelValue" runat="server"></asp:Label>
-                                            </td>
-                                            <td align="left">
-                                                <asp:DropDownList ID="ddlDvcModel" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
-                                                <asp:TextBox ID="txtDvcModel" Visible="false" runat="server" MaxLength="100" SkinID="MediumTextBox"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" width="20%">
-                                                <asp:Label ID="lblDvcImei" runat="server">Imei</asp:Label>:
-                                            </td>
-                                            <td align="left">
-                                                <asp:Label ID="lblDvcImeiValue" runat="server"></asp:Label>
-                                            </td>
-                                            <td align="left">
-                                                <asp:TextBox ID="txtDvcImei" runat="server" MaxLength="30" SkinID="MediumTextBox"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" width="20%">
-                                                <asp:Label ID="lblDvcSerialNumber" runat="server">SERIAL_NUM</asp:Label>:
-                                            </td>
-                                            <td align="left">
-                                                <asp:Label ID="lblDvcSerialNumberValue" runat="server"></asp:Label>
-                                            </td>
-                                            <td align="left">
-                                                <asp:TextBox ID="txtDvcSerialNumber" runat="server" MaxLength="30" SkinID="MediumTextBox"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                         <tr>
-                                            <td align="right" width="20%">
-                                                <asp:Label ID="lblDvcColor" runat="server">COLOR</asp:Label>:
-                                            </td>
-                                            <td align="left">
-                                                <asp:Label ID="lblDvcColorValue" runat="server"></asp:Label>
-                                            </td>
-                                            <td align="left">
-                                                <asp:TextBox ID="txtDvcColor" runat="server" MaxLength="200" SkinID="MediumTextBox"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" width="20%">
-                                                <asp:Label ID="lblDvcCapacity" runat="server">CAPACITY</asp:Label>:
-                                            </td>
-                                            <td align="left">
-                                                <asp:Label ID="lblDvcCapacityValue" runat="server"></asp:Label>
-                                            </td>
-                                            <td align="left">
-                                                <asp:TextBox ID="txtDvcCapacity" runat="server" MaxLength="200" SkinID="MediumTextBox"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                    <div runat="server" id="divDeviceInfoContainer">
+                        <div class="dataContainer">
+                            <h2 class="dataGridHeader" runat="server" id="headerDeviceInfo">
+                                <asp:Label runat="server" ID="lblModifyDvcInfo" Text="MODIFY_DEVICE_INFORMATION"></asp:Label></h2>
+                            <div class="stepformZone">
+                                <table id="tblModifyDeviceInfo" style="width: 100%; height: 100%" class="formGrid">
+                                    <tr>
+                                        <td width="70%" align="left">
+                                            <table style="width: 100%; height: 100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="20%"></td>
+                                                        <td align="left">
+                                                            <asp:Label ID="lblDvcSelected" runat="server" Font-Bold="true" Text="CLAIM_DEVICE_ENROLLED"></asp:Label>
+                                                        </td>
+                                                        <td align="left">
+                                                            <asp:Label ID="lblDvcCorrected" runat="server" Font-Bold="true" Text="CLAIM_DEVICE_MODIFIED"></asp:Label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right" width="20%">
+                                                            <asp:Label ID="lblDvcMake" runat="server">Make</asp:Label>:
+                                                        </td>
+                                                        <td align="left">
+                                                            <asp:Label ID="lblDvcMakeValue" runat="server"></asp:Label>
+                                                        </td>
+                                                        <td align="left">
+                                                            <asp:DropDownList ID="ddlDvcMake" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
+                                                            <asp:TextBox ID="txtDvcMake" Visible="false" runat="server" MaxLength="225" SkinID="MediumTextBox"></asp:TextBox>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right" width="20%">
+                                                            <asp:Label ID="lblDvcModel" runat="server">Model</asp:Label>:
+                                                        </td>
+                                                        <td align="left">
+                                                            <asp:Label ID="lblDvcModelValue" runat="server"></asp:Label>
+                                                        </td>
+                                                        <td align="left">
+                                                            <asp:DropDownList ID="ddlDvcModel" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
+                                                            <asp:TextBox ID="txtDvcModel" Visible="false" runat="server" MaxLength="100" SkinID="MediumTextBox"></asp:TextBox>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right" width="20%">
+                                                            <asp:Label ID="lblDvcImei" runat="server">Imei</asp:Label>:
+                                                        </td>
+                                                        <td align="left">
+                                                            <asp:Label ID="lblDvcImeiValue" runat="server"></asp:Label>
+                                                        </td>
+                                                        <td align="left">
+                                                            <asp:TextBox ID="txtDvcImei" runat="server" MaxLength="30" SkinID="MediumTextBox"></asp:TextBox>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right" width="20%">
+                                                            <asp:Label ID="lblDvcSerialNumber" runat="server">SERIAL_NUM</asp:Label>:
+                                                        </td>
+                                                        <td align="left">
+                                                            <asp:Label ID="lblDvcSerialNumberValue" runat="server"></asp:Label>
+                                                        </td>
+                                                        <td align="left">
+                                                            <asp:TextBox ID="txtDvcSerialNumber" runat="server" MaxLength="30" SkinID="MediumTextBox"></asp:TextBox>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right" width="20%">
+                                                            <asp:Label ID="lblDvcColor" runat="server">COLOR</asp:Label>:
+                                                        </td>
+                                                        <td align="left">
+                                                            <asp:Label ID="lblDvcColorValue" runat="server"></asp:Label>
+                                                        </td>
+                                                        <td align="left">
+                                                            <asp:TextBox ID="txtDvcColor" runat="server" MaxLength="200" SkinID="MediumTextBox"></asp:TextBox>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right" width="20%">
+                                                            <asp:Label ID="lblDvcCapacity" runat="server">CAPACITY</asp:Label>:
+                                                        </td>
+                                                        <td align="left">
+                                                            <asp:Label ID="lblDvcCapacityValue" runat="server"></asp:Label>
+                                                        </td>
+                                                        <td align="left">
+                                                            <asp:TextBox ID="txtDvcCapacity" runat="server" MaxLength="200" SkinID="MediumTextBox"></asp:TextBox>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td width="30%"></td>
+                                    </tr>
                                 </table>
-                            </td>
-                            <td width="30%"></td>
-                        </tr>
-                    </table>
-                      </div></div>
-                    </div> 
-                       
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="btnZone">
@@ -429,8 +430,7 @@
                 <div>
                     <table width="100%" class="dataGrid">
                         <tr id="trPageSize" runat="server">
-                            <td class="bor" align="left">
-                            </td>
+                            <td class="bor" align="left"></td>
                             <td class="bor" align="right">
                                 <asp:Label ID="lblRecordCount" runat="server"></asp:Label>
                             </td>
@@ -447,10 +447,10 @@
                                             <div id="sub-title">
                                                 <div id="sub-left">
                                                     <asp:Panel runat="server" ID="panelCurrentDevice">
-                                                        <asp:Label ID="lblCurrentDevice" runat="server" Font-Bold="true" CssClass="highlightText"/>
+                                                        <asp:Label ID="lblCurrentDevice" runat="server" Font-Bold="true" CssClass="highlightText" />
                                                         <br />
                                                     </asp:Panel>
-                                                    <asp:Label ID="lblDeviceDescription1" runat="server" Font-Bold="true"/>
+                                                    <asp:Label ID="lblDeviceDescription1" runat="server" Font-Bold="true" />
                                                     <br />
                                                     <asp:Label ID="lblDeviceDescription2" runat="server" />
 
@@ -458,7 +458,8 @@
                                                 <div id="sub-right" style="text-align: right; vertical-align: top;">
                                                     <asp:Label ID="lblQuantity" runat="server" Font-Bold="true"></asp:Label>
                                                     <br />
-                                                    <asp:Label ID="lblDeviceShipped" runat="server"></asp:Label> &nbsp;
+                                                    <asp:Label ID="lblDeviceShipped" runat="server"></asp:Label>
+                                                    &nbsp;
                                         <asp:LinkButton CommandName="SelectDeviceAction" ID="btnSelectDevice" runat="server" Visible="true"
                                             OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
                                                 </div>
@@ -643,7 +644,7 @@
                                                                                     :
                                                                                 </td>
                                                                                 <td align="left" nowrap="nowrap">
-                                                                                    <asp:TextBox ID="txtServiceCenterCode" runat="server" ReadOnly="true" SkinID="smallTextBox" style="width: 100px"></asp:TextBox>
+                                                                                    <asp:TextBox ID="txtServiceCenterCode" runat="server" ReadOnly="true" SkinID="smallTextBox" Style="width: 100px"></asp:TextBox>
                                                                                 </td>
                                                                                 <td align="right" nowrap="nowrap">
                                                                                     <asp:Label runat="server" ID="moServiceCenterNameLabel" Text="SERVICE_CENTER_NAME" />
@@ -665,8 +666,8 @@
                                                     </tr>
                                                 </table>
 
-                                                <br/>
-                                                <Elita:UserControlQuestion runat="server" ID="logisticsOptionsQuestions"/>
+                                                <br />
+                                                <Elita:UserControlQuestion runat="server" ID="logisticsOptionsQuestions" />
 
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -738,20 +739,54 @@
                     OnClientClick="return revealModal('ModalCancel');" />
             </div>
         </asp:View>
+
+        <!--User Claim Address-->
+        <asp:View ID="vCustomerClaimAddress" runat="server">
+            <div id="dvStep8" runat="server">
+                <div class="dataContainer">
+                    <h2 class="dataGridHeader" runat="server" id="UserClaimAddress">
+                        <asp:Label runat="server" ID="LabelUserClaimAddress" Text="USER_CLAIM_ADDRESS" />
+                    </h2>
+                    <div class="stepformZone">
+                        <table id="tblUserClaimAddressDetail" class="formGrid" cellpadding="0" cellspacing="0" style="border: 1px solid;" width="80%">
+                            <tr>
+                                <td width="30%"></td>
+                                <td width="70%" align="left">
+                                    <table id="tblUserClaimAddress" class="formGrid" cellpadding="0" cellspacing="0" width="100%">
+                                        <tbody align="left">
+                                        <Elita:UserControlClaimAddress ID="UserControlClaimAddress1" runat="server" Visible="false"></Elita:UserControlClaimAddress>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="btnZone">
+                <asp:Button ID="ButtonUserClaimAddressContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
+                <asp:Button ID="ButtonUserClaimAddressSaveExit" TabIndex="190" runat="server" Text="Save_Exit" SkinID="PrimaryRightButton" Visible="false" />
+                <asp:LinkButton ID="LinkButtonUserClaimAddressCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
+                    OnClientClick="return revealModal('ModalCancel');" />
+            </div>
+        </asp:View>
+        <!--User Claim Address End-->
+
         <asp:View ID="vDynamicFulfillment" runat="server">
             <script type="text/javascript" src="../Scripts/df_ui.js"></script>
             <div class="dataContainer">
                 <asp:PlaceHolder runat="server" ID="phDynamicFulfillmentUI"></asp:PlaceHolder>
             </div>
             <div class="btnZone">
-                <div style="visibility:hidden">
+                <div style="visibility: hidden">
                     <asp:Button ID="btnContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
                     <asp:Button ID="btnLegacyContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
                     <input type="hidden" id="hdnInput" value="<%=hdnData.ClientID %>" />
                     <asp:HiddenField ID="hdnData" runat="server" />
-                </div>                
+                </div>
                 <asp:LinkButton ID="lnkCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
-                                OnClientClick="return revealModal('ModalCancel');" />
+                    OnClientClick="return revealModal('ModalCancel');" />
             </div>
         </asp:View>
     </asp:MultiView>
