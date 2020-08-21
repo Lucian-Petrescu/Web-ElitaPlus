@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="zknHvT8Kh6zGkBjdA8bZG75fnO2Sxe41sXiyoiibGFg=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="C6PMNDvEP9fLXlnLjblV50l78IsWm5y2jwEzg7+dKjM=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="customBinding" name="CustomBinding_IClaimRecordingService1">
       <properties>
@@ -719,10 +719,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="CustomBinding_IClaimRecordingService2" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://localhost:81/ElitaClaimService/ClaimRecordingService.svc" bindingConfiguration="CustomBinding_IClaimRecordingService1">
+    <endpoint name="CustomBinding_IClaimRecordingService2" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://localhost:20377/ClaimRecordingService.svc" bindingConfiguration="CustomBinding_IClaimRecordingService1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:81/ElitaClaimService/ClaimRecordingService.svc</serializedValue>
+          <serializedValue>http://localhost:20377/ClaimRecordingService.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -804,10 +804,10 @@
         </property>
       </properties>
     </endpoint>
-    <endpoint name="CustomBinding_IClaimRecordingService12" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://localhost:81/ElitaClaimService/ClaimRecordingService.svc/Secure" bindingConfiguration="CustomBinding_IClaimRecordingService1">
+    <endpoint name="CustomBinding_IClaimRecordingService12" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://localhost:20377/ClaimRecordingService.svc/Secure" bindingConfiguration="CustomBinding_IClaimRecordingService1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:81/ElitaClaimService/ClaimRecordingService.svc/Secure</serializedValue>
+          <serializedValue>http://localhost:20377/ClaimRecordingService.svc/Secure</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

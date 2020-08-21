@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:20377/ClaimRecordingService.svc?xsd=xsd1" namespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" />
+  <xs:complexType name="ArrayOfFulfillmentOption">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FulfillmentOption" nillable="true" type="tns:FulfillmentOption" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFulfillmentOption" nillable="true" type="tns:ArrayOfFulfillmentOption" />
+  <xs:complexType name="FulfillmentOption">
+    <xs:sequence>
+      <xs:element name="Code" nillable="true" type="xs:string" />
+      <xs:element name="Name" nillable="true" type="xs:string" />
+      <xs:element name="Description" nillable="true" type="xs:string" />
+      <xs:element name="Order" type="xs:int" />
+      <xs:element name="Selected" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Prices" nillable="true" type="tns:ArrayOfFulfillmentOptionPrice">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StandardCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DisplayOption" type="tns:FulfillmentDisplayOptionTypes" />
+      <xs:element minOccurs="0" name="AlternateCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FulfillmentOption" nillable="true" type="tns:FulfillmentOption" />
+  <xs:complexType name="ArrayOfFulfillmentOptionPrice">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FulfillmentOptionPrice" nillable="true" type="tns:FulfillmentOptionPrice" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFulfillmentOptionPrice" nillable="true" type="tns:ArrayOfFulfillmentOptionPrice" />
+  <xs:complexType name="FulfillmentOptionPrice">
+    <xs:sequence>
+      <xs:element name="ServiceClassCode" nillable="true" type="xs:string" />
+      <xs:element name="ServiceTypeCode" nillable="true" type="xs:string" />
+      <xs:element name="NetPrice" nillable="true" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FulfillmentOptionPrice" nillable="true" type="tns:FulfillmentOptionPrice" />
+  <xs:simpleType name="FulfillmentDisplayOptionTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="WhenMultipleOptionsNotAvailable" />
+      <xs:enumeration value="Always" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="FulfillmentDisplayOptionTypes" nillable="true" type="tns:FulfillmentDisplayOptionTypes" />
+  <xs:complexType name="ArrayOfLogisticStage">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="LogisticStage" nillable="true" type="tns:LogisticStage" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfLogisticStage" nillable="true" type="tns:ArrayOfLogisticStage" />
+  <xs:complexType name="LogisticStage">
+    <xs:sequence>
+      <xs:element name="Code" nillable="true" type="xs:string" />
+      <xs:element name="Name" nillable="true" type="xs:string" />
+      <xs:element name="Description" nillable="true" type="xs:string" />
+      <xs:element name="Order" type="xs:int" />
+      <xs:element name="Options" nillable="true" type="tns:ArrayOfLogisticOption" />
+      <xs:element minOccurs="0" name="ServiceCenterCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LogisticStage" nillable="true" type="tns:LogisticStage" />
+  <xs:complexType name="ArrayOfLogisticOption">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="LogisticOption" nillable="true" type="tns:LogisticOption" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfLogisticOption" nillable="true" type="tns:ArrayOfLogisticOption" />
+  <xs:complexType name="LogisticOption">
+    <xs:sequence>
+      <xs:element name="Code" nillable="true" type="xs:string" />
+      <xs:element name="Name" nillable="true" type="xs:string" />
+      <xs:element name="Description" nillable="true" type="xs:string" />
+      <xs:element name="Order" type="xs:int" />
+      <xs:element name="Selected" type="xs:boolean" />
+      <xs:element name="Type" type="tns:LogisticOptionType" />
+      <xs:element minOccurs="0" name="LogisticOptionInfo" nillable="true" type="tns:LogisticOptionInfoBase" />
+      <xs:element xmlns:q1="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="Questions" nillable="true" type="q1:ArrayOfQuestion" />
+      <xs:element minOccurs="0" name="DeliveryOptions" nillable="true" type="tns:DeliveryOptions" />
+      <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LogisticOption" nillable="true" type="tns:LogisticOption" />
+  <xs:simpleType name="LogisticOptionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CustomerAddress" />
+      <xs:enumeration value="DealerBranchAddress" />
+      <xs:enumeration value="ElectronicDelivery" />
+      <xs:enumeration value="Unspecified" />
+      <xs:enumeration value="HandlingStore" />
+      <xs:enumeration value="ServiceCenter" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="LogisticOptionType" nillable="true" type="tns:LogisticOptionType" />
+  <xs:complexType name="LogisticOptionInfoBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EstimatedDeliveryDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="EstimatedChangedDeliveryDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="EstimatedShippingDate" nillable="true" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LogisticOptionInfoBase" nillable="true" type="tns:LogisticOptionInfoBase" />
+  <xs:complexType name="LogisticOptionInfoCustomerAddress">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:LogisticOptionInfoBase">
+        <xs:sequence>
+          <xs:element name="Address" nillable="true" type="tns:Address" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LogisticOptionInfoCustomerAddress" nillable="true" type="tns:LogisticOptionInfoCustomerAddress" />
+  <xs:complexType name="Address">
+    <xs:sequence>
+      <xs:element name="Address1" nillable="true" type="xs:string" />
+      <xs:element name="Address2" nillable="true" type="xs:string" />
+      <xs:element name="Address3" nillable="true" type="xs:string" />
+      <xs:element name="City" nillable="true" type="xs:string" />
+      <xs:element name="State" nillable="true" type="xs:string" />
+      <xs:element name="Country" nillable="true" type="xs:string" />
+      <xs:element name="PostalCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Address" nillable="true" type="tns:Address" />
+  <xs:complexType name="LogisticOptionInfoDealerBranchAddress">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:LogisticOptionInfoBase">
+        <xs:sequence>
+          <xs:element name="Address" nillable="true" type="tns:Address" />
+          <xs:element name="BranchCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LogisticOptionInfoDealerBranchAddress" nillable="true" type="tns:LogisticOptionInfoDealerBranchAddress" />
+  <xs:complexType name="LogisticOptionInfoElectronicDelivery">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:LogisticOptionInfoBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LogisticOptionInfoElectronicDelivery" nillable="true" type="tns:LogisticOptionInfoElectronicDelivery" />
+  <xs:complexType name="LogisticOptionInfoUnspecified">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:LogisticOptionInfoBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LogisticOptionInfoUnspecified" nillable="true" type="tns:LogisticOptionInfoUnspecified" />
+  <xs:complexType name="LogisticOptionInfoHandlingStore">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:LogisticOptionInfoBase">
+        <xs:sequence>
+          <xs:element name="Address" nillable="true" type="tns:Address" />
+          <xs:element name="HandlingStore" nillable="true" type="tns:HandlingStore" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LogisticOptionInfoHandlingStore" nillable="true" type="tns:LogisticOptionInfoHandlingStore" />
+  <xs:complexType name="HandlingStore">
+    <xs:sequence>
+      <xs:element name="StoreCode" nillable="true" type="xs:string" />
+      <xs:element name="StoreName" nillable="true" type="xs:string" />
+      <xs:element name="StoreType" type="tns:HandlingStoreType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="HandlingStore" nillable="true" type="tns:HandlingStore" />
+  <xs:simpleType name="HandlingStoreType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="BranchOffice" />
+      <xs:enumeration value="ConvenienceStore" />
+      <xs:enumeration value="Locker" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="HandlingStoreType" nillable="true" type="tns:HandlingStoreType" />
+  <xs:complexType name="DeliveryOptions">
+    <xs:sequence>
+      <xs:element name="CourierCode" nillable="true" type="xs:string" />
+      <xs:element name="CourierProductCode" nillable="true" type="xs:string" />
+      <xs:element name="DisplayEstimatedDeliveryDate" type="xs:boolean" />
+      <xs:element minOccurs="0" name="AllowChangeEstimatedDeliveryDate" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" name="EstimateDeliveryDateChangeWindow" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="CountryCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ServiceCenterCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DesiredDeliveryDateMandatory" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DeliveryOptions" nillable="true" type="tns:DeliveryOptions" />
+</xs:schema>

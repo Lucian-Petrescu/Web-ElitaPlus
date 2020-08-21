@@ -514,8 +514,8 @@ Namespace ClaimRecordingService
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.CallerAuthenticationResponse)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticStagesResponse)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.ProcessCompleteResponse)),  _
-     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.ShippingAddressResponse)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.ActionResponse)),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.ShippingAddressResponse)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.FulfillmentOptionsResponse)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.DynamicFulfillmentResponse))>  _
     Partial Public Class BaseClaimRecordingResponse
@@ -1157,6 +1157,31 @@ Namespace ClaimRecordingService
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="ActionResponse", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Rec"& _ 
+        "ording.Shared.ClaimRecordingResponse"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class ActionResponse
+        Inherits ClaimRecordingService.BaseClaimRecordingResponse
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ActionsField() As ClaimRecordingService.CustomerActionResponse
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property Actions() As ClaimRecordingService.CustomerActionResponse()
+            Get
+                Return Me.ActionsField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ActionsField, value) <> true) Then
+                    Me.ActionsField = value
+                    Me.RaisePropertyChanged("Actions")
+                End If
+            End Set
+        End Property
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
      System.Runtime.Serialization.DataContractAttribute(Name:="ShippingAddressResponse", [Namespace]:="http://elita.assurant.com/Elita/ClaimService"),  _
      System.SerializableAttribute()>  _
     Partial Public Class ShippingAddressResponse
@@ -1222,31 +1247,6 @@ Namespace ClaimRecordingService
                 If (Me.AllowDeliveryDateSelectionField.Equals(value) <> true) Then
                     Me.AllowDeliveryDateSelectionField = value
                     Me.RaisePropertyChanged("AllowDeliveryDateSelection")
-                End If
-            End Set
-        End Property
-    End Class
-    
-    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
-     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
-     System.Runtime.Serialization.DataContractAttribute(Name:="ActionResponse", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Rec"& _ 
-        "ording.Shared.ClaimRecordingResponse"),  _
-     System.SerializableAttribute()>  _
-    Partial Public Class ActionResponse
-        Inherits ClaimRecordingService.BaseClaimRecordingResponse
-        
-        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
-        Private ActionsField() As ClaimRecordingService.CustomerActionResponse
-        
-        <System.Runtime.Serialization.DataMemberAttribute()>  _
-        Public Property Actions() As ClaimRecordingService.CustomerActionResponse()
-            Get
-                Return Me.ActionsField
-            End Get
-            Set
-                If (Object.ReferenceEquals(Me.ActionsField, value) <> true) Then
-                    Me.ActionsField = value
-                    Me.RaisePropertyChanged("Actions")
                 End If
             End Set
         End Property
@@ -3466,6 +3466,7 @@ Namespace ClaimRecordingService
      System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
      System.Runtime.Serialization.DataContractAttribute(Name:="BaseFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
      System.SerializableAttribute(),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.FmipApiNotConfiguredFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.InvalidCompanyCodeFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.InvalidDealerCodeFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.InvalidPurposeCodeFault)),  _
@@ -3480,7 +3481,6 @@ Namespace ClaimRecordingService
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.CallerAuthenticationFailedFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.FulfillmentServiceFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.TranslationNotFoundFault)),  _
-     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.FmipApiNotConfiguredFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.InvalidPolicyNumberFault))>  _
     Partial Public Class BaseFault
         Inherits Object
@@ -3537,6 +3537,15 @@ Namespace ClaimRecordingService
                 propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
             End If
         End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="FmipApiNotConfiguredFault", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Fau"& _ 
+        "lts"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class FmipApiNotConfiguredFault
+        Inherits ClaimRecordingService.BaseFault
     End Class
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
@@ -3648,15 +3657,6 @@ Namespace ClaimRecordingService
      System.Runtime.Serialization.DataContractAttribute(Name:="TranslationNotFoundFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
      System.SerializableAttribute()>  _
     Partial Public Class TranslationNotFoundFault
-        Inherits ClaimRecordingService.BaseFault
-    End Class
-    
-    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
-     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
-     System.Runtime.Serialization.DataContractAttribute(Name:="FmipApiNotConfiguredFault", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Fau"& _ 
-        "lts"),  _
-     System.SerializableAttribute()>  _
-    Partial Public Class FmipApiNotConfiguredFault
         Inherits ClaimRecordingService.BaseFault
     End Class
     

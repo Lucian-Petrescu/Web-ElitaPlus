@@ -183,6 +183,24 @@ Public Class UserControlServiceCenterSelection
             ViewState(ViewStateItems.SortExpression) = value
         End Set
     End Property
+    Public Property CityText() As String
+        Get
+            Return Me.moCityTextbox.Text
+        End Get
+        Set(ByVal Value As String)
+            Me.moCityTextbox.Text = Value
+        End Set
+    End Property
+
+    Public Property ZipCodeText() As String
+        Get
+            Return Me.moPostalCodeTextbox.Text
+        End Get
+        Set(ByVal Value As String)
+            Me.moPostalCodeTextbox.Text = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Internal Methods"

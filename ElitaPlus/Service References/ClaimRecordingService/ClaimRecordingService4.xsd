@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Faults" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Faults" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:20377/ClaimRecordingService.svc?xsd=xsd8" namespace="http://elita.assurant.com/Elita/ClaimService/Faults" />
+  <xs:complexType name="FmipApiNotConfiguredFault">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://elita.assurant.com/Elita/ClaimService/Faults" base="q1:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="FmipApiNotConfiguredFault" nillable="true" type="tns:FmipApiNotConfiguredFault" />
+</xs:schema>

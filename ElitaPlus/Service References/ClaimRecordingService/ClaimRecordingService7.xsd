@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/Elita/ClaimService/Faults" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/ClaimService/Faults" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="InvalidPolicyNumberFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InvalidPolicyNumberFault" nillable="true" type="tns:InvalidPolicyNumberFault" />
+  <xs:complexType name="BaseFault">
+    <xs:sequence>
+      <xs:element name="FaultCode" nillable="true" type="xs:string" />
+      <xs:element name="FaultMessage" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseFault" nillable="true" type="tns:BaseFault" />
+  <xs:complexType name="InvalidCompanyCodeFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InvalidCompanyCodeFault" nillable="true" type="tns:InvalidCompanyCodeFault" />
+  <xs:complexType name="InvalidDealerCodeFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InvalidDealerCodeFault" nillable="true" type="tns:InvalidDealerCodeFault" />
+  <xs:complexType name="InvalidClaimNumberFault">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="InvalidClaimNumberFault" nillable="true" type="tns:InvalidClaimNumberFault" />
+  <xs:complexType name="InvalidPurposeCodeFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InvalidPurposeCodeFault" nillable="true" type="tns:InvalidPurposeCodeFault" />
+  <xs:complexType name="InvalidChannelFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InvalidChannelFault" nillable="true" type="tns:InvalidChannelFault" />
+  <xs:complexType name="InvalidCultureCodeFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InvalidCultureCodeFault" nillable="true" type="tns:InvalidCultureCodeFault" />
+  <xs:complexType name="InvalidRelationshipTypeCodeFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InvalidRelationshipTypeCodeFault" nillable="true" type="tns:InvalidRelationshipTypeCodeFault" />
+  <xs:complexType name="InvalidCaseNumberFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InvalidCaseNumberFault" nillable="true" type="tns:InvalidCaseNumberFault" />
+  <xs:complexType name="QuestionSetCodeNotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="QuestionSetCodeNotFoundFault" nillable="true" type="tns:QuestionSetCodeNotFoundFault" />
+  <xs:complexType name="RegisteredItemsNotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RegisteredItemsNotFoundFault" nillable="true" type="tns:RegisteredItemsNotFoundFault" />
+  <xs:complexType name="ManufacturerNotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ManufacturerNotFoundFault" nillable="true" type="tns:ManufacturerNotFoundFault" />
+  <xs:complexType name="PolicyCancelRequestDeniedFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PolicyCancelRequestDeniedFault" nillable="true" type="tns:PolicyCancelRequestDeniedFault" />
+  <xs:complexType name="CallerAuthenticationFailedFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CallerAuthenticationFailedFault" nillable="true" type="tns:CallerAuthenticationFailedFault" />
+  <xs:complexType name="FulfillmentServiceFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="FulfillmentServiceFault" nillable="true" type="tns:FulfillmentServiceFault" />
+  <xs:complexType name="TranslationNotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="TranslationNotFoundFault" nillable="true" type="tns:TranslationNotFoundFault" />
+</xs:schema>
