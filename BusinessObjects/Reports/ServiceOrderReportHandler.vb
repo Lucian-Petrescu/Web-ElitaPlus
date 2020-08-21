@@ -184,6 +184,7 @@ Public Class ServiceOrderReportHandler
         soRow.IMEI = oCertItem.IMEINumber
         soRow.PRODUCT_SALES_DATE = cert.ProductSalesDate.Value
         soRow.DEALER_NAME = oDealer.DealerName
+        soRow.DEALER_CODE = oDealer.Dealer
         soRow.NAME_OF_CONTACT = ClaimBO.ContactName
         soRow.DEDUCTIBLE_AMOUNT = ClaimBO.Deductible.Value
 
