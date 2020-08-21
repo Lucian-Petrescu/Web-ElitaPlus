@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -192,7 +192,6 @@
     <Reference Include="Assurant.Elita.Configuration, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Configuration.5.0.1\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="Assurant.ElitaPlus.BusinessObjectsNew, Version=2.0.7537.42730, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="IdentityModel, Version=3.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IdentityModel.3.9.0\lib\net452\IdentityModel.dll</HintPath>
@@ -998,7 +997,7 @@
       <DependentUpon>UserControlCaseHeaderInfo.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Common\UserControlClaimAddress.ascx.designer.vb">
+	 <Compile Include="Common\UserControlClaimAddress.ascx.designer.vb">
       <DependentUpon>UserControlClaimAddress.ascx</DependentUpon>
     </Compile>
     <Compile Include="Common\UserControlClaimAddress.ascx.vb">
@@ -5867,7 +5866,6 @@
     <Content Include="Common\UserControlApInvoiceLinesSearch.ascx" />
     <Content Include="Common\UserControlCallerInfo.ascx" />
     <Content Include="Common\UserControlCaseHeaderInfo.ascx" />
-    <Content Include="Common\UserControlClaimAddress.ascx" />
     <Content Include="Common\UserControlDealerInflation.ascx" />
     <Content Include="Common\UserControlDeliverySlot.ascx" />
     <Content Include="Common\UserControlInvoiceRegionTaxes.ascx" />
@@ -6187,52 +6185,14 @@
     </Content>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway1.wsdl" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway11.wsdl" />
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\ClaimRecordingService\ClaimRecordingService1.wsdl" />
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService10.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService11.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\ClaimRecordingService\ClaimRecordingService3.wsdl" />
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService4.wsdl" />
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService7.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService8.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService9.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\ClaimRecordingService\configuration91.svcinfo" />
     <None Include="Service References\ClaimRecordingService\configuration.svcinfo" />
     <None Include="Service References\ClaimRecordingService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService.disco" />
     <Content Include="Service References\ClaimService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimService.ClaimSearchResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
