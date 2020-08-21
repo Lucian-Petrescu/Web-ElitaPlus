@@ -1352,7 +1352,7 @@ Namespace Tables
 
             mocboEntityType.Populate(CommEntityList, New PopulateOptions() With
             {
-                .AddBlankItem = False,
+                .AddBlankItem = True,
                 .TextFunc = AddressOf PopulateOptions.GetDescription,
                 .ValueFunc = AddressOf PopulateOptions.GetListItemId
             })
@@ -1841,33 +1841,42 @@ Namespace Tables
                 End If
             End If
 
-            If (String.IsNullOrWhiteSpace(moTextmoLowPriceText.Text)) Then
+            If (Not String.IsNullOrWhiteSpace(moTextmoLowPriceText.Text)) Then
                 'moTextmoLowPriceText.Text = "0.00"
-                moTextmoLowPriceText.Text = String.Empty
+                'moTextmoLowPriceText.Text = String.Empty
+                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_AMT, moTextmoLowPriceText)
             End If
 
-            If (String.IsNullOrWhiteSpace(moTextmoCommission_PercentText.Text)) Then
+            If (Not String.IsNullOrWhiteSpace(moTextmoCommission_PercentText.Text)) Then
                 'moTextmoCommission_PercentText.Text = "0.0000"
-                moTextmoCommission_PercentText.Text = String.Empty
+                'moTextmoCommission_PercentText.Text = String.Empty
+                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_PER, moTextmoCommission_PercentText)
             End If
 
-            If (String.IsNullOrWhiteSpace(moTextmoRenewal_NumberText.Text)) Then
-                moTextmoRenewal_NumberText.Text = "1"
+            If (Not String.IsNullOrWhiteSpace(moTextmoRenewal_NumberText.Text)) Then
+                'moTextmoRenewal_NumberText.Text = "1"
+                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_POSITION, moTextmoRenewal_NumberText)
             End If
-
-            Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_AMT, moTextmoLowPriceText)
-            Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_PER, moTextmoCommission_PercentText)
-            Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_POSITION, moTextmoRenewal_NumberText)
 
             If mocboEntityType.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                 If (mocboEntityType.SelectedValue.Equals(Guid.Empty.ToString())) Or (mocboEntityType.SelectedValue.Equals(String.Empty)) Then
-                    Dim tempEntityTypeTextbox As TextBox = New TextBox
-                    tempEntityTypeTextbox.Text = String.Empty
-                    Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, tempEntityTypeTextbox)
+                    'Dim tempEntityTypeTextbox As TextBox = New TextBox
+                    'tempEntityTypeTextbox.Text = String.Empty
+                    'Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, tempEntityTypeTextbox)
                 Else
                     Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, mocboEntityType, True, False)
                 End If
             End If
+
+            'If mocboEntityType.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+            '    If (mocboEntityType.SelectedValue.Equals(Guid.Empty.ToString())) Or (mocboEntityType.SelectedValue.Equals(String.Empty)) Then
+            '        Dim tempEntityTypeTextbox As TextBox = New TextBox
+            '        tempEntityTypeTextbox.Text = String.Empty
+            '        Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, tempEntityTypeTextbox)
+            '    Else
+            '        Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, mocboEntityType, True, False)
+            '    End If
+            'End If
 
             If mocboCommPercentSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                 Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMMISSIONS_XCD, mocboCommPercentSourceXcd, False, True)

@@ -114,7 +114,7 @@ Public Class CommPlanDistribution
         End Set
     End Property
     
-    <ValueMandatory("")>
+    '<ValueMandatory("")>
     Public Property EntityId() As Guid
         Get
             CheckDeleted()
@@ -130,8 +130,7 @@ Public Class CommPlanDistribution
         End Set
     End Property
 
-    '<ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)>
-    '<ValueMandatory("")>
+    <ValidNumericRange("", Min:=0)>
     Public Property CommissionAmount() As DecimalType
         Get
             CheckDeleted()
@@ -147,8 +146,7 @@ Public Class CommPlanDistribution
         End Set
     End Property
 
-    '<ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)>
-    '<ValueMandatory("")>
+    <ValidNumericRange("", Min:=0)>
     Public Property CommissionPercent() As DecimalType
         Get
             CheckDeleted()
@@ -164,6 +162,7 @@ Public Class CommPlanDistribution
         End Set
     End Property
 
+    <ValueMandatory(""), ValidNumericRange("", Min:=1)>
     Public Property Position() As LongType
         Get
             CheckDeleted()
