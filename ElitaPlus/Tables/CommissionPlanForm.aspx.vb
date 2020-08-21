@@ -1842,11 +1842,13 @@ Namespace Tables
             End If
 
             If (String.IsNullOrWhiteSpace(moTextmoLowPriceText.Text)) Then
-                moTextmoLowPriceText.Text = "0.00"
+                'moTextmoLowPriceText.Text = "0.00"
+                moTextmoLowPriceText.Text = String.Empty
             End If
 
             If (String.IsNullOrWhiteSpace(moTextmoCommission_PercentText.Text)) Then
-                moTextmoCommission_PercentText.Text = "0.0000"
+                'moTextmoCommission_PercentText.Text = "0.0000"
+                moTextmoCommission_PercentText.Text = String.Empty
             End If
 
             If (String.IsNullOrWhiteSpace(moTextmoRenewal_NumberText.Text)) Then
@@ -1858,7 +1860,13 @@ Namespace Tables
             Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_POSITION, moTextmoRenewal_NumberText)
 
             If mocboEntityType.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, mocboEntityType, True, False)
+                If (mocboEntityType.SelectedValue.Equals(Guid.Empty.ToString())) Or (mocboEntityType.SelectedValue.Equals(String.Empty)) Then
+                    Dim tempEntityTypeTextbox As TextBox = New TextBox
+                    tempEntityTypeTextbox.Text = String.Empty
+                    Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, tempEntityTypeTextbox)
+                Else
+                    Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, mocboEntityType, True, False)
+                End If
             End If
 
             If mocboCommPercentSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
@@ -2158,6 +2166,22 @@ Namespace Tables
 
             Return oCommPlanData
 
+        End Function
+
+        Protected Function CheckNull(ByVal objGrid As Object) As String
+            If Object.ReferenceEquals(objGrid, DBNull.Value) Then
+                Return String.Empty
+            ElseIf TypeOf objGrid Is Byte() Then
+                Return GetGuidStringFromByteArray(objGrid)
+            Else
+                If objGrid.ToString().Equals(Guid.Empty.ToString()) Then
+                    Return String.Empty
+                End If
+                'GetAmountFormattedToVariableString for amount
+                'GetAmountFormattedDoubleString, "N4" for amount percentage
+
+                Return objGrid.ToString()
+            End If
         End Function
 #End Region
 #End Region
