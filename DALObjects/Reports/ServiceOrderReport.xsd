@@ -119,6 +119,7 @@
               <xs:element name="EXTENDED_CLAIM_STATUS" type="xs:string" minOccurs="0" nillable="true" />
               <xs:element name="STATE_PROVINCE_CODE" type="xs:string" minOccurs="0" nillable="true" />
               <xs:element name="ADDRESS3" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="DEALER_CODE" type="xs:string" minOccurs="0" nillable="true" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
