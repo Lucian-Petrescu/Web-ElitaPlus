@@ -226,12 +226,10 @@
                     <asp:TemplateField Visible="True" HeaderText="POSITION">
                         <ItemStyle HorizontalAlign="center" Width="4%"></ItemStyle>
                         <ItemTemplate>
-                            <asp:Label ID="moRenewal_NumberLabel" Text='<%# GetAmountFormattedToString(Container.DataItem("POSITION"))%>'
-                                runat="server">
-                            </asp:Label>
+                            <asp:Label ID="lblPosition" Text='<%# GetAmountFormattedToString(Container.DataItem("POSITION"))%>' runat="server"> </asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
-                            <asp:TextBox ID="moRenewal_NumberText" runat="server" Visible="True" Width="75" MaxLength="3" Text="1"></asp:TextBox>
+                            <asp:TextBox ID="textBoxPosition" runat="server" Visible="True" Width="75" MaxLength="3" Text="1"></asp:TextBox>
                         </EditItemTemplate>
                     </asp:TemplateField>
                 </Columns>

@@ -1837,7 +1837,7 @@ Namespace Tables
             Dim mocboActEntitySourceXcd As DropDownList = DirectCast(gRow.Cells(COL_ACT_ENT_SOURCE_XCD_IDX).FindControl("cboActEntitySourceXcd"), DropDownList)
             Dim moTextmoLowPriceText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_AMOUNT_IDX).FindControl("moLowPriceText"), TextBox)
             Dim moTextmoCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
-            Dim moTextmoRenewal_NumberText As TextBox = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("moRenewal_NumberText"), TextBox)
+            Dim textboxPosition As TextBox = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("textBoxPosition"), TextBox)
 
             If (mocboCommPercentSourceXcd.Items.Count > 0) Then
                 If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
@@ -1846,41 +1846,23 @@ Namespace Tables
             End If
 
             If (Not String.IsNullOrWhiteSpace(moTextmoLowPriceText.Text)) Then
-                'moTextmoLowPriceText.Text = "0.00"
-                'moTextmoLowPriceText.Text = String.Empty
                 Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_AMT, moTextmoLowPriceText)
             End If
 
             If (Not String.IsNullOrWhiteSpace(moTextmoCommission_PercentText.Text)) Then
-                'moTextmoCommission_PercentText.Text = "0.0000"
-                'moTextmoCommission_PercentText.Text = String.Empty
                 Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_PER, moTextmoCommission_PercentText)
             End If
 
-            If (Not String.IsNullOrWhiteSpace(moTextmoRenewal_NumberText.Text)) Then
-                'moTextmoRenewal_NumberText.Text = "1"
-                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_POSITION, moTextmoRenewal_NumberText)
+            If (Not String.IsNullOrWhiteSpace(textboxPosition.Text)) Then
+                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_POSITION, textboxPosition)
             End If
 
             If mocboEntityType.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                 If (mocboEntityType.SelectedValue.Equals(Guid.Empty.ToString())) Or (mocboEntityType.SelectedValue.Equals(String.Empty)) Then
-                    'Dim tempEntityTypeTextbox As TextBox = New TextBox
-                    'tempEntityTypeTextbox.Text = String.Empty
-                    'Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, tempEntityTypeTextbox)
                 Else
                     Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, mocboEntityType, True, False)
                 End If
             End If
-
-            'If mocboEntityType.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-            '    If (mocboEntityType.SelectedValue.Equals(Guid.Empty.ToString())) Or (mocboEntityType.SelectedValue.Equals(String.Empty)) Then
-            '        Dim tempEntityTypeTextbox As TextBox = New TextBox
-            '        tempEntityTypeTextbox.Text = String.Empty
-            '        Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, tempEntityTypeTextbox)
-            '    Else
-            '        Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, mocboEntityType, True, False)
-            '    End If
-            'End If
 
             If mocboCommPercentSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                 Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMMISSIONS_XCD, mocboCommPercentSourceXcd, False, True)
@@ -2200,7 +2182,7 @@ Namespace Tables
         Private Sub ValidatePositionNo()
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim textBoxPosition As TextBox = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("moRenewal_NumberText"), TextBox)
+            Dim textBoxPosition As TextBox = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("textBoxPosition"), TextBox)
 
             If moGridView.Rows.Count = 0 Then
                 If Not textBoxPosition Is Nothing Then
@@ -2208,8 +2190,9 @@ Namespace Tables
                         If Convert.ToDecimal(textBoxPosition.Text) = 0 Then
                             'Can not be zero
                             Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NOT_ALLOWED)
-                        Else
-
+                        ElseIf Convert.ToDecimal(textBoxPosition.Text) <> 1 Then
+                            'Can not be other than one (1)
+                            Throw New GUIException(Message.MSG_FIRST_POSITION_VALUE_SHOULD_BE_ONE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_FIRST_POSITION_VALUE_OTHER_THAN_ONE_NOT_ALLOWED)
                         End If
                     Else
                         ' Can not be null
@@ -2223,49 +2206,24 @@ Namespace Tables
                             'Can not be zero
                             Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NOT_ALLOWED)
                         Else
-                            'Call procedure to validate repeatative position number
+                            If moGridView.Rows.Count > 1 Then
+                                Dim oPlanDist As CommPlanDistribution
+                                Dim positionExistsFlag As String
+
+                                'Call procedure to validate repeatative position number
+                                positionExistsFlag = oPlanDist.CheckPositionExists(Convert.ToInt16(textBoxPosition.Text), Me.State.moCommPlanDistId, Me.State.moCommPlanId)
+
+                                If positionExistsFlag = "Y" Then
+                                    Throw New GUIException(Message.MSG_POSITION_VALUE_CAN_NOT_BE_REPEATED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_POSITION_VALUE_NOT_ALLOWED)
+                                End If
+
+                            End If
                         End If
                     Else
                         ' Can not be null
                         Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_NULL_NOT_ALLOWED)
                     End If
                 End If
-
-                'Dim posNoCnt As Integer = 0
-                'For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
-                '    Me.moGridView.PageIndex = pageIndexk
-                '    Dim rowNum As Integer = Me.moGridView.Rows.Count
-                '    For i As Integer = 0 To rowNum - 1
-                '        Dim gRow As GridViewRow = moGridView.Rows(i)
-                '        If gRow.RowType = DataControlRowType.DataRow Then
-                '            Dim labelPosition As Label = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("moRenewal_NumberLabel"), Label)
-                '            Dim textBoxPosition As TextBox = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("moRenewal_NumberText"), TextBox)
-
-                '            If Not textBoxPosition Is Nothing Then
-                '                If Not String.IsNullOrWhiteSpace(textBoxPosition.Text) Then
-                '                    Dim cPer As Decimal = Convert.ToDecimal(textBoxPosition.Text)
-                '                    If cPer > 0 Then
-                '                        posNoCnt = posNoCnt + 1
-                '                    End If
-                '                End If
-                '            End If
-
-                '            If Not labelPosition Is Nothing Then
-                '                If Not String.IsNullOrWhiteSpace(labelPosition.Text) Then
-                '                    Dim cPer As Decimal = Convert.ToDecimal(labelPosition.Text)
-                '                    posNoCnt = posNoCnt + 1
-                '                End If
-                '            End If
-
-                '        End If
-                '    Next
-                'Next
-
-                'If (posNoCnt = 1 Or posNoCnt > 1) Then
-                '    'Me.State.IsAmountAndPercentBothPresent = True
-                'Else
-                '    'Me.State.IsAmountAndPercentBothPresent = False
-                'End If
             End If
         End Sub
 

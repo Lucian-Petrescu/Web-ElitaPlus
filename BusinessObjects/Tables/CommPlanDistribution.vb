@@ -341,6 +341,18 @@ Public Class CommPlanDistribution
         End Try
 
     End Function
+
+    Public Shared Function CheckPositionExists(ByVal pi_position As Integer, ByVal pi_comm_plan_dist_id As Guid, ByVal pi_commmission_plan_id As Guid ) As String
+        Try
+            Dim dal As New CommPlanDistributionDAL
+            'Return dal.CheckDatesOverLap(pi_dealer_id ,pi_effective_date , pi_expiration_date )
+            Return dal.CheckPositionExist(pi_position, pi_comm_plan_dist_id, pi_commmission_plan_id )
+       Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+
+    End Function
+    
 #End Region
 
 #Region "SearchDV"
