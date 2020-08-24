@@ -2188,11 +2188,11 @@ Namespace Tables
                 If Not textBoxPosition Is Nothing Then
                     If Not String.IsNullOrWhiteSpace(textBoxPosition.Text) Then
                         If Convert.ToDecimal(textBoxPosition.Text) = 0 Then
-                            'Can not be zero
+                            'Can not be zero and null
                             Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
                         'ElseIf Convert.ToDecimal(textBoxPosition.Text) <> 1 Then
                         '    'Can not be other than one (1)
-                        '    Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
+                        '    Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)                        
                         End If
                     Else
                         ' Can not be null
