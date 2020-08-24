@@ -2189,14 +2189,14 @@ Namespace Tables
                     If Not String.IsNullOrWhiteSpace(textBoxPosition.Text) Then
                         If Convert.ToDecimal(textBoxPosition.Text) = 0 Then
                             'Can not be zero
-                            Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NOT_ALLOWED)
-                        ElseIf Convert.ToDecimal(textBoxPosition.Text) <> 1 Then
-                            'Can not be other than one (1)
-                            Throw New GUIException(Message.MSG_FIRST_POSITION_VALUE_SHOULD_BE_ONE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_FIRST_POSITION_VALUE_OTHER_THAN_ONE_NOT_ALLOWED)
+                            Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
+                        'ElseIf Convert.ToDecimal(textBoxPosition.Text) <> 1 Then
+                        '    'Can not be other than one (1)
+                        '    Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
                         End If
                     Else
                         ' Can not be null
-                        Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_NULL_NOT_ALLOWED)
+                        Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
                     End If
                 End If
             ElseIf moGridView.Rows.Count > 0 Then
@@ -2204,7 +2204,7 @@ Namespace Tables
                     If Not String.IsNullOrWhiteSpace(textBoxPosition.Text) Then
                         If Convert.ToDecimal(textBoxPosition.Text) = 0 Then
                             'Can not be zero
-                            Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NOT_ALLOWED)
+                            Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
                         Else
                             If moGridView.Rows.Count > 1 Then
                                 Dim oPlanDist As CommPlanDistribution
@@ -2221,7 +2221,7 @@ Namespace Tables
                         End If
                     Else
                         ' Can not be null
-                        Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_NULL_NOT_ALLOWED)
+                        Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
                     End If
                 End If
             End If
