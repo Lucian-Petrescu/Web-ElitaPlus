@@ -14,8 +14,41 @@
     </script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"></script>
 
-    <script type="text/javascript">
+    <script type="text/javascript">        
         $(function () {
+
+            $("[id*=moRenewal_NumberText]").change(function () {
+                var row = $(this).closest("tr");
+                var value = $(this).val();
+                if (value == "0") {
+                    row.find("[id*=moLiability_LimitText]").val("");
+                    row.find("[id*=moLiability_LimitText]").attr("disabled", "true");
+
+                    row.find("[id*=moLiability_LimitPercentText]").val("");
+                    row.find("[id*=moLiability_LimitPercentText]").attr("disabled", "true");
+                }
+                else {
+                    row.find("[id*=moLiability_LimitText]").removeAttr("disabled");
+                    row.find("[id*=moLiability_LimitPercentText]").removeAttr("disabled");                   
+                }
+            });
+
+            $("[id*=moLiability_LimitText]").change(function () {
+                var row = $(this).closest("tr");
+                //var value = $(this).val();
+                //if (value > 0) {
+                    row.find("[id*=moLiability_LimitPercentText]").val("");
+                //}
+            });
+            
+            $("[id*=moLiability_LimitPercentText]").change(function () {
+                var row = $(this).closest("tr");
+                //var value = $(this).val();
+                //if (value > 0) {
+                    row.find("[id*=moLiability_LimitText]").val("");
+                //}
+            });
+
             $("[id*=cboCommPercentSourceXcd]").change(function () {
                 var row = $(this).closest("tr");
                 var value = $(this).val();
@@ -802,6 +835,24 @@
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:DropDownList ID="ddlTax_Region" runat="server" Visible="True" Width="75"></asp:DropDownList>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField Visible="True" HeaderText="LIABILITY_LIMIT">
+                                            <ItemStyle HorizontalAlign="center"></ItemStyle>
+                                            <ItemTemplate>                                                
+                                                <asp:Label ID="lblLiabilityLimit" Text='<%# CheckNull(Eval("COV_LIABILITY_LIMIT"))%>' runat="server"></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="moLiability_LimitText" runat="server" Visible="True" Width="75" MaxLength="3" Text="0"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField Visible="True" HeaderText="LIABILITY_LIMIT_PERCENT">
+                                            <ItemStyle HorizontalAlign="center"></ItemStyle>
+                                            <ItemTemplate>                                                
+                                                <asp:Label ID="lblLiabilityLimitPercent" Text='<%# CheckNull(Eval("COV_LIABILITY_LIMIT_PERCENT"))%>' runat="server"></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox ID="moLiability_LimitPercentText" runat="server" Visible="True" Width="75" Text="0.00"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
