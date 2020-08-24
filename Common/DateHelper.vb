@@ -17,7 +17,8 @@ Public NotInheritable Class DateHelper
             If (inputDate.Length > DATE_TIME_FORMAT.Length) Then ' There are some places where value is set as DateType but page passes value as dd-MMM-yyyy 00:00:00.
                 strChkDateFormat = DATE_TIME_FORMAT_12
                 dt = DateTime.Parse(inputDate)
-            ElseIf (inputDate.Length > DATE_FORMAT.Length) Then
+            ElseIf (inputDate.Length > DATE_FORMAT.Length) AndAlso
+             Not (Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" OrElse Thread.CurrentThread.CurrentCulture.ToString() = "zh-CN") Then
                 strChkDateFormat = DATE_TIME_FORMAT
                 dt = DateTime.Parse(inputDate)
             Else
