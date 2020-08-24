@@ -1669,6 +1669,10 @@ Namespace Tables
             Try
                 ValidatePmCertSourceLogic()
 
+                ValidatePositionNo()
+
+                ValidateCommAmountAndPercent()
+
                 If Me.State.IsPmComCombination Then
                     Throw New GUIException(Message.MSG_PRICEMETRICS_CERTCALC_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_PRICE_METRICS_AND_CERT_COMM_NOT_ALLOWED)
                 End If
@@ -2192,6 +2196,93 @@ Namespace Tables
                 Return objGrid.ToString()
             End If
         End Function
+
+        Private Sub ValidatePositionNo()
+            If moGridView.EditIndex = -1 Then Exit Sub
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim textBoxPosition As TextBox = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("moRenewal_NumberText"), TextBox)
+
+            If moGridView.Rows.Count = 0 Then
+                If Not textBoxPosition Is Nothing Then
+                    If Not String.IsNullOrWhiteSpace(textBoxPosition.Text) Then
+                        If Convert.ToDecimal(textBoxPosition.Text) = 0 Then
+                            'Can not be zero
+                            Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NOT_ALLOWED)
+                        Else
+
+                        End If
+                    Else
+                        ' Can not be null
+                        Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_NULL_NOT_ALLOWED)
+                    End If
+                End If
+            ElseIf moGridView.Rows.Count > 0 Then
+                If Not textBoxPosition Is Nothing Then
+                    If Not String.IsNullOrWhiteSpace(textBoxPosition.Text) Then
+                        If Convert.ToDecimal(textBoxPosition.Text) = 0 Then
+                            'Can not be zero
+                            Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NOT_ALLOWED)
+                        Else
+                            'Call procedure to validate repeatative position number
+                        End If
+                    Else
+                        ' Can not be null
+                        Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_NULL_NOT_ALLOWED)
+                    End If
+                End If
+
+                'Dim posNoCnt As Integer = 0
+                'For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
+                '    Me.moGridView.PageIndex = pageIndexk
+                '    Dim rowNum As Integer = Me.moGridView.Rows.Count
+                '    For i As Integer = 0 To rowNum - 1
+                '        Dim gRow As GridViewRow = moGridView.Rows(i)
+                '        If gRow.RowType = DataControlRowType.DataRow Then
+                '            Dim labelPosition As Label = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("moRenewal_NumberLabel"), Label)
+                '            Dim textBoxPosition As TextBox = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("moRenewal_NumberText"), TextBox)
+
+                '            If Not textBoxPosition Is Nothing Then
+                '                If Not String.IsNullOrWhiteSpace(textBoxPosition.Text) Then
+                '                    Dim cPer As Decimal = Convert.ToDecimal(textBoxPosition.Text)
+                '                    If cPer > 0 Then
+                '                        posNoCnt = posNoCnt + 1
+                '                    End If
+                '                End If
+                '            End If
+
+                '            If Not labelPosition Is Nothing Then
+                '                If Not String.IsNullOrWhiteSpace(labelPosition.Text) Then
+                '                    Dim cPer As Decimal = Convert.ToDecimal(labelPosition.Text)
+                '                    posNoCnt = posNoCnt + 1
+                '                End If
+                '            End If
+
+                '        End If
+                '    Next
+                'Next
+
+                'If (posNoCnt = 1 Or posNoCnt > 1) Then
+                '    'Me.State.IsAmountAndPercentBothPresent = True
+                'Else
+                '    'Me.State.IsAmountAndPercentBothPresent = False
+                'End If
+            End If
+        End Sub
+
+        Private Sub ValidateCommAmountAndPercent()
+            If moGridView.EditIndex = -1 Then Exit Sub
+
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim textBoxAmt As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_AMOUNT_IDX).FindControl("moLowPriceText"), TextBox)
+            Dim textBoxAmtPercent As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
+
+            If Not textBoxAmt Is Nothing And Not textBoxAmtPercent Is Nothing Then
+                If String.IsNullOrWhiteSpace(textBoxAmt.Text) And String.IsNullOrWhiteSpace(textBoxAmtPercent.Text) Then
+                    ' Either one should be present
+                    Throw New GUIException(Message.MSG_EITHER_PERCENTAGE_OR_AMOUNT_NEEDED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EITHER_PERCENTAGE_OR_AMOUNT_REQUIRED)
+                End If
+            End If
+        End Sub
 #End Region
 #End Region
     End Class

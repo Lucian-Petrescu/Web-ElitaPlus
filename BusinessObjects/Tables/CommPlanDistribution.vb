@@ -114,7 +114,6 @@ Public Class CommPlanDistribution
         End Set
     End Property
     
-    '<ValueMandatory("")>
     Public Property EntityId() As Guid
         Get
             CheckDeleted()
