@@ -4951,6 +4951,7 @@ Namespace Tables
 #End Region
 
 #Region "Coverage Rate Liability Limit US-489838"
+        'Null check for grid fields
         Protected Function CheckNull(ByVal objGrid As Object) As String
             If Object.ReferenceEquals(objGrid, DBNull.Value) Then
                 Return String.Empty
@@ -4960,7 +4961,7 @@ Namespace Tables
                 If objGrid.ToString().Equals(Guid.Empty.ToString()) Then
                     Return String.Empty
                 End If
-
+               
                 Return objGrid.ToString()
             End If
         End Function
