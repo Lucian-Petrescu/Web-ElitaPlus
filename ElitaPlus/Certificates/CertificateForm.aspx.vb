@@ -5517,11 +5517,11 @@ Namespace Certificates
             return DateAdd(DateInterval.Day, -1, expirationDate)
         End function
 
-        private function NumberOfRenewalsRemaining(ByVal maxRenewalDuration as Integer, ByVal coverageDuration as Integer, ByVal numberOfRenewals As Integer) As Integer
-            Dim renewalsRemaining as Integer = maxRenewalDuration/coverageDuration - (numberOfRenewals + 1) '+1 for initial registration
+        private function NumberOfRenewalsRemaining(ByVal renewalDuration as Integer, ByVal coverageDuration as Integer, ByVal numberOfRenewals As Integer) As Integer
+            Dim renewalsRemaining as Integer = renewalDuration/coverageDuration - (numberOfRenewals + 1) '+1 for initial registration
 
             if renewalsRemaining < 0 then
-                'data issue ?
+                'potential data issue - should we log an 'exception'?
                 renewalsRemaining = 0
             End If
 
@@ -5547,16 +5547,20 @@ Namespace Certificates
                     e.Item.Cells(Me.GRID_COL_SEQUENCE_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_SEQUENCE).ToString
 
                     e.Item.Cells(Me.GRID_COL_COVERAGE_DURATION_IDX).Text = coverageDuration
-                    e.Item.Cells(Me.GRID_COL_NO_OF_RENEWALS_IDX).Text = numberOfRenewals
+                    e.Item.Cells(Me.GRID_COL_NO_OF_RENEWALS_IDX).Text = numberOfRenewals.ToInteger()
                     'e.Item.Cells(Me.GRID_COL_BEGIN_KM_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_Ext_Begin_KM_MI).ToString
                     'e.Item.Cells(Me.GRID_COL_END_KM_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_Ext_End_KM_MI).ToString
 
-                    If Not String.IsNullOrWhiteSpace(maxRenewalDuration) and IsNumeric(maxRenewalDuration) then
+                    If (Not String.IsNullOrWhiteSpace(maxRenewalDuration)) then
                         e.Item.Cells(Me.GRID_COL_MAX_RENEWAL_DURATION_IDX).Text = maxRenewalDuration
-                        
-                        Dim maximumRenewalDuration as Integer = CType(maxRenewalDuration, Integer)
-                        e.Item.Cells(Me.GRID_COL_COVERAGE_EXPIRATION_DATE_IDX).Text = Me.GetDateFormattedStringNullable(CoverageExpirationDate(coverageBeginDate, maximumRenewalDuration))
-                        e.Item.Cells(Me.GRID_COL_NO_OF_RENEWALS_REMAINING_IDX).Text = NumberOfRenewalsRemaining(maximumRenewalDuration, CType(coverageDuration, Integer), CType(numberOfRenewals, Integer)).ToString
+                        Dim renewalDuration as Integer = maxRenewalDuration.ToInteger()
+                        If (0 < renewalDuration) Then
+                            e.Item.Cells(Me.GRID_COL_COVERAGE_EXPIRATION_DATE_IDX).Text = Me.GetDateFormattedStringNullable(CoverageExpirationDate(coverageBeginDate, renewalDuration))
+                        End If
+                        Dim coverDuration as Integer = coverageDuration.ToInteger()
+                        If (0 < coverDuration) Then
+                            e.Item.Cells(Me.GRID_COL_NO_OF_RENEWALS_REMAINING_IDX).Text = NumberOfRenewalsRemaining(renewalDuration, coverDuration, numberOfRenewals.ToInteger()).ToString
+                        End If
                     End If
 
                     If Not Convert.IsDBNull(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_RENEWAL_DATE)) Then
