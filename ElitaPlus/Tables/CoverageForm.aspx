@@ -16,7 +16,7 @@
 
     <script type="text/javascript">        
         $(function () {
-
+            // Validation for Renewal
             $("[id*=moRenewal_NumberText]").change(function () {
                 var row = $(this).closest("tr");
                 var value = $(this).val();
