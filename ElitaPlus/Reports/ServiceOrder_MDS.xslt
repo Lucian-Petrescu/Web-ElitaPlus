@@ -354,15 +354,15 @@
                                 PRODUCTO
                               </td>
                               <td>
-                                &#160;
+                                DISTRIBUIDOR
                               </td>
                             </tr>
                             <tr>
                               <td class="data" style="padding-left:10px">
                                 <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:PRODUCT_DESCRIPTION" />
                               </td>
-                              <td>
-                                &#160;
+                              <td class="data" style="padding-left:10px">
+                                <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:DEALER_CODE" />
                               </td>
                             </tr>
                             <tr>
@@ -821,15 +821,15 @@
                                 PRODUCTO
                               </td>
                               <td>
-                                &#160;
+                                DISTRIBUIDOR
                               </td>
                             </tr>
                             <tr>
                               <td class="data" style="padding-left:10px">
                                 <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:PRODUCT_DESCRIPTION" />
                               </td>
-                              <td>
-                                &#160;
+                              <td class="data" style="padding-left:10px">
+                                <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:DEALER_CODE" />
                               </td>
                             </tr>
                             <tr>
