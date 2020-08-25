@@ -136,6 +136,25 @@ Public Class CommPlanDistributionDAL
 
     End Function
 
+    Public Function CheckPositionExist(ByVal pi_position As Integer, ByVal pi_comm_plan_dist_id As Guid, ByVal pi_commmission_plan_id As Guid) As String
+        Try
+            Dim selectStmt As String = Me.Config("/SQL/CHECK_FOR_POSITION_EXIST")
+
+            Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_position", pi_position),
+                                                                                                 New DBHelper.DBHelperParameter("pi_comm_plan_dist_id", pi_comm_plan_dist_id.ToByteArray),
+                                                                                                 New DBHelper.DBHelperParameter("pi_Commmission_Plan_id", pi_commmission_plan_id.ToByteArray)}
+
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_status", GetType(String))}
+
+            DBHelper.ExecuteSp(selectStmt, inparameters, outParameters)
+            Return outParameters(0).Value.ToString()
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Function    
+
 #End Region
 
 #Region "Overloaded Methods"

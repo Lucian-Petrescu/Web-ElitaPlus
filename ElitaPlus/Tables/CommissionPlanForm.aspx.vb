@@ -1352,7 +1352,7 @@ Namespace Tables
 
             mocboEntityType.Populate(CommEntityList, New PopulateOptions() With
             {
-                .AddBlankItem = False,
+                .AddBlankItem = True,
                 .TextFunc = AddressOf PopulateOptions.GetDescription,
                 .ValueFunc = AddressOf PopulateOptions.GetListItemId
             })
@@ -1669,6 +1669,10 @@ Namespace Tables
             Try
                 ValidatePmCertSourceLogic()
 
+                ValidatePositionNo()
+
+                ValidateCommAmountAndPercent()
+
                 If Me.State.IsPmComCombination Then
                     Throw New GUIException(Message.MSG_PRICEMETRICS_CERTCALC_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_PRICE_METRICS_AND_CERT_COMM_NOT_ALLOWED)
                 End If
@@ -1833,7 +1837,7 @@ Namespace Tables
             Dim mocboActEntitySourceXcd As DropDownList = DirectCast(gRow.Cells(COL_ACT_ENT_SOURCE_XCD_IDX).FindControl("cboActEntitySourceXcd"), DropDownList)
             Dim moTextmoLowPriceText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_AMOUNT_IDX).FindControl("moLowPriceText"), TextBox)
             Dim moTextmoCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
-            Dim moTextmoRenewal_NumberText As TextBox = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("moRenewal_NumberText"), TextBox)
+            Dim textboxPosition As TextBox = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("textBoxPosition"), TextBox)
 
             If (mocboCommPercentSourceXcd.Items.Count > 0) Then
                 If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
@@ -1841,24 +1845,23 @@ Namespace Tables
                 End If
             End If
 
-            If (String.IsNullOrWhiteSpace(moTextmoLowPriceText.Text)) Then
-                moTextmoLowPriceText.Text = "0.00"
+            If (Not String.IsNullOrWhiteSpace(moTextmoLowPriceText.Text)) Then
+                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_AMT, moTextmoLowPriceText)
             End If
 
-            If (String.IsNullOrWhiteSpace(moTextmoCommission_PercentText.Text)) Then
-                moTextmoCommission_PercentText.Text = "0.0000"
+            If (Not String.IsNullOrWhiteSpace(moTextmoCommission_PercentText.Text)) Then
+                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_PER, moTextmoCommission_PercentText)
             End If
 
-            If (String.IsNullOrWhiteSpace(moTextmoRenewal_NumberText.Text)) Then
-                moTextmoRenewal_NumberText.Text = "1"
+            If (Not String.IsNullOrWhiteSpace(textboxPosition.Text)) Then
+                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_POSITION, textboxPosition)
             End If
-
-            Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_AMT, moTextmoLowPriceText)
-            Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_PER, moTextmoCommission_PercentText)
-            Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_POSITION, moTextmoRenewal_NumberText)
 
             If mocboEntityType.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, mocboEntityType, True, False)
+                If (mocboEntityType.SelectedValue.Equals(Guid.Empty.ToString())) Or (mocboEntityType.SelectedValue.Equals(String.Empty)) Then
+                Else
+                    Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, mocboEntityType, True, False)
+                End If
             End If
 
             If mocboCommPercentSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
@@ -2159,6 +2162,85 @@ Namespace Tables
             Return oCommPlanData
 
         End Function
+
+        Protected Function CheckNull(ByVal objGrid As Object) As String
+            If Object.ReferenceEquals(objGrid, DBNull.Value) Then
+                Return String.Empty
+            ElseIf TypeOf objGrid Is Byte() Then
+                Return GetGuidStringFromByteArray(objGrid)
+            Else
+                If objGrid.ToString().Equals(Guid.Empty.ToString()) Then
+                    Return String.Empty
+                End If
+                'GetAmountFormattedToVariableString for amount
+                'GetAmountFormattedDoubleString, "N4" for amount percentage
+
+                Return objGrid.ToString()
+            End If
+        End Function
+
+        Private Sub ValidatePositionNo()
+            If moGridView.EditIndex = -1 Then Exit Sub
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim textBoxPosition As TextBox = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("textBoxPosition"), TextBox)
+
+            If moGridView.Rows.Count = 0 Then
+                If Not textBoxPosition Is Nothing Then
+                    If Not String.IsNullOrWhiteSpace(textBoxPosition.Text) Then
+                        If Convert.ToDecimal(textBoxPosition.Text) = 0 Then
+                            'Can not be zero and null
+                            Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
+                        'ElseIf Convert.ToDecimal(textBoxPosition.Text) <> 1 Then
+                        '    'Can not be other than one (1)
+                        '    Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)                        
+                        End If
+                    Else
+                        ' Can not be null
+                        Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
+                    End If
+                End If
+            ElseIf moGridView.Rows.Count > 0 Then
+                If Not textBoxPosition Is Nothing Then
+                    If Not String.IsNullOrWhiteSpace(textBoxPosition.Text) Then
+                        If Convert.ToDecimal(textBoxPosition.Text) = 0 Then
+                            'Can not be zero
+                            Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
+                        Else
+                            If moGridView.Rows.Count > 1 Then
+                                Dim oPlanDist As CommPlanDistribution
+                                Dim positionExistsFlag As String
+
+                                'Call procedure to validate repeatative position number
+                                positionExistsFlag = oPlanDist.CheckPositionExists(Convert.ToInt16(textBoxPosition.Text), Me.State.moCommPlanDistId, Me.State.moCommPlanId)
+
+                                If positionExistsFlag = "Y" Then
+                                    Throw New GUIException(Message.MSG_POSITION_VALUE_CAN_NOT_BE_REPEATED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_POSITION_VALUE_NOT_ALLOWED)
+                                End If
+
+                            End If
+                        End If
+                    Else
+                        ' Can not be null
+                        Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
+                    End If
+                End If
+            End If
+        End Sub
+
+        Private Sub ValidateCommAmountAndPercent()
+            If moGridView.EditIndex = -1 Then Exit Sub
+
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim textBoxAmt As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_AMOUNT_IDX).FindControl("moLowPriceText"), TextBox)
+            Dim textBoxAmtPercent As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
+
+            If Not textBoxAmt Is Nothing And Not textBoxAmtPercent Is Nothing Then
+                If String.IsNullOrWhiteSpace(textBoxAmt.Text) And String.IsNullOrWhiteSpace(textBoxAmtPercent.Text) Then
+                    ' Either one should be present
+                    Throw New GUIException(Message.MSG_EITHER_PERCENTAGE_OR_AMOUNT_NEEDED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EITHER_PERCENTAGE_OR_AMOUNT_REQUIRED)
+                End If
+            End If
+        End Sub
 #End Region
 #End Region
     End Class
