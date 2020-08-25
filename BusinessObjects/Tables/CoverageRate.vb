@@ -451,7 +451,7 @@ Public Class CoverageRate
             Me.SetValue(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT, Value)
         End Set
     End Property
-
+    'US-489838
     <ValidNumericRange("", Max:=MAX_PERCENT, MaxExclusive:=False)>
     Public Property CovLiabilityLimitPercent() As DecimalType
         Get

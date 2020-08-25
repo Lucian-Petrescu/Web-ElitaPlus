@@ -31,7 +31,7 @@ Public Class CoverageRateDAL
     Public Const COL_NAME_PROFIT_PERCENT_SOURCE_XCD As String = "profit_percent_source_xcd"
     Public Const COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD As String = "loss_cost_percent_source_xcd"
 
-    'US - 489838
+    'US - 489838 '
     Public Const COL_NAME_COV_LIABILITY_LIMIT As String = "cov_liability_limit"
     Public Const COL_NAME_COV_LIABILITY_LIMIT_PERCENT As String = "cov_liability_limit_percent"
 
