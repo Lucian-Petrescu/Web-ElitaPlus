@@ -71,12 +71,7 @@
     <![CDATA[ELP_SERVICE_GROUP_OPS.LoadGrid]]>
   </LOAD_GRID>
   <COUNTOFRECORDS>
-    <![CDATA[select count(1)
-        from elp_sgrt_manufacturer sgrtm
-        inner join elp_manufacturer manu on sgrtm.manufacturer_id = manu.manufacturer_id
-        inner join elp_service_group_risk_type sgrt on sgrt.service_group_risk_type_id = sgrtm.service_group_risk_type_id
-        inner join elp_risk_type rt on rt.risk_type_id = sgrt.risk_type_id
-        where sgrt.service_group_id = :service_group_id]]>
+    <![CDATA[elita.ELP_SERVICE_GROUP_OPS.CountOfRecords]]>
   </COUNTOFRECORDS>
   <SGRTMANU_SAVE>
     <![CDATA[ELP_SERVICE_GROUP_OPS.SgrtManuSave]]>

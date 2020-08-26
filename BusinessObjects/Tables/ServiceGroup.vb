@@ -192,9 +192,10 @@ Public Class ServiceGroup
     End Function
 
     Public Function countofrecords(ByVal servicegroupid As Guid) As Double
+        Dim ds As New DataSet
         Dim dal As New ServiceGroupDAL
-        Dim count As Double
-        Return dal.countofrecords(servicegroupid)
+        ds = dal.countofrecords(servicegroupid)
+        Return CType(ds.Tables(0).Rows(0)(0), Double)
 
     End Function
 

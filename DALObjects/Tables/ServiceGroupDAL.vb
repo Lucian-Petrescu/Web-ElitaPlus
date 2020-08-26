@@ -47,13 +47,13 @@ Public Class ServiceGroupDAL
         End Try
     End Sub
 
-    Public Function countofrecords(ByVal servicegroupid As Guid) As Double
-        Dim selectStmt As String = Me.Config("/SQL/COUNTOFRECORDS")
-        Dim familyDS As New DataSet
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("service_group_id", servicegroupid.ToByteArray)}
+    Public Function countofrecords(ByVal servicegroupid As Guid) As DataSet
         Try
-            DBHelper.Fetch(familyDS, selectStmt, "countofrecords", parameters)
-            Return CType(familyDS.Tables(0).Rows(0)(0), Double)
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/COUNTOFRECORDS"))
+                cmd.AddParameter(PAR_IN_SERVICE_GROUP_ID, OracleDbType.Raw, servicegroupid.ToByteArray())
+                cmd.AddParameter(PAR_OU_RESULT_SET, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                Return OracleDbHelper.Fetch(cmd, "countofrecords")
+            End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
