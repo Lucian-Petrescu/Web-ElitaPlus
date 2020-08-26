@@ -182,6 +182,35 @@ Public Class ServiceGroup
         End Try
     End Sub
 
+    Public Function sgrtmanusave(ByVal ServiceGroupId As Guid, ByVal risktypeid As Guid, ByVal sgrtmanu As String, ByVal result As Integer) As Integer
+        MyBase.Save()
+        If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            Dim dal As New ServiceGroupDAL
+            result = dal.sgrtmanusave(ServiceGroupId, risktypeid, sgrtmanu, result)
+        End If
+
+    End Function
+
+    Public Function countofrecords(ByVal servicegroupid As Guid) As Double
+        Dim dal As New ServiceGroupDAL
+        Dim count As Double
+        Return dal.countofrecords(servicegroupid)
+
+    End Function
+
+    Public Function LoadGrid(ByVal servicegroupID As Guid,
+                                        ByVal PageIndex As Integer,
+                                        ByVal SortExpression As String) As DataSet
+        Try
+            Dim dal As New ServiceGroupDAL
+            Dim ds As DataSet
+            ds = dal.LoadGrid(servicegroupID, PageIndex, SortExpression)
+            Return (ds)
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+
     'Added manually to the code
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
