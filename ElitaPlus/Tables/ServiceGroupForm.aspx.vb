@@ -38,6 +38,10 @@ Partial Class ServiceGroupForm
     Public Const GRID_COL_RISK_TYPE As Integer = 2
     Public Const GRID_COL_MANUFACTURER As Integer = 3
     Public Const GRID_COL_RISK_TYPE_MANUFACTURER_ID As Integer = 4
+    Public Const RISK_TYPE_COL_NAME As String = "risk_type"
+    Public Const MANUFACTURER_COL_NAME As String = "manufacturer"
+    Public Const SERVICE_GROUP_RISK_COL_ID As String = "service_group_risk_type_id"
+    Public Const SERVICE_GROUP_RISK_MAN_COL_ID As String = "service_group_risk_manu_id"
 #End Region
 
 #Region "Page Return Type"
@@ -60,7 +64,7 @@ Partial Class ServiceGroupForm
         Public MyBO As ServiceGroup
         Public ScreenSnapShotBO As ServiceGroup
         Public SelectedRiskTypeId As Guid = Guid.Empty
-        Public SortExpressionDetailGrid As String = ServiceGroup.RiskTypeManufacturerDataView.RISK_TYPE_COL_NAME
+        Public SortExpressionDetailGrid As String = "RISK_TYPE_ENGLISH"
         Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
         Public LastErrMsg As String
         Public HasDataChanged As Boolean
@@ -200,17 +204,25 @@ Partial Class ServiceGroupForm
 #Region "Detail Grid"
     Sub PopulateDetailGrid()
         'This is a temporary Binding Logic. BEGIN        
-        Dim dv As ServiceGroup.RiskTypeManufacturerDataView = Me.State.MyBO.GetRiskTypeManufacturersView()
-        dv.Sort = Me.State.SortExpressionDetailGrid
+        Dim dv As DataSet
+        Dim countofrecords As Double
+        countofrecords = Me.State.MyBO.countofrecords(Me.State.MyBO.Id)
 
-        Me.DataGridDetail.Columns(Me.GRID_COL_RISK_TYPE).SortExpression = ServiceGroup.RiskTypeManufacturerDataView.RISK_TYPE_COL_NAME
-        Me.DataGridDetail.Columns(Me.GRID_COL_MANUFACTURER).SortExpression = ServiceGroup.RiskTypeManufacturerDataView.MANUFACTURER_COL_NAME
+        dv = GetDV()
 
         Me.DataGridDetail.DataSource = dv
+        Me.DataGridDetail.AllowCustomPaging = True
+        Me.DataGridDetail.VirtualItemCount = countofrecords
         Me.DataGridDetail.AutoGenerateColumns = False
         Me.DataGridDetail.DataBind()
         'This is a temporary Binding Logic. END
     End Sub
+
+    Private Function GetDV() As DataSet
+        Dim dv As DataSet
+        dv = Me.State.MyBO.LoadGrid(Me.State.MyBO.Id, DataGridDetail.CurrentPageIndex, Me.State.SortExpressionDetailGrid)
+        Return (dv)
+    End Function
 
     Sub PopulateUserControlAvailableSelectedManufacturers()
         Me.UserControlAvailableSelectedManufacturers.BackColor = "#d5d6e4"
@@ -344,7 +356,16 @@ Partial Class ServiceGroupForm
         Try
             Me.PopulateBOsFormFrom()
             If Me.State.MyBO.IsDirty Then
-                Me.State.MyBO.Save()
+
+                Dim result As Integer
+                Dim Strarr As String
+                Dim risktypeid As Guid = Guid.Parse(Me.DropDownRiskType.SelectedValue.ToString())
+
+                For result = 0 To Me.UserControlAvailableSelectedManufacturers.SelectedList.Count() - 1
+                    Strarr = Strarr + Me.UserControlAvailableSelectedManufacturers.SelectedList.Item(result).ToString() + ";"
+                Next
+
+                result = Me.State.MyBO.sgrtmanusave(Me.State.MyBO.Id, risktypeid, Strarr, result)
                 Me.State.IsNew = False
                 Me.State.HasDataChanged = True
                 PopulateCountry()
@@ -453,10 +474,10 @@ Partial Class ServiceGroupForm
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
             If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                e.Item.Cells(Me.GRID_COL_RISK_TYPE).Text = dvRow(ServiceGroup.RiskTypeManufacturerDataView.RISK_TYPE_COL_NAME).ToString
-                e.Item.Cells(Me.GRID_COL_MANUFACTURER).Text = dvRow(ServiceGroup.RiskTypeManufacturerDataView.MANUFACTURER_COL_NAME).ToString
-                e.Item.Cells(Me.GRID_COL_RISK_TYPE_ID).Text = dvRow(ServiceGroup.RiskTypeManufacturerDataView.SERVICE_GROUP_RISK_COL_ID).ToString
-                e.Item.Cells(Me.GRID_COL_RISK_TYPE_MANUFACTURER_ID).Text = dvRow(ServiceGroup.RiskTypeManufacturerDataView.SERVICE_GROUP_RISK_MAN_COL_ID).ToString
+                e.Item.Cells(Me.GRID_COL_RISK_TYPE).Text = dvRow(RISK_TYPE_COL_NAME).ToString
+                e.Item.Cells(Me.GRID_COL_MANUFACTURER).Text = dvRow(MANUFACTURER_COL_NAME).ToString
+                e.Item.Cells(Me.GRID_COL_RISK_TYPE_ID).Text = dvRow(SERVICE_GROUP_RISK_COL_ID).ToString
+                e.Item.Cells(Me.GRID_COL_RISK_TYPE_MANUFACTURER_ID).Text = dvRow(SERVICE_GROUP_RISK_MAN_COL_ID).ToString
 
                 Dim del As ImageButton
                 del = CType(e.Item.Cells(Me.GRID_COL_DELETE_BUTTON).FindControl("btnDeleteRiskType_WRITE"), ImageButton)
