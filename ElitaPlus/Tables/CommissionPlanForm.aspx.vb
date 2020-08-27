@@ -1850,10 +1850,7 @@ Namespace Tables
             End If
 
             If mocboEntityType.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                If (mocboEntityType.SelectedValue.Equals(Guid.Empty.ToString())) Or (mocboEntityType.SelectedValue.Equals(String.Empty)) Then
-                Else
-                    Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, mocboEntityType, True, False)
-                End If
+                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, mocboEntityType, True, False)
             End If
 
             If mocboCommPercentSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
