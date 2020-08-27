@@ -73,6 +73,7 @@ Namespace Tables
             Me.UpdateBreadCrum()
 
             Try
+                txtProductCode.Visible = False
                 If Not Me.IsPostBack Then
                     If Me.State.MyBO Is Nothing Then
                         Me.State.MyBO = New ConfigQuestionSet
@@ -363,7 +364,7 @@ Namespace Tables
                 Me.PopulateControlFromBOProperty(ddlCompany, .CompanyId)
                 Me.PopulateControlFromBOProperty(ddlDealerGroup, .DealerGroupId)
                 Me.PopulateControlFromBOProperty(ddlDealer, .DealerId)
-                Me.PopulateControlFromBOProperty(ddlProductCode, .ProductCodeId)
+
                 Me.PopulateControlFromBOProperty(ddlDeviceType, .DeviceTypeId)
                 Me.PopulateControlFromBOProperty(ddlRiskType, .RiskTypeId)
                 Me.PopulateControlFromBOProperty(ddlCoverageType, .CoverageTypeId)
@@ -376,13 +377,16 @@ Namespace Tables
                     Me.ddlPurpose.Style.Remove("background")
                 End If
 
-                If Not .QuestionSetCode Is Nothing Then
-                    Me.ddlQuestionSetCode.Items.FindByValue(.QuestionSetCode).Selected = True
-                    Me.ddlQuestionSetCode.Style.Remove("background")
+                If Not .ProductCodeId = Guid.Empty Then
+                    Me.PopulateControlFromBOProperty(ddlProductCode, .ProductCodeId)
+                    Me.txtProductCode.Visible = False
+                    Me.ddlProductCode.Visible = True
                 Else
-                    Me.ddlQuestionSetCode.Items.FindByText(String.Empty).Selected = True
-                    Me.ddlQuestionSetCode.Style.Remove("background")
+                    Me.txtProductCode.Text = .ProductCode
+                    Me.txtProductCode.Visible = True
+                    Me.ddlProductCode.Visible = False
                 End If
+
             End With
         End Sub
 
@@ -412,6 +416,9 @@ Namespace Tables
                 Me.PopulateBOProperty(Me.State.MyBO, "RiskTypeId", Me.ddlRiskType)
                 Me.PopulateBOProperty(Me.State.MyBO, "PurposeXCD", Me.ddlPurpose, False, True)
                 Me.PopulateBOProperty(Me.State.MyBO, "QuestionSetCode", Me.ddlQuestionSetCode, False, True)
+                Me.State.MyBO.ProductCode = txtProductCode.Text
+
+
             End With
             If Me.ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
@@ -506,6 +513,17 @@ Namespace Tables
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                With Me.State.MyBO
+                    If Not .ProductCode Is Nothing Then
+                        Me.txtProductCode.Text = .ProductCode
+                        Me.txtProductCode.Visible = True
+                        Me.ddlProductCode.Visible = False
+                    Else
+                        Me.txtProductCode.Text = String.Empty
+                        Me.txtProductCode.Visible = False
+                        Me.ddlProductCode.Visible = True
+                    End If
+                End With
             End Try
         End Sub
 
@@ -564,6 +582,21 @@ Namespace Tables
                 ddlProductCode.Enabled = False
 
             End If
+        End Sub
+
+        Protected Sub ddlDealerGroup_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlDealerGroup.SelectedIndexChanged
+            Try
+                If ddlDealerGroup.SelectedIndex > NO_ITEM_SELECTED_INDEX And ddlDealerGroup.SelectedIndex <> BLANK_ITEM_SELECTED Then
+                    ddlProductCode.Visible = False
+                    txtProductCode.Visible = True
+                Else
+                    txtProductCode.Visible = False
+                    ddlProductCode.Visible = True
+                End If
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+
         End Sub
 
         Private Sub ddlDealer_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlDealer.SelectedIndexChanged

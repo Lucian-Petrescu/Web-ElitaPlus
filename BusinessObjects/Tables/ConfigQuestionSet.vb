@@ -173,6 +173,23 @@
         End Set
     End Property
 
+    Public Property ProductCode As String
+        Get
+            CheckDeleted()
+            If Row(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE, Value)
+        End Set
+    End Property
+
+
+
     Public Property DeviceTypeId() As Guid
         Get
             CheckDeleted()
@@ -260,9 +277,9 @@
                 Dim dal As New ConfigQuestionSetDAL
                 'Check for Duplicate Question Set Configuration
                 Dim rtnMessage As String
-                rtnMessage = dal.CheckForDuplicateConfiguration(ConfigQuestionSetID:=Me.Id, CompanyGroupID:=Me.CompanyGroupId, CompanyID:=Me.CompanyId,
+                rtnMessage = dal.CheckForValidConfiguration(ConfigQuestionSetID:=Me.Id, CompanyGroupID:=Me.CompanyGroupId, CompanyID:=Me.CompanyId,
                                                                 CoverageTypeID:=Me.CoverageTypeId, DealerGroupID:=Me.DealerGroupId, DealerID:=Me.DealerId,
-                                                                DeviceTypeID:=Me.DeviceTypeId, ProductCodeID:=Me.ProductCodeId, RiskTypeID:=Me.RiskTypeId,
+                                                                DeviceTypeID:=Me.DeviceTypeId, ProductCodeID:=Me.ProductCodeId, ProductCode:=Me.ProductCode, RiskTypeID:=Me.RiskTypeId,
                                                                 LanguageID:=ElitaPlusIdentity.Current.ActiveUser.LanguageId, strPurposeXCD:=Me.PurposeXCD, strQuestionSetCode:=Me.QuestionSetCode)
                 If rtnMessage <> "NO_ERROR" Then
                     Dim vErrors() As ValidationError = {New ValidationError(rtnMessage, Me.GetType(), Nothing, "QuestionSetCode", Nothing)}

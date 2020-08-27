@@ -37,8 +37,8 @@ Public Class ConfigQuestionSetDAL
 
 #Region "Validation Methods"
 
-    Public Function CheckForDuplicateConfiguration(ByVal ConfigQuestionSetID As Guid, ByVal CompanyGroupID As Guid, ByVal CompanyID As Guid,
-                                                   ByVal DealerGroupID As Guid, ByVal DealerID As Guid, ByVal ProductCodeID As Guid,
+    Public Function CheckForValidConfiguration(ByVal ConfigQuestionSetID As Guid, ByVal CompanyGroupID As Guid, ByVal CompanyID As Guid,
+                                                   ByVal DealerGroupID As Guid, ByVal DealerID As Guid, ByVal ProductCodeID As Guid, ByVal ProductCode As String,
                                                    ByVal CoverageTypeID As Guid, ByVal DeviceTypeID As Guid, ByVal RiskTypeID As Guid,
                                                    ByVal LanguageID As Guid, ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String) As String
 
@@ -70,6 +70,10 @@ Public Class ConfigQuestionSetDAL
 
         If ProductCodeID <> Guid.Empty Then
             cmd.AddParameter("pi_product_code_id", OracleDbType.Raw, ProductCodeID.ToByteArray())
+        End If
+
+        If ProductCode <> String.Empty Then
+            cmd.AddParameter("pi_product_code", OracleDbType.NVarchar2, ProductCode.ToString())
         End If
 
         If CoverageTypeID <> Guid.Empty Then
