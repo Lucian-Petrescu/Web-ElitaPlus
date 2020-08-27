@@ -67,6 +67,15 @@
 			WHERE
 				service_group_id = :service_group_id
 	</DELETE>
+  <LOAD_GRID>
+    <![CDATA[ELP_SERVICE_GROUP_OPS.LoadGrid]]>
+  </LOAD_GRID>
+  <COUNTOFRECORDS>
+    <![CDATA[elita.ELP_SERVICE_GROUP_OPS.CountOfRecords]]>
+  </COUNTOFRECORDS>
+  <SGRTMANU_SAVE>
+    <![CDATA[ELP_SERVICE_GROUP_OPS.SgrtManuSave]]>
+  </SGRTMANU_SAVE>
 </SQL> 
 
 
