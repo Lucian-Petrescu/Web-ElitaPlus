@@ -79,32 +79,6 @@ Namespace Tables
             If Not TheDealerControl.SelectedGuid.Equals(Guid.Empty) Then
             End If
         End Sub
-        Private Sub ReSetStateProperties()
-            Me.State.moCommPlanId = CType(Me.CallingParameters, Guid)
-
-            If Me.State.moCommPlanId.Equals(Guid.Empty) Then
-                Me.State.IsCommPlanDistNew = True
-                ClearPlan()
-                SetPlanButtonsState(True)
-                PopulatePlanFields()
-                If Me.moGridView.Visible And Me.moGridView.Rows.Count > 0 Then
-                    PopulateDistributionList()
-                End If
-
-                TheDealerControl.ChangeEnabledControlProperty(True)
-            Else
-                Me.State.IsCommPlanDistNew = False
-                SetPlanButtonsState(False)
-                PopulatePlanFields()
-                If Me.moGridView.Visible And Me.moGridView.Rows.Count > 0 Then
-                    PopulateDistributionList()
-                End If
-                'TheDealerControl.ChangeEnabledControlProperty(False)
-                TheDealerControl.ChangeEnabledControlProperty(True)
-            End If
-            If Not TheDealerControl.SelectedGuid.Equals(Guid.Empty) Then
-            End If
-        End Sub
 #End Region
 
 
@@ -1431,6 +1405,41 @@ Namespace Tables
             End If
         End Sub
 
+        Private Sub SetGridActEntXcdDropdownFromBo()
+            If moGridView.EditIndex = -1 Then Exit Sub
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim cboActEntitySourceXcd As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboActEntitySourceXcd"), DropDownList)
+
+            If Me.State.IsNewWithCopy = False Then
+                With TheCommPlanDist
+                    If cboActEntitySourceXcd.Visible Then
+                        If Not .ActEntitySourceXcd Is Nothing And cboActEntitySourceXcd.Items.Count > 0 Then
+                            Me.SetSelectedItem(cboActEntitySourceXcd, .ActEntitySourceXcd)
+                        End If
+                    End If
+                End With
+            End If
+        End Sub
+
+        Private Sub SetGridAmountPerFromBo()
+            If moGridView.EditIndex = -1 Then Exit Sub
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
+            Dim moLowPriceText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moLowPriceText"), TextBox)
+
+            If Me.State.IsNewWithCopy = False Then
+                With TheCommPlanDist
+                    If Not .CommissionPercent Is Nothing And Not moTextCommission_PercentText Is Nothing Then
+                        Me.PopulateControlFromBOProperty(moTextCommission_PercentText, .CommissionPercent, Me.PERCENT_FORMAT)
+                    End If
+
+                    If Not .CommissionAmount Is Nothing And Not moLowPriceText Is Nothing Then
+                        Me.PopulateControlFromBOProperty(moLowPriceText, .CommissionAmount)
+                    End If
+                End With
+            End If
+        End Sub
+
         Private Sub PoupulateSourceOptionDropdownlist(ByVal oDropDownList As DropDownList)
             Dim oAcctBucketsSourceOption As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTBUCKETSOURCE_COMMBRKDOWN")
 
@@ -1639,7 +1648,7 @@ Namespace Tables
                     FillPayeeTypeDropDownList()
                     SetGridSourceXcdDropdownFromBo()
                     SetGridSourceXcdLabelFromBo()
-
+                    'SetGridAmountPerFromBo()
                     SetGridControls(moGridView, False)
                     EnableDisableControls(Me.moCoverageEditPanel, True)
                 ElseIf (e.CommandName = DELETE_COMMAND_NAME) Then
@@ -1693,21 +1702,9 @@ Namespace Tables
 
                 EnablePlanCodeDescFields(True)
             Catch ex As Exception
-                If Me.State.IsAmountAndPercentBothPresent = True Then
-                    Me.State.IsCommPlanDistNew = False
-                    EnableForEditRateButtons(False)
-                    RePopulateDistributionListForPlan()
-                    SetGridSourceXcdLabelFromBo()
-                    TheDealerControl.ChangeEnabledControlProperty(False)
-                Else
-                    Me.State.IsCommPlanDistNew = False
-                    EnableForEditRateButtons(False)
-                    RePopulateDistributionListForPlan()
-                    SetGridSourceXcdLabelFromBo()
-                    TheDealerControl.ChangeEnabledControlProperty(False)
-                End If
-
-                'PopulatePlanFields()
+                Me.State.IsCommPlanDistNew = False
+                SetGridSourceXcdLabelFromBo()
+                TheDealerControl.ChangeEnabledControlProperty(False)
                 setbuttons(True)
                 btnBack.Visible = True
                 btnSave_WRITE.Visible = False
@@ -1786,7 +1783,6 @@ Namespace Tables
             If moGridView.EditIndex < 0 Then Return False ' Distribution is not in edit mode
             If Me.State.IsNewWithCopy Then
                 Me.LoadDistributionList()
-                'RePopulateDistributionListForPlan()
                 Me.State.moDistributionList(moGridView.SelectedIndex).Validate()
                 Return bIsOk
             End If
@@ -1845,13 +1841,9 @@ Namespace Tables
                 End If
             End If
 
-            If (Not String.IsNullOrWhiteSpace(moTextmoLowPriceText.Text)) Then
-                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_AMT, moTextmoLowPriceText)
-            End If
+            Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_AMT, moTextmoLowPriceText)
 
-            If (Not String.IsNullOrWhiteSpace(moTextmoCommission_PercentText.Text)) Then
-                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_PER, moTextmoCommission_PercentText)
-            End If
+            Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_PER, moTextmoCommission_PercentText)
 
             If (Not String.IsNullOrWhiteSpace(textboxPosition.Text)) Then
                 Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_POSITION, textboxPosition)
@@ -1899,7 +1891,6 @@ Namespace Tables
                 If Me.State.IsNewWithCopy Then
                     If Me.State.moDistributionList Is Nothing Then
                         Me.LoadDistributionList()
-                        'RePopulateDistributionListForPlan()
                     End If
                     Me.State.moDistributionList(nIndex) = Nothing
                 Else
@@ -1918,7 +1909,6 @@ Namespace Tables
                     End If
                 End If
             Catch ex As Exception
-                RePopulateDistributionListForPlan()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
                 bIsOk = False
             End Try
@@ -2190,9 +2180,9 @@ Namespace Tables
                         If Convert.ToDecimal(textBoxPosition.Text) = 0 Then
                             'Can not be zero and null
                             Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
-                        'ElseIf Convert.ToDecimal(textBoxPosition.Text) <> 1 Then
-                        '    'Can not be other than one (1)
-                        '    Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)                        
+                            'ElseIf Convert.ToDecimal(textBoxPosition.Text) <> 1 Then
+                            '    'Can not be other than one (1)
+                            '    Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)                        
                         End If
                     Else
                         ' Can not be null
@@ -2239,6 +2229,7 @@ Namespace Tables
                     ' Either one should be present
                     Throw New GUIException(Message.MSG_EITHER_PERCENTAGE_OR_AMOUNT_NEEDED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EITHER_PERCENTAGE_OR_AMOUNT_REQUIRED)
                 End If
+
             End If
         End Sub
 #End Region

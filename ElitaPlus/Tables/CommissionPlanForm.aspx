@@ -1,7 +1,6 @@
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CommissionPlanForm.aspx.vb"
     Theme="Default" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.CommissionPlanForm"
     EnableSessionState="True" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
-
 <%@ Register TagPrefix="uc1" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="MultipleColumnDDLabelControl" Src="../Common/MultipleColumnDDLabelControl.ascx" %>
 
@@ -116,7 +115,7 @@
     </div>
 </asp:Content>
 
-<asp:Content ID="Content4" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
+<asp:Content ID="Content4" ContentPlaceHolderID="MessagePlaceHolder" runat="server">    
 </asp:Content>
 <asp:Content ID="SummaryContent" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManager2" runat="server" EnablePageMethods="true" ScriptMode="Auto">
