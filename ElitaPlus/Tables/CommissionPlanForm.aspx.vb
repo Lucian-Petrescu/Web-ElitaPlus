@@ -1841,13 +1841,9 @@ Namespace Tables
                 End If
             End If
 
-            'If (Not String.IsNullOrWhiteSpace(moTextmoLowPriceText.Text)) Then
             Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_AMT, moTextmoLowPriceText)
-            'End If
 
-            'If (Not String.IsNullOrWhiteSpace(moTextmoCommission_PercentText.Text)) Then
             Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_PER, moTextmoCommission_PercentText)
-            'End If
 
             If (Not String.IsNullOrWhiteSpace(textboxPosition.Text)) Then
                 Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_POSITION, textboxPosition)
