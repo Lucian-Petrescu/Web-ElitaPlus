@@ -2150,7 +2150,7 @@ Namespace Tables
 
         End Function
 
-        Protected Function CheckNull(ByVal objGrid As Object) As String
+        Protected Function CheckNull(ByVal objGrid As Object, ByVal objParam2 As String) As String
             If Object.ReferenceEquals(objGrid, DBNull.Value) Then
                 Return String.Empty
             ElseIf TypeOf objGrid Is Byte() Then
@@ -2159,8 +2159,18 @@ Namespace Tables
                 If objGrid.ToString().Equals(Guid.Empty.ToString()) Then
                     Return String.Empty
                 End If
-                'GetAmountFormattedToVariableString for amount
-                'GetAmountFormattedDoubleString, "N4" for amount percentage
+
+                If Not String.IsNullOrWhiteSpace(objParam2) Then
+                    If objParam2.Equals("COMMISSION_AMOUNT") Then
+                        Return GetAmountFormattedToVariableString(objGrid)
+                    End If
+                End If
+
+                If Not String.IsNullOrWhiteSpace(objParam2) Then
+                    If objParam2.Equals("COMMISSION_PERCENTAGE") Then
+                        Return GetAmountFormattedDoubleString(objGrid,"N4")
+                    End If
+                End If
 
                 Return objGrid.ToString()
             End If
