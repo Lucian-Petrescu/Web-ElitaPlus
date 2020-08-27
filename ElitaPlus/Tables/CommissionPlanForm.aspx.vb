@@ -2007,7 +2007,6 @@ Namespace Tables
                 ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, moGridView)
 
             Catch ex As Exception
-                'Me.HandleErrors(ex, Me.moMsgControllerRate)
             End Try
         End Sub
 
