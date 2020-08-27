@@ -178,7 +178,7 @@
                     <asp:TemplateField Visible="true" HeaderText="ENTITY_TYPE">
                         <ItemStyle HorizontalAlign="Center" Width="15%"></ItemStyle>
                         <ItemTemplate>
-                            <asp:Label ID="lblEntityType" Text='<%# CheckNull(Eval("ENTITY_ID"))%>' runat="server"> </asp:Label>
+                            <asp:Label ID="lblEntityType" Text='<%# CheckNull(Eval("ENTITY_ID"),"")%>' runat="server"> </asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:DropDownList ID="cboEntityType" runat="server" Width="100"></asp:DropDownList>
@@ -187,7 +187,7 @@
                     <asp:TemplateField Visible="True" HeaderText="COMMISSION_AMOUNT">
                         <ItemStyle HorizontalAlign="center" Width="15%"></ItemStyle>
                         <ItemTemplate>
-                            <asp:Label ID="moLowPriceLabel" Text='<%# CheckNull(Eval("COMMISSION_AMOUNT"))%>' runat="server"> </asp:Label>
+                            <asp:Label ID="moLowPriceLabel" Text='<%# CheckNull(Eval("COMMISSION_AMOUNT"),"COMMISSION_AMOUNT")%>' runat="server"> </asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="moLowPriceText" runat="server" Visible="True" Width="75"></asp:TextBox>
@@ -196,7 +196,7 @@
                     <asp:TemplateField Visible="True" HeaderText="COMMISSION_PERCENT">
                         <ItemStyle HorizontalAlign="center" Width="15%"></ItemStyle>
                         <ItemTemplate>
-                            <asp:Label ID="moCommission_PercentLabel" Text='<%# CheckNull(Eval("COMMISSION_PERCENTAGE"))%>' runat="server"> </asp:Label>
+                            <asp:Label ID="moCommission_PercentLabel" Text='<%# CheckNull(Eval("COMMISSION_PERCENTAGE"), "COMMISSION_PERCENTAGE")%>' runat="server"> </asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="moCommission_PercentText" runat="server" Visible="True" Width="75"></asp:TextBox>
