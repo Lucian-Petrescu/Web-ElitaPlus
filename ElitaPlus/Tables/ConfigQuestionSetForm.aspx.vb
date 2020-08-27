@@ -209,15 +209,15 @@ Namespace Tables
                 'Dealer Group
                 If Not Me.State Is Nothing Then
                     If Not Me.State.MyBO Is Nothing Then
-                        If Me.State.MyBO.CompanyId = Nothing Then
-                            Dim oDealerGroupList = GetDealerGroupListByCompanyForUser()
+                        If Not Me.State.MyBO.CompanyId = Nothing Then
+                            Dim oDealerGroupList = GetDealerGroupListByCompany(Me.State.MyBO.CompanyId)
                             Me.ddlDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
                             {
                                 .AddBlankItem = True,
                                 .SortFunc = AddressOf .GetCode
                             })
                         Else
-                            Dim oDealerGroupList = GetDealerGroupListByCompany(Me.State.MyBO.CompanyId)
+                            Dim oDealerGroupList = GetDealerGroupListByCompanyForUser()
                             Me.ddlDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
                             {
                                 .AddBlankItem = True,
@@ -230,14 +230,14 @@ Namespace Tables
                 'Dealer
                 If Not Me.State Is Nothing Then
                     If Not Me.State.MyBO Is Nothing Then
-                        If Me.State.MyBO.CompanyId = Nothing Then
-                            Dim oDealerList = GetDealerListByCompanyForUser()
+                        If Not Me.State.MyBO.CompanyId = Nothing Then
+                            Dim oDealerList = GetDealerListByCompany(Me.State.MyBO.CompanyId)
                             Me.ddlDealer.Populate(oDealerList, New PopulateOptions() With
                             {
                                 .AddBlankItem = True
                             })
                         Else
-                            Dim oDealerList = GetDealerListByCompany(Me.State.MyBO.CompanyId)
+                            Dim oDealerList = GetDealerListByCompanyForUser()
                             Me.ddlDealer.Populate(oDealerList, New PopulateOptions() With
                             {
                                 .AddBlankItem = True
