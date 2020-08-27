@@ -4168,7 +4168,7 @@ Partial Class ClaimForm
 #End Region
 
 #Region "Change Fulfillment"
-    Protected Sub btnContinue_Click(sender As Object, e As EventArgs) Handles btnContinue.Click
+    Protected Sub btnLegacyContinue_Click(sender As Object, e As EventArgs) Handles btnLegacyContinue.Click
 
 
         Try
