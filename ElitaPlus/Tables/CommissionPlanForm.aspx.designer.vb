@@ -204,6 +204,15 @@ Namespace Tables
         Protected WithEvents lblActiveSearchResults As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
+        '''moMsgControllerRate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moMsgControllerRate As Global.Assurant.ElitaPlus.ElitaPlusWebApp.MessageController
+
+        '''<summary>
         '''moGridView control.
         '''</summary>
         '''<remarks>

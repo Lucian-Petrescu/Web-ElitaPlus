@@ -1,7 +1,7 @@
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CommissionPlanForm.aspx.vb"
     Theme="Default" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.CommissionPlanForm"
     EnableSessionState="True" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
-
+<%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="MultipleColumnDDLabelControl" Src="../Common/MultipleColumnDDLabelControl.ascx" %>
 
@@ -116,7 +116,7 @@
     </div>
 </asp:Content>
 
-<asp:Content ID="Content4" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
+<asp:Content ID="Content4" ContentPlaceHolderID="MessagePlaceHolder" runat="server">    
 </asp:Content>
 <asp:Content ID="SummaryContent" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManager2" runat="server" EnablePageMethods="true" ScriptMode="Auto">
@@ -130,6 +130,8 @@
             <h2 class="dataGridHeader">
                 <asp:Label ID="lblActiveSearchResults" runat="server" Text="SEARCH_RESULTS_FOR_COMMPLANDISTRIBUTION" Visible="true"></asp:Label>
             </h2>
+            <Elita:MessageController runat="server" ID="moMsgControllerRate" Visible="false" />
+
             <asp:GridView ID="moGridView" runat="server" OnRowCreated="ItemCreated" OnRowCommand="ItemCommand"
                 AllowPaging="True" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"
                 SkinID="DetailPageGridView">
