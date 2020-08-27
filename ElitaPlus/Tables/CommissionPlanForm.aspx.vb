@@ -276,7 +276,6 @@ Namespace Tables
         Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                moMsgControllerRate.Clear()
                 Me.MasterPage.MessageController.Clear_Hide()
                 ClearLabelsErrSign()
                 ClearGridHeaders(moGridView)
@@ -1476,8 +1475,7 @@ Namespace Tables
                 End If
                 Return sGetCodeSourceOptionDesc
             Catch ex As Exception
-                'Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.HandleErrors(ex, Me.moMsgControllerRate)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Function
 
@@ -1490,8 +1488,7 @@ Namespace Tables
                 End If
                 Return sGetCodeSourceOptionDesc
             Catch ex As Exception
-                'Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.HandleErrors(ex, Me.moMsgControllerRate)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Function
 
@@ -1504,8 +1501,7 @@ Namespace Tables
                 End If
                 Return sGetDescOfExtCodeFromPayeeTypeXcd
             Catch ex As Exception
-                'Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.HandleErrors(ex, Me.moMsgControllerRate)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Function
 
@@ -1526,8 +1522,7 @@ Namespace Tables
                 End If
                 Return sGetDescOfExtCodeFromPayeeTypeXcd
             Catch ex As Exception
-                'Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.HandleErrors(ex, Me.moMsgControllerRate)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Function
 
@@ -1623,8 +1618,7 @@ Namespace Tables
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                'Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.HandleErrors(ex, Me.moMsgControllerRate)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -1634,7 +1628,7 @@ Namespace Tables
                 moGridView.PageIndex = e.NewPageIndex
                 PopulateDistributionList(ACTION_CANCEL_DELETE)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moMsgControllerRate)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -1671,7 +1665,7 @@ Namespace Tables
                     SetGridSourceXcdLabelFromBo()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moMsgControllerRate)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -1715,7 +1709,7 @@ Namespace Tables
                 btnBack.Visible = True
                 btnSave_WRITE.Visible = False
                 BtnSaveRate_WRITE.Visible = True
-                Me.HandleErrors(ex, Me.moMsgControllerRate)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -1728,7 +1722,7 @@ Namespace Tables
                 SetGridSourceXcdLabelFromBo()
                 TheDealerControl.ChangeEnabledControlProperty(False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moMsgControllerRate)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -1761,7 +1755,7 @@ Namespace Tables
                 FillPayeeTypeDropDownList()
                 SetGridSourceXcdDropdownFromBo()
                 SetGridSourceXcdLabelFromBo()
-                Me.HandleErrors(ex, Me.moMsgControllerRate)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -1919,7 +1913,7 @@ Namespace Tables
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moMsgControllerRate)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
                 bIsOk = False
             End Try
             Return bIsOk
