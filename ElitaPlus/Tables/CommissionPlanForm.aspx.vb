@@ -1404,37 +1404,47 @@ Namespace Tables
                 End With
             End If
         End Sub
-
-        Private Sub SetGridActEntXcdDropdownFromBo()
+        Private Sub SetControlValuesFromBo()
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim cboPayeeType As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboPayeeType"), DropDownList)
             Dim cboActEntitySourceXcd As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboActEntitySourceXcd"), DropDownList)
+            Dim cboEntityType As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboEntityType"), DropDownList)
+            Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
+            Dim moLowPriceText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moLowPriceText"), TextBox)
+            Dim textBoxPosition As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("textBoxPosition"), TextBox)
 
             If Me.State.IsNewWithCopy = False Then
                 With TheCommPlanDist
+
                     If cboActEntitySourceXcd.Visible Then
                         If Not .ActEntitySourceXcd Is Nothing And cboActEntitySourceXcd.Items.Count > 0 Then
                             Me.SetSelectedItem(cboActEntitySourceXcd, .ActEntitySourceXcd)
                         End If
                     End If
-                End With
-            End If
-        End Sub
 
-        Private Sub SetGridAmountPerFromBo()
-            If moGridView.EditIndex = -1 Then Exit Sub
-            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
-            Dim moLowPriceText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moLowPriceText"), TextBox)
+                    If cboPayeeType.Visible Then
+                        If Not .PayeeTypeXcd Is Nothing And cboPayeeType.Items.Count > 0 Then
+                            Me.SetSelectedItem(cboPayeeType, .PayeeTypeXcd)
+                        End If
+                    End If
 
-            If Me.State.IsNewWithCopy = False Then
-                With TheCommPlanDist
+                    If cboEntityType.Visible Then
+                        If cboEntityType.Items.Count > 0 Then
+                            Me.SetSelectedItem(cboEntityType, .EntityId)
+                        End If
+                    End If
+
                     If Not .CommissionPercent Is Nothing And Not moTextCommission_PercentText Is Nothing Then
                         Me.PopulateControlFromBOProperty(moTextCommission_PercentText, .CommissionPercent, Me.PERCENT_FORMAT)
                     End If
 
                     If Not .CommissionAmount Is Nothing And Not moLowPriceText Is Nothing Then
-                        Me.PopulateControlFromBOProperty(moLowPriceText, .CommissionAmount)
+                        Me.PopulateControlFromBOProperty(moLowPriceText, .CommissionAmount, Me.DECIMAL_FORMAT)
+                    End If
+
+                    If Not .Position Is Nothing And Not textBoxPosition Is Nothing Then
+                        Me.PopulateControlFromBOProperty(textBoxPosition, .Position)
                     End If
                 End With
             End If
@@ -1641,14 +1651,13 @@ Namespace Tables
                     moGridView.EditIndex = nIndex
                     moGridView.SelectedIndex = nIndex
                     PopulateDistributionList(ACTION_EDIT)
-
-                    Me.FillSourceXcdDropdownList()
+                    FillSourceXcdDropdownList()
                     FillActEntSourceXcdDropdownList()
                     FillEntityDropDownList()
                     FillPayeeTypeDropDownList()
                     SetGridSourceXcdDropdownFromBo()
                     SetGridSourceXcdLabelFromBo()
-                    'SetGridAmountPerFromBo()
+                    SetControlValuesFromBo()
                     SetGridControls(moGridView, False)
                     EnableDisableControls(Me.moCoverageEditPanel, True)
                 ElseIf (e.CommandName = DELETE_COMMAND_NAME) Then
@@ -2168,7 +2177,7 @@ Namespace Tables
 
                 If Not String.IsNullOrWhiteSpace(objParam2) Then
                     If objParam2.Equals("COMMISSION_PERCENTAGE") Then
-                        Return GetAmountFormattedDoubleString(objGrid,"N4")
+                        Return GetAmountFormattedDoubleString(objGrid, "N4")
                     End If
                 End If
 
