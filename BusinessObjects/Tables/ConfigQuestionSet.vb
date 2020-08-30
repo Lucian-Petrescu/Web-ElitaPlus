@@ -173,6 +173,7 @@
         End Set
     End Property
 
+    <ValidProductCodeDealerGroup("Product Code")>
     Public Property ProductCode As String
         Get
             CheckDeleted()
@@ -187,8 +188,6 @@
             Me.SetValue(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
-
-
 
     Public Property DeviceTypeId() As Guid
         Get
@@ -426,6 +425,25 @@
                 (Guid.Empty = obj.DealerGroupId) And (Guid.Empty = obj.DealerId) And
                 (Guid.Empty = obj.ProductCodeId) And (Guid.Empty = obj.CoverageTypeId) And
                 (Guid.Empty = obj.RiskTypeId) And (Guid.Empty = obj.DeviceTypeId) Then
+                Return False
+            Else
+                Return True
+            End If
+
+        End Function
+    End Class
+
+    Public NotInheritable Class ValidProductCodeDealerGroup
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, "Dealer Group  Is Required")
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj As ConfigQuestionSet = CType(objectToValidate, ConfigQuestionSet)
+
+            If (Guid.Empty = obj.DealerGroupId) Then
                 Return False
             Else
                 Return True

@@ -73,7 +73,7 @@ Public Class ConfigQuestionSetDAL
         End If
 
         If ProductCode <> String.Empty Then
-            cmd.AddParameter("pi_product_code", OracleDbType.NVarchar2, ProductCode.ToString())
+            cmd.AddParameter("pi_product_code", OracleDbType.Varchar2, ProductCode.ToString())
         End If
 
         If CoverageTypeID <> Guid.Empty Then
@@ -222,12 +222,12 @@ Public Class ConfigQuestionSetDAL
             .AddParameter(parameterName:="pi_dealer_group_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_GROUP_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_dealer_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_product_code_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_PRODUCT_CODE_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_product_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_PRODUCT_CODE, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_coverage_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COVERAGE_TYPE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_risk_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_RISK_TYPE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_device_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEVICE_TYPE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_purpose_xcd", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_PURPOSE_XCD, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_question_set_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_QUESTION_SET_CODE, direction:=ParameterDirection.Input)
-
             .AddParameter(parameterName:="pi_modified_by", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY, direction:=ParameterDirection.Input)
         End With
     End Sub
@@ -248,12 +248,12 @@ Public Class ConfigQuestionSetDAL
             .AddParameter(parameterName:="pi_dealer_group_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_GROUP_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_dealer_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_product_code_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_PRODUCT_CODE_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_product_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_PRODUCT_CODE, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_coverage_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COVERAGE_TYPE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_risk_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_RISK_TYPE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_device_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEVICE_TYPE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_purpose_xcd", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_PURPOSE_XCD, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_question_set_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_QUESTION_SET_CODE, direction:=ParameterDirection.Input)
-
             .AddParameter(parameterName:="pi_created_by", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY, direction:=ParameterDirection.Input, size:=30)
         End With
     End Sub

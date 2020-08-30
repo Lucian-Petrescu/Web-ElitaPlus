@@ -364,7 +364,6 @@ Namespace Tables
                 Me.PopulateControlFromBOProperty(ddlCompany, .CompanyId)
                 Me.PopulateControlFromBOProperty(ddlDealerGroup, .DealerGroupId)
                 Me.PopulateControlFromBOProperty(ddlDealer, .DealerId)
-
                 Me.PopulateControlFromBOProperty(ddlDeviceType, .DeviceTypeId)
                 Me.PopulateControlFromBOProperty(ddlRiskType, .RiskTypeId)
                 Me.PopulateControlFromBOProperty(ddlCoverageType, .CoverageTypeId)
@@ -377,7 +376,15 @@ Namespace Tables
                     Me.ddlPurpose.Style.Remove("background")
                 End If
 
-                If Not .ProductCodeId = Guid.Empty Then
+                If Not .QuestionSetCode Is Nothing Then
+                    Me.ddlQuestionSetCode.Items.FindByValue(.QuestionSetCode).Selected = True
+                    Me.ddlQuestionSetCode.Style.Remove("background")
+                Else
+                    Me.ddlQuestionSetCode.Items.FindByText(String.Empty).Selected = True
+                    Me.ddlQuestionSetCode.Style.Remove("background")
+                End If
+
+                If (Not .ProductCodeId = Guid.Empty) Or (.ProductCode = String.Empty) Then
                     Me.PopulateControlFromBOProperty(ddlProductCode, .ProductCodeId)
                     Me.txtProductCode.Visible = False
                     Me.ddlProductCode.Visible = True
@@ -385,6 +392,20 @@ Namespace Tables
                     Me.txtProductCode.Text = .ProductCode
                     Me.txtProductCode.Visible = True
                     Me.ddlProductCode.Visible = False
+                End If
+
+                If (.DealerGroupId <> Guid.Empty) And (.ProductCode <> String.Empty) Then
+                    ddlDealerGroup.Enabled = True
+                    Me.txtProductCode.Visible = True
+                    ddlDealer.SelectedIndex = BLANK_ITEM_SELECTED
+                    ddlDealer.Enabled = False
+                End If
+
+                If (.DealerId <> Guid.Empty) And (.ProductCodeId <> Guid.Empty) Then
+                    ddlDealer.Enabled = True
+                    Me.txtProductCode.Visible = False
+                    ddlDealerGroup.SelectedIndex = BLANK_ITEM_SELECTED
+                    ddlDealerGroup.Enabled = False
                 End If
 
             End With
@@ -416,10 +437,9 @@ Namespace Tables
                 Me.PopulateBOProperty(Me.State.MyBO, "RiskTypeId", Me.ddlRiskType)
                 Me.PopulateBOProperty(Me.State.MyBO, "PurposeXCD", Me.ddlPurpose, False, True)
                 Me.PopulateBOProperty(Me.State.MyBO, "QuestionSetCode", Me.ddlQuestionSetCode, False, True)
-                Me.State.MyBO.ProductCode = txtProductCode.Text
-
-
+                Me.PopulateBOProperty(Me.State.MyBO, "ProductCode", Me.txtProductCode)
             End With
+
             If Me.ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
@@ -589,14 +609,16 @@ Namespace Tables
                 If ddlDealerGroup.SelectedIndex > NO_ITEM_SELECTED_INDEX And ddlDealerGroup.SelectedIndex <> BLANK_ITEM_SELECTED Then
                     ddlProductCode.Visible = False
                     txtProductCode.Visible = True
+                    ddlDealer.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                    ddlDealer.Enabled = False
                 Else
-                    txtProductCode.Visible = False
                     ddlProductCode.Visible = True
+                    txtProductCode.Visible = False
+                    ddlDealer.Enabled = True
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
-
         End Sub
 
         Private Sub ddlDealer_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlDealer.SelectedIndexChanged
@@ -605,26 +627,29 @@ Namespace Tables
                                                                     End Function
 
             If ddlDealer.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-
                 If ddlDealer.SelectedIndex = BLANK_ITEM_SELECTED Then
+                    'ProductCode
                     Me.ddlProductCode.Populate(New ListItem(0) {}, New PopulateOptions() With
                     {
                         .AddBlankItem = True,
                         .TextFunc = textFun
                     })
                     ddlProductCode.Enabled = False
-                    Exit Sub
+                    'DealerGroup
+                    ddlDealerGroup.Enabled = True
+                Else
+                    'ProductCode
+                    ddlProductCode.Enabled = True
+                    ddlProductCode.Items.Clear()
+                    Dim oProductCodeList = GetProductListByDealer()
+                    Me.ddlProductCode.Populate(oProductCodeList, New PopulateOptions() With
+                    {
+                        .AddBlankItem = True,
+                        .TextFunc = textFun
+                    })
+                    'DealerGroup
+                    ddlDealerGroup.Enabled = False
                 End If
-
-                'ProductCode
-                ddlProductCode.Enabled = True
-                ddlProductCode.Items.Clear()
-                Dim oProductCodeList = GetProductListByDealer()
-                Me.ddlProductCode.Populate(oProductCodeList, New PopulateOptions() With
-                {
-                    .AddBlankItem = True,
-                    .TextFunc = textFun
-                })
             Else
                 Me.ddlProductCode.Populate(New ListItem(0) {}, New PopulateOptions() With
                 {
