@@ -437,13 +437,13 @@
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, "Dealer Group  Is Required")
+            MyBase.New(fieldDisplayName, "Dealer Group Is Required")
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As ConfigQuestionSet = CType(objectToValidate, ConfigQuestionSet)
 
-            If (Guid.Empty = obj.DealerGroupId) Then
+            If (Guid.Empty = obj.DealerGroupId And obj.ProductCode <> String.Empty) Then
                 Return False
             Else
                 Return True
