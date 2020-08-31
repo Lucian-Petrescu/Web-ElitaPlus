@@ -155,9 +155,8 @@
       <HintPath>..\packages\Elita.Assurant.Common.Localization.2.0.0\lib\net462\Assurant.Common.Localization.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.0\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.3\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Common.Types, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Elita.Assurant.Common.Types.2.0.0\lib\net462\Assurant.Common.Types.dll</HintPath>
@@ -1074,6 +1073,7 @@
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Helpers\ceHelperParameter.vb" />
+    <Compile Include="Helpers\ExtensionHelper.vb" />
     <Compile Include="Helpers\ListHelper.vb" />
     <Compile Include="Helpers\SSHelper.vb" />
     <Compile Include="Helpers\ssHelperParameter.vb" />
