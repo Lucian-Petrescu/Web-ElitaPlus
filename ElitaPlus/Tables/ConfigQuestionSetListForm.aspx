@@ -29,7 +29,7 @@
             <tr>
                 <td>
                     <asp:Label ID="lblSearchProdCode" runat="server">PRODUCT_CODE:</asp:Label><br />
-                    <asp:TextBox ID="txtSearchProductCode" TabIndex="5" runat="server" SkinID="MediumTextBox"></asp:TextBox>
+                    <asp:TextBox ID="txtSearchProductCode" TabIndex="5" runat="server" SkinID="MediumTextBox" MaxLength="5"></asp:TextBox>
                 </td>
                 <td>
                     <asp:Label ID="lblSearchRiskType" runat="server">RISK_TYPE:</asp:Label><br />
