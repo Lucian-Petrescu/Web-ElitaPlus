@@ -440,6 +440,7 @@ Namespace Tables
 
                 If (Not .ProductCodeId = Guid.Empty) Or (.ProductCode = String.Empty) Then
                     Me.PopulateControlFromBOProperty(ddlProductCode, .ProductCodeId)
+                    Me.txtProductCode.Text = String.Empty
                     Me.txtProductCode.Visible = False
                     Me.ddlProductCode.Visible = True
                 Else
@@ -457,6 +458,7 @@ Namespace Tables
 
                 If (.DealerId <> Guid.Empty) And (.ProductCodeId <> Guid.Empty) Then
                     ddlDealer.Enabled = True
+                    Me.txtProductCode.Text = String.Empty
                     Me.txtProductCode.Visible = False
                     ddlDealerGroup.SelectedIndex = BLANK_ITEM_SELECTED
                     ddlDealerGroup.Enabled = False
@@ -667,6 +669,7 @@ Namespace Tables
                     ddlDealer.Enabled = False
                 Else
                     ddlProductCode.Visible = True
+                    txtProductCode.Text = String.Empty
                     txtProductCode.Visible = False
                     ddlDealer.Enabled = True
                 End If
@@ -695,7 +698,7 @@ Namespace Tables
                     'ProductCode
                     ddlProductCode.Enabled = True
                     ddlProductCode.Items.Clear()
-                    Dim oProductCodeList = GetProductListByDealer()
+                    Dim oProductCodeList = GetProductCodeListByDealer(Guid.Parse(ddlDealer.SelectedValue))
                     Me.ddlProductCode.Populate(oProductCodeList, New PopulateOptions() With
                     {
                         .AddBlankItem = True,
