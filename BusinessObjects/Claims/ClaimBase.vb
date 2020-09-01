@@ -22,6 +22,7 @@ Public MustInherit Class ClaimBase
     Public Const COMPLIANCE_ISSUE_CODE As String = "CMPLARG"
     Public Const m_NewClaimRepairDedPercent As Integer = 30
     Public Const m_NewClaimOrigReplDedPercent As Integer = 50
+    Private Const CLAIM_DOC_UPLD_DETAILS as String ="Claim Document Upload Details"
 
 #End Region
 
@@ -2887,9 +2888,9 @@ Public MustInherit Class ClaimBase
 #End Region
 
 #Region "Claim Images"
-    Public ReadOnly Property ClaimImagesList() As ClaimImage.ClaimImagesList
+    Public ReadOnly Property ClaimImagesList(Optional ByVal loadAllFiles As Boolean = False) As ClaimImage.ClaimImagesList
         Get
-            Return New ClaimImage.ClaimImagesList(Me)
+            Return New ClaimImage.ClaimImagesList(Me, loadAllFiles)
         End Get
     End Property
 
@@ -2919,8 +2920,8 @@ Public MustInherit Class ClaimBase
         End If
 
         Dim oClaimImage As ClaimImage
-        oClaimImage = DirectCast(Me.ClaimImagesList.GetNewChild(Me.Id), ClaimImage)
-
+    oClaimImage = DirectCast(Me.ClaimImagesList.GetNewChild(Me.Id), ClaimImage)
+        
         With oClaimImage
             .DocumentTypeId = pDocumentTypeId.Value
             .ImageStatusId = pImageStatusId.Value
@@ -2951,6 +2952,18 @@ Public MustInherit Class ClaimBase
             oClaimImage.ImageId = doc.Id
 
             oClaimImage.Save()
+          
+            PublishedTask.AddEvent(companyGroupId:=Me.Company.CompanyGroupId,
+                                   companyId:=Me.Dealer.Company.id,
+                                   countryId:=Me.Company.CountryId,
+                                   dealerId:= Me.Dealer.Id,
+                                   productCode:=String.Empty,
+                                   coverageTypeId:=Guid.Empty,
+                                   sender:= CLAIM_DOC_UPLD_DETAILS,
+                                   arguments:="ClaimId:" & DALBase.GuidToSQLString(Me.Id) & ";DocumentTypeId:" & DALBase.GuidToSQLString(oClaimImage.DocumentTypeId) & "",
+                                   eventDate:=DateTime.UtcNow,
+                                   eventTypeId:=LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP__CLAIM_DOCUMENT_UPLOAD),
+                                   eventArgumentId:=Nothing)
 
             Return doc.Id
         Catch ex As Exception
@@ -2964,14 +2977,14 @@ Public MustInherit Class ClaimBase
 
 #Region "Claim Images Dataview"
 
-    Public Function GetClaimImagesView() As ClaimImagesView
+    Public Function GetClaimImagesView(Optional ByVal loadAllFiles As Boolean = False) As ClaimImagesView
         Dim t As DataTable = ClaimImagesView.CreateTable
         Dim detail As ClaimImage
         Dim filteredTable As DataTable
 
         Try
 
-            For Each detail In Me.ClaimImagesList
+            For Each detail In Me.ClaimImagesList(loadAllFiles)
                 Dim row As DataRow = t.NewRow
                 row(ClaimImagesView.COL_CLAIM_IMAGE_ID) = detail.Id.ToByteArray
                 row(ClaimImagesView.COL_IMAGE_ID) = detail.ImageId.ToByteArray
@@ -3000,7 +3013,7 @@ Public MustInherit Class ClaimBase
                     row(ClaimImagesView.COL_USER_NAME) = detail.UserName
                 End If
                 row(ClaimImagesView.COL_IS_LOCAL_REPOSITORY) = detail.IsLocalRepository
-
+                row(ClaimImagesView.COL_DELETE_FLAG) = detail.DeleteFlag
                 t.Rows.Add(row)
 
             Next
@@ -3026,7 +3039,7 @@ Public MustInherit Class ClaimBase
         Public Const COL_COMMENTS As String = "COMMENTS"
         Public Const COL_USER_NAME As String = "USER_NAME"
         Public Const COL_IS_LOCAL_REPOSITORY As String = "IS_LOCAL_REPOSITORY"
-
+        Public Const COL_DELETE_FLAG As String = "DELETE_FLAG"
         Public Sub New(ByVal Table As DataTable)
             MyBase.New(Table)
         End Sub
@@ -3045,7 +3058,7 @@ Public MustInherit Class ClaimBase
             t.Columns.Add(COL_COMMENTS, GetType(String))
             t.Columns.Add(COL_USER_NAME, GetType(String))
             t.Columns.Add(COL_IS_LOCAL_REPOSITORY, GetType(String))
-
+            t.Columns.Add(COL_DELETE_FLAG, GetType(String))
             Return t
         End Function
     End Class
@@ -3975,9 +3988,9 @@ Public MustInherit Class ClaimBase
             Me.LockedBy = Guid.Empty
             Me.lockedOn = Nothing
             Me.IsLocked = Codes.YESNO_N
-            ''claim lock - End
+            ''claim lock - End            
 
-            If Not Me.IsNew Then
+            If Not Me.IsNew Then                
                 If Me.GetDealerDRPTradeInQuoteFlag(Me.DealerCode) Then
                     If IsStatusChngdFromPendingOrClosedToActive() Then
                         If Me.VerifyIMEIWithDRPSystem(Me.SerialNumber) Then

@@ -203,7 +203,7 @@ Namespace Tables
                 End If
 
                 'Company
-                Dim compLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("Company", Thread.CurrentPrincipal.GetLanguageCode())
+                Dim compLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("Company", Authentication.CurrentUser.LanguageCode)
                 Dim list As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
                 Dim filteredList As ListItem() = (From x In compLkl
                                                   Where list.Contains(x.ListItemId)
@@ -230,21 +230,21 @@ Namespace Tables
                 })
 
                 'ProductCode
-                Dim oProductCodeList = GetProductCodeListByCompanyForUser()
-                Me.ddlProductCode.Populate(oProductCodeList, New PopulateOptions() With
+                Me.ddlProductCode.Populate(New ListItem(0) {}, New PopulateOptions() With
                 {
                     .AddBlankItem = True,
                     .TextFunc = textFun
                 })
+                ddlProductCode.Enabled = False
 
                 'Device Type
-                Me.ddlDeviceType.Populate(CommonConfigManager.Current.ListManager.GetList("DEVICE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                Me.ddlDeviceType.Populate(CommonConfigManager.Current.ListManager.GetList("DEVICE", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
 
                 'Coverage Type
-                Me.ddlCoverageType.Populate(CommonConfigManager.Current.ListManager.GetList("CTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                Me.ddlCoverageType.Populate(CommonConfigManager.Current.ListManager.GetList("CTYP", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -253,14 +253,14 @@ Namespace Tables
                 Dim listcontext As ListContext = New ListContext()
                 Dim compGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                 listcontext.CompanyGroupId = compGroupId
-                Dim riskLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
+                Dim riskLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCompanyGroup", Authentication.CurrentUser.LanguageCode, listcontext)
                 ddlRiskType.Populate(riskLkl, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
 
                 'Purpose
-                ddlPurpose.Populate(CommonConfigManager.Current.ListManager.GetList("CASEPUR", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                ddlPurpose.Populate(CommonConfigManager.Current.ListManager.GetList("CASEPUR", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
                 {
                     .AddBlankItem = True,
                     .BlankItemValue = String.Empty,
@@ -269,7 +269,7 @@ Namespace Tables
                 })
 
                 'QuestionSetCode
-                Me.ddlQuestionSetCode.Populate(CommonConfigManager.Current.ListManager.GetList("DcmQuestionSet", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                Me.ddlQuestionSetCode.Populate(CommonConfigManager.Current.ListManager.GetList("DcmQuestionSet", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
                 {
                     .AddBlankItem = True,
                     .BlankItemValue = String.Empty,
@@ -329,30 +329,6 @@ Namespace Tables
             Next
 
             Return oDealerGroupList.ToArray()
-
-        End Function
-
-        Private Function GetProductCodeListByCompanyForUser() As ListItem()
-            Dim Index As Integer
-            Dim oListContext As New ListContext
-
-            Dim UserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-
-            Dim oProductCodeList As New Collections.Generic.List(Of ListItem)
-
-            For Index = 0 To UserCompanies.Count - 1
-                oListContext.CompanyId = UserCompanies(Index)
-                Dim oProductCodeListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByCompany", context:=oListContext)
-                If oProductCodeListForCompany.Count > 0 Then
-                    If oProductCodeList IsNot Nothing Then
-                        oProductCodeList.AddRange(oProductCodeListForCompany)
-                    Else
-                        oProductCodeList = oProductCodeListForCompany.Clone()
-                    End If
-                End If
-            Next
-
-            Return oProductCodeList.ToArray()
 
         End Function
 
@@ -580,12 +556,12 @@ Namespace Tables
                 })
 
                 'ProductCode
-                Dim oProductCodeList = GetProductListByCompany()
-                Me.ddlProductCode.Populate(oProductCodeList, New PopulateOptions() With
+                Me.ddlProductCode.Populate(New ListItem(0) {}, New PopulateOptions() With
                 {
                     .AddBlankItem = True,
                     .TextFunc = textFun
                 })
+                ddlProductCode.Enabled = False
 
             End If
         End Sub
@@ -598,17 +574,31 @@ Namespace Tables
             If ddlDealer.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
 
                 If ddlDealer.SelectedIndex = BLANK_ITEM_SELECTED Then
+                    Me.ddlProductCode.Populate(New ListItem(0) {}, New PopulateOptions() With
+                    {
+                        .AddBlankItem = True,
+                        .TextFunc = textFun
+                    })
+                    ddlProductCode.Enabled = False
                     Exit Sub
                 End If
 
                 'ProductCode
+                ddlProductCode.Enabled = True
+                ddlProductCode.Items.Clear()
                 Dim oProductCodeList = GetProductListByDealer()
                 Me.ddlProductCode.Populate(oProductCodeList, New PopulateOptions() With
                 {
                     .AddBlankItem = True,
                     .TextFunc = textFun
                 })
-
+            Else
+                Me.ddlProductCode.Populate(New ListItem(0) {}, New PopulateOptions() With
+                {
+                    .AddBlankItem = True,
+                    .TextFunc = textFun
+                })
+                ddlProductCode.Enabled = False
             End If
         End Sub
 
@@ -624,13 +614,6 @@ Namespace Tables
             oListContext.CompanyId = Guid.Parse(ddlCompany.SelectedValue)
             Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             Return oDealerListForCompany.ToArray()
-        End Function
-
-        Private Function GetProductListByCompany() As ListItem()
-            Dim oListContext As New ListContext
-            oListContext.CompanyId = Guid.Parse(ddlCompany.SelectedValue)
-            Dim oProductListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByCompany", context:=oListContext)
-            Return oProductListForCompany.ToArray()
         End Function
 
         Private Function GetProductListByDealer() As ListItem()

@@ -1136,6 +1136,7 @@ Public Class CertItemCoverage
         Public Const COL_CERT_ITEM_COVERAGE_COVERAGE_DURATION As String = "Coverage_Duration"
         Public Const COL_CERT_ITEM_COVERAGE_NO_OF_RENEWALS As String = "No_of_Renewals"
         Public Const COL_CERT_ITEM_COVERAGE_RENEWAL_DATE As String = "Renewal_Date"
+        Public Const COL_CERT_ITEM_MAX_RENEWAL_DURATION As String = "Max_Renewal_Duration"
         'Public Const COL_Ext_Begin_KM_MI As String = "Ext_Begin_KM_MI"
         'Public Const COL_Ext_End_KM_MI As String = "Ext_End_KM_MI"
 #End Region

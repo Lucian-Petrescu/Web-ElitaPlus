@@ -835,6 +835,13 @@
       <DependentUpon>SerialNumberListForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Certificates\SolicitListForm.aspx.designer.vb">
+      <DependentUpon>SolicitListForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\SolicitListForm.aspx.vb">
+      <DependentUpon>SolicitListForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Certificates\UserControlCertificateInfo.ascx.designer.vb">
       <DependentUpon>UserControlCertificateInfo.ascx</DependentUpon>
     </Compile>
@@ -896,6 +903,13 @@
     </Compile>
     <Compile Include="Claims\AccountPayable\APInvoiceListForm.aspx.vb">
       <DependentUpon>APInvoiceListForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Claims\ClaimReplacementQuoteForm.aspx.designer.vb">
+      <DependentUpon>ClaimReplacementQuoteForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\ClaimReplacementQuoteForm.aspx.vb">
+      <DependentUpon>ClaimReplacementQuoteForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Claims\PoAdjustmentForm.aspx.designer.vb">
@@ -1025,6 +1039,7 @@
       <DependentUpon>UserControlServiceCenterSelection.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Contracts\Solicit.vb" />
     <Compile Include="DataProtection\CustomerReportForm.aspx.designer.vb">
       <DependentUpon>CustomerReportForm.aspx</DependentUpon>
     </Compile>
@@ -1058,21 +1073,8 @@
       <DependentUpon>ClaimDetailsForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
-    <Compile Include="GlobalConfig\QuestionSetForm.aspx.designer.vb">
-      <DependentUpon>QuestionSetForm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GlobalConfig\QuestionSetForm.aspx.vb">
-      <DependentUpon>QuestionSetForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GlobalConfig\QuestionSetListForm.aspx.designer.vb">
-      <DependentUpon>QuestionSetListForm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GlobalConfig\QuestionSetListForm.aspx.vb">
-      <DependentUpon>QuestionSetListForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Helpers\ceHelperParameter.vb" />
+    <Compile Include="Helpers\ExtensionHelper.vb" />
     <Compile Include="Helpers\ListHelper.vb" />
     <Compile Include="Helpers\SSHelper.vb" />
     <Compile Include="Helpers\ssHelperParameter.vb" />
@@ -1441,11 +1443,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Service References\QuestionService\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Startup.vb" />
     <Compile Include="Service References\UtilityService\Reference.vb">
       <AutoGen>True</AutoGen>
@@ -1465,6 +1462,20 @@
     <Compile Include="Tables\BenefitProductCodeSearchForm.aspx.vb">
       <DependentUpon>BenefitProductCodeSearchForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Tables\CommissionPlanForm.aspx.designer.vb">
+      <DependentUpon>CommissionPlanForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tables\CommissionPlanForm.aspx.vb">
+      <DependentUpon>CommissionPlanForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tables\CommissionPlanSearchForm.aspx.designer.vb">
+      <DependentUpon>CommissionPlanSearchForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tables\CommissionPlanSearchForm.aspx.vb">
+      <DependentUpon>CommissionPlanSearchForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Tables\ProducerForm.aspx.designer.vb">
       <DependentUpon>ProducerForm.aspx</DependentUpon>
@@ -5806,6 +5817,8 @@
     <Content Include="Certificates\RewardDetailsForm.aspx" />
     <Content Include="Certificates\RewardSearchForm.aspx" />
     <Content Include="Certificates\SerialNumberListForm.aspx" />
+    <Content Include="Certificates\SolicitDetailsForm.xslt" />
+    <Content Include="Certificates\SolicitListForm.aspx" />
     <Content Include="Certificates\UserControlCertificateInfo.ascx" />
     <Content Include="Certificates\UserControlCertificateInfo_New.ascx" />
     <Content Include="Certificates\UserControlSelectServiceCenter.ascx" />
@@ -5815,6 +5828,7 @@
     <Content Include="Claims\AccountPayable\AddAPInvoiceForm.aspx" />
     <Content Include="Claims\AccountPayable\APInvoiceDetailForm.aspx" />
     <Content Include="Claims\AccountPayable\APInvoiceListForm.aspx" />
+    <Content Include="Claims\ClaimReplacementQuoteForm.aspx" />
     <Content Include="Claims\PoAdjustmentForm.aspx" />
     <Content Include="Claims\ClaimIndixSearchForm.aspx" />
     <Content Include="Claims\InventorySearchForm.aspx" />
@@ -5844,8 +5858,6 @@
     <Content Include="ElitaSecurity.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="GlobalConfig\QuestionSetForm.aspx" />
-    <Content Include="GlobalConfig\QuestionSetListForm.aspx" />
     <Content Include="Interfaces\AppleGBIFileForm.aspx" />
     <Content Include="Interfaces\AppleGBIFileFormDetail.aspx" />
     <Content Include="Interfaces\ARInvoiceReconWrkForm.aspx" />
@@ -6288,12 +6300,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
-    <Content Include="Service References\QuestionService\Assurant.ElitaPlus.ElitaPlusWebApp.QuestionService.QuestionSet.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\QuestionService\Assurant.ElitaPlus.ElitaPlusWebApp.QuestionService.QuestionSetInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <None Include="Service References\GiftCardService\GiftCardService.wsdl" />
     <None Include="Service References\GiftCardService\GiftCardService.xsd">
       <SubType>Designer</SubType>
@@ -6308,13 +6314,6 @@
     <None Include="Service References\GiftCardService\GiftCardService3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\QuestionService\QuestionService.disco" />
-    <None Include="Service References\QuestionService\configuration91.svcinfo" />
-    <None Include="Service References\QuestionService\configuration.svcinfo" />
-    <None Include="Service References\QuestionService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
     <None Include="Service References\UtilityService\UtilityWcf.disco" />
     <None Include="Service References\UtilityService\configuration91.svcinfo" />
     <None Include="Service References\UtilityService\configuration.svcinfo" />
@@ -6324,6 +6323,8 @@
     </None>
     <Content Include="Tables\BenefitProductCodeForm.aspx" />
     <Content Include="Tables\BenefitProductCodeSearchForm.aspx" />
+    <Content Include="Tables\CommissionPlanForm.aspx" />
+    <Content Include="Tables\CommissionPlanSearchForm.aspx" />
     <Content Include="Tables\ProducerForm.aspx" />
     <Content Include="Tables\ClaimFulfillmentOrderDetailForm.aspx" />
     <Content Include="Tables\ClaimFulfillmentOrderListForm.aspx" />
@@ -7633,14 +7634,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
-    <None Include="Service References\QuestionService\QuestionService.wsdl" />
-    <None Include="Service References\QuestionService\QuestionService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\QuestionService\QuestionService1.wsdl" />
-    <None Include="Service References\QuestionService\QuestionService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\TestWcfRef\WcfTest.disco" />
     <None Include="Service References\TestWcfRef\configuration.svcinfo" />
     <None Include="Service References\TestWcfRef\Reference.svcmap">
@@ -7924,6 +7917,7 @@
       <DependentUpon>SerialNumberListForm.aspx.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Certificates\SolicitListForm.aspx.resx" />
     <EmbeddedResource Include="Certificates\UserControlCertificateInfo.ascx.resx">
       <DependentUpon>UserControlCertificateInfo.ascx.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -8594,6 +8588,12 @@
       <DependentUpon>AccountingSettingPopup.aspx.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CommissionPlanForm.aspx.resx">
+      <DependentUpon>CommissionPlanForm.aspx.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CommissionPlanSearchForm.aspx.resx">
+      <DependentUpon>CommissionPlanSearchForm.aspx.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tables\ProducerForm.aspx.resx">
       <DependentUpon>ProducerForm.aspx.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -9049,7 +9049,6 @@
     <WCFMetadataStorage Include="Service References\GalaxyWcfRef\" />
     <WCFMetadataStorage Include="Service References\GiftCardService\" />
     <WCFMetadataStorage Include="Service References\OlitaWcfRef\" />
-    <WCFMetadataStorage Include="Service References\QuestionService\" />
     <WCFMetadataStorage Include="Service References\TestWcfRef\" />
     <WCFMetadataStorage Include="Service References\UtilityService\" />
   </ItemGroup>

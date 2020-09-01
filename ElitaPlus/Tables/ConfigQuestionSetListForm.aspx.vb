@@ -12,8 +12,8 @@ Namespace Tables
 
 #Region "Constants"
         Public Const URL As String = "Tables/ConfigQuestionSetListForm.aspx"
-        Public Const PAGETITLE As String = "CONFIG_QUESTION_SET"
-        Public Const PAGETAB As String = "ADMIN"
+        Public Const PAGETITLE As String = "CONFIG_QUESTION_SET_LIST"
+        Public Const PAGETAB As String = "TABLES"
         Public Const SUMMARYTITLE As String = "SEARCH"
 
         Private Const GRID_COL_CONFIG_QUESTION_SET_ID_IDX As Integer = 0
@@ -221,7 +221,7 @@ Namespace Tables
                 End If
 
                 'Company
-                Dim compLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("Company", Thread.CurrentPrincipal.GetLanguageCode())
+                Dim compLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("Company", Authentication.CurrentUser.LanguageCode)
                 Dim list As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
 
                 Dim filteredList As ListItem() = (From x In compLkl
@@ -257,7 +257,7 @@ Namespace Tables
                 })
 
                 'Coverage Type
-                ddlSearchCoverageType.Populate(CommonConfigManager.Current.ListManager.GetList("CTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                ddlSearchCoverageType.Populate(CommonConfigManager.Current.ListManager.GetList("CTYP", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -266,14 +266,14 @@ Namespace Tables
                 Dim listcontext As ListContext = New ListContext()
                 Dim compGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                 listcontext.CompanyGroupId = compGroupId
-                Dim riskLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
+                Dim riskLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCompanyGroup", Authentication.CurrentUser.LanguageCode, listcontext)
                 ddlSearchRiskType.Populate(riskLkl, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
 
                 'Purpose
-                ddlSearchPurposeCode.Populate(CommonConfigManager.Current.ListManager.GetList("CASEPUR", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                ddlSearchPurposeCode.Populate(CommonConfigManager.Current.ListManager.GetList("CASEPUR", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
                 {
                     .BlankItemValue = String.Empty,
                     .AddBlankItem = True,
@@ -282,7 +282,7 @@ Namespace Tables
                 })
 
                 'Question Set Code
-                Me.ddlSearchQuestionSetCode.Populate(CommonConfigManager.Current.ListManager.GetList("DcmQuestionSet", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                Me.ddlSearchQuestionSetCode.Populate(CommonConfigManager.Current.ListManager.GetList("DcmQuestionSet", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
                 {
                     .BlankItemValue = String.Empty,
                     .AddBlankItem = True,
