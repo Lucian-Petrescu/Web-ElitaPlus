@@ -85,9 +85,8 @@
     <OutputPath>$(TeamBuildOutDir)\$(SolutionName)\$(MSBuildProjectName)\$(Configuration)</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.0\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.3\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Services3, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>

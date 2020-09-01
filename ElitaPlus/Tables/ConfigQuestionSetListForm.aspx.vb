@@ -221,14 +221,8 @@ Namespace Tables
                 End If
 
                 'Company
-                Dim compLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("Company", Authentication.CurrentUser.LanguageCode)
-                Dim list As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-
-                Dim filteredList As ListItem() = (From x In compLkl
-                                                  Where list.Contains(x.ListItemId)
-                                                  Select x).ToArray()
-
-                Me.ddlSearchCompany.Populate(filteredList, New PopulateOptions() With
+                Dim oCompanyList = GetCompanyListByCompanyGroup(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
+                Me.ddlSearchCompany.Populate(oCompanyList, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -332,7 +326,16 @@ Namespace Tables
 
         End Sub
 
-        Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
+        Private Function GetCompanyListByCompanyGroup(ByVal companyGroupId As Guid) As ListItem()
+            Dim listcontext As ListContext = New ListContext()
+
+            listcontext.CompanyGroupId = companyGroupId
+            Dim companyListForCompanyGroup As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="GetCompanyByCompanyGroup", context:=listcontext)
+
+            Return companyListForCompanyGroup.ToArray()
+        End Function
+
+        Private Function GetDealerListByCompanyForUser() As ListItem()
             Dim Index As Integer
             Dim oListContext As New ListContext
 
@@ -342,7 +345,7 @@ Namespace Tables
 
             For Index = 0 To UserCompanies.Count - 1
                 oListContext.CompanyId = UserCompanies(Index)
-                Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
+                Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
                     If Not oDealerList Is Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
