@@ -63,6 +63,7 @@ Partial Class ClaimForm
     'REQ-6230
     Public Const RETAIL_PRICE_SEARCH As String = "RETAIL_PRICE_SEARCH"
     Public Const VALIDATE_SERVICE_WARRANTY As String = "VALIDATE_SERVICE_WARRANTY"
+
 #End Region
 #Region "Tabs"
     Public Const Tab_DeviceInfo As String = "0"
@@ -1157,6 +1158,7 @@ Partial Class ClaimForm
         If (Me.State.MyBO.Company.AttributeValues.Contains(VALIDATE_SERVICE_WARRANTY)) Then
             strValidateSvcWty = Me.State.MyBO.Company.AttributeValues.Value(VALIDATE_SERVICE_WARRANTY)
         End If
+
         If Not String.IsNullOrEmpty(strValidateSvcWty) And strValidateSvcWty = YES Then
             If Not Me.State.MyBO.IsServiceWarrantyValid(Me.State.MyBO.Id) Then
                 Me.btnServiceWarranty.Enabled = False
