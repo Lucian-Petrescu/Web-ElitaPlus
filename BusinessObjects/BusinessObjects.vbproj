@@ -137,8 +137,8 @@
       <HintPath>..\packages\Elita.Assurant.Common.Validation.2.0.0\lib\net462\Assurant.Common.Validation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Elita.Base.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.4\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
+    <Reference Include="Assurant.Elita.Base.DataAccess, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.8\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.BaseDataElements, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Base.DataElements.1.0.0\lib\net462\Assurant.Elita.BaseDataElements.dll</HintPath>
@@ -147,12 +147,11 @@
       <HintPath>..\packages\Assurant.Elita.ClientIntegration.4.0.0\lib\net462\Assurant.Elita.ClientIntegration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.9\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
+    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.13\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Configuration, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.Configuration.5.0.1\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Assurant.Elita.Configuration.5.0.3\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Logging.Interface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Logging.Interface.1.0.0\lib\netstandard2.0\Assurant.Elita.Logging.Interface.dll</HintPath>
@@ -164,6 +163,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Assurant.Elita.PciSecure.1.0.0.3\lib\net46\Assurant.Elita.PciSecure.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Elita.Primitives, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Primitives.2.1.2\lib\netstandard2.0\Assurant.Elita.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
