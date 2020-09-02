@@ -17,15 +17,10 @@ Partial Public Class VSCPlanRateForm
     Private Const GRID_COL_PLAN_IDX As Integer = 3
     Private Const GRID_COL_DEALERGROUP_IDX As Integer = 4
     Private Const GRID_COL_DEALER_IDX As Integer = 5
-    Private Const GRID_COL_EFFECTIVEDATE_IDX As Integer = 7 'PBI 554831 changes
     Private Const GRID_COL_EXPIRATIONDATE_IDX As Integer = 8
 
     Private Const GRID_CONTROL_NAME_EXPIRATIONDATE As String = "txtExpirationDate"
     Private Const GRID_CONTROL_NAME_Calendar As String = "btnExpirationDate"
-    'START PBI 554831 changes
-    Private Const GRID_CONTROL_NAME_EFFECTIVEDATE As String = "txtEffectiveDate"
-    Private Const GRID_CONTROL_NAME_EFFECTIVEDATE_Calendar As String = "btnEffectiveDate"
-    'END
     Private Const GRID_CONTROL_NAME_VERSIONID As String = "RateVersionId"
     Private Const GRID_CONTROL_NAME_PLAN As String = "lblGridPlan"
     Private Const GRID_CONTROL_NAME_DEALERGROUP As String = "lblGridDEALERGROUP"
@@ -363,7 +358,6 @@ Partial Public Class VSCPlanRateForm
         'update the Search results with the new date
         Dim dr As DataRow = State.searchDV.Table.Select("ROWNUM=" & State.EditRowNum)(0)
         dr("EXPIRATION_DATE") = State.MyBO.ExpirationDate.Value
-        dr("EFFECTIVE_DATE") = State.MyBO.EffectiveDate.Value
         dr.AcceptChanges()
     End Sub
 #End Region
@@ -433,13 +427,6 @@ Partial Public Class VSCPlanRateForm
                 Next
             End If
         ElseIf elemType = ListItemType.EditItem Then
-            'START PBI 554831 Changes
-            Dim ctrEffDtTxt As TextBox = CType(e.Item.FindControl(Me.GRID_CONTROL_NAME_EFFECTIVEDATE), TextBox)
-            Dim ctrEffDtBtn As ImageButton = CType(e.Item.FindControl(Me.GRID_CONTROL_NAME_EFFECTIVEDATE_Calendar), ImageButton)
-            If Not (ctrEffDtTxt Is Nothing OrElse ctrEffDtBtn Is Nothing) Then
-                Me.AddCalendar(ctrEffDtBtn, ctrEffDtTxt)
-            End If
-            'END
             Dim ctrTxt As TextBox = CType(e.Item.FindControl(Me.GRID_CONTROL_NAME_EXPIRATIONDATE), TextBox)
             Dim ctrBtn As ImageButton = CType(e.Item.FindControl(Me.GRID_CONTROL_NAME_Calendar), ImageButton)
             If Not (ctrTxt Is Nothing OrElse ctrBtn Is Nothing) Then
@@ -520,25 +507,6 @@ Partial Public Class VSCPlanRateForm
             Else
                 Me.PopulateBOProperty(State.MyBO, "ExpirationDate", txtControl)
             End If
-
-            'START PBI 554831 changes
-            Dim txtEffDtControl As TextBox = CType(Me.Grid.Items(index).Cells(Me.GRID_COL_EFFECTIVEDATE_IDX).FindControl(Me.GRID_CONTROL_NAME_EFFECTIVEDATE), TextBox)
-            Dim dtEffectiveDate As Date
-
-            If Not Date.TryParse(txtEffDtControl.Text, dtEffectiveDate) Then
-                Throw New GUIException(Message.MSG_INVALID_DATE, Message.MSG_INVALID_DATE)
-            ElseIf dtEffectiveDate > DateTime.Today Then
-                Throw New GUIException(Message.MSG_INVALID_DATE, Message.MSG_INVALID_DATE)
-            Else
-                If (Me.State.MyBO.EffectiveDate <> dtEffectiveDate) Then
-                    Dim msgCode As String = VSCRateVersion.validateEffectiveDate(Me.State.RateVersionID, dtEffectiveDate)
-                    If Not String.IsNullOrWhiteSpace(msgCode) Then
-                        Throw New GUIException(msgCode, msgCode)
-                    End If
-                End If
-                Me.PopulateBOProperty(State.MyBO, "EffectiveDate", txtEffDtControl)
-            End If
-            'END
 
             If (Me.State.MyBO.IsDirty) Then
                 Me.State.MyBO.Save()
