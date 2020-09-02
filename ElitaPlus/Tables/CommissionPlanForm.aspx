@@ -1,6 +1,7 @@
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CommissionPlanForm.aspx.vb"
     Theme="Default" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.CommissionPlanForm"
     EnableSessionState="True" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
+
 <%@ Register TagPrefix="uc1" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="MultipleColumnDDLabelControl" Src="../Common/MultipleColumnDDLabelControl.ascx" %>
 
@@ -25,6 +26,7 @@
                 var row = $(this).closest("tr");
                 var value = $(this).val();
                 if (value > 0) {
+                    // Empty the COMMISSION_PERCENTAGE
                     row.find("[id*=moCommission_PercentText]").val("");
                 }
             });
@@ -33,6 +35,7 @@
                 var row = $(this).closest("tr");
                 var value = $(this).val();
                 if (value > 0) {
+                    // Empty the COMMISSION_AMOUNT
                     row.find("[id*=moLowPriceText]").val("");
                 }
             });
@@ -115,7 +118,7 @@
     </div>
 </asp:Content>
 
-<asp:Content ID="Content4" ContentPlaceHolderID="MessagePlaceHolder" runat="server">    
+<asp:Content ID="Content4" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="SummaryContent" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManager2" runat="server" EnablePageMethods="true" ScriptMode="Auto">
