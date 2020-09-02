@@ -271,29 +271,7 @@ Public Class CommPlanDistribution
         End Try
     End Sub
 #End Region
-    'Public Function HasDealerConfiguredForAcctBucket(ByVal CommissionTolerenceId As Guid) As Boolean
-
-    '    Dim oCommissionTolerence As New CommissionTolerance(CommissionTolerenceId)
-    '    Dim oCommissionPeriod As New CommissionPeriod(oCommissionTolerence.CommissionPeriodId)
-    '    Dim oDealer As New Dealer(oCommissionPeriod.DealerId)
-    '    Dim isDealerConfiguredForAcctBucket As Boolean = False
-
-    '    If (oCommissionPeriod.DealerId <> Guid.Empty) Then
-    '        If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
-    '            If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
-    '                isDealerConfiguredForAcctBucket = True
-    '            Else
-    '                isDealerConfiguredForAcctBucket = False
-    '            End If
-    '        Else
-    '            isDealerConfiguredForAcctBucket = False
-    '        End If
-    '    Else
-    '        isDealerConfiguredForAcctBucket = False
-    '    End If
-
-    '    Return isDealerConfiguredForAcctBucket
-    'End Function
+    
 #Region "DataView Retrieveing Methods"
 
     Public Shared Function getList(ByVal CommissionToleranceId As Guid) As SearchDV
