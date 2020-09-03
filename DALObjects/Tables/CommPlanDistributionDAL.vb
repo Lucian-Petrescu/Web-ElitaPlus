@@ -6,17 +6,12 @@ Public Class CommPlanDistributionDAL
     Public Const TABLE_KEY_NAME As String = "COMM_PLAN_DISTRIBUTION_ID"
     Public Const COL_NAME_COMM_PLAN_DIST_ID As String = "COMM_PLAN_DISTRIBUTION_ID"
     Public Const COL_NAME_COMM_PLAN_ID As String = "COMMISSION_PLAN_ID"
-    'Public Const COL_NAME_COMM_PLAN_EXT_DIST_ID As String = "COMM_PLAN_EXT_DISTRIBUTION_ID"    
-    'Public Const COL_NAME_COMM_PLAN_EXT_ID As String = "COMM_PLAN_EXTRACT_ID"
     Public Const COL_NAME_COMM_AMOUNT As String = "COMMISSION_AMOUNT"
     Public Const COL_NAME_COMMISSION_PERCENT As String = "COMMISSION_PERCENTAGE"
     Public Const COL_NAME_POSITION As String = "POSITION"
     Public Const COL_NAME_ENTITY_NAME As String = "ENTITY_NAME"
     Public Const COL_NAME_ENTITY_ID As String = "ENTITY_ID"
     Public Const COL_NAME_PAYEE_TYPE_XCD As String = "PAYEE_TYPE_XCD"
-    'Public Const COL_NAME_COMM_PLAN_EXT_RATE_ID As String = "COMM_PLAN_EXTRACT_RATE_ID"
-    'Public Const COL_NAME_CB_COMM_PERCENT As String = "CB_COMMISSION_PERCENTAGE"
-    'Public Const COL_NAME_CB_COMM_AMOUNT As String = "CB_COMMISSION_AMOUNT"
     
     Public Const COL_NAME_CREATED_BY As String = "CREATED_BY"
     Public Const COL_NAME_CREATED_DATE As String = "CREATED_DATE"
@@ -135,6 +130,26 @@ Public Class CommPlanDistributionDAL
         End Try
 
     End Function
+
+    'US - 565821 - UI - Commission fields check null and position validation
+    Public Function CheckPositionExist(ByVal pi_position As Integer, ByVal pi_comm_plan_dist_id As Guid, ByVal pi_commmission_plan_id As Guid) As String
+        Try
+            Dim selectStmt As String = Me.Config("/SQL/CHECK_FOR_POSITION_EXIST")
+
+            Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_position", pi_position),
+                                                                                                 New DBHelper.DBHelperParameter("pi_comm_plan_dist_id", pi_comm_plan_dist_id.ToByteArray),
+                                                                                                 New DBHelper.DBHelperParameter("pi_Commmission_Plan_id", pi_commmission_plan_id.ToByteArray)}
+
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_status", GetType(String))}
+
+            DBHelper.ExecuteSp(selectStmt, inparameters, outParameters)
+            Return outParameters(0).Value.ToString()
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Function    
 
 #End Region
 

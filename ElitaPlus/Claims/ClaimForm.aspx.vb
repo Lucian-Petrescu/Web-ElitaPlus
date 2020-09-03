@@ -61,6 +61,7 @@ Partial Class ClaimForm
 
     'REQ-6230
     Public Const RETAIL_PRICE_SEARCH As String = "RETAIL_PRICE_SEARCH"
+    Public Const VALIDATE_SERVICE_WARRANTY As String = "VALIDATE_SERVICE_WARRANTY"
 
 #End Region
 #Region "Tabs"
@@ -1141,6 +1142,7 @@ Partial Class ClaimForm
 
     Private Sub EnableDisableButtonsforMultiAuthCLaim()
         Dim claim As MultiAuthClaim = CType(Me.State.MyBO, MultiAuthClaim)
+        Dim strValidateSvcWty As String
 
         'For the Deny Claim button
         If ((Me.State.MyBO.Status = BasicClaimStatus.Active)) And
@@ -1151,15 +1153,26 @@ Partial Class ClaimForm
             ControlMgr.SetVisibleControl(Me, Me.btnDenyClaim, True)
         End If
 
-        'For the ServiceWarranty button
-        If (((claim.RepairDate Is Nothing) OrElse (claim.RepairDate.Value < Me.State.MyBO.GetShortDate(Me.State.MyBO.CreatedDate.Value))) OrElse
+        'For the ServiceWarranty button --check the flag at Company level
+        If (Me.State.MyBO.Company.AttributeValues.Contains(VALIDATE_SERVICE_WARRANTY)) Then
+            strValidateSvcWty = Me.State.MyBO.Company.AttributeValues.Value(VALIDATE_SERVICE_WARRANTY)
+        End If
+
+        If Not String.IsNullOrEmpty(strValidateSvcWty) And strValidateSvcWty = YES Then
+            If Not Me.State.MyBO.IsServiceWarrantyValid(Me.State.MyBO.Id) Then
+                Me.btnServiceWarranty.Enabled = False
+                ControlMgr.SetVisibleControl(Me, btnServiceWarranty, False)
+            End If
+        Else
+            If (((claim.RepairDate Is Nothing) OrElse (claim.RepairDate.Value < Me.State.MyBO.GetShortDate(Me.State.MyBO.CreatedDate.Value))) OrElse
             (Me.State.MyBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__TO_BE_REPLACED) OrElse
             (Me.State.MyBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT AndAlso State.MyBO.Dealer.DealerFulfillmentProviderClassCode <> Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS) OrElse
             (Me.State.MyBO.ReasonClosedCode = Codes.REASON_CLOSED__TO_BE_REPLACED) OrElse
             (Me.State.MyBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT)) Then
 
-            Me.btnServiceWarranty.Enabled = False
-            ControlMgr.SetVisibleControl(Me, btnServiceWarranty, False)
+                Me.btnServiceWarranty.Enabled = False
+                ControlMgr.SetVisibleControl(Me, btnServiceWarranty, False)
+            End If
         End If
 
 
