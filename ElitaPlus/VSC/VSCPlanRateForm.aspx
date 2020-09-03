@@ -191,12 +191,6 @@
 							<ItemTemplate>
                                 <asp:Label id="EFFECTIVEDATE" runat="server" text='<%# CType(Container.DataItem("EFFECTIVE_DATE"), DateTime).ToString("dd-MMM-yyyy")%>'></asp:Label>
                             </ItemTemplate>
-                            <%--START PBI 554831 changes--%>
-                            <EditItemTemplate>
-                                <asp:TextBox id="txtEffectiveDate" runat="server" text='<%# CType(Container.DataItem("EFFECTIVE_DATE"), DateTime).ToString("dd-MMM-yyyy") %>'></asp:TextBox>
-                                <asp:imagebutton id="btnEffectiveDate" runat="server" Visible="True" ImageUrl="../Common/Images/calendarIcon2.jpg"></asp:imagebutton>
-                            </EditItemTemplate>
-                            <%--END --%>
                         </asp:TemplateColumn>
 						<asp:TemplateColumn HeaderText="EXPIRATION_DATE" ItemStyle-HorizontalAlign="Center">
                             <ItemStyle CssClass="CenteredTD" />

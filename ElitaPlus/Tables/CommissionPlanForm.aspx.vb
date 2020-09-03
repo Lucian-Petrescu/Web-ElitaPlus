@@ -79,32 +79,6 @@ Namespace Tables
             If Not TheDealerControl.SelectedGuid.Equals(Guid.Empty) Then
             End If
         End Sub
-        Private Sub ReSetStateProperties()
-            Me.State.moCommPlanId = CType(Me.CallingParameters, Guid)
-
-            If Me.State.moCommPlanId.Equals(Guid.Empty) Then
-                Me.State.IsCommPlanDistNew = True
-                ClearPlan()
-                SetPlanButtonsState(True)
-                PopulatePlanFields()
-                If Me.moGridView.Visible And Me.moGridView.Rows.Count > 0 Then
-                    PopulateDistributionList()
-                End If
-
-                TheDealerControl.ChangeEnabledControlProperty(True)
-            Else
-                Me.State.IsCommPlanDistNew = False
-                SetPlanButtonsState(False)
-                PopulatePlanFields()
-                If Me.moGridView.Visible And Me.moGridView.Rows.Count > 0 Then
-                    PopulateDistributionList()
-                End If
-                'TheDealerControl.ChangeEnabledControlProperty(False)
-                TheDealerControl.ChangeEnabledControlProperty(True)
-            End If
-            If Not TheDealerControl.SelectedGuid.Equals(Guid.Empty) Then
-            End If
-        End Sub
 #End Region
 
 
@@ -1352,7 +1326,7 @@ Namespace Tables
 
             mocboEntityType.Populate(CommEntityList, New PopulateOptions() With
             {
-                .AddBlankItem = False,
+                .AddBlankItem = True,
                 .TextFunc = AddressOf PopulateOptions.GetDescription,
                 .ValueFunc = AddressOf PopulateOptions.GetListItemId
             })
@@ -1426,6 +1400,51 @@ Namespace Tables
                                 moTextCommission_PercentText.Enabled = True
                             End If
                         End If
+                    End If
+                End With
+            End If
+        End Sub
+        Private Sub SetControlValuesFromBo()
+            If moGridView.EditIndex = -1 Then Exit Sub
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim cboPayeeType As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboPayeeType"), DropDownList)
+            Dim cboActEntitySourceXcd As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboActEntitySourceXcd"), DropDownList)
+            Dim cboEntityType As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboEntityType"), DropDownList)
+            Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
+            Dim moLowPriceText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moLowPriceText"), TextBox)
+            Dim textBoxPosition As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("textBoxPosition"), TextBox)
+
+            If Me.State.IsNewWithCopy = False Then
+                With TheCommPlanDist
+
+                    If cboActEntitySourceXcd.Visible Then
+                        If Not .ActEntitySourceXcd Is Nothing And cboActEntitySourceXcd.Items.Count > 0 Then
+                            Me.SetSelectedItem(cboActEntitySourceXcd, .ActEntitySourceXcd)
+                        End If
+                    End If
+
+                    If cboPayeeType.Visible Then
+                        If Not .PayeeTypeXcd Is Nothing And cboPayeeType.Items.Count > 0 Then
+                            Me.SetSelectedItem(cboPayeeType, .PayeeTypeXcd)
+                        End If
+                    End If
+
+                    If cboEntityType.Visible Then
+                        If cboEntityType.Items.Count > 0 Then
+                            Me.SetSelectedItem(cboEntityType, .EntityId)
+                        End If
+                    End If
+
+                    If Not .CommissionPercent Is Nothing And Not moTextCommission_PercentText Is Nothing Then
+                        Me.PopulateControlFromBOProperty(moTextCommission_PercentText, .CommissionPercent, Me.PERCENT_FORMAT)
+                    End If
+
+                    If Not .CommissionAmount Is Nothing And Not moLowPriceText Is Nothing Then
+                        Me.PopulateControlFromBOProperty(moLowPriceText, .CommissionAmount, Me.DECIMAL_FORMAT)
+                    End If
+
+                    If Not .Position Is Nothing And Not textBoxPosition Is Nothing Then
+                        Me.PopulateControlFromBOProperty(textBoxPosition, .Position)
                     End If
                 End With
             End If
@@ -1632,14 +1651,13 @@ Namespace Tables
                     moGridView.EditIndex = nIndex
                     moGridView.SelectedIndex = nIndex
                     PopulateDistributionList(ACTION_EDIT)
-
-                    Me.FillSourceXcdDropdownList()
+                    FillSourceXcdDropdownList()
                     FillActEntSourceXcdDropdownList()
                     FillEntityDropDownList()
                     FillPayeeTypeDropDownList()
                     SetGridSourceXcdDropdownFromBo()
                     SetGridSourceXcdLabelFromBo()
-
+                    SetControlValuesFromBo()
                     SetGridControls(moGridView, False)
                     EnableDisableControls(Me.moCoverageEditPanel, True)
                 ElseIf (e.CommandName = DELETE_COMMAND_NAME) Then
@@ -1669,6 +1687,10 @@ Namespace Tables
             Try
                 ValidatePmCertSourceLogic()
 
+                ValidatePositionNo()
+
+                ValidateCommAmountAndPercent()
+
                 If Me.State.IsPmComCombination Then
                     Throw New GUIException(Message.MSG_PRICEMETRICS_CERTCALC_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_PRICE_METRICS_AND_CERT_COMM_NOT_ALLOWED)
                 End If
@@ -1689,21 +1711,9 @@ Namespace Tables
 
                 EnablePlanCodeDescFields(True)
             Catch ex As Exception
-                If Me.State.IsAmountAndPercentBothPresent = True Then
-                    Me.State.IsCommPlanDistNew = False
-                    EnableForEditRateButtons(False)
-                    RePopulateDistributionListForPlan()
-                    SetGridSourceXcdLabelFromBo()
-                    TheDealerControl.ChangeEnabledControlProperty(False)
-                Else
-                    Me.State.IsCommPlanDistNew = False
-                    EnableForEditRateButtons(False)
-                    RePopulateDistributionListForPlan()
-                    SetGridSourceXcdLabelFromBo()
-                    TheDealerControl.ChangeEnabledControlProperty(False)
-                End If
-
-                'PopulatePlanFields()
+                Me.State.IsCommPlanDistNew = False
+                SetGridSourceXcdLabelFromBo()
+                TheDealerControl.ChangeEnabledControlProperty(False)
                 setbuttons(True)
                 btnBack.Visible = True
                 btnSave_WRITE.Visible = False
@@ -1782,7 +1792,6 @@ Namespace Tables
             If moGridView.EditIndex < 0 Then Return False ' Distribution is not in edit mode
             If Me.State.IsNewWithCopy Then
                 Me.LoadDistributionList()
-                'RePopulateDistributionListForPlan()
                 Me.State.moDistributionList(moGridView.SelectedIndex).Validate()
                 Return bIsOk
             End If
@@ -1833,7 +1842,7 @@ Namespace Tables
             Dim mocboActEntitySourceXcd As DropDownList = DirectCast(gRow.Cells(COL_ACT_ENT_SOURCE_XCD_IDX).FindControl("cboActEntitySourceXcd"), DropDownList)
             Dim moTextmoLowPriceText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_AMOUNT_IDX).FindControl("moLowPriceText"), TextBox)
             Dim moTextmoCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
-            Dim moTextmoRenewal_NumberText As TextBox = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("moRenewal_NumberText"), TextBox)
+            Dim textboxPosition As TextBox = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("textBoxPosition"), TextBox)
 
             If (mocboCommPercentSourceXcd.Items.Count > 0) Then
                 If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
@@ -1841,21 +1850,13 @@ Namespace Tables
                 End If
             End If
 
-            If (String.IsNullOrWhiteSpace(moTextmoLowPriceText.Text)) Then
-                moTextmoLowPriceText.Text = "0.00"
-            End If
-
-            If (String.IsNullOrWhiteSpace(moTextmoCommission_PercentText.Text)) Then
-                moTextmoCommission_PercentText.Text = "0.0000"
-            End If
-
-            If (String.IsNullOrWhiteSpace(moTextmoRenewal_NumberText.Text)) Then
-                moTextmoRenewal_NumberText.Text = "1"
-            End If
-
             Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_AMT, moTextmoLowPriceText)
+
             Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_PER, moTextmoCommission_PercentText)
-            Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_POSITION, moTextmoRenewal_NumberText)
+
+            If (Not String.IsNullOrWhiteSpace(textboxPosition.Text)) Then
+                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_POSITION, textboxPosition)
+            End If
 
             If mocboEntityType.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                 Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, mocboEntityType, True, False)
@@ -1896,7 +1897,6 @@ Namespace Tables
                 If Me.State.IsNewWithCopy Then
                     If Me.State.moDistributionList Is Nothing Then
                         Me.LoadDistributionList()
-                        'RePopulateDistributionListForPlan()
                     End If
                     Me.State.moDistributionList(nIndex) = Nothing
                 Else
@@ -1915,7 +1915,6 @@ Namespace Tables
                     End If
                 End If
             Catch ex As Exception
-                RePopulateDistributionListForPlan()
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
                 bIsOk = False
             End Try
@@ -2159,6 +2158,93 @@ Namespace Tables
             Return oCommPlanData
 
         End Function
+
+        Protected Function CheckNull(ByVal objGrid As Object, ByVal objParam2 As String) As String
+            If Object.ReferenceEquals(objGrid, DBNull.Value) Then
+                Return String.Empty
+            ElseIf TypeOf objGrid Is Byte() Then
+                Return GetGuidStringFromByteArray(objGrid)
+            Else
+                If objGrid.ToString().Equals(Guid.Empty.ToString()) Then
+                    Return String.Empty
+                End If
+
+                If Not String.IsNullOrWhiteSpace(objParam2) Then
+                    If objParam2.Equals("COMMISSION_AMOUNT") Then
+                        Return GetAmountFormattedToVariableString(objGrid)
+                    End If
+                End If
+
+                If Not String.IsNullOrWhiteSpace(objParam2) Then
+                    If objParam2.Equals("COMMISSION_PERCENTAGE") Then
+                        Return GetAmountFormattedDoubleString(objGrid, "N4")
+                    End If
+                End If
+
+                Return objGrid.ToString()
+            End If
+        End Function
+
+        Private Sub ValidatePositionNo()
+            If moGridView.EditIndex = -1 Then Exit Sub
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim textBoxPosition As TextBox = DirectCast(gRow.Cells(COL_POSITION_IDX).FindControl("textBoxPosition"), TextBox)
+
+            If moGridView.Rows.Count = 0 Then
+                If Not textBoxPosition Is Nothing Then
+                    If Not String.IsNullOrWhiteSpace(textBoxPosition.Text) Then
+                        If Convert.ToDecimal(textBoxPosition.Text) = 0 Then
+                            'Can not be zero and null
+                            Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
+                        End If
+                    Else
+                        ' Can not be null
+                        Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
+                    End If
+                End If
+            ElseIf moGridView.Rows.Count > 0 Then
+                If Not textBoxPosition Is Nothing Then
+                    If Not String.IsNullOrWhiteSpace(textBoxPosition.Text) Then
+                        If Convert.ToDecimal(textBoxPosition.Text) = 0 Then
+                            'Can not be zero
+                            Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
+                        Else
+                            If moGridView.Rows.Count > 1 Then
+                                Dim oPlanDist As CommPlanDistribution
+                                Dim positionExistsFlag As String
+
+                                'Call procedure to validate repeatative position number
+                                positionExistsFlag = oPlanDist.CheckPositionExists(Convert.ToInt16(textBoxPosition.Text), Me.State.moCommPlanDistId, Me.State.moCommPlanId)
+
+                                If positionExistsFlag = "Y" Then
+                                    Throw New GUIException(Message.MSG_POSITION_VALUE_CAN_NOT_BE_REPEATED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_POSITION_VALUE_NOT_ALLOWED)
+                                End If
+
+                            End If
+                        End If
+                    Else
+                        ' Can not be null
+                        Throw New GUIException(Message.MSG_POSITION_SHOULD_NOT_BE_ZERO_NULL, Assurant.ElitaPlus.Common.ErrorCodes.MSG_POSITION_VALUE_ZERO_NULL_NOT_ALLOWED)
+                    End If
+                End If
+            End If
+        End Sub
+
+        Private Sub ValidateCommAmountAndPercent()
+            If moGridView.EditIndex = -1 Then Exit Sub
+
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim textBoxAmt As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_AMOUNT_IDX).FindControl("moLowPriceText"), TextBox)
+            Dim textBoxAmtPercent As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
+
+            If Not textBoxAmt Is Nothing And Not textBoxAmtPercent Is Nothing Then
+                If String.IsNullOrWhiteSpace(textBoxAmt.Text) And String.IsNullOrWhiteSpace(textBoxAmtPercent.Text) Then
+                    ' Either one should be present
+                    Throw New GUIException(Message.MSG_EITHER_PERCENTAGE_OR_AMOUNT_NEEDED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EITHER_PERCENTAGE_OR_AMOUNT_REQUIRED)
+                End If
+
+            End If
+        End Sub
 #End Region
 #End Region
     End Class

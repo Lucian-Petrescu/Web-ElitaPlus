@@ -148,29 +148,6 @@ Public Class VSCRateVersionDAL
 
     End Function
 
-    Public Function validateEffectiveDate(RateVersionId As Guid, EffectiveDate As Date) As String
-        Dim sqlStmt As String
-        sqlStmt = Me.Config("/SQL/VALIDATE_VSC_PLAN_RATE")
-
-        Try
-            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter("po_errorCode", GetType(String), 500)}
-
-            Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter("pi_vsc_rate_version_id", RateVersionId.ToByteArray),
-                            New DBHelper.DBHelperParameter("pi_NewEffectiveDate", EffectiveDate)}
-
-            DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters, outParameters)
-
-            If outParameters(0).Value IsNot Nothing Then
-                Return outParameters(0).Value.ToString()
-            End If
-
-            Return ""
-        Catch ex As Exception
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-        End Try
-    End Function
 #End Region
 
 #Region "Overloaded Methods"

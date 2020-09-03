@@ -4962,7 +4962,7 @@ Public MustInherit Class ClaimBase
 
     Public Function IsServiceWarrantyValid(ByVal ClaimId As Guid) As Boolean
         Dim dal As New ClaimDAL
-        Return dal.IsServiceWarrantyValid(ClaimId)
+        Return dal.IsServiceWarrantyValid(ClaimId) 'checks if service warranty is valid
     End Function
 End Class
 

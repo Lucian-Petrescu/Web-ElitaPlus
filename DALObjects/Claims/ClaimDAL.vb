@@ -2018,7 +2018,7 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function IsServiceWarrantyValid(ByVal claimId As Guid) As Boolean
+    Public Function IsServiceWarrantyValid(ByVal claimId As Guid) As Boolean 'validates service warranty
         Dim ds As New DataSet
         Dim selectStmt As String = Me.Config("/SQL/VALIDATE_SERVICE_WARRANTY")
 
