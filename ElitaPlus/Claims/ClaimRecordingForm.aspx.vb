@@ -123,6 +123,10 @@ Public Class ClaimRecordingForm
         Public LogisticsStage As Integer = 0 ' 0 is first stage
         Public LogisticsOption As LogisticOption = Nothing
         Public EnableModifyClaimedDevice As Boolean = False
+        
+        Public serviceCentreCity As string 
+        Public serviceCentrePostalCode As string
+
     End Class
 
     Public Sub New()
@@ -1894,7 +1898,7 @@ Public Class ClaimRecordingForm
                 End If
 
                 shippingAddRequest.ShippingAddress = userSelectedShippingAddress
-
+                
 
                 If UserControlDeliverySlot.Visible Then
                     If userSelectedShippingAddress.Country <> UserControlDeliverySlot.CountryCode OrElse userSelectedShippingAddress.PostalCode <> UserControlDeliverySlot.DeliveryAddress.PostalCode Then
@@ -1916,6 +1920,8 @@ Public Class ClaimRecordingForm
 
                     If wsResponse IsNot Nothing Then
                         State.SubmitWsBaseClaimRecordingResponse = wsResponse
+                        state.serviceCentreCity = userSelectedShippingAddress.City
+                        state.serviceCentrePostalCode = userSelectedShippingAddress.PostalCode
                     End If
                 Catch ex As FaultException
                     ThrowWsFaultExceptions(ex)
@@ -3134,7 +3140,7 @@ Public Class ClaimRecordingForm
             rdoLogisticsOptions.Checked = isEnableControl
 
             Dim addressDetail As New BusinessObjectsNew.Address()
-
+            
             ' Logistics Options - Address
             If Not logisticsOptionItem Is Nothing _
                AndAlso (logisticsOptionItem.Type = LogisticOptionType.CustomerAddress OrElse logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress) Then
@@ -3320,6 +3326,10 @@ Public Class ClaimRecordingForm
         userControl.NewCurrentPageIndexFunc = Function(grid As GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer)
                                                   Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
                                               End Function
+
+        userControl.City = state.serviceCentreCity
+        userControl.PostalCode = state.serviceCentrePostalCode
+
         userControl.HostMessageController = MasterPage.MessageController
     End Sub
 

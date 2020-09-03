@@ -24,7 +24,7 @@ Public Module Logger
             .UserID = ElitaConfig.Current.Database.UserName,
             .Password = ElitaConfig.Current.Database.Password,
             .DataSource = AppConfig.DataBase.Server
-          })
+          }, String.Empty)
 
             _loggerClient = New OracleLogger(OracleHelper, applicationName, Environment.MachineName)
         Catch ex As Exception
