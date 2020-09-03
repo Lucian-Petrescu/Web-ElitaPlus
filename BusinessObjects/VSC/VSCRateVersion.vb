@@ -224,9 +224,9 @@ Public Class VSCRateVersion
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal SearchBy As VSCRateVersionDAL.SearchByType, ByVal companyGroupID As Guid,
-                                ByVal PlanID As Guid, ByVal Code As String, ByVal Name As String,
-                                ByVal EffectiveDate As Date, Optional ByVal HighestVersionOnly As Boolean = True,
+    Public Shared Function getList(ByVal SearchBy As VSCRateVersionDAL.SearchByType, ByVal companyGroupID As Guid, _
+                                ByVal PlanID As Guid, ByVal Code As String, ByVal Name As String, _
+                                ByVal EffectiveDate As Date, Optional ByVal HighestVersionOnly As Boolean = True, _
                                 Optional ByVal iVersionNumber As Integer = 0) As DataView
         Try
             Dim dal As New VSCRateVersionDAL
@@ -236,17 +236,6 @@ Public Class VSCRateVersion
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-
-    Public Shared Function validateEffectiveDate(RateVersionId As Guid, EffectiveDate As Date) As String
-        Try
-            Dim dal As New VSCRateVersionDAL
-            Return dal.validateEffectiveDate(RateVersionId, EffectiveDate)
-
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Throw New DataBaseAccessException(ex.ErrorType, ex)
-        End Try
-    End Function
-
 #End Region
 
 #Region "Custom validation"
