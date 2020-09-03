@@ -2018,6 +2018,21 @@ Public Class ClaimDAL
 
     End Function
 
+    Public Function IsServiceWarrantyValid(ByVal claimId As Guid) As Boolean 'validates service warranty
+        Dim ds As New DataSet
+        Dim selectStmt As String = Me.Config("/SQL/VALIDATE_SERVICE_WARRANTY")
+
+        Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray)}
+
+        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+
+        If (ds.Tables(0).Rows(0).Item(0).ToString) = "Y" Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
     Public Function GetCertClaims(ByVal certId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
