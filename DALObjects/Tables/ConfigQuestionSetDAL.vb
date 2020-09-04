@@ -126,7 +126,7 @@ Public Class ConfigQuestionSetDAL
     End Sub
 
     Public Function LoadList(ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal DealerGrpID As Guid, ByVal DealerID As Guid,
-                             ByVal ProductCodeID As Guid, ByVal CoverageTypeID As Guid, ByVal RiskTypeID As Guid,
+                             ByVal ProductCode As String, ByVal CoverageTypeID As Guid, ByVal RiskTypeID As Guid,
                              ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String, ByVal LanguageID As Guid,
                              ByVal networkID As String) As DataSet
 
@@ -154,8 +154,8 @@ Public Class ConfigQuestionSetDAL
             cmd.AddParameter("pi_dealer_id", OracleDbType.Raw, DealerID.ToByteArray())
         End If
 
-        If ProductCodeID <> Guid.Empty Then
-            cmd.AddParameter("pi_product_code_id", OracleDbType.Raw, ProductCodeID.ToByteArray())
+        If ProductCode <> String.Empty Then
+            cmd.AddParameter("pi_product_code", OracleDbType.Varchar2, ProductCode)
         End If
 
         If CoverageTypeID <> Guid.Empty Then
