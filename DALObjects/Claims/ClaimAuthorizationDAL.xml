@@ -226,7 +226,8 @@
     auth_type_xcd,
     party_type_xcd,
     party_reference_id,
-    locator
+    locator,
+    Refund_method_Xcd
     )
     VALUES
     (
@@ -259,7 +260,8 @@
     :auth_type_xcd,
     :party_type_xcd,
     :party_reference_id,
-    :locator
+    :locator,
+    :refund_method_xcd
     )
   </INSERT>
   <DELETE>

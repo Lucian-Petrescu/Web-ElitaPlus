@@ -894,6 +894,21 @@ Public NotInheritable Class ClaimAuthorization
         End Set
     End Property
 
+    Public Property RefundMethodXcd() As String
+        Get
+            CheckDeleted()
+            If Row(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD, Value)
+        End Set
+    End Property
+
     Public Property PartyReferenceId() As Guid
         Get
             CheckDeleted()
@@ -1431,6 +1446,37 @@ Public NotInheritable Class ClaimAuthorization
         Next
     End Sub
 
+    Public Sub PrepopulateClaimAuthForDeductibleRefund(ByVal serviceCenterId As Guid, ByVal claimid As Guid, ByVal certid As Guid)
+        Me.ServiceCenterId = serviceCenterId
+        Me.ClaimId = claimid
+        Me.IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        Me.ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        Me.ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
+        Me.AuthTypeXcd = "AUTH_TYPE-CREDIT_NOTE"
+        Me.PartyTypeXcd = "PARTY_TYPE-CUSTOMER"
+        Me.PartyReferenceId = certid
+        Me.WhoPaysId = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
+        Me.RefundMethodXcd = "RFM-SEPA"
+        'Me.IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        'Me.ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        'Me.ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+
+        'Me.AuthTypeXcd = LookupListNew.GetDescriptionFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y)
+        'Me.PartyTypeXcd = LookupListNew.GetDescriptionFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y)
+
+        'Me.sv
+        Try
+            Dim dv As PriceListDetail.PriceListResultsDV = Me.GetRepairPricesforMethodofRepair(Me.ServiceCenterId)
+            PopulateClaimAuthItems(dv)
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, ex.InnerException, Messages.PRICE_LIST_NOT_FOUND)
+        End Try
+
+        If (Me.IsSupervisorAuthorizationRequired) Then Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
+
+    End Sub
+
     Public Sub Void()
         Me.ClaimAuthStatus = ClaimAuthorizationStatus.Void
         Me.Save()
@@ -1481,6 +1527,18 @@ Public NotInheritable Class ClaimAuthorization
         claimAuthItem.VendorSku = Codes.VENDOR_SKU_PAY_DEDUCTIBLE
         claimAuthItem.VendorSkuDescription = Codes.VENDOR_SKU_DESC_PAY_DEDUCTIBLE
         claimAuthItem.Amount = Me.Claim.Deductible
+
+    End Sub
+
+    Friend Sub AddDeductibleRefundLineItem()
+        Dim serviceClassType As ServiceClassType = ServiceCLassTypeList.Instance.GetDetails(Codes.SERVICE_CLASS__DEDUCTIBLE, "DEDUCTIBLE")
+        Dim claimAuthItem As ClaimAuthItem = CType(Me.ClaimAuthorizationItemChildren.GetNewChild(Me.Id), ClaimAuthItem)
+        claimAuthItem.ClaimAuthorizationId = Me.Id
+        claimAuthItem.ServiceClassId = serviceClassType.ServiceClassId
+        claimAuthItem.ServiceTypeId = serviceClassType.ServiceTypeId
+        claimAuthItem.VendorSku = "DEDUCTIBLE" 'Codes.VENDOR_SKU_PAY_DEDUCTIBLE
+        claimAuthItem.VendorSkuDescription = "DEDUCTIBLE" 'Codes.VENDOR_SKU_DESC_PAY_DEDUCTIBLE
+        claimAuthItem.Amount = Me.Claim.Deductible * -1D
 
     End Sub
 

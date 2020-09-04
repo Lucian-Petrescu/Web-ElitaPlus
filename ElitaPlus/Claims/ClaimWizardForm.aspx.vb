@@ -449,7 +449,7 @@ Public Class ClaimWizardForm
                             End If
                         Next
                         ' REQ- 6156 - Call Start Fulfillment process web method in Fulfillment Web Service
-                        'Me.State.ClaimBO.AddClaimAuthorization(Me.State.SelectedServiceCenterId)
+                        Me.State.ClaimBO.AddClaimAuthorization(Me.State.SelectedServiceCenterId)
 
                         Me.State.DoesActiveTradeInExistForIMEI = DoesAcceptedOfferExistForIMEI()
                         If Me.State.ClaimBO.IsNew And Me.State.DoesActiveTradeInExistForIMEI Then

@@ -556,6 +556,25 @@ Public NotInheritable Class MultiAuthClaim
 
         Next
     End Sub
+
+    Public Function AddClaimAuthForDeductibleRefund(ByVal serviceCenterId As Guid) As ClaimAuthorization
+        Dim newClaimAuth As ClaimAuthorization
+        Try
+            newClaimAuth = CType(Me.ClaimAuthorizationChildren.GetNewChild(), BusinessObjectsNew.ClaimAuthorization)
+            newClaimAuth.PrepopulateClaimAuthForDeductibleRefund(serviceCenterId, Me.Id, Me.CertificateId)
+            newClaimAuth.AddDeductibleRefundLineItem()
+
+            'If Me.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) And
+            '    newClaimAuth.ContainsDeductible Then
+            '    newClaimAuth.AddDeductibleRefundLineItem()
+            'End If
+            newClaimAuth.Save()
+            Return newClaimAuth
+        Catch ex As DataBaseAccessException
+            Me.ClaimAuthorizationChildren.GetChild(newClaimAuth.Id).Delete()
+            Throw ex
+        End Try
+    End Function
 #End Region
 
 #Region "Validations"

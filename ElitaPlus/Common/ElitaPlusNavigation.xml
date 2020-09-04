@@ -387,6 +387,7 @@
       <TRANSITION event="next" action="go" state="CLAIM_ISSUE_DETAIL" />
       <TRANSITION event="consequential_damage" action="go"  state="CLAIM_CONSEQUENTIAL_DAMAGE"/>
       <TRANSITION event="change_fulfillment" action="go"  state="CHANGE_FULFILLMENT"/>
+      <TRANSITION event="claim_deductible_refund" action="go"  state="CLAIM_DEDUCTIBLE_REFUND_INFORMATION"/>
       <!--<TRANSITION event="claim_approved" action="go"  state="CLAIM_APPROVED_FROM_ISSUES"/>-->
     </STATE>
     <!--<STATE name="CLAIM_APPROVED_FROM_ISSUES" url="~\Claims\ClaimListForm.aspx">
@@ -653,6 +654,10 @@
     <STATE name="CHANGE_FULFILLMENT" url="~\Claims\ClaimRecordingForm.aspx">
       <TRANSITION event="back" action="go" state="CLAIM_DETAIL"/>
       <TRANSITION event="next" action="go" state="CLAIM_DETAIL"/>
+    </STATE>
+    <STATE name="CLAIM_DEDUCTIBLE_REFUND_INFORMATION" url="~\Claims\ClaimDeductibleRefundForm.aspx">
+      <TRANSITION event="back" action="go" state="CLAIM_DETAIL" />
+      <TRANSITION event="cancel" action="go" state="CLAIM_DETAIL"/>
     </STATE>
   </FLOW>
   <FLOW name ="AUTHORIZE_PENDING_CLAIM_FROM_PENDING_SEARCH">

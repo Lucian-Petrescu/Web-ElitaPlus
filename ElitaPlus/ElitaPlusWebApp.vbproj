@@ -904,6 +904,13 @@
       <DependentUpon>APInvoiceListForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="Claims\ClaimDeductibleRefundForm.aspx.designer.vb">
+      <DependentUpon>ClaimDeductibleRefundForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\ClaimDeductibleRefundForm.aspx.vb">
+      <DependentUpon>ClaimDeductibleRefundForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Claims\ClaimReplacementQuoteForm.aspx.designer.vb">
       <DependentUpon>ClaimReplacementQuoteForm.aspx</DependentUpon>
     </Compile>
@@ -5827,6 +5834,7 @@
     <Content Include="Claims\AccountPayable\AddAPInvoiceForm.aspx" />
     <Content Include="Claims\AccountPayable\APInvoiceDetailForm.aspx" />
     <Content Include="Claims\AccountPayable\APInvoiceListForm.aspx" />
+    <Content Include="Claims\ClaimDeductibleRefundForm.aspx" />
     <Content Include="Claims\ClaimReplacementQuoteForm.aspx" />
     <Content Include="Claims\PoAdjustmentForm.aspx" />
     <Content Include="Claims\ClaimIndixSearchForm.aspx" />
