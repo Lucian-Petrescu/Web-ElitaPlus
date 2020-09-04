@@ -362,10 +362,10 @@ Partial Class ServiceGroupForm
                 Dim risktypeid As Guid = Guid.Parse(Me.DropDownRiskType.SelectedValue.ToString())
 
                 For result = 0 To Me.UserControlAvailableSelectedManufacturers.SelectedList.Count() - 1
-                    Strarr = Strarr + Me.UserControlAvailableSelectedManufacturers.SelectedList.Item(result).ToString() + ";"
+                    Strarr = Strarr + Assurant.ElitaPlus.Common.GuidControl.GuidToHexString(Guid.Parse(Me.UserControlAvailableSelectedManufacturers.SelectedList.Item(result))).ToString() + ";"
                 Next
 
-                result = Me.State.MyBO.sgrtmanusave(Me.State.MyBO.Id, risktypeid, Strarr, result)
+                Me.State.MyBO.sgrtmanusave(Me.State.MyBO.Id, risktypeid, Strarr, result)
                 Me.State.IsNew = False
                 Me.State.HasDataChanged = True
                 PopulateCountry()

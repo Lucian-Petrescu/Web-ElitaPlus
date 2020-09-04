@@ -1,6 +1,6 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (9/20/2004)********************
 
-
+Imports System.Threading
 Public Class ServiceGroupDAL
     Inherits DALBase
 
@@ -31,6 +31,7 @@ Public Class ServiceGroupDAL
 
 #End Region
 
+    Public Delegate Sub AsyncCaller(ByVal ServiceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal SgrtManu As String, ByVal Result As Integer)
 #Region "Load Methods"
 
     Public Sub LoadSchema(ByVal ds As DataSet)
@@ -59,20 +60,27 @@ Public Class ServiceGroupDAL
         End Try
     End Function
 
-    Public Function sgrtmanusave(ByVal ServiceGroupId As Guid, ByVal risktypeid As Guid, ByVal sgrtmanu As String, ByVal result As Integer)
-        Try
+    Public Sub sgrtmanusave(ByVal ServiceGroupId As Guid, ByVal risktypeid As Guid, ByVal sgrtmanu As String, ByVal result As Integer)
 
+        Dim aSyncHandler As New AsyncCaller(AddressOf Asyncsgrtmanusave)
+        aSyncHandler.BeginInvoke(ServiceGroupId, risktypeid, sgrtmanu, result, Nothing, Nothing)
+
+
+    End Sub
+
+    Private Sub Asyncsgrtmanusave(ByVal ServiceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal SgrtManu As String, ByVal Result As Integer)
+        Try
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/SGRTMANU_SAVE"))
                 cmd.AddParameter(PAR_IN_SERVICE_GROUP_ID, OracleDbType.Raw, ServiceGroupId.ToByteArray())
-                cmd.AddParameter(PAR_IN_RISK_TYPE_ID, OracleDbType.Raw, value:=risktypeid)
-                cmd.AddParameter(PAR_IN_SGRT_MANU, OracleDbType.Varchar2, value:=sgrtmanu)
+                cmd.AddParameter(PAR_IN_RISK_TYPE_ID, OracleDbType.Raw, value:=RiskTypeId)
+                cmd.AddParameter(PAR_IN_SGRT_MANU, OracleDbType.Clob, value:=SgrtManu)
                 cmd.AddParameter(PAR_OU_RESULT_SET, OracleDbType.Int32, direction:=ParameterDirection.Output)
                 OracleDbHelper.ExecuteNonQuery(cmd)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
-    End Function
+    End Sub
 
     Public Function LoadGrid(ByVal servicegroupID As Guid,
                                 ByVal pageindex As Integer,
