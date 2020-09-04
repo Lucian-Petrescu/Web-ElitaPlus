@@ -117,7 +117,7 @@ Public Class CoverageRate
     Public Const MAX_LIABILITY As Integer = 99999    
     Public Const MIN_OFFSET_LIABLIMIT_PERCENT As Integer = 50
     Private Const NEW_COVERAGE_LIABILITY_MAX_DOUBLE As Double = 999999999.99
-    Private Const NEW_COVERAGE_LIABILITY_PERCENT_MAX_DOUBLE As Double = 999999.99
+    Private Const NEW_COVERAGE_LIABILITY_PERCENT_MAX_DOUBLE As Double = 99.9999
     
 
     Private Const COVERAGE_RATE_ID As Integer = 0
@@ -460,7 +460,7 @@ Public Class CoverageRate
     End Property
     
     'US-489838        
-    <ValidNumericRange("", Min:=MIN_DOUBLE, Max:=NEW_COVERAGE_LIABILITY_PERCENT_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM018), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
+    <ValidNumericRange("", Min:=MIN_DOUBLE, Max:=MAX_DOUBLE, Message:=COVERAGE_RATE_FORM018), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
     Public Property CovLiabilityLimitPercent() As DecimalType
         Get
             CheckDeleted()
