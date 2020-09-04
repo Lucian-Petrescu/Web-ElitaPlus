@@ -460,12 +460,12 @@ Public Class CoverageRate
     End Property
     
     'US-489838        
-    <ValidNumericRange("", Min:=MIN_DOUBLE, Max:=MAX_DOUBLE, Message:=COVERAGE_RATE_FORM018), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
+    <ValidNumericRange("", Min:=MIN_PERCENT, Max:=MAX_PERCENT, Message:=COVERAGE_RATE_FORM018), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
     Public Property CovLiabilityLimitPercent() As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT_PERCENT) Is DBNull.Value Then
-                Return MIN_DOUBLE
+                Return Nothing
             Else
                 Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT_PERCENT), Decimal))
             End If
