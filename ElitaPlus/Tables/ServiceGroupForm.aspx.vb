@@ -365,7 +365,7 @@ Partial Class ServiceGroupForm
                     Strarr = Strarr + Assurant.ElitaPlus.Common.GuidControl.GuidToHexString(Guid.Parse(Me.UserControlAvailableSelectedManufacturers.SelectedList.Item(result))).ToString() + ";"
                 Next
 
-                Me.State.MyBO.sgrtmanusave(Me.State.MyBO.Id, risktypeid, Strarr, result)
+                Me.State.MyBO.sgrtmanusave(Me.State.MyBO.Id, risktypeid, Strarr)
                 Me.State.IsNew = False
                 Me.State.HasDataChanged = True
                 PopulateCountry()

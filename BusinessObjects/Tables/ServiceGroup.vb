@@ -182,11 +182,11 @@ Public Class ServiceGroup
         End Try
     End Sub
 
-    Public Sub sgrtmanusave(ByVal ServiceGroupId As Guid, ByVal risktypeid As Guid, ByVal sgrtmanu As String, ByVal result As Integer)
+    Public Sub sgrtmanusave(ByVal ServiceGroupId As Guid, ByVal risktypeid As Guid, ByVal sgrtmanu As String)
         MyBase.Save()
         If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
             Dim dal As New ServiceGroupDAL
-            dal.sgrtmanusave(ServiceGroupId, risktypeid, sgrtmanu, result)
+            dal.sgrtmanusave(ServiceGroupId, risktypeid, sgrtmanu)
         End If
 
     End Sub

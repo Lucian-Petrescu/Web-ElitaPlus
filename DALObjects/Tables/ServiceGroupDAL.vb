@@ -31,7 +31,7 @@ Public Class ServiceGroupDAL
 
 #End Region
 
-    Public Delegate Sub AsyncCaller(ByVal ServiceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal SgrtManu As String, ByVal Result As Integer)
+    Public Delegate Sub AsyncCaller(ByVal ServiceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal SgrtManu As String)
 #Region "Load Methods"
 
     Public Sub LoadSchema(ByVal ds As DataSet)
@@ -60,21 +60,20 @@ Public Class ServiceGroupDAL
         End Try
     End Function
 
-    Public Sub sgrtmanusave(ByVal ServiceGroupId As Guid, ByVal risktypeid As Guid, ByVal sgrtmanu As String, ByVal result As Integer)
+    Public Sub sgrtmanusave(ByVal ServiceGroupId As Guid, ByVal risktypeid As Guid, ByVal sgrtmanu As String)
 
         Dim aSyncHandler As New AsyncCaller(AddressOf Asyncsgrtmanusave)
-        aSyncHandler.BeginInvoke(ServiceGroupId, risktypeid, sgrtmanu, result, Nothing, Nothing)
+        aSyncHandler.BeginInvoke(ServiceGroupId, risktypeid, sgrtmanu, Nothing, Nothing)
 
 
     End Sub
 
-    Private Sub Asyncsgrtmanusave(ByVal ServiceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal SgrtManu As String, ByVal Result As Integer)
+    Private Sub Asyncsgrtmanusave(ByVal ServiceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal SgrtManu As String)
         Try
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/SGRTMANU_SAVE"))
                 cmd.AddParameter(PAR_IN_SERVICE_GROUP_ID, OracleDbType.Raw, ServiceGroupId.ToByteArray())
                 cmd.AddParameter(PAR_IN_RISK_TYPE_ID, OracleDbType.Raw, value:=RiskTypeId)
                 cmd.AddParameter(PAR_IN_SGRT_MANU, OracleDbType.Clob, value:=SgrtManu)
-                cmd.AddParameter(PAR_OU_RESULT_SET, OracleDbType.Int32, direction:=ParameterDirection.Output)
                 OracleDbHelper.ExecuteNonQuery(cmd)
             End Using
         Catch ex As Exception
