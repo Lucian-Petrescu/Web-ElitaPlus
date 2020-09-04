@@ -3918,7 +3918,11 @@ Public Class ClaimWizardForm
 
 
         Try
-            If (Not String.IsNullOrWhiteSpace(Me.State.CertItemCoverageBO.FulfillmentProfileCode)) Then
+            if Me.State.ClaimBO?.FulfillmentProviderType = FulfillmentProviderType.DynamicFulfillment then
+
+                return True
+            
+            else If (Not String.IsNullOrWhiteSpace(Me.State.CertItemCoverageBO.FulfillmentProfileCode)) Then
 
                 wsResponseObject = WcfClientHelper.Execute(Of Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGatewayClient, Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGateway, Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse)(
                                     GetClaimFulfillmentWebAppGatewayClient(),
