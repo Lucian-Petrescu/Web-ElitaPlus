@@ -182,14 +182,14 @@ Public Class ServiceGroup
         End Try
     End Sub
 
-    Public Function sgrtmanusave(ByVal ServiceGroupId As Guid, ByVal risktypeid As Guid, ByVal sgrtmanu As String, ByVal result As Integer) As Integer
+    Public Sub sgrtmanusave(ByVal ServiceGroupId As Guid, ByVal risktypeid As Guid, ByVal sgrtmanu As String)
         MyBase.Save()
         If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
             Dim dal As New ServiceGroupDAL
-            result = dal.sgrtmanusave(ServiceGroupId, risktypeid, sgrtmanu, result)
+            dal.sgrtmanusave(ServiceGroupId, risktypeid, sgrtmanu)
         End If
 
-    End Function
+    End Sub
 
     Public Function countofrecords(ByVal servicegroupid As Guid) As Double
         Dim ds As New DataSet
