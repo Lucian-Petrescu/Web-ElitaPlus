@@ -4952,7 +4952,7 @@ Namespace Tables
 
 #Region "Coverage Rate Liability Limit PBI-489838"
         'Null check for grid fields
-        Protected Function CheckNull(ByVal objGrid As Object) As String
+        Protected Function CheckNull(ByVal objGrid As Object, ByVal objParam2 As String) As String
             If Object.ReferenceEquals(objGrid, DBNull.Value) Then
                 Return String.Empty
             ElseIf TypeOf objGrid Is Byte() Then
@@ -4962,6 +4962,18 @@ Namespace Tables
                     Return String.Empty
                 End If
                
+                If Not String.IsNullOrWhiteSpace(objParam2) Then
+                    If objParam2.Equals("COV_LIABILITY_LIMIT") Then
+                        Return GetAmountFormattedToVariableString(objGrid)
+                    End If
+                End If
+
+                If Not String.IsNullOrWhiteSpace(objParam2) Then
+                    If objParam2.Equals("COV_LIABILITY_LIMIT_PERCENT") Then
+                        Return GetAmountFormattedDoubleString(objGrid, "N4")
+                    End If
+                End If
+
                 Return objGrid.ToString()
             End If
         End Function

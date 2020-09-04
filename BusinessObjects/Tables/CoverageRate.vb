@@ -104,6 +104,8 @@ Public Class CoverageRate
     Private Const COVERAGE_RATE_FORM014 As String = "COVERAGE_RATE_FORM014" ' 0<= Renewal Number <= 999
     Private Const COVERAGE_RATE_FORM015 As String = "COVERAGE_RATE_FORM015" ' Invalid Renewal Number
     Private Const COVERAGE_RATE_FORM016 As String = "COVERAGE_RATE_FORM016" ' There should be no overlaps or gaps (low/high) and row with 0 renewal number cannot be deleted if there are other row for same low/high price combination
+    Private Const COVERAGE_RATE_FORM017 As String = "COVERAGE_RATE_FORM017" ' 0<= LiabilityLimitAmount <1*10^6
+    Private Const COVERAGE_RATE_FORM018 As String = "COVERAGE_RATE_FORM018" ' 0<= LiabilityLimitPercent <1*10^6
 
     Private Const MIN_DOUBLE As Double = 0.0
     Private Const MAX_DOUBLE As Double = 999999.99
@@ -112,8 +114,11 @@ Public Class CoverageRate
     Private Const MIM_DECIMAL_NUMBERS As Integer = 4
     Private Const THRESHOLD As Double = 0.01
     Public Const MIN_OFFSET As Integer = 0
-    Public Const MAX_LIABILITY As Integer = 99999
+    Public Const MAX_LIABILITY As Integer = 99999    
     Public Const MIN_OFFSET_LIABLIMIT_PERCENT As Integer = 50
+    Private Const NEW_COVERAGE_LIABILITY_MAX_DOUBLE As Double = 999999999.99
+    Private Const NEW_COVERAGE_LIABILITY_PERCENT_MAX_DOUBLE As Double = 999999.99
+    
 
     Private Const COVERAGE_RATE_ID As Integer = 0
     Private Const LOW_PRICE As Integer = 1
@@ -437,25 +442,25 @@ Public Class CoverageRate
         End Set
     End Property
     
-    'US-489838
-    <ValidNumericRange("", Min:=MIN_OFFSET, Max:=NEW_MAX_LONG, Message:=Common.ErrorCodes.COVERAGEBO_006)>
-    Public Property CovLiabilityLimit() As LongType
+    'US-489838    
+    <ValidNumericRange("", Min:=MIN_DOUBLE, Max:=NEW_COVERAGE_LIABILITY_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM017)>
+    Public Property CovLiabilityLimit() As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New LongType(CType(Row(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT), Long))
+                Return New DecimalType(CType(Row(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT), Decimal))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set(ByVal Value As DecimalType)
             CheckDeleted()
             Me.SetValue(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT, Value)
         End Set
     End Property
     
-    'US-489838
-    <ValidNumericRange("", Max:=MAX_PERCENT, MaxExclusive:=False)>
+    'US-489838        
+    <ValidNumericRange("", Min:=MIN_DOUBLE, Max:=NEW_COVERAGE_LIABILITY_PERCENT_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM018), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
     Public Property CovLiabilityLimitPercent() As DecimalType
         Get
             CheckDeleted()
