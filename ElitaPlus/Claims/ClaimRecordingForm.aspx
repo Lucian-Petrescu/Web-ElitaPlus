@@ -190,7 +190,7 @@
                                     <Columns>
                                         <asp:TemplateField ShowHeader="false" ItemStyle-Width="2%" ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Top">
                                             <ItemTemplate>
-                                                <asp:RadioButton ID="rdoItems" runat="server" Class="callers" Enabled="True" Visible="True" AutoPostBack="true" OnCheckedChanged="rdoItemSelectChanged"></asp:RadioButton>
+                                                <asp:RadioButton ID="rdoItems" runat="server" Class="callers" Enabled="True" Visible="True" AutoPostBack="true" OnCheckedChanged="DeviceItemSelectChanged"></asp:RadioButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Manufacturer" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
