@@ -249,6 +249,15 @@ Namespace Certificates
         Protected WithEvents Label23 As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
+        '''lblCertificateExtendedFields control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblCertificateExtendedFields As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
         '''moCertificateDetailPanel control.
         '''</summary>
         '''<remarks>
@@ -5044,6 +5053,15 @@ Namespace Certificates
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents linkOrigCertId As Global.System.Web.UI.WebControls.LinkButton
+
+        '''<summary>
+        '''GridCertExtFields control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents GridCertExtFields As Global.System.Web.UI.WebControls.DataGrid
 
         '''<summary>
         '''LabelCvgInfoHdr control.
