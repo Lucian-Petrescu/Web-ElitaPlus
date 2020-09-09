@@ -72,6 +72,7 @@ Namespace Certificates
         Public Const CERT_REPRICE_TAB As Integer = 12
         'Data Protection Tab
         Public Const CERT_DATA_PROTECTION_TAB As Integer = 13
+        Public Const CERT_EXTENDED_FIELDS_TAB As Integer = 14
         Public Const Total_installments As Integer = 0
         Public Const Remaining_Installments As Integer = 1
         Public Const Amount_Collected As Integer = 2
@@ -96,8 +97,6 @@ Namespace Certificates
         Public Const GRID_COL_RENEWAL_DATE_IDX As Integer = 10
         Public Const GRID_COL_COVERAGE_TOTAL_PAID_AMOUNT_IDX As Integer = 11
         Public Const GRID_COL_COVERAGE_REMAIN_LIABILITY_LIMIT_IDX As Integer = 12
-        'Public Const GRID_COL_BEGIN_KM_IDX As Integer = 10
-        'Public Const GRID_COL_END_KM_IDX As Integer = 11
 
 #End Region
 
@@ -158,6 +157,19 @@ Namespace Certificates
         Private Const GRID_CTRL_NAME_COMMENT As String = "txtComment"
         Private Const GRID_CTRL_NAME_REQUEST_ID_HEADER As String = "lblRequestHeader"
         Private Const GRID_CTRL_NAME_COMMENT_HEADER As String = "lblCommentHeader"
+
+#End Region
+
+#Region "Cert Extended Fields Grid"
+
+        Public Const CERT_EXT_ID_ID_IDX As Integer = 0
+        Public Const CERT_EXT_CERT_ID_IDX As Integer = 1
+        Public Const CERT_EXT_FIELD_NAME_IDX As Integer = 2
+        Public Const CERT_EXT_FIELD_VALUE_IDX As Integer = 3
+        Public Const CERT_EXT_CREATED_BY_IDX as Integer = 4
+        Public Const CERT_EXT_CREATED_DATE_IDX as Integer = 5
+        Public Const CERT_EXT_MODIFIED_BY_IDX as Integer = 6
+        Public Const CERT_EXT_MODIFIED_DATE_IDX as Integer = 7
 
 #End Region
 
@@ -295,12 +307,6 @@ Namespace Certificates
                 Return moAddressController
             End Get
         End Property
-
-        'Public ReadOnly Property BankInfoCtr() As UserControlBankInfo
-        '    Get
-        '        Return moBankInfoController
-        '    End Get
-        'End Property
 
         Public ReadOnly Property UserCertificateCtr() As UserControlCertificateInfo_New
             Get
@@ -590,12 +596,15 @@ Namespace Certificates
             Public selectedClaimItemId As Guid = Guid.Empty
             Public SelectedCommentId As Guid = Guid.Empty
             Public SelectedEndorseId As Guid = Guid.Empty
+            Public SelectedCertExtId As Guid = Guid.Empty
             Public isPremiumTAbVisible As Boolean = True
             Public PageIndex As Integer = 0
             Public PageIndexClaimsGrid As Integer = 0
             Public IsGridVisible As Boolean = False
             Public CommentsPageIndex As Integer = 0
+            Public CertExtFieldsPageIndex As Integer = 0
             Public IsCommentsGridVisible As Boolean = False
+            Public IsCertExtFieldsGridVisible As Boolean = False
             Public EndorsementsPageIndex As Integer = 0
             Public ItemsPageIndex As Integer = 0
             Public ExtensionGridPageIndex As Integer = 0
@@ -628,6 +637,7 @@ Namespace Certificates
             Public CertInstallmentHistorySortExpression As String = Certificate.CertInstallmentHistoryDV.COL_START_DATE & " ASC"
             Public CertExtensionSortExpression As String = Certificate.CertExtensionsDV.COL_FIELD_NAME & " ASC"
             Public CertUpgradeExtensionSortExpression As String = Certificate.CertUpgradeExtensionsDV.COL_SEQUENCE_NUMBER & " ASC"
+            Public CertExtFieldsSortExpression As String = Certificate.CertExtendedFieldsDv.COL_FIELD_NAME & " DESC"
             Public IsRepriceGridVisible As Boolean = False
             Public IsNew As Boolean
             Public CertificateId As Guid
@@ -909,6 +919,8 @@ Namespace Certificates
                 Me.State.IsCommentsGridVisible = True
                 Me.State.IsEndorsementsGridVisible = True
                 Me.State.IsCertHistoryGridVisible = True
+                Me.State.IsCertExtFieldsGridVisible = True
+                
                 ' Me.State.isItemsGridVisible = True
 
                 If Not Me.State.MyBO Is Nothing AndAlso Contract.HasContract(Me.State.MyBO.DealerId, Me.State.MyBO.WarrantySalesDate.Value) Then
@@ -916,13 +928,6 @@ Namespace Certificates
                 Else
                     ControlMgr.SetVisibleControl(Me, TNCButton_WRITE, False)
                 End If
-
-                'If Not String.IsNullOrEmpty(Me.State.MyBO.Dealer.AcceptPaymentByCheck) AndAlso
-                '    Me.State.MyBO.Dealer.AcceptPaymentByCheck = "YESNO-Y" Then
-                '    ControlMgr.SetVisibleControl(Me, btnAddCheckPayment, True)
-                'Else
-                '    ControlMgr.SetVisibleControl(Me, btnAddCheckPayment, False)
-                'End If
 
                 If Me.State.MyBO.CustomerId = Guid.Empty Then
                     ControlMgr.SetVisibleControl(Me, btnCustProfileHistory_Write, False)
@@ -935,29 +940,13 @@ Namespace Certificates
                 'KDDI
                 If Me.State.AddressFlag = False Then
                     EnableDisableControls(Me.moCertificateDetailPanel, False)
-                    'Dim btnValidate_Address1 As Button = AddressCtr.FindControl(ValidateAddressButton)
-                    'ControlMgr.SetVisibleControl(Me, btnValidate_Address1, True)
                 Else
                     EnableDisableControls(Me.moCertificateDetailPanel, True)
-                    'Dim btnValidate_Address1 As Button = AddressCtr.FindControl(ValidateAddressButton)
-                    'ControlMgr.SetVisibleControl(Me, btnValidate_Address1, False)
                 End If
 
-                ' EnableDisableControls(Me.moTaxIdPanel, True)
-                'EnableDisableControls(moGeneral_InformationTabPanel_WRITE, True)
-                'moTaxIdText.ReadOnly = False
-                'EnableDisableControls(Me.moPremiumInformationTabPanel_WRITE, True)
 
                 Me.moTaxIdText.Attributes.Add("OnChange", "fillTB(this,'" & moNewTaxIdText.ClientID & "')")
                 Me.moNewTaxIdText.Attributes.Add("OnChange", "fillTB(this,'" & moTaxIdText.ClientID & "')")
-                'Me.tsHoriz.Items(Me.CERT_ITEMS_INFO_TAB).Text = TranslationBase.TranslateLabelOrMessage("ITEMS")  'Added by Pedro
-
-
-                'START DEF - 1986
-                'Dim doctypeFunction As String
-                'doctypeFunction = String.Format("DisableTextbox('{0}','{1}','{2}', '{3}', '{4}');", Me.cboDocumentTypeId.ClientID, Me.moIDTypeText.ClientID, Me.moDocumentAgencyText.ClientID, Me.moRGNumberText.ClientID, Me.moDocumentIssueDateText.ClientID)
-                'Me.cboDocumentTypeId.Attributes.Add("onChange", "doctypeFunction")
-                'END    DEF-1986
 
                 If Not Me.IsPostBack Then
                     If Not Me.State.MyBO.CountryPurchaseId.Equals(Guid.Empty) Then
@@ -1004,11 +993,9 @@ Namespace Certificates
                         Me.PopulateEndorsementsGrid()
                     End If
 
-                    'Certificate History tab
-                    'If Me.State.IsCertHistoryGridVisible Then
-                    '    Me.TranslateGridHeader(Me.CertHistoryGrid)
-                    '    Me.PopulateCertificateHistoryTabInfo()
-                    'End If
+                    If Me.State.IsCertExtFieldsGridVisible Then
+                        Me.PopulateCertExtendedFieldsGrid()
+                    End If
 
                     PopulateInstallmentHistoryGrid()
                     PopulateExtensionsGrid()
@@ -1159,17 +1146,6 @@ Namespace Certificates
                 If Not Me.State.MyBO.CustomerId.Equals(Guid.Empty) Then
                     If dealerBO.AttributeValues.Contains(Codes.DLR_ATTR__ENABLE_ALT_CUSTOMER_NAME) Then
 
-                        'If dealerBO.AttributeValues.Value(Codes.DLR_ATTR__ENABLE_ALT_CUSTOMER_NAME) = Codes.YESNO_Y Then
-                        '    ControlMgr.SetVisibleControl(Me, moAlternativeLastNameLabel, True)
-                        '    ControlMgr.SetVisibleControl(Me, moAlternativeLastNameText, True)
-                        '    ControlMgr.SetVisibleControl(Me, moAlternativeFirstNameLabel, True)
-                        '    ControlMgr.SetVisibleControl(Me, moAlternativeFirstNameText, True)
-                        'Else
-                        '    ControlMgr.SetVisibleControl(Me, moAlternativeLastNameLabel, False)
-                        '    ControlMgr.SetVisibleControl(Me, moAlternativeLastNameText, False)
-                        '    ControlMgr.SetVisibleControl(Me, moAlternativeFirstNameLabel, False)
-                        '    ControlMgr.SetVisibleControl(Me, moAlternativeFirstNameText, False)
-                        'End If
                         If Not (dealerBO.AttributeValues.Value(Codes.DLR_ATTR__ENABLE_ALT_CUSTOMER_NAME) = Codes.YESNO_Y) Then
                             moAltCustLasName.Attributes("style") = "display: none"
                             moAltCustFirstName.Attributes("style") = "display: none"
@@ -1308,7 +1284,6 @@ Namespace Certificates
 
         Private Sub CheckIfComingFromEndorse()
             If Me.State.NavigateToEndorment Then
-                'If tsHoriz.Items(CERT_ENDORSEMENTS_TAB).Enabled = True Then Me.tsHoriz.SelectedIndex = CERT_ENDORSEMENTS_TAB
                 If isTabEnabled(CERT_ENDORSEMENTS_TAB) = True Then Me.State.selectedTab = CERT_ENDORSEMENTS_TAB
                 Me.State.NavigateToEndorment = False
                 Me.State.MyBO = New Certificate(Me.State.MyBO.Id)
@@ -1319,7 +1294,6 @@ Namespace Certificates
 
         Private Sub CheckIfComingFromBillingHistory()
             If Me.State.NavigateToBillingHistory Then
-                'If tsHoriz.Items(CERT_PREMIUM_INFO_TAB).Enabled = True Then Me.tsHoriz.SelectedIndex = CERT_PREMIUM_INFO_TAB
                 If isTabEnabled(CERT_PREMIUM_INFO_TAB) = True Then Me.State.selectedTab = CERT_PREMIUM_INFO_TAB
                 Me.State.NavigateToBillingHistory = False
             End If
@@ -1328,7 +1302,6 @@ Namespace Certificates
 
         Private Sub CheckIfComingFromPaymentHistory()
             If Me.State.NavigateToPaymentHistory Then
-                'If tsHoriz.Items(CERT_PREMIUM_INFO_TAB).Enabled = True Then Me.tsHoriz.SelectedIndex = CERT_PREMIUM_INFO_TAB
                 If isTabEnabled(CERT_PREMIUM_INFO_TAB) = True Then Me.State.selectedTab = CERT_PREMIUM_INFO_TAB
                 Me.State.NavigateToPaymentHistory = False
             End If
@@ -1337,10 +1310,6 @@ Namespace Certificates
 
         Private Sub CheckIfComingFromBillPayHistory()
             If Me.State.NavigateToBillpayHistory Then
-                'If tsHoriz.Items(CERT_PREMIUM_INFO_TAB).Enabled = True Then
-                '    Me.tsHoriz.SelectedIndex = CERT_PREMIUM_INFO_TAB
-                '    Me.State.NavigateToBillpayHistory = False
-                'End If
                 If isTabEnabled(CERT_PREMIUM_INFO_TAB) = True Then Me.State.selectedTab = CERT_PREMIUM_INFO_TAB
                 Me.State.NavigateToBillpayHistory = False
             End If
@@ -1772,9 +1741,6 @@ Namespace Certificates
                             ControlMgr.SetEnableControl(Me, moBankRoutingNumberText, True)
                             ControlMgr.SetEnableControl(Me, moBankAccountNumberText, True)
                             Me.moBillingStatusId.CssClass = ""
-                            'Me.moBankAccountOwnerText.CssClass = ""
-                            'Me.moBankAccountNumberText.CssClass = ""
-                            'Me.moBankRoutingNumberText.CssClass = ""
                             moBankAccountOwnerText.ReadOnly = False
                             moBankRoutingNumberText.ReadOnly = False
                             moBankAccountNumberText.ReadOnly = False
@@ -1783,10 +1749,6 @@ Namespace Certificates
                             ControlMgr.SetEnableControl(Me, moCreditCardTypeIDDropDown, True)
                             ControlMgr.SetEnableControl(Me, moExpirationDateText, True)
                             ControlMgr.SetEnableControl(Me, moNameOnCreditCardText, True)
-                            'Me.moCreditCardNumberText.CssClass = ""
-                            'Me.moCreditCardTypeIDDropDown.CssClass = ""
-                            'Me.moExpirationDateText.CssClass = ""
-                            'Me.moNameOnCreditCardText.CssClass = ""
                             moCreditCardNumberText.ReadOnly = False
                             moNameOnCreditCardText.ReadOnly = False
                             moExpirationDateText.ReadOnly = False
@@ -2390,14 +2352,6 @@ Namespace Certificates
             End If
         End Sub
 
-        'Public Function getCancelRequestReasonDescription(ByVal CancellationReasonId As Guid) As String
-        '    Dim cancellationReasonDesc As String
-        '    Dim cancellationReasonDV As DataView = LookupListNew.GetCancellationReasonWithCodeLookupList(Me.State.MyBO.CompanyId)
-        '    cancellationReasonDV.RowFilter = "code in ('16','17')"
-        '    cancellationReasonDesc = LookupListNew.GetDescriptionFromId(cancellationReasonDV, CancellationReasonId)
-        '    Return cancellationReasonDesc
-        'End Function
-
         Protected Sub BindBoPropertiesToLabels()
             'pedro
             Me.BindBOPropertyToLabel(Me.State.MyBO, "CustomerName", Me.moCustomerNameLabel)
@@ -2584,14 +2538,6 @@ Namespace Certificates
                 Me.PopulateControlFromBOProperty(Me.moCurrencyPurchaseText, Me.State.MyBO.getPurchaseCurrencyDescription)
             End If
 
-            'If Not (Me.State.MyBO.getClaimWaitingPeriod.Equals(Guid.Empty)) Then
-            '    Dim waitingPeriodEndDate = Me.State.MyBO.WarrantySalesDate.Value
-            '    Dim wpDate = waitingPeriodEndDate.AddDays(State.MyBO.getClaimWaitingPeriod)
-            '    Me.PopulateControlFromBOProperty(Me.moClaimWaitingPeriodEndDateText, wpDate)
-            'Else
-            '    Me.PopulateControlFromBOProperty(Me.moClaimWaitingPeriodEndDateText, Me.State.MyBO.WarrantySalesDate)
-            'End If
-
             moCertificateInfoController = Me.UserCertificateCtr
             moCertificateInfoController.InitController(Me.State.MyBO, , Me.State.companyCode)
             UpdateBreadCrum()
@@ -2727,24 +2673,6 @@ Namespace Certificates
                     Me.tdVehicleLicenseTag.InnerHtml = ""
                 End If
 
-                'If (Me.State.MyBO.Company.EnablePeriodMileageVal.ToUpper().Equals("YESNO-N")) Then
-                '    ControlMgr.SetVisibleControl(Me, trmfgdate, False)
-                '    ControlMgr.SetVisibleControl(Me, trmfgkm, False)
-                'Else
-                '    ControlMgr.SetVisibleControl(Me, trmfgdate, True)
-                '    ControlMgr.SetVisibleControl(Me, trmfgkm, True)
-                'End If
-
-                'DEF-21659 - START
-                'If .DateOfBirth Is Nothing Then
-                'ControlMgr.SetVisibleControl(Me, moDateOfBirthText, False)
-                'ControlMgr.SetVisibleControl(Me, moDateOfBirthLabel, False)
-                'Me.tdDateOfBirthTag.InnerHtml = ""
-                'ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
-                'End If
-                'Me.PopulateControlFromBOProperty(Me.moDateOfBirthText, .DateOfBirth)
-                'DEF-21659 - END
-
                 If Not blnPremiumEdit Then PopulatePaymentTypesDropdown(Me.moPaymentTypeId)
 
                 If Me.State.creditCardPayment Then
@@ -2771,10 +2699,6 @@ Namespace Certificates
                 Me.PopulateControlFromBOProperty(Me.moServiceStartDateText, .ServiceStartDate)
                 Me.PopulateControlFromBOProperty(Me.moServiceIdText, .ServiceID)
 
-                'Me.PopulateControlFromBOProperty(Me.txtMfgBeginDate, .MfgBeginDate)
-                'Me.PopulateControlFromBOProperty(Me.txtMfgEndDate, .MfgEndDate)
-                'Me.PopulateControlFromBOProperty(Me.txtMfgBeginKm, .MfgBeginKm)
-                'Me.PopulateControlFromBOProperty(Me.txtMfgEndKm, .MfgEndKm)
                 'REQ-910 New fields BEGIN
                 If Me.State.ReqCustomerLegalInfoId.Equals(Guid.Empty) Then
                     Me.State.ReqCustomerLegalInfoId = (New Company(Me.State.MyBO.CompanyId).ReqCustomerLegalInfoId)
@@ -2976,12 +2900,6 @@ Namespace Certificates
 
                 Me.State.BillingStatusId = Me.State.TheDirectDebitState.certInstallment.BillingStatusId
 
-                'If (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS _
-                '    And (Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD _
-                '         Or Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT)) _
-                '    Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS _
-                '        And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) Then
-                'If Me.State.directDebitPayment Or Me.State.creditCardPayment Or Me.State.dealerBillPayment Then
                 If HasInstallment Then
                     Me.PopulateBOProperty(Me.State.TheDirectDebitState.certInstallment, "BillingStatusId", Me.moBillingStatusId)
 
@@ -3012,11 +2930,6 @@ Namespace Certificates
                             Me.PopulateBOProperty(Me.State.TheDirectDebitState.bankInfo, "Account_Number", Me.moBankAccountNumberText)
                         End If
 
-
-                        'ElseIf (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS _
-                        '        And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) _
-                        '        Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS _
-                        '            And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) Then
                     ElseIf Me.State.creditCardPayment Then
                         If Me.IfCreditCardInfoChanged() Then
                             Me.State.BillingInformationChanged = True
@@ -3124,12 +3037,6 @@ Namespace Certificates
                 Me.PopulateBOProperty(Me.State.MyBO, "DocumentAgency", Me.moDocumentAgencyText)
                 Me.PopulateBOProperty(Me.State.MyBO, "IdType", Me.moIDTypeText)
 
-                'Me.PopulateBOProperty(Me.State.MyBO, "MfgBeginDate", Me.txtMfgBeginDate)
-                'Me.PopulateBOProperty(Me.State.MyBO, "MfgEndDate", Me.txtMfgEndDate)
-                'Me.PopulateBOProperty(Me.State.MyBO, "MfgBeginKm", Me.txtMfgBeginKm)
-                'Me.PopulateBOProperty(Me.State.MyBO, "MfgEndKm", Me.txtMfgEndKm)
-
-                'If Me.tsHoriz.SelectedIndex = CERT_TAX_ID_TAB Then
                 If Me.State.selectedTab = CERT_TAX_ID_TAB Then
                     Me.PopulateBOProperty(Me.State.MyBO, "TaxIDNumb", Me.moNewTaxIdText)
                 End If
@@ -3872,9 +3779,6 @@ Namespace Certificates
 
             Try
 
-                'Dim PaymentTypesDV As DataView = LookupListNew.GetPaymentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.Company.CompanyGroupId)
-                'Me.BindListControlToDataView(cboPaymentTypesTypesDropDownList, PaymentTypesDV, "DESCRIPTION", "ID", True)
-
                 Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
                 oListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.Company.CompanyGroupId
                 Dim paymentTypeList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("PaymentTypeByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), oListContext)
@@ -3939,9 +3843,6 @@ Namespace Certificates
         Private Sub PopulateCancelRequestReasonDropdown(ByVal cancellationReasonDropDownList As DropDownList, ByVal filtercondition As String)
 
             Try
-                'Dim cancellationReasonDV As DataView = LookupListNew.GetCancellationReasonWithCodeLookupList(Me.State.MyBO.CompanyId)
-                'If Not filtercondition Is Nothing Then cancellationReasonDV.RowFilter = filtercondition
-                'BindListControlToDataView(cancellationReasonDropDownList, cancellationReasonDV, "DESCRIPTION", "ID", True)
 
                 Dim listcontext As ListContext = New ListContext()
                 listcontext.CompanyId = Me.State.MyBO.CompanyId
@@ -4598,8 +4499,6 @@ Namespace Certificates
                 Me.State.CancReqCommentBO = Comment.GetNewComment(Me.State.MyBO.Id)
                 Me.PopulateBOProperty(Me.State.CancReqCommentBO, "CallerName", Me.moCallerNameTextBox)
                 Me.PopulateBOProperty(Me.State.CancReqCommentBO, "Comments", Me.moCommentsTextbox)
-                'oCommTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CERT_CANCEL_REQUEST)
-                'Me.PopulateBOProperty(Me.State.CancReqCommentBO, "CommentTypeId", oCommTypeId)
                 PopulateBOProperty(Me.State.CancReqCommentBO, "CommentTypeId", GetSelectedItem(Me.moCancelRequestJustificationDrop))
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -5154,20 +5053,10 @@ Namespace Certificates
         End Sub
         Private Sub validateUpdateBankInfoRefundFields()
 
-            'If Me.State.RefundBankInfoBO.Account_Number.Length <= 4 Then
-            '    ElitaPlusPage.SetLabelError(moRfAccountNumberLabel)
-            '    Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_ACCTNO_LENGTH)
-            'Else
-            '    ClearLabelError(moRfAccountNumberLabel)
-            'End If
             ClearLabelError(moRfIBANNumberLabel)
             Try
                 If Me.State.RefundBankInfoBO.IbanNumber <> String.Empty Then
                     Me.State.RefundBankInfoBO.Validate()
-                    'If Me.State.RefundBankInfoBO.IbanNumber.Length <= 4 Then
-                    '    ElitaPlusPage.SetLabelError(moRfIBANNumberLabel)
-                    '    Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_BANKIBANNO_LENGTH)
-                    'End If
                 Else
                     ElitaPlusPage.SetLabelError(moRfIBANNumberLabel)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_BANKIBANNO_REQD)
@@ -5390,28 +5279,9 @@ Namespace Certificates
                     Me.Grid.Columns(GRID_COL_COVERAGE_DURATION_IDX).Visible = False
                 End If
 
-                'If (Me.State.MyBO.Company.EnablePeriodMileageVal.ToUpper().Equals("YESNO-N")) Then
-                '    Me.Grid.Columns(GRID_COL_BEGIN_KM_IDX).Visible = False
-                '    Me.Grid.Columns(GRID_COL_END_KM_IDX).Visible = False
-                'Else
-                '    Me.Grid.Columns(GRID_COL_BEGIN_KM_IDX).Visible = True
-                '    Me.Grid.Columns(GRID_COL_END_KM_IDX).Visible = True
-                'End If
-
-
                 If dv.Count = 0 Then
                     Throw New DataNotFoundException(NO_COVERAGE_FOUND)
                 End If
-
-                'Dim tempDV As DataView = dv
-                'tempDV.RowFilter = "end_date >= '" & todayDate.Today.ToString("d", System.Globalization.CultureInfo.InvariantCulture) & "'"
-                'If tempDV.Count <= 0 Then
-                '    allCoveragesExpired = True
-                'Else
-                '    allCoveragesExpired = False
-
-                'End If
-
 
                 'Check if there are expired coverages to enable coverage history tab
                 Me.State.TheItemCoverageState.CoverageHistoryDV = New DataView(dv.Table)
@@ -5422,12 +5292,6 @@ Namespace Certificates
                     ExpiredCoveragesExist = True
                 End If
 
-                ' removed as it is already used above
-                'Me.Grid.DataSource = dv1
-                'Me.Grid.DataBind()
-
-                'ControlMgr.SetVisibleControl(Me, Grid, Me.State.TheItemCoverageState.IsGridVisible)
-
                 'PM 2/14/2006 begin
                 For Each cov As CertItemCoverage In Me.State.MyBO.AssociatedItemCoverages
                     If cov.CoverageTypeCode = Codes.COVERAGE_TYPE__MANUFACTURER Then
@@ -5435,12 +5299,6 @@ Namespace Certificates
                     End If
                 Next
 
-                'For Each ciRow As DataRow In dv.Table.Rows
-                '    Dim ciCov As String = CType(ciRow(CertItemCoverage.CertItemCoverageSearchDV.COL_COVERAGE_TYPE), String)
-                '    If ciCov = MANUFACTURER Then
-                '        Me.State.TheItemCoverageState.manufaturerWarranty = True
-                '    End If
-                'Next
                 'PM 2/14/2006 end
 
                 Dim tempDV As DataView = New DataView(dv.Table)
@@ -5451,13 +5309,6 @@ Namespace Certificates
                     allCoveragesExpired = False
                 End If
 
-                'allCoveragesExpired = False
-                'tempDV.Sort = CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE
-                'Dim coverageRow As DataRow = tempDV.Table.Rows(0)
-                'Dim lastDate As Date = CType(coverageRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date)
-                'If lastDate < todayDate.Today Then
-                '    allCoveragesExpired = True
-                'End If
             Catch ex As DataNotFoundException
                 Me.MasterPage.MessageController.AddError(ex.Message)
                 Me.State.IsEdit = False
@@ -5492,8 +5343,6 @@ Namespace Certificates
             Try
                 If e.CommandName = SELECT_ACTION_COMMAND Then
                     Me.State.TheItemCoverageState.selectedItemId = New Guid(e.CommandArgument.ToString())
-                    'Me.State.MyBO.SelectedCoverageId = Me.State.TheItemCoverageState.selectedItemId
-                    'Me.callPage(CertItemForm.URL, Me.State.MyBO)
                     'arf 12-20-04 'Me.callPage(CertItemForm.URL, Me.State.TheItemCoverageState.selectedItemId)
                     'arf 12-20-04 begin
                     Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
@@ -5548,8 +5397,6 @@ Namespace Certificates
 
                     e.Item.Cells(Me.GRID_COL_COVERAGE_DURATION_IDX).Text = coverageDuration
                     e.Item.Cells(Me.GRID_COL_NO_OF_RENEWALS_IDX).Text = numberOfRenewals.ToInteger()
-                    'e.Item.Cells(Me.GRID_COL_BEGIN_KM_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_Ext_Begin_KM_MI).ToString
-                    'e.Item.Cells(Me.GRID_COL_END_KM_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_Ext_End_KM_MI).ToString
 
                     If (Not String.IsNullOrWhiteSpace(maxRenewalDuration)) then
                         e.Item.Cells(Me.GRID_COL_MAX_RENEWAL_DURATION_IDX).Text = maxRenewalDuration
@@ -5579,13 +5426,9 @@ Namespace Certificates
                     If Me.IsEffectiveCoverage(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date), CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date)) Then
                         e.Item.Cells(Me.GRID_COL_BEGIN_DATE_IDX).CssClass = "StatActive"
                         e.Item.Cells(Me.GRID_COL_END_DATE_IDX).CssClass = "StatActive"
-                        'e.Item.Cells(Me.GRID_COL_BEGIN_KM_IDX).CssClass = "StatActive"
-                        'e.Item.Cells(Me.GRID_COL_END_KM_IDX).CssClass = "StatActive"
                     Else
                         e.Item.Cells(Me.GRID_COL_BEGIN_DATE_IDX).CssClass = "StatInactive"
                         e.Item.Cells(Me.GRID_COL_END_DATE_IDX).CssClass = "StatInactive"
-                        'e.Item.Cells(Me.GRID_COL_BEGIN_KM_IDX).CssClass = "StatInactive"
-                        'e.Item.Cells(Me.GRID_COL_END_KM_IDX).CssClass = "StatInactive"
                     End If
                 End If
             Catch ex As Exception
@@ -5609,12 +5452,9 @@ Namespace Certificates
 #Region "Coverage History Datagrid Related"
 
         Public Sub PopulateCoveragesHistoryGrid()
-            'Me.GetSelectedItem(moDealerDrop)
 
-            'Dim dv As CertItemCoverage.CertItemCoverageSearchDV = CertItemCoverage.GetItemCoverages(Me.State.MyBO.Id)
             Dim todayDate As Date
 
-            '   dv.Sort = Me.State.CurrentSortExpresion
             Try
                 Me.State.TheItemCoverageState.CoverageHistoryDV.Sort = CoverageHistoryGrid.DataMember
                 Me.CoverageHistoryGrid.AutoGenerateColumns = False
@@ -5624,9 +5464,6 @@ Namespace Certificates
                 If Me.State.TheItemCoverageState.CoverageHistoryDV.Count = 0 Then
                     Throw New DataNotFoundException(NO_COVERAGE_FOUND)
                 End If
-
-                'Filter only expired coverages 
-                'dv.RowFilter = "end_date < '" & todayDate.Today.ToString("d", System.Globalization.CultureInfo.InvariantCulture) & "'"
 
                 Me.CoverageHistoryGrid.DataSource = Me.State.TheItemCoverageState.CoverageHistoryDV
                 Me.CoverageHistoryGrid.DataBind()
@@ -5728,9 +5565,6 @@ Namespace Certificates
                 Me.State.ClaimsearchDV = Me.State.MyBO.ClaimsForCertificate(Me.State.CertificateId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             End If
 
-            ' remove the sort, since column wise sorting is to be implemented
-            ' dv.Sort = Me.State.CurrentSortExpresion
-            ' dv.Sort = moClaimsDatagrid.DataMember
             Me.moClaimsDatagrid.AutoGenerateColumns = False
 
             SetPageAndSelectedIndexFromGuid(Me.State.ClaimsearchDV, Me.State.selectedClaimItemId, Me.moClaimsDatagrid, Me.State.PageIndexClaimsGrid)
@@ -5864,7 +5698,6 @@ Namespace Certificates
             Dim endDate, todayDate As Date
             Dim cert As Certificate = Me.State.MyBO
             Dim dv As CertItem.CertItemSearchDV = CertItem.GetItems(Me.State.MyBO.Id)
-            'Me.tsHoriz.Items(Me.CERT_ITEMS_INFO_TAB).Text = TranslationBase.TranslateLabelOrMessage("ITEMS")
 
             Dim dvPrdSS As DataView
             dvPrdSS = Certificate.ValidateProductForSpecialServices(cert.DealerId, cert.ProductCode)
@@ -6835,6 +6668,124 @@ Namespace Certificates
             End Try
         End Sub
 
+#End Region
+
+#Region "Certificate Extended Fields grid Related "
+        Private Sub GridCertExtFields_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles GridCertExtFields.ItemDataBound
+            Try
+                Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
+                Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
+                'Dim btnEditItem As LinkButton
+                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                    'If (Not e.Item.Cells(GRID_COL_TIME_STAMP).FindControl(COMMENT_GRID_COL_EDIT_CTRL) Is Nothing) Then
+                    '    btnEditItem = CType(e.Item.Cells(GRID_COL_TIME_STAMP).FindControl(ITEMS_GRID_COL_EDIT_CTRL), LinkButton)
+                    '    btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Comment.CommentSearchDV.COL_COMMENT_ID), Byte()))
+                    '    btnEditItem.CommandName = SELECT_ACTION_COMMAND
+                    '    Dim createdDate As Date = CType(dvRow(Comment.CommentSearchDV.COL_CREATED_DATE), Date)
+                    '    btnEditItem.Text = GetLongDateFormattedString(createdDate)
+                    'End If
+                    e.Item.Cells(CERT_EXT_CERT_ID_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_CERT_ID).ToString
+                    e.Item.Cells(CERT_EXT_FIELD_NAME_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_NAME).ToString
+                    e.Item.Cells(CERT_EXT_FIELD_VALUE_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE).ToString
+                    e.Item.Cells(CERT_EXT_CREATED_BY_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_BY).ToString
+                    e.Item.Cells(CERT_EXT_MODIFIED_BY_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_BY).ToString
+
+                    Dim strCreationDate As String = dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE).Text.ToString
+                    strCreationDate = strCreationDate.Replace("&nbsp;", "")
+                    If String.IsNullOrWhiteSpace(strCreationDate) = False Then
+                        Dim tempCreationDate = Convert.ToDateTime(dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE).Text.Trim())
+                        Dim formattedCreationDate = GetLongDate12FormattedString(tempCreationDate)
+                        e.Item.Cells(CERT_EXT_CREATED_DATE_IDX).Text = Convert.ToString(formattedCreationDate)
+                    End If
+
+                    Dim strModifiedDate As String = dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE).Text.ToString
+                    strModifiedDate = strModifiedDate.Replace("&nbsp;", "")
+                    If String.IsNullOrWhiteSpace(strModifiedDate) = False Then
+                        Dim tempModifiedDate = Convert.ToDateTime(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE).Text.Trim())
+                        Dim formattedModifiedDate = GetLongDate12FormattedString(tempModifiedDate)
+                        e.Item.Cells(CERT_EXT_MODIFIED_DATE_IDX).Text = Convert.ToString(formattedModifiedDate)
+                    End If
+                End If
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub GridCertExtFields_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles GridCertExtFields.SortCommand
+            Try
+                If Me.State.CertExtFieldsSortExpression.StartsWith(e.SortExpression) Then
+                    If Me.State.CertExtFieldsSortExpression.EndsWith(" DESC") Then
+                        Me.State.CertExtFieldsSortExpression = e.SortExpression
+                    Else
+                        Me.State.CertExtFieldsSortExpression &= " DESC"
+                    End If
+                Else
+                    Me.State.CertExtFieldsSortExpression = e.SortExpression
+                End If
+                Me.State.SelectedCertExtId = Nothing
+                Me.State.PageIndex = 0
+                Me.PopulateCertExtendedFieldsGrid()
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Public Sub GridCertExtFields_ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles GridCertExtFields.ItemCommand
+            Try
+                If e.CommandName = "SelectAction" Then
+                    Me.State.SelectedCertExtId = New Guid(e.CommandArgument.ToString())
+                    Dim originalComment As Comment = New Comment(Me.State.SelectedCertExtId)
+                    Dim newComment As Comment = Comment.GetNewComment(originalComment)
+                    Me.State.NavigateToComment = True
+                    Me.NavController.Navigate(Me, FlowEvents.EVENT_COMMENT_SELECTED, New CommentForm.Parameters(newComment))
+                End If
+            Catch ex As Threading.ThreadAbortException
+            Catch ex As Exception
+                Me.HandleErrors(ex, MasterPage.MessageController)
+            End Try
+
+        End Sub
+
+        Public Sub GridCertExtFields_ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles GridCertExtFields.ItemCreated
+            Try
+                BaseItemCreated(sender, e)
+            Catch ex As Exception
+                Me.HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub GridCertExtFields_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles GridCertExtFields.PageIndexChanged
+            Try
+                Me.State.CertExtFieldsPageIndex = e.NewPageIndex
+                Me.State.SelectedCertExtId = Guid.Empty
+                Me.PopulateCertExtendedFieldsGrid()
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Public Sub PopulateCertExtendedFieldsGrid()
+            Dim cert As Certificate = Me.State.MyBO
+            Dim dv As Certificate.CertExtendedFieldsDv = Certificate.GetCertExtensionFieldsList(Me.State.MyBO.Id, Authentication.CurrentUser.LanguageId)
+            dv.Sort = Me.State.CertExtFieldsSortExpression
+
+            Me.GridCertExtFields.AutoGenerateColumns = False
+            Me.GridCertExtFields.Columns(CERT_EXT_FIELD_NAME_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_FIELD_NAME
+            Me.GridCertExtFields.Columns(CERT_EXT_FIELD_VALUE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE
+            Me.GridCertExtFields.Columns(CERT_EXT_CREATED_BY_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_CREATED_BY
+            Me.GridCertExtFields.Columns(CERT_EXT_CREATED_DATE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_CREATED_DATE
+            Me.GridCertExtFields.Columns(CERT_EXT_MODIFIED_BY_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_MODIFIED_BY
+            Me.GridCertExtFields.Columns(CERT_EXT_MODIFIED_DATE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE
+            Me.GridCertExtFields.EditItemIndex = -1
+            SetPageAndSelectedIndexFromGuid(dv, Me.State.SelectedCertExtId, Me.GridCertExtFields, Me.State.CertExtFieldsPageIndex)
+            Me.State.CertExtFieldsPageIndex = Me.GridCertExtFields.CurrentPageIndex
+            Me.GridCertExtFields.DataSource = dv
+            Me.GridCertExtFields.DataBind()
+
+            lblTabCommentHeader.Text = TranslationBase.TranslateLabelOrMessage("CERT_EXT_FIELDS") & " : " & dv.Count.ToString()
+
+            ControlMgr.SetVisibleControl(Me, GridCertExtFields, Me.State.IsCertExtFieldsGridVisible)
+        End Sub
 #End Region
 
 #Region "Button Clicks"
