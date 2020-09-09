@@ -1215,6 +1215,6 @@ group  by c.cert_number
     Elita.elp_certificate.getCertPaymentPassedDueExtInfo
   </GET_CERT_PYMT_PASSED_DUE_EXT_INFO>
   <GET_CERT_EXT_FIELDS_LIST>
-    elita.elp_tbl_cert_ext_s.load
+    elita.elp_tbl_cert_ext.load
   </GET_CERT_EXT_FIELDS_LIST>
 </SQL>

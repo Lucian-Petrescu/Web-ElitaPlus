@@ -177,7 +177,7 @@
                     <li><a href="#tabsMigratedCertificateLink">
                         <asp:Label ID="Label23" runat="server" CssClass="tabHeaderText">CERTIFICATE_LINKS_TAB</asp:Label></a></li>
                     <li><a href="#tabsCertificateExtendedFields">
-                        <asp:Label ID="lblCertificateExtendedFields" runat="server" CssClass="tabHeaderText">CERTIFICATE_EXTENDED_FIELDS</asp:Label></a></li>
+                        <asp:Label ID="lblCertificateExtendedFields" runat="server" CssClass="tabHeaderText">CERT_EXT_FIELDS</asp:Label></a></li>
                 </ul>
                 <div id="tabsCertDetail">
                     <div class="Page" runat="server" id="moCertificateDetailPanel" style="display: block; height: 300px; overflow: auto">
@@ -2284,8 +2284,7 @@
             <div id ="tabsCertificateExtendedFields">
                     <div class="dataContainer" style="width: 100%">
                         <asp:DataGrid ID="GridCertExtFields" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True"
-                                      OnItemCommand="GridCertExtFields_ItemCommand"
-                                      OnItemCreated="GridCertExtFields_ItemCreated"
+                            OnItemCreated="GridCertExtFields_ItemCreated"
                                       SkinID="DetailPageDataGrid" AllowSorting="true">
                             <HeaderStyle />
                             <Columns>
@@ -2295,14 +2294,14 @@
                                                 HeaderText="FIELD_NAME" HeaderStyle-HorizontalAlign="Center" />
                                 <asp:BoundColumn DataField="FIELD_VALUE" SortExpression="FIELD_VALUE" ReadOnly="true"
                                                 HeaderText="FIELD_VALUE" HeaderStyle-HorizontalAlign="Center" />
-                                <asp:BoundColumn DataField="CREATED_DATE" SortExpression="CREATED_DATE" ReadOnly="true"
-                                                HeaderText="CREATED_DATE" HeaderStyle-HorizontalAlign="Center" />
                                 <asp:BoundColumn DataField="CREATED_BY" SortExpression="CREATED_BY" ReadOnly="true"
                                                 HeaderText="CREATED_BY" HeaderStyle-HorizontalAlign="Center" />
-                                <asp:BoundColumn DataField="MODIFIED_DATE" SortExpression="MODIFIED_DATE" ReadOnly="true"
-                                                HeaderText="MODIFIED_DATE" HeaderStyle-HorizontalAlign="Center" />
+                                <asp:BoundColumn DataField="CREATED_DATE" SortExpression="CREATED_DATE" ReadOnly="true"
+                                                 HeaderText="CREATED_DATE" HeaderStyle-HorizontalAlign="Center" />
                                 <asp:BoundColumn DataField="MODIFIED_BY" SortExpression="MODIFIED_BY" ReadOnly="true"
                                                 HeaderText="MODIFIED_BY" HeaderStyle-HorizontalAlign="Center" />
+                                <asp:BoundColumn DataField="MODIFIED_DATE" SortExpression="MODIFIED_DATE" ReadOnly="true"
+                                                 HeaderText="MODIFIED_DATE" HeaderStyle-HorizontalAlign="Center" />
                             </Columns>
                             <PagerStyle Position="TopAndBottom" PageButtonCount="15" Mode="NumericPages"></PagerStyle>
                             <PagerStyle />
