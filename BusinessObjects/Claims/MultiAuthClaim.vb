@@ -557,17 +557,12 @@ Public NotInheritable Class MultiAuthClaim
         Next
     End Sub
 
-    Public Function AddClaimAuthForDeductibleRefund(ByVal serviceCenterId As Guid) As ClaimAuthorization
+    Public Function AddClaimAuthForDeductibleRefund(ByVal serviceCenterId As Guid, ByVal refundAmount As Decimal, ByVal refundMethod As String) As ClaimAuthorization
         Dim newClaimAuth As ClaimAuthorization
         Try
             newClaimAuth = CType(Me.ClaimAuthorizationChildren.GetNewChild(), BusinessObjectsNew.ClaimAuthorization)
-            newClaimAuth.PrepopulateClaimAuthForDeductibleRefund(serviceCenterId, Me.Id, Me.CertificateId)
-            newClaimAuth.AddDeductibleRefundLineItem()
-
-            'If Me.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) And
-            '    newClaimAuth.ContainsDeductible Then
-            '    newClaimAuth.AddDeductibleRefundLineItem()
-            'End If
+            newClaimAuth.PrepopulateClaimAuthForDeductibleRefund(serviceCenterId, Me.Id, Me.CertificateId, refundMethod)
+            newClaimAuth.AddDeductibleRefundLineItem(refundAmount)
             newClaimAuth.Save()
             Return newClaimAuth
         Catch ex As DataBaseAccessException

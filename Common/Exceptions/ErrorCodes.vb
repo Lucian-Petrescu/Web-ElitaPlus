@@ -289,6 +289,9 @@ Public Class ErrorCodes
     Public Const INVALID_REGISTRATION_DELETE_DAY_ERR As String = "ERR_BO_INVALID_REGISTRATION_DELETE_DAY"
     Public Const INVALID_CLIP_PERCENT As String = "CLIP_PERCENT_REQUIRED"
     Public Const INVALID_FIXED_COMMISSION_THRESHOLD As String = "FIXED_COMMISSION_THRESHOLD_REQUIRED"
+    Public Const INVALID_DEDUCTIBLE_REFUND_AMOUNT As String = "DEDUCTIBLE_REFUND_AMOUNT_INVALID" '"Amount Greate than 0 and lessthan or equal to Claim deductible amount."
+    Public Const MSG_DEDUCTIBLE_REFUND_CLAIM_STATUS As String = "MSG_DEDUCTIBLE_REFUND_CLAIM_STATUS" '"Claim is Closed/Denied, please make sure the refund is valid before proceeding."
+    Public Const MSG_DEDUCTIBLE_REFUND_MULTI_AUTH_CLAIM As String = "MSG_DEDUCTIBLE_REFUND_MULTI_AUTH_CLAIM" '"Claim Deductible refund is available only for Multi Auth."
     'Req - 1016 Start 
     Public Const INVALID_WARRANTY_PERIOD As String = "INVALID_WARRANTY_PERIOD"
     Public Const INVALID_OFFSET_BEFORE_DUE_DATE As String = "INVALID_OFFSET_BEFORE_DUE_DATE"

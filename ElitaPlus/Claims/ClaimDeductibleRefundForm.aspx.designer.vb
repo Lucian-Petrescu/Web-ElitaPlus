@@ -212,15 +212,6 @@ Partial Public Class ClaimDeductibleRefundForm
     Protected WithEvents lblDateOfLossValue As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''mcIssueStatus control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents mcIssueStatus As Global.Assurant.ElitaPlus.ElitaPlusWebApp.MessageController
-
-    '''<summary>
     '''lblGrdHdr control.
     '''</summary>
     '''<remarks>

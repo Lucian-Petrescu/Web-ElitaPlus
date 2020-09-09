@@ -1,36 +1,22 @@
-﻿Imports BO = Assurant.ElitaPlus.BusinessObjectsNew
-Imports System.Threading
+﻿Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita.CommonConfiguration.DataElements
-Imports Assurant.Elita
 
 Public Class ClaimDeductibleRefundForm
     Inherits ElitaPlusSearchPage
 
 
 #Region "Constants"
-    Public Const SELECT_ACTION_COMMAND As String = "SelectAction"
+
     Public Const NO_DATA As String = " - "
-    'Public Const GRID_COL_STATUS_CODE_IDX As Integer = 5
-    'Public Const GRID_COL_PROCESS_DATE_IDX As Integer = 3
-    'Public Const GRID_COL_CREATE_DATE_IDX As Integer = 1
-    'Public Const CLAIM_ISSUE_LIST As String = "CLMISSUESTATUS"
-#End Region
-
-#Region "Page Return Type"
-
-    Public Class ReturnType
-        Public LastOperation As DetailPageCommand
-        Public EditingBo As ClaimBase
-        Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As ClaimBase, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
-            Me.HasDataChanged = hasDataChanged
-        End Sub
-    End Class
+    Private Const STATE_ACTIVE As String = "StatActive"
+    Private Const STATE_CLOSED As String = "StatClosed"
+    Private Const STRING_CLASS As String = "Class"
+    Private Const LIST_CODE_RFM As String = "RFM"
+    Private Const LBL_TXT_CLAIM_DEDUCTIBLE_REFUND As String = "CLAIM_DEDUCTIBLE_REFUND"
+    Private Const LBL_TXT_CLAIM_SUMMARY As String = "CLAIM_SUMMARY"
 
 #End Region
 
@@ -38,17 +24,9 @@ Public Class ClaimDeductibleRefundForm
 
     Class MyState
         Public MyBO As ClaimBase
-        Public IsGridVisible As Boolean = True
-        Public SortExpression As String = Claim.ClaimIssuesView.COL_CREATED_DATE & " DESC"
-        Public PageIndex As Integer = 0
-        Public SelectedClaimIssueId As Guid
-        Public PageSize As Integer = 5
-        Public ClaimIssuesView As Claim.ClaimIssuesView
         Public InputParameters As Parameters
 
-
     End Class
-
 
     Public Sub New()
         MyBase.New(New MyState)
@@ -91,32 +69,23 @@ Public Class ClaimDeductibleRefundForm
 
 #Region "Page Events"
     Private Sub UpdateBreadCrum()
-
         Me.MasterPage.BreadCrum = Me.MasterPage.BreadCrum & TranslationBase.TranslateLabelOrMessage("CLAIM") & ElitaBase.Sperator & Me.MasterPage.PageTab
-
     End Sub
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("CLAIM_DEDUCTIBLE_REFUND")
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CLAIM_SUMMARY")
+        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(LBL_TXT_CLAIM_DEDUCTIBLE_REFUND)
+        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(LBL_TXT_CLAIM_SUMMARY)
 
         UpdateBreadCrum()
         Me.MasterPage.MessageController.Clear()
 
-        lblGrdHdr.Text = TranslationBase.TranslateLabelOrMessage("CLAIM_DEDUCTIBLE_REFUND")
-        'lblFileNewIssue.Text = TranslationBase.TranslateLabelOrMessage("FILE_NEW_CLAIM_ISSUE")
-        'If (Me.State.MyBO.StatusCode = Codes.CLAIM_STATUS__CLOSED Or Me.State.MyBO.StatusCode = Codes.CLAIM_STATUS__DENIED) Then
-        'lblFileNewIssue.Visible = False
-        'End If
+        lblGrdHdr.Text = TranslationBase.TranslateLabelOrMessage(LBL_TXT_CLAIM_DEDUCTIBLE_REFUND)
 
         Try
             If Not Me.IsPostBack Then
-                Me.State.ClaimIssuesView = Me.State.MyBO.GetClaimIssuesView()
                 PopulateFormFromBO()
-                'PopulateGrid()
-
             End If
 
         Catch ex As Threading.ThreadAbortException
@@ -133,6 +102,7 @@ Public Class ClaimDeductibleRefundForm
     Private Sub PopulateFormFromBO()
         Dim cssClassName As String
         Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
+
         With Me.State.MyBO
             Me.PopulateControlFromBOProperty(Me.lblCustomerNameValue, .CustomerName)
             Me.PopulateControlFromBOProperty(Me.lblClaimNumberValue, .ClaimNumber)
@@ -144,11 +114,11 @@ Public Class ClaimDeductibleRefundForm
             Me.PopulateControlFromBOProperty(Me.lblWorkPhoneNumberValue, .MobileNumber)
 
             If (Me.State.MyBO.StatusCode = Codes.CLAIM_STATUS__ACTIVE) Then
-                cssClassName = "StatActive"
+                cssClassName = STATE_ACTIVE
             Else
-                cssClassName = "StatClosed"
+                cssClassName = STATE_CLOSED
             End If
-            ClaimStatusTD.Attributes.Item("Class") = cssClassName
+            ClaimStatusTD.Attributes.Item(STRING_CLASS) = cssClassName
         End With
 
         Dim oCertificate As Certificate = New Certificate(Me.State.MyBO.CertificateId)
@@ -157,39 +127,21 @@ Public Class ClaimDeductibleRefundForm
         Me.PopulateControlFromBOProperty(Me.lblDealerGroupValue, oDealer.DealerGroupName)
         Me.PopulateControlFromBOProperty(Me.lblSubscriberStatusValue, LookupListNew.GetClaimStatusFromCode(langId, oCertificate.StatusCode))
         If (oCertificate.StatusCode = Codes.CLAIM_STATUS__ACTIVE) Then
-            cssClassName = "StatActive"
+            cssClassName = STATE_ACTIVE
         Else
-            cssClassName = "StatClosed"
+            cssClassName = STATE_CLOSED
         End If
-        SubStatusTD.Attributes.Item("Class") = SubStatusTD.Attributes.Item("Class") & " " & cssClassName
+        SubStatusTD.Attributes.Item(STRING_CLASS) = SubStatusTD.Attributes.Item(STRING_CLASS) & " " & cssClassName
 
-        'BindListControlToDataView(ddlIssueCode, Me.State.MyBO.Load_Filtered_Issues(), "CODE", "ISSUE_ID", False, , True)
-        'BindListControlToDataView(ddlIssueDescription, Me.State.MyBO.Load_Filtered_Issues(), "DESCRIPTION", "ISSUE_ID", False, , True)
         Dim LanguageCode = Thread.CurrentPrincipal.GetLanguageCode()
-        Dim oRefundTypeDropDown As ListItem() = CommonConfigManager.Current.ListManager.GetList("RFM", LanguageCode)
-        ddlRefundType.Populate(oRefundTypeDropDown, New PopulateOptions() With
-                                          {
-                                            .AddBlankItem = False
-                                           })
+        Dim oRefundTypeDropDown As ListItem() = CommonConfigManager.Current.ListManager.GetList(LIST_CODE_RFM, LanguageCode)
+
+        ddlRefundType.Populate(oRefundTypeDropDown, New PopulateOptions() With {.AddBlankItem = False, .ValueFunc = AddressOf PopulateOptions.GetExtendedCode})
         txtClmDedRefundAmount.Text = Me.GetAmountFormattedString(Me.State.MyBO.Deductible)
-        'txtCreatedDate.Text = GetLongDate12FormattedString(DateTime.Now)
 
-        'If No issues to Add to claim hide the Save and Cancel Button
-        If (Me.State.MyBO.Load_Filtered_Issues().Count = 0) Then
-            'MessageLiteral.Text = TranslationBase.TranslateLabelOrMessage("MSG_NO_ISSUES_FOUND")
-            'modalMessageBox.Attributes.Add("class", "infoMsg")
-            'modalMessageBox.Attributes.Add("style", "display: block")
-            'imgIssueMsg.Src = "~/App_Themes/Default/Images/icon_info.png"
-            'btnSubmit.Visible = False
-            'btnCancel.Visible = False
-        Else
-            'btnSubmit.Visible = True
-            'btnCancel.Visible = True
-            'modalMessageBox.Attributes.Add("class", "errorMsg")
-            'modalMessageBox.Attributes.Add("style", "display: none")
-            'imgIssueMsg.Src = "~/App_Themes/Default/Images/icon_error.png"
+        If (Me.State.MyBO.StatusCode = Codes.CLAIM_STATUS__CLOSED Or Me.State.MyBO.StatusCode = Codes.CLAIM_STATUS__DENIED) Then
+            Me.MasterPage.MessageController.AddWarning(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_DEDUCTIBLE_REFUND_CLAIM_STATUS))
         End If
-
 
     End Sub
 
@@ -198,216 +150,54 @@ Public Class ClaimDeductibleRefundForm
 #Region "Button Clicks"
 
     Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
-        Me.NavController.Navigate(Me, FlowEvents.EVENT_CANCEL, New ClaimForm.Parameters(Me.State.MyBO.Id))
+        If (Me.State.MyBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple AndAlso Me.State.MyBO.StatusCode = Codes.CLAIM_STATUS__PENDING) Then
+            Dim claimId As Guid = Me.State.MyBO.Id
+            Me.RestoreState(Me.State)
+            Me.callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step3, Nothing, claimId, Nothing))
+        Else
+            Me.NavController.Navigate(Me, FlowEvents.EVENT_CANCEL, New ClaimForm.Parameters(Me.State.MyBO.Id))
+        End If
+
     End Sub
 
-    Private Sub SaveClaimIssue(ByVal sender As Object, ByVal Args As EventArgs) Handles btnSubmit.Click
+    Private Sub SaveClaimDeductibleRefund(ByVal sender As Object, ByVal Args As EventArgs) Handles btnSubmit.Click
 
         Try
             If (Me.State.MyBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple) Then
-
+                If validateRefundAmount(txtClmDedRefundAmount.Text, Me.State.MyBO.Deductible) Then
+                    Dim multauth As MultiAuthClaim = CType(Me.State.MyBO, MultiAuthClaim)
+                    multauth.AddClaimAuthForDeductibleRefund(Me.State.MyBO.ServiceCenterId, txtClmDedRefundAmount.Text, ddlRefundType.SelectedValue)
+                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    btnSubmit.Enabled = False
+                End If
+            Else
+                Me.MasterPage.MessageController.AddWarning(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_DEDUCTIBLE_REFUND_MULTI_AUTH_CLAIM))
             End If
 
-            Dim multauth As MultiAuthClaim = CType(Me.State.MyBO, MultiAuthClaim)
-            multauth.AddClaimAuthForDeductibleRefund(Me.State.MyBO.ServiceCenterId)
-
-            'Dim claim As MultiAuthClaim
-            'Dim claimAuthorization As ClaimAuthorization
-            ''Dim claimAuthDetails As ClaimAuthDetail
-
-            ''Create Instance of Claim And Claim Authorizations based on Recon Record
-            'claim = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(Me.State.MyBO.Id) '' Create New DataSet
-
-            'claimAuthorization = claim.ClaimAuthorizationChildren.GetChild(Me.State.MyBO.)
-            'If (Not claimAuthorization.ServiceCenterId.Equals(Me.State.MyBO.ServiceCenterId)) Then
-            '    claimAuthorization.Void()
-            '    claimAuthorization = claimAuthorization.Claim.AddClaimAuthForDeductibleRefund(Me.State.MyBO.ServiceCenterId)
-            'End If
-            'Me.State.MyBO.
-            'Me.State.MyBO
-            'Me.State.MyBO.AddClaimAuthorization(Me.State.SelectedServiceCenterId)
-
-            '    Dim claimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-            '    claimIssue.Me.State.MyBO(Me.State.MyBO.Id, New Guid(hdnSelectedIssueCode.Value), Me.State.MyBO.CertificateId, False)
-            '    Select Case claimIssue.StatusCode
-            '        Case Codes.CLAIMISSUE_STATUS__OPEN, Codes.CLAIMISSUE_STATUS__PENDING
-            '            'Me.State.MyBO.StatusCode = Codes.CLAIM_STATUS__PENDING
-            '            Dim c As Comment = Me.State.MyBO.AddNewComment()
-            '            c.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_SET_TO_PENDING)
-            '            c.Comments = TranslationBase.TranslateLabelOrMessage("MSG_CLAIM_PENDING_ISSUE_OPEN")
-            '    End Select
-            Me.State.MyBO.Save()
-
-            '    PopulateFormFromBO()
-            '    Me.State.ClaimIssuesView = Me.State.MyBO.GetClaimIssuesView()
-            '    'PopulateGrid()
-            '    Me.MasterPage.MessageController.AddSuccess(TranslationBase.TranslateLabelOrMessage(Message.RECORD_ADDED_OK))
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
-
-
     End Sub
 
+    Private Function validateRefundAmount(ByVal deductibleRefundAmt As String, claimDedutiable As Decimal) As Boolean
 
-#End Region
+        Dim blnSuccess As Boolean = True
+        Dim decAmt As Decimal
 
-#Region "Grid related"
+        If Decimal.TryParse(deductibleRefundAmt, decAmt) Then
+            If (decAmt > 0 And decAmt <= claimDedutiable) Then
+                blnSuccess = True
+            Else
+                blnSuccess = False
+                Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.INVALID_DEDUCTIBLE_REFUND_AMOUNT))
+            End If
+        Else
+            blnSuccess = False
+            Me.MasterPage.MessageController.AddError(lblClmDedRefundAmount.Text & ": " & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR))
+        End If
+        Return blnSuccess
+    End Function
 
-    'Public Sub PopulateGrid()
-
-    '    Me.Grid.AutoGenerateColumns = False
-    '    Me.Grid.PageSize = Me.State.PageSize
-    '    Me.ValidSearchResultCountNew(Me.State.ClaimIssuesView.Count, True)
-    '    Me.HighLightSortColumn(Me.Grid, Me.State.SortExpression, Me.IsNewUI)
-    '    Me.SetPageAndSelectedIndexFromGuid(Me.State.ClaimIssuesView, Me.State.SelectedClaimIssueId, Me.Grid, Me.State.PageIndex)
-    '    Me.Grid.DataSource = Me.State.ClaimIssuesView
-    '    Me.Grid.DataBind()
-    '    If (Me.State.ClaimIssuesView.Count > 0) Then
-    '        Me.State.IsGridVisible = True
-    '        dvGridPager.Visible = True
-    '    Else
-    '        Me.State.IsGridVisible = False
-    '        dvGridPager.Visible = False
-    '    End If
-    '    ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-    '    If Me.Grid.Visible Then
-    '        Me.lblRecordCount.Text = Me.State.ClaimIssuesView.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
-    '    End If
-    '    If (Me.State.MyBO.HasIssues) Then
-    '        Select Case Me.State.MyBO.IssuesStatus()
-    '            Case Codes.CLAIMISSUE_STATUS__OPEN
-    '                mcIssueStatus.Clear()
-    '                mcIssueStatus.AddError(Message.MSG_CLAIM_ISSUES_PENDING)
-    '            Case Codes.CLAIMISSUE_STATUS__REJECTED
-    '                mcIssueStatus.Clear()
-    '                mcIssueStatus.AddError(Message.MSG_CLAIM_ISSUES_REJECTED)
-    '            Case Codes.CLAIMISSUE_STATUS__RESOLVED
-    '                mcIssueStatus.Clear()
-    '                mcIssueStatus.AddSuccess(Message.MSG_CLAIM_ISSUES_RESOLVED)
-
-    '        End Select
-    '    End If
-
-    'End Sub
-
-    'Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
-    '    Try
-    '        If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-    '            If Me.State.SortExpression.EndsWith(" DESC") Then
-    '                Me.State.SortExpression = e.SortExpression
-    '            Else
-    '                Me.State.SortExpression &= " DESC"
-    '            End If
-    '        Else
-    '            Me.State.SortExpression = e.SortExpression
-    '        End If
-    '        Me.State.PageIndex = 0
-    '        Me.State.ClaimIssuesView.Sort = Me.State.SortExpression
-    '        Me.PopulateGrid()
-    '    Catch ex As Exception
-    '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
-    '    End Try
-
-    'End Sub
-
-    'Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
-    '    Try
-    '        Me.State.PageIndex = Grid.PageIndex
-    '        Me.State.SelectedClaimIssueId = Guid.Empty
-    '        PopulateGrid()
-    '    Catch ex As Exception
-    '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
-    '    End Try
-    'End Sub
-
-    'Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
-    '    Try
-    '        Grid.PageIndex = e.NewPageIndex
-    '        State.PageIndex = Grid.PageIndex
-    '    Catch ex As Exception
-    '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
-    '    End Try
-    'End Sub
-
-    'Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
-    '    Try
-    '        BaseItemCreated(sender, e)
-    '    Catch ex As Exception
-    '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
-    '    End Try
-    'End Sub
-
-    'Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
-    '    Try
-    '        Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-    '        Dim btnEditItem As LinkButton
-    '        If (e.Row.RowType = DataControlRowType.DataRow) _
-    '            OrElse (e.Row.RowType = DataControlRowType.Separator) Then
-    '            If (Not e.Row.Cells(1).FindControl("EditButton_WRITE") Is Nothing) Then
-    '                btnEditItem = CType(e.Row.Cells(0).FindControl("EditButton_WRITE"), LinkButton)
-    '                btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimIssuesView.COL_CLAIM_ISSUE_ID), Byte()))
-    '                btnEditItem.CommandName = SELECT_ACTION_COMMAND
-    '                btnEditItem.Text = dvRow(Claim.ClaimIssuesView.COL_ISSUE_DESC).ToString
-    '            End If
-
-    '            Dim strCreationDate As String = Convert.ToString(e.Row.Cells(GRID_COL_CREATE_DATE_IDX).Text)
-    '            strCreationDate = strCreationDate.Replace("&nbsp;", "")
-    '            If String.IsNullOrWhiteSpace(strCreationDate) = False Then
-    '                Dim tempCreationDate = Convert.ToDateTime(e.Row.Cells(GRID_COL_CREATE_DATE_IDX).Text.Trim())
-    '                Dim formattedCreationDate = GetLongDate12FormattedString(tempCreationDate)
-    '                e.Row.Cells(GRID_COL_CREATE_DATE_IDX).Text = Convert.ToString(formattedCreationDate)
-    '            End If
-
-    '            Dim strProcessDate As String = Convert.ToString(e.Row.Cells(GRID_COL_PROCESS_DATE_IDX).Text)
-    '            strProcessDate = strProcessDate.Replace("&nbsp;", "")
-    '            If String.IsNullOrWhiteSpace(strProcessDate) = False Then
-    '                Dim tempProcessDate = Convert.ToDateTime(e.Row.Cells(GRID_COL_PROCESS_DATE_IDX).Text.Trim())
-    '                Dim formattedProcessDate = GetLongDate12FormattedString(tempProcessDate)
-    '                e.Row.Cells(GRID_COL_PROCESS_DATE_IDX).Text = Convert.ToString(formattedProcessDate)
-    '            End If
-
-    '            ' Convert short status codes to full description with css
-    '            e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(CLAIM_ISSUE_LIST, dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString)
-    '            If (dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED Or
-    '                      dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
-    '                e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).CssClass = "StatActive"
-    '            Else
-    '                e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).CssClass = "StatInactive"
-    '            End If
-
-    '        End If
-    '    Catch ex As Exception
-    '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
-    '    End Try
-    'End Sub
-
-    'Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
-    '    Try
-    '        If e.CommandName = SELECT_ACTION_COMMAND Then
-    '            If Not e.CommandArgument.ToString().Equals(String.Empty) Then
-    '                Me.State.SelectedClaimIssueId = New Guid(e.CommandArgument.ToString())
-    '                Me.NavController.Navigate(Me, FlowEvents.EVENT_NEXT, New ClaimIssueDetailForm.Parameters(Me.State.MyBO, Me.State.SelectedClaimIssueId))
-    '            End If
-    '        End If
-    '    Catch ex As Threading.ThreadAbortException
-    '    Catch ex As Exception
-    '        If (TypeOf ex Is System.Reflection.TargetInvocationException) AndAlso
-    '       (TypeOf ex.InnerException Is Threading.ThreadAbortException) Then Return
-    '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
-    '    End Try
-    'End Sub
-
-    'Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
-    '    Try
-    '        Me.State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-    '        Me.State.PageIndex = NewCurrentPageIndex(Grid, State.ClaimIssuesView.Count, State.PageSize)
-    '        Me.Grid.PageIndex = Me.State.PageIndex
-    '        Me.PopulateGrid()
-    '    Catch ex As Exception
-    '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
-    '    End Try
-    'End Sub
 #End Region
 
 End Class

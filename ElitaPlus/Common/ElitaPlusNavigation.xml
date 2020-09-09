@@ -1578,7 +1578,17 @@
       <TRANSITION event="next" action="go" state="CREATE_NEW_CLAIM"/>
     </STATE>
   </FLOW>
-
+  <FLOW name="CLAIM_WIZARD_FROM_EXISTING_CLAIM">
+    <START_STATE name="CLAIM_WIZARD_DETAIL" />
+    <END_STATE name="CLAIM_WIZARD_DETAIL" />
+    <STATE name="CLAIM_WIZARD_DETAIL" url="~\Claims\ClaimWizardForm.aspx">
+      <TRANSITION event="claim_deductible_refund" action="go"  state="CLAIM_DEDUCTIBLE_REFUND_INFORMATION"/>
+    </STATE> 
+    <STATE name="CLAIM_DEDUCTIBLE_REFUND_INFORMATION" url="~\Claims\ClaimDeductibleRefundForm.aspx">
+      <TRANSITION event="back" action="go" state="CLAIM_WIZARD_DETAIL" />
+      <TRANSITION event="cancel" action="go" state="CLAIM_WIZARD_DETAIL"/>
+    </STATE>
+  </FLOW>
 </NAVIGATION>
 <!-- 
 NAVIGATION Attributes:

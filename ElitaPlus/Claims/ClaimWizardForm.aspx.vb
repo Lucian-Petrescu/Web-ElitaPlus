@@ -60,6 +60,7 @@ Public Class ClaimWizardForm
     Public Const URL As String = "~/Claims/ClaimWizardForm.aspx"
     Public Const AbsoluteURL As String = "/ElitaPlus/Claims/ClaimWizardForm.aspx"
     Private Const PROTECTION_AND_EVENT_DETAILS As String = "PROTECTION_AND_EVENT_DETAILS"
+    Private Const CLAIM_WIZARD_FROM_EVENT_DETAILS As String = "CLAIM_WIZARD_FROM_EXISTING_CLAIM"
     Private Const CERTIFICATES As String = "CERTIFICATES"
     Private Const VSCCode As String = "2"
     Public Const CLOSED As String = "C"
@@ -449,7 +450,7 @@ Public Class ClaimWizardForm
                             End If
                         Next
                         ' REQ- 6156 - Call Start Fulfillment process web method in Fulfillment Web Service
-                        Me.State.ClaimBO.AddClaimAuthorization(Me.State.SelectedServiceCenterId)
+                        'Me.State.ClaimBO.AddClaimAuthorization(Me.State.SelectedServiceCenterId)
 
                         Me.State.DoesActiveTradeInExistForIMEI = DoesAcceptedOfferExistForIMEI()
                         If Me.State.ClaimBO.IsNew And Me.State.DoesActiveTradeInExistForIMEI Then
@@ -3961,6 +3962,21 @@ Public Class ClaimWizardForm
         End If
         Return blnSuccess
     End Function
+
+    Private Sub btnClaimDeductibleRefund_Click(sender As Object, e As EventArgs) Handles btnClaimDeductibleRefund.Click
+        Try
+            Dim FlowName As String = CLAIM_WIZARD_FROM_EVENT_DETAILS
+            Dim nav As New ElitaPlusNavigation
+            Me.NavController = New NavControllerBase(nav.Flow(FlowName))
+            Me.NavController.State = New MyState
+            Me.NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_DEDUCTIBLE_REFUND, New ClaimDeductibleRefundForm.Parameters(CType(Me.State.ClaimBO, ClaimBase)))
+
+        Catch ex As Threading.ThreadAbortException
+
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
 
 #End Region
 

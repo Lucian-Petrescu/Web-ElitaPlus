@@ -613,6 +613,17 @@ Public NotInheritable Class ClaimAuthorization
         End Get
     End Property
 
+    Public ReadOnly Property IsAuthorizationDeductibleRefund As Boolean
+
+        Get
+            If (Me.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE AndAlso Me.PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER) Then
+                Return True
+            Else
+                Return False
+            End If
+        End Get
+    End Property
+
     Public ReadOnly Property IsSupervisorAuthorizationRequired() As Boolean
         Get
             Dim bIsReq As Boolean
@@ -1367,10 +1378,13 @@ Public NotInheritable Class ClaimAuthorization
             End If
 
             If (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso Not Me.RepairDate Is Nothing) Then
-                
-                    Me.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled
+
+                Me.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled
             End If
-        End If        
+            If (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized Or Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending) AndAlso Not Me.IsSupervisorAuthorizationRequired AndAlso Me.IsAuthorizationDeductibleRefund() Then
+                Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
+            End If
+        End If
 
         Try
 
@@ -1446,34 +1460,22 @@ Public NotInheritable Class ClaimAuthorization
         Next
     End Sub
 
-    Public Sub PrepopulateClaimAuthForDeductibleRefund(ByVal serviceCenterId As Guid, ByVal claimid As Guid, ByVal certid As Guid)
+    Public Sub PrepopulateClaimAuthForDeductibleRefund(ByVal serviceCenterId As Guid, ByVal claimid As Guid, ByVal certid As Guid, ByVal refundMethod As String)
         Me.ServiceCenterId = serviceCenterId
         Me.ClaimId = claimid
         Me.IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
         Me.ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
         Me.ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
-        Me.AuthTypeXcd = "AUTH_TYPE-CREDIT_NOTE"
-        Me.PartyTypeXcd = "PARTY_TYPE-CUSTOMER"
+        'Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
+        Me.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE
+        Me.PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER
         Me.PartyReferenceId = certid
         Me.WhoPaysId = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
-        Me.RefundMethodXcd = "RFM-SEPA"
-        'Me.IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        'Me.ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        'Me.ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-
-        'Me.AuthTypeXcd = LookupListNew.GetDescriptionFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y)
-        'Me.PartyTypeXcd = LookupListNew.GetDescriptionFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y)
-
-        'Me.sv
-        Try
-            Dim dv As PriceListDetail.PriceListResultsDV = Me.GetRepairPricesforMethodofRepair(Me.ServiceCenterId)
-            PopulateClaimAuthItems(dv)
-        Catch ex As Exception
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, ex.InnerException, Messages.PRICE_LIST_NOT_FOUND)
-        End Try
-
-        If (Me.IsSupervisorAuthorizationRequired) Then Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
+        Me.RefundMethodXcd = refundMethod
+        Me._isDSCreator = True
+        Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
+        Me.SetCreatedAuditInfo()
+        'Me.CreatedById = ElitaPlusIdentity.Current.ActiveUser.NetworkId
 
     End Sub
 
@@ -1530,15 +1532,15 @@ Public NotInheritable Class ClaimAuthorization
 
     End Sub
 
-    Friend Sub AddDeductibleRefundLineItem()
-        Dim serviceClassType As ServiceClassType = ServiceCLassTypeList.Instance.GetDetails(Codes.SERVICE_CLASS__DEDUCTIBLE, "DEDUCTIBLE")
+    Friend Sub AddDeductibleRefundLineItem(ByVal refundAmount As Decimal)
+        Dim serviceClassType As ServiceClassType = ServiceCLassTypeList.Instance.GetDetails(Codes.SERVICE_CLASS__DEDUCTIBLE, Codes.SERVICE_CLASS__DEDUCTIBLE)
         Dim claimAuthItem As ClaimAuthItem = CType(Me.ClaimAuthorizationItemChildren.GetNewChild(Me.Id), ClaimAuthItem)
         claimAuthItem.ClaimAuthorizationId = Me.Id
         claimAuthItem.ServiceClassId = serviceClassType.ServiceClassId
         claimAuthItem.ServiceTypeId = serviceClassType.ServiceTypeId
-        claimAuthItem.VendorSku = "DEDUCTIBLE" 'Codes.VENDOR_SKU_PAY_DEDUCTIBLE
-        claimAuthItem.VendorSkuDescription = "DEDUCTIBLE" 'Codes.VENDOR_SKU_DESC_PAY_DEDUCTIBLE
-        claimAuthItem.Amount = Me.Claim.Deductible * -1D
+        claimAuthItem.VendorSku = Codes.VENDOR_SKU_DEDUCTIBLE
+        claimAuthItem.VendorSkuDescription = Codes.VENDOR_SKU_DESC_DEDUCTIBLE
+        claimAuthItem.Amount = refundAmount * -1D
 
     End Sub
 
