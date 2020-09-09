@@ -15,10 +15,6 @@
             height: 20px;
         }
 
-        /* commented because IE 11 doesn't care about :not() and therefore has a different behaviour than Firefox, Chrome and others */
-        /*li.ui-state-default.ui-state-hidden[role=tab]:not(.ui-tabs-active) {
-            display: none;
-        }*/
     </style>
 
     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.6.1.min.js"></script>
@@ -180,6 +176,8 @@
                         <asp:Label ID="Label22" runat="server" CssClass="tabHeaderText">Data_Protection</asp:Label></a></li>
                     <li><a href="#tabsMigratedCertificateLink">
                         <asp:Label ID="Label23" runat="server" CssClass="tabHeaderText">CERTIFICATE_LINKS_TAB</asp:Label></a></li>
+                    <li><a href="#tabsCertificateExtendedFields">
+                        <asp:Label ID="lblCertificateExtendedFields" runat="server" CssClass="tabHeaderText">CERTIFICATE_EXTENDED_FIELDS</asp:Label></a></li>
                 </ul>
                 <div id="tabsCertDetail">
                     <div class="Page" runat="server" id="moCertificateDetailPanel" style="display: block; height: 300px; overflow: auto">
@@ -878,36 +876,6 @@
                                             ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false" />
                                     </td>
                                 </tr>
-                               <%-- <tr id="trmfgdate" runat="server">
-
-                                    <td align="right">
-                                        <asp:Label ID="lblMfgBeginDate" runat="server" >MANUFACTURING_BEGIN_DATE</asp:Label>
-                                    </td>
-                                    <td align="left">
-                                        <asp:TextBox ID="txtMfgBeginDate" runat="server" SkinID="SmallTextBox" Enabled="false"></asp:TextBox>
-                                    </td>
-                                    <td align="right">
-                                        <asp:Label ID="lblMfgEndDate" runat="server" >MANUFACTURING_END_DATE</asp:Label>
-                                    </td>
-                                    <td align="left">
-                                        <asp:TextBox ID="txtMfgEndDate" runat="server" SkinID="SmallTextBox" Enabled="false"></asp:TextBox>
-                                    </td>
-                                </tr>
-                                <tr id="trmfgkm" runat="server">
-
-                                    <td align="right">
-                                        <asp:Label ID="lblMfgBeginKm" runat="server" >MANUFACTURING_BEGIN_KM</asp:Label>
-                                    </td>
-                                    <td align="left">
-                                        <asp:TextBox ID="txtMfgBeginKm" runat="server" SkinID="SmallTextBox" Enabled="false"></asp:TextBox>
-                                    </td>
-                                    <td align="right">
-                                        <asp:Label ID="lblMfgEndKm" runat="server" >MANUFACTURING_END_KM</asp:Label>
-                                    </td>
-                                    <td align="left">
-                                        <asp:TextBox ID="txtMfgEndKm" runat="server" SkinID="SmallTextBox" Enabled="false"></asp:TextBox>
-                                    </td>
-                                </tr>--%>
                                 <tr id="trCertExtn" runat="server">
                                     <td colspan="4">
                                         <div class="Page" runat="server" id="Div2" style="display: block; height: 300px; overflow: auto">
@@ -2313,6 +2281,34 @@
                         </table>
                     </div>
                 </div>
+            <div id ="tabsCertificateExtendedFields">
+                    <div class="dataContainer" style="width: 100%">
+                        <asp:DataGrid ID="GridCertExtFields" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True"
+                                      OnItemCommand="GridCertExtFields_ItemCommand"
+                                      OnItemCreated="GridCertExtFields_ItemCreated"
+                                      SkinID="DetailPageDataGrid" AllowSorting="true">
+                            <HeaderStyle />
+                            <Columns>
+                                <asp:BoundColumn DataField="CERT_EXT_ID" Visible="False"/>
+                                <asp:BoundColumn DataField="CERT_ID" Visible="False"/>
+                                <asp:BoundColumn DataField="FIELD_NAME" SortExpression="FIELD_NAME" ReadOnly="true"
+                                                HeaderText="FIELD_NAME" HeaderStyle-HorizontalAlign="Center" />
+                                <asp:BoundColumn DataField="FIELD_VALUE" SortExpression="FIELD_VALUE" ReadOnly="true"
+                                                HeaderText="FIELD_VALUE" HeaderStyle-HorizontalAlign="Center" />
+                                <asp:BoundColumn DataField="CREATED_DATE" SortExpression="CREATED_DATE" ReadOnly="true"
+                                                HeaderText="CREATED_DATE" HeaderStyle-HorizontalAlign="Center" />
+                                <asp:BoundColumn DataField="CREATED_BY" SortExpression="CREATED_BY" ReadOnly="true"
+                                                HeaderText="CREATED_BY" HeaderStyle-HorizontalAlign="Center" />
+                                <asp:BoundColumn DataField="MODIFIED_DATE" SortExpression="MODIFIED_DATE" ReadOnly="true"
+                                                HeaderText="MODIFIED_DATE" HeaderStyle-HorizontalAlign="Center" />
+                                <asp:BoundColumn DataField="MODIFIED_BY" SortExpression="MODIFIED_BY" ReadOnly="true"
+                                                HeaderText="MODIFIED_BY" HeaderStyle-HorizontalAlign="Center" />
+                            </Columns>
+                            <PagerStyle Position="TopAndBottom" PageButtonCount="15" Mode="NumericPages"></PagerStyle>
+                            <PagerStyle />
+                        </asp:DataGrid>
+                        </div>
+                </div>
 
             </div>
         </div>
@@ -2339,8 +2335,6 @@
                     <asp:BoundColumn SortExpression="Renewal_Date" HeaderText="Renewal_Date" HeaderStyle-Wrap="false" ItemStyle-Wrap="false" />
                     <asp:BoundColumn HeaderText="COVERAGE_TOTAL_PAID_AMOUNT" HeaderStyle-Width="150" />
                     <asp:BoundColumn HeaderText="COVERAGE_REMAIN_LIABILITY_LIMIT" HeaderStyle-Width="150" />
-<%--                    <asp:BoundColumn SortExpression="Ext_Begin_KM_MI" HeaderText="Begin_KM" ItemStyle-Wrap="false" />
-                    <asp:BoundColumn SortExpression="Ext_End_KM_MI" HeaderText="End_KM" ItemStyle-Wrap="false" />--%>
                 </Columns>
                 <PagerStyle HorizontalAlign="Center" ForeColor="DarkSlateBlue" BackColor="#DEE3E7"
                     PageButtonCount="15" Mode="NumericPages"></PagerStyle>
