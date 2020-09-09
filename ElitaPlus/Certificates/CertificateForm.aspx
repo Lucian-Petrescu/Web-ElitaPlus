@@ -180,8 +180,6 @@
                         <asp:Label ID="Label22" runat="server" CssClass="tabHeaderText">Data_Protection</asp:Label></a></li>
                     <li><a href="#tabsMigratedCertificateLink">
                         <asp:Label ID="Label23" runat="server" CssClass="tabHeaderText">CERTIFICATE_LINKS_TAB</asp:Label></a></li>
-                    <li><a href="#tabsCertificateExtendedFields">
-                        <asp:Label ID="lblCertificateExtendedFields" runat="server" CssClass="tabHeaderText">CERT_EXT_FIELDS</asp:Label></a></li>
                 </ul>
                 <div id="tabsCertDetail">
                     <div class="Page" runat="server" id="moCertificateDetailPanel" style="display: block; height: 300px; overflow: auto">
@@ -213,7 +211,7 @@
                                         </asp:DropDownList>
                                     </td>
                                 </tr>
-                                <tr runat="server" id="moCustName1">
+                                <tr runat="server" id="Tr1">
                                     <td align="right">
                                         <asp:Label ID="moCustomerFirstNameLabel" runat="server">CUSTOMER_FIRST_NAME</asp:Label>
                                     </td>
@@ -227,7 +225,7 @@
                                         <asp:TextBox ID="moCustomerMiddleNameText" TabIndex="1" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
-                                <tr runat="server" id="moCustName2">
+                                <tr runat="server" id="Tr2">
                                     <td align="right">
                                         <asp:Label ID="moCustomerLastNameLabel" runat="server">CUSTOMER_LAST_NAME</asp:Label>
                                     </td>
@@ -2110,7 +2108,7 @@
                                             ReadOnly="true" />
                                     </td>
                                 </tr>
-                                <tr id="Tr2" runat="server">
+                                <tr id="Tr4" runat="server">
                                     <td align="right">
                                         <asp:Label ID="moLoanCodeLabel" runat="server">LOAN_CODE</asp:Label>
                                     </td>
@@ -2189,7 +2187,7 @@
                     <div class="Page" runat="server" id="moInstallmentHistoryPanel" style="display: block; height: 300px; overflow: auto">
 
                         <table width="100%" class="dataGrid">
-                            <tr id="tr1" runat="server">
+                            <tr id="tr5" runat="server">
                                 <td class="bor" align="left">
                                     <asp:Label ID="moCertInstallmentHistory_lblPageSize" runat="server">Page_Size</asp:Label><asp:Label
                                         ID="Label9" runat="server">:</asp:Label>
@@ -2295,7 +2293,7 @@
                     <div class="Page" runat="server" id="moCertificatesLinkPanel" style="display: block; height: 300px; overflow: auto">
 
                         <table width="20%" class="dataGrid">
-                            <tr id="tr4" runat="server">
+                            <tr id="tr6" runat="server">
                                 <td class="bor" align="left">
                                     <asp:Label ID="moCertificatesLinkPanel_PrevCertId" runat="server">PREVIOUS_CERTIFICATE_ID</asp:Label>
                                 </td>
@@ -2303,7 +2301,7 @@
                                     <asp:LinkButton ID="linkPrevCertId" runat="server"></asp:LinkButton>
                                 </td>
                             </tr>
-                            <tr id="tr5" runat="server">
+                            <tr id="tr7" runat="server">
                                 <td class="bor" align="left">
                                     <asp:Label ID="moCertificatesLinkPanel_OrigCertId" runat="server">ORIGINAL_CERTIFICATE_ID</asp:Label>
                                     &nbsp;
@@ -2315,34 +2313,7 @@
                         </table>
                     </div>
                 </div>
-                
-                <div id ="tabsCertificateExtendedFields">
-                    <div class="dataContainer" style="width: 100%">
-                        <asp:DataGrid ID="GridCertExtFields" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True"
-                            OnItemCreated="GridCertExtFields_ItemCreated"
-                                      SkinID="DetailPageDataGrid" AllowSorting="true">
-                            <HeaderStyle />
-                            <Columns>
-                                <asp:BoundColumn DataField="CERT_EXT_ID" Visible="False"/>
-                                <asp:BoundColumn DataField="CERT_ID" Visible="False"/>
-                                <asp:BoundColumn DataField="FIELD_NAME" SortExpression="FIELD_NAME" ReadOnly="true"
-                                                HeaderText="FIELD_NAME" HeaderStyle-HorizontalAlign="Center" />
-                                <asp:BoundColumn DataField="FIELD_VALUE" SortExpression="FIELD_VALUE" ReadOnly="true"
-                                                HeaderText="FIELD_VALUE" HeaderStyle-HorizontalAlign="Center" />
-                                <asp:BoundColumn DataField="CREATED_BY" SortExpression="CREATED_BY" ReadOnly="true"
-                                                HeaderText="CREATED_BY" HeaderStyle-HorizontalAlign="Center" />
-                                <asp:BoundColumn DataField="CREATED_DATE" SortExpression="CREATED_DATE" ReadOnly="true"
-                                                 HeaderText="CREATED_DATE" HeaderStyle-HorizontalAlign="Center" />
-                                <asp:BoundColumn DataField="MODIFIED_BY" SortExpression="MODIFIED_BY" ReadOnly="true"
-                                                HeaderText="MODIFIED_BY" HeaderStyle-HorizontalAlign="Center" />
-                                <asp:BoundColumn DataField="MODIFIED_DATE" SortExpression="MODIFIED_DATE" ReadOnly="true"
-                                                 HeaderText="MODIFIED_DATE" HeaderStyle-HorizontalAlign="Center" />
-                            </Columns>
-                            <PagerStyle Position="TopAndBottom" PageButtonCount="15" Mode="NumericPages"></PagerStyle>
-                            <PagerStyle />
-                        </asp:DataGrid>
-                        </div>
-                </div>
+
             </div>
         </div>
         <div class="dataContainer">

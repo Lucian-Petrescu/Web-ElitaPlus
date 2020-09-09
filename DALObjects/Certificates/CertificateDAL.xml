@@ -1010,9 +1010,9 @@ group  by c.cert_number
     Elita.elp_certificate.getCertUpgExtensionInfo
   </GET_CERT_UPG_EXT_INFO>
   <GET_FRAUD_CERT_EXT>
-      ELITA.ELP_CERTIFICATE.GetFraudulentCertExtensions
+    ELITA.ELP_CERTIFICATE.GetFraudulentCertExtensions
   </GET_FRAUD_CERT_EXT>
-    <GET_OTHER_CUSTOMER_INFO>
+  <GET_OTHER_CUSTOMER_INFO>
     Elita.elp_customer_ops.get_other_customers
   </GET_OTHER_CUSTOMER_INFO>
   <GET_OTHER_CUSTOMER_DETAILS>
@@ -1115,7 +1115,7 @@ group  by c.cert_number
     where ap.reference_id = :cert_id
     and   ap.reference = 'ELP_CERT'
   </LOAD_CUST_BANK_DETAIL_HISTORY>
-  
+
   <CANCEL_CERT_BY_EXTERNAL_NUMBER>
     Elita.elp_certificate.CancelCertByExternalCertNum
   </CANCEL_CERT_BY_EXTERNAL_NUMBER>
@@ -1195,7 +1195,7 @@ group  by c.cert_number
     elita.elp_serialnumber_search
   </LOAD_SERIAL_NUMBER>
   <LOAD_CERT_PHONE_SEARCH_LIST>
-			elita.elp_cert_phone_search
+    elita.elp_cert_phone_search
   </LOAD_CERT_PHONE_SEARCH_LIST>
   <GET_CERT_TERM>
     select (max(coverage_duration))
@@ -1214,7 +1214,4 @@ group  by c.cert_number
   <GET_CERT_PYMT_PASSED_DUE_EXT_INFO>
     Elita.elp_certificate.getCertPaymentPassedDueExtInfo
   </GET_CERT_PYMT_PASSED_DUE_EXT_INFO>
-  <GET_CERT_EXT_FIELDS_LIST>
-    elita.elp_tbl_cert_ext_s.load
-  </GET_CERT_EXT_FIELDS_LIST>
 </SQL>
