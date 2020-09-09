@@ -3379,7 +3379,6 @@ Partial Class ClaimForm
 
         End Try
     End Sub
-
     Protected Sub btnClaimIssues_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClaimIssues.Click
         Try
             Me.NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_ISSUES, New ClaimIssueForm.Parameters(Me.State.MyBO))
@@ -3390,7 +3389,6 @@ Partial Class ClaimForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
-
     Private Sub btnClaimImages_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClaimImages.Click
         Try
             Dim URL As String = "~/Claims/ClaimDocumentForm.aspx"
@@ -3498,6 +3496,19 @@ Partial Class ClaimForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
+
+    Protected Sub btnClaimDeductibleRefund_Click(sender As Object, e As EventArgs) Handles btnClaimDeductibleRefund.Click
+        Try
+            Me.NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_DEDUCTIBLE_REFUND, New ClaimDeductibleRefundForm.Parameters(Me.State.MyBO))
+
+        Catch ex As Threading.ThreadAbortException
+
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+
 #End Region
 
 #Region "Page Control Events"
@@ -4178,6 +4189,7 @@ Partial Class ClaimForm
         End Try
 
     End Function
+
 #End Region
 
 #Region "Change Fulfillment"
