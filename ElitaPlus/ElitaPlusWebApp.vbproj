@@ -5933,6 +5933,7 @@
     <Content Include="Reports\ReplacementOrder_AAU_TWG_DE.xslt" />
     <Content Include="Reports\ReplacementOrder_AAU_TWG_ESC.xslt" />
     <Content Include="Reports\ReplacementOrder_ANZ_TWG_ESC.xslt" />
+    <Content Include="Reports\ReplacementOrder_APT.xslt" />
     <Content Include="Reports\ReportCeProgressForm_New.aspx" />
     <Content Include="Reports\ReconciliationReportForm.aspx" />
     <Content Include="Reports\ReportExtractInputControl.ascx" />
@@ -5943,6 +5944,8 @@
     <Content Include="Reports\ServiceOrder_ANZ_TWG_ESC.xslt" />
     <Content Include="Reports\ServiceOrder_AAU_TWG_DE.xslt" />
     <Content Include="Reports\ServiceOrder_AAU_TWG_ESC.xslt" />
+    <Content Include="Reports\ServiceOrder_APT.xslt" />
+    <Content Include="Reports\ServiceWarranty_APT.xslt" />
     <Content Include="Reports\SummaryPaymentByCertificate.aspx" />
     <Content Include="Reports\UpgradeReconciliationReportForm.aspx" />
     <Content Include="Reports\TIMMCertificateExtractForm.aspx" />
