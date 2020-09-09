@@ -2108,7 +2108,7 @@
                                             ReadOnly="true" />
                                     </td>
                                 </tr>
-                                <tr id="Tr4" runat="server">
+                                <tr id="Tr2" runat="server">
                                     <td align="right">
                                         <asp:Label ID="moLoanCodeLabel" runat="server">LOAN_CODE</asp:Label>
                                     </td>
@@ -2187,7 +2187,7 @@
                     <div class="Page" runat="server" id="moInstallmentHistoryPanel" style="display: block; height: 300px; overflow: auto">
 
                         <table width="100%" class="dataGrid">
-                            <tr id="tr5" runat="server">
+                            <tr id="tr1" runat="server">
                                 <td class="bor" align="left">
                                     <asp:Label ID="moCertInstallmentHistory_lblPageSize" runat="server">Page_Size</asp:Label><asp:Label
                                         ID="Label9" runat="server">:</asp:Label>
@@ -2293,7 +2293,7 @@
                     <div class="Page" runat="server" id="moCertificatesLinkPanel" style="display: block; height: 300px; overflow: auto">
 
                         <table width="20%" class="dataGrid">
-                            <tr id="tr6" runat="server">
+                            <tr id="tr4" runat="server">
                                 <td class="bor" align="left">
                                     <asp:Label ID="moCertificatesLinkPanel_PrevCertId" runat="server">PREVIOUS_CERTIFICATE_ID</asp:Label>
                                 </td>
@@ -2301,7 +2301,7 @@
                                     <asp:LinkButton ID="linkPrevCertId" runat="server"></asp:LinkButton>
                                 </td>
                             </tr>
-                            <tr id="tr7" runat="server">
+                            <tr id="tr5" runat="server">
                                 <td class="bor" align="left">
                                     <asp:Label ID="moCertificatesLinkPanel_OrigCertId" runat="server">ORIGINAL_CERTIFICATE_ID</asp:Label>
                                     &nbsp;
