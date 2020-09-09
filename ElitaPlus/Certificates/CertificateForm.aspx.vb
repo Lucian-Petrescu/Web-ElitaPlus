@@ -6937,7 +6937,7 @@ Namespace Certificates
             Me.GridCertExtFields.DataSource = dv
             Me.GridCertExtFields.DataBind()
 
-            lblTabCommentHeader.Text = TranslationBase.TranslateLabelOrMessage("CERT_EXT_FIELDS") & " : " & dv.Count.ToString()
+            lblCertificateExtendedFields.Text = TranslationBase.TranslateLabelOrMessage("CERT_EXT_FIELDS") & " : " & dv.Count.ToString()
 
             ControlMgr.SetVisibleControl(Me, GridCertExtFields, Me.State.IsCertExtFieldsGridVisible)
         End Sub
