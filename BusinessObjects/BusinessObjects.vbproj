@@ -2148,6 +2148,15 @@
     <None Include="Service References\PolicyService\PolicyService1.disco" />
     <Compile Include="DataProtection\CertForgotRequest.vb" />
     <Compile Include="Claims\FulfillmentProviderType.vb" />
+    <EmbeddedResource Include="..\ElitaPlus\Reports\ServiceWarranty_APT.xslt">
+      <Link>ServiceOrderXslt\ServiceWarranty_APT.xslt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\ElitaPlus\Reports\ReplacementOrder_APT.xslt">
+      <Link>ServiceOrderXslt\ReplacementOrder_APT.xslt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\ElitaPlus\Reports\ServiceOrder_APT.xslt">
+      <Link>ServiceOrderXslt\ServiceOrder_APT.xslt</Link>
+    </EmbeddedResource>
     <Content Include="Settings.xml">
       <SubType>Designer</SubType>
     </Content>
