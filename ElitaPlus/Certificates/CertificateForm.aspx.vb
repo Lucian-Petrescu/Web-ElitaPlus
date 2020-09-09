@@ -6089,7 +6089,6 @@ Namespace Certificates
             Me.CommentsGrid.DataSource = dv
             Me.CommentsGrid.DataBind()
 
-            'Me.tsHoriz.Items(Me.CERT_COMMENTS_TAB).Text = TranslationBase.TranslateLabelOrMessage("COMMENTS") & " : " & dv.Count.ToString()
             lblTabCommentHeader.Text = TranslationBase.TranslateLabelOrMessage("COMMENTS") & " : " & dv.Count.ToString()
 
             ControlMgr.SetVisibleControl(Me, CommentsGrid, Me.State.IsCommentsGridVisible)
@@ -6689,22 +6688,13 @@ Namespace Certificates
                     e.Item.Cells(CERT_EXT_FIELD_VALUE_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE).ToString
                     e.Item.Cells(CERT_EXT_CREATED_BY_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_BY).ToString
                     e.Item.Cells(CERT_EXT_MODIFIED_BY_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_BY).ToString
-
-                    Dim strCreationDate As String = dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE).Text.ToString
-                    strCreationDate = strCreationDate.Replace("&nbsp;", "")
-                    If String.IsNullOrWhiteSpace(strCreationDate) = False Then
-                        Dim tempCreationDate = Convert.ToDateTime(dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE).Text.Trim())
-                        Dim formattedCreationDate = GetLongDate12FormattedString(tempCreationDate)
-                        e.Item.Cells(CERT_EXT_CREATED_DATE_IDX).Text = Convert.ToString(formattedCreationDate)
+                    e.Item.Cells(CERT_EXT_CREATED_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE), Date))
+                    If Not IsDBNull(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE)) then
+                        e.Item.Cells(CERT_EXT_MODIFIED_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE), Date))
+                    Else 
+                        e.Item.Cells(CERT_EXT_MODIFIED_DATE_IDX).Text = String.Empty
                     End If
-
-                    Dim strModifiedDate As String = dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE).Text.ToString
-                    strModifiedDate = strModifiedDate.Replace("&nbsp;", "")
-                    If String.IsNullOrWhiteSpace(strModifiedDate) = False Then
-                        Dim tempModifiedDate = Convert.ToDateTime(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE).Text.Trim())
-                        Dim formattedModifiedDate = GetLongDate12FormattedString(tempModifiedDate)
-                        e.Item.Cells(CERT_EXT_MODIFIED_DATE_IDX).Text = Convert.ToString(formattedModifiedDate)
-                    End If
+                    
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -6730,21 +6720,21 @@ Namespace Certificates
             End Try
         End Sub
 
-        Public Sub GridCertExtFields_ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles GridCertExtFields.ItemCommand
-            Try
-                If e.CommandName = "SelectAction" Then
-                    Me.State.SelectedCertExtId = New Guid(e.CommandArgument.ToString())
-                    Dim originalComment As Comment = New Comment(Me.State.SelectedCertExtId)
-                    Dim newComment As Comment = Comment.GetNewComment(originalComment)
-                    Me.State.NavigateToComment = True
-                    Me.NavController.Navigate(Me, FlowEvents.EVENT_COMMENT_SELECTED, New CommentForm.Parameters(newComment))
-                End If
-            Catch ex As Threading.ThreadAbortException
-            Catch ex As Exception
-                Me.HandleErrors(ex, MasterPage.MessageController)
-            End Try
+        'Public Sub GridCertExtFields_ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles GridCertExtFields.ItemCommand
+        '    Try
+        '        If e.CommandName = "SelectAction" Then
+        '            Me.State.SelectedCertExtId = New Guid(e.CommandArgument.ToString())
+        '            Dim originalComment As Comment = New Comment(Me.State.SelectedCertExtId)
+        '            Dim newComment As Comment = Comment.GetNewComment(originalComment)
+        '            Me.State.NavigateToComment = True
+        '            Me.NavController.Navigate(Me, FlowEvents.EVENT_COMMENT_SELECTED, New CommentForm.Parameters(newComment))
+        '        End If
+        '    Catch ex As Threading.ThreadAbortException
+        '    Catch ex As Exception
+        '        Me.HandleErrors(ex, MasterPage.MessageController)
+        '    End Try
 
-        End Sub
+        'End Sub
 
         Public Sub GridCertExtFields_ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles GridCertExtFields.ItemCreated
             Try
