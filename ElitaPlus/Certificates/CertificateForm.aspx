@@ -211,7 +211,7 @@
                                         </asp:DropDownList>
                                     </td>
                                 </tr>
-                                <tr runat="server" id="Tr1">
+                                <tr runat="server" id="moCustName1">
                                     <td align="right">
                                         <asp:Label ID="moCustomerFirstNameLabel" runat="server">CUSTOMER_FIRST_NAME</asp:Label>
                                     </td>
@@ -225,7 +225,7 @@
                                         <asp:TextBox ID="moCustomerMiddleNameText" TabIndex="1" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
-                                <tr runat="server" id="Tr2">
+                                <tr runat="server" id="moCustName2">
                                     <td align="right">
                                         <asp:Label ID="moCustomerLastNameLabel" runat="server">CUSTOMER_LAST_NAME</asp:Label>
                                     </td>
