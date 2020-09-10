@@ -1169,6 +1169,15 @@ Public Class CertificateDAL
 
     End Function
 
+    'Public Function getClaimWaitingPeriod(ByVal certID As Guid) As DataSet
+    '    Dim ds As New DataSet
+    '    Dim parameters() As OracleParameter
+    '    Dim selectStmt As String = Me.Config("/SQL/GET_CLAIM_WAITING_PERIOD")
+
+    '    parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ID, certID.ToByteArray)}
+    '    Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_CLAIM_WAITING_PERIOD, parameters)
+
+    'End Function
     Public Function getCertCancellationDate(ByVal certID As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
@@ -3297,28 +3306,6 @@ Public Class CertificateDAL
         End Try
 
     End Function
-    Public Function GetCertExtFieldsList(ByVal certId As Guid, ByVal languageId As Guid) As DataSet
-
-        Dim selectStmt As String = Me.Config("/SQL/GET_CERT_EXT_FIELDS_LIST")
-        Dim ds As DataSet = New DataSet
-        Dim outputParameter(0) As DBHelper.DBHelperParameter
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                    {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray),
-                     New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)
-                    }
-
-        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))
-
-        Try
-            DBHelper.FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertExtFieldsList")
-            ds.Tables(0).TableName = "GetCertExtFieldsList"
-
-            Return ds
-        Catch ex As Exception
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-        End Try
-
-    End Function
 
     Public Function GetCertUpgradeExtensionsInfo(ByVal Cert_id As Guid) As DataSet
         Dim selectStmt As String = Me.Config("/SQL/GET_CERT_UPG_EXT_INFO")
@@ -3408,6 +3395,32 @@ Public Class CertificateDAL
 
             Return paymentPasseddue
 
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Function
+
+#End Region
+
+#Region "Certificate Extended Fields"
+    Public Function GetCertExtFieldsList(ByVal certId As Guid, ByVal languageId As Guid) As DataSet
+
+        Dim selectStmt As String = Me.Config("/SQL/GET_CERT_EXT_FIELDS_LIST")
+        Dim ds As DataSet = New DataSet
+        Dim outputParameter(0) As DBHelper.DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray),
+                 New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)
+                }
+
+        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))
+
+        Try
+            DBHelper.FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertExtFieldsList")
+            ds.Tables(0).TableName = "GetCertExtFieldsList"
+
+            Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
