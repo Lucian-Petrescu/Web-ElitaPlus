@@ -590,7 +590,7 @@ Public NotInheritable Class MultiAuthClaim
     Public Function IsDeductibleRefundExist() As Boolean
         Dim flag As Boolean = False
         Dim auth = Me.NonVoidClaimAuthorizationList.Where(Function(c) c.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE And c.PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER And
-                                                                    (c.ClaimAuthStatus <> ClaimAuthorizationStatus.Pending Or c.ClaimAuthStatus <> ClaimAuthorizationStatus.Authorized)).ToList()
+                                                                    (c.ClaimAuthStatus = ClaimAuthorizationStatus.Pending Or c.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized)).ToList()
         If auth.Count > 0 Then
             flag = True
         End If
