@@ -477,7 +477,7 @@ Public NotInheritable Class ValidDelayFactorPeriod
             Dim ds As New DataSet
             Dim currRow, prevRow, nextRow As DataRow
 
-            If obj.EffectiveDate Is Nothing Or obj.EffectiveDate Is Nothing Then
+            If obj.EffectiveDate Is Nothing Then
                 Return True  ' Skip validation. Rely on mandatory field validation to report exception
             End If
 

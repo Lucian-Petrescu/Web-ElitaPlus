@@ -86,12 +86,6 @@ Public Class ClaimIssueStatus
     End Sub
 #End Region
 
-#Region "Variables"
-
-    ' Dim moStatus As CEHelper.RptStatus
-    Private _ProcessedBy As String
-
-#End Region
 #Region "Properties"
 
     'Key Property
@@ -206,7 +200,7 @@ Public Class ClaimIssueStatus
         Get
             CheckDeleted()
             If Row(ClaimIssueStatusDAL.COL_NAME_PROCESSED_BY) Is DBNull.Value Then
-                Return _ProcessedBy
+                Return Nothing
             Else
                 Return CType(Row(ClaimIssueStatusDAL.COL_NAME_PROCESSED_BY), String)
             End If
@@ -221,7 +215,7 @@ Public Class ClaimIssueStatus
         Get
             CheckDeleted()
             If Row(ClaimIssueStatusDAL.COL_NAME_CREATED_BY) Is DBNull.Value Then
-                Return _ProcessedBy
+                Return Nothing
             Else
                 Return CType(Row(ClaimIssueStatusDAL.COL_NAME_CREATED_BY), String)
             End If

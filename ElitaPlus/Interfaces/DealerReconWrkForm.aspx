@@ -780,7 +780,7 @@
                                         <asp:TextBox ID="moUpgradeTermTextGrid" runat="server" Visible="True"></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>  
-                                <asp:TemplateField HeaderText="BILLING_ACCOUNT_NUMBER">
+                                <asp:TemplateField HeaderText="CertBillingAccountNumber">
                                     <HeaderStyle  HorizontalAlign="Center"></HeaderStyle>
                                     <ItemStyle Wrap="False" HorizontalAlign="Right" Width="40%"></ItemStyle>
                                     <ItemTemplate>

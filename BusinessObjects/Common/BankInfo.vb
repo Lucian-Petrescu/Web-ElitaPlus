@@ -677,8 +677,8 @@ Public Class BankInfo
                             Dim BankId(6) As Integer, strConstant As String = "7139713"
                             Dim Total As Integer = 0, checkDigit As Integer
                             For i = 0 To 6
-                                BankId(i) = CInt(Mid(obj.Bank_Id.ToString, i + 1, 1))
-                                BankId(i) = BankId(i) * CInt(Mid(strConstant, i + 1, 1))
+                                'BankId(i) = CInt(Mid(obj.Bank_Id.ToString, i + 1, 1))
+                                BankId(i) = CInt(Mid(obj.Bank_Id.ToString, i + 1, 1)) * CInt(Mid(strConstant, i + 1, 1))
                                 Total = Total + BankId(i)
                             Next
                             checkDigit = 10 - CInt(Total.ToString.Substring(Total.ToString.Length - 1, 1))
@@ -759,8 +759,8 @@ Public Class BankInfo
                                     Return False
                                 End If
                                 For i = 0 To 12
-                                    AccNumber(i) = CInt(Mid(obj.Account_Number.ToString, i + 1, 1))
-                                    AccNumber(i) = AccNumber(i) * CInt(Mid(strConstant, i + 1, 1))
+                                    'AccNumber(i) = CInt(Mid(obj.Account_Number.ToString, i + 1, 1))
+                                    AccNumber(i) = CInt(Mid(obj.Account_Number.ToString, i + 1, 1)) * CInt(Mid(strConstant, i + 1, 1))
                                     Total = Total + AccNumber(i)
                                 Next
                                 checkDigit = 10 - CInt(Total.ToString.Substring(Total.ToString.Length - 1, 1))

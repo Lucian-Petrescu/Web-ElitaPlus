@@ -93,10 +93,6 @@ Public Class EarningPercent
     Private Const MIN_PERCENT As Decimal = 0.0
     Private Const MAX_PERCENT As Decimal = 100.0
 
-    Private Const EARNING_PERCENT_ID As Integer = 0
-    Private Const EARNING_PATTERN_ID As Integer = 1
-    Private Const EARNING_TERM As Integer = 2
-    Private Const EARNING_PERCENT As Integer = 3
     Private Const MIM_DECIMAL_NUMBERS As Integer = 4
     Private Const EARNING_PERCENT_FORM012 As String = "COVERAGE_RATE_FORM012" ' Only 4 Digits Allowed After Decimal Point
 

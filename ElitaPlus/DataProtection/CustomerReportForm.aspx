@@ -85,7 +85,7 @@
 
 
                             <td>
-                                 <asp:Label ID="lblIDNumber" runat="server">TAX_ID_NUMBER</asp:Label><br />
+                                 <asp:Label ID="lblIDNumber" runat="server">CertTaxIdER</asp:Label><br />
                                 <asp:TextBox ID="txtTaxIDNumber" runat="server" SkinID="MediumTextBox" AutoPostBack="False" MaxLength="50"></asp:TextBox>
 
                                </td> 

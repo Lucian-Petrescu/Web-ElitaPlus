@@ -52,7 +52,7 @@ Public Class Certificate
     Public Const CANCELLATION_REASON_CODE_16 = "16"
     Public Const CANCELLATION_REASON_CODE_17 = "17"
 
-    Public Const IDENTIFICATION_NUMBER = "IdentificationNumber"
+    Public Const CertIdentificationNumber = "IdentificationNumber"
     Public Const TAX_ID_NUMB = "TaxIDNumb"
 
     Public Const SEARCH_SORT_DEFAULT = CertificateDAL.SORT_BY_CUSTOMER_NAME
@@ -69,7 +69,7 @@ Public Class Certificate
     Private Const ASTERISK As Char = "*"
     Private Const SEARCH_EXCEPTION_INFORCE_DATE As String = "SEARCH_EXCEPTION_INFORCE_DATE"
     Public Const SEARCH_REGEX As String = "^[*]|[%]"
-    Public Const BILLING_ACCOUNT_NUMBER As String = "BILLING_ACCOUNT_NUMBER"
+    Public Const CertBillingAccountNumber As String = "CertBillingAccountNumber"
 
 
 #End Region
@@ -176,17 +176,17 @@ Public Class Certificate
 #End Region
 #Region "Navigation Properties"
 
-    Private _productCode As ProductCode = Nothing
+    Private _productCodeObject As ProductCode = Nothing
     Private _company As Company = Nothing
 
     Public ReadOnly Property Product As ProductCode
         Get
-            If (_productCode Is Nothing) Then
+            If (_productCodeObject Is Nothing) Then
                 If (Me.DealerId <> Guid.Empty) AndAlso (Not Me.ProductCode Is Nothing) AndAlso (Me.ProductCode.Trim().Length > 0) Then
-                    _productCode = New ProductCode(Me.DealerId, Me.ProductCode, Me.Dataset)
+                    _productCodeObject = New ProductCode(Me.DealerId, Me.ProductCode, Me.Dataset)
                 End If
             End If
-            Return _productCode
+            Return _productCodeObject
         End Get
     End Property
 
@@ -1190,7 +1190,7 @@ Public Class Certificate
         End Set
     End Property
 
-    <ValidStringLength("", Max:=50), ValueMustBeBlankForDocumentNumber(""), SPValidationDocumentNumber(IDENTIFICATION_NUMBER), ValueTaxIdLenht("")>
+    <ValidStringLength("", Max:=50), ValueMustBeBlankForDocumentNumber(""), SPValidationDocumentNumber(CertIdentificationNumber), ValueTaxIdLenht("")>
     Public Property IdentificationNumber() As String
         Get
             CheckDeleted()
@@ -5010,8 +5010,8 @@ Public Class Certificate
                             Return True
                         End If
 
-                        If Me.DisplayName = IDENTIFICATION_NUMBER _
-                            AndAlso (Not obj.DocumentIssueDate Is Nothing _
+                        If Me.DisplayName = CertIdentificationNumber _
+                           AndAlso (Not obj.DocumentIssueDate Is Nothing _
                                 Or Not obj.IdType Is Nothing _
                                 Or Not obj.DocumentAgency Is Nothing _
                                 Or Not obj.RgNumber Is Nothing _

@@ -67,12 +67,6 @@ Public NotInheritable Class MultiAuthClaim
 
 #End Region
 
-#Region "Instance Fields"
-    Private _repairDate As DateType
-    Private _invoiceProcessDate As DateType
-    Private _pickUpDate As DateType
-#End Region
-
 #Region "Properties"
 
     <ValidateContainsDeductible("")>

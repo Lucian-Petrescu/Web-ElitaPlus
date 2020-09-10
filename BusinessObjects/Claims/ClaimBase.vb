@@ -4600,7 +4600,7 @@ Public MustInherit Class ClaimBase
             Return Me._ReplacementEquipment
         End Get
         Set(ByVal value As ClaimEquipment)
-            _EnrolledEquipment = value
+            _ReplacementEquipment = value
         End Set
     End Property
     Public Sub CreateEnrolledEquipment()

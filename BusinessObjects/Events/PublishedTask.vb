@@ -103,7 +103,7 @@ Public Class PublishedTask
 
 #Region "Private Members"
     Private _syncRoot As New Object
-    Private _arguments As KeyValueDictionary
+    Private _taskArguments As KeyValueDictionary
     Public Const REGISTRATION_ID As String = "RegistrationId"
     Public Const REGISTRATION_ITEM_ID As String = "RegistrationItemId"
     Public Const CERTIFICATE_ID As String = "CertificateId"
@@ -321,15 +321,15 @@ Public Class PublishedTask
     Default Public ReadOnly Property Argument(ByVal key As String) As String
         Get
             Dim returnValue As String = String.Empty
-            If (_arguments Is Nothing) Then
+            If (_taskArguments Is Nothing) Then
                 SyncLock (_syncRoot)
-                    If (_arguments Is Nothing) Then
-                        _arguments = New KeyValueDictionary(Me.Arguments)
+                    If (_taskArguments Is Nothing) Then
+                        _taskArguments = New KeyValueDictionary(Me.Arguments)
                     End If
                 End SyncLock
             End If
-            If (_arguments.ContainsKey(key)) Then
-                returnValue = _arguments(key)
+            If (_taskArguments.ContainsKey(key)) Then
+                returnValue = _taskArguments(key)
             End If
             Return returnValue
         End Get

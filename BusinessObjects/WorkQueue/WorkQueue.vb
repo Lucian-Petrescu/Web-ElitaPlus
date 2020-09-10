@@ -257,7 +257,6 @@ Partial Public Class WorkQueue
 #End Region
 
 #Region "Instance Fields"
-    Private _isNew As Boolean = False
     Private _timeZoneInfo As TimeZoneInfo
     Private _workQueue As WrkQueue.WorkQueue
     Private _workQueueId As Guid = Guid.NewGuid()
@@ -274,7 +273,6 @@ Partial Public Class WorkQueue
     Private Sub BuildWorkQueue(ByVal id As Guid)
         Me.Dataset = New DataSet
         CreateEmptyTable()
-        _isNew = False
         Dim userName As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
         Try
             Me._workQueue = WorkQueueClientProxy.GetWorkQueueById(id, userName)
@@ -321,7 +319,6 @@ Partial Public Class WorkQueue
         MyBase.New()
         Me.Dataset = New DataSet
         CreateEmptyTable()
-        _isNew = True
         Me._workQueue = New WrkQueue.WorkQueue()
         _workQueue.ActiveOn = DateTime.UtcNow
         _workQueue.InActiveOn = DEFAULT_EXPIRATION_DATE

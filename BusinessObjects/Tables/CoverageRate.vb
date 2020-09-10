@@ -119,19 +119,18 @@ Public Class CoverageRate
     Private Const NEW_COVERAGE_LIABILITY_MAX_DOUBLE As Double = 999999999.99
     Private Const NEW_COVERAGE_LIABILITY_PERCENT_MAX_DOUBLE As Double = 99.9999
     
-
-    Private Const COVERAGE_RATE_ID As Integer = 0
-    Private Const LOW_PRICE As Integer = 1
-    Private Const HIGH_PRICE As Integer = 2
-    Private Const GROSS_AMT As Integer = 3
-    Private Const COMMISSION_PERCENT As Integer = 4
-    Private Const MARKETING_PERCENT As Integer = 5
-    Private Const ADMIN_EXPENSE As Integer = 6
-    Private Const PROFIT_EXPENSE As Integer = 7
-    Private Const LOSS_COST_PERCENT As Integer = 8
-    Private Const GROSS_AMOUNT_PERCENT As Integer = 13
-    Private Const RENEWAL_NUMBER As Integer = 10
-    Private Const REGION_ID As Integer = 11
+    Private Const coverageRateId As Integer = 0
+    Private Const coverageRateLowPrice As Integer = 1
+    Private Const coverageRateHighPrice As Integer = 2
+    Private Const coverageRateGrossAmt As Integer = 3
+    Private Const coverageRateCommissionPercent As Integer = 4
+    Private Const coverageRateMarketingPercent As Integer = 5
+    Private Const coverageRateAdminExpense As Integer = 6
+    Private Const coverageRateProfitExpense As Integer = 7
+    Private Const coverageRateLossCostPercent As Integer = 8
+    Private Const coverageRateGrossAmtPercent As Integer = 13
+    Private Const coverageRateRenewalNumber As Integer = 10
+    Private Const coverageRateRegionId As Integer = 11
 
     Private IsProductCodeSetForSequenceRenewalNo As Boolean
 #End Region
@@ -527,9 +526,9 @@ Public Class CoverageRate
             deleteOk = True
         Else
             For Each oRow In oRows
-                oCoverageRateId = New Guid(CType(oRow(COVERAGE_RATE_ID), Byte()))
-                oLow = Math.Round(Convert.ToDouble(oRow(LOW_PRICE)), 2)
-                oHigh = Math.Round(Convert.ToDouble(oRow(HIGH_PRICE)), 2)
+                oCoverageRateId = New Guid(CType(oRow(coverageRateId), Byte()))
+                oLow = Math.Round(Convert.ToDouble(oRow(coverageRateLowPrice)), 2)
+                oHigh = Math.Round(Convert.ToDouble(oRow(coverageRateHighPrice)), 2)
 
                 If (oLow = covRateLow And oHigh = covRateHigh) And Not (Id.Equals(oCoverageRateId)) Then
                     oCount = oCount + 1
@@ -742,9 +741,9 @@ Public Class CoverageRate
                 bValid = True
             Else
                 For Each oRow In oRows
-                    oCoverageRateId = New Guid(CType(oRow(COVERAGE_RATE_ID), Byte()))
-                    oLow = Math.Round(Convert.ToDouble(oRow(LOW_PRICE)), 2)
-                    oHigh = Math.Round(Convert.ToDouble(oRow(HIGH_PRICE)), 2)
+                    oCoverageRateId = New Guid(CType(oRow(coverageRateId), Byte()))
+                    oLow = Math.Round(Convert.ToDouble(oRow(coverageRateLowPrice)), 2)
+                    oHigh = Math.Round(Convert.ToDouble(oRow(coverageRateHighPrice)), 2)
                     oCount = oCount + 1
                     If oCoverageRate.Id.Equals(oCoverageRateId) Then
                         If oRows.Count = 1 Then
@@ -889,11 +888,11 @@ Public Class CoverageRate
                 End If
             Else
                 For Each oRow In oRows
-                    oCoverageRateId = New Guid(CType(oRow(COVERAGE_RATE_ID), Byte()))
-                    oLow = Math.Round(Convert.ToDouble(oRow(LOW_PRICE)), 2)
-                    oHigh = Math.Round(Convert.ToDouble(oRow(HIGH_PRICE)), 2)
-                    oRenewalNo = Convert.ToInt32(oRow(RENEWAL_NUMBER))
-                    oTaxRegionId = If(IsDBNull(oRow(REGION_ID)), Guid.Empty, New Guid(CType(oRow(REGION_ID), Byte())))
+                    oCoverageRateId = New Guid(CType(oRow(coverageRateId), Byte()))
+                    oLow = Math.Round(Convert.ToDouble(oRow(coverageRateLowPrice)), 2)
+                    oHigh = Math.Round(Convert.ToDouble(oRow(coverageRateHighPrice)), 2)
+                    oRenewalNo = Convert.ToInt32(oRow(coverageRateRenewalNumber))
+                    oTaxRegionId = If(IsDBNull(oRow(coverageRateRegionId)), Guid.Empty, New Guid(CType(oRow(coverageRateRegionId), Byte())))
 
                     If (oLow = oNewLow AndAlso oHigh = oNewHigh AndAlso If(IsNothing(oCoverageRate.RegionId), Guid.Empty, oCoverageRate.RegionId).Equals(oTaxRegionId)) Then
                         If oCoverageRate.Id.Equals(oCoverageRateId) Then
@@ -951,11 +950,11 @@ Public Class CoverageRate
                 End If
             Else
                 For Each oRow In oRows
-                    oCoverageRateId = New Guid(CType(oRow(COVERAGE_RATE_ID), Byte()))
-                    oLow = Math.Round(Convert.ToDouble(oRow(LOW_PRICE)), 2)
-                    oHigh = Math.Round(Convert.ToDouble(oRow(HIGH_PRICE)), 2)
-                    oRenewalNo = Convert.ToInt32(oRow(RENEWAL_NUMBER))
-                    oTaxRegionId = If(IsDBNull(oRow(REGION_ID)), Guid.Empty, New Guid(CType(oRow(REGION_ID), Byte())))
+                    oCoverageRateId = New Guid(CType(oRow(coverageRateId), Byte()))
+                    oLow = Math.Round(Convert.ToDouble(oRow(coverageRateLowPrice)), 2)
+                    oHigh = Math.Round(Convert.ToDouble(oRow(coverageRateHighPrice)), 2)
+                    oRenewalNo = Convert.ToInt32(oRow(coverageRateRenewalNumber))
+                    oTaxRegionId = If(IsDBNull(oRow(coverageRateRegionId)), Guid.Empty, New Guid(CType(oRow(coverageRateRegionId), Byte())))
 
                     If (oLow = oNewLow AndAlso oHigh = oNewHigh AndAlso If(IsNothing(oCoverageRate.RegionId), Guid.Empty, oCoverageRate.RegionId).Equals(oTaxRegionId)) Then
                         If oCoverageRate.Id.Equals(oCoverageRateId) Then

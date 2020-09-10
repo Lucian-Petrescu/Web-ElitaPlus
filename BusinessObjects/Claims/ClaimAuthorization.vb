@@ -165,15 +165,8 @@ Public NotInheritable Class ClaimAuthorization
         End Set
     End Property
 
-    Private _LoanerReturnedDate As DateType
-    Public Property LoanerReturnedDate() As DateType Implements IInvoiceable.LoanerReturnedDate
-        Get
-            Return Nothing
-        End Get
-        Set(ByVal Value As DateType)
-            _LoanerReturnedDate = Value
-        End Set
-    End Property
+    Public Property LoanerReturnedDate As DateType Implements IInvoiceable.LoanerReturnedDate
+
 
     Public ReadOnly Property CreatedDate() As DateType Implements IInvoiceable.CreatedDate
         Get
@@ -839,31 +832,11 @@ Public NotInheritable Class ClaimAuthorization
         End Set
     End Property
 
-    Dim _invoiceProcessDate As DateType
-    Public Property InvoiceProcessDate() As DateType Implements IInvoiceable.InvoiceProcessDate
-        Get
-            Return Nothing
-            ' When this is Required we can Get the Created Date from the ClaimInvoice based on Auth Id
-        End Get
-        Private Set(ByVal value As DateType)
-            'There is not use of setting this value for Multi Auth Claim
-            'Following Code is just for implementing Invoiceable.
-            _invoiceProcessDate = value
-        End Set
-    End Property
+    Public Property InvoiceProcessDate As DateType Implements IInvoiceable.InvoiceProcessDate
 
-    Dim _invoiceDate As DateType
-    Public Property InvoiceDate() As DateType Implements IInvoiceable.InvoiceDate
-        Get
-            Return Nothing
-            ' When this is Required we can Get the Invoice Date from the ClaimInvoice based on Auth Id
-        End Get
-        Private Set(ByVal value As DateType)
-            'There is not use of setting this value for Multi Auth Claim
-            'Following Code is just for implementing Invoiceable.
-            _invoiceDate = value
-        End Set
-    End Property
+
+    Public Property InvoiceDate As DateType Implements IInvoiceable.InvoiceDate
+
     Public Property ClaimAuthfulfillmentTypeXcd() As String
         Get
             CheckDeleted()
@@ -980,10 +953,10 @@ Public NotInheritable Class ClaimAuthorization
 #End Region
 
 
-    Dim _isComingFromPayClaim As Boolean
+    Dim _isComingFromPayClaim As Boolean = False 
     Public Property IsComingFromPayClaim() As Boolean Implements IInvoiceable.IsComingFromPayClaim
         Get
-            Return False
+            Return _isComingFromPayClaim
         End Get
         Set(ByVal Value As Boolean)
             _isComingFromPayClaim = Value

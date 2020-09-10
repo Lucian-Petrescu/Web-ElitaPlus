@@ -89,7 +89,7 @@ Public Class Issue
     Dim _ActiveOn As DateType
     Private Const TABLE_ISSUE_COMMENT As String = "elp_issue_comment"
     Private Const ICTYP As String = "ICTYP"
-    Private Const _CODE As String = "CODE"
+    Private Const listItemCode As String = "CODE"
     Private Const _TEXT As String = "TEXT"
     Private Const ISSUE_COMMENT_ID As String = "ISSUE_COMMENT_ID"
     Private Const ISSUE_COMMENT_TYPE_ID As String = "ISSUE_COMMENT_TYPE_ID"
@@ -355,14 +355,14 @@ Public Class Issue
             If Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count > 0 Then
                 If Not Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added) Is Nothing Then
                     For Each TECrow As DataRow In Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added).Rows
-                        retVal = dropdownBO.AddDropdownItem(TECrow(_CODE).ToString, Codes.YESNO_Y, Codes.YESNO_Y, DropdownId, TECrow(_TEXT).ToString, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+                        retVal = dropdownBO.AddDropdownItem(TECrow(listItemCode).ToString, Codes.YESNO_Y, Codes.YESNO_Y, DropdownId, TECrow(_TEXT).ToString, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
                     Next
                 End If
                 If Not Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified) Is Nothing Then
                     For Each TECrow As DataRow In Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified).Rows
                         If Not GetDropdownCodeToUpdate(TECrow(ISSUE_COMMENT_ID)) = String.Empty Then
                             retVal = dropdownBO.UpdateDropdownItem(QuestionList.GetDropdownItemId(DropdownId,
-                                     GetDropdownCodeToUpdate(TECrow(ISSUE_COMMENT_ID))), TECrow(_CODE).ToString,
+                                     GetDropdownCodeToUpdate(TECrow(ISSUE_COMMENT_ID))), TECrow(listItemCode).ToString,
                                      Codes.YESNO_Y, Codes.YESNO_Y, TECrow(_TEXT).ToString, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
                         End If
                     Next

@@ -26,7 +26,7 @@ Public Class SubmitClaim
     'Private dsCoverageInfo As DataSet
 
     Private _isShippingInfoProvided As Boolean = False
-    Private _countryCode As String
+    Private _shippingCountryCode As String
     Private _regionCode As String
 
     Private _contactNumber As String
@@ -572,7 +572,7 @@ Public Class SubmitClaim
                     If Not ds.ShippingInfo(i).IsCityNull Then _shippingAddress.City = ds.ShippingInfo(i).City
                     If Not ds.ShippingInfo(i).IsRegionCodeNull Then Me._regionCode = ds.ShippingInfo(i).RegionCode
                     If Not ds.ShippingInfo(i).IsPostalCodeNull Then _shippingAddress.PostalCode = ds.ShippingInfo(i).PostalCode
-                    Me._countryCode = ds.ShippingInfo(i).CountryCode
+                    Me._shippingCountryCode = ds.ShippingInfo(i).CountryCode
                 Next
             End With
 
@@ -597,7 +597,7 @@ Public Class SubmitClaim
             oWebSubmitClaimPreValidateInputData.ServiceCenterCode = Me.ServiceCenterCode
             oWebSubmitClaimPreValidateInputData.SystemUserId = ElitaPlusIdentity.Current.ActiveUser.Id
             oWebSubmitClaimPreValidateInputData.CauseOfLossCode = Me.CauseOfLossCode
-            oWebSubmitClaimPreValidateInputData.CountryCode = Me._countryCode
+            oWebSubmitClaimPreValidateInputData.CountryCode = Me._shippingCountryCode
             oWebSubmitClaimPreValidateInputData.RegionCode = Me._regionCode
             oWebSubmitClaimPreValidateInputData.PaymentMethod = Me.PaymentMethod
             oWebSubmitClaimPreValidateInputData.Make = Me.Make

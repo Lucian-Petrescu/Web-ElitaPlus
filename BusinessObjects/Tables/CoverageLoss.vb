@@ -118,10 +118,6 @@ Public Class CoverageLoss
     End Sub
 #End Region
 
-#Region "CONSTANTS"
-    Private Const DEFAULT_FLAG As String = "Y"
-#End Region
-
 #Region "Properties"
 
     'Key Property
@@ -443,7 +439,7 @@ Public Class CoverageLoss
         Public Function FindDefault() As CoverageLoss
             Dim bo As CoverageLoss
             For Each bo In Me
-                If bo.DefaultFlag = DEFAULT_FLAG Then
+                If bo.DefaultFlag = Codes.YESNO_Y Then
                     Return bo
                 End If
             Next

@@ -1762,7 +1762,7 @@ Public NotInheritable Class Claim
                 End If
                 ''''''''''''''''''''''''''''''''''''''''''
                 If PreserveAuthAmount() Then
-                    Me.AuthorizedAmount = Me.AuthorizedAmount
+                    Me.AuthorizedAmount = AuthorizedAmount
                 Else
                     Me.AuthorizedAmount = nEstimatePrice
                 End If
@@ -1774,7 +1774,7 @@ Public NotInheritable Class Claim
                         Me.CloseTheClaim()
                     End If
                     If PreserveAuthAmount() Then
-                        Me.AuthorizedAmount = Me.AuthorizedAmount
+                        Me.AuthorizedAmount = AuthorizedAmount
                     Else
                         Me.AuthorizedAmount = New DecimalType(ZERO_DECIMAL)
                     End If

@@ -14,7 +14,6 @@ Public Class SendClaimGiftCardEMailTask
     Inherits TaskBase
 
     Private Const GiftCardStatusSent As String = "SENT"
-    Private Const GiftCardStatusProcured As String = "PROCURED"
     Private Const GiftCardOperationCodeForVoucher = "VOUCHER"
     Private Const GiftCardOperationCodeForClaim = "CLAIM"
 
@@ -880,36 +879,8 @@ Public Class SendClaimGiftCardEMailTask
     End Sub
 End Class
 Public Class Request
-    Private Property _giftcardRequest As GenerateGiftCardRequest
-
-    Private Property _entityName As String
-
-    Private Property _entityId As Guid
-
     Public Property GiftcardRequest As GenerateGiftCardRequest
-        Get
-            Return _giftcardRequest
-        End Get
-        Set(ByVal value As GenerateGiftCardRequest)
-            _giftcardRequest = value
-        End Set
-    End Property
     Public Property EntityName As String
-        Get
-            Return _entityName
-        End Get
-        Set(ByVal value As String)
-            _entityName = value
-        End Set
-    End Property
 
     Public Property EntityId As Guid
-        Get
-            Return _entityId
-        End Get
-        Set(ByVal value As Guid)
-            _entityId = value
-        End Set
-    End Property
-
 End Class

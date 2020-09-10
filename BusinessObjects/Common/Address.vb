@@ -707,30 +707,30 @@ Public NotInheritable Class MandatoryForServCenterAttribute
 
 #Region "Handle mailing address format"
     Public Class MailAddressItem
-        Private _ItemName As String
-        Private _Required As Boolean
+        Private _itemName As String
+        Private _required As Boolean
         Public Sub New()
-            _ItemName = String.Empty
-            _Required = True
+            _itemName = String.Empty
+            _required = True
         End Sub
         Public Sub New(ByVal ItemName As String, Optional ByVal Required As Boolean = True)
             _ItemName = ItemName
-            _Required = Required
+            _required = Required
         End Sub
         Public Property ItemName() As String
             Get
-                Return _ItemName
+                Return _itemName
             End Get
             Set(ByVal Value As String)
-                _ItemName = Value
+                _itemName = Value
             End Set
         End Property
         Public Property Required() As Boolean
             Get
-                Return _Required
+                Return _required
             End Get
             Set(ByVal Value As Boolean)
-                Required = Value
+                _required = Value
             End Set
         End Property
     End Class

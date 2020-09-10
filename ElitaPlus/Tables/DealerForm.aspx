@@ -798,7 +798,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:TextBox ID="txtBusinessName" runat="server"></asp:TextBox>
     </td>
     <td align="right" nowrap="nowrap">
-        <asp:Label ID="lblStateTaxIdNumber" runat="server">STATE_TAX_ID_NUMBER</asp:Label>
+        <asp:Label ID="lblStateTaxIdNumber" runat="server">STATE_CertTaxIdER</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
         <asp:TextBox ID="txtStateTaxIdNumber" runat="server"></asp:TextBox>
@@ -812,7 +812,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:TextBox ID="txtNumbOfOtherLocations" runat="server" Width="55px"></asp:TextBox>
     </td>
     <td align="right" nowrap="nowrap">
-        <asp:Label ID="lblCityTaxIdNumber" runat="server">CITY_TAX_ID_NUMBER</asp:Label>
+        <asp:Label ID="lblCityTaxIdNumber" runat="server">CITY_CertTaxIdER</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
         <asp:TextBox ID="txtCityTaxIdNumber" runat="server" Width="170px"></asp:TextBox>
@@ -1244,7 +1244,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
                                         <asp:TextBox ID="txtName" runat="server" Width="90%"></asp:TextBox>
                                     </td>
                                     <td style="height: 5px" nowrap align="right" width="1%" colspan="1" rowspan="1">
-                                        <asp:Label ID="lblOtherTaxId" runat="server" Font-Bold="false" Width="13px">TAX_ID_NUMBER</asp:Label>:
+                                        <asp:Label ID="lblOtherTaxId" runat="server" Font-Bold="false" Width="13px">CertTaxIdER</asp:Label>:
                                     </td>
                                     <td width="170px">
                                         &nbsp;

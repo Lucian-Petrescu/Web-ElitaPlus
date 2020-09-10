@@ -2049,7 +2049,7 @@
                                 </tr>
                                 <tr>
                                     <td align="right">
-                                        <asp:Label ID="moBillingAccountNumberLabel" runat="server">BILLING_ACCOUNT_NUMBER</asp:Label>
+                                        <asp:Label ID="moBillingAccountNumberLabel" runat="server">CertBillingAccountNumber</asp:Label>
                                     </td>
                                     <td align="left">
                                         <asp:TextBox ID="moBillingAccountNumberText" runat="server" SkinID="SmallTextBox"

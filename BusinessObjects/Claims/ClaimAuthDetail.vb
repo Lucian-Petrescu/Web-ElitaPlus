@@ -99,7 +99,7 @@ Public Class ClaimAuthDetail
 
 #Region "Private Members"
 
-    Private _ClaimId As Guid
+    Private _claimId As Guid
 
     'Initialization code for new objects
     Private Sub Initialize()
@@ -262,10 +262,10 @@ Public Class ClaimAuthDetail
 
     Public Property TempClaimId() As Guid
         Get
-            Return _ClaimId
+            Return _claimId
         End Get
         Set(ByVal Value As Guid)
-            _ClaimId = Value
+            _claimId = Value
         End Set
     End Property
 

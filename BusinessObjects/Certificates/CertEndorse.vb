@@ -1030,7 +1030,7 @@ Public Class CertEndorse
             Return Me._addr
         End Get
     End Property
-    Private _certId As Guid
+
    <ValueMandatory("")> _
     Public Property CertId() As Guid
         Get
