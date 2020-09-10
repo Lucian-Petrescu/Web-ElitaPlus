@@ -18,7 +18,7 @@ Namespace Tables
         '''moMessageController control.
         '''</summary>
         '''<remarks>
-        '''Auto-generated field.
+        '''Auto-generated field. 
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moMessageController As Global.Assurant.ElitaPlus.ElitaPlusWebApp.MessageController
