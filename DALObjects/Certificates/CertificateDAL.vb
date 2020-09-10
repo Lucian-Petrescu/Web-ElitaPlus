@@ -3403,32 +3403,6 @@ Public Class CertificateDAL
 
 #End Region
 
-#Region "Certificate Extended Fields"
-    Public Function GetCertExtFieldsList(ByVal certId As Guid, ByVal languageId As Guid) As DataSet
-
-        Dim selectStmt As String = Me.Config("/SQL/GET_CERT_EXT_FIELDS_LIST")
-        Dim ds As DataSet = New DataSet
-        Dim outputParameter(0) As DBHelper.DBHelperParameter
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray),
-                 New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)
-                }
-
-        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))
-
-        Try
-            DBHelper.FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertExtFieldsList")
-            ds.Tables(0).TableName = "GetCertExtFieldsList"
-
-            Return ds
-        Catch ex As Exception
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-        End Try
-
-    End Function
-
-#End Region
-
 #Region "SFR Related"
     Public Function SFRSearchCertificate(ByVal pCompanyCode As String, ByVal pDealerCode As String, ByVal pDealerGrp As String, ByVal pCustomerFirstName As String, ByVal pCustomerLastName As String,
                                                 ByVal pPhoneNumber As String, ByVal pEmail As String, ByVal pPostalCode As String, ByVal pAccountNumber As String) As DataSet
@@ -3494,5 +3468,3 @@ Public Class CertificateDAL
 
 #End Region
 End Class
-
-
