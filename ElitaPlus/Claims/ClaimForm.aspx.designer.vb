@@ -2165,6 +2165,33 @@ Partial Public Class ClaimForm
     Protected WithEvents phDynamicFulfillmentUI As Global.System.Web.UI.WebControls.PlaceHolder
 
     '''<summary>
+    '''btnContinue control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnContinue As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnLegacyContinue control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnLegacyContinue As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''hdnData control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hdnData As Global.System.Web.UI.WebControls.HiddenField
+
+    '''<summary>
     '''ViewPanel_READ2 control.
     '''</summary>
     '''<remarks>

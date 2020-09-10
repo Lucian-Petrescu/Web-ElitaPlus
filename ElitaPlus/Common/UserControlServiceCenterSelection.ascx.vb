@@ -51,6 +51,9 @@ Public Class UserControlServiceCenterSelection
         Public Const PageIndex As String = "PageIndex"
         Public Const PageSize As String = "PageSize"
         Public Const SortExpression As String = "SortExpression"
+        Public Const City As String = "City"
+        Public Const PostalCode As String = "PostalCode"
+
     End Class
 #End Region
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -183,6 +186,24 @@ Public Class UserControlServiceCenterSelection
             ViewState(ViewStateItems.SortExpression) = value
         End Set
     End Property
+    Public Property City As String
+        Get
+            Return DirectCast(ViewState(ViewStateItems.City), String)
+        End Get
+        Set(value As String)
+            ViewState(ViewStateItems.City) = value
+        End Set
+    End Property
+    Public Property PostalCode As String
+        Get
+            Return DirectCast(ViewState(ViewStateItems.PostalCode), String)
+        End Get
+        Set(value As String)
+            ViewState(ViewStateItems.PostalCode) = value
+        End Set
+    End Property
+
+
 #End Region
 
 #Region "Internal Methods"
@@ -202,6 +223,25 @@ Public Class UserControlServiceCenterSelection
         btnClearSearch.Text = TranslationFunc("Clear")
         btnSearch.Text = TranslationFunc("Search")
     End Sub
+
+    Sub PopulateCityAndPostalCode
+
+
+        if City <> "" And City IsNot Nothing Then
+            moCityTextbox.Text =City
+            else 
+                moCityTextbox.Text = ""
+        end if 
+
+
+        if PostalCode <> "" And PostalCode IsNot Nothing Then
+            moPostalCodeTextbox.Text = PostalCode
+            else
+                moPostalCodeTextbox.Text  = ""
+        end if 
+       
+    End Sub
+
 
     Sub PopulateSearchFilterDropdown()
         Try
@@ -232,8 +272,7 @@ Public Class UserControlServiceCenterSelection
         Dim showAllFields As Boolean = IsSearchBy(SearchByCodes.All)
         Dim showPostalCodeFields As Boolean = IsSearchBy(SearchByCodes.PostalCode)
 
-        moCityTextbox.Text = String.Empty
-        moPostalCodeTextbox.Text = String.Empty
+        PopulateCityAndPostalCode()
 
         ' City
         ControlMgr.SetVisibleControl(ElitaHostPage, tdCityLabel, showCityFields)
@@ -431,6 +470,7 @@ Public Class UserControlServiceCenterSelection
             EnableDisableFields()
             TranslateGridHeaderFunc.Invoke(GridServiceCenter)
             SetTranslations()
+            PopulateCityAndPostalCode()
 
         Catch ex As Exception
             HandleLocalException(ex)

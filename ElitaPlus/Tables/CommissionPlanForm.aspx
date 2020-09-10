@@ -26,7 +26,8 @@
                 var row = $(this).closest("tr");
                 var value = $(this).val();
                 if (value > 0) {
-                    row.find("[id*=moCommission_PercentText]").val("0.0000");
+                    // Empty the COMMISSION_PERCENTAGE
+                    row.find("[id*=moCommission_PercentText]").val("");
                 }
             });
 
@@ -34,7 +35,8 @@
                 var row = $(this).closest("tr");
                 var value = $(this).val();
                 if (value > 0) {
-                    row.find("[id*=moLowPriceText]").val("0.0000");
+                    // Empty the COMMISSION_AMOUNT
+                    row.find("[id*=moLowPriceText]").val("");
                 }
             });
         });
@@ -57,10 +59,10 @@
                             </tr>
                         </table>
                     </td>
-                </tr>               
+                </tr>
                 <tr>
                     <td>
-                        <table width="100%" border="0" class="searchGrid" id="Table1" runat="server" style="padding-top:20px;">
+                        <table width="100%" border="0" class="searchGrid" id="Table1" runat="server" style="padding-top: 20px;">
                             <tr>
                                 <td align="right" class="" width="10%">*
                                     <asp:Label ID="LabelCode" runat="server">Code</asp:Label>:&nbsp;
@@ -179,7 +181,7 @@
                     <asp:TemplateField Visible="true" HeaderText="ENTITY_TYPE">
                         <ItemStyle HorizontalAlign="Center" Width="15%"></ItemStyle>
                         <ItemTemplate>
-                            <asp:Label ID="lblEntityType" Text='<%# GetGuidStringFromByteArray(Container.DataItem("ENTITY_ID"))%>' runat="server"> </asp:Label>
+                            <asp:Label ID="lblEntityType" Text='<%# CheckNull(Eval("ENTITY_ID"),"")%>' runat="server"> </asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:DropDownList ID="cboEntityType" runat="server" Width="100"></asp:DropDownList>
@@ -188,9 +190,7 @@
                     <asp:TemplateField Visible="True" HeaderText="COMMISSION_AMOUNT">
                         <ItemStyle HorizontalAlign="center" Width="15%"></ItemStyle>
                         <ItemTemplate>
-                            <asp:Label ID="moLowPriceLabel" Text='<%# GetAmountFormattedToVariableString(Container.DataItem("COMMISSION_AMOUNT"))%>'
-                                runat="server">
-                            </asp:Label>
+                            <asp:Label ID="moLowPriceLabel" Text='<%# CheckNull(Eval("COMMISSION_AMOUNT"),"COMMISSION_AMOUNT")%>' runat="server"> </asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="moLowPriceText" runat="server" Visible="True" Width="75"></asp:TextBox>
@@ -199,9 +199,7 @@
                     <asp:TemplateField Visible="True" HeaderText="COMMISSION_PERCENT">
                         <ItemStyle HorizontalAlign="center" Width="15%"></ItemStyle>
                         <ItemTemplate>
-                            <asp:Label ID="moCommission_PercentLabel" Text='<%# GetAmountFormattedDoubleString(Container.DataItem("COMMISSION_PERCENTAGE"), "N4")%>'
-                                runat="server">
-                            </asp:Label>
+                            <asp:Label ID="moCommission_PercentLabel" Text='<%# CheckNull(Eval("COMMISSION_PERCENTAGE"), "COMMISSION_PERCENTAGE")%>' runat="server"> </asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="moCommission_PercentText" runat="server" Visible="True" Width="75"></asp:TextBox>
@@ -230,12 +228,10 @@
                     <asp:TemplateField Visible="True" HeaderText="POSITION">
                         <ItemStyle HorizontalAlign="center" Width="4%"></ItemStyle>
                         <ItemTemplate>
-                            <asp:Label ID="moRenewal_NumberLabel" Text='<%# GetAmountFormattedToString(Container.DataItem("POSITION"))%>'
-                                runat="server">
-                            </asp:Label>
+                            <asp:Label ID="lblPosition" Text='<%# GetAmountFormattedToString(Container.DataItem("POSITION"))%>' runat="server"> </asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
-                            <asp:TextBox ID="moRenewal_NumberText" runat="server" Visible="True" Width="75" MaxLength="3" Text="0"></asp:TextBox>
+                            <asp:TextBox ID="textBoxPosition" runat="server" Visible="True" Width="75" MaxLength="3" Text="1"></asp:TextBox>
                         </EditItemTemplate>
                     </asp:TemplateField>
                 </Columns>
