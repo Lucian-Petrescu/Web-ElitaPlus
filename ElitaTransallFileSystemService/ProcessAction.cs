@@ -165,9 +165,11 @@ namespace ElitaTransallFileSystemService
                 System.Net.Mail.MailMessage _mail = new System.Net.Mail.MailMessage();
                 System.Net.Mail.SmtpClient _ser = new System.Net.Mail.SmtpClient(AppConfig.ServiceOrderEmail.SmtpServer);
 
+                var pattern = "{0} {2}";
+
                 _mail.To.Add(_notificationEmail);
 
-                _mail.Subject = String.Format("[{0} {2}] - TRANSALL FILES ERRORS", EnvironmentContext.Current.EnvironmentShortName.ToUpper(), AppConfig.ConnType);
+                _mail.Subject = string.Format("[" + pattern + " - TRANSALL FILES ERRORS", EnvironmentContext.Current.EnvironmentShortName.ToUpper(), AppConfig.ConnType);
                 _mail.From = new MailAddress(_notificationEmail);
                 _mail.Body = errorMessage;
 

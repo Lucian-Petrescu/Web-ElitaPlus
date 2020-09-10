@@ -21,6 +21,6 @@
  </asp:Content>      
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPanelButtons" runat="server">
     <asp:Button ID="btnBack" Style="background-image: url(../Navigation/images/icons/back_icon.gif);
-        cursor: hand; background-repeat: no-repeat; align: left" TabIndex="185" runat="server"
+        cursor: hand; background-repeat: no-repeat;" TabIndex="185" runat="server"
         CssClass="FLATBUTTON" Text="Back" Height="20px" Width="96px"></asp:Button>
 </asp:Content>   

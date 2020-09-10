@@ -31,8 +31,7 @@ from fckconnector import FCKeditorConnectorBase # import base connector
 import config as Config
 
 class FCKeditorQuickUpload(	FCKeditorConnectorBase,
-							UploadFileCommandMixin,
-							BaseHttpMixin, BaseHtmlMixin):
+							UploadFileCommandMixin):
 	def doResponse(self):
 		"Main function. Process the request, set headers and return a string as response."
 		# Check if this connector is disabled

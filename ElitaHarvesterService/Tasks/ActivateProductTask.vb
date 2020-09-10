@@ -1,4 +1,5 @@
-﻿Imports ElitaHarvesterService.Antivirus.ActivateProduct
+﻿Imports System.Configuration
+Imports ElitaHarvesterService.Antivirus.ActivateProduct
 Imports Assurant.ElitaPlus.BusinessObjectsNew
 Imports System.Text
 Imports Assurant.ElitaPlus.Common
@@ -40,6 +41,8 @@ Public NotInheritable Class ActivateProductTask
             Return String.Format("{0}-{1}", Me.CustRegistration.TaxId, Me.CustomerItem.ImeiNumber)
         End Get
     End Property
+
+    Private Const McafeeReqPassword = "MCAFEE_REQ_PASSWORD"
 #End Region
 
 #Region "Protected Methods"
@@ -105,7 +108,7 @@ Public NotInheritable Class ActivateProductTask
         apRequestSubscriberInfo.Street = CustRegistration.ContactInfo.Address.Address1
         apRequestSubscriberInfo.CountryCode = CountryCode
         apRequestSubscriberInfo.EmailAddress = CustRegistration.ContactInfo.Email
-        apRequestSubscriberInfo.RequestedPassword = Codes.MCAFEE_REQ_PASSWORD
+        apRequestSubscriberInfo.RequestedPassword = ConfigurationManager.AppSettings(McafeeReqPassword)
         Return apRequestSubscriberInfo
     End Function
 

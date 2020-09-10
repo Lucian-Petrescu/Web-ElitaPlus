@@ -126,7 +126,7 @@
                             <td>
                                 &nbsp;
                                 <asp:Button ID="btnBack" Style="background-image: url(../navigation/images/icons/back_icon.gif);
-                                    cursor: hand; background-repeat: no-repeat; align: left" TabIndex="185" runat="server"
+                                    cursor: hand; background-repeat: no-repeat;" TabIndex="185" runat="server"
                                     CssClass="flatbutton" Text="back" Height="20px" Width="96px"></asp:Button>
                             </td>
                         </tr>
