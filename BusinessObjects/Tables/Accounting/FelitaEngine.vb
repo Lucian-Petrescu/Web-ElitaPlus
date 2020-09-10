@@ -84,6 +84,7 @@ Public Class FelitaEngine
         INV
         REVERSAL
         VEND
+        COMMISSIONS
     End Enum
 
     Public Enum DateFilter

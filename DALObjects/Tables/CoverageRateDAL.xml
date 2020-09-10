@@ -28,7 +28,9 @@
         Marketing_Percent_Source_Xcd,
         Admin_Expense_Source_Xcd,
         Profit_Percent_Source_Xcd,
-        Loss_Cost_Percent_Source_Xcd
+        Loss_Cost_Percent_Source_Xcd,
+        cov_liability_limit,
+        cov_liability_limit_percent
 			FROM elp_coverage_rate cr
       Left Outer Join elp_region r on cr.region_id=r.region_id
 			WHERE
@@ -38,7 +40,7 @@
   <LOAD_LIST>
     <![CDATA[	
 			 select  
-        COVERAGE_RATE_ID, LOW_PRICE, HIGH_PRICE, NVL(GROSS_AMT, 0) AS GROSS_AMT, NVL(COMMISSIONS_PERCENT, 0) AS COMMISSION_PERCENT,
+        COVERAGE_RATE_ID, LOW_PRICE, HIGH_PRICE, NVL(GROSS_AMT, 0) AS GROSS_AMT, NVL(COMMISSIONS_PERCENT, 0) AS COMMISSIONS_PERCENT,
         NVL(MARKETING_PERCENT, 0) AS MARKETING_PERCENT, NVL(ADMIN_EXPENSE, 0) AS ADMIN_EXPENSE, NVL(PROFIT_EXPENSE, 0) AS PROFIT_EXPENSE, NVL(LOSS_COST_PERCENT, 0) AS LOSS_COST_PERCENT,
         NVL(GROSS_AMOUNT_PERCENT, 0) AS GROSS_AMOUNT_PERCENT,
         NVL(renewal_number, 0) AS RENEWAL_NUMBER,CR.REGION_ID as REGION_ID,R.DESCRIPTION AS TAX_REGION,
@@ -46,7 +48,9 @@
         Marketing_Percent_Source_Xcd,
         Admin_Expense_Source_Xcd,
         Profit_Percent_Source_Xcd,
-        Loss_Cost_Percent_Source_Xcd
+        Loss_Cost_Percent_Source_Xcd,
+        cov_liability_limit,
+        cov_liability_limit_percent
         FROM    elp_coverage_rate cr
         LEFT OUTER JOIN  elp_region r on cr.region_id=r.region_id
         WHERE COVERAGE_ID = :COVERAGE_ID
@@ -64,7 +68,9 @@
         Marketing_Percent_Source_Xcd,
         Admin_Expense_Source_Xcd,
         Profit_Percent_Source_Xcd,
-        Loss_Cost_Percent_Source_Xcd
+        Loss_Cost_Percent_Source_Xcd,
+        cov_liability_limit,
+        cov_liability_limit_percent
 				FROM	elp_coverage_rate
 				WHERE	COVERAGE_ID = :COVERAGE_ID
 				order by LOW_PRICE asc,RENEWAL_NUMBER desc
@@ -112,7 +118,9 @@
         Marketing_Percent_Source_Xcd = :Marketing_Percent_Source_Xcd,
         Admin_Expense_Source_Xcd = :Admin_Expense_Source_Xcd,
         Profit_Percent_Source_Xcd = :Profit_Percent_Source_Xcd,
-        Loss_Cost_Percent_Source_Xcd = :Loss_Cost_Percent_Source_Xcd
+        Loss_Cost_Percent_Source_Xcd = :Loss_Cost_Percent_Source_Xcd,
+        cov_liability_limit = :cov_liability_limit,
+        cov_liability_limit_percent = :cov_liability_limit_percent        
 			WHERE
 				coverage_rate_id = :coverage_rate_id
 		]]>
@@ -138,7 +146,9 @@
     Marketing_Percent_Source_Xcd,
     Admin_Expense_Source_Xcd,
     Profit_Percent_Source_Xcd,
-    Loss_Cost_Percent_Source_Xcd
+    Loss_Cost_Percent_Source_Xcd,
+    cov_liability_limit,
+    cov_liability_limit_percent
     )
     VALUES
     (
@@ -160,7 +170,9 @@
     :Marketing_Percent_Source_Xcd,
     :Admin_Expense_Source_Xcd,
     :Profit_Percent_Source_Xcd,
-    :Loss_Cost_Percent_Source_Xcd
+    :Loss_Cost_Percent_Source_Xcd,
+    :cov_liability_limit,
+    :cov_liability_limit_percent
     )
   </INSERT>
   <DELETE>
@@ -170,7 +182,5 @@
   </DELETE>
   <LOAD_EXPECTED_GWP>
     ELP_EXPECTED_PREMIUM.GetExpectedGWPMain
-  </LOAD_EXPECTED_GWP>
+  </LOAD_EXPECTED_GWP>  
 </SQL>
-
-

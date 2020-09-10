@@ -22,6 +22,7 @@ Public MustInherit Class ClaimBase
     Public Const COMPLIANCE_ISSUE_CODE As String = "CMPLARG"
     Public Const m_NewClaimRepairDedPercent As Integer = 30
     Public Const m_NewClaimOrigReplDedPercent As Integer = 50
+    Private Const CLAIM_DOC_UPLD_DETAILS As String = "Claim Document Upload Details"
 
 #End Region
 
@@ -614,11 +615,11 @@ Public MustInherit Class ClaimBase
             CheckDeleted()
             Dim lLimit As Decimal = 0D
 
-            If Not Row(ClaimDAL.COL_NAME_LIABILITY_LIMIT) Is DBNull.Value Then               
+            If Not Row(ClaimDAL.COL_NAME_LIABILITY_LIMIT) Is DBNull.Value Then
                 lLimit = CType(Row(ClaimDAL.COL_NAME_LIABILITY_LIMIT), Decimal)
             End If
 
-            If (Me.StatusCode.ToString <> Codes.CLAIM_STATUS__CLOSED and lLimit = 0 And
+            If (Me.StatusCode.ToString <> Codes.CLAIM_STATUS__CLOSED And lLimit = 0 And
                 (CDec(Me.Certificate.ProductLiabilityLimit.ToString) > 0D Or CDec(Me.CertificateItemCoverage.CoverageLiabilityLimit.ToString) > 0D)) Then
                 Dim al As ArrayList = Me.CalculateLiabilityLimit(Me.CertificateId, Me.Contract.Id, Me.CertItemCoverageId, Me.LossDate)
                 lLimit = CType(al(0), Decimal)
@@ -2287,11 +2288,11 @@ Public MustInherit Class ClaimBase
             If claimBaseObject.IsNew _
                 AndAlso LookupListNew.GetCodeFromId(LookupListNew.LK_COVERAGE_TYPES, claimBaseObject.CoverageTypeId) = Codes.COVERAGE_TYPE__MANUFACTURER Then
                 Dim oClmSystem As New ClaimSystem(claimBaseObject.Dealer.ClaimSystemId)
-                if oClmSystem.Code = "GW" Then
+                If oClmSystem.Code = "GW" Then
                     Return True 'allow claim under manufacturer warranty if the claim is created by GW
                 Else
                     Return False
-                End If                
+                End If
             End If
             Return True
         End Function
@@ -2887,9 +2888,9 @@ Public MustInherit Class ClaimBase
 #End Region
 
 #Region "Claim Images"
-    Public ReadOnly Property ClaimImagesList() As ClaimImage.ClaimImagesList
+    Public ReadOnly Property ClaimImagesList(Optional ByVal loadAllFiles As Boolean = False) As ClaimImage.ClaimImagesList
         Get
-            Return New ClaimImage.ClaimImagesList(Me)
+            Return New ClaimImage.ClaimImagesList(Me, loadAllFiles)
         End Get
     End Property
 
@@ -2952,6 +2953,18 @@ Public MustInherit Class ClaimBase
 
             oClaimImage.Save()
 
+            PublishedTask.AddEvent(companyGroupId:=Me.Company.CompanyGroupId,
+                                   companyId:=Me.Dealer.Company.id,
+                                   countryId:=Me.Company.CountryId,
+                                   dealerId:=Me.Dealer.Id,
+                                   productCode:=String.Empty,
+                                   coverageTypeId:=Guid.Empty,
+                                   sender:=CLAIM_DOC_UPLD_DETAILS,
+                                   arguments:="ClaimId:" & DALBase.GuidToSQLString(Me.Id) & ";DocumentTypeId:" & DALBase.GuidToSQLString(oClaimImage.DocumentTypeId) & "",
+                                   eventDate:=DateTime.UtcNow,
+                                   eventTypeId:=LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP__CLAIM_DOCUMENT_UPLOAD),
+                                   eventArgumentId:=Nothing)
+
             Return doc.Id
         Catch ex As Exception
             oClaimImage.Delete()
@@ -2964,14 +2977,14 @@ Public MustInherit Class ClaimBase
 
 #Region "Claim Images Dataview"
 
-    Public Function GetClaimImagesView() As ClaimImagesView
+    Public Function GetClaimImagesView(Optional ByVal loadAllFiles As Boolean = False) As ClaimImagesView
         Dim t As DataTable = ClaimImagesView.CreateTable
         Dim detail As ClaimImage
         Dim filteredTable As DataTable
 
         Try
 
-            For Each detail In Me.ClaimImagesList
+            For Each detail In Me.ClaimImagesList(loadAllFiles)
                 Dim row As DataRow = t.NewRow
                 row(ClaimImagesView.COL_CLAIM_IMAGE_ID) = detail.Id.ToByteArray
                 row(ClaimImagesView.COL_IMAGE_ID) = detail.ImageId.ToByteArray
@@ -3000,7 +3013,7 @@ Public MustInherit Class ClaimBase
                     row(ClaimImagesView.COL_USER_NAME) = detail.UserName
                 End If
                 row(ClaimImagesView.COL_IS_LOCAL_REPOSITORY) = detail.IsLocalRepository
-
+                row(ClaimImagesView.COL_DELETE_FLAG) = detail.DeleteFlag
                 t.Rows.Add(row)
 
             Next
@@ -3026,7 +3039,7 @@ Public MustInherit Class ClaimBase
         Public Const COL_COMMENTS As String = "COMMENTS"
         Public Const COL_USER_NAME As String = "USER_NAME"
         Public Const COL_IS_LOCAL_REPOSITORY As String = "IS_LOCAL_REPOSITORY"
-
+        Public Const COL_DELETE_FLAG As String = "DELETE_FLAG"
         Public Sub New(ByVal Table As DataTable)
             MyBase.New(Table)
         End Sub
@@ -3045,7 +3058,7 @@ Public MustInherit Class ClaimBase
             t.Columns.Add(COL_COMMENTS, GetType(String))
             t.Columns.Add(COL_USER_NAME, GetType(String))
             t.Columns.Add(COL_IS_LOCAL_REPOSITORY, GetType(String))
-
+            t.Columns.Add(COL_DELETE_FLAG, GetType(String))
             Return t
         End Function
     End Class
@@ -3975,9 +3988,9 @@ Public MustInherit Class ClaimBase
             Me.LockedBy = Guid.Empty
             Me.lockedOn = Nothing
             Me.IsLocked = Codes.YESNO_N
-            ''claim lock - End
+            ''claim lock - End            
 
-            If Not Me.IsNew Then
+            If Not Me.IsNew Then                
                 If Me.GetDealerDRPTradeInQuoteFlag(Me.DealerCode) Then
                     If IsStatusChngdFromPendingOrClosedToActive() Then
                         If Me.VerifyIMEIWithDRPSystem(Me.SerialNumber) Then
@@ -4945,6 +4958,11 @@ Public MustInherit Class ClaimBase
     Public Function isConsequentialDamageAllowed(ByVal productCodeId As Guid) As Boolean
         Dim dal As New ClaimDAL
         Return dal.isConsequentialDamageAllowed(productCodeId)
+    End Function
+
+    Public Function IsServiceWarrantyValid(ByVal ClaimId As Guid) As Boolean
+        Dim dal As New ClaimDAL
+        Return dal.IsServiceWarrantyValid(ClaimId) 'checks if service warranty is valid
     End Function
 End Class
 

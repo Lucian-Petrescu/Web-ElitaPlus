@@ -83,6 +83,7 @@
                 </tr>
             </table>
         </div>
+        <input id="HiddenIsDeleteImagesAllowed" type="hidden" name="HiddenIsDeleteImagesAllowed" runat="server">
         <asp:GridView ID="CertificateDocumentsGridView" runat="server" Width="100%" AutoGenerateColumns="False"
             AllowPaging="True" SkinID="DetailPageGridView" EnableViewState="true" OnRowCommand="CertificateDocumentsGridView_RowCommand">
             <SelectedRowStyle Wrap="True" />
@@ -112,6 +113,12 @@
                     HtmlEncode="false" HeaderText="DOCUMENT_TYPE" HeaderStyle-HorizontalAlign="Center" />
                 <asp:BoundField DataField="COMMENTS" ReadOnly="true" HtmlEncode="false" HeaderText="COMMENTS"
                     HeaderStyle-HorizontalAlign="Center" />
+                <asp:TemplateField HeaderText="ADD_REMOVE_IMAGE">
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server" ID="btnAddRemoveImage"
+                            Text="Image Link"></asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
             </Columns>
             <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
             <PagerStyle />

@@ -185,6 +185,15 @@ Partial Public Class ClaimAuthorizationDetailForm
     Protected WithEvents HiddenFieldVoidAuth As Global.System.Web.UI.WebControls.HiddenField
 
     '''<summary>
+    '''HiddenFieldRepairCodeProcess control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents HiddenFieldRepairCodeProcess As Global.System.Web.UI.WebControls.HiddenField
+
+    '''<summary>
     '''lblNewSCError control.
     '''</summary>
     '''<remarks>
@@ -336,6 +345,123 @@ Partial Public Class ClaimAuthorizationDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnVoidAuthClose As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''moRepairCodeProcessLabel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents moRepairCodeProcessLabel As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''divRepairCodeProcessStatus control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents divRepairCodeProcessStatus As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''lblRepairCodeProcessStatus control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblRepairCodeProcessStatus As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''divRepairCodeProcessError control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents divRepairCodeProcessError As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''lblRepairCodeProcessError control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblRepairCodeProcessError As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Label11 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents Label11 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''rdbRepairQuoteStatus control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents rdbRepairQuoteStatus As Global.System.Web.UI.WebControls.RadioButtonList
+
+    '''<summary>
+    '''lblRepairQuote control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblRepairQuote As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtRepairQuote control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtRepairQuote As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''RegularExpressionValidator1 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents RegularExpressionValidator1 As Global.System.Web.UI.WebControls.RegularExpressionValidator
+
+    '''<summary>
+    '''btnRepairCodeProcessSave control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnRepairCodeProcessSave As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnRepairCodeProcessCancel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnRepairCodeProcessCancel As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnRepairCodeProcessClose control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnRepairCodeProcessClose As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
     '''dvClaimAuthorizationDetails control.
@@ -1047,6 +1173,15 @@ Partial Public Class ClaimAuthorizationDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnPayCash As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnRepairCodeProcess control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnRepairCodeProcess As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.

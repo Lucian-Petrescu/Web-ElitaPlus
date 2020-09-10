@@ -190,7 +190,7 @@
                                     <Columns>
                                         <asp:TemplateField ShowHeader="false" ItemStyle-Width="2%" ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Top">
                                             <ItemTemplate>
-                                                <asp:RadioButton ID="rdoItems" runat="server" Class="callers" Enabled="True" Visible="True" AutoPostBack="true" OnCheckedChanged="rdoItemSelectChanged"></asp:RadioButton>
+                                                <asp:RadioButton ID="rdoItems" runat="server" Class="callers" Enabled="True" Visible="True" AutoPostBack="true" OnCheckedChanged="DeviceItemSelectChanged"></asp:RadioButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Manufacturer" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
@@ -198,23 +198,23 @@
                                                 <asp:Label ID="lblManufacturer" runat="server" Text='<%# Eval("Manufacturer")%>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Model" ItemStyle-Width="15%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
+                                        <asp:TemplateField HeaderText="Model" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblModel" runat="server" Text='<%# Eval("Model")%>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="device_Type" ItemStyle-Width="13%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
+                                        <asp:TemplateField HeaderText="device_Type" ItemStyle-Width="8%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblDeviceType" runat="server" Text='<%# Eval("DeviceType")%>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
-                                        <asp:TemplateField HeaderText="purchased_date" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
+                                        <asp:TemplateField HeaderText="purchased_date" ItemStyle-Width="9%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblPurchasedDate" runat="server" Text='<%# Eval("PurchasedDate")%>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="purchase_price" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
+                                        <asp:TemplateField HeaderText="purchase_price" ItemStyle-Width="9%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblPurchasePrice" runat="server" Text='<%# Eval("PurchasePrice")%>'></asp:Label>
                                             </ItemTemplate>
@@ -229,14 +229,24 @@
                                                 <asp:Label ID="lblSerialNo" runat="server" Text='<%# Eval("SerialNumber")%>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="REGISTERED_ITEM" ItemStyle-Width="20%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
+                                        <asp:TemplateField HeaderText="REGISTERED_ITEM" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblRegisteredItem" runat="server" Text='<%# Eval("RegisteredItemName")%>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField Visible="False" HeaderText="RISK_TYPE" ItemStyle-Width="20%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
+                                        <asp:TemplateField Visible="False" HeaderText="RISK_TYPE" ItemStyle-Width="7%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
                                             <ItemTemplate>
                                                 <asp:HiddenField ID="HiddenRiskType" runat="server" Value='<%#Eval("RiskTypeCode") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Color" ItemStyle-Width="7%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblColor" runat="server" Text='<%# Eval("Color")%>'></asp:Label>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Capacity" ItemStyle-Width="8%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblCapacity" runat="server" Text='<%# Eval("Capacity")%>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -257,6 +267,7 @@
                         </tbody>
                     </table>
                     <br />
+                    <div  runat="server" id="divDeviceInfoContainer">
                      <div class="dataContainer">
                          <h2 class="dataGridHeader" runat="server" id="headerDeviceInfo">
                             <asp:Label runat="server" ID="lblModifyDvcInfo" Text="MODIFY_DEVICE_INFORMATION"></asp:Label></h2>
@@ -321,6 +332,28 @@
                                                 <asp:TextBox ID="txtDvcSerialNumber" runat="server" MaxLength="30" SkinID="MediumTextBox"></asp:TextBox>
                                             </td>
                                         </tr>
+                                         <tr>
+                                            <td align="right" width="20%">
+                                                <asp:Label ID="lblDvcColor" runat="server">COLOR</asp:Label>:
+                                            </td>
+                                            <td align="left">
+                                                <asp:Label ID="lblDvcColorValue" runat="server"></asp:Label>
+                                            </td>
+                                            <td align="left">
+                                                <asp:TextBox ID="txtDvcColor" runat="server" MaxLength="200" SkinID="MediumTextBox"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" width="20%">
+                                                <asp:Label ID="lblDvcCapacity" runat="server">CAPACITY</asp:Label>:
+                                            </td>
+                                            <td align="left">
+                                                <asp:Label ID="lblDvcCapacityValue" runat="server"></asp:Label>
+                                            </td>
+                                            <td align="left">
+                                                <asp:TextBox ID="txtDvcCapacity" runat="server" MaxLength="200" SkinID="MediumTextBox"></asp:TextBox>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </td>
@@ -328,6 +361,7 @@
                         </tr>
                     </table>
                       </div></div>
+                    </div> 
                        
                 </div>
             </div>

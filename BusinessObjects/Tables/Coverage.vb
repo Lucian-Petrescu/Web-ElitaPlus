@@ -199,6 +199,21 @@ Public Class Coverage
             Me.SetValue(CoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID, value)
         End Set
     End Property
+
+    Public Property FulfillmentProviderXcd() As string
+        Get
+            CheckDeleted()
+            If Row(CoverageDAL.COL_NAME_FULFILLMENT_PROVIDER_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageDAL.COL_NAME_FULFILLMENT_PROVIDER_XCD), string)
+            End If
+        End Get
+        Set(ByVal value As string)
+            CheckDeleted()
+            Me.SetValue(CoverageDAL.COL_NAME_FULFILLMENT_PROVIDER_XCD, value)
+        End Set
+    End Property
     Public Property FulfillmentProfileCode() As string
         Get
             CheckDeleted()
@@ -1183,6 +1198,7 @@ Public Class Coverage
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As Coverage = CType(objectToValidate, Coverage)
+            Dim SinglePremiumRenewable As String = "4"
 
             Try
                 If Not obj.Effective Is Nothing And Not obj.Expiration Is Nothing Then
@@ -1194,11 +1210,16 @@ Public Class Coverage
 
                         If (Not obj.CertificateDuration Is Nothing) And (obj.CertificateDuration <> 0) Then
                             If (Not sVal Is Nothing) And (CType(sVal, Long) <> 0) Then
-                                If CType(obj.CertificateDuration, Long) Mod CType(sVal, Long) = 0 Then
-                                    Return True
+                                If Not sVal = SinglePremiumRenewable Then
+                                    If CType(obj.CertificateDuration, Long) Mod CType(sVal, Long) = 0 Then
+                                        Return True
+                                    Else
+                                        Return False
+                                    End If
                                 Else
-                                    Return False
+                                    Return True
                                 End If
+
                             End If
                         End If
                     End If
@@ -1222,6 +1243,7 @@ Public Class Coverage
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As Coverage = CType(objectToValidate, Coverage)
+            Dim SinglePremiumRenewable As String = "4"
 
             Try
                 If Not obj.Effective Is Nothing And Not obj.Expiration Is Nothing Then
@@ -1233,10 +1255,14 @@ Public Class Coverage
 
                         If (Not obj.CoverageDuration Is Nothing) And (obj.CoverageDuration <> 0) Then
                             If (Not sVal Is Nothing) And (CType(sVal, Long) <> 0) Then
-                                If CType(obj.CoverageDuration, Long) Mod CType(sVal, Long) = 0 Then
-                                    Return True
+                                If Not sVal = SinglePremiumRenewable Then
+                                    If CType(obj.CoverageDuration, Long) Mod CType(sVal, Long) = 0 Then
+                                        Return True
+                                    Else
+                                        Return False
+                                    End If
                                 Else
-                                    Return False
+                                    Return True
                                 End If
                             End If
                         End If

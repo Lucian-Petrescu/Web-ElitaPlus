@@ -5396,9 +5396,9 @@ Public Class Certificate
     End Function
 #End Region
 #Region "Claim Images"
-    Public ReadOnly Property CertificateImagesList() As CertImage.CertImagesList
+    Public ReadOnly Property CertificateImagesList(Optional ByVal loadAllFiles As Boolean = False) As CertImage.CertImagesList
         Get
-            Return New CertImage.CertImagesList(Me)
+            Return New CertImage.CertImagesList(Me, loadAllFiles)
         End Get
     End Property
 
@@ -5464,14 +5464,13 @@ Public Class Certificate
 #End Region
 
 #Region "Images/Documents"
-    Public Function GetCertificateImagesView() As CertificateImagesView
+    Public Function GetCertificateImagesView(Optional ByVal loadAllFiles As Boolean = False) As CertificateImagesView
         Dim t As DataTable = CertificateImagesView.CreateTable
         Dim detail As CertImage
         Dim filteredTable As DataTable
 
         Try
-
-            For Each detail In Me.CertificateImagesList
+            For Each detail In Me.CertificateImagesList(loadAllFiles)
                 Dim row As DataRow = t.NewRow
                 row(CertificateImagesView.COL_CERT_IMAGE_ID) = detail.Id.ToByteArray
                 row(CertificateImagesView.COL_IMAGE_ID) = detail.ImageId.ToByteArray
@@ -5493,7 +5492,7 @@ Public Class Certificate
                 Else
                     row(CertificateImagesView.COL_USER_NAME) = detail.UserName
                 End If
-
+                row(CertificateImagesView.COL_DELETE_FLAG) = detail.DeleteFlag
                 t.Rows.Add(row)
 
             Next
@@ -5516,6 +5515,7 @@ Public Class Certificate
         Public Const COL_FILE_SIZE_BYTES As String = "FILE_SIZE_BYTES"
         Public Const COL_COMMENTS As String = "COMMENTS"
         Public Const COL_USER_NAME As String = "USER_NAME"
+        Public Const COL_DELETE_FLAG As String = "DELETE_FLAG"
 
         Public Sub New(ByVal Table As DataTable)
             MyBase.New(Table)
@@ -5532,7 +5532,7 @@ Public Class Certificate
             t.Columns.Add(COL_FILE_SIZE_BYTES, GetType(Long))
             t.Columns.Add(COL_COMMENTS, GetType(String))
             t.Columns.Add(COL_USER_NAME, GetType(String))
-
+            t.Columns.Add(COL_DELETE_FLAG, GetType(String))
             Return t
         End Function
     End Class
@@ -5541,8 +5541,3 @@ Public Class Certificate
 #End Region
 
 End Class
-
-
-
-
-

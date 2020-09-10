@@ -2857,16 +2857,21 @@ Public Class Contract
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
+            Dim SinglePremiumRenewable As String = "4"
 
             If (Not obj Is Nothing) Then
                 Dim sVal As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PERIOD_RENEW, obj.RecurringPremiumId)
 
                 If (Not obj.RecurringWarrantyPeriod Is Nothing) And (obj.RecurringWarrantyPeriod <> 0) Then
                     If (Not sVal Is Nothing) And (CType(sVal, Long) <> 0) Then
-                        If CType(obj.RecurringWarrantyPeriod, Long) Mod CType(sVal, Long) = 0 Then
-                            Return True
+                        If Not sVal = SinglePremiumRenewable Then
+                            If CType(obj.RecurringWarrantyPeriod, Long) Mod CType(sVal, Long) = 0 Then
+                                Return True
+                            Else
+                                Return False
+                            End If
                         Else
-                            Return False
+                            Return True
                         End If
                     End If
                 End If

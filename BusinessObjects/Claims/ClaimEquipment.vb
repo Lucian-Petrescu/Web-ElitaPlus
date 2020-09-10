@@ -78,6 +78,19 @@ Public Class ClaimEquipment
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
+
+    Public Sub SaveClaimDeviceInfo()
+        Try
+            MyBase.Save()
+            If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+                Dim dal As New ClaimEquipmentDAL
+                dal.Update(Me.Row)
+            End If
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
+
 #End Region
 
 #Region "Private Members"

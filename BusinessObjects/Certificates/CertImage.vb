@@ -240,6 +240,21 @@ Public Class CertImage
         End Set
     End Property
 
+    Public Property DeleteFlag() As String
+        Get
+            CheckDeleted()
+            If Row(CertImageDAL.COL_NAME_DELETE_FLAG) Is DBNull.Value Then
+                Return "N"
+            Else
+                Return CType(Row(CertImageDAL.COL_NAME_DELETE_FLAG), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CertImageDAL.COL_NAME_DELETE_FLAG, Value)
+        End Set
+    End Property
+
 #End Region
 
 #Region "Public Members"
@@ -248,7 +263,9 @@ Public Class CertImage
             MyBase.Save()
             If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CertImageDAL
-                dal.Update(Me.Row)
+                dal.Update(Me.Row)   
+                dal.UpdateDocumentDeleteFlag(Me.ImageId, Me.DeleteFlag, Me.ModifiedById)               
+
                 'Reload the Data from the DB
                 If Me.Row.RowState <> DataRowState.Detached Then
                     Dim objId As Guid = Me.Id
@@ -261,25 +278,35 @@ Public Class CertImage
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+
+    Public Sub UpdateDocumentDeleteFlag(modifiedById As String)
+        Try
+            Dim dal As New CertImageDAL
+            dal.UpdateDocumentDeleteFlag(Me.imageId, Me.deleteFlag, modifiedById)                
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
+
 #End Region
 
 #Region "Certificate Image List Selection View"
     Public Class CertImagesList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As Certificate)
-            MyBase.New(LoadTable(parent), GetType(CertImage), parent)
+        Public Sub New(ByVal parent As Certificate, Optional ByVal loadAllFiles As Boolean = False)
+            MyBase.New(LoadTable(parent, loadAllFiles), GetType(CertImage), parent)
         End Sub
 
         Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
             Return CType(bo, CertImage).CertId.Equals(CType(Parent, Certificate).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As Certificate) As DataTable
+        Private Shared Function LoadTable(ByVal parent As Certificate, Optional ByVal loadAllFiles As Boolean = False) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(CertImagesList)) Then
-                    Dim dal As New CertImageDAL
-                    dal.LoadList(parent.Dataset, parent.Id)
+                    Dim dal As New CertImageDAL                    
+                    dal.LoadList(parent.Dataset, parent.Id, loadAllFiles)
                     parent.AddChildrenCollection(GetType(CertImagesList))
                 End If
                 Return parent.Dataset.Tables(CertImageDAL.TABLE_NAME)

@@ -36,7 +36,7 @@
     elita.elp_cancel_certificate
   </PROCESS_CANCEL_FILE>
   <PROCESS_EXTRACT_REPORT>
-    elita.r_upload_report.extract
+    elita.r_certcancel_export.extract
   </PROCESS_EXTRACT_REPORT>
   <PROCESS_UPDATE_CLAIM>
     elita.elp_utl_custom_upload.elp_utl_claim_update

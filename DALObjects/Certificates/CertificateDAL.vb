@@ -2422,7 +2422,7 @@ Public Class CertificateDAL
 
             'Second Pass updates additions and changes
             addressDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Modified)
+            Update(familyDataset, tr, DataRowState.Modified)
 
             'At the end delete the Address
             addressDAL.Update(familyDataset, tr, DataRowState.Deleted)
@@ -3468,5 +3468,3 @@ Public Class CertificateDAL
 
 #End Region
 End Class
-
-

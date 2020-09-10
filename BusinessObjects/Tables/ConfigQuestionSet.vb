@@ -285,20 +285,12 @@
         End Try
     End Sub
 
-    Public Sub DeleteAndSave()
-        Me.BeginEdit()
-
+    Public Sub DeleteConfiguration(ByVal configQuestionSetId As Guid)
         Try
-            Me.Delete()
-            Me.Save()
+            Dim dal As New ConfigQuestionSetDAL
+            dal.DeleteConfiguration(configQuestionSetId)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Me.cancelEdit()
             Throw New DataBaseAccessException(ex.ErrorType, ex)
-        Catch ex As RowNotInTableException
-            ex = Nothing
-        Catch ex As Exception
-            Me.cancelEdit()
-            Throw ex
         End Try
     End Sub
 
@@ -388,12 +380,12 @@
     End Sub
 
     Public Shared Function getList(ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal DealerGrpID As Guid, ByVal DealerID As Guid,
-                                   ByVal ProductCodeID As Guid, ByVal RiskTypeID As Guid, ByVal CoverageTypeID As Guid,
+                                   ByVal ProductCode As String, ByVal RiskTypeID As Guid, ByVal CoverageTypeID As Guid,
                                    ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String) As ConfigQuestionSetSearchDV
         Try
             Dim dal As New ConfigQuestionSetDAL
             Return New ConfigQuestionSetSearchDV(dal.LoadList(CompGrpID:=CompGrpID, CompanyID:=CompanyID, DealerGrpID:=DealerGrpID, DealerID:=DealerID,
-                                                              ProductCodeID:=ProductCodeID, CoverageTypeID:=CoverageTypeID, RiskTypeID:=RiskTypeID,
+                                                              ProductCode:=ProductCode, CoverageTypeID:=CoverageTypeID, RiskTypeID:=RiskTypeID,
                                                               strPurposeXCD:=strPurposeXCD, strQuestionSetCode:=strQuestionSetCode,
                                                               LanguageID:=ElitaPlusIdentity.Current.ActiveUser.LanguageId, networkID:=ElitaPlusIdentity.Current.ActiveUser.NetworkId).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

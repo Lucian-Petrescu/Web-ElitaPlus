@@ -1,4 +1,4 @@
-Imports System.DirectoryServices
+﻿Imports System.DirectoryServices
 Imports RMEncryption
 Imports System.Collections.Generic
 'Imports Assurant.Elita.Configuration
@@ -427,6 +427,8 @@ Public Class Authentication
         ' First Access to DB that is not for Log
         oServers = New Servers(connType, machineDomain, webServiceName, webServiceFunctionName)
 
+        identity.LdapIp = oServers.LdapIp
+
         ' Privacy groups
         If Not userPrivacyGroups Is Nothing Then
             ' We already have the user privacy groups
@@ -578,6 +580,11 @@ Public Class Authentication
             '  Dim langId As Guid = langId
             Dim cultureName As String = LookupListNew.GetCodeFromId(LookupListNew.LK_LANGUAGE_CULTURES, LangId)
             System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(cultureName)
+
+            if (System.Threading.Thread.CurrentThread.CurrentCulture.Name.ToUpper() = "ZH-CN") then
+                System.Threading.Thread.CurrentThread.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames = {"一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月",""}
+            End If
+
         End If
     End Sub
 
