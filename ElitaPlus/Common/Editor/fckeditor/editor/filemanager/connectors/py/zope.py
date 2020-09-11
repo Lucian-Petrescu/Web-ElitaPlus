@@ -33,25 +33,6 @@ from fckutil import *
 from connector import *
 import config as Config
 
-def escape(text, replace=string.replace):
-	"""
-	Converts the special characters '<', '>', and '&'.
-
-	RFC 1866 specifies that these characters be represented
-	in HTML as &lt; &gt; and &amp; respectively. In Python
-	1.5 we use the new string.replace() function for speed.
-	"""
-	text = replace(text, '&', '&amp;') # must be done 1st
-	text = replace(text, '<', '&lt;')
-	text = replace(text, '>', '&gt;')
-	text = replace(text, '"', '&quot;')
-	return text
-
-def convertToXmlAttribute(value):
-	if (value is None):
-		value = ""
-	return escape(value)
-
 class FCKeditorConnectorZope(FCKeditorConnector):
 	"""
 	Zope versiof FCKeditorConnector

@@ -99,8 +99,6 @@ Public Class ClaimAuthDetail
 
 #Region "Private Members"
 
-    Private _claimId As Guid
-
     'Initialization code for new objects
     Private Sub Initialize()
         Me.LaborAmount = 0
@@ -260,14 +258,7 @@ Public Class ClaimAuthDetail
         End Set
     End Property
 
-    Public Property TempClaimId() As Guid
-        Get
-            Return _claimId
-        End Get
-        Set(ByVal Value As Guid)
-            _claimId = Value
-        End Set
-    End Property
+    Public Property TempClaimId As Guid
 
     Public Property DispositionAmount() As DecimalType
         Get

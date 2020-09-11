@@ -53,7 +53,7 @@ Public Class Certificate
     Public Const CANCELLATION_REASON_CODE_17 = "17"
 
     Public Const CertIdentificationNumber = "IdentificationNumber"
-    Public Const TAX_ID_NUMB = "TaxIDNumb"
+    Public Const taxIdentificationNumber = "TaxIDNumb"
 
     Public Const SEARCH_SORT_DEFAULT = CertificateDAL.SORT_BY_CUSTOMER_NAME
     Public Const SEARCH_MAX_NUMBER_OF_ROWS = CertificateDAL.MAX_NUMBER_OF_ROWS
@@ -1220,7 +1220,7 @@ Public Class Certificate
         End Set
     End Property
 
-    <ValidStringLength("", Max:=20), ValueMustBeBlankForDocumentNumber(""), SPValidationDocumentNumber(TAX_ID_NUMB), ValueTaxIdLenht("")>
+    <ValidStringLength("", Max:=20), ValueMustBeBlankForDocumentNumber(""), SPValidationDocumentNumber(taxIdentificationNumber), ValueTaxIdLenht("")>
     Public Property TaxIDNumb() As String
         Get
             CheckDeleted()
@@ -5004,8 +5004,8 @@ Public Class Certificate
                         End If
 
                     Case VALIDATION_FLAG_PARTIAL
-                        If Me.DisplayName = TAX_ID_NUMB _
-                            AndAlso (obj.getDocTypeCode <> DOC_TYPE_CPF AndAlso obj.getDocTypeCode <> DOC_TYPE_CNPJ) _
+                        If Me.DisplayName = taxIdentificationNumber _
+                           AndAlso (obj.getDocTypeCode <> DOC_TYPE_CPF AndAlso obj.getDocTypeCode <> DOC_TYPE_CNPJ) _
                             AndAlso (obj.TaxIDNumb Is Nothing OrElse obj.TaxIDNumb.Trim.Length = 0) Then
                             Return True
                         End If

@@ -27,7 +27,6 @@ Public Class GetActiveClaimsForSvc
 #Region "Private Members"
     Private _serviceCenterID As Guid = Guid.Empty
     Private _ExtendedClaimStatusListItemID As Guid = Guid.Empty
-    Private _excludeRepairedClaims As Boolean = False
 
 
     Private Sub MapDataSet(ByVal ds As GetActiveClaimsForSvcDs)
@@ -61,7 +60,6 @@ Public Class GetActiveClaimsForSvc
             Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
             Me._serviceCenterID = Guid.Empty
             Me._ExtendedClaimStatusListItemID = Guid.Empty
-            Me._excludeRepairedClaims = False
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException

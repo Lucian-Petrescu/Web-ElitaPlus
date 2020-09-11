@@ -19,8 +19,6 @@ Partial Class UserControlClaimCloseRules
     Public Event CloneDealerData As RequestData
     Public Event PropertyChanged As PropertyChangedEventHandler
 
-    Private _companyId As Guid
-    Private _dealerId As Nullable(Of Guid)
 
 #Region "Constants"
     Private moState As MyState

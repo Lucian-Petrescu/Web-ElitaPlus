@@ -14,11 +14,7 @@ namespace Assurant.ElitaPlus.External.Indix.Clients
 {
     public class IndixClient : RestClient
     {
-        private const string serviceUri = "https://qa-indixapi.assurantprotectionplans.com/api/v1/indix/summary/products";
-        private const string thumbPrint = "25 36 78 6d 8f 6e 7b 3e ac f5 45 a8 3c 03 e6 a9 fe 34 cb 4c";
-        private static object syncRoot = new Object();
 
-        private static string _webPasswdUrl;
         private static string WebPasswdUrl
         {
             get

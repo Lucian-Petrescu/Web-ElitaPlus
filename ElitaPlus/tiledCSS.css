@@ -14,11 +14,11 @@
             border-width: 1px;
         }
 
-        dataRep hr {
+        /*dataRep hr {
             width: 100%;
             border-color : #999;
             border-style: solid;
-        }
+        }*/
         
         .repContainer {
             border-left: 10px solid #0066CC;

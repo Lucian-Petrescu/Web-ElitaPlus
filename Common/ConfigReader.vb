@@ -68,12 +68,12 @@ Public NotInheritable Class ConfigReader
     Public Shared ReadOnly Property ConfigDocument(ByVal describedType As Type) As XmlDocument
         Get
             'only allow one thread (aspnet session) to access the shared hashtable at a time
-            SyncLock describedType
+            
                 Dim _configDocument As XmlDocument = Nothing
 
                 'get from the cache (hashtable)
                 _configDocument = configCollection.Item(describedType)
-
+            SyncLock describedType
                 'if it was not in the cache, then using the type of the class, retrieve
                 'the xml file, which is just an embeded resource in the type's (class)
                 'assembly.  Use a stream to read it in.
@@ -98,9 +98,9 @@ Public NotInheritable Class ConfigReader
                         resStream.Close()
                     End Try
                 End If
-
-                Return _configDocument
             End SyncLock
+                Return _configDocument
+            
         End Get
     End Property
 
