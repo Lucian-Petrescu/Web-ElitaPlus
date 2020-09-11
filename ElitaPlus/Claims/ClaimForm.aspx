@@ -807,7 +807,7 @@
                                         <asp:BoundField DataField="ServiceCenterName" SortExpression="ServiceCenterName"
                                             ReadOnly="true" HtmlEncode="false" HeaderText="SERVICE_CENTER_NAME" HeaderStyle-HorizontalAlign="Center" />
                                         <asp:BoundField DataField="AuthorizedAmount" SortExpression="AuthorizedAmount" ReadOnly="true"
-                                            HtmlEncode="false" HeaderText="AUTHORIZED_AMOUNT" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Right" ItemStyle-HorizontalAlign="Right" />
+                                            HtmlEncode="false" HeaderText="AUTHORIZED_AMOUNT" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Right"/>
                                         <asp:BoundField DataField="AuthorizationType" SortExpression="AuthorizationType" ReadOnly="true"
                                                         HtmlEncode="false" HeaderText="AUTHORIZATION_TYPE" HeaderStyle-HorizontalAlign="Center" />
                                         <asp:BoundField DataField="RefundMethod" SortExpression="RefundMethod" ReadOnly="true"
