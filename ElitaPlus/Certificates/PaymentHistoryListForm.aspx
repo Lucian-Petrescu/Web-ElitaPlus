@@ -32,9 +32,9 @@
                <asp:HiddenField ID="hdnDisabledTab" runat="server" />
                 <div id="tabs" class="style-tabs">
                     <ul>
-                        <li><a href="#tabsBillingHistory">
+                        <li><a href="#tabsBillingHistory" rel="noopener noreferrer">
                             <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">BILLING_HISTORY</asp:Label></a></li>
-                        <li><a href="#tabsPaymentCollected">
+                        <li><a href="#tabsPaymentCollected" rel="noopener noreferrer">
                             <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">Payment_Collected</asp:Label></a></li>
                     </ul>
 

@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ClaimAuthDetailForm.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ClaimAuthDetailForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.ClaimAuthDetailForm" %>
 
 <%@ Register TagPrefix="mytab" Namespace="Microsoft.Web.UI.WebControls" Assembly="Microsoft.Web.UI.WebControls, Version=1.0.2.226, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
@@ -470,9 +470,9 @@
                                     <div class="dataContainer">
                                         <div id="tabs" class="style-tabs">
                                             <ul>
-                                                <li><a href="#tabPartsInfo">
+                                                <li><a href="#tabPartsInfo" rel="noopener noreferrer">
                                                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">PARTS   INFO</asp:Label></a></li>
-                                                <li><a href="#tabsAuthDetaily">
+                                                <li><a href="#tabsAuthDetaily" rel="noopener noreferrer">
                                                     <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">AUTH_DETAIL</asp:Label></a></li>
                                             </ul>
 

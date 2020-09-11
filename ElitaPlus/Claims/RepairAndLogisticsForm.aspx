@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="RepairAndLogisticsForm.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="RepairAndLogisticsForm.aspx.vb"
     Theme="Default" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.RepairAndLogisticsForm"
     EnableSessionState="True" MasterPageFile="~/Navigation/masters/ElitaBase.Master" %>
 
@@ -78,11 +78,11 @@
                         <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
                          <div id="tabs" class="style-tabs repairTabs">
                             <ul>
-                                <li><a href="#tabsGeneralInformation">
+                                <li><a href="#tabsGeneralInformation" rel="noopener noreferrer">
                                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">General_Information</asp:Label></a></li>
-                                <li><a href="#tabsReplacedDevice">
+                                <li><a href="#tabsReplacedDevice" rel="noopener noreferrer">
                                     <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">Replaced_Device</asp:Label></a></li>
-                                <li><a href="#tabsLOGISTICALINFORMATION">
+                                <li><a href="#tabsLOGISTICALINFORMATION" rel="noopener noreferrer">
                                     <asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">LOGISTICAL_INFORMATION</asp:Label></a></li>
                             </ul>
 

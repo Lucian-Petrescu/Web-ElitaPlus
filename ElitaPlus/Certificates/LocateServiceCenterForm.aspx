@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="LocateServiceCenterForm.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="LocateServiceCenterForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.LocateServiceCenterForm" Theme="Default"
     EnableSessionState="True" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
@@ -19,7 +19,7 @@
             <p class="modalTitle">
             <table width="525"><tr><td align="left">
                 <asp:Label ID="lblModalTitle" runat="server" Text="CONFIRM"></asp:Label></td><td align="right">
-                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');">
+                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');" rel="noopener noreferrer">
                     <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="right"/></a></td></tr></table></p>
             <table class="formGrid" cellspacing="0" cellpadding="0" border="0" width="525">

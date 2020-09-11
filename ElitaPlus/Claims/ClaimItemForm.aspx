@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ClaimItemForm.aspx.vb" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" EnableSessionState="True"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ClaimItemForm.aspx.vb" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" EnableSessionState="True"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.ClaimItemForm" %>
 
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimInfo" Src="UserControlClaimInfo.ascx" %>
@@ -45,9 +45,9 @@
              <div class="stepformZone">
              <div id="tabs" class="style-tabs">
                  <ul>
-                     <li><a href="#tbClaimItem">
+                     <li><a href="#tbClaimItem" rel="noopener noreferrer">
                          <asp:Label ID="lblClaimItem" runat="server" CssClass="tabHeaderText">CLAIM_ITEM</asp:Label></a></li>
-                     <li><a href="#tbReplacementItems">
+                     <li><a href="#tbReplacementItems" rel="noopener noreferrer">
                          <asp:Label ID="lblRelacementItem" runat="server" CssClass="tabHeaderText">REPLACEMENT_ITEMS</asp:Label></a></li>
 
                  </ul>
