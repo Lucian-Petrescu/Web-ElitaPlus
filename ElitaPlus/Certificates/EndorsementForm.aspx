@@ -1,4 +1,4 @@
-
+﻿
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="EndorsementForm.aspx.vb"
     Theme="Default" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.EndorsementForm" 
     EnableSessionState="True" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
@@ -222,7 +222,7 @@
                         <td colspan="4" valign="top">                            
                             <div id="tabs" class="style-tabs">
                               <ul>
-                                <li><a href="#tabsCoverages"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Coverages</asp:Label></a></li>
+                                <li><a href="#tabsCoverages" rel="noopener noreferrer"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Coverages</asp:Label></a></li>
                               </ul>
           
                                 <div id="tabsCoverages">

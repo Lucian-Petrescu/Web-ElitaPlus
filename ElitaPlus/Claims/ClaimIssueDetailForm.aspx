@@ -134,7 +134,7 @@
         <div id="light" class="overlay_message_content" style="width: 500px">
             <p class="modalTitle">
                 <asp:Label ID="lblModalTitle" runat="server" Text="REOPEN_ISSUE"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalReopenIssue');">
+                <a href="javascript:void(0)" onclick="hideModal('ModalReopenIssue');" rel="noopener noreferrer">
                     <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
@@ -187,7 +187,7 @@
         <div id="light" class="overlay_message_content" style="width: 500px">
             <p class="modalTitle">
                 <asp:Label ID="Label1" runat="server" Text="WAIVE_ISSUE"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalWaiveIssue');">
+                <a href="javascript:void(0)" onclick="hideModal('ModalWaiveIssue');" rel="noopener noreferrer">
                     <img id="Img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
@@ -242,9 +242,9 @@
            <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
                 <div id="tabs" class="style-tabs">
                     <ul>
-                        <li><a href="#tabsQuestionDetail">
+                        <li><a href="#tabsQuestionDetail" rel="noopener noreferrer">
                             <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Questions</asp:Label></a></li>
-                        <li><a href="#tabsProcessHistory">
+                        <li><a href="#tabsProcessHistory" rel="noopener noreferrer">
                             <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">PROCESS_HISTORY</asp:Label></a></li>
                     </ul>
 

@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CancellationReasonForm.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CancellationReasonForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.CancellationReasonForm" EnableSessionState="True"  Theme="Default"
     MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
@@ -113,7 +113,7 @@
        <div class="dataContainer">    
             <div id="tabs" class="style-tabs">
             <ul>
-                <li><a href="#tabsRoles">
+                <li><a href="#tabsRoles" rel="noopener noreferrer">
                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Roles</asp:Label></a></li>
             </ul>
 

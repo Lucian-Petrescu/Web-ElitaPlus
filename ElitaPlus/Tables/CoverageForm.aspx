@@ -1,4 +1,4 @@
-<%@ Register TagPrefix="uc1" TagName="MultipleColumnDDLabelControl" Src="../Common/MultipleColumnDDLabelControl.ascx" %>
+﻿<%@ Register TagPrefix="uc1" TagName="MultipleColumnDDLabelControl" Src="../Common/MultipleColumnDDLabelControl.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlAttrtibutes" Src="~/Common/UserControlAttrtibutes.ascx" %>
 
@@ -617,13 +617,13 @@
         <asp:HiddenField ID="hdnDisabledTab" runat="server" />
         <div id="tabs" class="style-tabs">
             <ul>
-                <li><a href="#tabsCoverageRate">
+                <li><a href="#tabsCoverageRate" rel="noopener noreferrer">
                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Coverage Rate</asp:Label></a></li>
-                <li><a href="#tabsDeductible">
+                <li><a href="#tabsDeductible" rel="noopener noreferrer">
                     <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">Deductible</asp:Label></a></li>
-                <li><a href="#tabsATTRIBUTES">
+                <li><a href="#tabsATTRIBUTES" rel="noopener noreferrer">
                     <asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">ATTRIBUTES</asp:Label></a></li>
-                <li><a href="#tabsCoverageConseqDamage">
+                <li><a href="#tabsCoverageConseqDamage" rel="noopener noreferrer">
                     <asp:Label ID="Label2" runat="server" CssClass="tabHeaderText">Coverage_Conseq_Damage</asp:Label></a></li>
             </ul>
 

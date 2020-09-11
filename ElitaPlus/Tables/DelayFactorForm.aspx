@@ -97,7 +97,7 @@
                                                 <%--     changes for tab--%>
                                                 <div id="tabs" class="style-tabs-old">
                                                     <ul>
-                                                        <li style="background:#d5d6e4;"><a href="#tabsDelayFactor">
+                                                        <li style="background:#d5d6e4;"><a href="#tabsDelayFactor" rel="noopener noreferrer">
                                                             <asp:Label ID="Label4" runat="server" CssClass="tabHeaderTextOld">DELAY_FACTOR</asp:Label></a></li>
 
                                                     </ul>

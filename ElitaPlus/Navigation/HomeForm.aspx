@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" Codebehind="HomeForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.HomeForm"%>
+﻿<%@ Page Language="vb" AutoEventWireup="false" Codebehind="HomeForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.HomeForm"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 	<HEAD>
@@ -109,8 +109,8 @@
 							<tr>
 								<td align="center"><div style="MARGIN-TOP: 5px; MARGIN-BOTTOM: 15px; MARGIN-LEFT: 10px"><br>
 										<asp:Label id="lblCopyright" runat="server" Visible="True" ></asp:Label>
-                                    <a target="_blank" href="http://www.assurant.com/inc/assurant/notice.html">
-											<font color="#0066cc">Notice</font></a> | <a target="_blank" href="http://www.assurant.com/inc/assurant/privacy.html">
+                                    <a target="_blank" href="http://www.assurant.com/inc/assurant/notice.html" rel="noopener noreferrer">
+											<font color="#0066cc">Notice</font></a> | <a target="_blank" href="http://www.assurant.com/inc/assurant/privacy.html" rel="noopener noreferrer">
 											<font color="#0066cc">Privacy Policy</font></a></div>
 									<DIV></DIV>
 								</td>

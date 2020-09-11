@@ -97,7 +97,7 @@
                                                 <%--     changes for tab--%>
                                                 <div id="tabs" class="style-tabs">
                                                     <ul>
-                                                        <li><a href="#tabsInstallmentFactor">
+                                                        <li><a href="#tabsInstallmentFactor" rel="noopener noreferrer">
                                                             <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">INSTALLMENT_FACTOR</asp:Label></a></li>
                                                     </ul>
 

@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="AccountingEventForm.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="AccountingEventForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.AccountingEventForm" MasterPageFile="~/Navigation/masters/content_default.Master" %>
 
 <%@ Register TagPrefix="mytab" Namespace="Microsoft.Web.UI.WebControls" Assembly="Microsoft.Web.UI.WebControls, Version=1.0.2.226, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
@@ -181,7 +181,7 @@
             <td colspan="4">
                 <div id="tabs" class="style-tabs-old" style="border:none;">
                   <ul>
-                    <li style="background:#d5d6e4"><a href="#tabsLineItems"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderTextOld">LINE_ITEMS</asp:Label></a></li>
+                    <li style="background:#d5d6e4"><a href="#tabsLineItems" rel="noopener noreferrer"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderTextOld">LINE_ITEMS</asp:Label></a></li>
                   </ul>
           
                   <div id="tabsLineItems" style="background:#d5d6e4">

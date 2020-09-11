@@ -1,4 +1,4 @@
- <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CommissionPeriodForm.aspx.vb"
+﻿ <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CommissionPeriodForm.aspx.vb"
     Theme="Default" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.CommissionPeriodForm"
     EnableSessionState="True" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
@@ -357,8 +357,8 @@
             
             <div id="tabs" class="style-tabs-old" style="border:none;">
               <ul>
-                <li style="background:#d5d6e4"><a href="#tabsCommissionBreakdown"><asp:Label ID="Label1" runat="server" CssClass="tabHeaderTextOld">Commission_Breakdown</asp:Label></a></li>
-                <li style="background:#d5d6e4"><a href="#tabmoEntityTabPanelWRITE"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderTextOld">Entities</asp:Label></a></li>
+                <li style="background:#d5d6e4"><a href="#tabsCommissionBreakdown" rel="noopener noreferrer"><asp:Label ID="Label1" runat="server" CssClass="tabHeaderTextOld">Commission_Breakdown</asp:Label></a></li>
+                <li style="background:#d5d6e4"><a href="#tabmoEntityTabPanelWRITE" rel="noopener noreferrer"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderTextOld">Entities</asp:Label></a></li>
               </ul>
           
               <div id="tabsCommissionBreakdown" style="border:1px solid black;">

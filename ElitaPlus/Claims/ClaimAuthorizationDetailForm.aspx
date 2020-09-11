@@ -267,11 +267,11 @@
             <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
             <div id="tabs" class="style-tabs">
                 <ul>
-                    <li><a href="#tabsClaimAuthItemDetail">
+                    <li><a href="#tabsClaimAuthItemDetail" rel="noopener noreferrer">
                         <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">CLAIM_AUTHORIZATION_ITEM</asp:Label></a></li>
-                    <li><a href="#tabsClaimAuthFulfillmentIssues">
+                    <li><a href="#tabsClaimAuthFulfillmentIssues" rel="noopener noreferrer">
                         <asp:Label ID="Label7" runat="server" CssClass="tabHeaderText">CLAIM_AUTHORIZATION_FULFILLMENT_ISSUE</asp:Label></a></li>
-                    <li><a href="#tabsClaimAuthStatusHistory">
+                    <li><a href="#tabsClaimAuthStatusHistory" rel="noopener noreferrer">
                         <asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">CLAIM_AUTHORIZATION_STATUS_HISTORY</asp:Label></a></li>
                 </ul>
                 <div id="tabsClaimAuthItemDetail">
@@ -477,7 +477,7 @@
           <div id="light" class="overlay_message_content" style="align-content:center; max-height: 80%;width:80%">
             <p class="modalTitle">
                 <asp:Label ID="Label1" runat="server" Text="Reshipment"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalReshipment');">
+                <a href="javascript:void(0)" onclick="hideModal('ModalReshipment');" rel="noopener noreferrer">
                     <img id="Img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
@@ -590,7 +590,7 @@
     <div id="light" class="overlay_message_content" style="width: 540px">
        <p class="modalTitle">
             <asp:Label ID="Label3" Text="REFUND_FEE" runat="server"></asp:Label>
-            <a href="javascript:void(0)" onclick="hideModal('ModalRefundFee');">
+            <a href="javascript:void(0)" onclick="hideModal('ModalRefundFee');" rel="noopener noreferrer">
                 <img id="Img9" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                      width="16" height="18" align="absmiddle" class="floatR" /></a>
         </p>

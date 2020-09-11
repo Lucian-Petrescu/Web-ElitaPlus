@@ -58,7 +58,7 @@
                <div class="Pages">
                 <div id="tabs" class="style-tabs">
                     <ul>
-                        <li><a href="#tabsInvoices">
+                        <li><a href="#tabsInvoices" rel="noopener noreferrer">
                             <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">INVOICES</asp:Label></a></li>
                     </ul>
                     <div id="tabsInvoices">

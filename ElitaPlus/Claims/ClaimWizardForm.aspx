@@ -54,7 +54,7 @@
         <div id="light" class="overlay_message_content">
             <p class="modalTitle">
                 <asp:Label ID="lblModalTitle" runat="server" Text="CONFIRM"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');">
+                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');" rel="noopener noreferrer">
                     <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
@@ -89,7 +89,7 @@
         <div id="light" class="overlay_message_content">
             <p class="modalTitle">
                 <asp:Label ID="lblModalTitleServiceWarranty" runat="server" Text="CONFIRM"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalServiceWarranty');">
+                <a href="javascript:void(0)" onclick="hideModal('ModalServiceWarranty');" rel="noopener noreferrer">
                     <img id="Img11" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
@@ -123,7 +123,7 @@
         <div id="light" class="overlay_message_content">
             <p class="modalTitle">
                 <asp:Label ID="lblModalClaimCancelTitle" runat="server" Text="CONFIRM"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalClaimCancel');">
+                <a href="javascript:void(0)" onclick="hideModal('ModalClaimCancel');" rel="noopener noreferrer">
                     <img id="Img7" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
@@ -162,7 +162,7 @@
                         <td align="left">
                             <asp:Label ID="modalHeaderLabel" Text="SELECT_MASTER_CLAIM_NUMBER" runat="server"></asp:Label></td>
                         <td align="right">
-                            <a href="javascript:void(0)" onclick="hideModal('ModalMasterClaim');">
+                            <a href="javascript:void(0)" onclick="hideModal('ModalMasterClaim');" rel="noopener noreferrer">
                                 <img id="Img6" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                                     width="16" height="18" align="top" /></a>
             </p>
@@ -201,7 +201,7 @@
         <div id="light" class="overlay_message_content" style="width: 470px">
             <p class="modalTitle">
                 <asp:Label ID="Label2" Text="Deny_Claim" runat="server"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalDenyClaim');">
+                <a href="javascript:void(0)" onclick="hideModal('ModalDenyClaim');" rel="noopener noreferrer">
                     <img id="Img9" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
@@ -248,7 +248,7 @@
         <div class="overlay_message_content">
             <p class="modalTitle">
                 <asp:Label ID="lblTitle" runat="server" Text="CONFIRM"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalBypassDoL');">
+                <a href="javascript:void(0)" onclick="hideModal('ModalBypassDoL');" rel="noopener noreferrer">
                     <img id="Img13" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR" alt="" />
                 </a>
             </p>
@@ -281,7 +281,7 @@
         <div id="light" class="overlay_message_content" style="left: 10%; right: 5%; top: 5%; max-height: 80%">
             <p class="modalTitle">
                 <asp:Label ID="lbl" runat="server">Soft Questions</asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalSoftQuestions');">
+                <a href="javascript:void(0)" onclick="hideModal('ModalSoftQuestions');" rel="noopener noreferrer">
                     <img id="Img10" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
@@ -898,7 +898,7 @@
                 <div class="dataContainer">
                     <h2 class="dataGridHeader">
                         <asp:Label runat="server" ID="lblGrdHdr"></asp:Label>
-                        <span class=""><a onclick="RevealModalWithMessage('ModalIssue');" href="javascript:void(0)">
+                        <span class=""><a onclick="RevealModalWithMessage('ModalIssue');" href="javascript:void(0)" rel="noopener noreferrer">
                             <asp:Label ID="lblFileNewIssue" runat="server"></asp:Label>
                         </a></span>
                     </h2>
@@ -908,19 +908,19 @@
                         <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
                         <div id="tabs" class="style-tabs">
                             <ul>
-                                <li><a href="#tabClaimIssues">
+                                <li><a href="#tabClaimIssues" rel="noopener noreferrer">
                                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">CLAIM_ISSUES</asp:Label></a></li>
-                                <li><a href="#tabClaimImages">
+                                <li><a href="#tabClaimImages" rel="noopener noreferrer">
                                     <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">CLAIM_IMAGES</asp:Label></a></li>
-                                <li><a href="#tabClaimAuthorization">
+                                <li><a href="#tabClaimAuthorization" rel="noopener noreferrer">
                                     <asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">CLAIM_AUTHORIZATIONS</asp:Label></a></li>
-                                <li><a href="#tabDeviceInformation">
+                                <li><a href="#tabDeviceInformation" rel="noopener noreferrer">
                                     <asp:Label ID="Label3" runat="server" CssClass="tabHeaderText">DEVICE_INFORMATION</asp:Label></a></li>
-                                <li><a href="#tabsQuestionAnswerInfo">
+                                <li><a href="#tabsQuestionAnswerInfo" rel="noopener noreferrer">
                                     <asp:Label ID="QuestionAnswerLabel" runat="server" CssClass="tabHeaderText">CASE_QUESTION_ANSWER</asp:Label></a></li>
-                                <li><a href="#tabsActionInfo">
+                                <li><a href="#tabsActionInfo" rel="noopener noreferrer">
                                     <asp:Label ID="ActionInfoLabel" runat="server" CssClass="tabHeaderText">CASE_ACTION</asp:Label></a></li>
-                                <li><a href="#tbClaimConsequentialDamage">
+                                <li><a href="#tbClaimConsequentialDamage" rel="noopener noreferrer">
                                     <asp:Label ID="Label5" runat="server" CssClass="tabHeaderText">CLAIM_CONSEQUENTIAL_DAMAGE</asp:Label></a></li>                        
                             </ul>
 
@@ -1216,7 +1216,7 @@
                     <div id="light" class="overlay_message_content" style="width: 1100px; left: 8%">
                         <p class="modalTitle">
                             <asp:Label ID="lblClaimImage" runat="server" Text="CLAIM_IMAGE"></asp:Label>
-                            <a href="javascript:void(0)" onclick="hideModal('modalClaimImages');">
+                            <a href="javascript:void(0)" onclick="hideModal('modalClaimImages');" rel="noopener noreferrer">
                                 <img id="img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                                     width="16" height="18" align="absmiddle" class="floatR" /></a>
                         </p>
@@ -1229,7 +1229,7 @@
                     <div id="light" class="overlay_message_content" style="width: 500px">
                         <p class="modalTitle">
                             <asp:Label ID="Label1" runat="server" Text="NEW_CLAIM_ISSUE"></asp:Label>
-                            <a href="javascript:void(0)" onclick="HideErrorAndModal('ModalIssue');">
+                            <a href="javascript:void(0)" onclick="HideErrorAndModal('ModalIssue');" rel="noopener noreferrer">
                                 <img id="img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                                     width="16" height="18" align="absmiddle" class="floatR" /></a>
                         </p>
@@ -1307,7 +1307,7 @@
                     <div id="light" class="overlay_message_content" style="width: 45%; top: 50px; overflow: hidden;">
                         <p class="modalTitle">
                             <asp:Label ID="lblCollectDeductible" runat="server" Text="COLLECT_DEDUCTIBLE"></asp:Label>
-                            <a href="javascript:void(0)" onclick="hideModal('modalCollectDeductible');">
+                            <a href="javascript:void(0)" onclick="hideModal('modalCollectDeductible');" rel="noopener noreferrer">
                                 <img id="img5" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                                     width="16" height="18" align="middle" class="floatR" /></a>
                         </p>
