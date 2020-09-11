@@ -148,37 +148,6 @@ Namespace Tables
 
 #Region "Properties"
 
-        Private ReadOnly Property TheCompanyCreditCard() As CompanyCreditCard
-            Get
-                If IsNewCompanyCreditCard() = True Then
-                    ' For creating, inserting
-                    moCompanyCreditCard = New CompanyCreditCard
-                    CompanyCreditCardId = moCompanyCreditCard.Id.ToString
-                Else
-                    ' For updating, deleting
-                    Dim oCompanyCreditCardId As Guid = Me.GetGuidFromString(CompanyCreditCardId)
-                    moCompanyCreditCard = New CompanyCreditCard(oCompanyCreditCardId)
-                End If
-
-                Return moCompanyCreditCard
-            End Get
-        End Property
-
-        Private Property CompanyCreditCardId() As String
-            Get
-                If Grid.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX Then
-                    moCompanyCreditCardId = Me.GetSelectedGridText(Grid, COMPANY_CREDIT_CARD_ID)
-                End If
-                Return moCompanyCreditCardId
-            End Get
-            Set(ByVal Value As String)
-                If Grid.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX Then
-                    Me.SetSelectedGridText(Grid, COMPANY_CREDIT_CARD_ID, Value)
-                End If
-                moCompanyCreditCardId = Value
-            End Set
-        End Property
-
         Private Property IsNewCompanyCreditCard() As Boolean
             Get
                 Return Me.State.IsNew

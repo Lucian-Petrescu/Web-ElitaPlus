@@ -183,7 +183,6 @@ Namespace Tables
                 moEarningPercentIDLabel.Text = Value
             End Set
         End Property
-
         Private Property IsNewPercent() As Boolean
             Get
                 Return Convert.ToBoolean(moIsNewPercentLabel.Text)

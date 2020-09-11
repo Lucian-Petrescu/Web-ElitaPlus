@@ -126,45 +126,6 @@ Namespace Tables
 
 #Region "Properties"
 
-        Private ReadOnly Property theMfgStandardization() As BusinessObjectsNew.MfgStandardization
-            Get
-                If IsNewMfgStandardization() = True Then
-                    ' For creating, inserting
-                    moMfgStandardization = New BusinessObjectsNew.MfgStandardization
-                    MfgStandardizationId = moMfgStandardization.Id.ToString
-                Else
-                    ' For updating, deleting
-                    Dim oMfgStandardizationId As New Guid(MfgStandardizationId)
-                    moMfgStandardization = New BusinessObjectsNew.MfgStandardization(oMfgStandardizationId)
-                End If
-
-                Return moMfgStandardization
-            End Get
-        End Property
-        Private Property MfgStandardizationId() As String
-            Get
-                If moMfgGrid.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX And IsNewMfgStandardization() = False Then
-                    moMfgStandardizationId = New Guid(CType((Me.State.searchDV(moMfgGrid.SelectedIndex)("mfg_standardization_id")), Byte())).ToString
-                End If
-                Return moMfgStandardizationId
-            End Get
-            Set(ByVal Value As String)
-                If moMfgGrid.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX Then
-                    Me.SetSelectedGridText(moMfgGrid, MFGStandardization_ID, Value)
-                End If
-                moMfgStandardizationId = Value
-            End Set
-        End Property
-
-        Private Property IsNewMfgStandardization() As Boolean
-            Get
-                Return Me.State.IsNew
-            End Get
-            Set(ByVal Value As Boolean)
-                Me.State.IsNew = Value
-            End Set
-        End Property
-
         Public ReadOnly Property IsEditing() As Boolean
             Get
                 IsEditing = (Me.moMfgGrid.EditIndex > NO_ROW_SELECTED_INDEX)

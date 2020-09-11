@@ -73,7 +73,6 @@ Public NotInheritable Class ConfigReader
 
                 'get from the cache (hashtable)
                 _configDocument = configCollection.Item(describedType)
-            SyncLock describedType
                 'if it was not in the cache, then using the type of the class, retrieve
                 'the xml file, which is just an embeded resource in the type's (class)
                 'assembly.  Use a stream to read it in.
@@ -98,7 +97,6 @@ Public NotInheritable Class ConfigReader
                         resStream.Close()
                     End Try
                 End If
-            End SyncLock
                 Return _configDocument
             
         End Get
