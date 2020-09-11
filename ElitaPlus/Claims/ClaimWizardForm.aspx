@@ -1075,7 +1075,13 @@
                                                     <asp:BoundField DataField="ServiceCenterName" SortExpression="ServiceCenterName"
                                                         ReadOnly="true" HtmlEncode="false" HeaderText="SERVICE_CENTER_NAME" HeaderStyle-HorizontalAlign="Center" />
                                                     <asp:BoundField DataField="AuthorizedAmount" SortExpression="AuthorizedAmount" ReadOnly="true"
-                                                        HtmlEncode="false" HeaderText="AUTHORIZED_AMOUNT" HeaderStyle-HorizontalAlign="Center" />
+                                                        HtmlEncode="false" HeaderText="AUTHORIZED_AMOUNT" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Right" />
+                                                    <asp:BoundField DataField="AuthorizationType" SortExpression="AuthorizationType" ReadOnly="true"
+                                                                    HtmlEncode="false" HeaderText="AUTHORIZATION_TYPE" HeaderStyle-HorizontalAlign="Center" />
+                                                    <asp:BoundField DataField="RefundMethod" SortExpression="RefundMethod" ReadOnly="true"
+                                                                    HtmlEncode="false" HeaderText="REFUND_METHOD" HeaderStyle-HorizontalAlign="Center" />
+                                                    <asp:BoundField DataField="CreatedBy" SortExpression="CreatedBy" ReadOnly="true"
+                                                                    HtmlEncode="false" HeaderText="CREATED_BY" HeaderStyle-HorizontalAlign="Center" />
                                                     <asp:BoundField DataField="CreatedDate" SortExpression="CreatedDate" ReadOnly="true"
                                                         HtmlEncode="false" HeaderText="CREATED_DATE" HeaderStyle-HorizontalAlign="Center" />
                                                     <asp:BoundField DataField="ClaimAuthStatus" ReadOnly="true" HeaderText="Status" SortExpression="ClaimAuthStatus"

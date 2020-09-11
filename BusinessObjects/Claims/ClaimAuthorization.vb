@@ -950,15 +950,15 @@ Public NotInheritable Class ClaimAuthorization
         End Set
     End Property
 
-    Public Readonly Property CashPymtMethodXcd() As String
+    Public ReadOnly Property CashPymtMethodXcd() As String
         Get
             CheckDeleted()
-            If row(ClaimAuthorizationDAL.COL_NAME_CASH_PYMT_METHOD_XCD) Is DBNull.Value Then
+            If Row(ClaimAuthorizationDAL.COL_NAME_CASH_PYMT_METHOD_XCD) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(row(ClaimAuthorizationDAL.COL_NAME_CASH_PYMT_METHOD_XCD), String)
+                Return CType(Row(ClaimAuthorizationDAL.COL_NAME_CASH_PYMT_METHOD_XCD), String)
             End If
-        End Get        
+        End Get
     End Property
 #Region "Derived Properties"
 
@@ -979,6 +979,35 @@ Public NotInheritable Class ClaimAuthorization
             End If
             Dim oClaimInvoice As New ClaimInvoice(Me.ClaimInvoiceId, Me.Dataset)
             Return oClaimInvoice.CreatedDate
+        End Get
+    End Property
+
+    Public ReadOnly Property AuthorizationType() As String
+        Get
+            If Row(ClaimAuthorizationDAL.COL_NAME_AUTH_TYPE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return LookupListNew.GetDescriptionFromExtCode(LookupListNew.LK_AUTH_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, AuthTypeXcd).ToString()
+            End If
+        End Get
+    End Property
+
+    Public ReadOnly Property RefundMethod() As String
+        Get
+            If Row(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return LookupListNew.GetDescriptionFromExtCode(LookupListNew.LK_RFM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, RefundMethodXcd)
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property CreatedBy() As String
+        Get
+            If Row(ClaimAuthorizationDAL.COL_NAME_USER_NAME) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ClaimAuthorizationDAL.COL_NAME_USER_NAME), String)
+            End If
         End Get
     End Property
 
@@ -1466,7 +1495,6 @@ Public NotInheritable Class ClaimAuthorization
         Me.IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
         Me.ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
         Me.ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        'Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
         Me.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE
         Me.PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER
         Me.PartyReferenceId = certid
@@ -1475,7 +1503,6 @@ Public NotInheritable Class ClaimAuthorization
         Me._isDSCreator = True
         Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
         Me.SetCreatedAuditInfo()
-        'Me.CreatedById = ElitaPlusIdentity.Current.ActiveUser.NetworkId
 
     End Sub
 
@@ -1489,8 +1516,8 @@ Public NotInheritable Class ClaimAuthorization
         Dim amount As Decimal = New Decimal(0)
         For Each Item As ClaimAuthItem In Me.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False)
             If Item.AdjustmentReasonId.Equals(Guid.Empty) And
-                Not (Item.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE Or
-                 Item.ServiceClassCode = Codes.SERVICE_CLASS__MISCELLANEOUS) Then
+               Not ((Item.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE AndAlso Item.Amount = 0) Or
+                    Item.ServiceClassCode = Codes.SERVICE_CLASS__MISCELLANEOUS) Then
                 amount = amount + If(Item.Amount Is Nothing, New Decimal(0D), Item.Amount.Value)
             End If
         Next
@@ -1540,7 +1567,7 @@ Public NotInheritable Class ClaimAuthorization
         claimAuthItem.ServiceTypeId = serviceClassType.ServiceTypeId
         claimAuthItem.VendorSku = Codes.VENDOR_SKU_DEDUCTIBLE
         claimAuthItem.VendorSkuDescription = Codes.VENDOR_SKU_DESC_DEDUCTIBLE
-        claimAuthItem.Amount = refundAmount * -1D
+        claimAuthItem.Amount = refundAmount * 1D
 
     End Sub
 

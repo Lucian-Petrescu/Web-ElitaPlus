@@ -45,8 +45,8 @@ Partial Class ClaimForm
     Public Const SELECT_ACTION_COMMAND As String = "SelectAction"
     Public Const GRID_COL_SERVICE_CENTER_NAME_IDX As Integer = 1
     Public Const GRID_COL_AMOUNT_IDX As Integer = 2
-    Public Const GRID_COL_CREATED_DATETIME_IDX As Integer = 3
-    Public Const GRID_COL_STATUS_CODE_IDX As Integer = 4
+    Public Const GRID_COL_CREATED_DATETIME_IDX As Integer = 6
+    Public Const GRID_COL_STATUS_CODE_IDX As Integer = 7
     Public params As New ArrayList
 
     'Req-784
