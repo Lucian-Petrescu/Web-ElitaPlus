@@ -3,10 +3,10 @@
     MasterPageFile="~/Navigation/masters/ElitaBase.Master" %>
 <%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
 <asp:Content ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet"/>
-    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js" > </script>
-    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js" > </script>
-    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet"/>  
+    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet">
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js"> </script>
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js"> </script>
+    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet">  
     <script type="text/javascript">        
         $(function () {
             // Disable tabs.
@@ -68,26 +68,24 @@
     
 </asp:Content>
 <asp:Content ContentPlaceHolderID="MessagePlaceHolder" runat="server">
-    <Elita:MessageController runat="server" ID="moMessageController" />
+    <Elita:MessageController runat="server" ID="moMessageController"></Elita:MessageController>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ContentPlaceHolderID="BodyPlaceHolder" runat="server">
-    <input runat="server" name="DeleteButtonId" id="DeleteButtonId" type="hidden" />
-    <input runat="server" name="DeleteButtonArgument" id="DeleteButtonArgument" type="hidden"  />
+    <input runat="server" name="DeleteButtonId" id="DeleteButtonId" type="hidden">
+    <input runat="server" name="DeleteButtonArgument" id="DeleteButtonArgument" type="hidden">
     <div id="ModalCancel" class="overlay">
         <div id="light" class="overlay_message_content">
             <p class="modalTitle">
                 <asp:Label ID="lblModalTitle" runat="server" Text="CONFIRM"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');">
-                    <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                        width="16" height="18" align="absmiddle" class="floatR" /></a></p>
+                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');" rel="noopener noreferrer">
+                    <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR"></a></p>
             <table class="formGrid" width="98%" cellspacing="0" cellpadding="0" border="0">
                 <tbody>
                     <tr>
                         <td align="right">
-                            <img id="imgMsgIcon" name="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
-                                height="28" />
+                            <img id="imgMsgIcon" name="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png" height="28">
                         </td>
                         <td id="tdModalMessage" colspan="2" runat="server">
                             <asp:Label ID="lblCancelMessage" runat="server"></asp:Label>
@@ -98,10 +96,8 @@
                             &nbsp;
                         </td>
                         <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="2">
-                            <input id="btnModalCancelYes" class="primaryBtn floatR" runat="server" type="button"
-                                value="Yes" />
-                            <input id="Button1" class="popWindowAltbtn floatR" runat="server" type="button" value="No"
-                                onclick="hideModal('ModalCancel');" />
+                            <input id="btnModalCancelYes" class="primaryBtn floatR" runat="server" type="button" value="Yes">
+                            <input id="Button1" class="popWindowAltbtn floatR" runat="server" type="button" value="No" onclick="hideModal('ModalCancel');">
                         </td>
                     </tr>
                 </tbody>
@@ -116,74 +112,72 @@
                 <tbody>
                     <tr>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moWorkQueueNameLabel" Text="WORK_QUEUE_NAME" />
+                            <asp:Label runat="server" ID="moWorkQueueNameLabel" Text="WORK_QUEUE_NAME"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
-                            <asp:TextBox runat="server" ID="moWorkQueueName" SkinID="MediumTextBox" />
+                            <asp:TextBox runat="server" ID="moWorkQueueName" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
-                        <td colspan="2" />
+                        <td colspan="2"></td>
                     </tr>
                     <tr>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moCompanyLabel" Text="COMPANY" />
+                            <asp:Label runat="server" ID="moCompanyLabel" Text="COMPANY"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
                             <asp:DropDownList runat="server" ID="moCompanyDropDown" SkinID="MediumDropDown">
                             </asp:DropDownList>
-                            <asp:TextBox runat="server" ID="moCompanyText" SkinID="MediumTextBox" ReadOnly="true" />
+                            <asp:TextBox runat="server" ID="moCompanyText" SkinID="MediumTextBox" ReadOnly="true"></asp:TextBox>
                         </td>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moTimeZoneLabel" Text="TIME_ZONE_NAME" />
+                            <asp:Label runat="server" ID="moTimeZoneLabel" Text="TIME_ZONE_NAME"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
                             <asp:DropDownList runat="server" ID="moTimeZoneDropDown" SkinID="MediumDropDown">
                             </asp:DropDownList>
-                            <asp:TextBox runat="server" ID="moTimeZoneText" SkinID="MediumTextBox" ReadOnly="true" />
+                            <asp:TextBox runat="server" ID="moTimeZoneText" SkinID="MediumTextBox" ReadOnly="true"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moEffectiveDateLabel" Text="EFFECTIVE_DATE" />
+                            <asp:Label runat="server" ID="moEffectiveDateLabel" Text="EFFECTIVE_DATE"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
                             <asp:TextBox ID="moEffectiveDate" runat="server" SkinID="SmallTextBox"></asp:TextBox>
-                            <asp:ImageButton ID="btnEffectiveDate" runat="server" Style="vertical-align: bottom"
-                                ImageUrl="~/App_Themes/Default/Images/calendar.png" />
+                            <asp:ImageButton ID="btnEffectiveDate" runat="server" Style="vertical-align: bottom" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                         </td>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moExpirationDateLabel" Text="EXPIRATION_DATE" />
+                            <asp:Label runat="server" ID="moExpirationDateLabel" Text="EXPIRATION_DATE"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
                             <asp:TextBox ID="moExpirationDate" runat="server" SkinID="SmallTextBox"></asp:TextBox>
-                            <asp:ImageButton ID="btnExpirationDate" runat="server" Style="vertical-align: bottom"
-                                ImageUrl="~/App_Themes/Default/Images/calendar.png" />
+                            <asp:ImageButton ID="btnExpirationDate" runat="server" Style="vertical-align: bottom" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                         </td>
                     </tr>
                     <tr>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moStartItemDelayMinutesLabel" Text="START_ITEM_DELAY_MINUTES" />
+                            <asp:Label runat="server" ID="moStartItemDelayMinutesLabel" Text="START_ITEM_DELAY_MINUTES"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
-                            <asp:TextBox runat="server" ID="moStartItemDelayMinutes" SkinID="MediumTextBox" />
+                            <asp:TextBox runat="server" ID="moStartItemDelayMinutes" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moTimeToCompleteMinutesLabel" Text="TIME_TO_COMPLETE_MINUTES" />
+                            <asp:Label runat="server" ID="moTimeToCompleteMinutesLabel" Text="TIME_TO_COMPLETE_MINUTES"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
-                            <asp:TextBox runat="server" ID="moTimeToCompleteMinutes" SkinID="MediumTextBox" />
+                            <asp:TextBox runat="server" ID="moTimeToCompleteMinutes" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moWorkQueueTypeLabel" Text="PROCESSING_METHOD" />
+                            <asp:Label runat="server" ID="moWorkQueueTypeLabel" Text="PROCESSING_METHOD"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
                             <asp:DropDownList runat="server" ID="moWorkQueueTypeDropDown" SkinID="MediumDropDown">
                             </asp:DropDownList>
-                            <asp:TextBox runat="server" ID="moWorkQueueTypeText" SkinID="MediumTextBox" ReadOnly="true" />
+                            <asp:TextBox runat="server" ID="moWorkQueueTypeText" SkinID="MediumTextBox" ReadOnly="true"></asp:TextBox>
                         </td>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moAdminRoleLabel" Text="ADMIN_ROLE" />
+                            <asp:Label runat="server" ID="moAdminRoleLabel" Text="ADMIN_ROLE"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
                             <asp:DropDownList runat="server" ID="moAdminRole" SkinID="MediumDropDown">
@@ -192,41 +186,41 @@
                     </tr>
                     <tr>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moActionLabel" Text="ACTION" />
+                            <asp:Label runat="server" ID="moActionLabel" Text="ACTION"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
                             <asp:DropDownList runat="server" ID="moActionDropDown" SkinID="MediumDropDown">
                             </asp:DropDownList>
-                            <asp:TextBox runat="server" ID="moActionText" SkinID="MediumTextBox" ReadOnly="true" />
+                            <asp:TextBox runat="server" ID="moActionText" SkinID="MediumTextBox" ReadOnly="true"></asp:TextBox>
                         </td>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moTransformationFileLabel" Text="TRANSFORMATION_FILE" />
+                            <asp:Label runat="server" ID="moTransformationFileLabel" Text="TRANSFORMATION_FILE"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
-                            <asp:TextBox runat="server" ID="moTransformationFile" SkinID="MediumTextBox" />
+                            <asp:TextBox runat="server" ID="moTransformationFile" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moLockableDataTypeLabel" Text="LOCKABLE_DATA_TYPE" />
+                            <asp:Label runat="server" ID="moLockableDataTypeLabel" Text="LOCKABLE_DATA_TYPE"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
                             <asp:DropDownList runat="server" ID="moLockableDataType" SkinID="MediumDropDown">
                             </asp:DropDownList>
                         </td>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moMaximumReQueueLabel" Text="MAXIMUM_REQUEUE" />
+                            <asp:Label runat="server" ID="moMaximumReQueueLabel" Text="MAXIMUM_REQUEUE"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
-                            <asp:TextBox runat="server" ID="moMaximumReQueue" SkinID="MediumTextBox" />
+                            <asp:TextBox runat="server" ID="moMaximumReQueue" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moReQueueDelayLabel" Text="REQUEUE_DELAY" />
+                            <asp:Label runat="server" ID="moReQueueDelayLabel" Text="REQUEUE_DELAY"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
-                            <asp:TextBox runat="server" ID="moReQueueDelay" SkinID="MediumTextBox" />
+                            <asp:TextBox runat="server" ID="moReQueueDelay" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
                     </tr>
                 </tbody>
@@ -234,69 +228,65 @@
         </div>
     </div>
     <div class="dataContainer">
-        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
-        <asp:HiddenField ID="hdnDisabledTabs" runat="server" Value="" />
+        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
+        <asp:HiddenField ID="hdnDisabledTabs" runat="server" Value=""></asp:HiddenField>
         <div id="tabs" class="style-tabs">
             <ul>
-                <li><a href="#tabsSchedules"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">SCHEDULES</asp:Label></a></li>
-                <li><a href="#tabsRequeueReason"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">REQUEUE_REASONS</asp:Label></a></li>
-                <li><a href="#tabsRedirectReason"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">REDIRECT_REASONS</asp:Label></a></li>
+                <li><a href="#tabsSchedules" rel="noopener noreferrer"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">SCHEDULES</asp:Label></a></li>
+                <li><a href="#tabsRequeueReason" rel="noopener noreferrer"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">REQUEUE_REASONS</asp:Label></a></li>
+                <li><a href="#tabsRedirectReason" rel="noopener noreferrer"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">REDIRECT_REASONS</asp:Label></a></li>
             </ul>
             <div id="tabsSchedules">
                 <div class="Page" runat="server" id="moSchedulesPage" style="height: 300px; overflow: auto">
-                    <asp:GridView runat="server" ID="GridViewSchedules" SkinID="DetailPageGridView" AllowPaging="false"
-                        AllowSorting="false" Width="100%">
+                    <asp:GridView runat="server" ID="GridViewSchedules" SkinID="DetailPageGridView" AllowPaging="false" AllowSorting="false" Width="100%">
                         <Columns>
                             <asp:TemplateField HeaderText="CODE">
                                 <ItemTemplate>
-                                    <asp:Label runat="server" ID="moCodeLabel" />
+                                    <asp:Label runat="server" ID="moCodeLabel"></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:DropDownList runat="server" ID="moCodeDropDown" Visible="false" SkinID="SmallDropDown" />
-                                    <asp:Label runat="server" ID="moCodeLabel" Visible="false" />
+                                    <asp:DropDownList runat="server" ID="moCodeDropDown" Visible="false" SkinID="SmallDropDown"></asp:DropDownList>
+                                    <asp:Label runat="server" ID="moCodeLabel" Visible="false"></asp:Label>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="DESCRIPTION">
                                 <ItemTemplate>
-                                    <asp:Label runat="server" ID="moDescriptionLabel" />
+                                    <asp:Label runat="server" ID="moDescriptionLabel"></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:DropDownList runat="server" ID="moDescriptionDropDown" Visible="false" SkinID="MediumDropDown" />
-                                    <asp:Label runat="server" ID="moDescriptionLabel" Visible="false" />
+                                    <asp:DropDownList runat="server" ID="moDescriptionDropDown" Visible="false" SkinID="MediumDropDown"></asp:DropDownList>
+                                    <asp:Label runat="server" ID="moDescriptionLabel" Visible="false"></asp:Label>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="EFFECTIVE_DATE">
                                 <ItemTemplate>
-                                    <asp:Label runat="server" ID="moEffectiveDateLabel" />
+                                    <asp:Label runat="server" ID="moEffectiveDateLabel"></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:TextBox runat="server" ID="moEffectiveDateText" Visible="false" SkinID="SmallTextBox" />
-                                    <asp:ImageButton ID="btnEffectiveDate" runat="server" Style="vertical-align: bottom"
-                                        ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false" />
-                                    <asp:Label runat="server" ID="moEffectiveDateLabel" Visible="false" />
+                                    <asp:TextBox runat="server" ID="moEffectiveDateText" Visible="false" SkinID="SmallTextBox"></asp:TextBox>
+                                    <asp:ImageButton ID="btnEffectiveDate" runat="server" Style="vertical-align: bottom" ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false"></asp:ImageButton>
+                                    <asp:Label runat="server" ID="moEffectiveDateLabel" Visible="false"></asp:Label>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="EXPIRATION_DATE">
                                 <ItemTemplate>
-                                    <asp:Label runat="server" ID="moExpirationDateLabel" />
+                                    <asp:Label runat="server" ID="moExpirationDateLabel"></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:TextBox runat="server" ID="moExpirationDateText" Visible="false" SkinID="SmallTextBox" />
-                                    <asp:ImageButton ID="btnExpirationDate" runat="server" Style="vertical-align: bottom"
-                                        ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false" />
-                                    <asp:Label runat="server" ID="moExpirationDateLabel" Visible="false" />
+                                    <asp:TextBox runat="server" ID="moExpirationDateText" Visible="false" SkinID="SmallTextBox"></asp:TextBox>
+                                    <asp:ImageButton ID="btnExpirationDate" runat="server" Style="vertical-align: bottom" ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false"></asp:ImageButton>
+                                    <asp:Label runat="server" ID="moExpirationDateLabel" Visible="false"></asp:Label>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField ItemStyle-HorizontalAlign="Right">
                                 <ItemTemplate>
-                                    <asp:ImageButton runat="server" ID="moEdit" CommandName="EditRecord" ImageUrl="~/App_Themes/Default/Images/edit.png" />
-                                    <asp:ImageButton runat="server" ID="moDelete" CommandName="DeleteRecord" ImageUrl="~/App_Themes/Default/Images/icon_delete.png" />
+                                    <asp:ImageButton runat="server" ID="moEdit" CommandName="EditRecord" ImageUrl="~/App_Themes/Default/Images/edit.png"></asp:ImageButton>
+                                    <asp:ImageButton runat="server" ID="moDelete" CommandName="DeleteRecord" ImageUrl="~/App_Themes/Default/Images/icon_delete.png"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:Button ID="btnSave" runat="server" Text="Save" CommandName="SaveRecord" SkinID="PrimaryRightButton">
                                     </asp:Button>
-                                    <asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" CommandName="CancelRecord"
-                                        SkinID="AlternateRightButton"></asp:LinkButton>
+                                    <asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" CommandName="CancelRecord" SkinID="AlternateRightButton"></asp:LinkButton>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -304,12 +294,11 @@
                     <table class="tabBtnAreaZone" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
                             <tr>
-                                <td />
+                                <td></td>
                             </tr>
                             <tr>
                                 <td>
-                                    <asp:Button runat="server" ID="btnAddNewSchedule_WRITE" SkinID="PrimaryLeftButton"
-                                        Text="ADD_NEW" />
+                                    <asp:Button runat="server" ID="btnAddNewSchedule_WRITE" SkinID="PrimaryLeftButton" Text="ADD_NEW"></asp:Button>
                                 </td>
                             </tr>
                         </tbody>
@@ -319,34 +308,32 @@
             <div id="tabsRequeueReason">
                 <div class="Page" runat="server" id="moReQueueReasonsPage" style="height: 300px;
                     overflow: auto">
-                    <asp:GridView runat="server" ID="GridViewReQueueReasons" SkinID="DetailPageGridView"
-                        AllowPaging="false" Width="100%">
+                    <asp:GridView runat="server" ID="GridViewReQueueReasons" SkinID="DetailPageGridView" AllowPaging="false" Width="100%">
                         <Columns>
                             <asp:TemplateField HeaderText="REASON_CODE">
                                 <ItemTemplate>
-                                    <asp:Label runat="server" ID="moCodeLabel" />
+                                    <asp:Label runat="server" ID="moCodeLabel"></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:DropDownList runat="server" ID="moCodeDropDown" />
+                                    <asp:DropDownList runat="server" ID="moCodeDropDown"></asp:DropDownList>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="DESCRIPTION">
                                 <ItemTemplate>
-                                    <asp:Label runat="server" ID="moDescriptionLabel" />
+                                    <asp:Label runat="server" ID="moDescriptionLabel"></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:DropDownList runat="server" ID="moDescriptionDropDown" />
+                                    <asp:DropDownList runat="server" ID="moDescriptionDropDown"></asp:DropDownList>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField ItemStyle-HorizontalAlign="Right">
                                 <ItemTemplate>
-                                    <asp:ImageButton runat="server" ID="moDelete" CommandName="DeleteRecord" ImageUrl="~/App_Themes/Default/Images/icon_delete.png" />
+                                    <asp:ImageButton runat="server" ID="moDelete" CommandName="DeleteRecord" ImageUrl="~/App_Themes/Default/Images/icon_delete.png"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:Button ID="btnSave" runat="server" Text="Save" CommandName="SaveRecord" SkinID="PrimaryRightButton">
                                     </asp:Button>
-                                    <asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" CommandName="CancelRecord"
-                                        SkinID="AlternateRightButton"></asp:LinkButton>
+                                    <asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" CommandName="CancelRecord" SkinID="AlternateRightButton"></asp:LinkButton>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -354,12 +341,11 @@
                     <table class="tabBtnAreaZone" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
                             <tr>
-                                <td />
+                                <td></td>
                             </tr>
                             <tr>
                                 <td>
-                                    <asp:Button runat="server" ID="btnAddNewReQueueReason_WRITE" SkinID="PrimaryLeftButton"
-                                        Text="ADD_NEW" />
+                                    <asp:Button runat="server" ID="btnAddNewReQueueReason_WRITE" SkinID="PrimaryLeftButton" Text="ADD_NEW"></asp:Button>
                                 </td>
                             </tr>
                         </tbody>
@@ -369,34 +355,32 @@
             <div id="tabsRedirectReason">
                 <div class="Page" runat="server" id="moReDirectReasonsPage" style="height: 300px;
                     overflow: auto">
-                    <asp:GridView runat="server" ID="GridViewReDirectReasons" SkinID="DetailPageGridView"
-                        AllowPaging="false" Width="100%">
+                    <asp:GridView runat="server" ID="GridViewReDirectReasons" SkinID="DetailPageGridView" AllowPaging="false" Width="100%">
                         <Columns>
                             <asp:TemplateField HeaderText="REASON_CODE">
                                 <ItemTemplate>
-                                    <asp:Label runat="server" ID="moCodeLabel" />
+                                    <asp:Label runat="server" ID="moCodeLabel"></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:DropDownList runat="server" ID="moCodeDropDown" />
+                                    <asp:DropDownList runat="server" ID="moCodeDropDown"></asp:DropDownList>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="DESCRIPTION">
                                 <ItemTemplate>
-                                    <asp:Label runat="server" ID="moDescriptionLabel" />
+                                    <asp:Label runat="server" ID="moDescriptionLabel"></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:DropDownList runat="server" ID="moDescriptionDropDown" />
+                                    <asp:DropDownList runat="server" ID="moDescriptionDropDown"></asp:DropDownList>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField ItemStyle-HorizontalAlign="Right">
                                 <ItemTemplate>
-                                    <asp:ImageButton runat="server" ID="moDelete" CommandName="DeleteRecord" ImageUrl="~/App_Themes/Default/Images/icon_delete.png" />
+                                    <asp:ImageButton runat="server" ID="moDelete" CommandName="DeleteRecord" ImageUrl="~/App_Themes/Default/Images/icon_delete.png"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:Button ID="btnSave" runat="server" Text="Save" CommandName="SaveRecord" SkinID="PrimaryRightButton">
                                     </asp:Button>
-                                    <asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" CommandName="CancelRecord"
-                                        SkinID="AlternateRightButton"></asp:LinkButton>
+                                    <asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" CommandName="CancelRecord" SkinID="AlternateRightButton"></asp:LinkButton>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -404,12 +388,11 @@
                     <table class="tabBtnAreaZone" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
                             <tr>
-                                <td />
+                                <td></td>
                             </tr>
                             <tr>
                                 <td>
-                                    <asp:Button runat="server" ID="btnAddNewReDirectReason_WRITE" SkinID="PrimaryLeftButton"
-                                        Text="ADD_NEW" />
+                                    <asp:Button runat="server" ID="btnAddNewReDirectReason_WRITE" SkinID="PrimaryLeftButton" Text="ADD_NEW"></asp:Button>
                                 </td>
                             </tr>
                         </tbody>
@@ -419,13 +402,12 @@
         </div>        
     </div>
     <div class="btnZone">
-        <asp:Button runat="server" ID="btnBack" Text="Back" SkinID="AlternateLeftButton" />
-        <asp:Button runat="server" ID="btnSave_WRITE" Text="Save" SkinID="PrimaryRightButton" />
-        <asp:Button runat="server" ID="btnCopy_WRITE" Text="NEW_WITH_COPY" SkinID="AlternateRightButton" />
-        <asp:Button runat="server" ID="btnNew_WRITE" Text="New" SkinID="AlternateRightButton" />
-        <asp:Button runat="server" ID="btnUndo_Write" Text="Undo" SkinID="AlternateRightButton" />
-        <asp:Button runat="server" ID="btnDelete_WRITE" Text="Delete" SkinID="CenterButton" />
+        <asp:Button runat="server" ID="btnBack" Text="Back" SkinID="AlternateLeftButton"></asp:Button>
+        <asp:Button runat="server" ID="btnSave_WRITE" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
+        <asp:Button runat="server" ID="btnCopy_WRITE" Text="NEW_WITH_COPY" SkinID="AlternateRightButton"></asp:Button>
+        <asp:Button runat="server" ID="btnNew_WRITE" Text="New" SkinID="AlternateRightButton"></asp:Button>
+        <asp:Button runat="server" ID="btnUndo_Write" Text="Undo" SkinID="AlternateRightButton"></asp:Button>
+        <asp:Button runat="server" ID="btnDelete_WRITE" Text="Delete" SkinID="CenterButton"></asp:Button>
     </div>
-    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-        runat="server" />
+    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server">
 </asp:Content>

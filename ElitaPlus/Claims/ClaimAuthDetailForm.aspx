@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ClaimAuthDetailForm.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ClaimAuthDetailForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.ClaimAuthDetailForm" %>
 
 <%@ Register TagPrefix="mytab" Namespace="Microsoft.Web.UI.WebControls" Assembly="Microsoft.Web.UI.WebControls, Version=1.0.2.226, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
@@ -14,10 +14,10 @@
     <link href="../Styles.css" type="text/css" rel="STYLESHEET">
 
     <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js"></script>
-    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet"/>
-    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js" > </script>
-    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js" > </script>
-    <script language="javascript" type="text/javascript" src="../Navigation/scripts/Tabs.js" > </script> 
+    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet">
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js"> </script>
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js"> </script>
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/Tabs.js"> </script> 
     <script language="javascript" type="text/javascript">
 			
 			function trim(str){
@@ -384,13 +384,11 @@
 </head>
 <body leftmargin="0" topmargin="0" onload="changeScrollbarColor();" ms_positioning="GridLayout">
     <form id="Form1" method="post" runat="server">
-    <asj:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"
-        EnablePageMethods="true">
+    <asj:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true" EnablePageMethods="true">
     </asj:ScriptManager>
     <!--Start Header-->
     <table style="border-right: black 1px solid; border-top: black 1px solid; margin: 5px;
-        border-left: black 1px solid; border-bottom: black 1px solid" cellspacing="0"
-        cellpadding="0" width="98%" bgcolor="#d5d6e4" border="0">
+        border-left: black 1px solid; border-bottom: black 1px solid" cellspacing="0" cellpadding="0" width="98%" bgcolor="#d5d6e4" border="0">
         <tr>
             <td valign="top">
                 <table width="100%" border="0">
@@ -405,16 +403,14 @@
         </tr>
     </table>
     <table id="tblOuter2" style="border-right: black 1px solid; border-top: black 1px solid;
-        margin: 5px; border-left: black 1px solid; border-bottom: black 1px solid" height="93%"
-        cellspacing="0" cellpadding="0" rules="none" width="98%" bgcolor="#d5d6e4" border="0">
+        margin: 5px; border-left: black 1px solid; border-bottom: black 1px solid" height="93%" cellspacing="0" cellpadding="0" rules="none" width="98%" bgcolor="#d5d6e4" border="0">
         <!--d5d6e4-->
         <tr>
             <td valign="top" align="center" height="100%">
                 <asp:Panel ID="WorkingPanel" runat="server" Height="98%" Width="98%">
                     <table id="tblMain1" style="border-right: #999999 1px solid; border-top: #999999 1px solid;
                         border-left: #999999 1px solid; width: 100%; border-bottom: #999999 1px solid;
-                        height: 100%" cellspacing="0" cellpadding="6" rules="cols" width="100%" align="center"
-                        bgcolor="#fef9ea" border="0" valign="top">
+                        height: 100%" cellspacing="0" cellpadding="6" rules="cols" width="100%" align="center" bgcolor="#fef9ea" border="0" valign="top">
                         <tr>
                             <td align="center" width="75%" colspan="2" valign="top" height="1">
                                 <uc1:ErrorController ID="ErrController" runat="server">
@@ -423,10 +419,9 @@
                         </tr>
                         <tr>
                             <td valign="top">
-                                <table id="tblHeader" cellspacing="0" cellpadding="0" rules="cols" width="100%" align="center"
-                                    bgcolor="#fef9ea" border="0">
+                                <table id="tblHeader" cellspacing="0" cellpadding="0" rules="cols" width="100%" align="center" bgcolor="#fef9ea" border="0">
                                     <tr>
-                                        <td valign="bottom" nowrap align="left" colspan="3">
+                                        <td valign="bottom" nowrap="" align="left" colspan="3">
                                             &nbsp;
                                         </td>
                                     </tr>
@@ -443,20 +438,17 @@
                                     </tr>
                                     <tr>
                                         <td align="left">
-                                            <asp:TextBox ID="TextboxCustomerName" Style="background-color: whitesmoke" TabIndex="1"
-                                                runat="server" ReadOnly="True" Width="95%" CssClass="FLATTEXTBOX"></asp:TextBox>
+                                            <asp:TextBox ID="TextboxCustomerName" Style="background-color: whitesmoke" TabIndex="1" runat="server" ReadOnly="True" Width="95%" CssClass="FLATTEXTBOX"></asp:TextBox>
                                         </td>
                                         <td align="left">
-                                            <asp:TextBox ID="TextboxClaimNumber" Style="background-color: whitesmoke" TabIndex="1"
-                                                runat="server" ReadOnly="True" Width="95%" CssClass="FLATTEXTBOX"></asp:TextBox>
+                                            <asp:TextBox ID="TextboxClaimNumber" Style="background-color: whitesmoke" TabIndex="1" runat="server" ReadOnly="True" Width="95%" CssClass="FLATTEXTBOX"></asp:TextBox>
                                         </td>
                                         <td align="left">
-                                            <asp:TextBox ID="TextboxRiskGroup" Style="background-color: whitesmoke" TabIndex="1"
-                                                runat="server" ReadOnly="True" Width="95%" CssClass="FLATTEXTBOX"></asp:TextBox>
+                                            <asp:TextBox ID="TextboxRiskGroup" Style="background-color: whitesmoke" TabIndex="1" runat="server" ReadOnly="True" Width="95%" CssClass="FLATTEXTBOX"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td valign="bottom" nowrap align="left" colspan="3">
+                                        <td valign="bottom" nowrap="" align="left" colspan="3">
                                             <hr style="width: 100%; height: 1px" size="1">
                                         </td>
                                     </tr>
@@ -464,31 +456,28 @@
                             </td>
                         </tr>
                         <tr>
-                            <td valign="top" align="left" width="100%" colspan="2" >
-                                    <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
-                                    <asp:HiddenField ID="hdnDisabledTab" runat="server" />
+                            <td valign="top" align="left" width="100%" colspan="2">
+                                    <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
+                                    <asp:HiddenField ID="hdnDisabledTab" runat="server"></asp:HiddenField>
                                     <div class="dataContainer">
                                         <div id="tabs" class="style-tabs">
                                             <ul>
-                                                <li><a href="#tabPartsInfo">
+                                                <li><a href="#tabPartsInfo" rel="noopener noreferrer">
                                                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">PARTS   INFO</asp:Label></a></li>
-                                                <li><a href="#tabsAuthDetaily">
+                                                <li><a href="#tabsAuthDetaily" rel="noopener noreferrer">
                                                     <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">AUTH_DETAIL</asp:Label></a></li>
                                             </ul>
 
                                             <div id="tabPartsInfo">
                                                 <asp:Panel ID="moPartsInfoTabPanel_WRITE" runat="server" Width="100%">
                                                     <div id="scroller1" style="overflow: auto; width: 99.53%; height: 90%" align="center">
-                                                        <table id="tblPartsInfo" style="border-right: #999999 0px solid; border-top: #999999 0px solid; border-left: #999999 0px solid; border-bottom: #999999 0px solid; width: 100%; height: 178px"
-                                                            cellspacing="4" cellpadding="4" rules="cols" background="" border="0">
+                                                        <table id="tblPartsInfo" style="border-right: #999999 0px solid; border-top: #999999 0px solid; border-left: #999999 0px solid; border-bottom: #999999 0px solid; width: 100%; height: 178px" cellspacing="4" cellpadding="4" rules="cols" background="" border="0">
                                                             <tr>
                                                                 <td>
                                                                     <table cellspacing="0" cellpadding="0" width="100%" border="0">
                                                                         <tr>
                                                                             <td>
-                                                                                <asp:GridView ID="Grid" runat="server" Width="100%" OnRowCreated="ItemCreated" OnRowCommand="ItemCommand"
-                                                                                    AllowPaging="True" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False"
-                                                                                    CssClass="DATAGRID">
+                                                                                <asp:GridView ID="Grid" runat="server" Width="100%" OnRowCreated="ItemCreated" OnRowCommand="ItemCommand" AllowPaging="True" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" CssClass="DATAGRID">
                                                                                     <SelectedRowStyle CssClass="SELECTED"></SelectedRowStyle>
                                                                                     <EditRowStyle CssClass="EDITROW"></EditRowStyle>
                                                                                     <AlternatingRowStyle Wrap="False" CssClass="ALTROW"></AlternatingRowStyle>
@@ -496,17 +485,15 @@
                                                                                     <HeaderStyle CssClass="HEADER"></HeaderStyle>
                                                                                     <Columns>
                                                                                         <asp:TemplateField ShowHeader="false">
-                                                                                            <ItemStyle HorizontalAlign="Center" Width="3%" Height="15px" />
+                                                                                            <ItemStyle HorizontalAlign="Center" Width="3%" Height="15px"></ItemStyle>
                                                                                             <ItemTemplate>
-                                                                                                <asp:ImageButton ID="EditButton_WRITE" runat="server" CausesValidation="False" CommandName="SelectAction"
-                                                                                                    ImageUrl="~/Navigation/images/icons/edit2.gif" CommandArgument="<%#Container.DisplayIndex %>" />
+                                                                                                <asp:ImageButton ID="EditButton_WRITE" runat="server" CausesValidation="False" CommandName="SelectAction" ImageUrl="~/Navigation/images/icons/edit2.gif" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                                                                             </ItemTemplate>
                                                                                         </asp:TemplateField>
                                                                                         <asp:TemplateField>
                                                                                             <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B"></HeaderStyle>
                                                                                             <ItemTemplate>
-                                                                                                <asp:ImageButton ID="DeleteButton_WRITE" Style="cursor: hand" runat="server" CommandName="DeleteRecord"
-                                                                                                    ImageUrl="../Navigation/images/icons/trash.gif"></asp:ImageButton>
+                                                                                                <asp:ImageButton ID="DeleteButton_WRITE" Style="cursor: hand" runat="server" CommandName="DeleteRecord" ImageUrl="../Navigation/images/icons/trash.gif"></asp:ImageButton>
                                                                                             </ItemTemplate>
                                                                                         </asp:TemplateField>
                                                                                         <asp:TemplateField Visible="False" HeaderText="Id">
@@ -546,7 +533,7 @@
                                                                                             </EditItemTemplate>
                                                                                         </asp:TemplateField>
                                                                                     </Columns>
-                                                                                    <PagerSettings PageButtonCount="15" Mode="Numeric" />
+                                                                                    <PagerSettings PageButtonCount="15" Mode="Numeric"></PagerSettings>
                                                                                     <PagerStyle HorizontalAlign="Center" CssClass="PAGER"></PagerStyle>
                                                                                 </asp:GridView>
                                                                             </td>
@@ -554,15 +541,13 @@
                                                                         <tr>
                                                                             <td style="width: 45%" align="right">
                                                                                 <asp:Label ID="LabelTotalCost" runat="server">Total_Cost</asp:Label>:&nbsp;
-                                                                        <asp:TextBox ID="TextTotalCost" Style="background-color: whitesmoke" runat="server"
-                                                                            ReadOnly="True" CssClass="FLATTEXTBOX"></asp:TextBox>
+                                                                        <asp:TextBox ID="TextTotalCost" Style="background-color: whitesmoke" runat="server" ReadOnly="True" CssClass="FLATTEXTBOX"></asp:TextBox>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td style="width: 45%" align="right">
                                                                                 <asp:Label ID="LabelPartsTax1" runat="server">PARTS_TAX</asp:Label>:&nbsp;
-                                                                        <asp:TextBox ID="TextPartsTax1" Style="background-color: whitesmoke" runat="server"
-                                                                            ReadOnly="True" CssClass="FLATTEXTBOX"></asp:TextBox>
+                                                                        <asp:TextBox ID="TextPartsTax1" Style="background-color: whitesmoke" runat="server" ReadOnly="True" CssClass="FLATTEXTBOX"></asp:TextBox>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -578,15 +563,9 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td>
-                                                                                <asp:Button ID="btnNew_PI_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif); cursor: hand; background-repeat: no-repeat"
-                                                                                    runat="server" Width="100px" CssClass="FLATBUTTON"
-                                                                                    Text="New" Height="20px"></asp:Button>
-                                                                                &nbsp;<asp:Button ID="btnSave_PI_WRITE" Style="background-image: url(../Navigation/images/icons/save_icon.gif); cursor: hand; background-repeat: no-repeat"
-                                                                                    runat="server" Width="100px" CssClass="FLATBUTTON"
-                                                                                    Text="Save" Height="20px"></asp:Button>
-                                                                                &nbsp;<asp:Button ID="Cancel_PI_Button" Style="background-image: url(../Navigation/images/icons/cancel_icon.gif); cursor: hand; background-repeat: no-repeat"
-                                                                                    runat="server" Width="100px" CssClass="FLATBUTTON"
-                                                                                    Text="Cancel" Height="20px"></asp:Button>
+                                                                                <asp:Button ID="btnNew_PI_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif); cursor: hand; background-repeat: no-repeat" runat="server" Width="100px" CssClass="FLATBUTTON" Text="New" Height="20px"></asp:Button>
+                                                                                &nbsp;<asp:Button ID="btnSave_PI_WRITE" Style="background-image: url(../Navigation/images/icons/save_icon.gif); cursor: hand; background-repeat: no-repeat" runat="server" Width="100px" CssClass="FLATBUTTON" Text="Save" Height="20px"></asp:Button>
+                                                                                &nbsp;<asp:Button ID="Cancel_PI_Button" Style="background-image: url(../Navigation/images/icons/cancel_icon.gif); cursor: hand; background-repeat: no-repeat" runat="server" Width="100px" CssClass="FLATBUTTON" Text="Cancel" Height="20px"></asp:Button>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -598,14 +577,13 @@
                                             </div>
 
                                             <div id="tabsAuthDetaily">
-                                                <table id="tblAuthDetail" style="border-right: #999999 0px solid; border-top: #999999 0px solid; border-left: #999999 0px solid; border-bottom: #999999 0px solid; width: 100%; height: 178px"
-                                                    cellspacing="4" cellpadding="4" background="" border="0">
+                                                <table id="tblAuthDetail" style="border-right: #999999 0px solid; border-top: #999999 0px solid; border-left: #999999 0px solid; border-bottom: #999999 0px solid; width: 100%; height: 178px" cellspacing="4" cellpadding="4" background="" border="0">
                                                     <tr>
                                                         <td align="left">
                                                             <asp:Panel ID="moAuthDetailTabPanel_WRITE" runat="server" Width="100%">
                                                                 <table cellpadding="4" height="100%" width="100%" background="" border="0">
                                                                     <tr>
-                                                                        <td valign="middle" nowrap align="right" width="20%" style="height: 18px">
+                                                                        <td valign="middle" nowrap="" align="right" width="20%" style="height: 18px">
                                                                             &nbsp;</td>
                                                                         <td valign="middle" align="left" width="20%" style="height: 18px">&nbsp;</td>
                                                                         <td width="50%">
@@ -614,107 +592,91 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td align="right" nowrap style="height: 18px" valign="middle" width="20%">
+                                                                        <td align="right" nowrap="" style="height: 18px" valign="middle" width="20%">
                                                                             <asp:Label ID="LabelLabor" runat="server">Labor</asp:Label>
                                                                             : </td>
                                                                         <td align="left" style="height: 18px" valign="middle" width="20%">&nbsp;
                                                                             <asp:TextBox ID="txtLabor" runat="server" CssClass="FLATTEXTBOX" ReadOnly="true" Style="text-align: right" TabIndex="6" Width="55%"></asp:TextBox>
                                                                         </td>
                                                                         <td width="50%">
-                                                                            <asp:TextBox ID="txtLaborTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right"
-                                                                        TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtLaborTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right" TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td valign="middle" nowrap align="right" width="20%">
+                                                                        <td valign="middle" nowrap="" align="right" width="20%">
                                                                             <asp:Label ID="LabelParts" runat="server">Parts</asp:Label>:
                                                                         </td>
                                                                         <td valign="middle" align="left" width="20%">&nbsp;
-                                                                    <asp:TextBox ID="txtParts" Style="text-align: right" TabIndex="7" runat="server"
-                                                                        CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtParts" Style="text-align: right" TabIndex="7" runat="server" CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
                                                                         </td>
                                                                         <td width="50%">
-                                                                            <asp:TextBox ID="txtPartsTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right"
-                                                                        TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtPartsTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right" TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td valign="middle" nowrap align="right" width="20%">
+                                                                        <td valign="middle" nowrap="" align="right" width="20%">
                                                                             <asp:Label ID="LabelSvcCharge" runat="server">Service_Charge</asp:Label>:
                                                                         </td>
                                                                         <td valign="middle" align="left" width="20%">&nbsp;
-                                                                    <asp:TextBox ID="txtServiceCharge" Style="text-align: right" TabIndex="8" runat="server"
-                                                                        CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtServiceCharge" Style="text-align: right" TabIndex="8" runat="server" CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
                                                                         </td>
                                                                         <td width="50%">
-                                                                            <asp:TextBox ID="txtServiceChargeTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right"
-                                                                        TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtServiceChargeTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right" TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td valign="middle" nowrap align="right" width="20%">
+                                                                        <td valign="middle" nowrap="" align="right" width="20%">
                                                                             <asp:Label ID="LabelTripAmount" runat="server">Trip_Amount</asp:Label>:
                                                                         </td>
                                                                         <td valign="middle" align="left" width="20%">&nbsp;
-                                                                    <asp:TextBox ID="txtTripAmt" Style="text-align: right" TabIndex="9" runat="server"
-                                                                        CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtTripAmt" Style="text-align: right" TabIndex="9" runat="server" CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
                                                                         </td>
                                                                         <td width="50%">
-                                                                            <asp:TextBox ID="txtTripAmtTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right"
-                                                                        TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtTripAmtTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right" TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td valign="middle" nowrap align="right" width="20%">
+                                                                        <td valign="middle" nowrap="" align="right" width="20%">
                                                                             <asp:Label ID="LabelShippingAmount" runat="server">SHIPPING_AMOUNT</asp:Label>:
                                                                         </td>
                                                                         <td valign="middle" align="left" width="20%">&nbsp;
-                                                                    <asp:TextBox ID="txtShippingAmt" Style="text-align: right" TabIndex="9" runat="server"
-                                                                        CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtShippingAmt" Style="text-align: right" TabIndex="9" runat="server" CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
                                                                         </td>
                                                                         <td width="50%">
-                                                                            <asp:TextBox ID="txtShippingTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right"
-                                                                        TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtShippingTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right" TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td align="right" nowrap valign="middle" width="20%">&nbsp;
+                                                                        <td align="right" nowrap="" valign="middle" width="20%">&nbsp;
                                                                             <asp:Label ID="LabelDiagnostics" runat="server">DIAGNOSTICS</asp:Label>:
                                                                         </td>
                                                                         <td valign="middle" align="left" width="20%">&nbsp;
-                                                                    <asp:TextBox ID="txtDiagnostics" Style="text-align: right" TabIndex="9" runat="server"
-                                                                        CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtDiagnostics" Style="text-align: right" TabIndex="9" runat="server" CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
                                                                         </td>
                                                                         <td width="50%">
-                                                                            <asp:TextBox ID="txtDiagnosticsTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right"
-                                                                        TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtDiagnosticsTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right" TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td align="right" nowrap valign="middle" width="20%">&nbsp;
+                                                                        <td align="right" nowrap="" valign="middle" width="20%">&nbsp;
                                                                             <asp:Label ID="LabelDisposition" runat="server">DISPOSITION</asp:Label>:
                                                                         </td>
                                                                         <td valign="middle" align="left" width="20%">&nbsp;
-                                                                    <asp:TextBox ID="txtDisposition" Style="text-align: right" TabIndex="9" runat="server"
-                                                                        CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtDisposition" Style="text-align: right" TabIndex="9" runat="server" CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
                                                                         </td>
                                                                         <td width="50%">
-                                                                            <asp:TextBox ID="txtDispositionTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right"
-                                                                        TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtDispositionTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right" TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td valign="middle" align="right" width="15%">
-                                                                            <asp:TextBox ID="txtOtherDesc" TabIndex="20" runat="server" CssClass="FLATTEXTBOX"
-                                                                                Width="98%" ReadOnly="true"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtOtherDesc" TabIndex="20" runat="server" CssClass="FLATTEXTBOX" Width="98%" ReadOnly="true"></asp:TextBox>
                                                                         </td>
                                                                         <td valign="middle" align="left" width="20%">&nbsp;
-                                                                    <asp:TextBox ID="txtOtherAmt" Style="text-align: right" TabIndex="11" runat="server"
-                                                                        CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtOtherAmt" Style="text-align: right" TabIndex="11" runat="server" CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
                                                                         </td>
                                                                         <td width="50%">
-                                                                            <asp:TextBox ID="txtOtherTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right"
-                                                                        TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtOtherTax" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right" TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="15%" ReadOnly="True"></asp:TextBox>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
@@ -723,32 +685,29 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td valign="middle" nowrap align="right" width="20%">
+                                                                        <td valign="middle" nowrap="" align="right" width="20%">
                                                                             <asp:Label ID="LabelSubTotal" runat="server">Sub_Total</asp:Label>:
                                                                         </td>
                                                                         <td valign="middle" align="left" width="20%">&nbsp;
-                                                                    <asp:TextBox ID="txtSubTotal" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right"
-                                                                        TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="55%" ReadOnly="True"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtSubTotal" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right" TabIndex="31" runat="server" CssClass="FLATTEXTBOX" Width="55%" ReadOnly="True"></asp:TextBox>
                                                                         </td>
                                                                         <td width="50%"></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td align="right" nowrap valign="middle" width="20%">
+                                                                        <td align="right" nowrap="" valign="middle" width="20%">
                                                                             <asp:Label ID="LabelTotalTaxAmount" runat="server">TOTAL_TAX_AMOUNT</asp:Label>
                                                                             :</td>
                                                                         <td align="left" valign="middle" width="20%">&nbsp;
-                                                                            <asp:TextBox ID="txtTotalTaxAmount" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right"
-                                                                        TabIndex="32" runat="server" CssClass="FLATTEXTBOX" Width="55%" ReadOnly="True"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtTotalTaxAmount" Style="border-right: #c6c6c6 1px solid; border-top: #c6c6c6 1px solid; border-left: #c6c6c6 1px solid; border-bottom: #c6c6c6 1px solid; text-align: right" TabIndex="32" runat="server" CssClass="FLATTEXTBOX" Width="55%" ReadOnly="True"></asp:TextBox>
                                                                         </td>
                                                                         <td width="50%">&nbsp;</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td valign="middle" nowrap align="right" width="20%">
+                                                                        <td valign="middle" nowrap="" align="right" width="20%">
                                                                             <asp:Label ID="LabelTotal" runat="server">Total</asp:Label>:
                                                                         </td>
                                                                         <td valign="middle" align="left" width="20%">&nbsp;
-                                                                    <asp:TextBox ID="txtTotal" Style="text-align: right" TabIndex="12" runat="server"
-                                                                        CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtTotal" Style="text-align: right" TabIndex="12" runat="server" CssClass="FLATTEXTBOX" Width="55%" ReadOnly="true"></asp:TextBox>
                                                                         </td>
                                                                         <td width="50%"></td>
                                                                     </tr>
@@ -756,10 +715,8 @@
                                                                         <td colspan="3" align="left">
                                                                             <table cellpadding="0" cellspacing="0" width="100%">
                                                                                 <asp:Panel ID="pnlApprove_Disapprove" runat="server" Visible="false">
-                                                                                    <asp:CheckBox ID="chkApproved" runat="server" AutoPostBack="false" TabIndex="15"
-                                                                                        Checked="False" onclick="toggleCheckBox('chkDisapproved')" Text="Approved" />
-                                                                                    <asp:CheckBox ID="chkDisapproved" runat="server" AutoPostBack="false" TabIndex="15"
-                                                                                        Checked="False" onclick="toggleCheckBox('chkApproved')" Text="Disapproved" />
+                                                                                    <asp:CheckBox ID="chkApproved" runat="server" AutoPostBack="false" TabIndex="15" Checked="False" onclick="toggleCheckBox('chkDisapproved')" Text="Approved"></asp:CheckBox>
+                                                                                    <asp:CheckBox ID="chkDisapproved" runat="server" AutoPostBack="false" TabIndex="15" Checked="False" onclick="toggleCheckBox('chkApproved')" Text="Disapproved"></asp:CheckBox>
                                                                                 </asp:Panel>
                                                                             </table>
                                                                         </td>
@@ -778,18 +735,10 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        <asp:Button ID="btnNew_AD_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif); cursor: hand; background-repeat: no-repeat"
-                                                                            runat="server" Width="100px" CssClass="FLATBUTTON"
-                                                                            Text="New" Height="20px"></asp:Button>
-                                                                        <asp:Button ID="BtnEdit_AD_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif); cursor: hand; background-repeat: no-repeat"
-                                                                            runat="server" Width="100px" CssClass="FLATBUTTON"
-                                                                            Height="20px" Text="Edit"></asp:Button>
-                                                                        &nbsp;<asp:Button ID="btnSave_AD_WRITE" Style="background-image: url(../Navigation/images/icons/save_icon.gif); cursor: hand; background-repeat: no-repeat"
-                                                                            runat="server" Width="100px" CssClass="FLATBUTTON"
-                                                                            Text="Save" Height="20px"></asp:Button>
-                                                                        &nbsp;<asp:Button ID="Cancel_AD_Button" Style="background-image: url(../Navigation/images/icons/cancel_icon.gif); cursor: hand; background-repeat: no-repeat"
-                                                                            runat="server" Width="100px" CssClass="FLATBUTTON"
-                                                                            Text="Cancel" Height="20px"></asp:Button>
+                                                                        <asp:Button ID="btnNew_AD_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif); cursor: hand; background-repeat: no-repeat" runat="server" Width="100px" CssClass="FLATBUTTON" Text="New" Height="20px"></asp:Button>
+                                                                        <asp:Button ID="BtnEdit_AD_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif); cursor: hand; background-repeat: no-repeat" runat="server" Width="100px" CssClass="FLATBUTTON" Height="20px" Text="Edit"></asp:Button>
+                                                                        &nbsp;<asp:Button ID="btnSave_AD_WRITE" Style="background-image: url(../Navigation/images/icons/save_icon.gif); cursor: hand; background-repeat: no-repeat" runat="server" Width="100px" CssClass="FLATBUTTON" Text="Save" Height="20px"></asp:Button>
+                                                                        &nbsp;<asp:Button ID="Cancel_AD_Button" Style="background-image: url(../Navigation/images/icons/cancel_icon.gif); cursor: hand; background-repeat: no-repeat" runat="server" Width="100px" CssClass="FLATBUTTON" Text="Cancel" Height="20px"></asp:Button>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -808,16 +757,63 @@
                                     <tr>
                                         <td>
                                             <asp:Button ID="btnBack" Style="background-image: url(../Navigation/images/icons/back_icon.gif);
-                                                cursor: hand; background-repeat: no-repeat" TabIndex="42" runat="server" Width="90px"
-                                                CssClass="FLATBUTTON" Height="20px" Text="Back"></asp:Button>&nbsp;
-                                            <asp:Button ID="btnSave_WRITE" runat="server" CssClass="FLATBUTTON" Height="20px"
-                                                Style="background-image: url(../Navigation/images/icons/save_icon.gif); cursor: hand;
-                                                background-repeat: no-repeat" TabIndex="5" Text="Save" Width="90px" />
+                                                cursor: hand; background-repeat: no-repeat" TabIndex="42" runat="server" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Back"></asp:Button>&nbsp;
+                                            <asp:Button ID="btnSave_WRITE" runat="server" CssClass="FLATBUTTON" Height="20px" Style="background-image: url(../Navigation/images/icons/save_icon.gif); cursor: hand;
+                                                background-repeat: no-repeat" TabIndex="5" Text="Save" Width="90px"></asp:Button>
                                             &nbsp;<asp:Button ID="btnUndo_Write" Style="background-image: url(../Navigation/images/icons/cancel_icon.gif);
-                                                cursor: hand; background-repeat: no-repeat" runat="server" Width="90px" CssClass="FLATBUTTON"
-                                                Height="20px" Text="Undo"></asp:Button>
+                                                cursor: hand; background-repeat: no-repeat" runat="server" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Undo"></asp:Button>
                                         </td>
                                     </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server" designtimedragdrop="261">
+
+                    <input id="hdTaxRateClaimDiagnostics" type="hidden" name="hdTaxRateClaimDiagnostics" runat="server">
+                    <input id="hdComputeMethodClaimDiagnostics" type="hidden" name="hdComputeMethodClaimDiagnostics" runat="server">
+                
+                    <input id="hdTaxRateClaimOther" type="hidden" name="hdTaxRateClaimOther" runat="server">
+                    <input id="hdComputeMethodClaimOther" type="hidden" name="hdComputeMethodClaimOther" runat="server">
+
+                    <input id="hdTaxRateClaimDisposition" type="hidden" name="hdTaxRateClaimDisposition" runat="server">
+                    <input id="hdComputeMethodClaimDisposition" type="hidden" name="hdComputeMethodClaimDisposition" runat="server">
+
+                    <input id="hdTaxRateClaimLabor" type="hidden" name="hdTaxRateClaimLabor" runat="server">
+                    <input id="hdComputeMethodClaimLabor" type="hidden" name="hdComputeMethodClaimLabor" runat="server">
+
+                    <input id="hdTaxRateClaimParts" type="hidden" name="hdTaxRateClaimParts" runat="server">
+                    <input id="hdComputeMethodClaimParts" type="hidden" name="hdComputeMethodClaimParts" runat="server">
+
+                    <input id="hdTaxRateClaimShipping" type="hidden" name="hdTaxRateClaimShipping" runat="server">
+                    <input id="hdComputeMethodClaimShipping" type="hidden" name="hdComputeMethodClaimShipping" runat="server">
+
+                    <input id="hdTaxRateClaimService" type="hidden" name="hdTaxRateClaimService" runat="server">
+                    <input id="hdComputeMethodClaimService" type="hidden" name="hdComputeMethodClaimService" runat="server">
+
+                    <input id="hdTaxRateClaimTrip" type="hidden" name="hdTaxRateClaimTrip" runat="server">
+                    <input id="hdComputeMethodClaimTrip" type="hidden" name="hdComputeMethodClaimTrip" runat="server">
+                    
+                    <input id="hdLaborTaxAmt" type="hidden" name="hdLaborTaxAmt" runat="server">
+                    <input id="hdPartsTaxAmt" type="hidden" name="hdPartsTaxAmt" runat="server"> 
+                    <input id="hdServiceChargeTaxAmt" type="hidden" name="hdServiceChargeTaxAmt" runat="server">
+                    <input id="hdTripTaxAmt" type="hidden" name="hdTripTaxAmt" runat="server">
+                    <input id="hdShippingTaxAmt" type="hidden" name="hdShippingTaxAmt" runat="server">
+                    <input id="hdDispositionTaxAmt" type="hidden" name="hdDispositionTaxAmt" runat="server"> 
+                    <input id="hdDiagnosticsTaxAmt" type="hidden" name="hdDiagnosticsTaxAmt" runat="server">
+                    <input id="hdOtherTaxAmt" type="hidden" name="hdOtherTaxAmt" runat="server">
+                    <input id="hdSubTotalAmt" type="hidden" name="hdSubTotalAmt" runat="server">
+                    <input id="hdTotalAmt" type="hidden" name="hdTotalAmt" runat="server">
+                    <input id="hdTotalTaxAmt" type="hidden" name="hdTotalTaxAmt" runat="server">
+
+                </asp:Panel>
+            </td>
+        </tr>
+    </table>
+    </form>
+</body>
+</html>
+                 </tr>
                                 </table>
                             </td>
                         </tr>

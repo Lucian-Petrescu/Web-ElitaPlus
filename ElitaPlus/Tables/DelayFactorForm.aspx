@@ -15,14 +15,13 @@
     <link href="../Styles.css" type="text/css" rel="STYLESHEET">
 
     <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js"></script>
-    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet"/>
-    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js" > </script>
-    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js" > </script>
-    <script language="javascript" type="text/javascript" src="../Navigation/scripts/Tabs.js" > </script> 
-    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet"/>
+    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet">
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js"> </script>
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js"> </script>
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/Tabs.js"> </script> 
+    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet">
 </head>
-<body onresize="resizeForm(document.getElementById('scroller'));" leftmargin="0"
-    topmargin="0" onload="changeScrollbarColor();" ms_positioning="GridLayout">
+<body onresize="resizeForm(document.getElementById('scroller'));" leftmargin="0" topmargin="0" onload="changeScrollbarColor();" ms_positioning="GridLayout">
     <form id="Form1" method="post" runat="server">
         <!--Start Header-->
         <table class="TABLETITLE" cellspacing="0" cellpadding="0" border="0">
@@ -38,18 +37,13 @@
                 </td>
             </tr>
         </table>
-        <table id="moTableOuter" style="border-right: black 1px solid; border-top: black 1px solid; margin: 5px; border-left: black 1px solid; border-bottom: black 1px solid"
-            height="93%"
-            cellspacing="0" cellpadding="0" rules="none" width="98%" bgcolor="#d5d6e4" border="0">
+        <table id="moTableOuter" style="border-right: black 1px solid; border-top: black 1px solid; margin: 5px; border-left: black 1px solid; border-bottom: black 1px solid" height="93%" cellspacing="0" cellpadding="0" rules="none" width="98%" bgcolor="#d5d6e4" border="0">
             <tr>
                 <td style="height: 8px; vertical-align:top; text-align:center;"></td>
             </tr>
             <tr>
                 <td style="vertical-align:top;text-align:center;" height="100%">
-                    <table id="moTableMain" style="border-right: #999999 1px solid; border-top: #999999 1px solid; border-left: #999999 1px solid; border-bottom: #999999 1px solid"
-                        height="98%"
-                        cellspacing="0" cellpadding="6" rules="cols" width="98%" align="center" bgcolor="#fef9ea"
-                        border="0">
+                    <table id="moTableMain" style="border-right: #999999 1px solid; border-top: #999999 1px solid; border-left: #999999 1px solid; border-bottom: #999999 1px solid" height="98%" cellspacing="0" cellpadding="6" rules="cols" width="98%" align="center" bgcolor="#fef9ea" border="0">
                         <tr>
                             <td style="vertical-align:top;text-align:center;" height="1">
                                 <uc1:ErrorController ID="ErrController" runat="server"></uc1:ErrorController>
@@ -58,30 +52,26 @@
                         <tr>
                             <td style="vertical-align:top;">
                                 <asp:Panel ID="EditPanel" runat="server">
-                                    <table style="width: 100%" height="20%" cellspacing="2" cellpadding="0" width="100%"
-                                        border="0">
-                                        <asp:Panel ID="moDepreciationScheduleEditPanel_WRITE" runat="server" Width="100%"
-                                            Height="98%">
+                                    <table style="width: 100%" height="20%" cellspacing="2" cellpadding="0" width="100%" border="0">
+                                        <asp:Panel ID="moDepreciationScheduleEditPanel_WRITE" runat="server" Width="100%" Height="98%">
                                             <tbody>
                                                 <tr>
-                                                    <td nowrap colspan="4" align="center">
+                                                    <td nowrap="" colspan="4" align="center">
                                                         <div style="width: 74%; height: 39px">
                                                             <uc1:MultipleColumnDDLabelControl ID="multipleDropControl" runat="server"></uc1:MultipleColumnDDLabelControl>
                                                         </div>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="width: 25%; height: 13px;text-align:right;" >
+                                                    <td style="width: 25%; height: 13px;text-align:right;">
                                                         <asp:Label ID="LabelEffective" runat="server" Font-Bold="false">EFFECTIVE</asp:Label></td>
                                                     <td style="width: 15%; height: 13px; white-space:nowrap;">&nbsp;
-	    <asp:TextBox ID="TextboxEffective" TabIndex="3" runat="server" CssClass="FLATTEXTBOX"
-            Width="150px"></asp:TextBox>
+	    <asp:TextBox ID="TextboxEffective" TabIndex="3" runat="server" CssClass="FLATTEXTBOX" Width="150px"></asp:TextBox>
                                                         <asp:ImageButton ID="ImageButtonStartDate" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg" Height="17px" Width="20px" ImageAlign="AbsMiddle"></asp:ImageButton></td>
                                                     <td style="width: 10%" align="right">
                                                         <asp:Label ID="LabelExpiration" runat="server" Font-Bold="false">EXPIRATION</asp:Label></td>
                                                     <td style="width: 50%">&nbsp;
-	    <asp:TextBox ID="TextboxExpiration" TabIndex="7" runat="server" CssClass="FLATTEXTBOX"
-            Width="150px"></asp:TextBox>
+	    <asp:TextBox ID="TextboxExpiration" TabIndex="7" runat="server" CssClass="FLATTEXTBOX" Width="150px"></asp:TextBox>
                                                         <asp:ImageButton ID="ImageButtonEndDate" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg" Height="17px" Width="20px" ImageAlign="AbsMiddle"></asp:ImageButton></td>
 
 
@@ -91,21 +81,19 @@
                                                         <hr>
                                                     </td>
                                                 </tr>
-                                        </asp:Panel>
+                                        </tbody></asp:Panel>
                                         <tr>
                                             <td align="left" width="100%" colspan="5">
                                                 <%--     changes for tab--%>
                                                 <div id="tabs" class="style-tabs-old">
                                                     <ul>
-                                                        <li style="background:#d5d6e4;"><a href="#tabsDelayFactor">
+                                                        <li style="background:#d5d6e4;"><a href="#tabsDelayFactor" rel="noopener noreferrer">
                                                             <asp:Label ID="Label4" runat="server" CssClass="tabHeaderTextOld">DELAY_FACTOR</asp:Label></a></li>
 
                                                     </ul>
 
                                                     <div id="tabsDelayFactor" style="background:#d5d6e4">
-                                                        <table id="tblOpportunities" style="border-right: #999999 1px solid; border-top: #999999 1px solid; border-left: #999999 1px solid; border-bottom: #999999 1px solid"
-                                                            cellspacing="2"
-                                                            cellpadding="2" rules="cols" width="100%" background="" border="0">
+                                                        <table id="tblOpportunities" style="border-right: #999999 1px solid; border-top: #999999 1px solid; border-left: #999999 1px solid; border-bottom: #999999 1px solid" cellspacing="2" cellpadding="2" rules="cols" width="100%" background="" border="0">
                                                             <tr>
                                                                 <td colspan="2">
                                                                     <uc1:ErrorController ID="ErrorControllerDS" runat="server"></uc1:ErrorController>
@@ -114,9 +102,7 @@
                                                             <tr>
                                                                 <td align="middle" colspan="2">
                                                                     <div id="scroller" style="width: 98%" align="center">
-                                                                        <asp:GridView ID="Grid" runat="server" Width="100%" OnRowCreated="RowCreated" OnRowCommand="RowCommand"
-                                                                            AllowPaging="True" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"
-                                                                            CssClass="DATAGRID">
+                                                                        <asp:GridView ID="Grid" runat="server" Width="100%" OnRowCreated="RowCreated" OnRowCommand="RowCommand" AllowPaging="True" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False" CssClass="DATAGRID">
                                                                             <SelectedRowStyle CssClass="SELECTED"></SelectedRowStyle>
                                                                             <EditRowStyle CssClass="EDITROW"></EditRowStyle>
                                                                             <AlternatingRowStyle Wrap="False" CssClass="ALTROW"></AlternatingRowStyle>
@@ -127,22 +113,19 @@
                                                                                     <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                                                                     <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                                                                     <ItemTemplate>
-                                                                                        <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/icons/edit2.gif"
-                                                                                            CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                                                                        <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/icons/edit2.gif" CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                                                                     </ItemTemplate>
                                                                                 </asp:TemplateField>
                                                                                 <asp:TemplateField>
                                                                                     <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                                                                     <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                                                                     <ItemTemplate>
-                                                                                        <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icons/trash.gif"
-                                                                                            runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                                                                        <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icons/trash.gif" runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                                                                     </ItemTemplate>
                                                                                 </asp:TemplateField>
                                                                                 <asp:TemplateField Visible="False">
                                                                                     <ItemTemplate>
-                                                                                        <asp:Label ID="moDelayFactor_ID" Text='<%# GetGuidStringFromByteArray(Container.DataItem("DELAY_FACTOR_ID"))%>'
-                                                                                            runat="server">
+                                                                                        <asp:Label ID="moDelayFactor_ID" Text='<%# GetGuidStringFromByteArray(Container.DataItem("DELAY_FACTOR_ID"))%>' runat="server">
                                                                                         </asp:Label>
                                                                                     </ItemTemplate>
                                                                                 </asp:TemplateField>
@@ -181,18 +164,15 @@
                                                                                 </asp:TemplateField>
                                                                                 <asp:TemplateField Visible="False">
                                                                                     <ItemTemplate>
-                                                                                        <asp:Label ID="moDealer_ID" Text='<%# GetGuidStringFromByteArray(Container.DataItem("DEALER_ID"))%>'
-                                                                                            runat="server">
+                                                                                        <asp:Label ID="moDealer_ID" Text='<%# GetGuidStringFromByteArray(Container.DataItem("DEALER_ID"))%>' runat="server">
                                                                                         </asp:Label>
                                                                                     </ItemTemplate>
                                                                                 </asp:TemplateField>
                                                                             </Columns>
-                                                                            <PagerSettings PageButtonCount="15" Mode="Numeric" />
+                                                                            <PagerSettings PageButtonCount="15" Mode="Numeric"></PagerSettings>
                                                                             <PagerStyle HorizontalAlign="Center" CssClass="PAGER"></PagerStyle>
                                                                         </asp:GridView>
-                                                                        <asp:GridView ID="Grid1" runat="server" Width="100%" OnRowCreated="RowCreated" OnRowCommand="RowCommand"
-                                                                            AllowPaging="True" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"
-                                                                            CssClass="DATAGRID">
+                                                                        <asp:GridView ID="Grid1" runat="server" Width="100%" OnRowCreated="RowCreated" OnRowCommand="RowCommand" AllowPaging="True" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False" CssClass="DATAGRID">
                                                                             <SelectedRowStyle CssClass="SELECTED"></SelectedRowStyle>
                                                                             <EditRowStyle CssClass="EDITROW"></EditRowStyle>
                                                                             <AlternatingRowStyle Wrap="False" CssClass="ALTROW"></AlternatingRowStyle>
@@ -203,16 +183,14 @@
                                                                                     <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                                                                     <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                                                                     <ItemTemplate>
-                                                                                        <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/icons/edit2.gif"
-                                                                                            CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                                                                        <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/icons/edit2.gif" CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                                                                     </ItemTemplate>
                                                                                 </asp:TemplateField>
                                                                                 <asp:TemplateField>
                                                                                     <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                                                                     <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                                                                     <ItemTemplate>
-                                                                                        <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icons/trash.gif"
-                                                                                            runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                                                                        <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icons/trash.gif" runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                                                                     </ItemTemplate>
                                                                                 </asp:TemplateField>
                                                                                 <asp:TemplateField Visible="False">
@@ -261,7 +239,7 @@
                                                                                     </ItemTemplate>
                                                                                 </asp:TemplateField>
                                                                             </Columns>
-                                                                            <PagerSettings PageButtonCount="15" Mode="Numeric" />
+                                                                            <PagerSettings PageButtonCount="15" Mode="Numeric"></PagerSettings>
                                                                             <PagerStyle HorizontalAlign="Center" CssClass="PAGER"></PagerStyle>
                                                                         </asp:GridView>
                                                                     </div>
@@ -269,15 +247,9 @@
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2" style="padding-top:35px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                    <asp:Button ID="BtnNew_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif); cursor: hand; background-repeat: no-repeat"
-                                                                        runat="server" Font-Bold="false"
-                                                                        Width="100px" CssClass="FLATBUTTON" Height="20px" Text="New"></asp:Button>&nbsp;
-                                                                    <asp:Button ID="BtnSave_WRITE" Style="background-image: url(../Navigation/images/icons/save_icon.gif); cursor: hand; background-repeat: no-repeat"
-                                                                        runat="server" Font-Bold="false"
-                                                                        Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Save"></asp:Button>&nbsp;
-                                                                    <asp:Button ID="BtnCancel" Style="background-image: url(../Navigation/images/icons/cancel_icon.gif); cursor: hand; background-repeat: no-repeat"
-                                                                        runat="server" Font-Bold="false"
-                                                                        Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Cancel"></asp:Button>
+                                                                    <asp:Button ID="BtnNew_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif); cursor: hand; background-repeat: no-repeat" runat="server" Font-Bold="false" Width="100px" CssClass="FLATBUTTON" Height="20px" Text="New"></asp:Button>&nbsp;
+                                                                    <asp:Button ID="BtnSave_WRITE" Style="background-image: url(../Navigation/images/icons/save_icon.gif); cursor: hand; background-repeat: no-repeat" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Save"></asp:Button>&nbsp;
+                                                                    <asp:Button ID="BtnCancel" Style="background-image: url(../Navigation/images/icons/cancel_icon.gif); cursor: hand; background-repeat: no-repeat" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Cancel"></asp:Button>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -293,23 +265,68 @@
                         <tr height="30px">
                             <td align="right" colspan="2">
                                 <hr style="height: 1px">
-                                <table id="Table2" style="width: 678px;" cellspacing="1" cellpadding="1" align="left"
-                                    border="0">
+                                <table id="Table2" style="width: 678px;" cellspacing="1" cellpadding="1" align="left" border="0">
                                     <tr>
                                         <td>
-                                            <asp:Button ID="btnBack" Style="background-image: url(../Navigation/images/icons/back_icon.gif); cursor: hand; background-repeat: no-repeat"
-                                                runat="server" Width="90px" CssClass="FLATBUTTON"
-                                                Height="20px" Text="BACK"></asp:Button></td>
+                                            <asp:Button ID="btnBack" Style="background-image: url(../Navigation/images/icons/back_icon.gif); cursor: hand; background-repeat: no-repeat" runat="server" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="BACK"></asp:Button></td>
                                         <td>
-                                            <asp:Button ID="btnApply_WRITE" Style="background-image: url(../Navigation/images/icons/save_trans_icon.gif); cursor: hand; background-repeat: no-repeat"
-                                                runat="server" Width="90px" CssClass="FLATBUTTON"
-                                                Height="20px" Text="SAVE"></asp:Button></td>
+                                            <asp:Button ID="btnApply_WRITE" Style="background-image: url(../Navigation/images/icons/save_trans_icon.gif); cursor: hand; background-repeat: no-repeat" runat="server" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="SAVE"></asp:Button></td>
                                         <td>
-                                            <asp:Button ID="btnButtomNew_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif); cursor: hand; background-repeat: no-repeat"
-                                                runat="server" Width="100px" CssClass="FLATBUTTON"
-                                                Height="20px" Text="New"></asp:Button></td>
+                                            <asp:Button ID="btnButtomNew_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif); cursor: hand; background-repeat: no-repeat" runat="server" Width="100px" CssClass="FLATBUTTON" Height="20px" Text="New"></asp:Button></td>
                                         <td>
-                                            <asp:Button ID="btnCopy_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif); cursor: hand; background-repeat: no-repeat"
+                                            <asp:Button ID="btnCopy_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif); cursor: hand; background-repeat: no-repeat" runat="server" Width="140px" CssClass="FLATBUTTON" Height="20px" Text="New_With_Copy"></asp:Button></td>
+                                        <td width="140px">&nbsp;</td>
+                                        <td width="140px">&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <script>
+
+            function resizeForm(item) {
+                var browseWidth, browseHeight;
+
+                if (document.layers) {
+                    browseWidth = window.outerWidth;
+                    browseHeight = window.outerHeight;
+                }
+                if (document.all) {
+                    browseWidth = document.body.clientWidth;
+                    browseHeight = document.body.clientHeight;
+                }
+
+                if (screen.width == "800" && screen.height == "600") {
+                    newHeight = browseHeight - 350;
+                }
+                else {
+                    newHeight = browseHeight - 570;
+                }
+
+                if (newHeight < 75) {
+                    newHeight = 75;
+                }
+
+                item.style.height = String(newHeight) + "px";
+
+                item.style.width = String(browseWidth - 80) + "px";
+            }
+
+            resizeForm(document.getElementById("scroller"));
+            //document.getElementById("scroller").scrollBy(0,-50); // horizontal and vertical scroll increments
+
+        </script>
+
+        <input type="hidden" id="CMD" value="" runat="server">
+        <input type="hidden" id="CopyDealerId" value="" runat="server">
+    </form>
+</body>
+</html>
+kground-image: url(../Navigation/images/icons/add_icon.gif); cursor: hand; background-repeat: no-repeat"
                                                 runat="server" Width="140px" CssClass="FLATBUTTON"
                                                 Height="20px" Text="New_With_Copy"></asp:Button></td>
                                         <td width="140px">&nbsp;</td>

@@ -37,10 +37,10 @@
         //            return revealModal('ModalCancel');
         //        }
     </script>
-    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet"/>
-    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet"/>  
-    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js" > </script>
-    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js" > </script>
+    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet">
+    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet">  
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js"> </script>
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js"> </script>
     <script type="text/javascript">
     $(function () {
         $("#tabs").tabs({
@@ -58,21 +58,19 @@
 <asp:Content ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ContentPlaceHolderID="BodyPlaceHolder" runat="server">
-    <input runat="server" name="DeleteButtonId" id="DeleteButtonId" type="hidden" />
-    <input runat="server" name="DeleteButtonArgument" id="DeleteButtonArgument" type="hidden" />
+    <input runat="server" name="DeleteButtonId" id="DeleteButtonId" type="hidden">
+    <input runat="server" name="DeleteButtonArgument" id="DeleteButtonArgument" type="hidden">
     <div id="ModalCancel" class="overlay">
         <div id="light" class="overlay_message_content">
             <p class="modalTitle">
                 <asp:Label ID="lblModalTitle" runat="server" Text="CONFIRM"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');">
-                    <img id="moModalCloseImage" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                        width="16" height="18" align="absmiddle" class="floatR" /></a></p>
+                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');" rel="noopener noreferrer">
+                    <img id="moModalCloseImage" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR"></a></p>
             <table class="formGrid" width="98%" cellspacing="0" cellpadding="0" border="0">
                 <tbody>
                     <tr>
                         <td align="right">
-                            <img id="imgMsgIcon" name="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
-                                height="28" />
+                            <img id="imgMsgIcon" name="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png" height="28">
                         </td>
                         <td id="tdModalMessage" colspan="2" runat="server">
                             <asp:Label ID="lblCancelMessage" runat="server"></asp:Label>
@@ -83,10 +81,8 @@
                             &nbsp;
                         </td>
                         <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="2">
-                            <input id="btnModalCancelYes" class="primaryBtn floatR" runat="server" type="button"
-                                value="Yes" />
-                            <input class="popWindowAltbtn floatR" runat="server" type="button" value="No"
-                                onclick="hideModal('ModalCancel');" />
+                            <input id="btnModalCancelYes" class="primaryBtn floatR" runat="server" type="button" value="Yes">
+                            <input class="popWindowAltbtn floatR" runat="server" type="button" value="No" onclick="hideModal('ModalCancel');">
                         </td>
                     </tr>
                 </tbody>
@@ -101,28 +97,28 @@
                 <tbody>
                     <tr>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moRoleCodeLabel" Text="CODE" />
+                            <asp:Label runat="server" ID="moRoleCodeLabel" Text="CODE"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
-                            <asp:TextBox runat="server" ID="moRoleCode" SkinID="MediumTextBox" />
+                            <asp:TextBox runat="server" ID="moRoleCode" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moRoleDescriptionLabel" Text="DESCRIPTION" />
+                            <asp:Label runat="server" ID="moRoleDescriptionLabel" Text="DESCRIPTION"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
-                            <asp:TextBox runat="server" ID="moRoleDescription" SkinID="MediumTextBox" />
+                            <asp:TextBox runat="server" ID="moRoleDescription" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moIhqOnlyLabel" Text="IHQ_ONLY" />
+                            <asp:Label runat="server" ID="moIhqOnlyLabel" Text="IHQ_ONLY"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
                             <asp:DropDownList runat="server" ID="moIhqOnly" SkinID="MediumDropDown">
                             </asp:DropDownList>
                         </td>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moRoleProviderLabel" Text="ROLE_PROVIDER" />
+                            <asp:Label runat="server" ID="moRoleProviderLabel" Text="ROLE_PROVIDER"></asp:Label>
                         </td>
                         <td nowrap="noWrap">
                             <asp:DropDownList runat="server" ID="moRoleProvider" SkinID="MediumDropDown">
@@ -134,14 +130,13 @@
         </div>
     </div>
     <div class="dataContainer">
-        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
-        <div id="tabs" class="style-tabs" style ="border:none;">
+        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
+        <div id="tabs" class="style-tabs" style="border:none;">
             <ul>
-            <li><a href="#tabPermission"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">PERMISSION</asp:Label></a></li>
+            <li><a href="#tabPermission" rel="noopener noreferrer"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">PERMISSION</asp:Label></a></li>
             </ul>
             <div id="tabPermission" class="style-tab" style="border:#999 1px solid;">
-                <table id="moPermissionsTable" cellspacing="0" cellpadding="0" width="300" align="center" border="0"
-                    class="formGrid">
+                <table id="moPermissionsTable" cellspacing="0" cellpadding="0" width="300" align="center" border="0" class="formGrid">
                     <tr>
                         <td>
                             <asp:Label ID="moAvailableLabel" runat="server">Available</asp:Label>
@@ -158,16 +153,14 @@
                             </asp:ListBox>
                         </td>
                         <td>
-                            <table id="moPermissionActionTable" style="width: 75px; height: 27px" cellspacing="1" cellpadding="1"
-                                width="75" border="0">
+                            <table id="moPermissionActionTable" style="width: 75px; height: 27px" cellspacing="1" cellpadding="1" width="75" border="0">
                                 <tr>
                                     <td>
-                                        <br />
-                                        <br />
-                                        <asp:Button ID="btnAddPermissionToSelected" runat="server" Width="55px" Text=">>"
-                                            SkinID=""></asp:Button>
-                                        <br />
-                                        <br />
+                                        <br>
+                                        <br>
+                                        <asp:Button ID="btnAddPermissionToSelected" runat="server" Width="55px" Text=">>" SkinID=""></asp:Button>
+                                        <br>
+                                        <br>
                                         <asp:Button ID="btnRemovePermission" runat="server" Text="<<" Width="55px" SkinID="">
                                         </asp:Button>
                                     </td>
@@ -184,13 +177,15 @@
         </div>
     </div>
     <div class="btnZone">
-        <asp:Button runat="server" ID="btnSave_WRITE" Text="Save" SkinID="PrimaryRightButton" />
-        <asp:Button runat="server" ID="btnNew_WRITE" Text="New" SkinID="AlternateRightButton" />
-        <asp:Button runat="server" ID="btnUndo_Write" Text="Undo" SkinID="AlternateRightButton" />
-        <asp:Button runat="server" ID="btnDelete_WRITE" Text="Delete" SkinID="CenterButton" />
-        <asp:Button runat="server" ID="btnBack" Text="Back" SkinID="AlternateLeftButton" />
+        <asp:Button runat="server" ID="btnSave_WRITE" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
+        <asp:Button runat="server" ID="btnNew_WRITE" Text="New" SkinID="AlternateRightButton"></asp:Button>
+        <asp:Button runat="server" ID="btnUndo_Write" Text="Undo" SkinID="AlternateRightButton"></asp:Button>
+        <asp:Button runat="server" ID="btnDelete_WRITE" Text="Delete" SkinID="CenterButton"></asp:Button>
+        <asp:Button runat="server" ID="btnBack" Text="Back" SkinID="AlternateLeftButton"></asp:Button>
         
     </div>
-    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
+    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server">
+</asp:Content>
+nSaveChangesPromptResponse"
         runat="server" />
 </asp:Content>

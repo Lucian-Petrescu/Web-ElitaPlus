@@ -10,8 +10,7 @@
                     <td align="right">
                         <asp:Label ID="CustomerNameLabel" runat="server" SkinID="SummaryLabel">CUSTOMER_NAME</asp:Label>:
                     </td>
-                    <td align="left" class="bor" style="font-weight: bold" runat="server"
-                        id="CustomerNameTD">
+                    <td align="left" class="bor" style="font-weight: bold" runat="server" id="CustomerNameTD">
                         <strong></strong>
                     </td>
                     <td align="right" runat="server" id="IdentificationNumberLabelTD">
@@ -102,12 +101,12 @@
             </td>
         </tr>
          </table>
-        <br />
+        <br>
         <table>
              <tr id="PerInfoHistory" runat="server">
                   <td align="left">
                         <h2 class="dataGridHeader">
-                            <a id="PersonalHistExpander" href="#"><img src="../App_Themes/Default/Images/sort_indicator_des.png"/></a>
+                            <a id="PersonalHistExpander" href="#" rel="noopener noreferrer"><img src="../App_Themes/Default/Images/sort_indicator_des.png"></a>
                                     <asp:Label ID="CustomerPersonelHistory" runat="server">PERSONAL_HISTORY</asp:Label>
                         
                          </h2>
@@ -116,23 +115,21 @@
               <tr id="PersonelHistInfo">
                    <td style="border-bottom:none">
                         <div style="width: 100%; height: 100%; min-height: 100% ">
-                         <asp:GridView ID="CustPersonalHistory" runat="server" AutoGenerateColumns="false"  Width="100%"
-                            BorderStyle="Solid" BorderWidth="1px" BorderColor="#999999"
-                              DataKeyNames="customer_id" SkinID="DetailPageGridView" AllowPaging="false" AllowSorting="false" >
+                         <asp:GridView ID="CustPersonalHistory" runat="server" AutoGenerateColumns="false" Width="100%" BorderStyle="Solid" BorderWidth="1px" BorderColor="#999999" DataKeyNames="customer_id" SkinID="DetailPageGridView" AllowPaging="false" AllowSorting="false">
                                 <Columns>
-                                        <asp:BoundField DataField="salutation" HeaderText="SALUTATION" />
-                                        <asp:BoundField DataField="first_name" HeaderText="FIRST_NAME" />
-                                        <asp:BoundField DataField="middle_name" HeaderText="MIDDLE_NAME" />
-                                        <asp:BoundField DataField="last_name" HeaderText="LAST_NAME" />
-                                        <asp:BoundField DataField="corporate_name" HeaderText="CORPORATE_NAME"/>
-                                        <asp:BoundField DataField="gender" HeaderText="GENDER" />
-                                        <asp:BoundField DataField="birth_date" HeaderText="BIRTH_DATE" />
-                                        <asp:BoundField DataField="marital_status" HeaderText="MARITAL_STATUS" />
-                                        <asp:BoundField DataField="nationality" HeaderText="NATIONALITY" />
-                                        <asp:BoundField DataField="place_of_birth" HeaderText="PLACE_OF_BIRTH" />
-                                        <asp:BoundField DataField="modified_by" HeaderText="MODIFIED_BY" />    
-                                        <asp:BoundField DataField="change_date" HeaderText="DATE_OF_CHANGE" />
-                                        <asp:BoundField DataField="customer_id" Visible="false" />
+                                        <asp:BoundField DataField="salutation" HeaderText="SALUTATION"></asp:BoundField>
+                                        <asp:BoundField DataField="first_name" HeaderText="FIRST_NAME"></asp:BoundField>
+                                        <asp:BoundField DataField="middle_name" HeaderText="MIDDLE_NAME"></asp:BoundField>
+                                        <asp:BoundField DataField="last_name" HeaderText="LAST_NAME"></asp:BoundField>
+                                        <asp:BoundField DataField="corporate_name" HeaderText="CORPORATE_NAME"></asp:BoundField>
+                                        <asp:BoundField DataField="gender" HeaderText="GENDER"></asp:BoundField>
+                                        <asp:BoundField DataField="birth_date" HeaderText="BIRTH_DATE"></asp:BoundField>
+                                        <asp:BoundField DataField="marital_status" HeaderText="MARITAL_STATUS"></asp:BoundField>
+                                        <asp:BoundField DataField="nationality" HeaderText="NATIONALITY"></asp:BoundField>
+                                        <asp:BoundField DataField="place_of_birth" HeaderText="PLACE_OF_BIRTH"></asp:BoundField>
+                                        <asp:BoundField DataField="modified_by" HeaderText="MODIFIED_BY"></asp:BoundField>    
+                                        <asp:BoundField DataField="change_date" HeaderText="DATE_OF_CHANGE"></asp:BoundField>
+                                        <asp:BoundField DataField="customer_id" Visible="false"></asp:BoundField>
   
                                 </Columns>
                         </asp:GridView>
@@ -141,13 +138,13 @@
                 </tr>
             <tr>
                 <td>
-                    <br />
+                    <br>
                 </td>
             </tr>
             <tr id="AddrInfohistory" runat="server">
                   <td align="left">
                         <h2 class="dataGridHeader">
-                            <a id="AddressHistExpander" href="#"><img src="../App_Themes/Default/Images/sort_indicator_des.png"/></a>
+                            <a id="AddressHistExpander" href="#" rel="noopener noreferrer"><img src="../App_Themes/Default/Images/sort_indicator_des.png"></a>
                                     <asp:Label ID="CustomerAddressHistory" runat="server">ADDRESS_HISTORY</asp:Label>
                         
                          </h2>
@@ -156,21 +153,19 @@
               <tr id="AddressHistInfo">
                    <td style="border-bottom:none">
                         <div style="width: 100%; height: 100%; min-height: 100% ">
-                         <asp:GridView ID="CustAddressHistory" runat="server" AutoGenerateColumns="false" 
-                             Width="100%" BorderStyle="Solid" BorderWidth="1px" BorderColor="#999999"
-                              DataKeyNames="address_id" SkinID="DetailPageGridView" AllowPaging="false" AllowSorting="false">
+                         <asp:GridView ID="CustAddressHistory" runat="server" AutoGenerateColumns="false" Width="100%" BorderStyle="Solid" BorderWidth="1px" BorderColor="#999999" DataKeyNames="address_id" SkinID="DetailPageGridView" AllowPaging="false" AllowSorting="false">
                                 <Columns>
-                                        <asp:BoundField DataField="address1" HeaderText="ADDRESS1" />
-                                        <asp:BoundField DataField="address2" HeaderText="ADDRESS2" />
-                                        <asp:BoundField DataField="address3" HeaderText="ADDRESS3" />
-                                        <asp:BoundField DataField="city" HeaderText="CITY" />
-                                        <asp:BoundField DataField="country" HeaderText="COUNTRY" />
-                                        <asp:BoundField DataField="state" HeaderText="STATE" />
-                                        <asp:BoundField DataField="postal_code" HeaderText="POSTAL_CODE" />
-                                        <asp:BoundField DataField="zip_locator" HeaderText="ZIP_LOCATOR" />
-                                        <asp:BoundField DataField="modified_by" HeaderText="MODIFIED_BY" />
-                                        <asp:BoundField DataField="change_date" HeaderText="DATE_OF_CHANGE" />
-                                        <asp:BoundField DataField="address_id" Visible="false" />
+                                        <asp:BoundField DataField="address1" HeaderText="ADDRESS1"></asp:BoundField>
+                                        <asp:BoundField DataField="address2" HeaderText="ADDRESS2"></asp:BoundField>
+                                        <asp:BoundField DataField="address3" HeaderText="ADDRESS3"></asp:BoundField>
+                                        <asp:BoundField DataField="city" HeaderText="CITY"></asp:BoundField>
+                                        <asp:BoundField DataField="country" HeaderText="COUNTRY"></asp:BoundField>
+                                        <asp:BoundField DataField="state" HeaderText="STATE"></asp:BoundField>
+                                        <asp:BoundField DataField="postal_code" HeaderText="POSTAL_CODE"></asp:BoundField>
+                                        <asp:BoundField DataField="zip_locator" HeaderText="ZIP_LOCATOR"></asp:BoundField>
+                                        <asp:BoundField DataField="modified_by" HeaderText="MODIFIED_BY"></asp:BoundField>
+                                        <asp:BoundField DataField="change_date" HeaderText="DATE_OF_CHANGE"></asp:BoundField>
+                                        <asp:BoundField DataField="address_id" Visible="false"></asp:BoundField>
   
                                 </Columns>
                         </asp:GridView>
@@ -179,13 +174,13 @@
                 </tr>
              <tr>
                 <td>
-                    <br />
+                    <br>
                 </td>
             </tr>
              <tr id="ConatctInfohistory" runat="server">
                   <td align="left">
                         <h2 class="dataGridHeader">
-                            <a id="ContactHistExpander" href="#"><img src="../App_Themes/Default/Images/sort_indicator_des.png"/></a>
+                            <a id="ContactHistExpander" href="#" rel="noopener noreferrer"><img src="../App_Themes/Default/Images/sort_indicator_des.png"></a>
                                     <asp:Label ID="Label1" runat="server">CONTACT_HISTORY</asp:Label>
                         
                          </h2>
@@ -194,15 +189,13 @@
               <tr id="ContactHistInfo">
                    <td style="border-bottom:none">
                         <div style="width: 100%; height: 100%; min-height: 100% ">
-                         <asp:GridView ID="CustContactHistory" runat="server" AutoGenerateColumns="false" 
-                             Width="100%" BorderStyle="Solid" BorderWidth="1px" BorderColor="#999999"
-                               SkinID="DetailPageGridView" AllowPaging="false" AllowSorting="false">
+                         <asp:GridView ID="CustContactHistory" runat="server" AutoGenerateColumns="false" Width="100%" BorderStyle="Solid" BorderWidth="1px" BorderColor="#999999" SkinID="DetailPageGridView" AllowPaging="false" AllowSorting="false">
                                 <Columns>
-                                        <asp:BoundField DataField="email" HeaderText="EMAIL"/>
-                                        <asp:BoundField DataField="home_phone" HeaderText="HOME_PHONE" />
-                                        <asp:BoundField DataField="work_phone" HeaderText="WORK_PHONE" />
-                                        <asp:BoundField DataField="modified_by" HeaderText="MODIFIED_BY" />
-                                        <asp:BoundField DataField="change_date" HeaderText="DATE_OF_CHANGE" />
+                                        <asp:BoundField DataField="email" HeaderText="EMAIL"></asp:BoundField>
+                                        <asp:BoundField DataField="home_phone" HeaderText="HOME_PHONE"></asp:BoundField>
+                                        <asp:BoundField DataField="work_phone" HeaderText="WORK_PHONE"></asp:BoundField>
+                                        <asp:BoundField DataField="modified_by" HeaderText="MODIFIED_BY"></asp:BoundField>
+                                        <asp:BoundField DataField="change_date" HeaderText="DATE_OF_CHANGE"></asp:BoundField>
                                       
                                 </Columns>
                         </asp:GridView>
@@ -211,13 +204,13 @@
                 </tr>
             <tr>
                 <td>
-                    <br />
+                    <br>
                 </td>
             </tr>
               <tr id="BankDetailHist" runat="server">
                   <td align="left">
                         <h2 class="dataGridHeader">
-                            <a id="BankDetailHistExpander" href="#"><img src="../App_Themes/Default/Images/sort_indicator_des.png"/></a>
+                            <a id="BankDetailHistExpander" href="#" rel="noopener noreferrer"><img src="../App_Themes/Default/Images/sort_indicator_des.png"></a>
                                     <asp:Label ID="BankDetailHistory" runat="server">BANK_DETAIL_HISTORY</asp:Label>                        
                          </h2>
                   </td>
@@ -225,23 +218,21 @@
               <tr id="BankDetailHistInfo">
                    <td style="border-bottom:none">
                         <div style="width: 100%; height: 100%; min-height: 100% ">
-                         <asp:GridView ID="CustBankDetailHistory" runat="server" AutoGenerateColumns="false" 
-                             Width="100%" BorderStyle="Solid" BorderWidth="1px" BorderColor="#999999"
-                              SkinID="DetailPageGridView" AllowPaging="false" AllowSorting="false">
+                         <asp:GridView ID="CustBankDetailHistory" runat="server" AutoGenerateColumns="false" Width="100%" BorderStyle="Solid" BorderWidth="1px" BorderColor="#999999" SkinID="DetailPageGridView" AllowPaging="false" AllowSorting="false">
                                 <Columns>
-                                        <asp:BoundField DataField="account_name" HeaderText="NAME_ON_ACCOUNT" HeaderStyle-Width="50" />
-                                        <asp:BoundField DataField="bank_name" HeaderText="BANK_NAME" HeaderStyle-Width="50" />
-                                        <asp:BoundField DataField="bank_id" HeaderText="BANK_ID" HeaderStyle-Width="50" />
-                                        <asp:BoundField DataField="account_type_id" HeaderText="ACCOUNT_TYPE_ID" HeaderStyle-Width="50" />
-                                        <asp:BoundField DataField="bank_lookup_code" HeaderText="BANK_LOOKUP_CODE" HeaderStyle-Width="50" />
-                                        <asp:BoundField DataField="bank_sort_code" HeaderText="BANK_SORT_CODE" HeaderStyle-Width="50" />
-                                        <asp:BoundField DataField="branch_name" HeaderText="BRANCH_NAME" HeaderStyle-Width="50" />
-                                        <asp:BoundField DataField="bank_sub_code" HeaderText="BANK_SUB_CODE" HeaderStyle-Width="50" />
-                                        <asp:BoundField DataField="account_number" HeaderText="ACCOUNT_NUMBER" HeaderStyle-Width="50" />
-                                        <asp:BoundField DataField="mandate_id" HeaderText="MANDATE_ID" HeaderStyle-Width="50" />
-                                        <asp:BoundField DataField="iban_number" HeaderText="IBAN_NUMBER"  HeaderStyle-Width="20"  ItemStyle-Width="10" ItemStyle-Wrap ="true"/>
-                                        <asp:BoundField DataField="created_by" HeaderText="CREATED_BY" HeaderStyle-Width="100" />
-                                        <asp:BoundField DataField="created_date" HeaderText="CREATED_DATE" HeaderStyle-Width="20" />
+                                        <asp:BoundField DataField="account_name" HeaderText="NAME_ON_ACCOUNT" HeaderStyle-Width="50"></asp:BoundField>
+                                        <asp:BoundField DataField="bank_name" HeaderText="BANK_NAME" HeaderStyle-Width="50"></asp:BoundField>
+                                        <asp:BoundField DataField="bank_id" HeaderText="BANK_ID" HeaderStyle-Width="50"></asp:BoundField>
+                                        <asp:BoundField DataField="account_type_id" HeaderText="ACCOUNT_TYPE_ID" HeaderStyle-Width="50"></asp:BoundField>
+                                        <asp:BoundField DataField="bank_lookup_code" HeaderText="BANK_LOOKUP_CODE" HeaderStyle-Width="50"></asp:BoundField>
+                                        <asp:BoundField DataField="bank_sort_code" HeaderText="BANK_SORT_CODE" HeaderStyle-Width="50"></asp:BoundField>
+                                        <asp:BoundField DataField="branch_name" HeaderText="BRANCH_NAME" HeaderStyle-Width="50"></asp:BoundField>
+                                        <asp:BoundField DataField="bank_sub_code" HeaderText="BANK_SUB_CODE" HeaderStyle-Width="50"></asp:BoundField>
+                                        <asp:BoundField DataField="account_number" HeaderText="ACCOUNT_NUMBER" HeaderStyle-Width="50"></asp:BoundField>
+                                        <asp:BoundField DataField="mandate_id" HeaderText="MANDATE_ID" HeaderStyle-Width="50"></asp:BoundField>
+                                        <asp:BoundField DataField="iban_number" HeaderText="IBAN_NUMBER" HeaderStyle-Width="20" ItemStyle-Width="10" ItemStyle-Wrap="true"></asp:BoundField>
+                                        <asp:BoundField DataField="created_by" HeaderText="CREATED_BY" HeaderStyle-Width="100"></asp:BoundField>
+                                        <asp:BoundField DataField="created_date" HeaderText="CREATED_DATE" HeaderStyle-Width="20"></asp:BoundField>
                                 </Columns>
                         </asp:GridView>
                        </div>

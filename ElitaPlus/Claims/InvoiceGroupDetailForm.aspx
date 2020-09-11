@@ -4,22 +4,21 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
-<asp:Content  ContentPlaceHolderID="MessagePlaceHolder" runat="server">
+<asp:Content ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
-<asp:Content  ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
+<asp:Content ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
 </asp:Content>
-<asp:Content  ContentPlaceHolderID="BodyPlaceHolder" runat="server">
+<asp:Content ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true">
         <Scripts>
-            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js"></asp:ScriptReference>
         </Scripts>
        
     </asp:ScriptManager>
            
     
     <div class="dataContainer">
-        <table width="100%" border="0" class="formGrid" id="invgrpdetailtable" runat="server"
-            cellspacing="0" cellpadding="0" style="padding-left: 0px;">
+        <table width="100%" border="0" class="formGrid" id="invgrpdetailtable" runat="server" cellspacing="0" cellpadding="0" style="padding-left: 0px;">
             <tr style="margin-bottom: 1px auto;">
                 <td class="borderLeft">
                     <asp:Label ID="lblreceiptdate" runat="server">RECEIPT_DATE</asp:Label>
@@ -31,8 +30,7 @@
                     <asp:Label ID="lblgrpnumber" runat="server">GROUP_NUMBER</asp:Label>
                 </td>
                 <td>
-                    <asp:TextBox ID="txtgrpnumber" runat="server" SkinID="MediumTextBox" ReadOnly="true"
-                        AutoPostBack="false"></asp:TextBox>
+                    <asp:TextBox ID="txtgrpnumber" runat="server" SkinID="MediumTextBox" ReadOnly="true" AutoPostBack="false"></asp:TextBox>
                 </td>
             </tr>
             <tr>
@@ -40,15 +38,13 @@
                     <asp:Label ID="lbltotalamount" runat="server">TOTAL_AMOUNT</asp:Label>:
                 </td>
                 <td>
-                    <asp:TextBox ID="txttotalamount" runat="server" SkinID="MediumTextBox" ReadOnly="true"
-                        AutoPostBack="False"></asp:TextBox>
+                    <asp:TextBox ID="txttotalamount" runat="server" SkinID="MediumTextBox" ReadOnly="true" AutoPostBack="False"></asp:TextBox>
                 </td>
                 <td>
                     <asp:Label ID="lblgroupcount" runat="server">GROUP_COUNT</asp:Label>:
                 </td>
                 <td>
-                    <asp:TextBox ID="txtgroupcount" runat="server" SkinID="SmallTextBox" AutoPostBack="False"
-                        ReadOnly="true"></asp:TextBox>
+                    <asp:TextBox ID="txtgroupcount" runat="server" SkinID="SmallTextBox" AutoPostBack="False" ReadOnly="true"></asp:TextBox>
                 </td>
             </tr>
         </table>
@@ -58,7 +54,7 @@
                <div class="Pages">
                 <div id="tabs" class="style-tabs">
                     <ul>
-                        <li><a href="#tabsInvoices">
+                        <li><a href="#tabsInvoices" rel="noopener noreferrer">
                             <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">INVOICES</asp:Label></a></li>
                     </ul>
                     <div id="tabsInvoices">
@@ -66,8 +62,7 @@
                             <tr id="trPageSize" runat="server">
                                 <td class="bor" align="left">
                                     <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label>: &nbsp;
-                                        <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true"
-                                            SkinID="SmallDropDown">
+                                        <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true" SkinID="SmallDropDown">
                                             <asp:ListItem Value="5">5</asp:ListItem>
                                             <asp:ListItem Value="10">10</asp:ListItem>
                                             <asp:ListItem Value="15">15</asp:ListItem>
@@ -86,51 +81,46 @@
                             </tr>
                         </table>
                         <div class="Page" runat="server" id="InvoiceTabPanel_WRITE" style="display: block; overflow: hidden">
-                            <asp:GridView ID="InvoicesGrid" runat="server" Width="100%" AllowPaging="true" AllowSorting="true"
-                                SkinID="DetailPageGridView" OnItemCommand="ItemCommand">
-                                <SelectedRowStyle Wrap="True" />
-                                <EditRowStyle Wrap="True" />
-                                <AlternatingRowStyle Wrap="True" />
-                                <RowStyle Wrap="True" />
-                                <HeaderStyle />
+                            <asp:GridView ID="InvoicesGrid" runat="server" Width="100%" AllowPaging="true" AllowSorting="true" SkinID="DetailPageGridView" OnItemCommand="ItemCommand">
+                                <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                                <EditRowStyle Wrap="True"></EditRowStyle>
+                                <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                <RowStyle Wrap="True"></RowStyle>
+                                <HeaderStyle></HeaderStyle>
                                 <Columns>
 
-                                    <asp:BoundField SortExpression="Service_center_description" HeaderText="REMITTANCE_VENDOR" HtmlEncode="False" />
-                                    <asp:BoundField SortExpression="invoice_number" HeaderText="INVOICE_NUMBER" HtmlEncode="False" />
-                                    <asp:BoundField SortExpression="invoice_amount" HeaderText="INVOICE_AMOUNT" HtmlEncode="False" />
+                                    <asp:BoundField SortExpression="Service_center_description" HeaderText="REMITTANCE_VENDOR" HtmlEncode="False"></asp:BoundField>
+                                    <asp:BoundField SortExpression="invoice_number" HeaderText="INVOICE_NUMBER" HtmlEncode="False"></asp:BoundField>
+                                    <asp:BoundField SortExpression="invoice_amount" HeaderText="INVOICE_AMOUNT" HtmlEncode="False"></asp:BoundField>
                                     <asp:TemplateField SortExpression="line_item_amount" HeaderText="LINE_ITEM_TOTAL">
                                         <ItemTemplate>
-                                            <asp:LinkButton ID="btnEditItem" runat="server" CommandName="selectAction" CommandArgument="<%#Container.DisplayIndex %>" />
+                                            <asp:LinkButton ID="btnEditItem" runat="server" CommandName="selectAction" CommandArgument="<%#Container.DisplayIndex %>"></asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField SortExpression="invoice_date" HeaderText="INVOICE_DATE" HtmlEncode="False" />
-                                    <asp:BoundField SortExpression="invoice_status" HeaderText="STATUS" HtmlEncode="False" />
+                                    <asp:BoundField SortExpression="invoice_date" HeaderText="INVOICE_DATE" HtmlEncode="False"></asp:BoundField>
+                                    <asp:BoundField SortExpression="invoice_status" HeaderText="STATUS" HtmlEncode="False"></asp:BoundField>
                                     <asp:TemplateField ShowHeader="false">
                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                         <ItemTemplate>
-                                            <asp:ImageButton ID="btn_edit" Style="cursor: hand" runat="server" ImageUrl="~/App_Themes/Default/Images/edit.png"
-                                                Visible="true" CommandName="EditRecord" ImageAlign="AbsMiddle" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                            <asp:ImageButton ID="btn_edit" Style="cursor: hand" runat="server" ImageUrl="~/App_Themes/Default/Images/edit.png" Visible="true" CommandName="EditRecord" ImageAlign="AbsMiddle" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField ShowHeader="false">
                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                         <ItemTemplate>
-                                            <asp:ImageButton ID="btn_delete" Style="cursor: hand;" ImageUrl="~/App_Themes/Default/Images/icon_delete.png"
-                                                runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                                ImageAlign="AbsMiddle"></asp:ImageButton>
+                                            <asp:ImageButton ID="btn_delete" Style="cursor: hand;" ImageUrl="~/App_Themes/Default/Images/icon_delete.png" runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>" ImageAlign="AbsMiddle"></asp:ImageButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField SortExpression="Invoice_id" HeaderText="INVOICE_ID" Visible="false" />
-                                    <asp:BoundField SortExpression="Invoice_group_detail_id" HeaderText="INVOICE_GROUP_DETAIL_ID"
-                                        Visible="false" />
+                                    <asp:BoundField SortExpression="Invoice_id" HeaderText="INVOICE_ID" Visible="false"></asp:BoundField>
+                                    <asp:BoundField SortExpression="Invoice_group_detail_id" HeaderText="INVOICE_GROUP_DETAIL_ID" Visible="false"></asp:BoundField>
                                 </Columns>
-                                <PagerSettings PageButtonCount="10" Mode="Numeric" Position="TopAndBottom" />
+                                <PagerSettings PageButtonCount="10" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
                             </asp:GridView>
                         </div>
                         <div class="btnZone">
                             <asp:LinkButton runat="server" ID="dummybutton"></asp:LinkButton>
                             <asp:Button Text="ADD" runat="server" ID="addBtnNew" SkinID="AlternateLeftButton"></asp:Button>
-                            <asp:LinkButton ID="Dummybtn" runat="server" />
+                            <asp:LinkButton ID="Dummybtn" runat="server"></asp:LinkButton>
                         </div>
                     </div>
                 </div>
@@ -138,27 +128,23 @@
         </div>
         <div class="btnZone">
        
-                <asp:Button ID="btnBack" runat="server" SkinID="AlternateLeftButton" Text="BACK" Visible ="False" />
-                <asp:Button ID="btnAdd" runat="server" SkinID="AlternateLeftButton" Text="NEW" />
-                <asp:Button ID="btnSave" runat="server" SkinID="PrimaryRightButton" Text="SAVE" />
-                <asp:Button ID="btnUndo" runat="server" SkinID="AlternateRightButton" Text="UNDO" />
-                <asp:Button ID="btnDelete" runat="server" SkinID="AlternateRightButton" Text="DELETE" />
+                <asp:Button ID="btnBack" runat="server" SkinID="AlternateLeftButton" Text="BACK" Visible="False"></asp:Button>
+                <asp:Button ID="btnAdd" runat="server" SkinID="AlternateLeftButton" Text="NEW"></asp:Button>
+                <asp:Button ID="btnSave" runat="server" SkinID="PrimaryRightButton" Text="SAVE"></asp:Button>
+                <asp:Button ID="btnUndo" runat="server" SkinID="AlternateRightButton" Text="UNDO"></asp:Button>
+                <asp:Button ID="btnDelete" runat="server" SkinID="AlternateRightButton" Text="DELETE"></asp:Button>
             </div>
      
         <div id="AddNewContainer" style="width: 80%;">
-            <asp:ModalPopupExtender runat="server" ID="mdlPopup" TargetControlID="dummybutton"
-                PopupControlID="pnlPopup" DropShadow="True" BackgroundCssClass="ModalBackground"
-                CancelControlID="mdlClose" BehaviorID="addNewModal" PopupDragHandleControlID="BodyPlaceHolder"
-                RepositionMode="RepositionOnWindowResizeAndScroll" Y="50">
+            <asp:ModalPopupExtender runat="server" ID="mdlPopup" TargetControlID="dummybutton" PopupControlID="pnlPopup" DropShadow="True" BackgroundCssClass="ModalBackground" CancelControlID="mdlClose" BehaviorID="addNewModal" PopupDragHandleControlID="BodyPlaceHolder" RepositionMode="RepositionOnWindowResizeAndScroll" Y="50">
             </asp:ModalPopupExtender>
             <asp:Panel ID="pnlPopup" runat="server" DefaultButton="btnSearch" Style="display: none; width: 75%; overflow: auto">
                 <div id="light" class="overlay_message_content" style="width: 75%; top: 25px; overflow: hidden;">
                     <p class="modalTitle">
                         <asp:Label ID="lblModalTitle" runat="server" Text="NEW_INVOICE_RECORD"></asp:Label>
-                        <asp:ImageButton ImageUrl="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                            ID="mdlClose" CssClass="floatR" AlternateText="Close" />
+                        <asp:ImageButton ImageUrl="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" ID="mdlClose" CssClass="floatR" AlternateText="Close"></asp:ImageButton>
                     </p>
-                    <Elita:MessageController runat="server" ID="moMessageController" />
+                    <Elita:MessageController runat="server" ID="moMessageController"></Elita:MessageController>
                     <table width="100%" border="0" cellpadding="0" cellspacing="0" class="formGrid">
                         <tr>
                             <td align="left" class="borderLeft">
@@ -190,8 +176,7 @@
                             <td>
                                 <asp:TextBox ID="txtInvoiceDate" runat="server" SkinID="smallTextBox">
                                 </asp:TextBox>
-                                <asp:ImageButton ID="ImgInvoiceDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"
-                                    align="absmiddle" alt="" Width="20" Height="20" />
+                                <asp:ImageButton ID="ImgInvoiceDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" align="absmiddle" alt="" Width="20" Height="20"></asp:ImageButton>
                             </td>
                         </tr>
                         <tr>
@@ -209,20 +194,16 @@
                         </tr>
                         <tr>
                             <td id="Td2" align="right" colspan="4" runat="server">
-                                <asp:Button ID="btnSearch" runat="server" TabIndex="3" SkinID="PrimaryRightButton"
-                                    Text="Search"></asp:Button>
-                                <asp:Button ID="btncancelSearch" runat="server" TabIndex="1" SkinID="AlternateRightButton"
-                                    Text="CANCEL_SEARCH"></asp:Button>
-                                <asp:Button ID="btnClearSearch" runat="server" TabIndex="2" SkinID="AlternateRightButton"
-                                    Text="Clear" CausesValidation="false"></asp:Button>
+                                <asp:Button ID="btnSearch" runat="server" TabIndex="3" SkinID="PrimaryRightButton" Text="Search"></asp:Button>
+                                <asp:Button ID="btncancelSearch" runat="server" TabIndex="1" SkinID="AlternateRightButton" Text="CANCEL_SEARCH"></asp:Button>
+                                <asp:Button ID="btnClearSearch" runat="server" TabIndex="2" SkinID="AlternateRightButton" Text="Clear" CausesValidation="false"></asp:Button>
                             </td>
                         </tr>
                         <tr>
                             <td id="Td1" align="right" colspan="4" runat="server">
-                                <asp:Button ID="btnNewInvCancel" runat="server" Text="CANCEL" SkinID="AlternateLeftButton" />
+                                <asp:Button ID="btnNewInvCancel" runat="server" Text="CANCEL" SkinID="AlternateLeftButton"></asp:Button>
                                 &nbsp;
-                                <asp:Button ID="btnEditInvSave" runat="server" Text="SAVE" SkinID="PrimaryRightButton"
-                                    CausesValidation="false" />
+                                <asp:Button ID="btnEditInvSave" runat="server" Text="SAVE" SkinID="PrimaryRightButton" CausesValidation="false"></asp:Button>
                             </td>
                         </tr>
                     </table>
@@ -254,42 +235,37 @@
                     </div>
                     <div class="dataContainer">
                         <div id="dvBottom" runat="server" style="overflow: hidden;">
-                            <asp:GridView ID="ReconciledInvoiceSearchgv" runat="server" Width="100%" AutoGenerateColumns="False"
-                                AllowPaging="true" SkinID="DetailPageGridView" EnableViewState="true" >
-                                <SelectedRowStyle Wrap="True" />
-                                <EditRowStyle Wrap="True" />
-                                <AlternatingRowStyle Wrap="True" />
-                                <RowStyle Wrap="True" />
-                                <HeaderStyle />
+                            <asp:GridView ID="ReconciledInvoiceSearchgv" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="true" SkinID="DetailPageGridView" EnableViewState="true">
+                                <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                                <EditRowStyle Wrap="True"></EditRowStyle>
+                                <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                <RowStyle Wrap="True"></RowStyle>
+                                <HeaderStyle></HeaderStyle>
                                 <Columns>
                                     <asp:TemplateField Visible="True" ItemStyle-HorizontalAlign="Left">
                                         <ItemTemplate>
-                                            <asp:CheckBox ID="chkbxinvoice" Checked="false" runat="server" Onclick = 'check_click()'/>
+                                            <asp:CheckBox ID="chkbxinvoice" Checked="false" runat="server" Onclick='check_click()'></asp:CheckBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField SortExpression="remittance_vendor" HeaderText="REMITTANCE_VENDOR" />
-                                    <asp:BoundField SortExpression="invoice_num" HeaderText="INVOICE_NUMBER" />
-                                    <asp:BoundField SortExpression="inv_amount" HeaderText="INVOICE_AMOUNT" />
-                                    <asp:BoundField SortExpression="inv_date" HeaderText="INVOICE_DATE" />
-                                    <asp:BoundField SortExpression="status" HeaderText="STATUS" />
-                                    <asp:BoundField SortExpression="invoice_id" HeaderText="INVOICE_ID"
-                                        Visible="false" />
+                                    <asp:BoundField SortExpression="remittance_vendor" HeaderText="REMITTANCE_VENDOR"></asp:BoundField>
+                                    <asp:BoundField SortExpression="invoice_num" HeaderText="INVOICE_NUMBER"></asp:BoundField>
+                                    <asp:BoundField SortExpression="inv_amount" HeaderText="INVOICE_AMOUNT"></asp:BoundField>
+                                    <asp:BoundField SortExpression="inv_date" HeaderText="INVOICE_DATE"></asp:BoundField>
+                                    <asp:BoundField SortExpression="status" HeaderText="STATUS"></asp:BoundField>
+                                    <asp:BoundField SortExpression="invoice_id" HeaderText="INVOICE_ID" Visible="false"></asp:BoundField>
                                 </Columns>
-                                <PagerSettings PageButtonCount="5" Mode="Numeric" Position="TopAndBottom" />
+                                <PagerSettings PageButtonCount="5" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
                             </asp:GridView>
                         </div>
                     </div>
                     <div id="btnDiv" runat="server" class="btnZone">
-                        <asp:Button ID="btnNewItemAdd" runat="server" Text="ADD" SkinID="PrimaryRightButton" style="display:none" />
+                        <asp:Button ID="btnNewItemAdd" runat="server" Text="ADD" SkinID="PrimaryRightButton" style="display:none"></asp:Button>
                     </div>
                 </div>
             </asp:Panel>
         </div>
         <div id="AddlineitemContainer" style="width: 80%;">
-            <ajaxToolkit:ModalPopupExtender runat="server" ID="mdlLineItem" TargetControlID="Dummybtn"
-                PopupControlID="LineItempnlPopup" DropShadow="True" BackgroundCssClass="ModalBackground"
-                PopupDragHandleControlID="BodyPlaceHolder" BehaviorID="modalbehaviour" CancelControlID="modlClose"
-                RepositionMode="RepositionOnWindowResizeAndScroll">
+            <ajaxToolkit:ModalPopupExtender runat="server" ID="mdlLineItem" TargetControlID="Dummybtn" PopupControlID="LineItempnlPopup" DropShadow="True" BackgroundCssClass="ModalBackground" PopupDragHandleControlID="BodyPlaceHolder" BehaviorID="modalbehaviour" CancelControlID="modlClose" RepositionMode="RepositionOnWindowResizeAndScroll">
             </ajaxToolkit:ModalPopupExtender>
             
             <asp:Panel ID="LineItempnlPopup" runat="server" Style="display: none; width: 100%;
@@ -297,21 +273,19 @@
                 <div id="divlineitems" class="overlay_message_content" style="width: 75%; top: 25px;">
                     <p class="modalTitle" style="overflow: auto;">
                         <asp:Label ID="lblModlTitle" runat="server" Text="INVOICE_LINE_ITEMS"></asp:Label>
-                        <asp:ImageButton ImageUrl="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                            ID="modlClose" CssClass="floatR" AlternateText="Close" />
+                        <asp:ImageButton ImageUrl="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" ID="modlClose" CssClass="floatR" AlternateText="Close"></asp:ImageButton>
                     </p>
-                       <Elita:MessageController runat="server" ID="molineitemmsgcontroller" />
+                       <Elita:MessageController runat="server" ID="molineitemmsgcontroller"></Elita:MessageController>
                     <div runat="server" id="LineItemsPanel_WRITE" style="display: inline; overflow: auto" class="dataContainer">
                         <asp:LinkButton ID="btnAddstandardLineItems" runat="server" Text="ADD_STANDARD_LINE_ITEMS"></asp:LinkButton>
                         &nbsp;
                        
-                                <asp:DataGrid ID="Lineitemsgv" runat="server" Width="100%" AllowPaging="true" AllowSorting="false"
-                                    SkinID="DetailPageDataGrid" AutoGenerateColumns="false">
-                                    <SelectedItemStyle Wrap="False" />
-                                    <EditItemStyle Wrap="False" />
-                                    <AlternatingItemStyle Wrap="False" />
-                                    <ItemStyle Wrap="False" />
-                                    <HeaderStyle />
+                                <asp:DataGrid ID="Lineitemsgv" runat="server" Width="100%" AllowPaging="true" AllowSorting="false" SkinID="DetailPageDataGrid" AutoGenerateColumns="false">
+                                    <SelectedItemStyle Wrap="False"></SelectedItemStyle>
+                                    <EditItemStyle Wrap="False"></EditItemStyle>
+                                    <AlternatingItemStyle Wrap="False"></AlternatingItemStyle>
+                                    <ItemStyle Wrap="False"></ItemStyle>
+                                    <HeaderStyle></HeaderStyle>
                                     <Columns>
                                     <asp:TemplateColumn Visible="false">
                                             <HeaderStyle Width="10%"></HeaderStyle>
@@ -332,8 +306,7 @@
                                             <EditItemTemplate>
                                                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Always" RenderMode="inline">
                                                     <ContentTemplate>
-                                                        <asp:DropDownList ID="ddlserviceclass" runat="server" Visible="true" OnSelectedIndexChanged="ddlServiceClass_SelectedIndexChanged"
-                                                            AutoPostBack="true">
+                                                        <asp:DropDownList ID="ddlserviceclass" runat="server" Visible="true" OnSelectedIndexChanged="ddlServiceClass_SelectedIndexChanged" AutoPostBack="true">
                                                         </asp:DropDownList>
                                                     </ContentTemplate>
                                                 </asp:UpdatePanel>
@@ -367,10 +340,8 @@
                                             <EditItemTemplate>
                                                <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Always" RenderMode="inline">
                                                     <ContentTemplate>
-                                            <asp:TextBox ID="txtclaimnumber" runat="server" Visible="true" AutoPostBack="true" ></asp:TextBox>
-                                                <asp:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtclaimnumber"
-                                                    CompletionSetCount="20" FirstRowSelected="false" MinimumPrefixLength="2" servicemethod="GetCompletionList"
-                                                      OnClientItemSelected="getclaimnumber" UseContextKey="true" CompletionInterval="100">
+                                            <asp:TextBox ID="txtclaimnumber" runat="server" Visible="true" AutoPostBack="true"></asp:TextBox>
+                                                <asp:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" TargetControlID="txtclaimnumber" CompletionSetCount="20" FirstRowSelected="false" MinimumPrefixLength="2" servicemethod="GetCompletionList" OnClientItemSelected="getclaimnumber" UseContextKey="true" CompletionInterval="100">
                                                 </asp:AutoCompleteExtender>
                                                 </ContentTemplate>
                                                 </asp:UpdatePanel>
@@ -384,7 +355,7 @@
                                             <EditItemTemplate>
                                                 <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Always" RenderMode="inline">
                                                     <ContentTemplate>
-                                                <asp:TextBox ID="txtauthnumber" runat="server" Visible="true" ></asp:TextBox>
+                                                <asp:TextBox ID="txtauthnumber" runat="server" Visible="true"></asp:TextBox>
                                                </ContentTemplate>
                                                </asp:UpdatePanel>
                                             </EditItemTemplate>
@@ -418,27 +389,25 @@
                                             <HeaderStyle Width="5%"></HeaderStyle>
                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:ImageButton ID="btn_edit" Style="cursor: hand" runat="server" ImageUrl="~/App_Themes/Default/Images/edit.png"
-                                                    Visible="true" CommandName="EditRecord" ImageAlign="AbsMiddle"></asp:ImageButton>
+                                                <asp:ImageButton ID="btn_edit" Style="cursor: hand" runat="server" ImageUrl="~/App_Themes/Default/Images/edit.png" Visible="true" CommandName="EditRecord" ImageAlign="AbsMiddle"></asp:ImageButton>
                                             </ItemTemplate>
                                         </asp:TemplateColumn>
                                         <asp:TemplateColumn>
                                             <HeaderStyle Width="5%"></HeaderStyle>
                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:ImageButton ID="btn_delete" Style="cursor: hand;" ImageUrl="~/App_Themes/Default/Images/icon_delete.png"
-                                                    runat="server" CommandName="DeleteRecord" ImageAlign="AbsMiddle"></asp:ImageButton></ItemTemplate>
+                                                <asp:ImageButton ID="btn_delete" Style="cursor: hand;" ImageUrl="~/App_Themes/Default/Images/icon_delete.png" runat="server" CommandName="DeleteRecord" ImageAlign="AbsMiddle"></asp:ImageButton></ItemTemplate>
                                         </asp:TemplateColumn>
                                     </Columns>
-                                    <PagerStyle PageButtonCount="5" Mode="Numericpages" Position="TopAndBottom" />
+                                    <PagerStyle PageButtonCount="5" Mode="Numericpages" Position="TopAndBottom"></PagerStyle>
                                 </asp:DataGrid>
                             
                         <table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataGrid">
                             <tr>
                                 <td>
-                                    <asp:Button ID="btnnew_lineitem" runat="server" SkinID="Alternateleftbutton" Text="New" />
-                                    <asp:Button ID="btnsave_lineitem" runat="server" SkinID="PrimaryRightButton" Text="Save" />
-                                    <asp:Button ID="btnundo_lineitem" runat="server" SkinID="AlternateRightButton" Text="Undo" />
+                                    <asp:Button ID="btnnew_lineitem" runat="server" SkinID="Alternateleftbutton" Text="New"></asp:Button>
+                                    <asp:Button ID="btnsave_lineitem" runat="server" SkinID="PrimaryRightButton" Text="Save"></asp:Button>
+                                    <asp:Button ID="btnundo_lineitem" runat="server" SkinID="AlternateRightButton" Text="Undo"></asp:Button>
                                 </td>
                             </tr>
                         </table>
@@ -448,10 +417,9 @@
            
         </div>
     </asp:Panel>
-    <asp:HiddenField ID="hdnclaimnum" runat="server" OnValueChanged="populatevendorsku"   />
-    <asp:HiddenField ID="hdnrowNumber" runat="server" />
-    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-        runat="server" designtimedragdrop="261" />
+    <asp:HiddenField ID="hdnclaimnum" runat="server" OnValueChanged="populatevendorsku"></asp:HiddenField>
+    <asp:HiddenField ID="hdnrowNumber" runat="server"></asp:HiddenField>
+    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server" designtimedragdrop="261">
         <script language="text/javascript" type="text/javascript">
             function getclaimnumber(source, eventArgs) {
                 document.getElementById('ctl00_BodyPlaceHolder_hdnclaimnum').value = eventArgs.get_text();
@@ -491,6 +459,20 @@
                                 checked = true;
                             }
                         }
+                    }
+                }
+
+                if (checked) {
+                    addbtn.style.display = "inline";
+                }
+                else {
+                    addbtn.style.display = "none";
+                }
+           }
+        </script>
+ 
+</asp:Content>
+                  }
                     }
                 }
 

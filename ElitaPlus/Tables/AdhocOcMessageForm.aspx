@@ -12,14 +12,14 @@
         <tr>
             <td align="left" style="height: 40px" width="30%" nowrap="nowrap">
                 <table width="1%">
-                    <Elita:MultipleColumnDDLabelControl ID="DealerMultipleDrop" runat="server" OnSelectedDropChanged="DealerMultipleDrop_SelectedDropChanged" />
+                    <Elita:MultipleColumnDDLabelControl ID="DealerMultipleDrop" runat="server" OnSelectedDropChanged="DealerMultipleDrop_SelectedDropChanged"></Elita:MultipleColumnDDLabelControl>
                 </table>
             </td>
         </tr>
         <tr>
             <td align="left" style="height: 40px" width="30%" nowrap="nowrap">
                 <table width="1%">
-                    <Elita:MultipleColumnDDLabelControl ID="TemplateMultipleDrop" runat="server" />
+                    <Elita:MultipleColumnDDLabelControl ID="TemplateMultipleDrop" runat="server"></Elita:MultipleColumnDDLabelControl>
                 </table>
             </td>
         </tr>
@@ -30,23 +30,21 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
         <Scripts>
-            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js"></asp:ScriptReference>
         </Scripts>
     </asp:ScriptManager>
     <div class="dataContainer">
-        <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server" />
-        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
-        <asp:HiddenField ID="hdnDisabledTab" runat="server" />
+        <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server">
+        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
+        <asp:HiddenField ID="hdnDisabledTab" runat="server"></asp:HiddenField>
         <div id="tabs" class="style-tabs">
 	        <ul>
-		        <li><a href="#tab_Parameters"><asp:Label ID="lblParametersTab" runat="server" CssClass="tabHeaderText">PARAMETERS_TAB</asp:Label></a></li>
-		        <li><a href="#tab_Recipients"><asp:Label ID="lblRecipientsTab" runat="server" CssClass="tabHeaderText">RECIPIENTS_TAB</asp:Label></a></li>
+		        <li><a href="#tab_Parameters" rel="noopener noreferrer"><asp:Label ID="lblParametersTab" runat="server" CssClass="tabHeaderText">PARAMETERS_TAB</asp:Label></a></li>
+		        <li><a href="#tab_Recipients" rel="noopener noreferrer"><asp:Label ID="lblRecipientsTab" runat="server" CssClass="tabHeaderText">RECIPIENTS_TAB</asp:Label></a></li>
 	        </ul>
             <div id="tab_Parameters">
                 <div class="Page" runat="server" style="height: 100%; overflow: auto">
-                    <asp:GridView ID="ParametersGrid" runat="server" Width="100%" OnRowCreated="ParametersGrid_RowCreated"
-                        OnRowCommand="ParametersGrid_RowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1"
-                        AutoGenerateColumns="False" SkinID="DetailPageGridView">
+                    <asp:GridView ID="ParametersGrid" runat="server" Width="100%" OnRowCreated="ParametersGrid_RowCreated" OnRowCommand="ParametersGrid_RowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
                         <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                         <EditRowStyle Wrap="False"></EditRowStyle>
                         <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -122,41 +120,34 @@
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/edit.png"
-                                        CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/edit.png" CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex%>"
-                                        Text="Cancel"></asp:LinkButton>
+                                    <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex%>" Text="Cancel"></asp:LinkButton>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png"
-                                        runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                    <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png" runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                        Text="Save" SkinID="PrimaryRightButton"></asp:Button>
+                                    <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                         </Columns>
-                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                        <PagerStyle />
+                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                        <PagerStyle></PagerStyle>
                     </asp:GridView>
-                    <br />
-                    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261" />
-                    <asp:Button ID="btnNewParameter_WRITE" runat="server" CausesValidation="False" Text="NEW_PARAMETER"
-                        SkinID="PrimaryLeftButton"></asp:Button>
+                    <br>
+                    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+                    <asp:Button ID="btnNewParameter_WRITE" runat="server" CausesValidation="False" Text="NEW_PARAMETER" SkinID="PrimaryLeftButton"></asp:Button>
                 </div>
             </div>
             <div id="tab_Recipients">
                 <div class="Page" runat="server" style="height: 100%; overflow: auto">
-                    <asp:GridView ID="RecipientsGrid" runat="server" Width="100%" OnRowCreated="RecipientsGrid_RowCreated"
-                        OnRowCommand="RecipientsGrid_RowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1"
-                        AutoGenerateColumns="False" SkinID="DetailPageGridView">
+                    <asp:GridView ID="RecipientsGrid" runat="server" Width="100%" OnRowCreated="RecipientsGrid_RowCreated" OnRowCommand="RecipientsGrid_RowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
                         <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                         <EditRowStyle Wrap="False"></EditRowStyle>
                         <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -202,39 +193,38 @@
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/edit.png"
-                                        CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/edit.png" CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex%>"
-                                        Text="Cancel"></asp:LinkButton>
+                                    <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex%>" Text="Cancel"></asp:LinkButton>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png"
-                                        runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                    <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png" runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                        Text="Save" SkinID="PrimaryRightButton"></asp:Button>
+                                    <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                         </Columns>
-                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                        <PagerStyle />
+                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                        <PagerStyle></PagerStyle>
                     </asp:GridView>
-                    <br />
-                    <asp:Button ID="btnNewRecipient_WRITE" runat="server" CausesValidation="False" Text="NEW_RECIPIENT"
-                        SkinID="PrimaryLeftButton"></asp:Button>
+                    <br>
+                    <asp:Button ID="btnNewRecipient_WRITE" runat="server" CausesValidation="False" Text="NEW_RECIPIENT" SkinID="PrimaryLeftButton"></asp:Button>
                 </div>
             </div>
         </div>
     </div>
     <div class="btnZone">
-        <asp:Button ID="btnApply_WRITE" runat="server" CausesValidation="False" Text="SEND"
+        <asp:Button ID="btnApply_WRITE" runat="server" CausesValidation="False" Text="SEND" SkinID="PrimaryRightButton"></asp:Button>
+        <asp:Button ID="btnBack" runat="server" CausesValidation="False" Text="BACK" SkinID="AlternateLeftButton"></asp:Button>
+    </div>
+</asp:Content>
+ly_WRITE" runat="server" CausesValidation="False" Text="SEND"
             SkinID="PrimaryRightButton"></asp:Button>
         <asp:Button ID="btnBack" runat="server" CausesValidation="False" Text="BACK" SkinID="AlternateLeftButton"></asp:Button>
     </div>

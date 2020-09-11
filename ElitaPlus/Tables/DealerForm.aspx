@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="DealerForm.aspx.vb" Theme="Default"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="DealerForm.aspx.vb" Theme="Default"
 Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.DealerForm" EnableSessionState="True"
 MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
@@ -22,18 +22,17 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
 <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
     <Scripts>
-        <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+        <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js"></asp:ScriptReference>
     </Scripts>
 </asp:ScriptManager>
 <div class="dataContainer">
-<table class="formGrid" border="0" cellspacing="0" cellpadding="0" style="padding-left: 0px;"
-       width="100%">
+<table class="formGrid" border="0" cellspacing="0" cellpadding="0" style="padding-left: 0px;" width="100%">
 <tr>
     <td align="left" nowrap="nowrap" colspan="4" class="borderLeft" width="100%">
         <table class="formGrid" width="100%">
             <tr>
                 <td>
-                    <Elita:MultipleColumnDDLabelControl runat="server" ID="moMultipleColumnDrop" />
+                    <Elita:MultipleColumnDDLabelControl runat="server" ID="moMultipleColumnDrop"></Elita:MultipleColumnDDLabelControl>
                 </td>
             </tr>
         </table>
@@ -259,8 +258,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:Label ID="lblClaim_Extended_Status_Entry" runat="server">Claim_Extended_Status_Entry</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="moClaim_Extended_Status_Entry" runat="server" AutoPostBack="true"
-                          Width="205px">
+        <asp:DropDownList ID="moClaim_Extended_Status_Entry" runat="server" AutoPostBack="true" Width="205px">
         </asp:DropDownList>
     </td>
     <td align="right" nowrap="nowrap">
@@ -277,8 +275,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:Label ID="lblDEALER_SUPPORT_WEB_CLAIMS" runat="server">DEALER_SUPPORT_WEB_CLAIMS</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="moDEALER_SUPPORT_WEB_CLAIMS" runat="server" AutoPostBack="true"
-                          Width="205px">
+        <asp:DropDownList ID="moDEALER_SUPPORT_WEB_CLAIMS" runat="server" AutoPostBack="true" Width="205px">
         </asp:DropDownList>
     </td>
     <td align="right" nowrap="nowrap">
@@ -294,10 +291,10 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:Label ID="lblGracePeriod" runat="server">GRACE_PERIOD</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:TextBox ID="txtGracePeriodMonths" runat="server" />
+        <asp:TextBox ID="txtGracePeriodMonths" runat="server"></asp:TextBox>
         <asp:Label ID="lblMonths" runat="server">MONTHS</asp:Label>
                   
-        <asp:TextBox ID="txtGracePeriodDays" runat="server" />
+        <asp:TextBox ID="txtGracePeriodDays" runat="server"></asp:TextBox>
         <asp:Label ID="lblDays" runat="server">DAYS</asp:Label>                        
     </td>
 
@@ -449,7 +446,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
     <td style="height: 6px" width="20%">
         &nbsp;
     </td>
-    <td style="height: 6px" nowrap align="right" width="1%">
+    <td style="height: 6px" nowrap="" align="right" width="1%">
         <asp:Label ID="lblUseClaimAutorization" runat="server">USE_CLAIM_AUTHORIZATION:</asp:Label>
     </td>
     <td style="height: 6px" width="20%">
@@ -607,14 +604,14 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:Label ID="lblAutoRejErrType" runat="server" Font-Bold="false">AUTO_REJ_ERR_TYPE:</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="ddlAutoRejErrType" runat="server" Width="205px" >
+        <asp:DropDownList ID="ddlAutoRejErrType" runat="server" Width="205px">
         </asp:DropDownList>
     </td>
     <td align="right" nowrap="nowrap">
         <asp:Label ID="lblReconRejRecType" runat="server" Font-Bold="false">RECON_REJ_REC_TYPE:</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="ddlReconRejRecType" runat="server" Width="205px" >
+        <asp:DropDownList ID="ddlReconRejRecType" runat="server" Width="205px">
         </asp:DropDownList>
     </td>
 </tr>
@@ -623,14 +620,14 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:Label ID="lblAutoGenRejPymtFile" runat="server" Font-Bold="false">AUTO_GEN_REJ_PYMT_FILE:</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="ddlAutoGenRejPymtFile" runat="server" Width="205px" >
+        <asp:DropDownList ID="ddlAutoGenRejPymtFile" runat="server" Width="205px">
         </asp:DropDownList>
     </td>
     <td align="right" nowrap="nowrap">
         <asp:Label ID="lblPymtRejRecRecon" runat="server" Font-Bold="false">PYMT_REJ_REC_RECON:</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="ddlPymtRejRecRecon" runat="server" Width="205px" >
+        <asp:DropDownList ID="ddlPymtRejRecRecon" runat="server" Width="205px">
         </asp:DropDownList>
     </td>
 </tr>
@@ -734,8 +731,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
     <td align="right" class="borderLeft" nowrap="nowrap" style="height: 7px" colspan="4">
         <asp:Label ID="lblDealerID" runat="server" Visible="False"></asp:Label>
         <asp:Label ID="moIsNewDealerLabel" runat="server" Visible="False"></asp:Label>
-        <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-               runat="server" />
+        <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server">
     </td>
 </tr>
 <tr style="height: 1px;">
@@ -877,13 +873,10 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:Label ID="moDefaultSalvageCenterLabel" runat="server">DEFAULT_SALVAGE_CENTER</asp:Label>
     </td>
     <td nowrap="noWrap">
-        <input id="inputServiceCenterId" type="hidden" name="inputServiceCenterId" runat="server" />
-        <input id="inputServiceCenterDesc" type="hidden" name="inputServiceCenterDesc" runat="server" />
-        <asp:TextBox runat="server" ID="moDefaultSalvageCenter" SkinID="MediumTextBox" />
-        <Ajax:AutoCompleteExtender ID="aCompSalvageCenter" runat="server" TargetControlID="moDefaultSalvageCenter"
-                                   OnClientItemSelected="comboSelectedServiceCenter" ServiceMethod="PopulateSalvageCenterDrop"
-                                   MinimumPrefixLength='1' CompletionListCssClass="completionList" CompletionListHighlightedItemCssClass="itemHighlighted"
-                                   CompletionListItemCssClass="listItem">
+        <input id="inputServiceCenterId" type="hidden" name="inputServiceCenterId" runat="server">
+        <input id="inputServiceCenterDesc" type="hidden" name="inputServiceCenterDesc" runat="server">
+        <asp:TextBox runat="server" ID="moDefaultSalvageCenter" SkinID="MediumTextBox"></asp:TextBox>
+        <Ajax:AutoCompleteExtender ID="aCompSalvageCenter" runat="server" TargetControlID="moDefaultSalvageCenter" OnClientItemSelected="comboSelectedServiceCenter" ServiceMethod="PopulateSalvageCenterDrop" MinimumPrefixLength='1' CompletionListCssClass="completionList" CompletionListHighlightedItemCssClass="itemHighlighted" CompletionListItemCssClass="listItem">
         </Ajax:AutoCompleteExtender>
     </td> 
 </tr>
@@ -916,7 +909,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:Label ID="lblPolicyEventNotifyEmail" runat="server">POLICY_EVENT_NOTIFICATION_EMAIL</asp:Label>
     </td>
     <td align="left">
-        <asp:TextBox ID ="txtPolicyEventNotifiyEmail" MaxLength="250" runat="server" Width="200px"></asp:TextBox>
+        <asp:TextBox ID="txtPolicyEventNotifiyEmail" MaxLength="250" runat="server" Width="200px"></asp:TextBox>
     </td>              
 </tr>
 <tr>
@@ -924,8 +917,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:Label ID="lblClaimAutoApprove" runat="server">CLAIM_AUTO_APPROVE</asp:Label>
     </td>
     <td align="left">
-        <asp:DropDownList ID="moClaimAutoApproveDrop" runat="server" Width="205px" 
-                          AutoPostBack="True">
+        <asp:DropDownList ID="moClaimAutoApproveDrop" runat="server" Width="205px" AutoPostBack="True">
         </asp:DropDownList>
     </td>
     <td align="right" nowrap="nowrap">
@@ -1031,15 +1023,14 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:Label ID="lblClaimRecordingCheckInventory" runat="server">CLAIM_RECORDING_CHECK_INVENTORY</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="ddlClaimRecordingCheckInventory" TabIndex="39" runat="server" AutoPostBack="False"
-                          SkinID="MediumDropDown">
+        <asp:DropDownList ID="ddlClaimRecordingCheckInventory" TabIndex="39" runat="server" AutoPostBack="False" SkinID="MediumDropDown">
         </asp:DropDownList>
     </td>
     <td align="right" nowrap="nowrap">
         <asp:Label ID="lblUseTatNotification" runat="server">USE_TAT_NOTIFICATION</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="moUseTatNotification" runat="server" SkinID="SmallDropDown" Width="205px" ></asp:DropDownList>
+        <asp:DropDownList ID="moUseTatNotification" runat="server" SkinID="SmallDropDown" Width="205px"></asp:DropDownList>
     </td>         
 </tr>
 <tr id="trBenefitDlrTypeCtls1" runat="server">
@@ -1047,8 +1038,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:Label ID="lblSuspenseApplies" runat="server">SUSPENSE_APPLIES</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="ddlSuspenseApplies" TabIndex="39" runat="server"
-                          SkinID="MediumDropDown">
+        <asp:DropDownList ID="ddlSuspenseApplies" TabIndex="39" runat="server" SkinID="MediumDropDown">
         </asp:DropDownList>
     </td>
     <td align="right" nowrap="nowrap">
@@ -1077,15 +1067,14 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:Label ID="lblSourceSystem" runat="server">SOURCE_SYSTEM</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="ddlSourceSystem" TabIndex="39" runat="server"
-                          SkinID="MediumDropDown">
+        <asp:DropDownList ID="ddlSourceSystem" TabIndex="39" runat="server" SkinID="MediumDropDown">
         </asp:DropDownList>
     </td>
     <td align="right" nowrap="nowrap">
         <asp:Label ID="lbleBenefitCarrierCode" runat="server" Font-Bold="False">BENEFIT_CARRIER_CODE</asp:Label>
     </td>
     <td align="left">
-        <asp:TextBox ID="txtBenefitCarrierCode" runat="server" Width="170px" ></asp:TextBox>
+        <asp:TextBox ID="txtBenefitCarrierCode" runat="server" Width="170px"></asp:TextBox>
     </td>          
 </tr>
 <tr id="trBenefitDlrTypeCtls4" runat="server">
@@ -1093,15 +1082,14 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:Label ID="lblBenefitSoldToAccount" runat="server">BENEFIT_SOLD_TO_ACCOUNT</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:TextBox ID="txtBenefitSoldToAccount" runat="server" Width="170px" ></asp:TextBox>
+        <asp:TextBox ID="txtBenefitSoldToAccount" runat="server" Width="170px"></asp:TextBox>
     </td>
-    <td align="right"  nowrap="nowrap">
+    <td align="right" nowrap="nowrap">
                   
         <asp:Label ID="lblIsShipmentAllowed" runat="server">IS_RESHIPMENT_ALLOWED</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="reshipmentAllowedDrop" runat="server" 
-                          Width="205px">
+        <asp:DropDownList ID="reshipmentAllowedDrop" runat="server" Width="205px">
         </asp:DropDownList>
     </td>
 </tr>
@@ -1111,8 +1099,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:Label ID="lblIsCancelShipmentAllowed" runat="server">IS_CANCEL_SHIPMENT_ALLOWED</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="cancelShipmentAllowedDrop" runat="server"
-                          Width="205px">
+        <asp:DropDownList ID="cancelShipmentAllowedDrop" runat="server" Width="205px">
         </asp:DropDownList>
     </td>
     <td align="right" nowrap="nowrap">
@@ -1128,8 +1115,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:Label ID="LabelValidateAddress" runat="server">VALIDATE_ADDRESS</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="moValidateAddress" runat="server"
-                          Width="205px">
+        <asp:DropDownList ID="moValidateAddress" runat="server" Width="205px">
         </asp:DropDownList>
     </td>
     <td align="right" nowrap="nowrap">
@@ -1187,25 +1173,24 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 <tr> <td colspan="4" class="borderLeft"> 
     <div class="dataContainer">            
         <asp:Panel ID="EditPanel_WRITE" runat="server">
-            <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
-            <asp:HiddenField ID="hdnDisabledTab" runat="server" />
+            <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
+            <asp:HiddenField ID="hdnDisabledTab" runat="server"></asp:HiddenField>
             <div id="tabs" class="style-tabs">
                 <ul>
-                    <li><a href="#tabmoAddressTabPanelWRITE"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Address</asp:Label></a></li>
-                    <li><a href="#tabmoMailingAddressTabPanelWRITE"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">MAILING_ADDRESS</asp:Label></a></li>
-                    <li><a href="#tabmoServiceOrderAddressTabPanalWRITE"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">SVC_ORDER_ADDRESS</asp:Label></a></li>
-                    <li><a href="#tabmoBnakInfoTabPanelWRITE"><asp:Label ID="Label5" runat="server" CssClass="tabHeaderText">BANK_INFO</asp:Label></a></li>
-                    <li><a href="#tabmoMerchantCodeTabPanelWRITE"><asp:Label ID="Label7" runat="server" CssClass="tabHeaderText">Merchant_Code</asp:Label></a></li>
-                    <li><a href="#tabmoClaimCloseRulesTabPanelWRITE"><asp:Label ID="Label9" runat="server" CssClass="tabHeaderText">CLAIM_CLOSE_RULES</asp:Label></a></li>
-                    <li><a href="#tabmoAttributesWRITE"><asp:Label ID="Label10" runat="server" CssClass="tabHeaderText">ATTRIBUTES</asp:Label></a></li>
-                    <li><a href="#tabmoDealerInflationWrite"><asp:Label ID="lblDealerInflationTab" runat="server"  CssClass="tabHeaderText">DEALER_INFLATION</asp:Label></a></li>
-                    <li><a href="#tabmoRiskTypeWrite"><asp:Label ID="lblRiskTypeTolerance" runat="server"  CssClass="tabHeaderText">RISK_TYPE_TOLERANCE</asp:Label></a></li>
+                    <li><a href="#tabmoAddressTabPanelWRITE" rel="noopener noreferrer"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Address</asp:Label></a></li>
+                    <li><a href="#tabmoMailingAddressTabPanelWRITE" rel="noopener noreferrer"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">MAILING_ADDRESS</asp:Label></a></li>
+                    <li><a href="#tabmoServiceOrderAddressTabPanalWRITE" rel="noopener noreferrer"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">SVC_ORDER_ADDRESS</asp:Label></a></li>
+                    <li><a href="#tabmoBnakInfoTabPanelWRITE" rel="noopener noreferrer"><asp:Label ID="Label5" runat="server" CssClass="tabHeaderText">BANK_INFO</asp:Label></a></li>
+                    <li><a href="#tabmoMerchantCodeTabPanelWRITE" rel="noopener noreferrer"><asp:Label ID="Label7" runat="server" CssClass="tabHeaderText">Merchant_Code</asp:Label></a></li>
+                    <li><a href="#tabmoClaimCloseRulesTabPanelWRITE" rel="noopener noreferrer"><asp:Label ID="Label9" runat="server" CssClass="tabHeaderText">CLAIM_CLOSE_RULES</asp:Label></a></li>
+                    <li><a href="#tabmoAttributesWRITE" rel="noopener noreferrer"><asp:Label ID="Label10" runat="server" CssClass="tabHeaderText">ATTRIBUTES</asp:Label></a></li>
+                    <li><a href="#tabmoDealerInflationWrite" rel="noopener noreferrer"><asp:Label ID="lblDealerInflationTab" runat="server" CssClass="tabHeaderText">DEALER_INFLATION</asp:Label></a></li>
+                    <li><a href="#tabmoRiskTypeWrite" rel="noopener noreferrer"><asp:Label ID="lblRiskTypeTolerance" runat="server" CssClass="tabHeaderText">RISK_TYPE_TOLERANCE</asp:Label></a></li>
                 </ul>
 
                 <div id="tabmoAddressTabPanelWRITE">
                     <asp:Panel ID="moAddressTabPanel_WRITE" runat="server" Width="100%">
-                        <table id="tblAddress" cellspacing="4" cellpadding="4" rules="cols" width="100%"
-                               height="100%" background="" border="0" class="formGrid">
+                        <table id="tblAddress" cellspacing="4" cellpadding="4" rules="cols" width="100%" height="100%" background="" border="0" class="formGrid">
                             <tr>
                                 <td align="left" height="100%">
                                     <Elita:UserControlAddress ID="moaddressController" runat="server"></Elita:UserControlAddress>
@@ -1218,8 +1203,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
                 <div id="tabmoMailingAddressTabPanelWRITE">
                     <asp:Panel ID="moMailingAddressTabPanel_WRITE" runat="server" Width="100%">
                         <div id="scroller1" style="overflow: auto; width: 99.53%; height: 90%" align="center">
-                            <table id="tblMAddress" height="100%" cellspacing="4" cellpadding="4" rules="cols"
-                                   width="100%" background="" border="0" class="formGrid">
+                            <table id="tblMAddress" height="100%" cellspacing="4" cellpadding="4" rules="cols" width="100%" background="" border="0" class="formGrid">
                                 <tr>
                                     <td align="left" height="100%">
                                         <Elita:UserControlAddress ID="moMailingaddressController" runat="server"></Elita:UserControlAddress>
@@ -1233,17 +1217,16 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
                 <div id="tabmoServiceOrderAddressTabPanalWRITE">
                     <asp:Panel ID="moServiceOrderAddressTabPanal_WRITE" runat="server" Width="100%">
                         <div id="DIV1" style="overflow: auto; width: 99.53%; height: 90%" align="center">
-                            <table id="TABLE4" cellspacing="4" cellpadding="4" rules="cols" width="100%" background=""
-                                   height="100%" border="0" class="formGrid">
+                            <table id="TABLE4" cellspacing="4" cellpadding="4" rules="cols" width="100%" background="" height="100%" border="0" class="formGrid">
                                 <tr>
-                                    <td style="height: 5px" nowrap align="right" width="1%" colspan="1" rowspan="1">
+                                    <td style="height: 5px" nowrap="" align="right" width="1%" colspan="1" rowspan="1">
                                         <asp:Label ID="lblName" runat="server" Font-Bold="false" Width="13px">NAME</asp:Label>:
                                     </td>
                                     <td width="20%">
                                         &nbsp;
                                         <asp:TextBox ID="txtName" runat="server" Width="90%"></asp:TextBox>
                                     </td>
-                                    <td style="height: 5px" nowrap align="right" width="1%" colspan="1" rowspan="1">
+                                    <td style="height: 5px" nowrap="" align="right" width="1%" colspan="1" rowspan="1">
                                         <asp:Label ID="lblOtherTaxId" runat="server" Font-Bold="false" Width="13px">TAX_ID_NUMBER</asp:Label>:
                                     </td>
                                     <td width="170px">
@@ -1261,11 +1244,10 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
                 <div id="tabmoBnakInfoTabPanelWRITE">
                     <asp:Panel ID="moBankInfoTabPanel_WRITE" runat="server" Width="100%">
-                        <table id="Table5" height="100%" cellspacing="4" cellpadding="4" rules="cols" width="100%"
-                               background="" border="0" class="formGrid">
+                        <table id="Table5" height="100%" cellspacing="4" cellpadding="4" rules="cols" width="100%" background="" border="0" class="formGrid">
                             <tr>
                                 <td align="left" colspan="1" height="100%">
-                                    <Elita:UserControlBankInfo ID="moBankInfo" runat="server" />
+                                    <Elita:UserControlBankInfo ID="moBankInfo" runat="server"></Elita:UserControlBankInfo>
                                 </td>
                             </tr>
                         </table>
@@ -1274,9 +1256,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
                 <div id="tabmoMerchantCodeTabPanelWRITE">
                     <asp:Panel ID="moMerchantCodesTabPanel_WRITE" runat="server" Width="100%">                        
-                        <asp:GridView ID="moMerchantCodesDatagrid" runat="server" Width="100%" OnRowCreated="RowCreated"
-                                      OnRowCommand="RowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1"
-                                      AutoGenerateColumns="False" SkinID="DetailPageGridView">
+                        <asp:GridView ID="moMerchantCodesDatagrid" runat="server" Width="100%" OnRowCreated="RowCreated" OnRowCommand="RowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
                             <SelectedRowStyle Wrap="True"></SelectedRowStyle>
                             <EditRowStyle Wrap="True"></EditRowStyle>
                             <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
@@ -1285,8 +1265,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
                                 <asp:TemplateField HeaderText="Company_Credit_Card">
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <ItemTemplate>
-                                        <asp:Label ID="CompanyCreditCardTypeLabel" runat="server" Text='<%# Container.DataItem("company_credit_card_type")%>'
-                                                   Visible="True">
+                                        <asp:Label ID="CompanyCreditCardTypeLabel" runat="server" Text='<%# Container.DataItem("company_credit_card_type")%>' Visible="True">
                                         </asp:Label>
                                     </ItemTemplate>
                                     <EditItemTemplate>
@@ -1306,15 +1285,13 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
                                 </asp:TemplateField>
                                 <asp:TemplateField Visible="False" HeaderText="MERCHANT_CODE_ID">
                                     <ItemTemplate>
-                                        <asp:Label ID="IdLabel" Text='<%# GetGuidStringFromByteArray(Container.DataItem("merchant_code_id"))%>'
-                                                   runat="server">
+                                        <asp:Label ID="IdLabel" Text='<%# GetGuidStringFromByteArray(Container.DataItem("merchant_code_id"))%>' runat="server">
                                         </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField Visible="False" HeaderText="company_credit_card_id">
                                     <ItemTemplate>
-                                        <asp:Label ID="CompanyCreditCardIDLabel" Text='<%# GetGuidStringFromByteArray(Container.DataItem("company_credit_card_id"))%>'
-                                                   runat="server">
+                                        <asp:Label ID="CompanyCreditCardIDLabel" Text='<%# GetGuidStringFromByteArray(Container.DataItem("company_credit_card_id"))%>' runat="server">
                                         </asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -1323,12 +1300,10 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
                                     </HeaderStyle>
                                     <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                     <ItemTemplate>
-                                        <asp:ImageButton ID="EditButton_WRITE" Style="cursor:  hand" runat="server" ImageUrl="../Navigation/images/edit.png"
-                                                         CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                        <asp:ImageButton ID="EditButton_WRITE" Style="cursor:  hand" runat="server" ImageUrl="../Navigation/images/edit.png" CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                     </ItemTemplate>
                                     <EditItemTemplate>
-                                        <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                                        Text="Cancel"></asp:LinkButton>
+                                        <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Cancel"></asp:LinkButton>
                                     </EditItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField>
@@ -1336,44 +1311,38 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
                                     </HeaderStyle>
                                     <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                     <ItemTemplate>
-                                        <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png"
-                                                         runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>">
+                                        <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png" runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>">
                                         </asp:ImageButton>
                                     </ItemTemplate>
                                     <EditItemTemplate>
-                                        <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                                    Text="Save" SkinID="PrimaryRightButton"></asp:Button>
+                                        <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
                                     </EditItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
-                            <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                            <PagerStyle />
+                            <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                            <PagerStyle></PagerStyle>
                         </asp:GridView>                                 
                     </asp:Panel>
                     <div class="btnZone">
-                        <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261" />
-                        <asp:Button ID="btnNewMerchantCode_WRITE" runat="server" CausesValidation="False"
-                                    Text="New" SkinID="AlternateLeftButton"></asp:Button>
+                        <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+                        <asp:Button ID="btnNewMerchantCode_WRITE" runat="server" CausesValidation="False" Text="New" SkinID="AlternateLeftButton"></asp:Button>
                     </div>
                 </div>
 
                 <div id="tabmoClaimCloseRulesTabPanelWRITE">
-                    <Elita:UserControlClaimCloseRules EntityType="Dealer" runat="server" ID="ClaimCloseRules"
-                                                      RequestCloseClaimData="ClaimCloseRules_RequestCloseClaimData"></Elita:UserControlClaimCloseRules>
+                    <Elita:UserControlClaimCloseRules EntityType="Dealer" runat="server" ID="ClaimCloseRules" RequestCloseClaimData="ClaimCloseRules_RequestCloseClaimData"></Elita:UserControlClaimCloseRules>
                 </div>
 
                 <div id="tabmoAttributesWRITE">
-                    <Elita:UserControlAttrtibutes runat="server" ID="AttributeValues" />
+                    <Elita:UserControlAttrtibutes runat="server" ID="AttributeValues"></Elita:UserControlAttrtibutes>
                 </div>
                 
-                <div id ="tabmoDealerInflationWrite">
-                  <Elita:UserControlDealerInflation runat="server" ID="DealerInflation" 
-                                                    RequestDealerInflationData="DealerInflation_RequestDealerInflationData"></Elita:UserControlDealerInflation>
+                <div id="tabmoDealerInflationWrite">
+                  <Elita:UserControlDealerInflation runat="server" ID="DealerInflation" RequestDealerInflationData="DealerInflation_RequestDealerInflationData"></Elita:UserControlDealerInflation>
                 </div>
                 
-                <div id ="tabmoRiskTypeWrite">
-                    <Elita:UserControlRiskTypeTolerance runat="server" ID="RiskTypeTolerance" 
-                                                        RequestRiskTypeToleranceData="RiskTypeTolerance_RequestRiskTypeTolerance"></Elita:UserControlRiskTypeTolerance>
+                <div id="tabmoRiskTypeWrite">
+                    <Elita:UserControlRiskTypeTolerance runat="server" ID="RiskTypeTolerance" RequestRiskTypeToleranceData="RiskTypeTolerance_RequestRiskTypeTolerance"></Elita:UserControlRiskTypeTolerance>
                 </div>
             </div>
         </asp:Panel>
@@ -1382,19 +1351,14 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 </table>
 </div>
 <div class="btnZone">
-    <asp:Button ID="btnApply_WRITE" runat="server" CausesValidation="False" Text="SAVE"
-                SkinID="PrimaryRightButton"></asp:Button>
-    <asp:Button ID="btnCopy_WRITE" runat="server" CausesValidation="False" Text="New_With_Copy"
-                SkinID="AlternateRightButton"></asp:Button>
-    <asp:Button ID="btnUndo_WRITE" runat="server" CausesValidation="False" Text="UNDO"
-                SkinID="AlternateRightButton"></asp:Button>
+    <asp:Button ID="btnApply_WRITE" runat="server" CausesValidation="False" Text="SAVE" SkinID="PrimaryRightButton"></asp:Button>
+    <asp:Button ID="btnCopy_WRITE" runat="server" CausesValidation="False" Text="New_With_Copy" SkinID="AlternateRightButton"></asp:Button>
+    <asp:Button ID="btnUndo_WRITE" runat="server" CausesValidation="False" Text="UNDO" SkinID="AlternateRightButton"></asp:Button>
     <asp:Button ID="btnBack" runat="server" CausesValidation="False" Text="BACK" SkinID="AlternateLeftButton">
     </asp:Button>
-    <asp:Button ID="btnNew_WRITE" runat="server" CausesValidation="False" Text="New"
-                SkinID="AlternateLeftButton"></asp:Button>
-    <asp:Button ID="btnDelete_WRITE" runat="server" CausesValidation="False" Text="Delete"
-                SkinID="CenterButton"></asp:Button>
-    <input id = "HiddenDelDeletePromptResponse" type ="Hidden" runat="server" designtimedragdrop="261" />
+    <asp:Button ID="btnNew_WRITE" runat="server" CausesValidation="False" Text="New" SkinID="AlternateLeftButton"></asp:Button>
+    <asp:Button ID="btnDelete_WRITE" runat="server" CausesValidation="False" Text="Delete" SkinID="CenterButton"></asp:Button>
+    <input id="HiddenDelDeletePromptResponse" type="Hidden" runat="server" designtimedragdrop="261">
      
 </div>
 <script type="text/javascript" language="javascript">
@@ -1483,6 +1447,37 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
            
         $('#<%=cancelShipmentAllowedDrop.ClientId%>').change(function () {
             $.fn.validateCancelShipment();
+        });
+
+
+    });
+
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+
+        return true;
+    }
+    <%--function EnableDisableSuspensePeriod()
+        {
+            var isSuspenseAllowed = document.get('<%=ddlSuspenseApplies.ClientID%>');
+            alert(isSuspenseAllowed.value());
+            if(isSuspenseAllowed)
+            {
+                $("#ctl00_BodyPlaceHolder_txtDealerCode").style.visibility = 'visible';
+            }
+            else
+            {
+                $("#ctl00_BodyPlaceHolder_txtDealerCode").style.visibility = 'hidden';
+            }
+        }--%>
+        
+</script>
+</asp:Content>
+();
         });
 
 

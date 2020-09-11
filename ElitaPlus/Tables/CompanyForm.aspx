@@ -1,4 +1,4 @@
-<%@ Register TagPrefix="uc1" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>
+﻿<%@ Register TagPrefix="uc1" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="UserControlAddress" Src="../Common/UserControlAddress.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="UserControlAvailableSelected" Src="../Common/UserControlAvailableSelected.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimCloseRules" Src="~/Common/UserControlClaimCloseRules.ascx" %>
@@ -17,7 +17,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManager2" runat="server" EnablePageMethods="true" ScriptMode="Auto">
         <Scripts>
-            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js"></asp:ScriptReference>
         </Scripts>
     </asp:ScriptManager>
     <!--Start Header-->
@@ -32,8 +32,7 @@
                                     <table valign="top">
                                         <tr>
                                             <td colspan="4">
-                                                <input id="HiddenSaveChangesPromptResponse" type="hidden" size="14" name="HiddenSaveChangesPromptResponse"
-                                                    runat="server" />
+                                                <input id="HiddenSaveChangesPromptResponse" type="hidden" size="14" name="HiddenSaveChangesPromptResponse" runat="server">
                                             </td>
                                         </tr>
                                         <tr>
@@ -47,8 +46,7 @@
                                                 <asp:Label ID="LabelUniqueCertificateNumber" runat="server" Font-Bold="False">UNIQUE_CERTIFICATE_NUMBERS</asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:DropDownList ID="CboUniqueCertificateNumberID" runat="server" SkinID="SmallDropDown"
-                                                    TabIndex="6" AutoPostBack="True">
+                                                <asp:DropDownList ID="CboUniqueCertificateNumberID" runat="server" SkinID="SmallDropDown" TabIndex="6" AutoPostBack="True">
                                                 </asp:DropDownList>
                                             </td>
                                         </tr>
@@ -64,8 +62,7 @@
                                             </td>
                                             <td align="left">
                                                 <asp:TextBox ID="TextboxUniqueCertNumberEffDate" TabIndex="6" runat="server" SkinID="SmallTextBox"></asp:TextBox>
-                                                <asp:ImageButton ID="ImgUniqueCertNumberEffDate" ImageAlign="AbsMiddle" runat="server"
-                                                    ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
+                                                <asp:ImageButton ID="ImgUniqueCertNumberEffDate" ImageAlign="AbsMiddle" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                                             </td>
                                         </tr>
                                         <tr>
@@ -187,8 +184,7 @@
                                                 <asp:Label ID="CountryLabel" runat="server" Font-Bold="false">Country</asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:DropDownList ID="moCountryDrop_WRITE" TabIndex="17" runat="server" SkinID="SmallDropDown"
-                                                    AutoPostBack="True">
+                                                <asp:DropDownList ID="moCountryDrop_WRITE" TabIndex="17" runat="server" SkinID="SmallDropDown" AutoPostBack="True">
                                                 </asp:DropDownList>
                                             </td>
                                         </tr>
@@ -356,8 +352,7 @@
                                                 <asp:Label ID="lblRequiresAgntCd" runat="server">Requires_Agent_Code</asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:DropDownList ID="cboReqAgentCode" runat="server" TabIndex="27" SkinID="SmallDropDown"
-                                                    AutoPostBack="true">
+                                                <asp:DropDownList ID="cboReqAgentCode" runat="server" TabIndex="27" SkinID="SmallDropDown" AutoPostBack="true">
                                                 </asp:DropDownList>
                                             </td>
                                         </tr>
@@ -394,8 +389,7 @@
                                                 <asp:Label ID="LabelCLAIM_NUMBER_OFFSET" runat="server" Font-Bold="false">CLAIM_NUMBER_OFFSET</asp:Label>
                                             </td>
                                             <td align="left" valign="top">
-                                                <asp:TextBox ID="TextboxClaimNumberOffset" TabIndex="23" runat="server" SkinID="SmallTextBox"
-                                                    MaxLength="2"></asp:TextBox>
+                                                <asp:TextBox ID="TextboxClaimNumberOffset" TabIndex="23" runat="server" SkinID="SmallTextBox" MaxLength="2"></asp:TextBox>
                                             </td>
                                             <td align="right">
                                                 <asp:Label ID="LabelOverride_WarrantyPriceid" runat="server" Font-Bold="false">OVERRIDE_WARRANTYPRICE_CHECK</asp:Label>
@@ -411,8 +405,7 @@
                                                 <asp:Label ID="lblREQ_CUSTOMER_LEGAL_INFO_ID" runat="server" Text="REQ_CUSTOMER_LEGAL_INFO_ID"></asp:Label>
                                             </td>
                                             <td align="left" valign="top">
-                                                <asp:DropDownList ID="cboREQ_CUSTOMER_LEGAL_INFO_ID" runat="server" TabIndex="23"
-                                                    SkinID="MediumDropDown">
+                                                <asp:DropDownList ID="cboREQ_CUSTOMER_LEGAL_INFO_ID" runat="server" TabIndex="23" SkinID="MediumDropDown">
                                                 </asp:DropDownList>
                                             </td>
                                             <td align="right" nowrap="nowrap">
@@ -428,16 +421,14 @@
                                                 <asp:Label ID="LabelUsePreInvProcess" runat="server" Font-Bold="false">USE_PRE_INVOICE_PROCESS</asp:Label>
                                             </td>
                                             <td align="left" valign="top">
-                                                <asp:DropDownList ID="ddlUsePreInvProcess" runat="server" TabIndex="23" SkinID="MediumDropDown"
-                                                    onChange="return enablePreInvControls();">
+                                                <asp:DropDownList ID="ddlUsePreInvProcess" runat="server" TabIndex="23" SkinID="MediumDropDown" onChange="return enablePreInvControls();">
                                                 </asp:DropDownList>
                                             </td>
                                             <td align="right" nowrap="nowrap">
                                                 <asp:Label ID="LabelSCPreInvWP" runat="server" Font-Bold="false">SC_PRE_INV_WAITING_PERIOD</asp:Label>
                                             </td>
                                             <td align="left" nowrap="nowrap">
-                                                <asp:TextBox ID="txtSCPreINVWP" TabIndex="27" runat="server" SkinID="SmallTextBox"
-                                                    MaxLength="2"></asp:TextBox>
+                                                <asp:TextBox ID="txtSCPreINVWP" TabIndex="27" runat="server" SkinID="SmallTextBox" MaxLength="2"></asp:TextBox>
                                             </td>
                                         </tr>
                                         <tr>
@@ -470,25 +461,24 @@
                                                     <tr>
                                                         <td>
                                                             <asp:Panel ID="Panel1" runat="server">
-                                                                <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
+                                                                <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
                                                                 <div id="tabs" class="style-tabs" style="border: none;">
                                                                     <ul style="text-align: center; background-color: white; border: none;">
-                                                                        <li><a href="#tabsClaimCloseRules">
+                                                                        <li><a href="#tabsClaimCloseRules" rel="noopener noreferrer">
                                                                             <asp:Label ID="Label1" runat="server" CssClass="tabHeaderText">CLAIM_CLOSE_RULES</asp:Label></a></li>
-                                                                        <li><a href="#tabsAttributes">
+                                                                        <li><a href="#tabsAttributes" rel="noopener noreferrer">
                                                                             <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">ATTRIBUTES</asp:Label></a></li>
 
                                                                     </ul>
 
                                                                     <div id="tabsClaimCloseRules" style="text-align: center; background: #d5d6e4;">
                                                                         <asp:Panel ID="moClaimCloseRulesTabPanel_WRITE" runat="server" Width="100%">
-                                                                            <Elita:UserControlClaimCloseRules EntityType="Company" runat="server" ID="ClaimCloseRules"
-                                                                                RequestCloseClaimData="ClaimCloseRules_RequestCloseClaimData"></Elita:UserControlClaimCloseRules>
+                                                                            <Elita:UserControlClaimCloseRules EntityType="Company" runat="server" ID="ClaimCloseRules" RequestCloseClaimData="ClaimCloseRules_RequestCloseClaimData"></Elita:UserControlClaimCloseRules>
                                                                         </asp:Panel>
                                                                     </div>
 
                                                                     <div id="tabsAttributes" style="text-align: center; background: #d5d6e4;">
-                                                                        <Elita:UserControlAttrtibutes runat="server" ID="AttributeValues" />
+                                                                        <Elita:UserControlAttrtibutes runat="server" ID="AttributeValues"></Elita:UserControlAttrtibutes>
                                                                     </div>
                                                                 </div>
                                                             </asp:Panel>
@@ -507,8 +497,7 @@
                                         </tr>
                                         <tr>
                                             <td align="center" colspan="4">
-                                                <asp:TextBox ID="TextboxLegalDisclaimer" TabIndex="180" runat="server" Width="98%"
-                                                    Height="60px" TextMode="MultiLine" Rows="8"></asp:TextBox>
+                                                <asp:TextBox ID="TextboxLegalDisclaimer" TabIndex="180" runat="server" Width="98%" Height="60px" TextMode="MultiLine" Rows="8"></asp:TextBox>
                                             </td>
                                         </tr>
                                     </table>
@@ -517,8 +506,7 @@
                         </tr>
                         <tr>
                             <td style="height: 1px" valign="top">&nbsp;
-                                <asp:Button ID="btnAccCloseDates" TabIndex="210" runat="server" SkinID="AlternateRightButton"
-                                    Text="ACCOUNTING_CLOSING_DATES" Visible="False"></asp:Button>
+                                <asp:Button ID="btnAccCloseDates" TabIndex="210" runat="server" SkinID="AlternateRightButton" Text="ACCOUNTING_CLOSING_DATES" Visible="False"></asp:Button>
                             </td>
                         </tr>
                     </table>
@@ -530,16 +518,14 @@
         <table width="100%">
             <tr>
                 <td width="50%">
-                    <asp:Button ID="btnBack" TabIndex="185" runat="server" SkinID="AlternateLeftButton"
-                        Text="Back"></asp:Button>
+                    <asp:Button ID="btnBack" TabIndex="185" runat="server" SkinID="AlternateLeftButton" Text="Back"></asp:Button>
                     <asp:Button ID="btnNew_WRITE" TabIndex="200" runat="server" Text="New" SkinID="AlternateLeftButton"></asp:Button>
-                    <asp:Button ID="btnCopy_WRITE" TabIndex="205" runat="server" Text="NEW_WITH_COPY"
-                        CausesValidation="False" SkinID="AlternateLeftButton"></asp:Button>
-                    <asp:Button ID="btnUndo_Write" TabIndex="195" runat="server" Text="Undo" SkinID="AlternateLeftButton" />
+                    <asp:Button ID="btnCopy_WRITE" TabIndex="205" runat="server" Text="NEW_WITH_COPY" CausesValidation="False" SkinID="AlternateLeftButton"></asp:Button>
+                    <asp:Button ID="btnUndo_Write" TabIndex="195" runat="server" Text="Undo" SkinID="AlternateLeftButton"></asp:Button>
                     <asp:Button ID="btnDelete_WRITE" TabIndex="210" runat="server" Text="Delete" SkinID="AlternateLeftButton"></asp:Button>
                 </td>
                 <td align="right" width="30%">
-                    <asp:Button ID="btnSAVE_WRITE" TabIndex="190" runat="server" Text="Save" SkinID="PrimaryRightButton" />
+                    <asp:Button ID="btnSAVE_WRITE" TabIndex="190" runat="server" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
                 </td>
                 <td width="10%"></td>
             </tr>
@@ -576,6 +562,20 @@
             if (ddl.options[ddl.selectedIndex].text == "Yes") {
 
                 document.getElementById("ctl00_SummaryPlaceHolder_LabelSCPreInvWP").style.display = "block";
+                document.getElementById("ctl00_SummaryPlaceHolder_txtSCPreINVWP").style.display = "block";
+            }
+            else {
+
+                document.getElementById("ctl00_SummaryPlaceHolder_LabelSCPreInvWP").style.display = "none";
+                document.getElementById("ctl00_SummaryPlaceHolder_txtSCPreINVWP").style.display = "none";
+            }
+
+            return false;
+        };
+
+    </script>
+</asp:Content>
+              document.getElementById("ctl00_SummaryPlaceHolder_LabelSCPreInvWP").style.display = "block";
                 document.getElementById("ctl00_SummaryPlaceHolder_txtSCPreINVWP").style.display = "block";
             }
             else {

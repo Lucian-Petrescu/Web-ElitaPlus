@@ -11,7 +11,7 @@
 <%@ Register assembly="Microsoft.Web.UI.WebControls" namespace="Microsoft.Web.UI.WebControls" tagprefix="iewc" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet"/>
+    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
@@ -20,7 +20,7 @@
         <tbody>
             <tr>
                 <td align="right" nowrap="nowrap" id="tdClaimNumber">
-                    <asp:Label ID="lblClaimNumber"  runat="server" SkinID="SummaryLabel">CLAIM_#:</asp:Label>
+                    <asp:Label ID="lblClaimNumber" runat="server" SkinID="SummaryLabel">CLAIM_#:</asp:Label>
                 </td>
                 <td align="left" nowrap="nowrap">
                     <asp:Label ID="Label_ClaimNumber" runat="server" SkinID="SmallTextBox"></asp:Label>
@@ -129,20 +129,19 @@
             hideModal(divId);
         }
     </script>
-    <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="Server" />
+    <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="Server"></asp:ToolkitScriptManager>
     <div id="ModalReopenIssue" class="overlay">
         <div id="light" class="overlay_message_content" style="width: 500px">
             <p class="modalTitle">
                 <asp:Label ID="lblModalTitle" runat="server" Text="REOPEN_ISSUE"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalReopenIssue');">
-                    <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                        width="16" height="18" align="absmiddle" class="floatR" /></a>
+                <a href="javascript:void(0)" onclick="hideModal('ModalReopenIssue');" rel="noopener noreferrer">
+                    <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR"></a>
             </p>
             <div class="dataContainer" style="margin-bottom:0px">
                 <div runat="server" id="modalMessageBoxReopen" class="errorMsg" style="display: none;width:80%">
                     <p>
-                        <img id="imgIssueMsg" width="16" height="13" align="middle" runat="server" src="~/App_Themes/Default/Images/icon_error.png" />
-                        <asp:Literal runat="server" ID="MessageLiteral" />
+                        <img id="imgIssueMsg" width="16" height="13" align="middle" runat="server" src="~/App_Themes/Default/Images/icon_error.png">
+                        <asp:Literal runat="server" ID="MessageLiteral"></asp:Literal>
                     </p>
                 </div>
             </div>
@@ -155,7 +154,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <asp:RadioButtonList ID="rdbtlstIssueReopen" runat="server" CssClass="formGrid" />
+                        <asp:RadioButtonList ID="rdbtlstIssueReopen" runat="server" CssClass="formGrid"></asp:RadioButtonList>
                     </td>
                 </tr>
             </table>
@@ -173,9 +172,8 @@
                         &nbsp;
                     </td>
                     <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="2">
-                        <asp:Button ID="btnReopenContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
-                        <input id='btnReopenCancel' runat="server" type="button" name="Cancel" value="Cancel" onclick="HideErrorAndModal('ModalReopenIssue');"
-                            class='popWindowCancelbtn floatR' />
+                        <asp:Button ID="btnReopenContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue"></asp:Button>
+                        <input id='btnReopenCancel' runat="server" type="button" name="Cancel" value="Cancel" onclick="HideErrorAndModal('ModalReopenIssue');" class='popWindowCancelbtn floatR'>
                     </td>
                 </tr>
             </table>
@@ -187,15 +185,14 @@
         <div id="light" class="overlay_message_content" style="width: 500px">
             <p class="modalTitle">
                 <asp:Label ID="Label1" runat="server" Text="WAIVE_ISSUE"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalWaiveIssue');">
-                    <img id="Img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                        width="16" height="18" align="absmiddle" class="floatR" /></a>
+                <a href="javascript:void(0)" onclick="hideModal('ModalWaiveIssue');" rel="noopener noreferrer">
+                    <img id="Img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR"></a>
             </p>
             <div class="dataContainer" style="margin-bottom:0px">
                 <div runat="server" id="modalMessageBoxWaive" class="errorMsg" style="display: none;width:80%">
                     <p>
-                        <img id="img3" width="16" height="13" align="middle" runat="server" src="~/App_Themes/Default/Images/icon_error.png" />
-                        <asp:Literal runat="server" ID="msgSelectwaiveReason" />
+                        <img id="img3" width="16" height="13" align="middle" runat="server" src="~/App_Themes/Default/Images/icon_error.png">
+                        <asp:Literal runat="server" ID="msgSelectwaiveReason"></asp:Literal>
                     </p>
                 </div>
             </div>
@@ -208,7 +205,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <asp:RadioButtonList ID="rdbtRsnWaiveIss" runat="server" CssClass="formGrid" />
+                        <asp:RadioButtonList ID="rdbtRsnWaiveIss" runat="server" CssClass="formGrid"></asp:RadioButtonList>
                     </td>
                 </tr>
             </table>
@@ -226,9 +223,8 @@
                         &nbsp;
                     </td>
                     <td id="td1" nowrap="nowrap" runat="server" colspan="2">
-                        <asp:Button ID="btnWaiveContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue"/>
-                        <input id='btnWaiveCancel' runat="server" type="button" name="Cancel" value="Cancel" onclick="HideErrorAndModal('ModalWaiveIssue');"
-                            class='popWindowCancelbtn floatR' />
+                        <asp:Button ID="btnWaiveContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue"></asp:Button>
+                        <input id='btnWaiveCancel' runat="server" type="button" name="Cancel" value="Cancel" onclick="HideErrorAndModal('ModalWaiveIssue');" class='popWindowCancelbtn floatR'>
                     </td>
                 </tr>
             </table>
@@ -239,30 +235,29 @@
     <!-- new layout start -->
     <div class="dataContainer">
         <div style="width: 100%">
-           <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
+           <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
                 <div id="tabs" class="style-tabs">
                     <ul>
-                        <li><a href="#tabsQuestionDetail">
+                        <li><a href="#tabsQuestionDetail" rel="noopener noreferrer">
                             <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Questions</asp:Label></a></li>
-                        <li><a href="#tabsProcessHistory">
+                        <li><a href="#tabsProcessHistory" rel="noopener noreferrer">
                             <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">PROCESS_HISTORY</asp:Label></a></li>
                     </ul>
 
                     <div id="tabsQuestionDetail">
                         <asp:Panel ID="PanelQuestions" runat="server" Width="100%" Height="100%">
                             <div id="question width: 99.53%; height: 100%">
-                                <table id="tblQuestionDetail" background="" border="0" cellpadding="2" cellspacing="2"
-                                    rules="cols" style="width: 100%; height: 100%">
+                                <table id="tblQuestionDetail" background="" border="0" cellpadding="2" cellspacing="2" rules="cols" style="width: 100%; height: 100%">
                                     <tr>
                                         <td align="left" valign="top">
 
                                             <contenttemplate>                                                                      
                                                                                   <asp:GridView ID="grdQuestions" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false" SkinID="DetailPageGridView" AllowSorting="False" EnableModelValidation="True">
-                                                                                        <SelectedRowStyle Wrap="True" />
-                                                                                        <EditRowStyle Wrap="True" />
-                                                                                        <AlternatingRowStyle Wrap="True" />
-                                                                                        <RowStyle Wrap="True" />
-                                                                                        <HeaderStyle   />
+                                                                                        <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                                                                                        <EditRowStyle Wrap="True"></EditRowStyle>
+                                                                                        <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                                                                        <RowStyle Wrap="True"></RowStyle>
+                                                                                        <HeaderStyle></HeaderStyle>
                                                                                         <Columns>
                                                                                              <asp:TemplateField Visible="False">
                                                                                                 <ItemTemplate>
@@ -281,7 +276,7 @@
                                                                                                 <EditItemTemplate>
                                                                                                     <asp:Label ID="Label2" runat="server"></asp:Label>
                                                                                                 </EditItemTemplate>
-                                                                                                <HeaderStyle HorizontalAlign="Center" />
+                                                                                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                                                                             </asp:TemplateField>                                                                  
                                                                                             <asp:TemplateField HeaderText="Value">
                                                                                                 <ItemTemplate>
@@ -290,7 +285,7 @@
                                                                                                 <EditItemTemplate>
                                                                                                     <asp:Label ID="Label3" runat="server"></asp:Label>
                                                                                                 </EditItemTemplate>
-                                                                                                <HeaderStyle HorizontalAlign="Center" />
+                                                                                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                                                                             </asp:TemplateField>
                                                                                             <asp:TemplateField HeaderText="Answer">
                                                                                                 <ItemTemplate>
@@ -299,7 +294,7 @@
                                                                                                 <EditItemTemplate>
                                                                                                     
                                                                                                 </EditItemTemplate>
-                                                                                                <HeaderStyle HorizontalAlign="Center" />
+                                                                                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                                                                             </asp:TemplateField>
                                                                                         </Columns>
                                                                             
@@ -315,8 +310,7 @@
                                                     <asp:Button ID="btnProcess" runat="server" Text="Process" SkinID="PrimaryRightButton" Enabled="False"></asp:Button>
                                                     <asp:Button ID="btnWaive" runat="server" Text="Waive" CssClass="primaryBtn floatR" OnClientClick="return revealModal('ModalWaiveIssue');"></asp:Button>
                                                     <asp:Button ID="btnUndo" runat="server" Text="Undo" SkinID="AlternateRightButton" Enabled="False"></asp:Button>
-                                                    <input id="btnReopen" runat="server" value="ReOpen" class="primaryBtn floatR" type="submit" visible="false"
-                                                        onclick="return revealModal('ModalReopenIssue');" />
+                                                    <input id="btnReopen" runat="server" value="ReOpen" class="primaryBtn floatR" type="submit" visible="false" onclick="return revealModal('ModalReopenIssue');">
 
                                                 </div>
                                             </div>
@@ -334,11 +328,11 @@
                                     <tr>
                                         <td align="left" valign="top">
                                             <asp:GridView ID="grdProcessHistory" runat="server" Width="100%" AutoGenerateColumns="False" SkinID="DetailPageGridView" AllowSorting="True" EnableModelValidation="True">
-                                                <SelectedRowStyle Wrap="True" />
-                                                <EditRowStyle Wrap="True" />
-                                                <AlternatingRowStyle Wrap="True" />
-                                                <RowStyle Wrap="True" />
-                                                <HeaderStyle />
+                                                <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                                                <EditRowStyle Wrap="True"></EditRowStyle>
+                                                <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                                <RowStyle Wrap="True"></RowStyle>
+                                                <HeaderStyle></HeaderStyle>
                                                 <Columns>
                                                     <asp:TemplateField Visible="False">
                                                         <ItemTemplate>
@@ -357,14 +351,14 @@
                                                         <EditItemTemplate>
                                                             <asp:Label ID="lblIssueStatusDesc" runat="server"></asp:Label>
                                                         </EditItemTemplate>
-                                                        <HeaderStyle HorizontalAlign="Center" />
+                                                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                                     </asp:TemplateField>
-                                                    <asp:BoundField DataField="comments" HeaderText="Comments" />
-                                                    <asp:BoundField DataField="created_by_name" HeaderText="Processed By" />
-                                                    <asp:BoundField DataField="created_date" HeaderText="Processed_Date" />
+                                                    <asp:BoundField DataField="comments" HeaderText="Comments"></asp:BoundField>
+                                                    <asp:BoundField DataField="created_by_name" HeaderText="Processed By"></asp:BoundField>
+                                                    <asp:BoundField DataField="created_date" HeaderText="Processed_Date"></asp:BoundField>
                                                 </Columns>
-                                                <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                                                <PagerStyle />
+                                                <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                                                <PagerStyle></PagerStyle>
                                             </asp:GridView>
                                         </td>
                                     </tr>
@@ -382,5 +376,5 @@
         </div>
     </div>
     <!-- end new layout -->
-    <asp:HiddenField ID="hdnSelectedReason" runat="server" /> 
+    <asp:HiddenField ID="hdnSelectedReason" runat="server"></asp:HiddenField> 
 </asp:Content>

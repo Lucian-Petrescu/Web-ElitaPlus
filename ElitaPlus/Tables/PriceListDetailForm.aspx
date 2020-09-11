@@ -5,8 +5,8 @@
 <%@ Register TagPrefix="uc1" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>
 <%@ Register TagPrefix="url" TagName="UserControlVendorAvailable" Src="../common/UserControlAvailableSelected_New.ascx" %>
 <asp:Content ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet" />
-    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet" />
+    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet">
+    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet">
     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js"> </script>
     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js"> </script>
     <script type="text/javascript">
@@ -122,16 +122,14 @@
                 </td>
                 <td nowrap="nowrap">
                     <asp:TextBox ID="txtEffective" runat="server" SkinID="SmallTextBox"></asp:TextBox>
-                    <asp:ImageButton ID="btneffective" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"
-                        align="absmiddle" alt="" Width="20" Height="20" />
+                    <asp:ImageButton ID="btneffective" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" align="absmiddle" alt="" Width="20" Height="20"></asp:ImageButton>
                 </td>
                 <td nowrap="nowrap" align="right">
                     <asp:Label ID="lblExpirationDate" runat="server" Text="EXPIRATION_DATE"></asp:Label>
                 </td>
                 <td>
                     <asp:TextBox ID="txtExpirationDate" runat="server" SkinID="SmallTextBox"></asp:TextBox>
-                    <asp:ImageButton ID="btnExpiration" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"
-                        align="absmiddle" alt="" Width="20" Height="20" />
+                    <asp:ImageButton ID="btnExpiration" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" align="absmiddle" alt="" Width="20" Height="20"></asp:ImageButton>
                 </td>
             </tr>
             <tr>
@@ -151,20 +149,19 @@
     </asp:ScriptManager>
     <%--<asp:Panel ID="pnlDetailView" runat="server">--%>
     <div class="dataContainer" style="width: 100%;">
-        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
+        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
         <div id="tabs" class="style-tabs">
             <ul>
-                <li><a href="#tabsService">
+                <li><a href="#tabsService" rel="noopener noreferrer">
                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">SERVICE</asp:Label></a></li>
-                <li><a href="#tabsVendor">
+                <li><a href="#tabsVendor" rel="noopener noreferrer">
                     <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">VENDOR</asp:Label></a></li>
-                <li><a href="#tabsPendingApprovals">
+                <li><a href="#tabsPendingApprovals" rel="noopener noreferrer">
                     <asp:Label ID="lblPendingApprovals" runat="server" CssClass="tabHeaderText">PENDING_APPROVALS</asp:Label></a></li>
             </ul>
             <div class="Pages">
                 <div id="tabsService">
-                    <table width="100%" border="1" class="dataGrid dataGridSpacer" cellpadding="0" cellspacing="0"
-                        style="padding-top: 5px; padding-bottom: 5px;">
+                    <table width="100%" border="1" class="dataGrid dataGridSpacer" cellpadding="0" cellspacing="0" style="padding-top: 5px; padding-bottom: 5px;">
                         <tr>
                             <td align="right">
                                 <asp:Label runat="server" ID="lblEquipmentList" Text="EQUIPMENT_LIST"></asp:Label>
@@ -177,8 +174,7 @@
                                 <asp:Label runat="server" ID="lblServiceClass" Text="SERVICE_CLASS"></asp:Label>
                             </td>
                             <td align="left">
-                                <asp:DropDownList ID="ddlServiceClass" runat="server" TabIndex="5" Width="210px"
-                                    AutoPostBack="true">
+                                <asp:DropDownList ID="ddlServiceClass" runat="server" TabIndex="5" Width="210px" AutoPostBack="true">
                                 </asp:DropDownList>
                             </td>
                             <td align="right">
@@ -189,8 +185,7 @@
                                 </asp:DropDownList>
                             </td>
                             <td align="left">
-                                <asp:Button ID="btnAddEquipment" Text="ADD_EQUIPMENT" SkinID="PrimaryRightButton"
-                                    runat="server"></asp:Button>
+                                <asp:Button ID="btnAddEquipment" Text="ADD_EQUIPMENT" SkinID="PrimaryRightButton" runat="server"></asp:Button>
                             </td>
                         </tr>
                         <tr>
@@ -214,7 +209,7 @@
                             <td align="left">
                                 <asp:DropDownList ID="ddlsearch" runat="server"></asp:DropDownList>
                                 &nbsp;
-                                <asp:Button ID="btntxtsearch" runat="server" Text="Search" />
+                                <asp:Button ID="btntxtsearch" runat="server" Text="Search"></asp:Button>
 
                             </td>
                             
@@ -231,8 +226,7 @@
                                         
                             </td>
                             <td align="left">
-                                <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true"
-                                    SkinID="SmallDropDown">
+                                <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true" SkinID="SmallDropDown">
                                     <asp:ListItem Value="5">5</asp:ListItem>
                                     <asp:ListItem Value="10">10</asp:ListItem>
                                     <asp:ListItem Value="15">15</asp:ListItem>
@@ -250,80 +244,48 @@
                         </tr>
                     </table>
                     <div style="width: 100%; overflow-y: scroll; height: 100%;">
-                        <asp:GridView ID="Grid" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True"
-                            DataKeyNames="price_list_detail_id" AllowSorting="true" SkinID="DetailPageGridView">
-                            <SelectedRowStyle Wrap="True" />
-                            <EditRowStyle Wrap="True" />
-                            <AlternatingRowStyle Wrap="True" />
-                            <RowStyle Wrap="True" />
+                        <asp:GridView ID="Grid" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True" DataKeyNames="price_list_detail_id" AllowSorting="true" SkinID="DetailPageGridView">
+                            <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                            <EditRowStyle Wrap="True"></EditRowStyle>
+                            <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                            <RowStyle Wrap="True"></RowStyle>
                             <Columns>
                                 <asp:TemplateField ShowHeader="false">
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <ItemTemplate>
-                                        <asp:ImageButton ID="btn_delete" Style="cursor: hand;" ImageUrl="~/App_Themes/Default/Images/icon_delete.png"
-                                            runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                            ImageAlign="AbsMiddle"></asp:ImageButton>
+                                        <asp:ImageButton ID="btn_delete" Style="cursor: hand;" ImageUrl="~/App_Themes/Default/Images/icon_delete.png" runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>" ImageAlign="AbsMiddle"></asp:ImageButton>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField ShowHeader="false">
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <ItemTemplate>
-                                        <asp:ImageButton ID="btn_edit" Style="cursor: hand" runat="server" ImageUrl="~/App_Themes/Default/Images/edit.png"
-                                            Visible="true" CommandName="EditRecord" ImageAlign="AbsMiddle" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                        <asp:ImageButton ID="btn_edit" Style="cursor: hand" runat="server" ImageUrl="~/App_Themes/Default/Images/edit.png" Visible="true" CommandName="EditRecord" ImageAlign="AbsMiddle" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:BoundField DataField="service_class_code" SortExpression="service_class_code"
-                                    ReadOnly="true" HeaderText="SERVICE_CLASS" HeaderStyle-HorizontalAlign="Center"
-                                    HtmlEncode="false" />
-                                <asp:BoundField DataField="service_type_code" SortExpression="service_type_code"
-                                    ReadOnly="true" HeaderText="SERVICE_TYPE" HeaderStyle-HorizontalAlign="Center"
-                                    HtmlEncode="false" />
-                                <asp:BoundField DataField="service_level_code" SortExpression="service_level_code"
-                                    ReadOnly="true" HeaderText="SERVICE_LEVEL" HeaderStyle-HorizontalAlign="Center"
-                                    HtmlEncode="false" />
-                                <asp:BoundField DataField="risk_type_code" SortExpression="risk_type_code" ReadOnly="true"
-                                    HeaderText="RISK_TYPE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="equipment_code" SortExpression="equipment_code" ReadOnly="true"
-                                    HeaderText="EQUIPMENT_CLASS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="make" SortExpression="make" ReadOnly="true" HeaderText="MAKE"
-                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="model" SortExpression="model" ReadOnly="true" HeaderText="MODEL"
-                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="part_description" SortExpression="part_description" ReadOnly="true" HeaderText="PART_DESCRIPTION"
-                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="condition_type_code" SortExpression="condition_type_code"
-                                    ReadOnly="true" HeaderText="CONDITION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="vendor_sku" SortExpression="vendor_sku" ReadOnly="true"
-                                    HeaderText="VENDOR_SKU" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="vendor_sku_description" SortExpression="vendor_sku_description"
-                                    ReadOnly="true" HeaderText="DESCRIPTION" HeaderStyle-HorizontalAlign="Center"
-                                    HtmlEncode="false" />
-                                <asp:BoundField DataField="requested_by" SortExpression="requested_by" ReadOnly="true" HeaderText="REQUESTED_BY"
-                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="requested_date" SortExpression="requested_date" ReadOnly="true" HeaderText="REQUESTED_DATE"
-                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="status" SortExpression="status" ReadOnly="true"
-                                    HeaderText="STATUS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="status_date" SortExpression="status_date"
-                                    ReadOnly="true" HeaderText="STATUS_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="status_by" SortExpression="status_by"
-                                    ReadOnly="true" HeaderText="status_by" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="manufacturer_origin_desc" SortExpression="manufacturer_origin_desc" ReadOnly="true" HeaderText="MANUFACTURER_ORIGIN"
-                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="price_with_symbol" SortExpression="price_with_symbol" ReadOnly="true" HeaderText="PRICE"
-                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="vendor_quantity" SortExpression="vendor_quantity" ReadOnly="true"
-                                    HeaderText="QUANTITY" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="price_low_range_with_symbol" SortExpression="price_low_range_with_symbol"
-                                    ReadOnly="true" HeaderText="LOW_PRICE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="price_high_range_with_symbol" SortExpression="price_high_range_with_symbol"
-                                    ReadOnly="true" HeaderText="HIGH_PRICE" HeaderStyle-HorizontalAlign="Center"
-                                    HtmlEncode="false" />
-                                <asp:BoundField DataField="effective" SortExpression="effective" ReadOnly="true"
-                                    HeaderText="EFFECTIVE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="expiration" SortExpression="expiration" ReadOnly="true"
-                                    HeaderText="EXPIRATION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="price_list_detail_id" ReadOnly="true" Visible="false" />
+                                <asp:BoundField DataField="service_class_code" SortExpression="service_class_code" ReadOnly="true" HeaderText="SERVICE_CLASS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="service_type_code" SortExpression="service_type_code" ReadOnly="true" HeaderText="SERVICE_TYPE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="service_level_code" SortExpression="service_level_code" ReadOnly="true" HeaderText="SERVICE_LEVEL" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="risk_type_code" SortExpression="risk_type_code" ReadOnly="true" HeaderText="RISK_TYPE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="equipment_code" SortExpression="equipment_code" ReadOnly="true" HeaderText="EQUIPMENT_CLASS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="make" SortExpression="make" ReadOnly="true" HeaderText="MAKE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="model" SortExpression="model" ReadOnly="true" HeaderText="MODEL" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="part_description" SortExpression="part_description" ReadOnly="true" HeaderText="PART_DESCRIPTION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="condition_type_code" SortExpression="condition_type_code" ReadOnly="true" HeaderText="CONDITION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="vendor_sku" SortExpression="vendor_sku" ReadOnly="true" HeaderText="VENDOR_SKU" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="vendor_sku_description" SortExpression="vendor_sku_description" ReadOnly="true" HeaderText="DESCRIPTION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="requested_by" SortExpression="requested_by" ReadOnly="true" HeaderText="REQUESTED_BY" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="requested_date" SortExpression="requested_date" ReadOnly="true" HeaderText="REQUESTED_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="status" SortExpression="status" ReadOnly="true" HeaderText="STATUS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="status_date" SortExpression="status_date" ReadOnly="true" HeaderText="STATUS_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="status_by" SortExpression="status_by" ReadOnly="true" HeaderText="status_by" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="manufacturer_origin_desc" SortExpression="manufacturer_origin_desc" ReadOnly="true" HeaderText="MANUFACTURER_ORIGIN" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="price_with_symbol" SortExpression="price_with_symbol" ReadOnly="true" HeaderText="PRICE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="vendor_quantity" SortExpression="vendor_quantity" ReadOnly="true" HeaderText="QUANTITY" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="price_low_range_with_symbol" SortExpression="price_low_range_with_symbol" ReadOnly="true" HeaderText="LOW_PRICE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="price_high_range_with_symbol" SortExpression="price_high_range_with_symbol" ReadOnly="true" HeaderText="HIGH_PRICE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="effective" SortExpression="effective" ReadOnly="true" HeaderText="EFFECTIVE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="expiration" SortExpression="expiration" ReadOnly="true" HeaderText="EXPIRATION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                <asp:BoundField DataField="price_list_detail_id" ReadOnly="true" Visible="false"></asp:BoundField>
                                  <asp:TemplateField Visible="false">
                                     <ItemTemplate>
                                         <asp:Label ID="lblStatusXCD" runat="server" Text='<%# Container.DataItem("status_xcd")%>'></asp:Label>
@@ -332,20 +294,19 @@
                                 <asp:TemplateField ShowHeader="false">
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <ItemTemplate>
-                                        <asp:LinkButton ID="btnViewHistory" runat="server" Visible="false"
-                                            OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
+                                        <asp:LinkButton ID="btnViewHistory" runat="server" Visible="false" OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:TemplateField> 
                             </Columns>
-                            <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                            <PagerStyle />
+                            <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                            <PagerStyle></PagerStyle>
                         </asp:GridView>
                         
                         <div class="btnZone">
                             <asp:LinkButton runat="server" ID="dummybutton"></asp:LinkButton>
-                            <asp:Button ID="addBtnNewListItem" runat="server" SkinID="AlternateLeftButton" Text="NEW" />
+                            <asp:Button ID="addBtnNewListItem" runat="server" SkinID="AlternateLeftButton" Text="NEW"></asp:Button>
                             <asp:LinkButton runat="server" ID="dummybutton1"></asp:LinkButton>
-                            <asp:Button ID="btnSubmitforApproval" runat="server" SkinID="AlternateLeftButton" Text="SUBMIT_FOR_APPROVAL" />
+                            <asp:Button ID="btnSubmitforApproval" runat="server" SkinID="AlternateLeftButton" Text="SUBMIT_FOR_APPROVAL"></asp:Button>
                         </div>
                 </div>
                     </div>
@@ -355,16 +316,14 @@
                             <td align="left" valign="top" width="30%">
                                 <strong>
                                     <asp:Label ID="moSelectedTitle" runat="server" Width="100%">SELECTED VENDORS</asp:Label></strong>
-                                <asp:ListBox ID="moSelectedList" runat="server" Height="135px" SelectionMode="Multiple"
-                                    Rows="6"></asp:ListBox>
+                                <asp:ListBox ID="moSelectedList" runat="server" Height="135px" SelectionMode="Multiple" Rows="6"></asp:ListBox>
                             </td>
                         </tr>
                     </table>
                 </div>
                     <div id="tabsPendingApprovals">
                           <div>
-                              <table width="100%" border="1" class="dataGrid dataGridSpacer" cellpadding="0" cellspacing="0"
-                                  style="padding-top: 5px; padding-bottom: 5px;">
+                              <table width="100%" border="1" class="dataGrid dataGridSpacer" cellpadding="0" cellspacing="0" style="padding-top: 5px; padding-bottom: 5px;">
                                   <tr>
                                       <td align="right" class="auto-style2">
                                           <asp:Label ID="lblpaSearch" runat="server" Text="SEARCH_REQUESTED_BY"></asp:Label>
@@ -372,7 +331,7 @@
                                       <td align="left">
                                           <asp:DropDownList ID="ddlpasearch" runat="server"></asp:DropDownList>
                                           &nbsp;
-                                          <asp:Button ID="btnpaSearch" runat="server" Text="Search" />
+                                          <asp:Button ID="btnpaSearch" runat="server" Text="Search"></asp:Button>
                                       </td>
                                           
 
@@ -388,8 +347,7 @@
                                         
                                       </td>
                                       <td align="left" colspan="6">
-                                          <asp:DropDownList ID="cboPageSizePendingApproval" runat="server" Width="50px" AutoPostBack="true"
-                                              SkinID="SmallDropDown">
+                                          <asp:DropDownList ID="cboPageSizePendingApproval" runat="server" Width="50px" AutoPostBack="true" SkinID="SmallDropDown">
                                               <asp:ListItem Value="5">5</asp:ListItem>
                                               <asp:ListItem Value="10">10</asp:ListItem>
                                               <asp:ListItem Value="15">15</asp:ListItem>
@@ -407,88 +365,59 @@
                               </table>
                         </div>
                         <div style="width: 100%; overflow-y: scroll; height: 100%;">
-                            <asp:GridView ID="gvPendingApprovals" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True"
-                                DataKeyNames="price_list_detail_id" AllowSorting="true" SkinID="DetailPageGridView">
-                                <SelectedRowStyle Wrap="True" />
-                                <EditRowStyle Wrap="True" />
-                                <AlternatingRowStyle Wrap="True" />
-                                <RowStyle Wrap="True" />
+                            <asp:GridView ID="gvPendingApprovals" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True" DataKeyNames="price_list_detail_id" AllowSorting="true" SkinID="DetailPageGridView">
+                                <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                                <EditRowStyle Wrap="True"></EditRowStyle>
+                                <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                <RowStyle Wrap="True"></RowStyle>
                                 <Columns>
                                     <asp:TemplateField>
                                         <HeaderTemplate>
-                                            <asp:CheckBox ID="chkHeaderApproveOrReject" runat="server" Onclick="checkAll(this)" />
+                                            <asp:CheckBox ID="chkHeaderApproveOrReject" runat="server" Onclick="checkAll(this)"></asp:CheckBox>
                                         </HeaderTemplate>
                                         <ItemTemplate>
-                                            <asp:CheckBox ID="chkApproveOrReject" runat="server" />
+                                            <asp:CheckBox ID="chkApproveOrReject" runat="server"></asp:CheckBox>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="service_class_code" SortExpression="service_class_code"
-                                        ReadOnly="true" HeaderText="SERVICE_CLASS" HeaderStyle-HorizontalAlign="Center"
-                                        HtmlEncode="false" />
-                                    <asp:BoundField DataField="service_type_code" SortExpression="service_type_code"
-                                        ReadOnly="true" HeaderText="SERVICE_TYPE" HeaderStyle-HorizontalAlign="Center"
-                                        HtmlEncode="false" />
-                                    <asp:BoundField DataField="service_level_code" SortExpression="service_level_code"
-                                        ReadOnly="true" HeaderText="SERVICE_LEVEL" HeaderStyle-HorizontalAlign="Center"
-                                        HtmlEncode="false" />
-                                    <asp:BoundField DataField="risk_type_code" SortExpression="risk_type_code" ReadOnly="true"
-                                        HeaderText="RISK_TYPE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="equipment_code" SortExpression="equipment_code" ReadOnly="true"
-                                        HeaderText="EQUIPMENT_CLASS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="make" SortExpression="make" ReadOnly="true" HeaderText="MAKE"
-                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="model" SortExpression="model" ReadOnly="true" HeaderText="MODEL"
-                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="part_description" SortExpression="part_description" ReadOnly="true" HeaderText="PART_DESCRIPTION"
-                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="condition_type_code" SortExpression="condition_type_code"
-                                        ReadOnly="true" HeaderText="CONDITION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="vendor_sku" SortExpression="vendor_sku" ReadOnly="true"
-                                        HeaderText="VENDOR_SKU" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="vendor_sku_description" SortExpression="vendor_sku_description"
-                                        ReadOnly="true" HeaderText="DESCRIPTION" HeaderStyle-HorizontalAlign="Center"
-                                        HtmlEncode="false" />
-                                    <asp:BoundField DataField="requested_by" SortExpression="requested_by" ReadOnly="true" HeaderText="REQUESTED_BY"
-                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="requested_date" SortExpression="requested_date" ReadOnly="true" HeaderText="REQUESTED_DATE"
-                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="status" SortExpression="status" ReadOnly="true"
-                                        HeaderText="STATUS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="status_date" SortExpression="status_date"
-                                        ReadOnly="true" HeaderText="STATUS_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="status_by" SortExpression="status_by" ReadOnly="true" HeaderText="status_by"
-                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="manufacturer_origin_desc" SortExpression="manufacturer_origin_desc" ReadOnly="true" HeaderText="MANUFACTURER_ORIGIN"
-                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="price_with_symbol" SortExpression="price_with_symbol" ReadOnly="true" HeaderText="PRICE"
-                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="vendor_quantity" SortExpression="vendor_quantity" ReadOnly="true"
-                                        HeaderText="QUANTITY" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="price_low_range_with_symbol" SortExpression="price_low_range_with_symbol"
-                                        ReadOnly="true" HeaderText="LOW_PRICE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="price_high_range_with_symbol" SortExpression="price_high_range_with_symbol"
-                                        ReadOnly="true" HeaderText="HIGH_PRICE" HeaderStyle-HorizontalAlign="Center"
-                                        HtmlEncode="false" />
-                                    <asp:BoundField DataField="effective" SortExpression="effective" ReadOnly="true"
-                                        HeaderText="EFFECTIVE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="expiration" SortExpression="expiration" ReadOnly="true"
-                                        HeaderText="EXPIRATION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="price_list_detail_id" ReadOnly="true" Visible="false" />
+                                    <asp:BoundField DataField="service_class_code" SortExpression="service_class_code" ReadOnly="true" HeaderText="SERVICE_CLASS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="service_type_code" SortExpression="service_type_code" ReadOnly="true" HeaderText="SERVICE_TYPE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="service_level_code" SortExpression="service_level_code" ReadOnly="true" HeaderText="SERVICE_LEVEL" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="risk_type_code" SortExpression="risk_type_code" ReadOnly="true" HeaderText="RISK_TYPE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="equipment_code" SortExpression="equipment_code" ReadOnly="true" HeaderText="EQUIPMENT_CLASS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="make" SortExpression="make" ReadOnly="true" HeaderText="MAKE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="model" SortExpression="model" ReadOnly="true" HeaderText="MODEL" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="part_description" SortExpression="part_description" ReadOnly="true" HeaderText="PART_DESCRIPTION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="condition_type_code" SortExpression="condition_type_code" ReadOnly="true" HeaderText="CONDITION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="vendor_sku" SortExpression="vendor_sku" ReadOnly="true" HeaderText="VENDOR_SKU" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="vendor_sku_description" SortExpression="vendor_sku_description" ReadOnly="true" HeaderText="DESCRIPTION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="requested_by" SortExpression="requested_by" ReadOnly="true" HeaderText="REQUESTED_BY" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="requested_date" SortExpression="requested_date" ReadOnly="true" HeaderText="REQUESTED_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="status" SortExpression="status" ReadOnly="true" HeaderText="STATUS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="status_date" SortExpression="status_date" ReadOnly="true" HeaderText="STATUS_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="status_by" SortExpression="status_by" ReadOnly="true" HeaderText="status_by" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="manufacturer_origin_desc" SortExpression="manufacturer_origin_desc" ReadOnly="true" HeaderText="MANUFACTURER_ORIGIN" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="price_with_symbol" SortExpression="price_with_symbol" ReadOnly="true" HeaderText="PRICE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="vendor_quantity" SortExpression="vendor_quantity" ReadOnly="true" HeaderText="QUANTITY" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="price_low_range_with_symbol" SortExpression="price_low_range_with_symbol" ReadOnly="true" HeaderText="LOW_PRICE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="price_high_range_with_symbol" SortExpression="price_high_range_with_symbol" ReadOnly="true" HeaderText="HIGH_PRICE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="effective" SortExpression="effective" ReadOnly="true" HeaderText="EFFECTIVE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="expiration" SortExpression="expiration" ReadOnly="true" HeaderText="EXPIRATION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="price_list_detail_id" ReadOnly="true" Visible="false"></asp:BoundField>
                                     <asp:TemplateField Visible="false">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPriceListDetailID" runat="server" Text='<%# GetGuidStringFromByteArray(Container.DataItem("price_list_detail_id"))%>'></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                     </Columns>
-                                <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                                <PagerStyle />
+                                <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                                <PagerStyle></PagerStyle>
                             </asp:GridView>
 
                         <div class="btnZone">
                             <asp:LinkButton runat="server" ID="LinkButton2"></asp:LinkButton>
-                            <asp:Button ID="btnApprove" runat="server" SkinID="AlternateLeftButton" Text="PL_APPROVE" />
+                            <asp:Button ID="btnApprove" runat="server" SkinID="AlternateLeftButton" Text="PL_APPROVE"></asp:Button>
                             <asp:LinkButton runat="server" ID="LinkButton1"></asp:LinkButton>
-                            <asp:Button ID="btnReject" runat="server" SkinID="AlternateLeftButton" Text="PL_REJECT" />
+                            <asp:Button ID="btnReject" runat="server" SkinID="AlternateLeftButton" Text="PL_REJECT"></asp:Button>
                         </div>
                     </div>
                     </div>
@@ -497,23 +426,20 @@
     </div>    
     <div class="btnZone">
         <div class="">
-            <asp:Button ID="btnSave" runat="server" SkinID="PrimaryRightButton" Text="SAVE" />
-            <asp:Button ID="btnBack" runat="server" SkinID="AlternateLeftButton" Text="BACK" />
-            <asp:Button ID="btnAdd" runat="server" SkinID="AlternateLeftButton" Text="ADD" />
-            <asp:Button ID="btnClone" runat="server" SkinID="AlternateRightButton" Text="NEW_WITH_COPY" />
-            <asp:Button ID="btnUndo" runat="server" SkinID="AlternateRightButton" Text="UNDO" />
-            <asp:Button ID="btnDelete" runat="server" SkinID="AlternateRightButton" Text="DELETE" />
+            <asp:Button ID="btnSave" runat="server" SkinID="PrimaryRightButton" Text="SAVE"></asp:Button>
+            <asp:Button ID="btnBack" runat="server" SkinID="AlternateLeftButton" Text="BACK"></asp:Button>
+            <asp:Button ID="btnAdd" runat="server" SkinID="AlternateLeftButton" Text="ADD"></asp:Button>
+            <asp:Button ID="btnClone" runat="server" SkinID="AlternateRightButton" Text="NEW_WITH_COPY"></asp:Button>
+            <asp:Button ID="btnUndo" runat="server" SkinID="AlternateRightButton" Text="UNDO"></asp:Button>
+            <asp:Button ID="btnDelete" runat="server" SkinID="AlternateRightButton" Text="DELETE"></asp:Button>
          </div>
     </div>
     <div id="AddNewContainer">
-        <ajaxToolkit:ModalPopupExtender runat="server" ID="mdlPopup" TargetControlID="dummybutton"
-            PopupControlID="pnlPopup" DropShadow="True" BackgroundCssClass="ModalBackground"
-            BehaviorID="addNewModal" PopupDragHandleControlID="pnlPopup" RepositionMode="RepositionOnWindowScroll">
+        <ajaxToolkit:ModalPopupExtender runat="server" ID="mdlPopup" TargetControlID="dummybutton" PopupControlID="pnlPopup" DropShadow="True" BackgroundCssClass="ModalBackground" BehaviorID="addNewModal" PopupDragHandleControlID="pnlPopup" RepositionMode="RepositionOnWindowScroll">
         </ajaxToolkit:ModalPopupExtender>
         <asp:Panel ID="pnlPopup" runat="server" Style="display: none; width: 500px;">
             <div id="light" class="overlay_message_content">
-                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Always" RenderMode="inline"
-                    ChildrenAsTriggers="True">
+                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Always" RenderMode="inline" ChildrenAsTriggers="True">
                     <ContentTemplate>
                         <p class="modalTitle">
                             <asp:Label ID="lblModalTitle" runat="server" Text="PRICE_LIST_DETAIL"></asp:Label>
@@ -526,8 +452,7 @@
                                         <asp:Label ID="lblNewItemServiceClass" runat="server" Text="SERVICE_CLASS"></asp:Label>
                                     </td>
                                     <td>
-                                        <asp:DropDownList ID="ddlNewItemServiceClass" runat="server" SkinID="MediumDropDown"
-                                            AutoPostBack="true">
+                                        <asp:DropDownList ID="ddlNewItemServiceClass" runat="server" SkinID="MediumDropDown" AutoPostBack="true">
                                         </asp:DropDownList>
                                     </td>
                                     <td align="right">
@@ -542,8 +467,7 @@
                                         <asp:Label ID="lblNewItemServiceType" runat="server" Text="SERVICE_TYPE"></asp:Label>
                                     </td>
                                     <td>
-                                        <asp:DropDownList ID="ddlNewItemServiceType" runat="server" SkinID="MediumDropDown"
-                                            Enabled="false">
+                                        <asp:DropDownList ID="ddlNewItemServiceType" runat="server" SkinID="MediumDropDown" Enabled="false">
                                         </asp:DropDownList>
                                     </td>
                                     <td align="right">
@@ -583,8 +507,7 @@
                                         <asp:Label ID="lblEquipmentClass" runat="server" Text="EQUIPMENT_CLASS"></asp:Label>
                                     </td>
                                     <td>
-                                        <asp:DropDownList ID="ddlEquipmentClass" runat="server" Width="75%" SkinID="SmallDropDown"
-                                            AutoPostBack="False" />
+                                        <asp:DropDownList ID="ddlEquipmentClass" runat="server" Width="75%" SkinID="SmallDropDown" AutoPostBack="False"></asp:DropDownList>
                                     </td>
                                 </tr>
                                 <tr>
@@ -593,8 +516,7 @@
                                     </td>
                                     <td>
                                         <asp:TextBox ID="txtNewItemEffectiveDate" runat="server" SkinID="SmallTextBox"></asp:TextBox>
-                                        <asp:ImageButton ID="imgNewItemEffectiveDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"
-                                            align="absmiddle" alt="" Width="20" Height="20" />
+                                        <asp:ImageButton ID="imgNewItemEffectiveDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" align="absmiddle" alt="" Width="20" Height="20"></asp:ImageButton>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="lblNewItemMake" runat="server" Text="MAKE"></asp:Label>
@@ -610,8 +532,7 @@
                                     </td>
                                     <td>
                                         <asp:TextBox ID="txtNewItemExpirationDate" runat="server" SkinID="SmallTextBox"></asp:TextBox>
-                                        <asp:ImageButton ID="imgNewItemExpirationDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"
-                                            align="absmiddle" alt="" Width="20" Height="20" />
+                                        <asp:ImageButton ID="imgNewItemExpirationDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" align="absmiddle" alt="" Width="20" Height="20"></asp:ImageButton>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="lblNewItemModel" runat="server" Text="MODEL"></asp:Label>
@@ -647,8 +568,7 @@
                                         <asp:Label ID="lblNewItemServiceLevel" runat="server" Text="SERVICE_LEVEL"></asp:Label>
                                     </td>
                                     <td>
-                                        <asp:DropDownList ID="ddlNewItemServiceLevel" runat="server" SkinID="MediumDropDown"
-                                            AutoPostBack="true">
+                                        <asp:DropDownList ID="ddlNewItemServiceLevel" runat="server" SkinID="MediumDropDown" AutoPostBack="true">
                                         </asp:DropDownList>
                                     </td>
                                 </tr>
@@ -672,22 +592,22 @@
                                         <asp:Label ID="lblNewItemPart" runat="server" Text="PART_DESCRIPTION"></asp:Label>
                                     </td>
                                     <td>
-                                        <asp:DropDownList ID="ddlNewItemPart" runat="server"  SkinID="MediumDropDown" Enabled="false" AutoPostBack="true"></asp:DropDownList>
+                                        <asp:DropDownList ID="ddlNewItemPart" runat="server" SkinID="MediumDropDown" Enabled="false" AutoPostBack="true"></asp:DropDownList>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="lblNewManOri" runat="server" Text="MANUFACTURER_ORIGIN"></asp:Label>
                                     </td>
                                     <td>
-                                        <asp:DropDownList ID="ddlNewManOri" runat="server"  SkinID="MediumDropDown"></asp:DropDownList>
+                                        <asp:DropDownList ID="ddlNewManOri" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
                                     </td>
                                 </tr>
                             </table>
                         </asp:Panel>
                     </ContentTemplate>
                     <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="ddlNewItemMake" EventName="SelectedIndexChanged" />
-                        <asp:AsyncPostBackTrigger ControlID="imgNewItemExpirationDate" EventName="Click" />
-                        <asp:AsyncPostBackTrigger ControlID="imgNewItemEffectiveDate" EventName="Click" />
+                        <asp:AsyncPostBackTrigger ControlID="ddlNewItemMake" EventName="SelectedIndexChanged"></asp:AsyncPostBackTrigger>
+                        <asp:AsyncPostBackTrigger ControlID="imgNewItemExpirationDate" EventName="Click"></asp:AsyncPostBackTrigger>
+                        <asp:AsyncPostBackTrigger ControlID="imgNewItemEffectiveDate" EventName="Click"></asp:AsyncPostBackTrigger>
                     </Triggers>
                 </asp:UpdatePanel>
                 <table width="100%" border="0" class="formGrid" cellpadding="0" cellspacing="0">
@@ -695,8 +615,8 @@
                         <td colspan="3">&nbsp;
                         </td>
                         <td>
-                            <asp:Button ID="btnNewItemSave" runat="server" CssClass="primaryBtn floatR" Text="SAVE" CausesValidation="false" />
-                            <asp:Button ID="btnNewItemCancel" runat="server" CssClass="popWindowCancelbtn floatR" Text="CANCEL" />
+                            <asp:Button ID="btnNewItemSave" runat="server" CssClass="primaryBtn floatR" Text="SAVE" CausesValidation="false"></asp:Button>
+                            <asp:Button ID="btnNewItemCancel" runat="server" CssClass="popWindowCancelbtn floatR" Text="CANCEL"></asp:Button>
                         </td>
                     </tr>
                 </table>
@@ -705,9 +625,7 @@
     </div>
 
     <div id="ShowHistoryContainer">
-        <ajaxToolkit:ModalPopupExtender runat="server" ID="mpeHistory" TargetControlID="dummybutton1"
-            PopupControlID="pnlHistoryPopup" DropShadow="True" BackgroundCssClass="ModalBackground"
-            BehaviorID="showHistoryModal" PopupDragHandleControlID="pnlHistoryPopup" RepositionMode="RepositionOnWindowScroll">
+        <ajaxToolkit:ModalPopupExtender runat="server" ID="mpeHistory" TargetControlID="dummybutton1" PopupControlID="pnlHistoryPopup" DropShadow="True" BackgroundCssClass="ModalBackground" BehaviorID="showHistoryModal" PopupDragHandleControlID="pnlHistoryPopup" RepositionMode="RepositionOnWindowScroll">
         </ajaxToolkit:ModalPopupExtender>
         <asp:Panel ID="pnlHistoryPopup" runat="server" Style="display: none; width: 500px;">
             <div id="dvHistory" class="overlay_message_content" style="width: 70%; overflow-y: scroll;">
@@ -725,53 +643,63 @@
                                 <td>&nbsp;</td>
                                 <td>
 
-                                    <asp:GridView ID="gvHistory" runat="server" Width="10%" AutoGenerateColumns="False" AllowPaging="True"
-                                        DataKeyNames="price_list_detail_id" AllowSorting="true" SkinID="DetailPageGridView">
-                                        <SelectedRowStyle Wrap="True" HorizontalAlign="Left" VerticalAlign="Top" />
-                                        <EditRowStyle Wrap="True" />
-                                        <AlternatingRowStyle Wrap="True" />
-                                        <RowStyle Wrap="True" />
+                                    <asp:GridView ID="gvHistory" runat="server" Width="10%" AutoGenerateColumns="False" AllowPaging="True" DataKeyNames="price_list_detail_id" AllowSorting="true" SkinID="DetailPageGridView">
+                                        <SelectedRowStyle Wrap="True" HorizontalAlign="Left" VerticalAlign="Top"></SelectedRowStyle>
+                                        <EditRowStyle Wrap="True"></EditRowStyle>
+                                        <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                        <RowStyle Wrap="True"></RowStyle>
                                         <Columns>
-                                            <asp:BoundField DataField="service_class_code" SortExpression="service_class_code"
-                                                ReadOnly="true" HeaderText="SERVICE_CLASS" HeaderStyle-HorizontalAlign="Center"
-                                                HtmlEncode="false" />
-                                            <asp:BoundField DataField="service_type_code" SortExpression="service_type_code"
-                                                ReadOnly="true" HeaderText="SERVICE_TYPE" HeaderStyle-HorizontalAlign="Center"
-                                                HtmlEncode="false" />
-                                            <asp:BoundField DataField="service_level_code" SortExpression="service_level_code"
-                                                ReadOnly="true" HeaderText="SERVICE_LEVEL" HeaderStyle-HorizontalAlign="Center"
-                                                HtmlEncode="false" />
-                                            <asp:BoundField DataField="risk_type_code" SortExpression="risk_type_code" ReadOnly="true"
-                                                HeaderText="RISK_TYPE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                            <asp:BoundField DataField="equipment_code" SortExpression="equipment_code" ReadOnly="true"
-                                                HeaderText="EQUIPMENT_CLASS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                            <asp:BoundField DataField="make" SortExpression="make" ReadOnly="true" HeaderText="MAKE"
-                                                HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                            <asp:BoundField DataField="model" SortExpression="model" ReadOnly="true" HeaderText="MODEL"
-                                                HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                            <asp:BoundField DataField="part_description" SortExpression="part_description" ReadOnly="true" HeaderText="PART_DESCRIPTION"
-                                                HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                            <asp:BoundField DataField="condition_type_code" SortExpression="condition_type_code"
-                                                ReadOnly="true" HeaderText="CONDITION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                            <asp:BoundField DataField="vendor_sku" SortExpression="vendor_sku" ReadOnly="true"
-                                                HeaderText="VENDOR_SKU" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                            <asp:BoundField DataField="vendor_sku_description" SortExpression="vendor_sku_description"
-                                                ReadOnly="true" HeaderText="DESCRIPTION" HeaderStyle-HorizontalAlign="Center"
-                                                HtmlEncode="false" />
-                                            <asp:BoundField DataField="manufacturer_origin_desc" SortExpression="manufacturer_origin_desc" ReadOnly="true" HeaderText="MANUFACTURER_ORIGIN"
-                                                HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                            <asp:BoundField DataField="price_with_symbol" SortExpression="price_with_symbol" ReadOnly="true" HeaderText="PRICE"
-                                                HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                            <asp:BoundField DataField="vendor_quantity" SortExpression="vendor_quantity" ReadOnly="true"
-                                                HeaderText="QUANTITY" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                            <asp:BoundField DataField="price_low_range_with_symbol" SortExpression="price_low_range_with_symbol"
-                                                ReadOnly="true" HeaderText="LOW_PRICE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                            <asp:BoundField DataField="price_high_range_with_symbol" SortExpression="price_high_range_with_symbol"
-                                                ReadOnly="true" HeaderText="HIGH_PRICE" HeaderStyle-HorizontalAlign="Center"
-                                                HtmlEncode="false" />
-                                            <asp:BoundField DataField="effective" SortExpression="effective" ReadOnly="true"
-                                                HeaderText="EFFECTIVE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                            <asp:BoundField DataField="expiration" SortExpression="expiration" ReadOnly="true"
+                                            <asp:BoundField DataField="service_class_code" SortExpression="service_class_code" ReadOnly="true" HeaderText="SERVICE_CLASS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="service_type_code" SortExpression="service_type_code" ReadOnly="true" HeaderText="SERVICE_TYPE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="service_level_code" SortExpression="service_level_code" ReadOnly="true" HeaderText="SERVICE_LEVEL" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="risk_type_code" SortExpression="risk_type_code" ReadOnly="true" HeaderText="RISK_TYPE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="equipment_code" SortExpression="equipment_code" ReadOnly="true" HeaderText="EQUIPMENT_CLASS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="make" SortExpression="make" ReadOnly="true" HeaderText="MAKE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="model" SortExpression="model" ReadOnly="true" HeaderText="MODEL" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="part_description" SortExpression="part_description" ReadOnly="true" HeaderText="PART_DESCRIPTION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="condition_type_code" SortExpression="condition_type_code" ReadOnly="true" HeaderText="CONDITION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="vendor_sku" SortExpression="vendor_sku" ReadOnly="true" HeaderText="VENDOR_SKU" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="vendor_sku_description" SortExpression="vendor_sku_description" ReadOnly="true" HeaderText="DESCRIPTION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="manufacturer_origin_desc" SortExpression="manufacturer_origin_desc" ReadOnly="true" HeaderText="MANUFACTURER_ORIGIN" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="price_with_symbol" SortExpression="price_with_symbol" ReadOnly="true" HeaderText="PRICE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="vendor_quantity" SortExpression="vendor_quantity" ReadOnly="true" HeaderText="QUANTITY" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="price_low_range_with_symbol" SortExpression="price_low_range_with_symbol" ReadOnly="true" HeaderText="LOW_PRICE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="price_high_range_with_symbol" SortExpression="price_high_range_with_symbol" ReadOnly="true" HeaderText="HIGH_PRICE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="effective" SortExpression="effective" ReadOnly="true" HeaderText="EFFECTIVE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="expiration" SortExpression="expiration" ReadOnly="true" HeaderText="EXPIRATION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="requested_by" SortExpression="requested_by" ReadOnly="true" HeaderText="REQUESTED_BY" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="requested_date" SortExpression="requested_date" ReadOnly="true" HeaderText="REQUESTED_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="status" SortExpression="status" ReadOnly="true" HeaderText="STATUS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="status_date" SortExpression="status_date" ReadOnly="true" HeaderText="STATUS_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                            <asp:BoundField DataField="status_by" SortExpression="status_by" ReadOnly="true" HeaderText="status_by" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                        </Columns>
+                                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                                        <PagerStyle></PagerStyle>
+                                    </asp:GridView>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+                <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                    <tr>
+                         <td align="center">
+                            <asp:Button ID="btnHistoryCancel" runat="server" Text="CLOSE"></asp:Button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </asp:Panel>
+    </div>
+
+    <%--</asp:Panel>--%>
+    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server">
+</asp:Content>
+                                   <asp:BoundField DataField="expiration" SortExpression="expiration" ReadOnly="true"
                                                 HeaderText="EXPIRATION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                             <asp:BoundField DataField="requested_by" SortExpression="requested_by" ReadOnly="true" HeaderText="REQUESTED_BY"
                                                 HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />

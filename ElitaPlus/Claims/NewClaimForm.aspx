@@ -1,4 +1,4 @@
-<%@ Register TagPrefix="uc1" TagName="UserControlPoliceReport" Src="../Common/UserControlPoliceReport_New.ascx" %>
+﻿<%@ Register TagPrefix="uc1" TagName="UserControlPoliceReport" Src="../Common/UserControlPoliceReport_New.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
 <%@ Register assembly="Microsoft.Web.UI.WebControls" namespace="Microsoft.Web.UI.WebControls" tagprefix="iewc" %>
 <%--REQ-784--%>
@@ -13,17 +13,17 @@
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.NewClaimForm" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet"/>
+    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
-    <Elita:ProtectionAndEventDetails ID="moProtectionEvtDtl" runat="server" align="center" />
+    <Elita:ProtectionAndEventDetails ID="moProtectionEvtDtl" runat="server" align="center"></Elita:ProtectionAndEventDetails>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
-    <Elita:MessageController runat="server" ID="moMessageController" Visible="false" />
-    <Elita:MessageController runat="server" ID="mcIssueStatus" Visible="false" />
+    <Elita:MessageController runat="server" ID="moMessageController" Visible="false"></Elita:MessageController>
+    <Elita:MessageController runat="server" ID="mcIssueStatus" Visible="false"></Elita:MessageController>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
-     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.6.1.min.js" />
+     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.6.1.min.js">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"
         EnablePageMethods="true" ScriptMode="Auto" AsyncPostBackTimeout="100">
     </asp:ScriptManager>
@@ -724,15 +724,13 @@
             <p class="modalTitle">
             <table width="525"><tr><td align="left">
                 <asp:Label ID="lblModalTitle" runat="server" Text="CONFIRM"></asp:Label></td><td align="right">
-                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');">
-                    <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                        width="16" height="18" align="right"/></a></td></tr></table></p>
+                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');" rel="noopener noreferrer">
+                    <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="right"></a></td></tr></table>
             <table class="formGrid" cellspacing="0" cellpadding="0" border="0" width="525">
                 <tbody>
                     <tr>
                         <td align="right">
-                            <img id="imgMsgIcon" name="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
-                                height="28" />
+                            <img id="imgMsgIcon" name="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png" height="28">
                         </td>
                         <td id="tdModalMessage" colspan="2" runat="server">
                             <asp:Label ID="lblCancelMessage" runat="server"></asp:Label>
@@ -743,10 +741,8 @@
                             &nbsp;
                         </td>
                         <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="2">
-                            <input id="btnModalCancelYes" class="primaryBtn floatR" runat="server" type="button"
-                                value="Yes" />
-                            <input id="Button1" class="popWindowAltbtn floatR" runat="server" type="button" value="No"
-                                onclick="hideModal('ModalCancel');" />
+                            <input id="btnModalCancelYes" class="primaryBtn floatR" runat="server" type="button" value="Yes">
+                            <input id="Button1" class="popWindowAltbtn floatR" runat="server" type="button" value="No" onclick="hideModal('ModalCancel');">
                         </td>
                     </tr>
                 </tbody>
@@ -825,10 +821,8 @@
                                 <asp:Label ID="LabelLossDate" runat="server">Date_Of_Loss</asp:Label>
                             </td>
                             <td nowrap="nowrap">
-                                <asp:TextBox ID="TextboxLossDate" TabIndex="73" runat="server" SkinID="SmallTextBox"
-                                    onchange="UpdateInfo();" AutoPostBack="true"></asp:TextBox>
-                                <asp:ImageButton ID="ImageButtonLossDate" TabIndex="75" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg"
-                                    ImageAlign="AbsMiddle"></asp:ImageButton>
+                                <asp:TextBox ID="TextboxLossDate" TabIndex="73" runat="server" SkinID="SmallTextBox" onchange="UpdateInfo();" AutoPostBack="true"></asp:TextBox>
+                                <asp:ImageButton ID="ImageButtonLossDate" TabIndex="75" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg" ImageAlign="AbsMiddle"></asp:ImageButton>
                             </td>
                             <td nowrap="nowrap" align="right">
                                 <asp:Label ID="LabelLiabilityLimit" runat="server">Liability_Limit</asp:Label>
@@ -843,17 +837,14 @@
                                 <asp:Label ID="LabelReportDate" runat="server">DATE_REPORTED</asp:Label>
                             </td>
                             <td nowrap="nowrap">
-                                <asp:TextBox ID="TextboxReportDate" TabIndex="73" runat="server" SkinID="SmallTextBox"
-                                    onchange="UpdateInfo();"></asp:TextBox>
-                                <asp:ImageButton ID="ImageButtonReportDate" TabIndex="75" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg"
-                                    ImageAlign="AbsMiddle"></asp:ImageButton>
+                                <asp:TextBox ID="TextboxReportDate" TabIndex="73" runat="server" SkinID="SmallTextBox" onchange="UpdateInfo();"></asp:TextBox>
+                                <asp:ImageButton ID="ImageButtonReportDate" TabIndex="75" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg" ImageAlign="AbsMiddle"></asp:ImageButton>
                             </td>
                             <td nowrap="nowrap" align="right">
                                 <asp:Label ID="LabelDeductible" runat="server">Deductible</asp:Label>
                             </td>
                             <td nowrap="nowrap">
-                                <asp:TextBox ID="TextboxDeductible_WRITE" TabIndex="78" runat="server" SkinID="SmallTextBox"
-                                    onchange="UpdateDeductible();"></asp:TextBox>
+                                <asp:TextBox ID="TextboxDeductible_WRITE" TabIndex="78" runat="server" SkinID="SmallTextBox" onchange="UpdateDeductible();"></asp:TextBox>
                                 <asp:TextBox ID="TextboxDeductibleShadow" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                             </td>
                         </tr>
@@ -862,8 +853,7 @@
                                 <asp:Label ID="LabelOutstandingPremAmt" runat="server">OUTSTANDING_PREMIUM_AMOUNT</asp:Label>
                             </td>
                             <td nowrap="nowrap">
-                                <asp:TextBox ID="TextboxOutstandingPremAmt" TabIndex="75" runat="server" ReadOnly="true"
-                                    SkinID="MediumTextBox" ForeColor="Red" Font-Bold="True"></asp:TextBox>
+                                <asp:TextBox ID="TextboxOutstandingPremAmt" TabIndex="75" runat="server" ReadOnly="true" SkinID="MediumTextBox" ForeColor="Red" Font-Bold="True"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
@@ -871,8 +861,7 @@
                                 <asp:Label ID="LabelCauseOfLossId" runat="server">Cause_Of_Loss</asp:Label>
                             </td>
                             <td nowrap="nowrap">
-                                <asp:DropDownList ID="cboCauseOfLossId" TabIndex="77" runat="server" SkinID="MediumDropDown"
-                                    AutoPostBack="True">
+                                <asp:DropDownList ID="cboCauseOfLossId" TabIndex="77" runat="server" SkinID="MediumDropDown" AutoPostBack="True">
                                 </asp:DropDownList>
                             </td>
                             <td nowrap="nowrap" align="right">
@@ -889,21 +878,16 @@
                                 <asp:Label ID="LabelAuthorizedAmount" runat="server">Authorized_Amount</asp:Label>
                             </td>
                             <td nowrap="nowrap">
-                                <asp:TextBox ID="TextBoxReplacementCost" runat="server" SkinID="MediumTextBox" onchange="UpdateAuth(this);"
-                                    TabIndex="78"></asp:TextBox>
-                                <asp:TextBox ID="TextboxAuthorizedAmountShadow" runat="server" ReadOnly="true" SkinID="SmallTextBox"
-                                    TabIndex="78"></asp:TextBox>
-                                <asp:TextBox ID="TextboxAuthorizedAmount" TabIndex="78" runat="server" SkinID="SmallTextBox"
-                                    onchange="UpdateAuth(this);"></asp:TextBox>
+                                <asp:TextBox ID="TextBoxReplacementCost" runat="server" SkinID="MediumTextBox" onchange="UpdateAuth(this);" TabIndex="78"></asp:TextBox>
+                                <asp:TextBox ID="TextboxAuthorizedAmountShadow" runat="server" ReadOnly="true" SkinID="SmallTextBox" TabIndex="78"></asp:TextBox>
+                                <asp:TextBox ID="TextboxAuthorizedAmount" TabIndex="78" runat="server" SkinID="SmallTextBox" onchange="UpdateAuth(this);"></asp:TextBox>
                             </td>
                             <td nowrap="nowrap" align="right">
                                 <asp:Label ID="LabelAssurantPays" runat="server">ASSURANT_PAY</asp:Label>
                             </td>
                             <td nowrap="nowrap">
-                                <asp:TextBox ID="TextboxAssurantPays" TabIndex="265" runat="server" SkinID="SmallTextBox"
-                                    DESIGNTIMEDRAGDROP="538"></asp:TextBox>
-                                <asp:TextBox ID="TextboxAssurantPaysShadow" runat="server" SkinID="SmallTextBox"
-                                    DESIGNTIMEDRAGDROP="538"></asp:TextBox>
+                                <asp:TextBox ID="TextboxAssurantPays" TabIndex="265" runat="server" SkinID="SmallTextBox" DESIGNTIMEDRAGDROP="538"></asp:TextBox>
+                                <asp:TextBox ID="TextboxAssurantPaysShadow" runat="server" SkinID="SmallTextBox" DESIGNTIMEDRAGDROP="538"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
@@ -952,16 +936,14 @@
                             </td>
                             <td nowrap="nowrap">
                                 <asp:TextBox ID="TextboxPickUpDate" TabIndex="83" runat="server" SkinID="MediumTextBox"></asp:TextBox>
-                                <asp:ImageButton ID="ImageButtonPickUpDate" TabIndex="84" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg"
-                                    ImageAlign="AbsMiddle"></asp:ImageButton>
+                                <asp:ImageButton ID="ImageButtonPickUpDate" TabIndex="84" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg" ImageAlign="AbsMiddle"></asp:ImageButton>
                             </td>
                             <td nowrap="nowrap" align="right">
                                 <asp:Label ID="LabelRepairDate" runat="server">REPAIR_DATE</asp:Label>
                             </td>
                             <td nowrap="nowrap">
                                 <asp:TextBox ID="TextboxRepairdate" TabIndex="81" runat="server" SkinID="MediumTextBox"></asp:TextBox>
-                                <asp:ImageButton ID="ImageButtonRepairDate" TabIndex="82" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg"
-                                    ImageAlign="AbsMiddle"></asp:ImageButton>
+                                <asp:ImageButton ID="ImageButtonRepairDate" TabIndex="82" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg" ImageAlign="AbsMiddle"></asp:ImageButton>
                             </td>
                         </tr>
                         <tr>
@@ -970,8 +952,7 @@
                                 <asp:Label ID="LabelUseShipAddress" runat="server" Visible="false">USE_SHIP_ADDRESS</asp:Label>
                             </td>
                             <td nowrap="nowrap">
-                                <asp:DropDownList ID="cboUseShipAddress" TabIndex="85" runat="server" SkinID="MediumDropDown"
-                                    AutoPostBack="True" Visible="false">
+                                <asp:DropDownList ID="cboUseShipAddress" TabIndex="85" runat="server" SkinID="MediumDropDown" AutoPostBack="True" Visible="false">
                                 </asp:DropDownList>
                             </td>
                             <td nowrap="nowrap" align="right">
@@ -992,36 +973,35 @@
                                 <asp:Label ID="lblNewDeviceSKU" runat="server">NEW_DEVICE_SKU:</asp:Label>
                             </td>
                             <td nowrap="nowrap">
-                                <asp:TextBox ID="txtNewDeviceSKU" TabIndex="88" runat="server" AutoPostBack="true"
-                                    SkinID="MediumTextBox"></asp:TextBox>
+                                <asp:TextBox ID="txtNewDeviceSKU" TabIndex="88" runat="server" AutoPostBack="true" SkinID="MediumTextBox"></asp:TextBox>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <Elita:BestReplacementOption id="ReplacementOption" runat="server" visible="True" >
+        <Elita:BestReplacementOption id="ReplacementOption" runat="server" visible="True">
         </Elita:BestReplacementOption>
         <div class="dataContainer">
             <h2 class="dataGridHeader">
                 <asp:Label runat="server" ID="lblGrdHdr"></asp:Label>
-                <span class=""><a onclick="RevealModalWithMessage('ModalIssue');" href="javascript:void(0)">
+                <span class=""><a onclick="RevealModalWithMessage('ModalIssue');" href="javascript:void(0)" rel="noopener noreferrer">
                     <asp:Label ID="lblFileNewIssue" runat="server"></asp:Label>
                 </a></span>
             </h2>
             <div style="width: 100%;">
 
-                <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />        
+                <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>        
                 <div id="tabs" class="style-tabs">
                   <ul>
-                    <li><a href="#tabClaimIssues"><asp:Label ID="Label21" runat="server" CssClass="tabHeaderText">CLAIM_ISSUES</asp:Label></a></li>
-                    <li><a href="#tabClaimImages"><asp:Label ID="Label23" runat="server" CssClass="tabHeaderText">CLAIM_IMAGES</asp:Label></a></li>
-                    <li><a href="#tabDeviceInformation"><asp:Label ID="Label24" runat="server" CssClass="tabHeaderText">DEVICE_INFORMATION</asp:Label></a></li>
-                    <li><a href="#tabServiceCenterInformation"><asp:Label ID="Label25" runat="server" CssClass="tabHeaderText">SERVICE_CENTER_INFORMATION</asp:Label></a></li>
-                    <li><a href="#tabLogisticalInformation"><asp:Label ID="Label26" runat="server" CssClass="tabHeaderText">LOGISTICAL_INFORMATION</asp:Label></a></li>
-                    <li><a href="#tabExtendedStatusAging"><asp:Label ID="Label27" runat="server" CssClass="tabHeaderText">EXTENDED_STATUS_AGING</asp:Label></a></li>
-                    <li><a href="#tabsQuestionAnswerInfo"><asp:Label ID="Label28" runat="server" CssClass="tabHeaderText">CASE_QUESTION_ANSWER</asp:Label></a></li>
-                    <li><a href="#tabsActionInfo"><asp:Label ID="Label29" runat="server" CssClass="tabHeaderText">CASE_ACTION</asp:Label></a></li>
+                    <li><a href="#tabClaimIssues" rel="noopener noreferrer"><asp:Label ID="Label21" runat="server" CssClass="tabHeaderText">CLAIM_ISSUES</asp:Label></a></li>
+                    <li><a href="#tabClaimImages" rel="noopener noreferrer"><asp:Label ID="Label23" runat="server" CssClass="tabHeaderText">CLAIM_IMAGES</asp:Label></a></li>
+                    <li><a href="#tabDeviceInformation" rel="noopener noreferrer"><asp:Label ID="Label24" runat="server" CssClass="tabHeaderText">DEVICE_INFORMATION</asp:Label></a></li>
+                    <li><a href="#tabServiceCenterInformation" rel="noopener noreferrer"><asp:Label ID="Label25" runat="server" CssClass="tabHeaderText">SERVICE_CENTER_INFORMATION</asp:Label></a></li>
+                    <li><a href="#tabLogisticalInformation" rel="noopener noreferrer"><asp:Label ID="Label26" runat="server" CssClass="tabHeaderText">LOGISTICAL_INFORMATION</asp:Label></a></li>
+                    <li><a href="#tabExtendedStatusAging" rel="noopener noreferrer"><asp:Label ID="Label27" runat="server" CssClass="tabHeaderText">EXTENDED_STATUS_AGING</asp:Label></a></li>
+                    <li><a href="#tabsQuestionAnswerInfo" rel="noopener noreferrer"><asp:Label ID="Label28" runat="server" CssClass="tabHeaderText">CASE_QUESTION_ANSWER</asp:Label></a></li>
+                    <li><a href="#tabsActionInfo" rel="noopener noreferrer"><asp:Label ID="Label29" runat="server" CssClass="tabHeaderText">CASE_ACTION</asp:Label></a></li>
                   </ul>
 
                   <div id="tabClaimIssues">
@@ -1030,11 +1010,9 @@
                                     <table width="100%" class="dataGrid">
                                         <tr id="trPageSize" runat="server">
                                             <td class="bor" align="left">
-                                                <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label><asp:Label ID="colonSepertor"
-                                                    runat="server">:</asp:Label>
+                                                <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label><asp:Label ID="colonSepertor" runat="server">:</asp:Label>
                                                 &nbsp;
-                                                <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true"
-                                                    SkinID="SmallDropDown">
+                                                <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true" SkinID="SmallDropDown">
                                                     <asp:ListItem Value="5">5</asp:ListItem>
                                                     <asp:ListItem Value="10">10</asp:ListItem>
                                                     <asp:ListItem Value="15">15</asp:ListItem>
@@ -1048,33 +1026,26 @@
                                         </tr>
                                     </table>
                                 </div>
-                                <asp:GridView ID="Grid" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True"
-                                    SkinID="DetailPageGridView" AllowSorting="true">
-                                    <SelectedRowStyle Wrap="True" />
-                                    <EditRowStyle Wrap="True" />
-                                    <AlternatingRowStyle Wrap="True" />
-                                    <RowStyle Wrap="True" />
-                                    <HeaderStyle />
+                                <asp:GridView ID="Grid" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True" SkinID="DetailPageGridView" AllowSorting="true">
+                                    <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                                    <EditRowStyle Wrap="True"></EditRowStyle>
+                                    <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                    <RowStyle Wrap="True"></RowStyle>
+                                    <HeaderStyle></HeaderStyle>
                                     <Columns>
                                         <asp:TemplateField HeaderText="Issue" SortExpression="ISSUE_DESCRIPTION">
                                             <ItemTemplate>
-                                                <asp:LinkButton CommandName="Select" ID="EditButton_WRITE" runat="server" CausesValidation="False"
-                                                    Text=""></asp:LinkButton>
+                                                <asp:LinkButton CommandName="Select" ID="EditButton_WRITE" runat="server" CausesValidation="False" Text=""></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:BoundField DataField="CREATED_DATE" SortExpression="CREATED_DATE" ReadOnly="true"
-                                            HtmlEncode="false" HeaderText="CREATED_DATE" HeaderStyle-HorizontalAlign="Center" />
-                                        <asp:BoundField DataField="CREATED_BY" SortExpression="CREATED_BY" ReadOnly="true"
-                                            HtmlEncode="false" HeaderText="CREATED_BY" HeaderStyle-HorizontalAlign="Center" />
-                                        <asp:BoundField DataField="PROCESSED_DATE" SortExpression="PROCESSED_DATE" ReadOnly="true"
-                                            HtmlEncode="false" HeaderText="PROCESSED_DATE" HeaderStyle-HorizontalAlign="Center" />
-                                        <asp:BoundField DataField="PROCESSED_BY" SortExpression="PROCESSED_BY" ReadOnly="true"
-                                            HtmlEncode="false" HeaderText="PROCESSED_BY" HeaderStyle-HorizontalAlign="Center" />
-                                        <asp:BoundField DataField="STATUS_CODE" ReadOnly="true" HeaderText="Status" SortExpression="Status"
-                                            HtmlEncode="false" />
+                                        <asp:BoundField DataField="CREATED_DATE" SortExpression="CREATED_DATE" ReadOnly="true" HtmlEncode="false" HeaderText="CREATED_DATE" HeaderStyle-HorizontalAlign="Center"></asp:BoundField>
+                                        <asp:BoundField DataField="CREATED_BY" SortExpression="CREATED_BY" ReadOnly="true" HtmlEncode="false" HeaderText="CREATED_BY" HeaderStyle-HorizontalAlign="Center"></asp:BoundField>
+                                        <asp:BoundField DataField="PROCESSED_DATE" SortExpression="PROCESSED_DATE" ReadOnly="true" HtmlEncode="false" HeaderText="PROCESSED_DATE" HeaderStyle-HorizontalAlign="Center"></asp:BoundField>
+                                        <asp:BoundField DataField="PROCESSED_BY" SortExpression="PROCESSED_BY" ReadOnly="true" HtmlEncode="false" HeaderText="PROCESSED_BY" HeaderStyle-HorizontalAlign="Center"></asp:BoundField>
+                                        <asp:BoundField DataField="STATUS_CODE" ReadOnly="true" HeaderText="Status" SortExpression="Status" HtmlEncode="false"></asp:BoundField>
                                     </Columns>
-                                    <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                                    <PagerStyle />
+                                    <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                                    <PagerStyle></PagerStyle>
                                 </asp:GridView>
                             </div>
                   </div>
@@ -1092,13 +1063,13 @@
                                                     <asp:Label runat="server" ID="DocumentTypeLabel" Text="DOCUMENT_TYPE"></asp:Label>
                                                 </td>
                                                 <td nowrap="nowrap">
-                                                    <asp:DropDownList runat="server" ID="DocumentTypeDropDown" SkinID="MediumDropDown" />
+                                                    <asp:DropDownList runat="server" ID="DocumentTypeDropDown" SkinID="MediumDropDown"></asp:DropDownList>
                                                 </td>
                                                 <td align="right" nowrap="nowrap">
                                                     <asp:Label runat="server" ID="ScanDateLabel" Text="SCAN_DATE"></asp:Label>
                                                 </td>
                                                 <td nowrap="nowrap">
-                                                    <asp:TextBox runat="server" ID="ScanDateTextBox" ReadOnly="true" SkinID="MediumTextBox" />
+                                                    <asp:TextBox runat="server" ID="ScanDateTextBox" ReadOnly="true" SkinID="MediumTextBox"></asp:TextBox>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -1106,8 +1077,7 @@
                                                     <asp:Label runat="server" ID="FileNameLabel" Text="FileName"></asp:Label>
                                                 </td>
                                                 <td colspan="3" nowrap="nowrap">
-                                                    <input id="ImageFileUpload" style="width: 80%" type="file" name="ImageFileUpload"
-                                                        runat="server" />
+                                                    <input id="ImageFileUpload" style="width: 80%" type="file" name="ImageFileUpload" runat="server">
                                                 </td>
                                             </tr>
                                             <tr>
@@ -1131,29 +1101,24 @@
                                 </div>
                             </asp:Panel>
                     <div class="Page">
-                        <asp:GridView ID="GridClaimImages" runat="server" Width="100%" AutoGenerateColumns="False"
-                            AllowPaging="True" SkinID="DetailPageGridView" AllowSorting="true">
-                            <SelectedRowStyle Wrap="True" />
-                            <EditRowStyle Wrap="True" />
-                            <AlternatingRowStyle Wrap="True" />
-                            <RowStyle Wrap="True" />
-                            <HeaderStyle />
+                        <asp:GridView ID="GridClaimImages" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True" SkinID="DetailPageGridView" AllowSorting="true">
+                            <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                            <EditRowStyle Wrap="True"></EditRowStyle>
+                            <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                            <RowStyle Wrap="True"></RowStyle>
+                            <HeaderStyle></HeaderStyle>
                             <Columns>
                                 <asp:TemplateField HeaderText="FILE_NAME" SortExpression="FILE_NAME">
                                     <ItemTemplate>
-                                        <asp:LinkButton runat="server" ID="btnImageLink" CommandName="SelectActionImage"
-                                            Text="Image Link"></asp:LinkButton>
+                                        <asp:LinkButton runat="server" ID="btnImageLink" CommandName="SelectActionImage" Text="Image Link"></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:BoundField DataField="SCAN_DATE" SortExpression="SCAN_DATE" ReadOnly="true"
-                                    HtmlEncode="false" HeaderText="SCAN_DATE" HeaderStyle-HorizontalAlign="Center" />
-                                <asp:BoundField DataField="DOCUMENT_TYPE" SortExpression="DOCUMENT_TYPE" ReadOnly="true"
-                                    HtmlEncode="false" HeaderText="DOCUMENT_TYPE" HeaderStyle-HorizontalAlign="Center" />
-                                <asp:BoundField DataField="STATUS" SortExpression="SCAN_DATE" ReadOnly="true"
-                                    HtmlEncode="false" HeaderText="STATUS" HeaderStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="SCAN_DATE" SortExpression="SCAN_DATE" ReadOnly="true" HtmlEncode="false" HeaderText="SCAN_DATE" HeaderStyle-HorizontalAlign="Center"></asp:BoundField>
+                                <asp:BoundField DataField="DOCUMENT_TYPE" SortExpression="DOCUMENT_TYPE" ReadOnly="true" HtmlEncode="false" HeaderText="DOCUMENT_TYPE" HeaderStyle-HorizontalAlign="Center"></asp:BoundField>
+                                <asp:BoundField DataField="STATUS" SortExpression="SCAN_DATE" ReadOnly="true" HtmlEncode="false" HeaderText="STATUS" HeaderStyle-HorizontalAlign="Center"></asp:BoundField>
                             </Columns>
-                            <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                            <PagerStyle />
+                            <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                            <PagerStyle></PagerStyle>
                         </asp:GridView>
                     </div>
                   </div>
@@ -1299,7 +1264,7 @@
                                             <asp:Label ID="Label20" runat="server" Text="DEFAULT_TO_EMAIL"></asp:Label>:
                                         </td>
                                         <td align="left">
-                                            <asp:CheckBox ID="chkServiceCenterDefToEmail" runat="server" Enabled="false" />
+                                            <asp:CheckBox ID="chkServiceCenterDefToEmail" runat="server" Enabled="false"></asp:CheckBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1313,7 +1278,7 @@
                                             <asp:Label ID="Label22" runat="server" Text="SHIPPING"></asp:Label>:
                                         </td>
                                         <td align="left">
-                                            <asp:CheckBox ID="chkServiceCenterShipping" runat="server" Enabled="false" />
+                                            <asp:CheckBox ID="chkServiceCenterShipping" runat="server" Enabled="false"></asp:CheckBox>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1321,8 +1286,7 @@
                                             <asp:Label ID="Label19" runat="server" Text="COMMENTS"></asp:Label>:
                                         </td>
                                         <td align="left" colspan="3">
-                                            <asp:TextBox ID="txtServiceCenterComments" runat="server" Columns="125" TextMode="MultiLine"
-                                            Rows="4"></asp:TextBox>
+                                            <asp:TextBox ID="txtServiceCenterComments" runat="server" Columns="125" TextMode="MultiLine" Rows="4"></asp:TextBox>
                                         </td>
                         
                                     </tr>
@@ -1401,21 +1365,20 @@
                      </table>
                      <div class="Page" runat="server" id="CaseQuestionAnswerTabPanel" style="display: block;
                             height: 300px; overflow: auto">
-                                <asp:GridView ID="CaseQuestionAnswerGrid" runat="server" Width="100%"  AllowPaging="false" AllowSorting="false"
-                                    SkinID="DetailPageGridView">
+                                <asp:GridView ID="CaseQuestionAnswerGrid" runat="server" Width="100%" AllowPaging="false" AllowSorting="false" SkinID="DetailPageGridView">
                                     <Columns>
-                                        <asp:BoundField HeaderText="case_number"  DataField="case_number" SortExpression="case_number"  HtmlEncode="false">
+                                        <asp:BoundField HeaderText="case_number" DataField="case_number" SortExpression="case_number" HtmlEncode="false">
                                         </asp:BoundField>
-                                        <asp:BoundField HeaderText="interaction_number"  DataField="interaction_number" SortExpression="interaction_number"  HtmlEncode="false">
+                                        <asp:BoundField HeaderText="interaction_number" DataField="interaction_number" SortExpression="interaction_number" HtmlEncode="false">
                                         </asp:BoundField>
-                                        <asp:BoundField HeaderText="Question"  DataField="Question" SortExpression="Question"  HtmlEncode="false">
+                                        <asp:BoundField HeaderText="Question" DataField="Question" SortExpression="Question" HtmlEncode="false">
                                         </asp:BoundField>
-                                        <asp:BoundField HeaderText="answer"  DataField="answer" SortExpression="answer"  HtmlEncode="false">
+                                        <asp:BoundField HeaderText="answer" DataField="answer" SortExpression="answer" HtmlEncode="false">
                                         </asp:BoundField>
-                                        <asp:BoundField HeaderText="created_date"  DataField="created_date" SortExpression="created_date"  HtmlEncode="false">
+                                        <asp:BoundField HeaderText="created_date" DataField="created_date" SortExpression="created_date" HtmlEncode="false">
                                         </asp:BoundField>
                                     </Columns>
-                                    <PagerSettings PageButtonCount="30" Mode="Numeric" />
+                                    <PagerSettings PageButtonCount="30" Mode="Numeric"></PagerSettings>
                                 </asp:GridView>
                      </div>
                   </div>  
@@ -1431,21 +1394,20 @@
                      <div class="Page" runat="server" id="ClaimActionTabPanel" style="display: block;
                             height: 300px; overflow: auto">
                             
-                            <asp:GridView ID="ClaimActionGrid" runat="server" Width="100%"  AllowPaging="false" AllowSorting="false"
-                                SkinID="DetailPageGridView">
+                            <asp:GridView ID="ClaimActionGrid" runat="server" Width="100%" AllowPaging="false" AllowSorting="false" SkinID="DetailPageGridView">
                                 <Columns>
-                                    <asp:BoundField HeaderText="action_owner"  DataField="action_owner" SortExpression="action_owner"  HtmlEncode="false">
+                                    <asp:BoundField HeaderText="action_owner" DataField="action_owner" SortExpression="action_owner" HtmlEncode="false">
                                     </asp:BoundField>
-                                    <asp:BoundField HeaderText="action_type"  DataField="action_type" SortExpression="action_type"  HtmlEncode="false">
+                                    <asp:BoundField HeaderText="action_type" DataField="action_type" SortExpression="action_type" HtmlEncode="false">
                                     </asp:BoundField>
-                                    <asp:BoundField HeaderText="document_type_descr"  DataField="document_type_descr" SortExpression="document_type_descr"  HtmlEncode="false">
+                                    <asp:BoundField HeaderText="document_type_descr" DataField="document_type_descr" SortExpression="document_type_descr" HtmlEncode="false">
                                     </asp:BoundField>
-                                    <asp:BoundField HeaderText="status"  DataField="status" SortExpression="status"  HtmlEncode="false">
+                                    <asp:BoundField HeaderText="status" DataField="status" SortExpression="status" HtmlEncode="false">
                                     </asp:BoundField>
-                                    <asp:BoundField HeaderText="created_date"  DataField="created_date" SortExpression="created_date"  HtmlEncode="false">
+                                    <asp:BoundField HeaderText="created_date" DataField="created_date" SortExpression="created_date" HtmlEncode="false">
                                     </asp:BoundField>
                                 </Columns>
-                                <PagerSettings PageButtonCount="30" Mode="Numeric" />
+                                <PagerSettings PageButtonCount="30" Mode="Numeric"></PagerSettings>
                             </asp:GridView>
                      </div>
                 </div> 
@@ -1458,9 +1420,8 @@
             <div id="Div3" class="overlay_message_content" style="width: 1100px; left: 8%">
                 <p class="modalTitle">
                     <asp:Label ID="lblClaimImage" runat="server" Text="CLAIM_IMAGE"></asp:Label>
-                    <a href="javascript:void(0)" onclick="hideModal('modalClaimImages');">
-                        <img id="img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                            width="16" height="18" align="absmiddle" class="floatR" /></a></p>
+                    <a href="javascript:void(0)" onclick="hideModal('modalClaimImages');" rel="noopener noreferrer">
+                        <img id="img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR"></a></p>
                 <iframe class="pdfContainer" align="left" runat="server" id="pdfIframe"></iframe>
             </div>
             <div id="Div5" class="black_overlay">
@@ -1470,11 +1431,10 @@
             <div id="Div4" class="overlay_message_content" style="width: 45%; top: 50px; overflow: hidden;">
                 <p class="modalTitle">
                     <asp:Label ID="lblCollectDeductible" runat="server" Text="COLLECT_DEDUCTIBLE"></asp:Label>
-                    <a href="javascript:void(0)" onclick="hideModal('modalCollectDeductible');">
-                        <img id="img5" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                            width="16" height="18" align="middle" class="floatR" /></a>
+                    <a href="javascript:void(0)" onclick="hideModal('modalCollectDeductible');" rel="noopener noreferrer">
+                        <img id="img5" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="middle" class="floatR"></a>
                 </p>
-                <Elita:MessageController runat="server" ID="moModalCollectDivMsgController" />                
+                <Elita:MessageController runat="server" ID="moModalCollectDivMsgController"></Elita:MessageController>                
                 <table width="100%" border="0" class="formGrid" cellpadding="0" cellspacing="0">
                     <tr>
                         <td>
@@ -1490,15 +1450,15 @@
                             <asp:Label ID="lblDedCollAuthCode" runat="server">CC_AUTH_CODE</asp:Label>
                         </td>
                         <td>
-                            <asp:TextBox ID="txtDedCollAuthCode" runat="server" SkinID="MediumTextBox" Enabled = "false"></asp:TextBox>
+                            <asp:TextBox ID="txtDedCollAuthCode" runat="server" SkinID="MediumTextBox" Enabled="false"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
-                        <td >
+                        <td>
                             &nbsp;
                         </td>
                         <td>
-                            <asp:Button ID="btnDedCollContinue" runat="server" CssClass="primaryBtn floatR"  Text="CONTINUE" CausesValidation="false" />
+                            <asp:Button ID="btnDedCollContinue" runat="server" CssClass="primaryBtn floatR" Text="CONTINUE" CausesValidation="false"></asp:Button>
                         </td>
                     </tr>
                 </table>              
@@ -1510,14 +1470,13 @@
             <div id="Div2" class="overlay_message_content" style="width: 500px">
                 <p class="modalTitle">
                     <asp:Label ID="Label1" runat="server" Text="NEW_CLAIM_ISSUE"></asp:Label>
-                    <a href="javascript:void(0)" onclick="HideErrorAndModal('ModalIssue');">
-                        <img id="img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                            width="16" height="18" align="absmiddle" class="floatR" /></a></p>
+                    <a href="javascript:void(0)" onclick="HideErrorAndModal('ModalIssue');" rel="noopener noreferrer">
+                        <img id="img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR"></a></p>
                 <div class="dataContainer">
                     <div runat="server" id="modalMessageBox" class="errorMsg" style="display: none">
                         <p>
-                            <img id="imgIssueMsg" width="16" height="13" align="middle" runat="server" src="~/App_Themes/Default/Images/icon_error.png" />
-                            <asp:Literal runat="server" ID="MessageLiteral" />
+                            <img id="imgIssueMsg" width="16" height="13" align="middle" runat="server" src="~/App_Themes/Default/Images/icon_error.png">
+                            <asp:Literal runat="server" ID="MessageLiteral"></asp:Literal>
                         </p>
                     </div>
                 </div>
@@ -1536,15 +1495,13 @@
                             <asp:Label ID="lblIssueDescription" runat="server" Text="ISSUE_DESCRIPTION"></asp:Label>:
                         </td>
                         <td colspan="2">
-                            <asp:DropDownList ID="ddlIssueDescription" runat="server" SkinID="MediumDropDown"
-                                AutoPostBack="false">
+                            <asp:DropDownList ID="ddlIssueDescription" runat="server" SkinID="MediumDropDown" AutoPostBack="false">
                             </asp:DropDownList>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3" class="seperator">
-                            <img id="Img4" src="~/App_Themes/Default/Images/icon_dash.png" runat="server" width="6"
-                                height="5" />
+                            <img id="Img4" src="~/App_Themes/Default/Images/icon_dash.png" runat="server" width="6" height="5">
                         </td>
                     </tr>
                     <tr>
@@ -1573,9 +1530,8 @@
                             &nbsp;
                         </td>
                         <td>
-                            <asp:Button ID="btnSave" runat="server" SkinID="PrimaryRightButton" Text="SAVE" OnClientClick="return validate();" />
-                            <input id='btnCancel' runat="server" type="button" name="Cancel" value="Cancel" onclick="HideErrorAndModal('ModalIssue');"
-                                class='popWindowCancelbtn floatR' />
+                            <asp:Button ID="btnSave" runat="server" SkinID="PrimaryRightButton" Text="SAVE" OnClientClick="return validate();"></asp:Button>
+                            <input id='btnCancel' runat="server" type="button" name="Cancel" value="Cancel" onclick="HideErrorAndModal('ModalIssue');" class='popWindowCancelbtn floatR'>
                         </td>
                     </tr>
                 </table>
@@ -1711,18 +1667,27 @@
     </asp:Panel>
     <div class="btnZone">
         <div>
-            <asp:Button ID="btnCreateClaim_WRITE" TabIndex="190" runat="server" Text="CONTINUE" SkinID="PrimaryRightButton"/>
-            <asp:Button ID="ButtonUpdateClaim_Write" TabIndex="190" runat="server" Text="UPDATE_CLAIM" SkinID="PrimaryRightButton"/>
-            <asp:LinkButton ID="ButtonCancel_Write" TabIndex="190" runat="server" Text="Cancel" OnClientClick="return revealModal('ModalCancel');" SkinID="AlternateRightButton" Visible="false"/>
-            <asp:LinkButton ID="btnCancelClaim" TabIndex="190" runat="server" Text="Cancel Claim" SkinID="AlternateRightButton" Visible="false"/>
-            <asp:Button ID="btnBack" TabIndex="185" runat="server" Text="Back" SkinID="AlternateLeftButton"/>
-            <asp:Button ID="btnUnlock" runat="server" TabIndex="187" Text="UNLOCK_CLAIM" Visible="false" SkinID="AlternateLeftButton"/>
-            <asp:Button ID="ButtonOverride_Write" TabIndex="190" runat="server" Text="Override" SkinID="AlternateLeftButton"/>
-            <asp:Button ID="btnComment" TabIndex="190" runat="server" Text="Comments" SkinID="AlternateLeftButton"/>
-            <asp:Button ID="btnDenyClaim_Write" TabIndex="195" runat="server" Text="Deny_Claim" SkinID="AlternateLeftButton"/>
+            <asp:Button ID="btnCreateClaim_WRITE" TabIndex="190" runat="server" Text="CONTINUE" SkinID="PrimaryRightButton"></asp:Button>
+            <asp:Button ID="ButtonUpdateClaim_Write" TabIndex="190" runat="server" Text="UPDATE_CLAIM" SkinID="PrimaryRightButton"></asp:Button>
+            <asp:LinkButton ID="ButtonCancel_Write" TabIndex="190" runat="server" Text="Cancel" OnClientClick="return revealModal('ModalCancel');" SkinID="AlternateRightButton" Visible="false"></asp:LinkButton>
+            <asp:LinkButton ID="btnCancelClaim" TabIndex="190" runat="server" Text="Cancel Claim" SkinID="AlternateRightButton" Visible="false"></asp:LinkButton>
+            <asp:Button ID="btnBack" TabIndex="185" runat="server" Text="Back" SkinID="AlternateLeftButton"></asp:Button>
+            <asp:Button ID="btnUnlock" runat="server" TabIndex="187" Text="UNLOCK_CLAIM" Visible="false" SkinID="AlternateLeftButton"></asp:Button>
+            <asp:Button ID="ButtonOverride_Write" TabIndex="190" runat="server" Text="Override" SkinID="AlternateLeftButton"></asp:Button>
+            <asp:Button ID="btnComment" TabIndex="190" runat="server" Text="Comments" SkinID="AlternateLeftButton"></asp:Button>
+            <asp:Button ID="btnDenyClaim_Write" TabIndex="195" runat="server" Text="Deny_Claim" SkinID="AlternateLeftButton"></asp:Button>
         </div>
     </div>
     <asp:TextBox ID="TextBoxNewLiabilityLimit" runat="server" Visible="False" Wrap="False"></asp:TextBox>
+    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server" designtimedragdrop="261">
+    <input id="HiddenUserAuthorization" type="hidden" name="HiddenUserAuthorization" runat="server">
+    <input id="HiddenCallerTaxNumber" type="hidden" name="HiddenCallerTaxNumber" runat="server" designtimedragdrop="261">
+    <asp:HiddenField ID="hdnSelectedIssueCode" runat="server"></asp:HiddenField>
+     <asp:HiddenField id="hdnDealerId" runat="server"></asp:HiddenField>
+     <asp:HiddenField id="hdnSelectedEnrolledSku" runat="server"></asp:HiddenField>
+    <asp:HiddenField id="hdnSelectedClaimedSku" runat="server"></asp:HiddenField>
+</asp:Content>
+lse"></asp:TextBox>
     <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
         runat="server" designtimedragdrop="261" />
     <input id="HiddenUserAuthorization" type="hidden" name="HiddenUserAuthorization"

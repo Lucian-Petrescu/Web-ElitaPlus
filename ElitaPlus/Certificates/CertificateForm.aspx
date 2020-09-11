@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CertificateForm.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CertificateForm.aspx.vb"
     Theme="Default" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.CertificateForm"
     EnableSessionState="True" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
@@ -29,10 +29,10 @@
     </script>
 
 
-    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet" />
+    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet">
     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js"> </script>
     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js"> </script>
-    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet" />
+    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet">
 
 
 
@@ -118,20 +118,16 @@
 
     <table id="TableFixed" cellspacing="0" cellpadding="0" border="0" width="80%" class="summaryGrid">
         <tbody>
-            <Elita:UserControlCertificateInfo ID="moCertificateInfoController" runat="server"
-                align="center" />
-            <Elita:UserControlCertificateInfo ID="moCertificateInfoCtrlCancel" runat="server"
-                align="center" />
+            <Elita:UserControlCertificateInfo ID="moCertificateInfoController" runat="server" align="center"></Elita:UserControlCertificateInfo>
+            <Elita:UserControlCertificateInfo ID="moCertificateInfoCtrlCancel" runat="server" align="center"></Elita:UserControlCertificateInfo>
             <tr>
                 <td align="right" id="moCancelDueDateInformation">
                     <asp:Label ID="lblFutureCancelationDate" runat="server" Visible="false" SkinID="SummaryLabel">FUTURE_CANCELATION_DATE</asp:Label>
                 </td>
                 <td align="left" colspan="5">
-                    <asp:TextBox ID="txtFutureCancelationDate" runat="server" Visible="false" ReadOnly="true"
-                        SkinID="SmallTextBox"></asp:TextBox>
+                    <asp:TextBox ID="txtFutureCancelationDate" runat="server" Visible="false" ReadOnly="true" SkinID="SmallTextBox"></asp:TextBox>
                     <asp:LinkButton ID="btnRemoveCancelDueDate_WRITE" runat="server" Visible="False">Remove</asp:LinkButton>
-                    <input id="HiddenRemoveCancelDueDatePromptResponse" type="hidden" name="HiddenRemoveCancelDueDatePromptResponse"
-                        runat="server" />
+                    <input id="HiddenRemoveCancelDueDatePromptResponse" type="hidden" name="HiddenRemoveCancelDueDatePromptResponse" runat="server">
                 </td>
             </tr>
         </tbody>
@@ -140,45 +136,45 @@
 <asp:Content ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
         <Scripts>
-            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js"></asp:ScriptReference>
         </Scripts>
     </asp:ScriptManager>
     <asp:Panel runat="server" ID="WorkingPanel">
         <div class="dataContainer">
-            <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
-            <asp:HiddenField ID="hdnDisabledTabs" runat="server" Value="" />
-            <asp:HiddenField ID="hdnInitDisabledTabs" runat="server" Value="NA" />
+            <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
+            <asp:HiddenField ID="hdnDisabledTabs" runat="server" Value=""></asp:HiddenField>
+            <asp:HiddenField ID="hdnInitDisabledTabs" runat="server" Value="NA"></asp:HiddenField>
             <div id="tabs" class="style-tabs" style="display: none;">
                 <ul>
-                    <li><a href="#tabsCertDetail">
+                    <li><a href="#tabsCertDetail" rel="noopener noreferrer">
                         <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">CERTIFICATE_DETAIL</asp:Label></a></li>
-                    <li><a href="#tabsGeneralInfo">
+                    <li><a href="#tabsGeneralInfo" rel="noopener noreferrer">
                         <asp:Label ID="Label7" runat="server" CssClass="tabHeaderText">General_Information</asp:Label></a></li>
-                    <li><a href="#tabsItemInfo">
+                    <li><a href="#tabsItemInfo" rel="noopener noreferrer">
                         <asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">ITEMS</asp:Label></a></li>
-                    <li><a href="#tabsPremiumInfo">
+                    <li><a href="#tabsPremiumInfo" rel="noopener noreferrer">
                         <asp:Label ID="Label11" runat="server" CssClass="tabHeaderText">Premium_Information</asp:Label></a></li>
-                    <li><a href="#tabsCancelRequest">
+                    <li><a href="#tabsCancelRequest" rel="noopener noreferrer">
                         <asp:Label ID="Label12" runat="server" CssClass="tabHeaderText">REQUEST_CANCELLATION</asp:Label></a></li>
-                    <li><a href="#tabsCancelInfo">
+                    <li><a href="#tabsCancelInfo" rel="noopener noreferrer">
                         <asp:Label ID="Label13" runat="server" CssClass="tabHeaderText">Cancellation_Information</asp:Label></a></li>
-                    <li><a href="#tabsComments">
+                    <li><a href="#tabsComments" rel="noopener noreferrer">
                         <asp:Label ID="lblTabCommentHeader" runat="server" CssClass="tabHeaderText">COMMENTS</asp:Label></a></li>
-                    <li><a href="#tabsEndorsement">
+                    <li><a href="#tabsEndorsement" rel="noopener noreferrer">
                         <asp:Label ID="Label15" runat="server" CssClass="tabHeaderText">ENDORSEMENTS</asp:Label></a></li>
-                    <li><a href="#tabsTaxId">
+                    <li><a href="#tabsTaxId" rel="noopener noreferrer">
                         <asp:Label ID="Label16" runat="server" CssClass="tabHeaderText">Tax ID</asp:Label></a></li>
-                    <li><a href="#tabsCertHistory">
+                    <li><a href="#tabsCertHistory" rel="noopener noreferrer">
                         <asp:Label ID="Label17" runat="server" CssClass="tabHeaderText">CERTIFICATE_HISTORY</asp:Label></a></li>
-                    <li><a href="#tabsCovHistory">
+                    <li><a href="#tabsCovHistory" rel="noopener noreferrer">
                         <asp:Label ID="Label18" runat="server" CssClass="tabHeaderText">Coverage_History</asp:Label></a></li>
-                    <li><a href="#tabsFinanceInfo">
+                    <li><a href="#tabsFinanceInfo" rel="noopener noreferrer">
                         <asp:Label ID="Label19" runat="server" CssClass="tabHeaderText">Finance_Information</asp:Label></a></li>
-                    <li><a href="#tabsReprice">
+                    <li><a href="#tabsReprice" rel="noopener noreferrer">
                         <asp:Label ID="Label20" runat="server" CssClass="tabHeaderText">REPRICE</asp:Label></a></li>
-                    <li><a href="#tabsDataProtection">
+                    <li><a href="#tabsDataProtection" rel="noopener noreferrer">
                         <asp:Label ID="Label22" runat="server" CssClass="tabHeaderText">Data_Protection</asp:Label></a></li>
-                    <li><a href="#tabsMigratedCertificateLink">
+                    <li><a href="#tabsMigratedCertificateLink" rel="noopener noreferrer">
                         <asp:Label ID="Label23" runat="server" CssClass="tabHeaderText">CERTIFICATE_LINKS_TAB</asp:Label></a></li>
                 </ul>
                 <div id="tabsCertDetail">
@@ -291,8 +287,7 @@
                                         <asp:Label ID="moOccupationLabel" runat="server">OCCUPATION</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moOccupationText" TabIndex="1" runat="server" CssClass="FLATTEXTBOX_TAB"
-                                            Width="95%"></asp:TextBox>
+                                        <asp:TextBox ID="moOccupationText" TabIndex="1" runat="server" CssClass="FLATTEXTBOX_TAB" Width="95%"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moPoliticallyExposedLabel" runat="server">POLITICALLY_EXPOSED</asp:Label>
@@ -308,8 +303,7 @@
                                         <asp:Label ID="moIncomeRangeLabel" runat="server">INCOME_RANGE</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moIncomeRangeText" TabIndex="1" runat="server" CssClass="FLATTEXTBOX_TAB"
-                                            Width="95%"></asp:TextBox>
+                                        <asp:TextBox ID="moIncomeRangeText" TabIndex="1" runat="server" CssClass="FLATTEXTBOX_TAB" Width="95%"></asp:TextBox>
                                         <asp:DropDownList ID="cboIncomeRangeId" TabIndex="1" runat="server" Width="50%">
                                         </asp:DropDownList>
                                     </td>
@@ -375,8 +369,7 @@
                                         <asp:Label ID="moCUIT_CUILLabel" runat="server">CUIT_CUIL</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moCUIT_CUILText" TabIndex="7" runat="server" SkinID="exSmallTextBox"
-                                            MaxLength="11"></asp:TextBox>
+                                        <asp:TextBox ID="moCUIT_CUILText" TabIndex="7" runat="server" SkinID="exSmallTextBox" MaxLength="11"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr runat="server" id="moAMLRegulations3">
@@ -400,18 +393,16 @@
                                     </td>
                                     <td colspan="2">
                                         <asp:Button ID="btnUndoCertDetail_Write" runat="server" Text="Undo" SkinID="AlternateRightButton"></asp:Button>
-                                        <asp:Button ID="btnSaveCertDetail_WRITE" TabIndex="11" runat="server" SkinID="PrimaryRightButton"
-                                            Text="Save"></asp:Button>
-                                        <asp:Button ID="btnEditCertDetail_WRITE" TabIndex="13" runat="server" Text="Edit"
-                                            SkinID="PrimaryRightButton"></asp:Button>
+                                        <asp:Button ID="btnSaveCertDetail_WRITE" TabIndex="11" runat="server" SkinID="PrimaryRightButton" Text="Save"></asp:Button>
+                                        <asp:Button ID="btnEditCertDetail_WRITE" TabIndex="13" runat="server" Text="Edit" SkinID="PrimaryRightButton"></asp:Button>
                                     </td>
                                 </tr>
 
                                 <tr id="AdditionalCustomer" runat="server">
                                     <td align="left" colspan="4">
                                         <h2 class="dataGridHeader">
-                                            <a id="OthCustExpander" href="#">
-                                                <img src="../App_Themes/Default/Images/sort_indicator_des.png" /></a>
+                                            <a id="OthCustExpander" href="#" rel="noopener noreferrer">
+                                                <img src="../App_Themes/Default/Images/sort_indicator_des.png"></a>
                                             <asp:Label ID="OtherCustomer" runat="server">OTHER_CUSTOMER</asp:Label>
                                             <asp:Label ID="CustomerCount" runat="server"></asp:Label>
                                         </h2>
@@ -421,23 +412,22 @@
                                 <tr id="OtherCustomerInfo">
                                     <td colspan="4" style="border-bottom: none">
 
-                                        <asp:GridView ID="CertOtherCustomers" runat="server" AutoGenerateColumns="false"
-                                            DataKeyNames="customer_id" SkinID="DetailPageGridView" AllowPaging="false" AllowSorting="false" Width="100%">
+                                        <asp:GridView ID="CertOtherCustomers" runat="server" AutoGenerateColumns="false" DataKeyNames="customer_id" SkinID="DetailPageGridView" AllowPaging="false" AllowSorting="false" Width="100%">
                                             <Columns>
                                                 <asp:TemplateField>
                                                     <ItemTemplate>
-                                                        <span style="cursor: pointer" id='<%# "Expand" & Container.DataItemIndex %>' onclick="ShowHideCustomerDetails(<%# Container.DataItemIndex %>, '<%# New Guid(CType(Eval("customer_id"), Byte())).ToString() %>', '<%# Eval("cust_info_exclude").ToString() %>', '<%# Eval("cust_salutation_exclude").ToString() %>', '<%# Eval("lang_id").ToString()%>', '<%# Eval("identification_number_type").ToString() %>');">+</span>
+                                                        <span style="cursor: pointer" id='<%# "Expand" & Container.DataItemIndex %>' onclick="ShowHideCustomerDetails(<%# Container.DataItemIndex %>, '<%# New Guid(CType(Eval(" customer_id"),="" Byte())).ToString()="" %="">', '<%# Eval("cust_info_exclude").ToString() %>', '<%# Eval("cust_salutation_exclude").ToString() %>', '<%# Eval("lang_id").ToString()%>', '<%# Eval("identification_number_type").ToString() %>');">+</span>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
 
-                                                <asp:BoundField DataField="customer_name" HeaderText="CUSTOMER_NAME" />
-                                                <asp:BoundField DataField="identification_number" HeaderText="TAX_ID" />
-                                                <asp:BoundField DataField="work_phone" HeaderText="WORK_PHONE" />
-                                                <asp:BoundField DataField="home_phone" HeaderText="HOME_PHONE" />
-                                                <asp:BoundField DataField="cust_info_exclude" Visible="false" />
-                                                <asp:BoundField DataField="cust_salutation_exclude" Visible="false" />
-                                                <asp:BoundField DataField="lang_id" Visible="false" />
-                                                <asp:BoundField DataField="identification_number_type" Visible="false" />
+                                                <asp:BoundField DataField="customer_name" HeaderText="CUSTOMER_NAME"></asp:BoundField>
+                                                <asp:BoundField DataField="identification_number" HeaderText="TAX_ID"></asp:BoundField>
+                                                <asp:BoundField DataField="work_phone" HeaderText="WORK_PHONE"></asp:BoundField>
+                                                <asp:BoundField DataField="home_phone" HeaderText="HOME_PHONE"></asp:BoundField>
+                                                <asp:BoundField DataField="cust_info_exclude" Visible="false"></asp:BoundField>
+                                                <asp:BoundField DataField="cust_salutation_exclude" Visible="false"></asp:BoundField>
+                                                <asp:BoundField DataField="lang_id" Visible="false"></asp:BoundField>
+                                                <asp:BoundField DataField="identification_number_type" Visible="false"></asp:BoundField>
                                                 <asp:TemplateField ItemStyle-BorderStyle="None">
                                                     <ItemTemplate>
                                                         <tr id='<%# "Child" & Container.DataItemIndex %>'>
@@ -466,8 +456,7 @@
                                     </td>
                                     <td align="left">
                                         <asp:TextBox ID="moProductSalesDateText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
-                                        <asp:ImageButton ID="BtnProductSalesDate" runat="server" Style="vertical-align: bottom"
-                                            ImageUrl="~/App_Themes/Default/Images/calendar.png" />
+                                        <asp:ImageButton ID="BtnProductSalesDate" runat="server" Style="vertical-align: bottom" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moRetailerLabel" runat="server">RETAILER</asp:Label>
@@ -482,8 +471,7 @@
                                     </td>
                                     <td align="left">
                                         <asp:TextBox ID="moWarrantySoldText" runat="server" SkinID="SmallTextBox" ReadOnly="True"></asp:TextBox>
-                                        <asp:ImageButton ID="BtnWarrantySoldDate" runat="server" Style="vertical-align: bottom"
-                                            ImageUrl="~/App_Themes/Default/Images/calendar.png" />
+                                        <asp:ImageButton ID="BtnWarrantySoldDate" runat="server" Style="vertical-align: bottom" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moInvoiceNumberLabel" runat="server">INVOICE_NUMBER</asp:Label>
@@ -503,7 +491,7 @@
                                         <asp:Label ID="moSalesPriceLabel" runat="server">SALES_PRICE</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moSalesPriceText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moSalesPriceText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -511,8 +499,7 @@
                                         <asp:Label ID="moOriginalRetailPriceLabel" runat="server">ORIGINAL_RETAIL_PRICE</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moOriginalRetailPriceText" ReadOnly="true" SkinID="SmallTextBox"
-                                            runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="moOriginalRetailPriceText" ReadOnly="true" SkinID="SmallTextBox" runat="server"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moCurrencyPurchaseLabel" runat="server">CURRENCY_OF_PURCHASE</asp:Label>:
@@ -546,7 +533,7 @@
                                         <asp:Label ID="Label14" runat="server">DEALER_UPDATE_REASON:</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="txtDealerUpdateReason" ReadOnly="true" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="txtDealerUpdateReason" ReadOnly="true" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -564,7 +551,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2" />
+                                    <td colspan="2"></td>
                                     <td runat="server" id="tdVehicleLicenseTag" align="right">
                                         <asp:Label ID="moVehicleLicenseTagLabel" runat="server">VEHICLE_LICENSE_TAG</asp:Label>
                                     </td>
@@ -793,8 +780,7 @@
                                     </td>
                                     <td align="left">
                                         <asp:TextBox ID="moServiceStartDateText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
-                                        <asp:ImageButton ID="BtnServiceStartDate" runat="server" Style="vertical-align: bottom"
-                                            ImageUrl="~/App_Themes/Default/Images/calendar.png" />
+                                        <asp:ImageButton ID="BtnServiceStartDate" runat="server" Style="vertical-align: bottom" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                                     </td>
                                 </tr>
                                 <tr>
@@ -819,8 +805,7 @@
                                     </td>
                                     <td align="left">
                                         <asp:TextBox ID="moCertificateVerificationDateText" runat="server" SkinID="SmallTextBox" Visible="false"></asp:TextBox>
-                                        <asp:ImageButton ID="BtnCertificateVerificationDate" runat="server" Style="vertical-align: bottom"
-                                            ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false" />
+                                        <asp:ImageButton ID="BtnCertificateVerificationDate" runat="server" Style="vertical-align: bottom" ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false"></asp:ImageButton>
                                     </td>
 
                                 </tr>
@@ -838,8 +823,7 @@
                                     </td>
                                     <td align="left">
                                         <asp:TextBox ID="moSEPAMandateDateText" runat="server" SkinID="SmallTextBox" Visible="false"></asp:TextBox>
-                                        <asp:ImageButton ID="BtnSEPAMandateDate" runat="server" Style="vertical-align: bottom"
-                                            ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false" />
+                                        <asp:ImageButton ID="BtnSEPAMandateDate" runat="server" Style="vertical-align: bottom" ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false"></asp:ImageButton>
                                     </td>
                                 </tr>
                                 <tr>
@@ -856,8 +840,7 @@
                                     </td>
                                     <td align="left">
                                         <asp:TextBox ID="moCheckVerificationDateText" runat="server" SkinID="SmallTextBox" Visible="false"></asp:TextBox>
-                                        <asp:ImageButton ID="BtnCheckVerificationDate" runat="server" Style="vertical-align: bottom"
-                                            ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false" />
+                                        <asp:ImageButton ID="BtnCheckVerificationDate" runat="server" Style="vertical-align: bottom" ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false"></asp:ImageButton>
                                     </td>
                                 </tr>
                                 <tr>
@@ -874,8 +857,7 @@
                                     </td>
                                     <td align="left">
                                         <asp:TextBox ID="moContractCheckCompleteDateText" runat="server" SkinID="SmallTextBox" Visible="false"></asp:TextBox>
-                                        <asp:ImageButton ID="BtnContractCheckCompleteDate" runat="server" Style="vertical-align: bottom"
-                                            ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false" />
+                                        <asp:ImageButton ID="BtnContractCheckCompleteDate" runat="server" Style="vertical-align: bottom" ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false"></asp:ImageButton>
                                     </td>
                                 </tr>
                                <%-- <tr id="trmfgdate" runat="server">
@@ -914,11 +896,9 @@
                                             <table width="100%" class="dataGrid">
                                                 <tr id="tr3" runat="server">
                                                     <td class="bor" align="left">
-                                                        <asp:Label ID="Label3" runat="server">Page_Size</asp:Label><asp:Label
-                                                            ID="Label4" runat="server">:</asp:Label>
+                                                        <asp:Label ID="Label3" runat="server">Page_Size</asp:Label><asp:Label ID="Label4" runat="server">:</asp:Label>
                                                         &nbsp;
-                                                        <asp:DropDownList ID="moCertExtn_cboPageSize" runat="server" Width="50px"
-                                                            AutoPostBack="true" SkinID="SmallDropDown">
+                                                        <asp:DropDownList ID="moCertExtn_cboPageSize" runat="server" Width="50px" AutoPostBack="true" SkinID="SmallDropDown">
                                                             <asp:ListItem Value="5">5</asp:ListItem>
                                                             <asp:ListItem Value="10">10</asp:ListItem>
                                                             <asp:ListItem Value="15">15</asp:ListItem>
@@ -937,21 +917,18 @@
                                                 </tr>
                                             </table>
                                             <div>
-                                                <asp:GridView ID="CertExtnGrid" runat="server" Width="50%" AutoGenerateColumns="False"
-                                                    AllowPaging="True" SkinID="DetailPageGridView" AllowSorting="False">
-                                                    <SelectedRowStyle Wrap="True" />
-                                                    <EditRowStyle Wrap="True" />
-                                                    <AlternatingRowStyle Wrap="True" />
-                                                    <HeaderStyle Wrap="false" />
-                                                    <RowStyle Wrap="True" />
+                                                <asp:GridView ID="CertExtnGrid" runat="server" Width="50%" AutoGenerateColumns="False" AllowPaging="True" SkinID="DetailPageGridView" AllowSorting="False">
+                                                    <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                                                    <EditRowStyle Wrap="True"></EditRowStyle>
+                                                    <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                                    <HeaderStyle Wrap="false"></HeaderStyle>
+                                                    <RowStyle Wrap="True"></RowStyle>
                                                     <Columns>
-                                                        <asp:BoundField DataField="FIELD_NAME"
-                                                            HeaderText="Consent Type" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                        <asp:BoundField DataField="FIELD_VALUE"
-                                                            HeaderText="Consent Value" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                                                        <asp:BoundField DataField="FIELD_NAME" HeaderText="Consent Type" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                        <asp:BoundField DataField="FIELD_VALUE" HeaderText="Consent Value" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
                                                     </Columns>
-                                                    <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                                                    <PagerStyle />
+                                                    <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                                                    <PagerStyle></PagerStyle>
                                                 </asp:GridView>
                                             </div>
                                         </div>
@@ -970,57 +947,51 @@
                 </div>
                 <div id="tabsItemInfo">
                     <div class="Page" runat="server" id="moItemsTabPanel_WRITE" style="display: block; height: 300px; overflow: auto">
-                        <asp:GridView ID="ItemsGrid" runat="server" Width="100%" OnRowCreated="ItemsGrid_ItemCreated"
-                            OnRowCommand="ItemsGrid_ItemCommand" AllowPaging="false" AllowSorting="false"
-                            SkinID="DetailPageGridView">
+                        <asp:GridView ID="ItemsGrid" runat="server" Width="100%" OnRowCreated="ItemsGrid_ItemCreated" OnRowCommand="ItemsGrid_ItemCommand" AllowPaging="false" AllowSorting="false" SkinID="DetailPageGridView">
                             <Columns>
-                                <asp:TemplateField SortExpression="item_number" HeaderText="item_number" />
+                                <asp:TemplateField SortExpression="item_number" HeaderText="item_number"></asp:TemplateField>
                                 <asp:TemplateField SortExpression="risk_type" HeaderText="Risk_Type">
                                     <ItemTemplate>
-                                        <asp:LinkButton ID="btnEditItem" runat="server" CommandName="SelectAction" />
+                                        <asp:LinkButton ID="btnEditItem" runat="server" CommandName="SelectAction"></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField SortExpression="item_desc" HeaderText="Item_Desc" />
-                                <asp:TemplateField SortExpression="make" HeaderText="Make" />
-                                <asp:TemplateField SortExpression="model" HeaderText="Model" />
-                                <asp:TemplateField SortExpression="expiration_date" HeaderText="Expiration_Date" />
-                                <asp:TemplateField SortExpression="benefit_status" HeaderText="Benefit_Status" />
+                                <asp:TemplateField SortExpression="item_desc" HeaderText="Item_Desc"></asp:TemplateField>
+                                <asp:TemplateField SortExpression="make" HeaderText="Make"></asp:TemplateField>
+                                <asp:TemplateField SortExpression="model" HeaderText="Model"></asp:TemplateField>
+                                <asp:TemplateField SortExpression="expiration_date" HeaderText="Expiration_Date"></asp:TemplateField>
+                                <asp:TemplateField SortExpression="benefit_status" HeaderText="Benefit_Status"></asp:TemplateField>
                             </Columns>
-                            <PagerSettings PageButtonCount="15" Mode="Numeric" />
+                            <PagerSettings PageButtonCount="15" Mode="Numeric"></PagerSettings>
                         </asp:GridView>
-                        <br />
-                        <asp:GridView ID="RegisteredItemsGrid" runat="server" Width="100%" OnRowCreated="RegisteredItemsGrid_ItemCreated"
-                            OnRowCommand="RegisteredItemsGrid_ItemCommand" AllowPaging="false" AllowSorting="false"
-                            SkinID="DetailPageGridView">
+                        <br>
+                        <asp:GridView ID="RegisteredItemsGrid" runat="server" Width="100%" OnRowCreated="RegisteredItemsGrid_ItemCreated" OnRowCommand="RegisteredItemsGrid_ItemCommand" AllowPaging="false" AllowSorting="false" SkinID="DetailPageGridView">
                             <Columns>
                                 <asp:TemplateField SortExpression="registered_item_name" HeaderText="registered_item_name">
                                     <ItemTemplate>
-                                        <asp:LinkButton ID="btnRegEditItem" runat="server" CommandName="SelectAction" />
+                                        <asp:LinkButton ID="btnRegEditItem" runat="server" CommandName="SelectAction"></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField SortExpression="device_type" HeaderText="device_Type" />
-                                <asp:TemplateField SortExpression="item_desc" HeaderText="Item_Desc" />
-                                <asp:TemplateField SortExpression="make" HeaderText="Make" />
-                                <asp:TemplateField SortExpression="model" HeaderText="Model" />
-                                <asp:TemplateField SortExpression="purchased_date" HeaderText="purchased_date" />
-                                <asp:TemplateField SortExpression="purchase_price" HeaderText="purchase_price" />
-                                <asp:TemplateField SortExpression="serial_number" HeaderText="serial_number" />
-                                <asp:TemplateField SortExpression="registration_date" HeaderText="registration_date" />
-                                <asp:TemplateField SortExpression="retail_price" HeaderText="retail_price" />
-                                <asp:TemplateField SortExpression="expiration_date" HeaderText="expiration_date" />
-                                <asp:TemplateField SortExpression="registered_item_status" HeaderText="registered_item_status" />
+                                <asp:TemplateField SortExpression="device_type" HeaderText="device_Type"></asp:TemplateField>
+                                <asp:TemplateField SortExpression="item_desc" HeaderText="Item_Desc"></asp:TemplateField>
+                                <asp:TemplateField SortExpression="make" HeaderText="Make"></asp:TemplateField>
+                                <asp:TemplateField SortExpression="model" HeaderText="Model"></asp:TemplateField>
+                                <asp:TemplateField SortExpression="purchased_date" HeaderText="purchased_date"></asp:TemplateField>
+                                <asp:TemplateField SortExpression="purchase_price" HeaderText="purchase_price"></asp:TemplateField>
+                                <asp:TemplateField SortExpression="serial_number" HeaderText="serial_number"></asp:TemplateField>
+                                <asp:TemplateField SortExpression="registration_date" HeaderText="registration_date"></asp:TemplateField>
+                                <asp:TemplateField SortExpression="retail_price" HeaderText="retail_price"></asp:TemplateField>
+                                <asp:TemplateField SortExpression="expiration_date" HeaderText="expiration_date"></asp:TemplateField>
+                                <asp:TemplateField SortExpression="registered_item_status" HeaderText="registered_item_status"></asp:TemplateField>
                             </Columns>
-                            <PagerSettings PageButtonCount="15" Mode="Numeric" />
+                            <PagerSettings PageButtonCount="15" Mode="Numeric"></PagerSettings>
                         </asp:GridView>
-                        <br />
+                        <br>
                         <table>
                             <tbody>
                                 <tr style="background-color: #f2f2f2">
                                     <td>
-                                        <asp:Button ID="btnNewCertItem_WRITE" runat="server" SkinID="PrimaryRightButton"
-                                            Text="New" />
-                                        <asp:Button ID="btnNewCertRegItem_WRITE" runat="server" SkinID="PrimaryRightButton"
-                                            Text="Register_New_Item" />
+                                        <asp:Button ID="btnNewCertItem_WRITE" runat="server" SkinID="PrimaryRightButton" Text="New"></asp:Button>
+                                        <asp:Button ID="btnNewCertRegItem_WRITE" runat="server" SkinID="PrimaryRightButton" Text="Register_New_Item"></asp:Button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -1036,13 +1007,13 @@
                                         <asp:Label ID="Label2" runat="server">CURRENCY:</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="TextboxCURRENCY_OF_CERT" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="TextboxCURRENCY_OF_CERT" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="lblBillingDocType" runat="server">BILLING_DOCUMENT_TYPE:</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="txtBillingDocType" ReadOnly="true" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="txtBillingDocType" ReadOnly="true" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1050,13 +1021,13 @@
                                         <asp:Label ID="moBillingPlanLabel" runat="server">BILLING_PLAN:</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moBillingPlanText" ReadOnly="true" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moBillingPlanText" ReadOnly="true" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moBillingCycleLabel" runat="server">BILLING_CYCLE:</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moBillingCycleText" ReadOnly="true" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moBillingCycleText" ReadOnly="true" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1064,13 +1035,13 @@
                                         <asp:Label ID="moGrossAmtReceivedLabel" runat="server">GROSS_AMT_RECEIVED</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moGrossAmtReceivedText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moGrossAmtReceivedText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moMarketingExpenseLabel" runat="server">MARKETING_EXPENSE</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moMarketingExpenseText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moMarketingExpenseText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1078,7 +1049,7 @@
                                         <asp:Label ID="moPremiumWrittenLabel" runat="server">PREMIUM_WRITTEN</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moPremiumWrittenText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moPremiumWrittenText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moOtherLabel" runat="server">OTHER</asp:Label>:
@@ -1092,18 +1063,16 @@
                                         <asp:Label ID="moOriginalPremiumLabel" runat="server">ORIGINAL_PREMIUM</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moOriginalPremiumText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moOriginalPremiumText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moSalesTaxLabel" runat="server">SALES_TAX</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moSalesTaxText" runat="server" SkinID="SmallTextBox" />
-                                        <asp:Label ID="lblTaxDetails" runat="server" ForeColor ="Blue"  Text="Tax_Details"> </asp:Label>
+                                        <asp:TextBox ID="moSalesTaxText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
+                                        <asp:Label ID="lblTaxDetails" runat="server" ForeColor="Blue" Text="Tax_Details"> </asp:Label>
                                     </td>
-                                    <ajaxToolkit:HoverMenuExtender  ID="HoverMenuExtender1" runat="server" TargetControlID="lblTaxDetails" 
-                                         PopupControlID="PanTaxDetails" PopupPosition="right" PopDelay="25" HoverCssClass="popupBtnHover"
-                                         DynamicControlID="PanTaxDetails"  DynamicServiceMethod="GetSalesTaxDetails">
+                                    <ajaxToolkit:HoverMenuExtender ID="HoverMenuExtender1" runat="server" TargetControlID="lblTaxDetails" PopupControlID="PanTaxDetails" PopupPosition="right" PopDelay="25" HoverCssClass="popupBtnHover" DynamicControlID="PanTaxDetails" DynamicServiceMethod="GetSalesTaxDetails">
                                      </ajaxToolkit:HoverMenuExtender>
                                 </tr>
                                 <tr>
@@ -1111,13 +1080,13 @@
                                         <asp:Label ID="moLossCostLabel" runat="server">LOSS_COST</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moLossCostText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moLossCostText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moMTDPaymentsLabel" runat="server">MTD_PAYMENTS</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moMTDPaymentsText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moMTDPaymentsText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1141,29 +1110,29 @@
                                     <td align="left">
                                         <asp:TextBox ID="moAdminExpensesText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
-                                    <td colspan="2" />
+                                    <td colspan="2"></td>
                                 </tr>
                                 <tr id="moCustPaymentInfo1" runat="server">
                                     <td align="right">
                                         <asp:Label ID="moPaymentRcvdFromCustLabel" runat="server">PAYMENT_RCVD_FROM_CUST</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moPaymentRcvdFromCustText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moPaymentRcvdFromCustText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moMTDPaymentFromCustLabel" runat="server">MTD_PAYMENT_FROM_CUST</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moMTDPaymentFromCustText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moMTDPaymentFromCustText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="moCustPaymentInfo2" runat="server">
-                                    <td colspan="2" />
+                                    <td colspan="2"></td>
                                     <td align="right">
                                         <asp:Label ID="moYTDPaymentFromCustLabel" runat="server">YTD_PAYMENT_FROM_CUST</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moYTDPaymentFromCustText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moYTDPaymentFromCustText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="moDirectDebitInformation1" runat="server">
@@ -1178,7 +1147,7 @@
                                         <asp:Label ID="moInstallAmountLabel" runat="server">INSTALLMENT_AMOUNT</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moInstallAmountText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moInstallAmountText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="moDirectDebitInformation2" runat="server">
@@ -1186,13 +1155,13 @@
                                         <asp:Label ID="moNumberOfInstallmentLabel" runat="server" Text="NUMBER_OF_INSTALLMENT"></asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moNumberOfInstallmentText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moNumberOfInstallmentText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moTotalAmountCollectedLabel" runat="server">TOTAL_AMOUNT_COLLECTED</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moTotalAmountCollectedText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moTotalAmountCollectedText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="moDirectDebitInformation3" runat="server">
@@ -1200,13 +1169,13 @@
                                         <asp:Label ID="moNumberOfInstallmentCollectedLabel" runat="server" Text="NUMBER_OF_INSTALLMENT_COLLECTED"></asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moNumberOfInstallmentCollectedText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moNumberOfInstallmentCollectedText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moBalanceRemainingLabel" runat="server">BALANCE_REMAINING</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moBalanceRemainingText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moBalanceRemainingText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="moDirectDebitInformation4" runat="server">
@@ -1214,13 +1183,13 @@
                                         <asp:Label ID="moNumberOfInstallmentRemainingLabel" runat="server" Text="NUMBER_OF_INSTALLMENT_REMAINING"></asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moNumberOfInstallmentRemainingLText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moNumberOfInstallmentRemainingLText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moNextDueDateLabel" runat="server">NEXT_DUE_DATE</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moNextDueDateText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moNextDueDateText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="moDirectDebitInformation4A" runat="server">
@@ -1229,7 +1198,7 @@
                                         <asp:Label ID="moNextBillingDateLabel" runat="server">NEXT_BILLING_DATE</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moNextBillingDateText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moNextBillingDateText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="moDirectDebitInformation5" runat="server">
@@ -1252,15 +1221,14 @@
                                         <asp:Label ID="moPaymentInstrumentLabel" runat="server">PAYMENT_INSTRUMENT:</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:DropDownList ID="moPaymentInstrument" runat="server" SkinID="SmallDropDown"
-                                            Enabled="false">
+                                        <asp:DropDownList ID="moPaymentInstrument" runat="server" SkinID="SmallDropDown" Enabled="false">
                                         </asp:DropDownList>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moDateLetterSentLabel" runat="server">DATE_LETTER_SENT</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moDateLetterSentText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moDateLetterSentText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="moDirectDebitInformation6" runat="server">
@@ -1268,13 +1236,13 @@
                                         <asp:Label ID="moBankAccountNumberLabel" runat="server">BANK_ACCOUNT_NUMBER</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moBankAccountNumberText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moBankAccountNumberText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moBankRoutingNumberLabel" runat="server">BANK_ROUTING_NUMBER</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moBankRoutingNumberText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moBankRoutingNumberText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="moDirectDebitInformation7" runat="server">
@@ -1282,24 +1250,23 @@
                                         <asp:Label ID="moBankAccountOwnerLabel" runat="server">BANK_ACCOUNT_OWNER</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moBankAccountOwnerText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moBankAccountOwnerText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
-                                    <td colspan="2" />
+                                    <td colspan="2"></td>
                                 </tr>
                                 <tr id="moCreditCardInformation1" runat="server">
                                     <td align="right">
                                         <asp:Label ID="moCreditCardTypeIDLabel" runat="server">CREDIT_CARD_TYPE</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:DropDownList ID="moCreditCardTypeIDDropDown" runat="server" SkinID="SmallDropDown"
-                                            AutoPostBack="false">
+                                        <asp:DropDownList ID="moCreditCardTypeIDDropDown" runat="server" SkinID="SmallDropDown" AutoPostBack="false">
                                         </asp:DropDownList>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moCreditCardNumberLabel" runat="server">CREDIT_CARD_NUMBER</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moCreditCardNumberText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moCreditCardNumberText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="moCreditCardInformation2" runat="server">
@@ -1307,48 +1274,44 @@
                                         <asp:Label ID="moNameOnCreditCardLabel" runat="server">NAME_ON_CREDIT_CARD</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moNameOnCreditCardText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moNameOnCreditCardText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moExpirationDateLabel" runat="server">Expiration_Date</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moExpirationDateText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moExpirationDateText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="moCommEntityInformationLine" runat="server">
                                     <td colspan="4">
-                                        <hr style="width: 100%; height: 1px" size="1" />
+                                        <hr style="width: 100%; height: 1px" size="1">
                                     </td>
                                 </tr>
                                 <tr id="moCommEntityInformation" runat="server">
                                     <td colspan="4">
-                                        <asp:GridView ID="moCommEntityGrid" runat="server" Width="70%" AutoGenerateColumns="False"
-                                            CellPadding="1" AllowPaging="false" AllowSorting="false" CssClass="DATAGRID"
-                                            Visible="true" HorizontalAlign="Center">
-                                            <SelectedRowStyle Wrap="False" CssClass="SELECTED" />
-                                            <EditRowStyle Wrap="False" CssClass="EDITROW" />
-                                            <AlternatingRowStyle Wrap="False" CssClass="ALTROW" />
-                                            <RowStyle Wrap="False" CssClass="ROW" />
-                                            <HeaderStyle CssClass="HEADER" />
+                                        <asp:GridView ID="moCommEntityGrid" runat="server" Width="70%" AutoGenerateColumns="False" CellPadding="1" AllowPaging="false" AllowSorting="false" CssClass="DATAGRID" Visible="true" HorizontalAlign="Center">
+                                            <SelectedRowStyle Wrap="False" CssClass="SELECTED"></SelectedRowStyle>
+                                            <EditRowStyle Wrap="False" CssClass="EDITROW"></EditRowStyle>
+                                            <AlternatingRowStyle Wrap="False" CssClass="ALTROW"></AlternatingRowStyle>
+                                            <RowStyle Wrap="False" CssClass="ROW"></RowStyle>
+                                            <HeaderStyle CssClass="HEADER"></HeaderStyle>
                                             <Columns>
-                                                <asp:BoundField HeaderText="Commission Entity" DataField="payee_type_or_entity_name"
-                                                    HeaderStyle-CssClass="CenteredTD" ItemStyle-Width="1%" />
-                                                <asp:BoundField HeaderText="Total Commission Paid" DataField="comm_paid_as_of_date"
-                                                    HeaderStyle-CssClass="CenteredTD" ItemStyle-Width="1%" />
+                                                <asp:BoundField HeaderText="Commission Entity" DataField="payee_type_or_entity_name" HeaderStyle-CssClass="CenteredTD" ItemStyle-Width="1%"></asp:BoundField>
+                                                <asp:BoundField HeaderText="Total Commission Paid" DataField="comm_paid_as_of_date" HeaderStyle-CssClass="CenteredTD" ItemStyle-Width="1%"></asp:BoundField>
                                             </Columns>
                                         </asp:GridView>
                                     </td>
                                 </tr>
                                 <tr style="background-color: #f2f2f2">
                                     <td colspan="4">
-                                        <asp:Button ID="btnBankInfo" runat="server" Text="BANK_INFO" SkinID="PrimaryRightButton" />
-                                        <asp:Button ID="btnDebitHistory" runat="server" Text="BILLING_HISTORY" SkinID="PrimaryRightButton" />
-                                        <asp:Button ID="btnPaymentHistory" runat="server" Text="PAYMENT_HISTORY" SkinID="PrimaryRightButton" />
-                                        <asp:Button ID="btnBillPayHist" runat="server" Text="BILLING_COLLECTION_HISTORY" SkinID="PrimaryRightButton" />
-                                        <asp:Button ID="btnDebitEdit_WRITE" runat="server" Text="Edit" SkinID="PrimaryRightButton" />
-                                        <asp:Button ID="btnUndoDebit_WRITE" runat="server" Text="Undo" SkinID="AlternateRightButton" />
-                                        <asp:Button ID="btnDebitSave_WRITE" runat="server" Text="Save" SkinID="PrimaryRightButton" />
+                                        <asp:Button ID="btnBankInfo" runat="server" Text="BANK_INFO" SkinID="PrimaryRightButton"></asp:Button>
+                                        <asp:Button ID="btnDebitHistory" runat="server" Text="BILLING_HISTORY" SkinID="PrimaryRightButton"></asp:Button>
+                                        <asp:Button ID="btnPaymentHistory" runat="server" Text="PAYMENT_HISTORY" SkinID="PrimaryRightButton"></asp:Button>
+                                        <asp:Button ID="btnBillPayHist" runat="server" Text="BILLING_COLLECTION_HISTORY" SkinID="PrimaryRightButton"></asp:Button>
+                                        <asp:Button ID="btnDebitEdit_WRITE" runat="server" Text="Edit" SkinID="PrimaryRightButton"></asp:Button>
+                                        <asp:Button ID="btnUndoDebit_WRITE" runat="server" Text="Undo" SkinID="AlternateRightButton"></asp:Button>
+                                        <asp:Button ID="btnDebitSave_WRITE" runat="server" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -1374,8 +1337,7 @@
                                         <asp:Label ID="moProofOfDocumentationLabel" Visible="false" runat="server">PROOF_OF_DOCUMENTATION</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:DropDownList ID="moProofOfDocumentationDrop" Visible="false" Width="200px" runat="server" SkinID="SmallDropDown"
-                                            AutoPostBack="false">
+                                        <asp:DropDownList ID="moProofOfDocumentationDrop" Visible="false" Width="200px" runat="server" SkinID="SmallDropDown" AutoPostBack="false">
                                         </asp:DropDownList>
                                     </td>
                                 </tr>
@@ -1384,8 +1346,8 @@
                                         <asp:Label ID="moCancelRequestDateLabel" runat="server">CANCELLATION_REQUEST_DATE</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moCancelRequestDateTextBox" AutoPostBack="true" runat="server" SkinID="SmallTextBox" />
-                                        <asp:ImageButton ID="moCancelRequestDateImagebutton" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" ImageAlign="AbsMiddle" />
+                                        <asp:TextBox ID="moCancelRequestDateTextBox" AutoPostBack="true" runat="server" SkinID="SmallTextBox"></asp:TextBox>
+                                        <asp:ImageButton ID="moCancelRequestDateImagebutton" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" ImageAlign="AbsMiddle"></asp:ImageButton>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1393,8 +1355,8 @@
                                         <asp:Label ID="moCancelDateLabel" runat="server">CANCELLATION_DATE</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moCancelDateTextBox" runat="server" SkinID="SmallTextBox" />
-                                        <asp:ImageButton ID="moCancelDateImageButton" runat="server" ImageAlign="AbsMiddle" ImageUrl="~/App_Themes/Default/Images/calendar.png" />
+                                        <asp:TextBox ID="moCancelDateTextBox" runat="server" SkinID="SmallTextBox"></asp:TextBox>
+                                        <asp:ImageButton ID="moCancelDateImageButton" runat="server" ImageAlign="AbsMiddle" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                                     </td>
                                 </tr>
                                 <tr valign="top">
@@ -1411,7 +1373,7 @@
                                         <asp:Label ID="moCRIBANNumberLabel" runat="server" Visible="false">IBAN_NUMBER</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moCRIBANNumberText" runat="server" Width="200px" Visible="false" SkinID="MediumTextBox" />
+                                        <asp:TextBox ID="moCRIBANNumberText" runat="server" Width="200px" Visible="false" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr valign="top">
@@ -1436,7 +1398,7 @@
                                         <asp:Label ID="moCancelRequestStatusLabel" runat="server">STATUS</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moCancelRequestStatusText" runat="server" SkinID="SmallTextBox" ReadOnly="True" />
+                                        <asp:TextBox ID="moCancelRequestStatusText" runat="server" SkinID="SmallTextBox" ReadOnly="True"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1444,15 +1406,15 @@
                                         <asp:Label ID="moCommentsLabel" runat="server">COMMENTS</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moCommentsTextbox" runat="server" Rows="8" SkinID="LargeTextBox" TextMode="MultiLine" Visible="true" />
+                                        <asp:TextBox ID="moCommentsTextbox" runat="server" Rows="8" SkinID="LargeTextBox" TextMode="MultiLine" Visible="true"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr style="background-color: #f2f2f2">
                                     <td colspan="2">
-                                        <asp:Button ID="btnCancelRequestEdit_WRITE" runat="server" SkinID="PrimaryRightButton" Text="Edit" />
-                                        <asp:Button ID="btnCancelRequestUndo_WRITE" runat="server" SkinID="AlternateRightButton" Text="Undo" />
-                                        <asp:Button ID="btnCancelRequestSave_WRITE" runat="server" SkinID="PrimaryRightButton" Text="Save" />
-                                        <asp:Button ID="btnCreateNewRequest_WRITE" runat="server" SkinID="PrimaryRightButton" Visible="false" Text="CREATE_NEW_REQUEST" />
+                                        <asp:Button ID="btnCancelRequestEdit_WRITE" runat="server" SkinID="PrimaryRightButton" Text="Edit"></asp:Button>
+                                        <asp:Button ID="btnCancelRequestUndo_WRITE" runat="server" SkinID="AlternateRightButton" Text="Undo"></asp:Button>
+                                        <asp:Button ID="btnCancelRequestSave_WRITE" runat="server" SkinID="PrimaryRightButton" Text="Save"></asp:Button>
+                                        <asp:Button ID="btnCreateNewRequest_WRITE" runat="server" SkinID="PrimaryRightButton" Visible="false" Text="CREATE_NEW_REQUEST"></asp:Button>
                                     </td>
                                 </tr>
 
@@ -1477,8 +1439,7 @@
                                         <asp:Label ID="moCancellationReasonLabel" runat="server">CANCELLATION_REASON</asp:Label>:
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moCancellationReasonTextbox" runat="server" SkinID="MediumTextBox"
-                                            CssClass="FLATTEXTBOX"></asp:TextBox>
+                                        <asp:TextBox ID="moCancellationReasonTextbox" runat="server" SkinID="MediumTextBox" CssClass="FLATTEXTBOX"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moCanGrossAmtReceivedLabel" runat="server">GROSS_AMT_RECEIVED</asp:Label>:
@@ -1711,10 +1672,8 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <asp:Button ID="ReverseCancellationButton_WRITE" runat="server" Text="REINSTATE_CERTIFICATE"
-                                                    class="primaryBtn" SkinID="PrimaryleftButton" />
-                                                <asp:Button ID="UpdateBankInfoButton_WRITE" runat="server" Text="UPDATE_BANK_INFO"
-                                                    class="primaryBtn" SkinID="PrimaryleftButton" />
+                                                <asp:Button ID="ReverseCancellationButton_WRITE" runat="server" Text="REINSTATE_CERTIFICATE" class="primaryBtn" SkinID="PrimaryleftButton"></asp:Button>
+                                                <asp:Button ID="UpdateBankInfoButton_WRITE" runat="server" Text="UPDATE_BANK_INFO" class="primaryBtn" SkinID="PrimaryleftButton"></asp:Button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -1725,18 +1684,16 @@
                 </div>
                 <div id="tabsComments">
                     <div class="Page" runat="server" id="moCommentsInformationTabPanel_WRITE" style="display: block; height: 300px; overflow: auto">
-                        <asp:DataGrid ID="CommentsGrid" runat="server" Width="100%" OnItemCommand="CommentsGrid_ItemCommand"
-                            OnItemCreated="CommentsGrid_ItemCreated" AllowSorting="True" AllowPaging="True"
-                            AutoGenerateColumns="False" SkinID="DetailPageDataGrid">
+                        <asp:DataGrid ID="CommentsGrid" runat="server" Width="100%" OnItemCommand="CommentsGrid_ItemCommand" OnItemCreated="CommentsGrid_ItemCreated" AllowSorting="True" AllowPaging="True" AutoGenerateColumns="False" SkinID="DetailPageDataGrid">
                             <Columns>
                                 <asp:TemplateColumn HeaderText="Time_Stamp">
                                     <ItemTemplate>
-                                        <asp:LinkButton ID="btnEditItem" runat="server" CommandName="SelectAction" />
+                                        <asp:LinkButton ID="btnEditItem" runat="server" CommandName="SelectAction"></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:TemplateColumn>
-                                <asp:BoundColumn HeaderText="Name_of_Caller" />
-                                <asp:BoundColumn HeaderText="User_Name" />
-                                <asp:BoundColumn HeaderText="Comments" />
+                                <asp:BoundColumn HeaderText="Name_of_Caller"></asp:BoundColumn>
+                                <asp:BoundColumn HeaderText="User_Name"></asp:BoundColumn>
+                                <asp:BoundColumn HeaderText="Comments"></asp:BoundColumn>
                             </Columns>
                             <PagerStyle Position="TopAndBottom" PageButtonCount="15" Mode="NumericPages"></PagerStyle>
                         </asp:DataGrid>
@@ -1744,7 +1701,7 @@
                             <tbody>
                                 <tr style="background-color: #f2f2f2">
                                     <td>
-                                        <asp:Button ID="btnAddComment_WRITE" SkinID="PrimaryRightButton" runat="server" Text="Add" />
+                                        <asp:Button ID="btnAddComment_WRITE" SkinID="PrimaryRightButton" runat="server" Text="Add"></asp:Button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -1753,21 +1710,19 @@
                 </div>
                 <div id="tabsEndorsement">
                     <div class="Page" runat="server" id="moEndorsementsTabPanel_WRITE" style="display: block; height: 300px; overflow: auto">
-                        <asp:DataGrid ID="EndorsementsGrid" runat="server" Width="100%" OnItemCommand="EndorsementsGrid_ItemCommand"
-                            OnItemCreated="EndorsementsGrid_ItemCreated" AllowSorting="False" AllowPaging="True"
-                            AutoGenerateColumns="False" SkinID="DetailPageDataGrid">
+                        <asp:DataGrid ID="EndorsementsGrid" runat="server" Width="100%" OnItemCommand="EndorsementsGrid_ItemCommand" OnItemCreated="EndorsementsGrid_ItemCreated" AllowSorting="False" AllowPaging="True" AutoGenerateColumns="False" SkinID="DetailPageDataGrid">
                             <Columns>
                                 <asp:TemplateColumn HeaderText="Endorsement_Number">
                                     <ItemTemplate>
-                                        <asp:LinkButton ID="btnEditItem" runat="server" CommandName="SelectAction" />
+                                        <asp:LinkButton ID="btnEditItem" runat="server" CommandName="SelectAction"></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:TemplateColumn>
-                                <asp:BoundColumn HeaderText="Created_by" />
-                                <asp:BoundColumn HeaderText="Created_Date" />
-                                <asp:BoundColumn HeaderText="Type" />
-                                <asp:BoundColumn HeaderText="Endorsement_Reason" />
-                                <asp:BoundColumn HeaderText="Effective_Date" />
-                                <asp:BoundColumn HeaderText="Expiration_Date" />
+                                <asp:BoundColumn HeaderText="Created_by"></asp:BoundColumn>
+                                <asp:BoundColumn HeaderText="Created_Date"></asp:BoundColumn>
+                                <asp:BoundColumn HeaderText="Type"></asp:BoundColumn>
+                                <asp:BoundColumn HeaderText="Endorsement_Reason"></asp:BoundColumn>
+                                <asp:BoundColumn HeaderText="Effective_Date"></asp:BoundColumn>
+                                <asp:BoundColumn HeaderText="Expiration_Date"></asp:BoundColumn>
                             </Columns>
                             <PagerStyle Position="TopAndBottom" PageButtonCount="15" Mode="NumericPages"></PagerStyle>
                         </asp:DataGrid>
@@ -1775,7 +1730,7 @@
                             <tbody>
                                 <tr style="background-color: #f2f2f2">
                                     <td>
-                                        <asp:Button ID="btnAddEndorsement_WRITE" runat="server" Text="Add" SkinID="PrimaryRightButton" />
+                                        <asp:Button ID="btnAddEndorsement_WRITE" runat="server" Text="Add" SkinID="PrimaryRightButton"></asp:Button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -1791,14 +1746,14 @@
                                         <asp:Label ID="moDocumentTypeLabel" runat="server">DOCUMENT_TYPE</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moDocumentTypeText" runat="server" SkinID="SmallTextBox" />
-                                        <asp:DropDownList ID="cboDocumentTypeId" runat="server" SkinID="SmallDropDown" />
+                                        <asp:TextBox ID="moDocumentTypeText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
+                                        <asp:DropDownList ID="cboDocumentTypeId" runat="server" SkinID="SmallDropDown"></asp:DropDownList>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moNewTaxIdLabel" runat="server">DOCUMENT_NUMBER</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moNewTaxIdText" runat="server" SkinID="MediumTextBox" />
+                                        <asp:TextBox ID="moNewTaxIdText" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1806,13 +1761,13 @@
                                         <asp:Label ID="moIDTypeLabel" runat="server">ID_TYPE</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moIDTypeText" runat="server" SkinID="MediumTextBox" />
+                                        <asp:TextBox ID="moIDTypeText" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moRGNumberLabel" runat="server">RG_NUMBER</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moRGNumberText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moRGNumberText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1820,22 +1775,21 @@
                                         <asp:Label ID="moDocumentAgencyLabel" runat="server">DOCUMENT_AGENCY</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moDocumentAgencyText" runat="server" SkinID="MediumTextBox" />
+                                        <asp:TextBox ID="moDocumentAgencyText" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moDocumentIssueDateLabel" runat="server" Width="100%">DOCUMENT_ISSUE_DATE</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moDocumentIssueDateText" runat="server" SkinID="SmallTextBox" />
-                                        <asp:ImageButton ID="BtnDocumentIssueDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"
-                                            Style="vertical-align: bottom" />
+                                        <asp:TextBox ID="moDocumentIssueDateText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
+                                        <asp:ImageButton ID="BtnDocumentIssueDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" Style="vertical-align: bottom"></asp:ImageButton>
                                     </td>
                                 </tr>
                                 <tr style="background-color: #f2f2f2">
                                     <td>
-                                        <asp:Button ID="btnEditTaxID_WRITE" runat="server" Text="Edit" SkinID="PrimaryRightButton" />
-                                        <asp:Button ID="btnUndoTaxID_WRITE" runat="server" Text="Undo" SkinID="AlternateRightButton" />
-                                        <asp:Button ID="btnSaveTaxID_WRITE" runat="server" Text="Save" SkinID="PrimaryRightButton" />
+                                        <asp:Button ID="btnEditTaxID_WRITE" runat="server" Text="Edit" SkinID="PrimaryRightButton"></asp:Button>
+                                        <asp:Button ID="btnUndoTaxID_WRITE" runat="server" Text="Undo" SkinID="AlternateRightButton"></asp:Button>
+                                        <asp:Button ID="btnSaveTaxID_WRITE" runat="server" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -1849,15 +1803,13 @@
                             <div>
                                 <asp:UpdatePanel ID="uplCertHistory" runat="server" UpdateMode="Always">
                                     <ContentTemplate>
-                                        <asp:Button ID="btnGetCertHistory" runat="server" Style="display: none;" />
+                                        <asp:Button ID="btnGetCertHistory" runat="server" Style="display: none;"></asp:Button>
                                         <table width="100%" class="dataGrid">
                                             <tr id="trPageSize" runat="server">
                                                 <td class="bor" align="left">
-                                                    <asp:Label ID="moCertificateHistory_lblPageSize" runat="server">Page_Size</asp:Label><asp:Label
-                                                        ID="colonSepertor" runat="server">:</asp:Label>
+                                                    <asp:Label ID="moCertificateHistory_lblPageSize" runat="server">Page_Size</asp:Label><asp:Label ID="colonSepertor" runat="server">:</asp:Label>
                                                     &nbsp;
-                                                        <asp:DropDownList ID="moCertificateHistory_cboPageSize" runat="server" Width="50px"
-                                                            AutoPostBack="true" SkinID="SmallDropDown">
+                                                        <asp:DropDownList ID="moCertificateHistory_cboPageSize" runat="server" Width="50px" AutoPostBack="true" SkinID="SmallDropDown">
                                                             <asp:ListItem Value="5">5</asp:ListItem>
                                                             <asp:ListItem Value="10">10</asp:ListItem>
                                                             <asp:ListItem Value="15">15</asp:ListItem>
@@ -1871,8 +1823,7 @@
                                                         </asp:DropDownList>
                                                 </td>
                                                 <td>
-                                                    <asp:CheckBox ID="chbShowUpdates" Text="SHOW_PREMIUM_CHANGES_ONLY" runat="server"
-                                                        TextAlign="Right" AutoPostBack="true" />
+                                                    <asp:CheckBox ID="chbShowUpdates" Text="SHOW_PREMIUM_CHANGES_ONLY" runat="server" TextAlign="Right" AutoPostBack="true"></asp:CheckBox>
                                                 </td>
                                                 <td class="bor" align="right">
                                                     <asp:Label ID="lblRecordCount" runat="server"></asp:Label>
@@ -1880,69 +1831,39 @@
                                             </tr>
                                         </table>
                                         <div style="width: 100%">
-                                            <asp:GridView ID="CertHistoryGrid" runat="server" Width="100%" AutoGenerateColumns="False"
-                                                AllowPaging="True" SkinID="DetailPageGridView" AllowSorting="true">
-                                                <SelectedRowStyle Wrap="True" />
-                                                <EditRowStyle Wrap="True" />
-                                                <AlternatingRowStyle Wrap="True" />
-                                                <HeaderStyle Wrap="false" />
-                                                <RowStyle Wrap="True" />
+                                            <asp:GridView ID="CertHistoryGrid" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True" SkinID="DetailPageGridView" AllowSorting="true">
+                                                <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                                                <EditRowStyle Wrap="True"></EditRowStyle>
+                                                <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                                <HeaderStyle Wrap="false"></HeaderStyle>
+                                                <RowStyle Wrap="True"></RowStyle>
                                                 <Columns>
-                                                    <asp:BoundField DataField="Record_Type" SortExpression="Record_Type" ReadOnly="true"
-                                                        HeaderText="Record_Type" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Description" SortExpression="Description" ReadOnly="true"
-                                                        HeaderText="Description" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="product_code" SortExpression="product_code" ReadOnly="true"
-                                                        HeaderText="product_code" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="source" SortExpression="source" ReadOnly="true" HeaderText="source"
-                                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Inforce_Date" SortExpression="Inforce_Date" ReadOnly="true"
-                                                        HeaderText="Inforce_Date" HeaderStyle-HorizontalAlign="Center" DataFormatString="{0:d}"
-                                                        HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Processed_date" SortExpression="Processed_date" ReadOnly="true"
-                                                        HeaderText="Processed_date" HeaderStyle-HorizontalAlign="Center" DataFormatString="{0:d}"
-                                                        HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Customer_Name" SortExpression="Customer_Name" ReadOnly="true"
-                                                        HeaderText="Customer_Name" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Address1" SortExpression="Address1" ReadOnly="true" HeaderText="Address1"
-                                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="City" SortExpression="City" ReadOnly="true" HeaderText="City"
-                                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="State_Province" SortExpression="State_Province" ReadOnly="true"
-                                                        HeaderText="State_Province" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Zip" SortExpression="Zip" ReadOnly="true" HeaderText="Zip"
-                                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Manufacturer" SortExpression="Manufacturer" ReadOnly="true"
-                                                        HeaderText="Manufacturer" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Model" SortExpression="Model" ReadOnly="true" HeaderText="Model"
-                                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="IMEI_Number" SortExpression="IMEI_Number"
-                                                        ReadOnly="true" HeaderText="IMEI_Number" HeaderStyle-HorizontalAlign="Center"
-                                                        HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Serial_Number" SortExpression="Serial_Number" ReadOnly="true"
-                                                        HeaderText="Serial_No_LABEL" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="SKU_Number" SortExpression="SKU_Number" ReadOnly="true"
-                                                        HeaderText="SKU_Number" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Membership_Type" SortExpression="Membership_Type" ReadOnly="true"
-                                                        HeaderText="Membership_Type" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Identification_Number" SortExpression="Identification_Number"
-                                                        ReadOnly="true" HeaderText="Identification_Number" HeaderStyle-HorizontalAlign="Center"
-                                                        HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Subscriber_Status" SortExpression="Subscriber_Status"
-                                                        ReadOnly="true" HeaderText="Subscriber_Status" HeaderStyle-HorizontalAlign="Center"
-                                                        HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Home_Phone" SortExpression="Home_Phone" ReadOnly="true"
-                                                        HeaderText="Home_Phone" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Work_Phone" SortExpression="Work_Phone" ReadOnly="true"
-                                                        HeaderText="Work_Phone" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Email" SortExpression="Email" ReadOnly="true" HeaderText="Email"
-                                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Status_Change_Date" SortExpression="Status_Change_Date" ReadOnly="true"
-                                                        HeaderText="Status_Change_Date" HeaderStyle-HorizontalAlign="Center" DataFormatString="{0:d}"
-                                                        HtmlEncode="false" />
+                                                    <asp:BoundField DataField="Record_Type" SortExpression="Record_Type" ReadOnly="true" HeaderText="Record_Type" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Description" SortExpression="Description" ReadOnly="true" HeaderText="Description" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="product_code" SortExpression="product_code" ReadOnly="true" HeaderText="product_code" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="source" SortExpression="source" ReadOnly="true" HeaderText="source" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Inforce_Date" SortExpression="Inforce_Date" ReadOnly="true" HeaderText="Inforce_Date" HeaderStyle-HorizontalAlign="Center" DataFormatString="{0:d}" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Processed_date" SortExpression="Processed_date" ReadOnly="true" HeaderText="Processed_date" HeaderStyle-HorizontalAlign="Center" DataFormatString="{0:d}" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Customer_Name" SortExpression="Customer_Name" ReadOnly="true" HeaderText="Customer_Name" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Address1" SortExpression="Address1" ReadOnly="true" HeaderText="Address1" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="City" SortExpression="City" ReadOnly="true" HeaderText="City" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="State_Province" SortExpression="State_Province" ReadOnly="true" HeaderText="State_Province" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Zip" SortExpression="Zip" ReadOnly="true" HeaderText="Zip" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Manufacturer" SortExpression="Manufacturer" ReadOnly="true" HeaderText="Manufacturer" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Model" SortExpression="Model" ReadOnly="true" HeaderText="Model" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="IMEI_Number" SortExpression="IMEI_Number" ReadOnly="true" HeaderText="IMEI_Number" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Serial_Number" SortExpression="Serial_Number" ReadOnly="true" HeaderText="Serial_No_LABEL" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="SKU_Number" SortExpression="SKU_Number" ReadOnly="true" HeaderText="SKU_Number" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Membership_Type" SortExpression="Membership_Type" ReadOnly="true" HeaderText="Membership_Type" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Identification_Number" SortExpression="Identification_Number" ReadOnly="true" HeaderText="Identification_Number" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Subscriber_Status" SortExpression="Subscriber_Status" ReadOnly="true" HeaderText="Subscriber_Status" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Home_Phone" SortExpression="Home_Phone" ReadOnly="true" HeaderText="Home_Phone" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Work_Phone" SortExpression="Work_Phone" ReadOnly="true" HeaderText="Work_Phone" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Email" SortExpression="Email" ReadOnly="true" HeaderText="Email" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Status_Change_Date" SortExpression="Status_Change_Date" ReadOnly="true" HeaderText="Status_Change_Date" HeaderStyle-HorizontalAlign="Center" DataFormatString="{0:d}" HtmlEncode="false"></asp:BoundField>
                                                 </Columns>
-                                                <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                                                <PagerStyle />
+                                                <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                                                <PagerStyle></PagerStyle>
                                             </asp:GridView>
                                         </div>
                                     </ContentTemplate>
@@ -1953,21 +1874,19 @@
                 </div>
                 <div id="tabsCovHistory">
                     <div class="Page" runat="server" id="moCoverageHistory_WRITE" style="display: block; height: 300px; overflow: auto">
-                        <asp:DataGrid ID="CoverageHistoryGrid" runat="server" Width="100%" AutoGenerateColumns="False"
-                            AllowPaging="false" AllowSorting="True" ShowFooter="false" SkinID="DetailPageDataGrid">
+                        <asp:DataGrid ID="CoverageHistoryGrid" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false" AllowSorting="True" ShowFooter="false" SkinID="DetailPageDataGrid">
                             <Columns>
-                                <asp:BoundColumn SortExpression="Risk_Type" HeaderText="Risk_type" />
+                                <asp:BoundColumn SortExpression="Risk_Type" HeaderText="Risk_type"></asp:BoundColumn>
                                 <asp:TemplateColumn HeaderText="Coverage_Type" SortExpression="Coverage_Type">
                                     <ItemTemplate>
-                                        <asp:LinkButton ID="btnEditCoverage" runat="server" CommandName="SelectAction" />
+                                        <asp:LinkButton ID="btnEditCoverage" runat="server" CommandName="SelectAction"></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:TemplateColumn>
-                                <asp:BoundColumn SortExpression="Sequence" HeaderText="Sequence" />
-                                <asp:BoundColumn SortExpression="Begin_Date" HeaderText="Begin_Date" />
-                                <asp:BoundColumn SortExpression="End_Date" HeaderText="End_Date" />
+                                <asp:BoundColumn SortExpression="Sequence" HeaderText="Sequence"></asp:BoundColumn>
+                                <asp:BoundColumn SortExpression="Begin_Date" HeaderText="Begin_Date"></asp:BoundColumn>
+                                <asp:BoundColumn SortExpression="End_Date" HeaderText="End_Date"></asp:BoundColumn>
                             </Columns>
-                            <PagerStyle HorizontalAlign="Center" ForeColor="DarkSlateBlue" BackColor="#DEE3E7"
-                                PageButtonCount="15" Mode="NumericPages"></PagerStyle>
+                            <PagerStyle HorizontalAlign="Center" ForeColor="DarkSlateBlue" BackColor="#DEE3E7" PageButtonCount="15" Mode="NumericPages"></PagerStyle>
                         </asp:DataGrid>
                     </div>
                 </div>
@@ -1981,13 +1900,13 @@
                                         <asp:Label ID="moFinanceAmountLabel" runat="server">Finance_Amount</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moFinanceAmount" runat="server" SkinID="SmallTextBox" ReadOnly="true" />
+                                        <asp:TextBox ID="moFinanceAmount" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moCurrentOutstandingBalanceLabel" runat="server">CURRENT_OUTSTANDING_BALANCE</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moCurrentOutstandingBalanceText" runat="server" SkinID="SmallTextBox" ReadOnly="true" />
+                                        <asp:TextBox ID="moCurrentOutstandingBalanceText" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1995,13 +1914,13 @@
                                         <asp:Label ID="moFinanceTermLabel" runat="server">Finance_Term</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moFinanceTerm" runat="server" SkinID="SmallTextBox" ReadOnly="true" />
+                                        <asp:TextBox ID="moFinanceTerm" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moOutstandingBalanceDueDateLabel" runat="server">OUTSTANDING_BALANCE_DUE_DATE</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moOutstandingBalanceDueDateText" runat="server" ReadOnly="true" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moOutstandingBalanceDueDateText" runat="server" ReadOnly="true" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -2009,13 +1928,13 @@
                                         <asp:Label ID="moFinanceFrequencyLabel" runat="server">Finance_Frequency</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moFinanceFrequency" runat="server" SkinID="SmallTextBox" ReadOnly="true" />
+                                        <asp:TextBox ID="moFinanceFrequency" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moFinanceDateLabel" runat="server">FINANCE_DATE</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moFinanceDateText" runat="server" ReadOnly="true" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moFinanceDateText" runat="server" ReadOnly="true" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -2023,13 +1942,13 @@
                                         <asp:Label ID="moFinanceInstallmentNumLabel" runat="server">Finance_Number_of_Installments</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moFinanceInstallmentNum" runat="server" SkinID="SmallTextBox" ReadOnly="true" />
+                                        <asp:TextBox ID="moFinanceInstallmentNum" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moDownPaymentLabel" runat="server">DOWN_PAYMENT</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moDownPaymentText" runat="server" ReadOnly="true" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moDownPaymentText" runat="server" ReadOnly="true" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -2037,14 +1956,13 @@
                                         <asp:Label ID="moFinanceInstallmentAmountLabel" runat="server">Finance_Installment_Amount</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moFinanceInstallmentAmount" runat="server" SkinID="SmallTextBox"
-                                            ReadOnly="true" />
+                                        <asp:TextBox ID="moFinanceInstallmentAmount" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moAdvancePaymentLabel" runat="server">ADVANCE_PAYMENT</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moAdvancePaymentText" runat="server" ReadOnly="true" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moAdvancePaymentText" runat="server" ReadOnly="true" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -2052,14 +1970,13 @@
                                         <asp:Label ID="moBillingAccountNumberLabel" runat="server">BILLING_ACCOUNT_NUMBER</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moBillingAccountNumberText" runat="server" SkinID="SmallTextBox"
-                                            ReadOnly="true" />
+                                        <asp:TextBox ID="moBillingAccountNumberText" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moNumOfConsecutivePaymentsLabel" runat="server">NUM_OF_CONSECUTIVE_PAYMENTS</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moNumOfConsecutivePaymentsText" runat="server" ReadOnly="true" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moNumOfConsecutivePaymentsText" runat="server" ReadOnly="true" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -2067,14 +1984,13 @@
                                         <asp:Label ID="moDealerCurrentPlanCodeLabel" runat="server">DEALER_CURRENT_PLAN_CODE</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moDealerCurrentPlanCodeText" runat="server" SkinID="SmallTextBox"
-                                            ReadOnly="true" />
+                                        <asp:TextBox ID="moDealerCurrentPlanCodeText" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moDealerRewardPointsLabel" runat="server">DEALER_REWARD_POINTS</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moDealerRewardPointsText" runat="server" ReadOnly="true" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moDealerRewardPointsText" runat="server" ReadOnly="true" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -2082,14 +1998,13 @@
                                         <asp:Label ID="lblUpgradeTermUnitOfMeasure" runat="server">Upgrade_Term_Unit_Of_Measure</asp:Label>
                                     </td>
                                     <td align="right" id="moUpgradeTermUOMTD2" runat="server">
-                                        <asp:TextBox ID="moUpgradeTermUnitOfMeasureText" runat="server" SkinID="SmallTextBox"
-                                            ReadOnly="true" />
+                                        <asp:TextBox ID="moUpgradeTermUnitOfMeasureText" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                     <td align="right" id="moUpgradeFixedTermTD1" runat="server">
                                         <asp:Label ID="moDealerScheduledPlanCodeLabel" runat="server">DEALER_SCHEDULED_PLAN_CODE</asp:Label>
                                     </td>
                                     <td align="left" id="moUpgradeFixedTermTD2" runat="server">
-                                        <asp:TextBox ID="moDealerScheduledPlanCodeText" runat="server" ReadOnly="true" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moDealerScheduledPlanCodeText" runat="server" ReadOnly="true" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="moUpgradeFixedTermTR" runat="server">
@@ -2097,15 +2012,13 @@
                                         <asp:Label ID="moUpgradeTermLabelFrom" runat="server">UPGRADE_TERM_FROM</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moUpgradeTermTextFROM" runat="server" SkinID="SmallTextBox"
-                                            ReadOnly="true" />
+                                        <asp:TextBox ID="moUpgradeTermTextFROM" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moUpgradeFixedTermLabel" runat="server">UPGRADE_TERM</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moUpgradeFixedTermText" runat="server" SkinID="SmallTextBox"
-                                            ReadOnly="true" />
+                                        <asp:TextBox ID="moUpgradeFixedTermText" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="Tr2" runat="server">
@@ -2113,14 +2026,13 @@
                                         <asp:Label ID="moLoanCodeLabel" runat="server">LOAN_CODE</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moLoanCodeText" runat="server" SkinID="SmallTextBox"
-                                            ReadOnly="true" />
+                                        <asp:TextBox ID="moLoanCodeText" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moUpgradeTermLabelTo" runat="server">UPGRADE_TERM_TO</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moUpgradeTermTextTo" runat="server" ReadOnly="true" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moUpgradeTermTextTo" runat="server" ReadOnly="true" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -2128,14 +2040,13 @@
                                         <asp:Label ID="moPenaltyFeeLabel" runat="server">PENALTY_FEE</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moPenaltyFeeText" runat="server" SkinID="SmallTextBox"
-                                            ReadOnly="true" />
+                                        <asp:TextBox ID="moPenaltyFeeText" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moPaymentShiftNumberLabel" runat="server">PAYMENT_SHIFT_NUMBER</asp:Label>
                                     </td>
                                     <td align="right">
-                                        <asp:TextBox ID="moPaymentShiftNumberText" runat="server" ReadOnly="true" SkinID="SmallTextBox" />
+                                        <asp:TextBox ID="moPaymentShiftNumberText" runat="server" ReadOnly="true" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -2143,36 +2054,33 @@
                                         <asp:Label ID="moAppleCareFeeLabel" runat="server">APPLECARE_FEE</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moAppleCareFeeText" runat="server" SkinID="SmallTextBox"
-                                            ReadOnly="true" />
+                                        <asp:TextBox ID="moAppleCareFeeText" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                     <td align="right">
                                         <asp:Label ID="moUpgradeProgramLabel" runat="server">UPGRADE_PROGRAM</asp:Label>
                                     </td>
                                     <td align="left">
-                                        <asp:TextBox ID="moUpgradeProgramText" runat="server" SkinID="SmallTextBox"
-                                            ReadOnly="true" />
+                                        <asp:TextBox ID="moUpgradeProgramText" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="UpgradeDataGridtr" runat="server">
                                     <td colspan="4">
                                         <div style="width: 100%">
-                                            <asp:GridView ID="CertUpgradeDatagrid" runat="server" Width="90%" AutoGenerateColumns="False"
-                                                AllowPaging="True" SkinID="DetailPageGridView" AllowSorting="False">
-                                                <SelectedRowStyle Wrap="True" />
-                                                <EditRowStyle Wrap="True" />
-                                                <AlternatingRowStyle Wrap="True" />
-                                                <HeaderStyle Wrap="false" />
-                                                <RowStyle Wrap="True" />
+                                            <asp:GridView ID="CertUpgradeDatagrid" runat="server" Width="90%" AutoGenerateColumns="False" AllowPaging="True" SkinID="DetailPageGridView" AllowSorting="False">
+                                                <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                                                <EditRowStyle Wrap="True"></EditRowStyle>
+                                                <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                                <HeaderStyle Wrap="false"></HeaderStyle>
+                                                <RowStyle Wrap="True"></RowStyle>
                                                 <Columns>
-                                                    <asp:BoundField DataField="Sequence_Number" HeaderText="Sequence Number" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Upgrade_Date" HeaderText="Upgrade Date" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Voucher_Number" HeaderText="Voucher Number" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="Upgrade_Fee" HeaderText="Upgrade Fee" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="RMA" HeaderText="RMA" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="UPGRADE_APR_AMOUNT" HeaderText="Upgrade APR Amount" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="UNEARNED_PREMIUM_CUSTOMER" HeaderText="Unearned Premium Customer" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                                    <asp:BoundField DataField="UPGRADE_TOTAL_AMOUNT" HeaderText="Upgrade Total Amount" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                                                    <asp:BoundField DataField="Sequence_Number" HeaderText="Sequence Number" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Upgrade_Date" HeaderText="Upgrade Date" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Voucher_Number" HeaderText="Voucher Number" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="Upgrade_Fee" HeaderText="Upgrade Fee" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="RMA" HeaderText="RMA" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="UPGRADE_APR_AMOUNT" HeaderText="Upgrade APR Amount" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="UNEARNED_PREMIUM_CUSTOMER" HeaderText="Unearned Premium Customer" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                                    <asp:BoundField DataField="UPGRADE_TOTAL_AMOUNT" HeaderText="Upgrade Total Amount" ReadOnly="true" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
                                                 </Columns>
                                             </asp:GridView>
                                         </div>
@@ -2189,11 +2097,9 @@
                         <table width="100%" class="dataGrid">
                             <tr id="tr1" runat="server">
                                 <td class="bor" align="left">
-                                    <asp:Label ID="moCertInstallmentHistory_lblPageSize" runat="server">Page_Size</asp:Label><asp:Label
-                                        ID="Label9" runat="server">:</asp:Label>
+                                    <asp:Label ID="moCertInstallmentHistory_lblPageSize" runat="server">Page_Size</asp:Label><asp:Label ID="Label9" runat="server">:</asp:Label>
                                     &nbsp;
-                                                        <asp:DropDownList ID="moCertInstallmentHistory_cboPageSize" runat="server" Width="50px"
-                                                            AutoPostBack="true" SkinID="SmallDropDown">
+                                                        <asp:DropDownList ID="moCertInstallmentHistory_cboPageSize" runat="server" Width="50px" AutoPostBack="true" SkinID="SmallDropDown">
                                                             <asp:ListItem Value="5">5</asp:ListItem>
                                                             <asp:ListItem Value="10">10</asp:ListItem>
                                                             <asp:ListItem Value="15">15</asp:ListItem>
@@ -2212,23 +2118,19 @@
                             </tr>
                         </table>
                         <div style="width: 100%">
-                            <asp:GridView ID="CertInstallmentHistoryGrid" runat="server" Width="100%" AutoGenerateColumns="False"
-                                AllowPaging="True" SkinID="DetailPageGridView" AllowSorting="true">
-                                <SelectedRowStyle Wrap="True" />
-                                <EditRowStyle Wrap="True" />
-                                <AlternatingRowStyle Wrap="True" />
-                                <HeaderStyle Wrap="false" />
-                                <RowStyle Wrap="True" />
+                            <asp:GridView ID="CertInstallmentHistoryGrid" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True" SkinID="DetailPageGridView" AllowSorting="true">
+                                <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                                <EditRowStyle Wrap="True"></EditRowStyle>
+                                <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                <HeaderStyle Wrap="false"></HeaderStyle>
+                                <RowStyle Wrap="True"></RowStyle>
                                 <Columns>
-                                    <asp:BoundField DataField="START_DATE" SortExpression="START_DATE"
-                                        HeaderText="START_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="END_DATE" SortExpression="END_DATE"
-                                        HeaderText="END_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                    <asp:BoundField DataField="INSTALLMENT_AMOUNT" SortExpression="INSTALLMENT_AMOUNT" ReadOnly="true"
-                                        HeaderText="INSTALLMENT_AMOUNT" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                                    <asp:BoundField DataField="START_DATE" SortExpression="START_DATE" HeaderText="START_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="END_DATE" SortExpression="END_DATE" HeaderText="END_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                                    <asp:BoundField DataField="INSTALLMENT_AMOUNT" SortExpression="INSTALLMENT_AMOUNT" ReadOnly="true" HeaderText="INSTALLMENT_AMOUNT" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
                                 </Columns>
-                                <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                                <PagerStyle />
+                                <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                                <PagerStyle></PagerStyle>
                             </asp:GridView>
                         </div>
                     </div>
@@ -2239,33 +2141,33 @@
 
                         <div class="dataContainer" style="width: 100%">
                             <asp:GridView ID="GridDataProtection" runat="server" Width="100%" ShowFooter="false" ShowHeaderWhenEmpty="true" AutoGenerateColumns="False" CellPadding="1" AllowPaging="false" SkinID="DetailPageGridView">
-                                <SelectedRowStyle Wrap="False" CssClass="SELECTED" />
-                                <EditRowStyle Wrap="False" CssClass="EDITROW" />
-                                <AlternatingRowStyle Wrap="False" CssClass="ALTROW" />
-                                <RowStyle Wrap="False" CssClass="ROW" />
-                                <HeaderStyle CssClass="HEADER" />
+                                <SelectedRowStyle Wrap="False" CssClass="SELECTED"></SelectedRowStyle>
+                                <EditRowStyle Wrap="False" CssClass="EDITROW"></EditRowStyle>
+                                <AlternatingRowStyle Wrap="False" CssClass="ALTROW"></AlternatingRowStyle>
+                                <RowStyle Wrap="False" CssClass="ROW"></RowStyle>
+                                <HeaderStyle CssClass="HEADER"></HeaderStyle>
                                 <Columns>
                                     <asp:TemplateField SortExpression="REQUEST_ID">
                                         <HeaderTemplate>
                                             <asp:Label ID="lblRequestHeader" runat="server" Visible="True" Text="REQUEST_ID"></asp:Label>
                                         </HeaderTemplate>
-                                        <ItemStyle CssClass="CenteredTD" />
+                                        <ItemStyle CssClass="CenteredTD"></ItemStyle>
                                         <FooterTemplate>
-                                            <asp:TextBox ID="txtRequestID" runat="server" onKeyUp="javascript:Count(this,100);" onChange="javascript:Count(this,100);" Visible="True" Columns="35" MaxLength="100" />
+                                            <asp:TextBox ID="txtRequestID" runat="server" onKeyUp="javascript:Count(this,100);" onChange="javascript:Count(this,100);" Visible="True" Columns="35" MaxLength="100"></asp:TextBox>
                                         </FooterTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="COMMENTS">
                                         <HeaderTemplate>
                                             <asp:Label ID="lblCommentHeader" runat="server" Visible="True" Text="COMMENTS"></asp:Label>
                                         </HeaderTemplate>
-                                        <ItemStyle CssClass="CenteredTD" />
+                                        <ItemStyle CssClass="CenteredTD"></ItemStyle>
                                         <FooterTemplate>
                                             <asp:TextBox ID="txtComment" runat="server" Visible="True" onKeyUp="javascript:Count(this,1000);" onChange="javascript:Count(this,1000);" TextMode="MultiLine" Rows="3" ForeColor="black" MaxLength="1000" Columns="35" SkinID="MediumTextBox"></asp:TextBox>
                                         </FooterTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField HeaderText="ADDED_BY" />
-                                    <asp:BoundField HeaderText="TIME_STAMP" />
-                                    <asp:BoundField HeaderText="STATUS" />
+                                    <asp:BoundField HeaderText="ADDED_BY"></asp:BoundField>
+                                    <asp:BoundField HeaderText="TIME_STAMP"></asp:BoundField>
+                                    <asp:BoundField HeaderText="STATUS"></asp:BoundField>
                                 </Columns>
                             </asp:GridView>
                         </div>
@@ -2319,31 +2221,29 @@
         <div class="dataContainer">
             <h2 class="dataGridHeader">
                 <asp:Label runat="server" ID="LabelCvgInfoHdr">COVERAGE INFORMATION</asp:Label></h2>
-            <asp:DataGrid ID="Grid" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false"
-                AllowSorting="True" ShowFooter="false" SkinID="DetailPageDataGrid">
+            <asp:DataGrid ID="Grid" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false" AllowSorting="True" ShowFooter="false" SkinID="DetailPageDataGrid">
                 <Columns>
-                    <asp:BoundColumn SortExpression="risk_type_description" HeaderText="Risk_type" />
+                    <asp:BoundColumn SortExpression="risk_type_description" HeaderText="Risk_type"></asp:BoundColumn>
                     <asp:TemplateColumn HeaderText="Coverage_Type" SortExpression="coverage_type_description" HeaderStyle-Wrap="false">
                         <ItemTemplate>
-                            <asp:LinkButton ID="btnEditCoverage" runat="server" CommandName="SelectAction" />
+                            <asp:LinkButton ID="btnEditCoverage" runat="server" CommandName="SelectAction"></asp:LinkButton>
                         </ItemTemplate>
                     </asp:TemplateColumn>
-                    <asp:BoundColumn SortExpression="Sequence" HeaderText="Sequence" />
-                    <asp:BoundColumn SortExpression="Begin_Date" HeaderText="Begin_Date" ItemStyle-Wrap="false" />
-                    <asp:BoundColumn SortExpression="End_Date" HeaderText="End_Date" ItemStyle-Wrap="false" />
-                    <asp:BoundColumn SortExpression="Coverage_duration" HeaderText="Coverage_Term" HeaderStyle-Wrap="false" />
-                    <asp:BoundColumn SortExpression="Coverage_Expiration_Date" HeaderText="Coverage_Expiration_Date" ItemStyle-Wrap="false" />
-                    <asp:BoundColumn SortExpression="Max_Renewal_Duration" HeaderText="Max_Renewal_Duration" HeaderStyle-Wrap="false" />
-                    <asp:BoundColumn SortExpression="No_of_Renewals" HeaderText="No_Of_Renewals" HeaderStyle-Wrap="false" />
-                    <asp:BoundColumn SortExpression="No_of_Renewals_Remaining" HeaderText="No_of_Renewals_Remaining" HeaderStyle-Wrap="false" />
-                    <asp:BoundColumn SortExpression="Renewal_Date" HeaderText="Renewal_Date" HeaderStyle-Wrap="false" ItemStyle-Wrap="false" />
-                    <asp:BoundColumn HeaderText="COVERAGE_TOTAL_PAID_AMOUNT" HeaderStyle-Width="150" />
-                    <asp:BoundColumn HeaderText="COVERAGE_REMAIN_LIABILITY_LIMIT" HeaderStyle-Width="150" />
+                    <asp:BoundColumn SortExpression="Sequence" HeaderText="Sequence"></asp:BoundColumn>
+                    <asp:BoundColumn SortExpression="Begin_Date" HeaderText="Begin_Date" ItemStyle-Wrap="false"></asp:BoundColumn>
+                    <asp:BoundColumn SortExpression="End_Date" HeaderText="End_Date" ItemStyle-Wrap="false"></asp:BoundColumn>
+                    <asp:BoundColumn SortExpression="Coverage_duration" HeaderText="Coverage_Term" HeaderStyle-Wrap="false"></asp:BoundColumn>
+                    <asp:BoundColumn SortExpression="Coverage_Expiration_Date" HeaderText="Coverage_Expiration_Date" ItemStyle-Wrap="false"></asp:BoundColumn>
+                    <asp:BoundColumn SortExpression="Max_Renewal_Duration" HeaderText="Max_Renewal_Duration" HeaderStyle-Wrap="false"></asp:BoundColumn>
+                    <asp:BoundColumn SortExpression="No_of_Renewals" HeaderText="No_Of_Renewals" HeaderStyle-Wrap="false"></asp:BoundColumn>
+                    <asp:BoundColumn SortExpression="No_of_Renewals_Remaining" HeaderText="No_of_Renewals_Remaining" HeaderStyle-Wrap="false"></asp:BoundColumn>
+                    <asp:BoundColumn SortExpression="Renewal_Date" HeaderText="Renewal_Date" HeaderStyle-Wrap="false" ItemStyle-Wrap="false"></asp:BoundColumn>
+                    <asp:BoundColumn HeaderText="COVERAGE_TOTAL_PAID_AMOUNT" HeaderStyle-Width="150"></asp:BoundColumn>
+                    <asp:BoundColumn HeaderText="COVERAGE_REMAIN_LIABILITY_LIMIT" HeaderStyle-Width="150"></asp:BoundColumn>
 <%--                    <asp:BoundColumn SortExpression="Ext_Begin_KM_MI" HeaderText="Begin_KM" ItemStyle-Wrap="false" />
                     <asp:BoundColumn SortExpression="Ext_End_KM_MI" HeaderText="End_KM" ItemStyle-Wrap="false" />--%>
                 </Columns>
-                <PagerStyle HorizontalAlign="Center" ForeColor="DarkSlateBlue" BackColor="#DEE3E7"
-                    PageButtonCount="15" Mode="NumericPages"></PagerStyle>
+                <PagerStyle HorizontalAlign="Center" ForeColor="DarkSlateBlue" BackColor="#DEE3E7" PageButtonCount="15" Mode="NumericPages"></PagerStyle>
             </asp:DataGrid>
         </div>
         <div class="dataContainer">
@@ -2352,31 +2252,27 @@
                 <asp:LinkButton ID="btnNewClaim" runat="server" Text="NEW_CLAIM"></asp:LinkButton>&nbsp;
                 <asp:LinkButton ID="btnNewClaimDcm" runat="server" Text="NEW_CLAIM_DCM"></asp:LinkButton>
             </h2>
-            <asp:DataGrid ID="moClaimsDatagrid" runat="server" Width="100%" AllowPaging="False"
-                AllowSorting="True" ShowFooter="false" SkinID="DetailPageDataGrid">
+            <asp:DataGrid ID="moClaimsDatagrid" runat="server" Width="100%" AllowPaging="False" AllowSorting="True" ShowFooter="false" SkinID="DetailPageDataGrid">
                 <Columns>
                     <asp:TemplateColumn HeaderText="CLAIM_NUMBER" SortExpression="Claim_Number">
                         <ItemTemplate>
-                            <asp:LinkButton ID="btnEditClaim" runat="server" CommandName="SelectAction" />
+                            <asp:LinkButton ID="btnEditClaim" runat="server" CommandName="SelectAction"></asp:LinkButton>
                         </ItemTemplate>
                     </asp:TemplateColumn>
-                    <asp:BoundColumn SortExpression="created_date" HeaderText="Date_Added" />
-                    <asp:BoundColumn SortExpression="Status_Code" HeaderText="Status" />
-                    <asp:BoundColumn SortExpression="Authorized_Amount" HeaderText="Auth_Amt" />
-                    <asp:BoundColumn SortExpression="Total_Paid" HeaderText="Inv. Total" />
-                    <asp:BoundColumn SortExpression="Extended_status" HeaderText="Extended_Status" />
+                    <asp:BoundColumn SortExpression="created_date" HeaderText="Date_Added"></asp:BoundColumn>
+                    <asp:BoundColumn SortExpression="Status_Code" HeaderText="Status"></asp:BoundColumn>
+                    <asp:BoundColumn SortExpression="Authorized_Amount" HeaderText="Auth_Amt"></asp:BoundColumn>
+                    <asp:BoundColumn SortExpression="Total_Paid" HeaderText="Inv. Total"></asp:BoundColumn>
+                    <asp:BoundColumn SortExpression="Extended_status" HeaderText="Extended_Status"></asp:BoundColumn>
                 </Columns>
-                <PagerStyle HorizontalAlign="Center" ForeColor="DarkSlateBlue" BackColor="#DEE3E7"
-                    PageButtonCount="15" Mode="NumericPages"></PagerStyle>
+                <PagerStyle HorizontalAlign="Center" ForeColor="DarkSlateBlue" BackColor="#DEE3E7" PageButtonCount="15" Mode="NumericPages"></PagerStyle>
             </asp:DataGrid>
         </div>
         <div class="btnZone">
             <div class="">
-                <asp:Button ID="TNCButton_WRITE" runat="server" Text="TERMANDCONDITION" SkinID="AlternateRightButton" />
-                <asp:Button ID="btnCancelCertificate_WRITE" runat="server" Text="Cancel Certificate"
-                    SkinID="AlternateRightButton" />
-                <asp:Button ID="DocumentsButton" runat="server" Text="DOCUMENTS"
-                    SkinID="AlternateRightButton" />
+                <asp:Button ID="TNCButton_WRITE" runat="server" Text="TERMANDCONDITION" SkinID="AlternateRightButton"></asp:Button>
+                <asp:Button ID="btnCancelCertificate_WRITE" runat="server" Text="Cancel Certificate" SkinID="AlternateRightButton"></asp:Button>
+                <asp:Button ID="DocumentsButton" runat="server" Text="DOCUMENTS" SkinID="AlternateRightButton"></asp:Button>
                 <asp:Button ID="btnBack" runat="server" Text="Back" SkinID="AlternateLeftButton"></asp:Button>
             </div>
         </div>
@@ -2398,8 +2294,7 @@
                             <asp:Label ID="moCancellationReasonDrpLabel" runat="server">CANCELLATION_REASON</asp:Label>
                         </td>
                         <td align="left" colspan="2">
-                            <asp:DropDownList ID="moCancellationReasonDrop" runat="server" SkinID="MediumDropDown"
-                                OnChange="return DisableControls();" />
+                            <asp:DropDownList ID="moCancellationReasonDrop" runat="server" SkinID="MediumDropDown" OnChange="return DisableControls();"></asp:DropDownList>
                         </td>
                     </tr>
                     <tr id="CancelCertReqDateRowHeader" runat="server">
@@ -2408,7 +2303,7 @@
                         </td>
                         <td align="left" colspan="2">
                             <asp:TextBox ID="CancelCertReqDateTextbox" runat="server" AutoPostBack="true" SkinID="MediumTextBox"></asp:TextBox>
-                            <asp:ImageButton ID="CancelCertReqDateImageButton" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" Style="vertical-align: bottom" />
+                            <asp:ImageButton ID="CancelCertReqDateImageButton" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" Style="vertical-align: bottom"></asp:ImageButton>
                         </td>
                     </tr>
                     <tr>
@@ -2417,7 +2312,7 @@
                         </td>
                         <td align="left" colspan="2">
                             <asp:TextBox ID="CancelCertDateTextbox" runat="server" SkinID="MediumTextBox" OnChange="return  DisableControls();"></asp:TextBox>
-                            <asp:ImageButton ID="CancelCertDateImagebutton" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" Style="vertical-align: bottom" />
+                            <asp:ImageButton ID="CancelCertDateImagebutton" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" Style="vertical-align: bottom"></asp:ImageButton>
                         </td>
                     </tr>
                     <tr>
@@ -2425,7 +2320,7 @@
                             <asp:Label ID="CancelCommentType" runat="server">JUSTIFICATION</asp:Label>
                         </td>
                         <td align="left" colspan="2">
-                            <asp:DropDownList ID="moCancelCommentType" runat="server" AutoPostBack="False" SkinID="MediumDropDown" />
+                            <asp:DropDownList ID="moCancelCommentType" runat="server" AutoPostBack="False" SkinID="MediumDropDown"></asp:DropDownList>
                         </td>
                     </tr>
                     <tr>
@@ -2433,10 +2328,9 @@
                             <asp:Label ID="RefundAmtLabel" runat="server">REFUND_AMOUNT</asp:Label>
                         </td>
                         <td align="left" colspan="2">
-                            <asp:TextBox ID="RefundAmtTextbox" runat="server" SkinID="MediumTextBox" />
-                            <asp:Label ID="LabelWarningRefundAmtBelowTolerance" runat="server" ForeColor="Red"
-                                Visible="False">REFUND_AMT_BELOW_TOLERANCE</asp:Label>
-                            <asp:TextBox ID="txtInstallmentsPaid" runat="server" SkinID="MediumTextBox" Visible="false" />
+                            <asp:TextBox ID="RefundAmtTextbox" runat="server" SkinID="MediumTextBox"></asp:TextBox>
+                            <asp:Label ID="LabelWarningRefundAmtBelowTolerance" runat="server" ForeColor="Red" Visible="False">REFUND_AMT_BELOW_TOLERANCE</asp:Label>
+                            <asp:TextBox ID="txtInstallmentsPaid" runat="server" SkinID="MediumTextBox" Visible="false"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -2444,8 +2338,7 @@
                             <asp:Label ID="moCanelCommentsLabel" runat="server">COMMENTS</asp:Label>
                         </td>
                         <td align="left" colspan="2">
-                            <asp:TextBox ID="moCancelCommentsTextbox" runat="server" TextMode="MultiLine" Rows="8"
-                                Visible="true" SkinID="LargeTextBox" />
+                            <asp:TextBox ID="moCancelCommentsTextbox" runat="server" TextMode="MultiLine" Rows="8" Visible="true" SkinID="LargeTextBox"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -2453,7 +2346,7 @@
                             <asp:Label ID="PaymentMethodDrpLabel" runat="server">PAYMENT_METHOD</asp:Label>
                         </td>
                         <td align="left" colspan="2">
-                            <asp:DropDownList ID="PaymentMethodDrop" runat="server" SkinID="MediumDropDown" AutoPostBack="False" />
+                            <asp:DropDownList ID="PaymentMethodDrop" runat="server" SkinID="MediumDropDown" AutoPostBack="False"></asp:DropDownList>
                         </td>
                     </tr>
                 </tbody>
@@ -2472,15 +2365,14 @@
             </div>
             <div class="btnZone">
                 <div class="">
-                    <asp:Button ID="ProcessCancellationButton_WRITE" runat="server" Text="Process Cancellation"
-                        SkinID="PrimaryRightButton" />
-                    <asp:Button ID="QuoteButton_WRITE" runat="server" Text="Quote" SkinID="PrimaryRightButton" />
-                    <asp:Button ID="BackCancelCertButton" runat="server" Text="Back" SkinID="AlternateRightButton" />
+                    <asp:Button ID="ProcessCancellationButton_WRITE" runat="server" Text="Process Cancellation" SkinID="PrimaryRightButton"></asp:Button>
+                    <asp:Button ID="QuoteButton_WRITE" runat="server" Text="Quote" SkinID="PrimaryRightButton"></asp:Button>
+                    <asp:Button ID="BackCancelCertButton" runat="server" Text="Back" SkinID="AlternateRightButton"></asp:Button>
                 </div>
             </div>
         </div>
     </asp:Panel>
-    <asp:Panel ID="PanTaxDetails" runat="server"  BackColor="#99ccff" ScrollBars="Auto" >
+    <asp:Panel ID="PanTaxDetails" runat="server" BackColor="#99ccff" ScrollBars="Auto">
          
     </asp:Panel>
     <script type="text/javascript" language="javascript">
@@ -2581,6 +2473,22 @@
                         }
                         $('#Child' + index).slideDown('slow');
                         $('#Expand' + index).text('-');
+                        $('#Expand' + index).parent().attr('RowSpan', '2');
+                    }
+                });
+            }
+            else {
+                $('#Child' + index).slideUp();
+                $('#Expand' + index).text('+');
+                $('#Expand' + index).parent().removeAttr('RowSpan');
+            }
+        }
+    </script>
+    <input id="HiddenSavePromptResponse" type="hidden" name="HiddenSavePromptResponse" runat="server">
+    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server">
+    <input id="HiddenTransferOfOwnershipPromptResponse" type="hidden" name="HiddenTransferOfOwnershipPromptResponse" runat="server">
+</asp:Content>
+'-');
                         $('#Expand' + index).parent().attr('RowSpan', '2');
                     }
                 });

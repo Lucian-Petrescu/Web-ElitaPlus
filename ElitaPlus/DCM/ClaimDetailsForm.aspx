@@ -121,16 +121,16 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
         <Scripts>
-            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js"></asp:ScriptReference>
         </Scripts>
     </asp:ScriptManager>
         <div class="dataContainer">
-            <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
-            <asp:HiddenField ID="hdnDisabledTabs" runat="server" Value="" />            
+            <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
+            <asp:HiddenField ID="hdnDisabledTabs" runat="server" Value=""></asp:HiddenField>            
             <div id="tabs" class="style-tabs" style="display: none;">
                 <ul>
-                    <li><a href="#tabsCaseList"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">CASE_LIST</asp:Label></a></li>
-                    <li><a href="#tabsActionInfo"><asp:Label ID="Label17" runat="server" CssClass="tabHeaderText">CASE_ACTION</asp:Label></a></li>
+                    <li><a href="#tabsCaseList" rel="noopener noreferrer"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">CASE_LIST</asp:Label></a></li>
+                    <li><a href="#tabsActionInfo" rel="noopener noreferrer"><asp:Label ID="Label17" runat="server" CssClass="tabHeaderText">CASE_ACTION</asp:Label></a></li>
                 </ul>
                 <div id="tabsCaseList">
                     <table class="dataGrid" border="0" width="100%">
@@ -142,31 +142,29 @@
                      </table>
                      <div class="Page" runat="server" id="ClaimCaseListTabPanel" style="display: block;
                             height: 300px; overflow: auto">
-                            <asp:GridView ID="ClaimCaseListGrid" runat="server" Width="100%"  AllowPaging="false" AllowSorting="false"
-                                SkinID="DetailPageGridView">
+                            <asp:GridView ID="ClaimCaseListGrid" runat="server" Width="100%" AllowPaging="false" AllowSorting="false" SkinID="DetailPageGridView">
                                 <Columns>
                                    <asp:TemplateField HeaderText="case_number" SortExpression="case_number">
                                         <ItemTemplate>
-                                            <asp:LinkButton CommandName="SelectAction" ID="btnSelectCase" runat="server"
-                                                OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
+                                            <asp:LinkButton CommandName="SelectAction" ID="btnSelectCase" runat="server" OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField HeaderText="case_purpose"  DataField="case_purpose" SortExpression="case_purpose"  HtmlEncode="false">
+                                    <asp:BoundField HeaderText="case_purpose" DataField="case_purpose" SortExpression="case_purpose" HtmlEncode="false">
                                     </asp:BoundField>
-                                    <asp:BoundField HeaderText="case_open_date"  DataField="case_open_date" SortExpression="case_open_date"  HtmlEncode="false">
+                                    <asp:BoundField HeaderText="case_open_date" DataField="case_open_date" SortExpression="case_open_date" HtmlEncode="false">
                                     </asp:BoundField>
-                                    <asp:BoundField  HeaderText="case_status" DataField="case_status" SortExpression="case_status" HtmlEncode="false">
+                                    <asp:BoundField HeaderText="case_status" DataField="case_status" SortExpression="case_status" HtmlEncode="false">
                                     </asp:BoundField>
-                                    <asp:BoundField HeaderText="case_close_date"  DataField="case_close_date" SortExpression="case_close_date"  HtmlEncode="false">
+                                    <asp:BoundField HeaderText="case_close_date" DataField="case_close_date" SortExpression="case_close_date" HtmlEncode="false">
                                     </asp:BoundField>
-                                    <asp:BoundField HeaderText="first_name"  DataField="first_name" SortExpression="first_name"  HtmlEncode="false">
+                                    <asp:BoundField HeaderText="first_name" DataField="first_name" SortExpression="first_name" HtmlEncode="false">
                                     </asp:BoundField>
-                                    <asp:BoundField  HeaderText="last_name" DataField="last_name" SortExpression="last_name" HtmlEncode="false">
+                                    <asp:BoundField HeaderText="last_name" DataField="last_name" SortExpression="last_name" HtmlEncode="false">
                                     </asp:BoundField>
-                                    <asp:BoundField  HeaderText="channel" DataField="channel" SortExpression="channel" HtmlEncode="false">
+                                    <asp:BoundField HeaderText="channel" DataField="channel" SortExpression="channel" HtmlEncode="false">
                                     </asp:BoundField>
                                 </Columns>
-                                <PagerSettings PageButtonCount="30" Mode="Numeric" />
+                                <PagerSettings PageButtonCount="30" Mode="Numeric"></PagerSettings>
                             </asp:GridView>
                         </div>
                 </div>
@@ -182,21 +180,20 @@
                      <div class="Page" runat="server" id="ClaimActionTabPanel" style="display: block;
                             height: 300px; overflow: auto">
                             
-                            <asp:GridView ID="ClaimActionGrid" runat="server" Width="100%"  AllowPaging="false" AllowSorting="false"
-                                SkinID="DetailPageGridView">
+                            <asp:GridView ID="ClaimActionGrid" runat="server" Width="100%" AllowPaging="false" AllowSorting="false" SkinID="DetailPageGridView">
                                 <Columns>
-                                    <asp:BoundField HeaderText="action_owner"  DataField="action_owner" SortExpression="action_owner"  HtmlEncode="false">
+                                    <asp:BoundField HeaderText="action_owner" DataField="action_owner" SortExpression="action_owner" HtmlEncode="false">
                                     </asp:BoundField>
-                                    <asp:BoundField HeaderText="action_type"  DataField="action_type" SortExpression="action_type"  HtmlEncode="false">
+                                    <asp:BoundField HeaderText="action_type" DataField="action_type" SortExpression="action_type" HtmlEncode="false">
                                     </asp:BoundField>
-                                    <asp:BoundField HeaderText="document_type_descr"  DataField="document_type_descr" SortExpression="document_type_descr"  HtmlEncode="false">
+                                    <asp:BoundField HeaderText="document_type_descr" DataField="document_type_descr" SortExpression="document_type_descr" HtmlEncode="false">
                                     </asp:BoundField>
-                                    <asp:BoundField HeaderText="status"  DataField="status" SortExpression="status"  HtmlEncode="false">
+                                    <asp:BoundField HeaderText="status" DataField="status" SortExpression="status" HtmlEncode="false">
                                     </asp:BoundField>
-                                    <asp:BoundField HeaderText="created_date"  DataField="created_date" SortExpression="created_date"  HtmlEncode="false">
+                                    <asp:BoundField HeaderText="created_date" DataField="created_date" SortExpression="created_date" HtmlEncode="false">
                                     </asp:BoundField>
                                 </Columns>
-                                <PagerSettings PageButtonCount="30" Mode="Numeric" />
+                                <PagerSettings PageButtonCount="30" Mode="Numeric"></PagerSettings>
                             </asp:GridView>
                      </div>
                 </div> 
@@ -209,3 +206,4 @@
             </div>
         </div>
 </asp:Content>
+ent>

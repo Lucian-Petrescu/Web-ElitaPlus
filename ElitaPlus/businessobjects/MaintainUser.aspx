@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="MaintainUser.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="MaintainUser.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.business.MaintainUser" EnableSessionState="True"
     MasterPageFile="../Navigation/masters/ElitaBase.Master" Theme="Default" %>
 
@@ -6,9 +6,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <script language="JavaScript" type="text/javascript" src="../Navigation/Scripts/GlobalHeader.js"></script>
 
-  <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet"/>
-  <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js" > </script>
-  <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js" > </script>
+  <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet">
+  <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js"> </script>
+  <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js"> </script>
   <script type="text/javascript">
     $(function () {
         $("#tabs").tabs({
@@ -20,7 +20,7 @@
         });
     });
   </script>
-  <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet"/>    
+  <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet">    
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
 </asp:Content>
@@ -28,8 +28,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <div class="dataContainer">
-        <table id="Table1" cellspacing="0" cellpadding="0" width="100%" border="0" class="formGrid"
-            style="padding: 0px; margin: 0px">
+        <table id="Table1" cellspacing="0" cellpadding="0" width="100%" border="0" class="formGrid" style="padding: 0px; margin: 0px">
             <tr>
                 <td align="right" height="20" class="borderLeft">
                     <asp:Label ID="moNetworkLabel" runat="server">Network_ID</asp:Label>
@@ -61,8 +60,7 @@
                 </td>
                 <td align="left" height="20">
                     <asp:RadioButton ID="rdoActive" runat="server" GroupName="IsActive" Text="Active">
-                    </asp:RadioButton><asp:RadioButton ID="rdoInActive" runat="server" GroupName="IsActive"
-                        Text="InActive"></asp:RadioButton>
+                    </asp:RadioButton><asp:RadioButton ID="rdoInActive" runat="server" GroupName="IsActive" Text="InActive"></asp:RadioButton>
                 </td>
             </tr>
             <tr>
@@ -71,17 +69,16 @@
             </tr>
         </table>
 
-        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
+        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
         <div id="tabs" class="style-tabs" style="position:static;">
           <ul>
-            <li style="position:static;"><a href="#tabsUserRoles"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">USER_ ROLES</asp:Label></a></li>
-            <li style="position:static;"><a href="#tabsUserCompany"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">USER_COMPANY</asp:Label></a></li>
-            <li style="position:static;"><a href="#tabsPermission"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">PERMISSION</asp:Label></a></li>
-            <li style="position:static;"><a href="#tabsUserSecurity"><asp:Label ID="Label9" runat="server" CssClass="tabHeaderText">USER_SECURITY</asp:Label></a></li>
+            <li style="position:static;"><a href="#tabsUserRoles" rel="noopener noreferrer"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">USER_ ROLES</asp:Label></a></li>
+            <li style="position:static;"><a href="#tabsUserCompany" rel="noopener noreferrer"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">USER_COMPANY</asp:Label></a></li>
+            <li style="position:static;"><a href="#tabsPermission" rel="noopener noreferrer"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">PERMISSION</asp:Label></a></li>
+            <li style="position:static;"><a href="#tabsUserSecurity" rel="noopener noreferrer"><asp:Label ID="Label9" runat="server" CssClass="tabHeaderText">USER_SECURITY</asp:Label></a></li>
           </ul>
           <div id="tabsUserRoles">
-            <table id="Table5" cellspacing="0" cellpadding="0" width="300" align="center" border="0"
-                    class="formGrid">
+            <table id="Table5" cellspacing="0" cellpadding="0" width="300" align="center" border="0" class="formGrid">
                     <tr>
                         <td>
                             <asp:Label ID="Label12" runat="server">Available</asp:Label>
@@ -98,16 +95,15 @@
                             </asp:ListBox>
                         </td>
                         <td>
-                            <table id="Table6" style="width: 75px; height: 27px" cellspacing="1" cellpadding="1"
-                                width="75" border="0">
+                            <table id="Table6" style="width: 75px; height: 27px" cellspacing="1" cellpadding="1" width="75" border="0">
                                 <tr>
                                     <td>
-                                        <br />
-                                        <br />
+                                        <br>
+                                        <br>
                                         <asp:Button ID="btnAddToSelected" runat="server" Width="55px" Text=">>" SkinID="">
                                         </asp:Button>
-                                        <br />
-                                        <br />
+                                        <br>
+                                        <br>
                                         <asp:Button ID="btnRemove" runat="server" Text="<<" Width="55px" SkinID=""></asp:Button>
                                     </td>
                                 </tr>
@@ -121,8 +117,7 @@
                 </table>
           </div>
           <div id="tabsUserCompany">
-            <table id="Table7" cellspacing="0" cellpadding="0" width="100%" align="center" border="0"
-                    class="formGrid">
+            <table id="Table7" cellspacing="0" cellpadding="0" width="100%" align="center" border="0" class="formGrid">
                     <tr>
                         <td align="right">
                             <asp:Label ID="Label1" runat="server">Available</asp:Label>:
@@ -138,26 +133,22 @@
                 </table>
                 <div class="Page" runat="server" id="moUserCompaniesTabPanel_WRITE" style="display: block;
                     height: 260px; overflow: auto">
-                    <asp:GridView ID="Grid" runat="server" Width="100%" OnRowDataBound="Grid_ItemDataBound"
-                        OnRowCommand="Grid_ItemCommand" AllowPaging="false" AllowSorting="False" CellPadding="1"
-                        AutoGenerateColumns="False" SkinID="DetailPageGridView">
+                    <asp:GridView ID="Grid" runat="server" Width="100%" OnRowDataBound="Grid_ItemDataBound" OnRowCommand="Grid_ItemCommand" AllowPaging="false" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
                         <SelectedRowStyle Wrap="True"></SelectedRowStyle>
                         <EditRowStyle Wrap="True"></EditRowStyle>
                         <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
                         <RowStyle Wrap="True"></RowStyle>
                         <Columns>
                             <asp:TemplateField ShowHeader="false">
-                                <ItemStyle HorizontalAlign="Center" Width="3%" Height="15px" />
+                                <ItemStyle HorizontalAlign="Center" Width="3%" Height="15px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton ID="btnView" runat="server" CausesValidation="False" CommandName="EditAction"
-                                        ImageUrl="../Navigation/images/edit.png" CommandArgument="<%#Container.DisplayIndex %>" />
+                                    <asp:ImageButton ID="btnView" runat="server" CausesValidation="False" CommandName="EditAction" ImageUrl="../Navigation/images/edit.png" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField ShowHeader="false">
-                                <ItemStyle HorizontalAlign="Center" Width="3%" Height="15px" />
+                                <ItemStyle HorizontalAlign="Center" Width="3%" Height="15px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton ID="btnDelete" runat="server" CausesValidation="False" CommandName="DeleteAction"
-                                        ImageUrl="../Navigation/images/icon_delete.png" CommandArgument="<%#Container.DisplayIndex %>" />
+                                    <asp:ImageButton ID="btnDelete" runat="server" CausesValidation="False" CommandName="DeleteAction" ImageUrl="../Navigation/images/icon_delete.png" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField Visible="false"></asp:TemplateField>
@@ -170,7 +161,7 @@
                                 <HeaderStyle HorizontalAlign="Center" Width="20%"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:Label ID="moPaymentLimitLabel" runat="server" Visible="True" />
+                                    <asp:Label ID="moPaymentLimitLabel" runat="server" Visible="True"></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:TextBox ID="moPaymentLimitText" runat="server" Visible="True" Width="70%"></asp:TextBox>
@@ -180,7 +171,7 @@
                                 <HeaderStyle HorizontalAlign="Center" Width="20%"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:Label ID="moAuthorizationLimitLabel" runat="server" Visible="True" />
+                                    <asp:Label ID="moAuthorizationLimitLabel" runat="server" Visible="True"></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:TextBox ID="moAuthorizationLimitText" runat="server" Visible="True" Width="70%"></asp:TextBox>
@@ -190,7 +181,7 @@
                                 <HeaderStyle HorizontalAlign="Center" Width="20%"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:Label ID="moLiabilityOverrideLimitLabel" runat="server" Visible="True" />
+                                    <asp:Label ID="moLiabilityOverrideLimitLabel" runat="server" Visible="True"></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:TextBox ID="moLiabilityOverrideLimitText" runat="server" Visible="True" Width="70%"></asp:TextBox>
@@ -207,8 +198,7 @@
                 </div>
           </div>
           <div id="tabsPermission">
-            <table id="Table3" cellspacing="0" cellpadding="0" width="300" align="center" border="0"
-                    class="formGrid">
+            <table id="Table3" cellspacing="0" cellpadding="0" width="300" align="center" border="0" class="formGrid">
                     <tr>
                         <td>
                             <asp:Label ID="Label2" runat="server">Available</asp:Label>
@@ -224,15 +214,14 @@
                             <asp:ListBox ID="lstAvailablePermission" Style="width: 300px; height: 150px" runat="server"></asp:ListBox>
                         </td>
                         <td>
-                            <table id="Table4" style="width: 75px; height: 27px" cellspacing="1" cellpadding="1"
-                                width="75" border="0">
+                            <table id="Table4" style="width: 75px; height: 27px" cellspacing="1" cellpadding="1" width="75" border="0">
                                 <tr>
                                     <td>
-                                        <br />
-                                        <br />
+                                        <br>
+                                        <br>
                                         <asp:Button ID="btnAddPermissionToSelected" runat="server" Width="55px" Text=">>" SkinID=""></asp:Button>
-                                        <br />
-                                        <br />
+                                        <br>
+                                        <br>
                                         <asp:Button ID="btnRemovePermission" runat="server" Text="<<" Width="55px" SkinID=""></asp:Button>
                                     </td>
                                 </tr>
@@ -252,7 +241,7 @@
                                 <asp:Label runat="server" ID="SpClaimCodeLabel" Text="SP_CLAIM_CODE"></asp:Label>
                             </td>
                             <td nowrap="nowrap">
-                                <asp:DropDownList runat="server" ID="SpClaimCodeDropDown"  AutoPostBack="true" SkinID="MediumDropDown" />
+                                <asp:DropDownList runat="server" ID="SpClaimCodeDropDown" AutoPostBack="true" SkinID="MediumDropDown"></asp:DropDownList>
                             </td>
                         </tr>
                         <tr id="CertificateFile" runat="server" visible="false">
@@ -260,8 +249,7 @@
                                 <asp:Label runat="server" ID="CertificateFileLabel" Text="CERTIFICATE_FILE_UPLOAD"></asp:Label>
                             </td>
                             <td nowrap="nowrap">
-                                <input id="CertificateFileUpload" style="width: 80%" type="file" accept=".cer,.crt" name="CertificateFileUpload"
-                                runat="server" />
+                                <input id="CertificateFileUpload" style="width: 80%" type="file" accept=".cer,.crt" name="CertificateFileUpload" runat="server">
                             </td>
                         </tr>
                         <tr id="SpClaimCountry" runat="server">
@@ -270,8 +258,7 @@
                             </td>
                             <td nowrap="nowrap">
                                 <asp:TextBox runat="server" ID="SpClaimCountryTextBox"></asp:TextBox>
-                                 <asp:RequiredFieldValidator ID="rfvSpClaimCountryTextBox" runat="server" ControlToValidate="SpClaimCountryTextBox" 
-                                    ErrorMessage="Value is required"></asp:RequiredFieldValidator>
+                                 <asp:RequiredFieldValidator ID="rfvSpClaimCountryTextBox" runat="server" ControlToValidate="SpClaimCountryTextBox" ErrorMessage="Value is required"></asp:RequiredFieldValidator>
                             </td>
                         </tr>
                         <tr id="SpClaimDealer" runat="server">
@@ -284,8 +271,7 @@
                                     <asp:ListItem Text="Other" Value="Other"></asp:ListItem>                                   
                                 </asp:RadioButtonList>
                                  <asp:TextBox runat="server" ID="txtDealerCode"></asp:TextBox>
-                                <asp:RequiredFieldValidator ID="rfvtxtDealerCode" runat="server" ControlToValidate="txtDealerCode" 
-                                    ErrorMessage="Value is required"></asp:RequiredFieldValidator>
+                                <asp:RequiredFieldValidator ID="rfvtxtDealerCode" runat="server" ControlToValidate="txtDealerCode" ErrorMessage="Value is required"></asp:RequiredFieldValidator>
                                 <asp:Label runat="server" ID="lblDealerErrorMsg" ForeColor="Red"></asp:Label>
                             </td>
                             <%--<td nowrap="nowrap">
@@ -298,8 +284,7 @@
                             </td>
                             <td nowrap="nowrap">
                                 <asp:TextBox runat="server" ID="SpClaimValueTextBox"></asp:TextBox>
-                                <asp:RequiredFieldValidator ID="rfvSpClaimValueTextBox" runat="server" ControlToValidate="SpClaimValueTextBox" 
-                                    ErrorMessage="Value is required"></asp:RequiredFieldValidator>
+                                <asp:RequiredFieldValidator ID="rfvSpClaimValueTextBox" runat="server" ControlToValidate="SpClaimValueTextBox" ErrorMessage="Value is required"></asp:RequiredFieldValidator>
                             </td>
                         </tr>
                         <tr id="SpClaimEffectiveDate" runat="server">
@@ -308,8 +293,7 @@
                            </td>
                            <td align="left">
                                 <asp:TextBox runat="server" ID="ValidFromText" SkinID="SmallTextBox"></asp:TextBox>
-                                  <asp:ImageButton ID="ValidFromImageButton" runat="server" Style="vertical-align: bottom"
-                                    ImageUrl="../Common/Images/calendarIcon2.jpg"/>
+                                  <asp:ImageButton ID="ValidFromImageButton" runat="server" Style="vertical-align: bottom" ImageUrl="../Common/Images/calendarIcon2.jpg"></asp:ImageButton>
                            </td>
                         </tr>
                         <tr id="SpClaimExpirationDate" runat="server">
@@ -318,8 +302,7 @@
                            </td>
                            <td align="left">
                                 <asp:TextBox ID="ValidToText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
-                                <asp:ImageButton ID="ValidToImageButton" runat="server" Style="vertical-align: bottom"
-                                    ImageUrl="../Common/Images/calendarIcon2.jpg"/>
+                                <asp:ImageButton ID="ValidToImageButton" runat="server" Style="vertical-align: bottom" ImageUrl="../Common/Images/calendarIcon2.jpg"></asp:ImageButton>
                            </td>
                         </tr>
                         <tr>
@@ -333,32 +316,28 @@
                      </tbody>
                </table>
               <div class="Page" style="display: block; overflow: auto">
-                   <asp:GridView ID="GridViewUserSecurity" runat="server" Width="100%" AutoGenerateColumns="False"
-                        OnRowDataBound="GridViewUserSecurity_ItemDataBound" OnRowCommand="GridViewUserSecurity_ItemCommand" AllowPaging="False" SkinID="DetailPageGridView">
-                        <SelectedRowStyle Wrap="False" />
-                        <EditRowStyle Wrap="False" />
-                        <AlternatingRowStyle Wrap="False" />
-                        <RowStyle Wrap="False" />
-                        <HeaderStyle />
+                   <asp:GridView ID="GridViewUserSecurity" runat="server" Width="100%" AutoGenerateColumns="False" OnRowDataBound="GridViewUserSecurity_ItemDataBound" OnRowCommand="GridViewUserSecurity_ItemCommand" AllowPaging="False" SkinID="DetailPageGridView">
+                        <SelectedRowStyle Wrap="False"></SelectedRowStyle>
+                        <EditRowStyle Wrap="False"></EditRowStyle>
+                        <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
+                        <RowStyle Wrap="False"></RowStyle>
+                        <HeaderStyle></HeaderStyle>
                         <Columns>
                             <asp:TemplateField ShowHeader="false">
-                                <ItemStyle HorizontalAlign="Center" Width="3%" Height="15px" />
+                                <ItemStyle HorizontalAlign="Center" Width="3%" Height="15px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton ID="EditButton" runat="server" CausesValidation="False" CommandName="EditAction"
-                                        ImageUrl="../Navigation/images/edit.png" CommandArgument="<%#Container.DisplayIndex %>" />
+                                    <asp:ImageButton ID="EditButton" runat="server" CausesValidation="False" CommandName="EditAction" ImageUrl="../Navigation/images/edit.png" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField Visible="False">
                                 <ItemTemplate>
-                                    <asp:Label ID="SpUserClaimsIdLabel" Text='<%# GetGuidStringFromByteArray(Container.DataItem("sp_user_claims_id"), "true")%>'
-                                        runat="server">
+                                    <asp:Label ID="SpUserClaimsIdLabel" Text='<%# GetGuidStringFromByteArray(Container.DataItem("sp_user_claims_id"), "true")%>' runat="server">
                                     </asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField Visible="False">
                                 <ItemTemplate>
-                                    <asp:Label ID="SpClaimTypeIdLabel" Text='<%# GetGuidStringFromByteArray(Container.DataItem("sp_claim_type_id"))%>'
-                                        runat="server">
+                                    <asp:Label ID="SpClaimTypeIdLabel" Text='<%# GetGuidStringFromByteArray(Container.DataItem("sp_claim_type_id"))%>' runat="server">
                                     </asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -366,8 +345,7 @@
                                 <HeaderStyle HorizontalAlign="Left" Width="20%"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Left"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:Label ID="SpClaimCodeDescriptionLabel" Text='<%# Container.DataItem("sp_claim_code_description")%>'
-                                        runat="server">
+                                    <asp:Label ID="SpClaimCodeDescriptionLabel" Text='<%# Container.DataItem("sp_claim_code_description")%>' runat="server">
                                     </asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -375,8 +353,7 @@
                                <HeaderStyle HorizontalAlign="Left" Width="20%"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Left"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:Label ID="SpClaimValueLabel" Text='<%# Container.DataItem("sp_claim_value")%>'
-                                        runat="server">
+                                    <asp:Label ID="SpClaimValueLabel" Text='<%# Container.DataItem("sp_claim_value")%>' runat="server">
                                     </asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -384,8 +361,7 @@
                                 <HeaderStyle HorizontalAlign="Left" Width="20%"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Left"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:Label ID="SpClaimEffectiveDateLabel" Text='<%# GetDateFormattedStringNullable(Container.DataItem("EFFECTIVE_DATE"))%>'
-                                        runat="server">
+                                    <asp:Label ID="SpClaimEffectiveDateLabel" Text='<%# GetDateFormattedStringNullable(Container.DataItem("EFFECTIVE_DATE"))%>' runat="server">
                                     </asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -393,12 +369,11 @@
                                 <HeaderStyle HorizontalAlign="Left" Width="20%"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Left"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:Label ID="SpClaimExpirationDateLabel" runat="server" Visible="True" text='<%# GetDateFormattedStringNullable(Container.DataItem("expiration_date"))%>'/>
+                                    <asp:Label ID="SpClaimExpirationDateLabel" runat="server" Visible="True" text='<%# GetDateFormattedStringNullable(Container.DataItem("expiration_date"))%>'></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:TextBox ID="SpClaimExpirationDateText" runat="server" Visible="True" text='<%# GetDateFormattedStringNullable(Container.DataItem("expiration_date"))%>' Width="70%"></asp:TextBox>
-                                     <asp:ImageButton ID="SpClaimExpirationDateImageButton" runat="server" Style="vertical-align: bottom"
-                                                        ImageUrl="~/App_Themes/Default/Images/calendar.png" />
+                                     <asp:ImageButton ID="SpClaimExpirationDateImageButton" runat="server" Style="vertical-align: bottom" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -412,40 +387,33 @@
                 </div>
            </div>
         </div>
-        <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-            runat="server" />
-        <table id="Table2" cellspacing="0" cellpadding="0" width="100%" border="0" class="formGrid"
-            style="padding: 0px; margin: 0px">
+        <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server">
+        <table id="Table2" cellspacing="0" cellpadding="0" width="100%" border="0" class="formGrid" style="padding: 0px; margin: 0px">
             <tr>
                 <td colspan="2">
                 </td>
             </tr>
             <tr>
                 <td valign="top" colspan="2" height="10" class="borderLeft">
-                    <table class="formGrid" border="0" cellspacing="0" cellpadding="0" style="padding-left: 0px;"
-                        width="100%">
+                    <table class="formGrid" border="0" cellspacing="0" cellpadding="0" style="padding-left: 0px;" width="100%">
                         <tr>
                             <td align="right" rowspan="1" width="30%">
-                                <asp:RadioButton ID="rdoInternal" runat="server" AutoPostBack="True" GroupName="IsInternal"
-                                    Text="Internal_User"></asp:RadioButton>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                                <asp:RadioButton ID="rdoInternal" runat="server" AutoPostBack="True" GroupName="IsInternal" Text="Internal_User"></asp:RadioButton>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
                             </td>
                             <td>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
-                                <asp:RadioButton ID="rdoExternal" runat="server" AutoPostBack="True" GroupName="IsInternal"
-                                    Text="External_User"></asp:RadioButton>
+                                <asp:RadioButton ID="rdoExternal" runat="server" AutoPostBack="True" GroupName="IsInternal" Text="External_User"></asp:RadioButton>
                             </td>
                         </tr>
                         <tr>
                             <td valign="top" colspan="2">
-                                <table id="tblExternalUserDetails" cellspacing="1" cellpadding="1" width="100%" border="0"
-                                    runat="server">
+                                <table id="tblExternalUserDetails" cellspacing="1" cellpadding="1" width="100%" border="0" runat="server">
                                     <tr>
                                         <td align="right">
                                             <asp:Label ID="moDealerGroupLabel" runat="server">Dealer_group</asp:Label>:
                                         </td>
                                         <td align="left" height="20">
-                                            <asp:DropDownList ID="cboDealerGroupId" onclick="RestOtherDropDown(1);" runat="server"
-                                                Width="388px" SkinID="SmallDropDown" AutoPostBack="False">
+                                            <asp:DropDownList ID="cboDealerGroupId" onclick="RestOtherDropDown(1);" runat="server" Width="388px" SkinID="SmallDropDown" AutoPostBack="False">
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
@@ -454,8 +422,7 @@
                                             <asp:Label ID="moDealerLabel" runat="server">Dealer</asp:Label>:
                                         </td>
                                         <td align="left" height="20">
-                                            <asp:DropDownList ID="cboDealerId" onclick="RestOtherDropDown(2);" runat="server"
-                                                Width="388px" SkinID="SmallDropDown" AutoPostBack="False">
+                                            <asp:DropDownList ID="cboDealerId" onclick="RestOtherDropDown(2);" runat="server" Width="388px" SkinID="SmallDropDown" AutoPostBack="False">
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
@@ -464,8 +431,7 @@
                                             <asp:Label ID="LabelSearchServiceCenter" runat="server">SERVICE_CENTER_NAME</asp:Label>:
                                         </td>
                                         <td align="left" height="20">
-                                            <asp:DropDownList ID="cboServiceCenterId" onclick="RestOtherDropDown(3);" runat="server"
-                                                SkinID="SmallDropDown" AutoPostBack="False" Width="388px">
+                                            <asp:DropDownList ID="cboServiceCenterId" onclick="RestOtherDropDown(3);" runat="server" SkinID="SmallDropDown" AutoPostBack="False" Width="388px">
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
@@ -474,8 +440,7 @@
                                             <asp:Label ID="lblOther" runat="server">OTHER</asp:Label>:
                                         </td>
                                         <td align="left" height="20">
-                                            <asp:CheckBox ID="chkOther" onclick="RestOtherDropDown(4);" runat="server"></asp:CheckBox><asp:Label
-                                                ID="Label7" runat="server" Width="372px"></asp:Label>
+                                            <asp:CheckBox ID="chkOther" onclick="RestOtherDropDown(4);" runat="server"></asp:CheckBox><asp:Label ID="Label7" runat="server" Width="372px"></asp:Label>
                                         </td>
                                     </tr>
                                 </table>
@@ -486,18 +451,12 @@
             </tr>
         </table>
         <div class="btnZone">
-            <asp:Button ID="btnSave_WRITE" runat="server" Text="Save" SkinID="PrimaryRightButton"
-                ToolTip="Save" CausesValidation="false"></asp:Button>
-            <asp:Button ID="btnApply_WRITE" runat="server" Text="Apply" SkinID="AlternateRightButton"
-                ToolTip="Save"></asp:Button>
-            <asp:Button ID="btnCopy_WRITE" runat="server" Text="New_With_Copy" SkinID="AlternateRightButton"
-                CausesValidation="False"></asp:Button>
-            <asp:Button ID="btnBack" runat="server" Text="Back" SkinID="AlternateLeftButton"
-                ToolTip="Back" CausesValidation="False"></asp:Button>
-            <asp:Button ID="btnNew_WRITE" runat="server" Text="New" SkinID="AlternateLeftButton"
-                CausesValidation="False"></asp:Button>
-            <asp:Button ID="btnDelete_WRITE" runat="server" Text="Delete" SkinID="CenterButton"
-                CausesValidation="False"></asp:Button>
+            <asp:Button ID="btnSave_WRITE" runat="server" Text="Save" SkinID="PrimaryRightButton" ToolTip="Save" CausesValidation="false"></asp:Button>
+            <asp:Button ID="btnApply_WRITE" runat="server" Text="Apply" SkinID="AlternateRightButton" ToolTip="Save"></asp:Button>
+            <asp:Button ID="btnCopy_WRITE" runat="server" Text="New_With_Copy" SkinID="AlternateRightButton" CausesValidation="False"></asp:Button>
+            <asp:Button ID="btnBack" runat="server" Text="Back" SkinID="AlternateLeftButton" ToolTip="Back" CausesValidation="False"></asp:Button>
+            <asp:Button ID="btnNew_WRITE" runat="server" Text="New" SkinID="AlternateLeftButton" CausesValidation="False"></asp:Button>
+            <asp:Button ID="btnDelete_WRITE" runat="server" Text="Delete" SkinID="CenterButton" CausesValidation="False"></asp:Button>
         </div>
     </div>
     <script type="text/javascript" language="javascript">
@@ -585,6 +544,29 @@
                         objDropDown1ToReset.selectedIndex = -1;
                         var objDropDown2ToReset = document.getElementById('<%=cboDealerId.ClientID%>');
                         objDropDown2ToReset.selectedIndex = -1;
+                        var objCheckBoxToReset = document.getElementById('<%=chkOther.ClientID%>');
+                        objCheckBoxToReset.checked = false;
+                        break;
+                    }
+                case 4: //Other checkbox
+                    {
+                        var objDropDown1ToReset = document.getElementById('<%=cboDealerGroupId.ClientID%>');
+                        objDropDown1ToReset.selectedIndex = -1;
+                        var objDropDown2ToReset = document.getElementById('<%=cboDealerId.ClientID%>');
+                        objDropDown2ToReset.selectedIndex = -1;
+                        var objDropDown3ToReset = document.getElementById('<%=cboServiceCenterId.ClientID%>');
+                        objDropDown3ToReset.selectedIndex = -1;
+                        break;
+                    }
+            }
+
+        }
+        
+        
+           
+    </script>
+</asp:Content>
+
                         var objCheckBoxToReset = document.getElementById('<%=chkOther.ClientID%>');
                         objCheckBoxToReset.checked = false;
                         break;

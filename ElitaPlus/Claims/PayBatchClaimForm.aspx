@@ -1,4 +1,4 @@
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+﻿<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <%@ Page Language="vb" AutoEventWireup="false" MasterPageFile="../Navigation/masters/ElitaBase.Master"
     CodeBehind="PayBatchClaimForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.PayBatchClaimForm"
@@ -14,8 +14,8 @@
             text-align: center;
         }
     </style>
-    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet" />
-    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet" />
+    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet">
+    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet">
     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js"> </script>
     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js"> </script>
     <table cellspacing="0" cellpadding="0" width="100%" border="0" class="searchGrid">
@@ -23,122 +23,108 @@
             <td style="height: 12px" align="left">
                 <asp:Label ID="LabelServiceCenter" runat="server">SERVICE_CENTER</asp:Label>:
             </td>
-            <td nowrap align="left" id="tdlblbatch" runat="server">
+            <td nowrap="" align="left" id="tdlblbatch" runat="server">
                 <asp:Label ID="LabelBatchNumber" runat="server">BATCH #</asp:Label>:
             </td>
-            <td nowrap align="left" id="td1" runat="server">
+            <td nowrap="" align="left" id="td1" runat="server">
                 <asp:Label ID="lblInvTyp" runat="server">INVOICE_TYPE:</asp:Label>
             </td>
-            <td nowrap align="left">
+            <td nowrap="" align="left">
                 <asp:Label ID="LabelRepairDate" runat="server">REPAIR_DATE:</asp:Label>
             </td>
         </tr>
         <tr>
-            <td nowrap align="left">
-                <asp:TextBox ID="TextBoxServiceCenter" runat="server" AutoPostBack="False" SkinID="SmallTextBox"
-                    Enabled="False"></asp:TextBox>&nbsp;&nbsp;
+            <td nowrap="" align="left">
+                <asp:TextBox ID="TextBoxServiceCenter" runat="server" AutoPostBack="False" SkinID="SmallTextBox" Enabled="False"></asp:TextBox>&nbsp;&nbsp;
             </td>
-            <td nowrap align="left" id="tdtxtbatch" runat="server">
-                <asp:TextBox ID="TextBoxBatchNumber" runat="server" AutoPostBack="False" SkinID="SmallTextBox"
-                    Enabled="False"></asp:TextBox>
+            <td nowrap="" align="left" id="tdtxtbatch" runat="server">
+                <asp:TextBox ID="TextBoxBatchNumber" runat="server" AutoPostBack="False" SkinID="SmallTextBox" Enabled="False"></asp:TextBox>
             </td>
-            <td nowrap align="left" id="td2" runat="server">
-                <asp:TextBox ID="txtInvTyp" runat="server" AutoPostBack="False" SkinID="SmallTextBox"
-                    Enabled="False"></asp:TextBox>
+            <td nowrap="" align="left" id="td2" runat="server">
+                <asp:TextBox ID="txtInvTyp" runat="server" AutoPostBack="False" SkinID="SmallTextBox" Enabled="False"></asp:TextBox>
             </td>
-            <td nowrap align="left">
+            <td nowrap="" align="left">
                 <asp:TextBox ID="TextBoxRepairDate" runat="server" SkinID="SmallTextBox" Enabled="false"></asp:TextBox>
-                <asp:ImageButton ID="ImageButtonRepirDate" runat="server" CausesValidation="False"
-                    Visible="True" ImageUrl="../Common/Images/calendarIcon2.jpg" Enabled="false"
-                    ImageAlign="AbsMiddle"></asp:ImageButton>&nbsp;
-                <asp:Button ID="btnAddRepairDate_WRITE" runat="server" SkinID="AlternateLeftButton"
-                    Text="ADD_REPAIR_DATE" Enabled="false"></asp:Button>
+                <asp:ImageButton ID="ImageButtonRepirDate" runat="server" CausesValidation="False" Visible="True" ImageUrl="../Common/Images/calendarIcon2.jpg" Enabled="false" ImageAlign="AbsMiddle"></asp:ImageButton>&nbsp;
+                <asp:Button ID="btnAddRepairDate_WRITE" runat="server" SkinID="AlternateLeftButton" Text="ADD_REPAIR_DATE" Enabled="false"></asp:Button>
             </td>
         </tr>
         <tr>
-            <td nowrap align="left" width="1%">
+            <td nowrap="" align="left" width="1%">
                 <asp:Label ID="LabelInvoiceNumber" runat="server">INVOICE_NUMBER</asp:Label>:
             </td>
-            <td nowrap align="left" colspan="1">
+            <td nowrap="" align="left" colspan="1">
                 <asp:Label ID="LabelInvoiceAmount" runat="server">INVOICE_AMT</asp:Label>:
             </td>
-            <td nowrap align="left" colspan="1" id="tdlblstate" runat="server">
+            <td nowrap="" align="left" colspan="1" id="tdlblstate" runat="server">
                 <asp:Label ID="LabelState" runat="server">PERCEPTION_IIBB_PROVINCE</asp:Label>:
             </td>
-            <td nowrap align="left" id="tdlbltax1" runat="server">
+            <td nowrap="" align="left" id="tdlbltax1" runat="server">
                 <asp:Label ID="LabelPerceptionIVA" runat="server">PERCEPTION_IVA</asp:Label>:
             </td>
         </tr>
         <tr>
-            <td style="height: 17px" nowrap align="left" width="275">
-                <asp:TextBox ID="TextBoxInvoiceNumber" runat="server" AutoPostBack="False" SkinID="SmallTextBox"
-                    Enabled="False"></asp:TextBox>
+            <td style="height: 17px" nowrap="" align="left" width="275">
+                <asp:TextBox ID="TextBoxInvoiceNumber" runat="server" AutoPostBack="False" SkinID="SmallTextBox" Enabled="False"></asp:TextBox>
             </td>
-            <td nowrap align="left" colspan="1">
-                <asp:TextBox ID="TextBoxInvoiceAmount" runat="server" AutoPostBack="False" SkinID="SmallTextBox"
-                    Enabled="False"></asp:TextBox>
+            <td nowrap="" align="left" colspan="1">
+                <asp:TextBox ID="TextBoxInvoiceAmount" runat="server" AutoPostBack="False" SkinID="SmallTextBox" Enabled="False"></asp:TextBox>
             </td>
-            <td nowrap align="left" colspan="1" id="tddpstate" runat="server">
-                <asp:DropDownList ID="DropDownState" runat="server" AutoPostBack="False" SkinID="SmallDropDown"
-                    Enabled="False">
+            <td nowrap="" align="left" colspan="1" id="tddpstate" runat="server">
+                <asp:DropDownList ID="DropDownState" runat="server" AutoPostBack="False" SkinID="SmallDropDown" Enabled="False">
                 </asp:DropDownList>
             </td>
-            <td style="height: 12px" nowrap align="left" id="tdtxttax1" runat="server">
-                <asp:TextBox ID="TextBoxPerceptionIVA" runat="server" AutoPostBack="False" SkinID="SmallTextBox"
-                    Enabled="False"></asp:TextBox>
+            <td style="height: 12px" nowrap="" align="left" id="tdtxttax1" runat="server">
+                <asp:TextBox ID="TextBoxPerceptionIVA" runat="server" AutoPostBack="False" SkinID="SmallTextBox" Enabled="False"></asp:TextBox>
             </td>
         </tr>
         <tr>
-            <td nowrap align="left">
+            <td nowrap="" align="left">
                 <asp:Label ID="LabelCurrentAmount" runat="server">CURRENT_AMT</asp:Label>:
             </td>
-            <td nowrap align="left">
+            <td nowrap="" align="left">
                 <asp:Label ID="LabelInvoiceDate" runat="server">INVOICE_DATE</asp:Label>:
             </td>
-            <td nowrap align="left">
+            <td nowrap="" align="left">
                 <asp:Label ID="LabelDifference" runat="server">DIFFERENCE</asp:Label>:
             </td>
-            <td nowrap align="left" id="tdlbltax2" runat="server">
+            <td nowrap="" align="left" id="tdlbltax2" runat="server">
                 <asp:Label ID="LabeLPerceptionIIBB" runat="server">PERCEPTION_IIBB</asp:Label>:
             </td>
         </tr>
         <tr>
-            <td style="height: 12px" nowrap align="left">
-                <asp:TextBox ID="TextBoxCurrentAmount" runat="server" AutoPostBack="False" SkinID="SmallTextBox"
-                    Enabled="False"></asp:TextBox>
+            <td style="height: 12px" nowrap="" align="left">
+                <asp:TextBox ID="TextBoxCurrentAmount" runat="server" AutoPostBack="False" SkinID="SmallTextBox" Enabled="False"></asp:TextBox>
             </td>
-            <td style="height: 12px" nowrap align="left">
-                <asp:TextBox ID="TextBoxInvoiceDate" runat="server" AutoPostBack="False" SkinID="SmallTextBox"
-                    Enabled="False"></asp:TextBox>
+            <td style="height: 12px" nowrap="" align="left">
+                <asp:TextBox ID="TextBoxInvoiceDate" runat="server" AutoPostBack="False" SkinID="SmallTextBox" Enabled="False"></asp:TextBox>
             </td>
-            <td style="height: 12px" nowrap align="left">
-                <asp:TextBox ID="TextBoxDifference" runat="server" AutoPostBack="False" SkinID="SmallTextBox"
-                    Enabled="False"></asp:TextBox>
+            <td style="height: 12px" nowrap="" align="left">
+                <asp:TextBox ID="TextBoxDifference" runat="server" AutoPostBack="False" SkinID="SmallTextBox" Enabled="False"></asp:TextBox>
             </td>
-            <td style="height: 12px" nowrap align="left" id="tdtxttax2" runat="server">
-                <asp:TextBox ID="TextBoxPerceptionIIBB" runat="server" AutoPostBack="False" SkinID="SmallTextBox"
-                    Enabled="False"></asp:TextBox>
+            <td style="height: 12px" nowrap="" align="left" id="tdtxttax2" runat="server">
+                <asp:TextBox ID="TextBoxPerceptionIIBB" runat="server" AutoPostBack="False" SkinID="SmallTextBox" Enabled="False"></asp:TextBox>
             </td>
         </tr>
     </table>
-    <input id="inpCurrentAmt" type="hidden" name="inpCurrentAmt" runat="server" />
-    <input id="inpDifference" type="hidden" name="impDifference" runat="server" />
+    <input id="inpCurrentAmt" type="hidden" name="inpCurrentAmt" runat="server">
+    <input id="inpDifference" type="hidden" name="impDifference" runat="server">
 </asp:Content>
 <asp:Content ID="Body" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <div class="dataContainer">
         <h2 class="dataGridHeader">Search results for Pay Invoice</h2>
         <div style="width: 100%">
         <div class="dataContainer" id="InvoiceTabs" Visible="False" runat="server" style="width: 100%;">
-            <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
+            <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
             <div id="tabs" class="style-tabs">
                 <ul>
                     <li>
-                        <a href="#tabsSearchInvoice">
+                        <a href="#tabsSearchInvoice" rel="noopener noreferrer">
                             <asp:Label ID="lblsearchInvoice" runat="server" CssClass="tabHeaderText">Claim Details</asp:Label>
                         </a>
                     </li>
                     <li>
-                        <a href="#tabsIIBBtaxes">
+                        <a href="#tabsIIBBtaxes" rel="noopener noreferrer">
                             <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">REGION_TAXES</asp:Label>
                         </a>
                     </li>
@@ -171,12 +157,11 @@
                         </table>
                     </div>
                     <div style="width: 100%">
-                        <asp:GridView ID="GridClaims" runat="server" Width="100%" AutoGenerateColumns="False"
-                            CellPadding="1" AllowPaging="True" SkinID="DetailPageGridView">
-                            <SelectedRowStyle Wrap="True" />
-                            <EditRowStyle Wrap="True" />
-                            <AlternatingRowStyle Wrap="True" />
-                            <RowStyle Wrap="True" />
+                        <asp:GridView ID="GridClaims" runat="server" Width="100%" AutoGenerateColumns="False" CellPadding="1" AllowPaging="True" SkinID="DetailPageGridView">
+                            <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                            <EditRowStyle Wrap="True"></EditRowStyle>
+                            <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                            <RowStyle Wrap="True"></RowStyle>
                             <Columns>
                                 <asp:BoundField Visible="False" HeaderText="invoice_trans_id"></asp:BoundField>
                                 <asp:BoundField Visible="False" HeaderText="invoice_trans_detail_id"></asp:BoundField>
@@ -216,16 +201,14 @@
                                     <ItemStyle HorizontalAlign="Center" Wrap="False" VerticalAlign="bottom"></ItemStyle>
                                     <ItemTemplate>
                                         <asp:TextBox ID="textRepairDate" runat="server" Width="80px" Height="18px"></asp:TextBox>
-                                        <asp:ImageButton ID="ImageButtonRepairDate" runat="server" CausesValidation="False"
-                                            Visible="True" ImageUrl="~/App_Themes/Default/Images/calendar.png" ImageAlign="AbsMiddle"></asp:ImageButton>
+                                        <asp:ImageButton ID="ImageButtonRepairDate" runat="server" CausesValidation="False" Visible="True" ImageUrl="~/App_Themes/Default/Images/calendar.png" ImageAlign="AbsMiddle"></asp:ImageButton>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Pickup_Date" HeaderStyle-HorizontalAlign="Center">
                                     <ItemStyle HorizontalAlign="Center" Wrap="False" VerticalAlign="bottom"></ItemStyle>
                                     <ItemTemplate>
                                         <asp:TextBox ID="textPickupDate" runat="server" Width="80px" Height="18px"></asp:TextBox>
-                                        <asp:ImageButton ID="ImageButtonPickupDate" runat="server" CausesValidation="False"
-                                            Visible="True" ImageUrl="~/App_Themes/Default/Images/calendar.png" ImageAlign="AbsMiddle"></asp:ImageButton>
+                                        <asp:ImageButton ID="ImageButtonPickupDate" runat="server" CausesValidation="False" Visible="True" ImageUrl="~/App_Themes/Default/Images/calendar.png" ImageAlign="AbsMiddle"></asp:ImageButton>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Close" HeaderStyle-HorizontalAlign="Center">
@@ -242,8 +225,8 @@
                                 </asp:TemplateField>
                                 <asp:BoundField Visible="False"></asp:BoundField>
                             </Columns>
-                            <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                            <PagerStyle />
+                            <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                            <PagerStyle></PagerStyle>
                         </asp:GridView>
                     </div>
                 </div>
@@ -282,14 +265,10 @@
         </div>
     </div>
     <div class="btnZone">
-        <asp:Button ID="btnCancel" runat="server" SkinID="AlternateLeftButton"
-            Text="Cancel"></asp:Button>
-        <asp:Button ID="btnSave_WRITE" runat="server" SkinID="AlternateLeftButton"
-            Text="SAVE"></asp:Button>
-        <asp:Button ID="btnPay_WRITE" runat="server" SkinID="AlternateLeftButton"
-            Text="Pay"></asp:Button>
-        <asp:Button ID="btnReject_WRITE" runat="server" SkinID="AlternateLeftButton"
-            Text="Reject"></asp:Button>
+        <asp:Button ID="btnCancel" runat="server" SkinID="AlternateLeftButton" Text="Cancel"></asp:Button>
+        <asp:Button ID="btnSave_WRITE" runat="server" SkinID="AlternateLeftButton" Text="SAVE"></asp:Button>
+        <asp:Button ID="btnPay_WRITE" runat="server" SkinID="AlternateLeftButton" Text="Pay"></asp:Button>
+        <asp:Button ID="btnReject_WRITE" runat="server" SkinID="AlternateLeftButton" Text="Reject"></asp:Button>
 
     </div>
 
@@ -449,6 +428,15 @@
                 if (r >= 0) {
                     calcAmountToBePaid(sID, aID, r * 100, s * 100);
                     chkamt(aID, r * 100);
+                }
+                return false;
+            }
+            document.getElementById(aID).innerText = convertNumberToCulture((r - newSal), curSep, groupSep);
+
+        }
+    </script>
+</asp:Content>
+       chkamt(aID, r * 100);
                 }
                 return false;
             }

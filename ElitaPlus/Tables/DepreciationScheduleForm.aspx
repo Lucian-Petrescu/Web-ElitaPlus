@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="DepreciationScheduleForm.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="DepreciationScheduleForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.DepreciationScheduleForm" Theme="Default"
     MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
@@ -19,7 +19,7 @@
                     <tr>
                         <td style="width: 1px"></td>
                         <td nowrap="nowrap" align="center" colspan="2">
-                            <uc1:MultipleColumnDDLabelControl ID="CompanyMultipleDrop" runat="server" />
+                            <uc1:MultipleColumnDDLabelControl ID="CompanyMultipleDrop" runat="server"></uc1:MultipleColumnDDLabelControl>
                         </td>
                     </tr>
                     <tr>
@@ -57,10 +57,10 @@
 
 <asp:Content ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <div class="dataContainer">
-        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
+        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
         <div id="tabs" class="style-tabs">
             <ul>
-                <li><a href="#tabsDepreciationSchedule">
+                <li><a href="#tabsDepreciationSchedule" rel="noopener noreferrer">
                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">DEPRECIATION_SCHEDULE</asp:Label></a>
                 </li>
             </ul>
@@ -75,9 +75,7 @@
                     <tr>
                         <td align="center" colspan="2">
                             <div id="scroller" style="overflow: auto; width: 96%; height: 125px" align="center">
-                                <asp:GridView ID="DepSchDetailsGridView" runat="server" OnRowCreated="DepSchDetailsGridView_RowCreated" OnRowCommand="DepSchDetailsGridView_RowCommand"
-                                    AllowPaging="False" AllowSorting="false" PageSize="50" CellPadding="1" AutoGenerateColumns="False"
-                                    SkinID="DetailPageGridView">
+                                <asp:GridView ID="DepSchDetailsGridView" runat="server" OnRowCreated="DepSchDetailsGridView_RowCreated" OnRowCommand="DepSchDetailsGridView_RowCommand" AllowPaging="False" AllowSorting="false" PageSize="50" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
                                     <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                                     <EditRowStyle Wrap="False"></EditRowStyle>
                                     <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -87,21 +85,18 @@
                                         <asp:TemplateField ShowHeader="false">
                                             <ItemStyle HorizontalAlign="Center" Width="3%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/icons/edit2.gif"
-                                                    CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                                <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/icons/edit2.gif" CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField ShowHeader="false">
                                             <ItemStyle HorizontalAlign="Center" Width="3%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icons/trash.gif"
-                                                    runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                                <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icons/trash.gif" runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="False">
                                             <ItemTemplate>
-                                                <asp:Label ID="moDepreciationScheduleItemIDlabel" Text='<%# GetGuidStringFromByteArray(Container.DataItem("DEPRECIATION_SCHEDULE_ITEM_ID"))%>'
-                                                    runat="server">
+                                                <asp:Label ID="moDepreciationScheduleItemIDlabel" Text='<%# GetGuidStringFromByteArray(Container.DataItem("DEPRECIATION_SCHEDULE_ITEM_ID"))%>' runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -143,8 +138,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="False">
                                             <ItemTemplate>
-                                                <asp:Label ID="moDepreciationScheduleIDlabel" Text='<%# GetGuidStringFromByteArray(Container.DataItem("DEPRECIATION_SCHEDULE_ID"))%>'
-                                                    runat="server">
+                                                <asp:Label ID="moDepreciationScheduleIDlabel" Text='<%# GetGuidStringFromByteArray(Container.DataItem("DEPRECIATION_SCHEDULE_ID"))%>' runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -169,6 +163,13 @@
         <asp:Button ID="btnBack" runat="server" SkinID="AlternateLeftButton" Text="BACK"></asp:Button>
         <asp:Button ID="btnNew" runat="server" SkinID="AlternateLeftButton" Text="New"></asp:Button>
         <asp:Button ID="btnCopy" runat="server" SkinID="AlternateLeftButton" Text="New_With_Copy"></asp:Button>
+        <asp:Button ID="btnApply" runat="server" SkinID="PrimaryRightButton" Text="SAVE"></asp:Button>
+    </div>
+</asp:Content>
+
+
+
+ver" SkinID="AlternateLeftButton" Text="New_With_Copy"></asp:Button>
         <asp:Button ID="btnApply" runat="server" SkinID="PrimaryRightButton" Text="SAVE" />
     </div>
 </asp:Content>

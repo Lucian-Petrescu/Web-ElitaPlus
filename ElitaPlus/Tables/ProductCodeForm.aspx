@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ProductCodeForm.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ProductCodeForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.ProductCodeForm" EnableSessionState="True" Theme="Default"
     MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
@@ -32,19 +32,18 @@
 
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
         <Scripts>
-            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js"></asp:ScriptReference>
         </Scripts>
     </asp:ScriptManager>
 
     <div class="dataContainer">
         <div class="stepformZone">
-            <table class="formGrid" border="0" cellspacing="0" cellpadding="0" style="padding-left: 0px;"
-                width="100%">
+            <table class="formGrid" border="0" cellspacing="0" cellpadding="0" style="padding-left: 0px;" width="100%">
                 <tr>
                     <td id="Td1" runat="server" colspan="2">
                         <table>
                             <tbody>
-                                <Elita:MultipleColumnDDLabelControl runat="server" ID="DealerDropControl" />
+                                <Elita:MultipleColumnDDLabelControl runat="server" ID="DealerDropControl"></Elita:MultipleColumnDDLabelControl>
                             </tbody>
                         </table>
                     </td>
@@ -53,7 +52,7 @@
                     <td id="TRPlanCode" runat="server" colspan="2">
                         <table>
                             <tbody>
-                                <Elita:MultipleColumnDDLabelControl runat="server" ID="ProductDropControl" />
+                                <Elita:MultipleColumnDDLabelControl runat="server" ID="ProductDropControl"></Elita:MultipleColumnDDLabelControl>
                             </tbody>
                         </table>
                     </td>
@@ -111,8 +110,7 @@
                                         <asp:Label ID="moNumOfReplacementsLabel" runat="server">NUMBER_OF_CLAIMS</asp:Label>
                                     </td>
                                     <td align="left" nowrap="nowrap">
-                                        <asp:TextBox ID="moNumOfReplacementsText" runat="server" type="number" SkinID="MediumTextBox"
-                                            MaxLength="4"></asp:TextBox>
+                                        <asp:TextBox ID="moNumOfReplacementsText" runat="server" type="number" SkinID="MediumTextBox" MaxLength="4"></asp:TextBox>
                                     </td>
                                 </tr>
 
@@ -121,8 +119,7 @@
                                         <asp:Label ID="moNumOfRepairClaimsLabel" runat="server">NUMBER_OF_REPAIR_CLAIMS</asp:Label>
                                     </td>
                                     <td align="left" nowrap="nowrap">
-                                        <asp:TextBox ID="moNumOfRepairClaimsText" runat="server" type="number" SkinID="MediumTextBox"
-                                            MaxLength="4"></asp:TextBox>
+                                        <asp:TextBox ID="moNumOfRepairClaimsText" runat="server" type="number" SkinID="MediumTextBox" MaxLength="4"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -130,8 +127,7 @@
                                         <asp:Label ID="moNumOfReplClaimsLabel" runat="server">NUMBER_OF_REPLACEMENT_CLAIMS</asp:Label>
                                     </td>
                                     <td align="left" nowrap="nowrap">
-                                        <asp:TextBox ID="moNumOfReplClaimsText" runat="server" type="number" SkinID="MediumTextBox"
-                                            MaxLength="4"></asp:TextBox>
+                                        <asp:TextBox ID="moNumOfReplClaimsText" runat="server" type="number" SkinID="MediumTextBox" MaxLength="4"></asp:TextBox>
                                     </td>
                                 </tr>
                             </asp:Panel>
@@ -238,8 +234,7 @@
                                         <asp:Label ID="moInstallmentsLabel" runat="server">NUMBER_OF_INSTALLMENTS</asp:Label>
                                     </td>
                                     <td align="left" nowrap="nowrap">
-                                        <asp:TextBox ID="moInstallmentText" runat="server" type="number" SkinID="MediumTextBox"
-                                            MaxLength="2"></asp:TextBox>
+                                        <asp:TextBox ID="moInstallmentText" runat="server" type="number" SkinID="MediumTextBox" MaxLength="2"></asp:TextBox>
                                     </td>
                                 </tr>
                             </asp:Panel>
@@ -249,8 +244,7 @@
                                         <asp:Label ID="moMethodOfRepairByPriceLabel" runat="server">Method_Of_Repair_By_Price</asp:Label>
                                     </td>
                                     <td align="left" nowrap="nowrap">
-                                        <asp:DropDownList ID="moMethodOfRepairByPriceDrop" AutoPostBack="false" runat="server"
-                                            SkinID="MediumDropDown">
+                                        <asp:DropDownList ID="moMethodOfRepairByPriceDrop" AutoPostBack="false" runat="server" SkinID="MediumDropDown">
                                         </asp:DropDownList>
                                     </td>
                                 </tr>
@@ -349,13 +343,13 @@
                                     <asp:Label ID="moUpgradeTermFromLabel" runat="server">UPGRADE_TERM_FROM</asp:Label>
                                 </td>
                                 <td align="left">
-                                    <asp:TextBox ID="moUpgradeTermFROMText" runat="server" SkinID="SmallTextBox" />
+                                    <asp:TextBox ID="moUpgradeTermFROMText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                 </td>
                                 <td align="right">
                                     <asp:Label ID="moUpgradeTermToLabel" runat="server">UPGRADE_TERM_TO</asp:Label>
                                 </td>
                                 <td align="left">
-                                    <asp:TextBox ID="moUpgradeTermToText" runat="server" SkinID="SmallTextBox" />
+                                    <asp:TextBox ID="moUpgradeTermToText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
@@ -364,8 +358,7 @@
                                 </td>
                                 <td align="left" nowrap="nowrap">
                                     <asp:Label ID="moProductCodeIdLabel" runat="server" Visible="False"></asp:Label>
-                                    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-                                        runat="server" />
+                                    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server">
                                 </td>
                             </tr>
                             <tr>
@@ -426,13 +419,13 @@
                                     <asp:Label ID="moMaxAgeOfRegisteredItemLabel" runat="server">MAX_AGE_OF_REGISTERED_ITEM</asp:Label>
                                 </td>
                                 <td align="left">
-                                    <asp:TextBox ID="moMaxAgeOfRegisteredItemText" runat="server" SkinID="SmallTextBox" />
+                                    <asp:TextBox ID="moMaxAgeOfRegisteredItemText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                 </td>
                                 <td align="right">
                                     <asp:Label ID="moMaxRegistrationsAllowedLabel" runat="server">MAX_REGISTERED_ALLOWED</asp:Label>
                                 </td>
                                 <td align="left">
-                                    <asp:TextBox ID="moMaxRegistrationsAllowedText" runat="server" SkinID="SmallTextBox" />
+                                    <asp:TextBox ID="moMaxRegistrationsAllowedText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr runat="server" id="trUpdateReplaceRegItemsId">
@@ -446,7 +439,7 @@
                                     <asp:Label runat="server" ID="lblRegisteredItemsLimit">REGISTERED_ITEMS_LIMIT</asp:Label>
                                 </td>
                                 <td align="left" nowrap="nowrap">
-                                    <asp:TextBox ID="txtRegisteredItemsLimit" runat="server" SkinID="SmallTextBox" />
+                                    <asp:TextBox ID="txtRegisteredItemsLimit" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
@@ -454,7 +447,7 @@
                                     <asp:Label ID="moClaimLimitPerRegisteredItemlabel" runat="server">CLAIM_LIMIT_PER_REG_ITEM</asp:Label>
                                 </td>
                                 <td align="left">
-                                    <asp:TextBox ID="moClaimLimitPerRegisteredItemText" runat="server" SkinID="SmallTextBox" />
+                                    <asp:TextBox ID="moClaimLimitPerRegisteredItemText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                 </td>
                                 <td align="right">
                                     <asp:Label ID="moCancellationWithinTermLabel" runat="server">CANCELLATION_WITHIN_TERM</asp:Label>
@@ -468,13 +461,13 @@
                                     <asp:Label ID="moExpNotificationDaysLabel" runat="server">EXPIRATION_NOTIFICATION_DAYS</asp:Label>
                                 </td>
                                 <td align="left">
-                                    <asp:TextBox ID="moExpNotificationDaysText" runat="server" SkinID="SmallTextBox" />
+                                    <asp:TextBox ID="moExpNotificationDaysText" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                 </td>
                                 <td align="right">
                                     <asp:Label ID="labelFulfillmentReimThresholdValue" runat="server">FULFILLMENT_REIM_THRESHOLD_VALUE</asp:Label>
                                 </td>
                                 <td align="left">
-                                    <asp:TextBox ID="TextBoxFulfillmentReimThresholdValue" runat="server" SkinID="SmallTextBox" />
+                                    <asp:TextBox ID="TextBoxFulfillmentReimThresholdValue" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
@@ -492,13 +485,13 @@
                                     <asp:Label ID="moBenefitsEligibleFlagLabel" runat="server">BENEFITS_ELIGIBLE</asp:Label>
                                 </td>
                                 <td align="left">
-                                    <asp:DropDownList ID="moBenefitsEligibleFlagDropDownList" runat="server" SkinID="MediumDropDown" AutoPostBack="true" OnSelectedIndexChanged="moBenefitsEligibleFlagDropDownList_SelectedIndexChanged" />
+                                    <asp:DropDownList ID="moBenefitsEligibleFlagDropDownList" runat="server" SkinID="MediumDropDown" AutoPostBack="true" OnSelectedIndexChanged="moBenefitsEligibleFlagDropDownList_SelectedIndexChanged"></asp:DropDownList>
                                 </td>
                                 <td align="right">
                                     <asp:Label ID="moBenefitsEligibleActionLabel" runat="server">BENEFITS_ELIGIBLE_ACTION</asp:Label>
                                 </td>
                                 <td align="left">
-                                    <asp:DropDownList ID="moBenefitsEligibleActionDropDownList" runat="server" SkinID="MediumDropDown" />
+                                    <asp:DropDownList ID="moBenefitsEligibleActionDropDownList" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
                                 </td>
                             </tr>
                             <tr>
@@ -545,44 +538,41 @@
     </div>
 
     <div class="dataContainer">
-        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
-        <asp:HiddenField ID="hdnDisabledTab" runat="server" />
+        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
+        <asp:HiddenField ID="hdnDisabledTab" runat="server"></asp:HiddenField>
         <%--This anchor is used to scroll to the Tab content--%>
-        <a ID="topTabs" runat="server" />
+        <a ID="topTabs" runat="server" rel="noopener noreferrer"></a>
 
         <div id="tabs" class="style-tabs">
             <ul>
-                <li><a href="#tab_RegionDetail">
+                <li><a href="#tab_RegionDetail" rel="noopener noreferrer">
                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Regions</asp:Label></a></li>
-                <li><a href="#tab_ExtProdCode_Policy_WRITE">
+                <li><a href="#tab_ExtProdCode_Policy_WRITE" rel="noopener noreferrer">
                     <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">Policy</asp:Label></a></li>
-                <li><a href="#tab_Accounting_Codes">
+                <li><a href="#tab_Accounting_Codes" rel="noopener noreferrer">
                     <asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">Accounting Codes</asp:Label></a></li>
-                <li><a href="#tab_moAttributes_WRITE">
+                <li><a href="#tab_moAttributes_WRITE" rel="noopener noreferrer">
                     <asp:Label ID="Label1" runat="server" CssClass="tabHeaderText">ATTRIBUTES</asp:Label></a></li>
-                <li><a href="#tab_ExtendedAttributes">
+                <li><a href="#tab_ExtendedAttributes" rel="noopener noreferrer">
                     <asp:Label ID="Label2" runat="server" CssClass="tabHeaderText">EXTENDED ATTRIBUTES</asp:Label></a></li>
-                <li><a href="#tab_moProductEquipment">
+                <li><a href="#tab_moProductEquipment" rel="noopener noreferrer">
                     <asp:Label ID="Label3" runat="server" CssClass="tabHeaderText">PRODUCT_EQUIPMENT</asp:Label></a></li>
-                <li><a href="#tab_moProductRewards">
+                <li><a href="#tab_moProductRewards" rel="noopener noreferrer">
                     <asp:Label ID="Label5" runat="server" CssClass="tabHeaderText">PRODUCT_REWARDS</asp:Label></a></li>
-                <li><a href="#tab_DeviceTypeDetails">
+                <li><a href="#tab_DeviceTypeDetails" rel="noopener noreferrer">
                     <asp:Label ID="Label7" runat="server" CssClass="tabHeaderText">DEVICE_TYPES</asp:Label></a></li>
-                <li><a href="#tab_moProductBenefits">
+                <li><a href="#tab_moProductBenefits" rel="noopener noreferrer">
                     <asp:Label ID="Label9" runat="server" CssClass="tabHeaderText">EQUIPMENT_BENEFITS</asp:Label></a></li>
             </ul>
 
             <div id="tab_RegionDetail">
                 <div class="Page" runat="server" id="moRegionDetail1" style="height: 100%; overflow: auto">
-                    <Elita:UserControlAvailableSelected tabindex="12" ID="UserControlAvailableSelectedRegions"
-                        runat="server"></Elita:UserControlAvailableSelected>
+                    <Elita:UserControlAvailableSelected tabindex="12" ID="UserControlAvailableSelectedRegions" runat="server"></Elita:UserControlAvailableSelected>
                 </div>
             </div>
             <div id="tab_ExtProdCode_Policy_WRITE">
                 <div class="Page" runat="server" id="moExtProdCode_Policy_WRITE1" style="height: 100%; overflow: auto">
-                    <asp:GridView ID="moProductPolicyDatagrid" runat="server" Width="100%" OnRowCreated="RowCreated"
-                        OnRowCommand="RowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1"
-                        AutoGenerateColumns="False" SkinID="DetailPageGridView">
+                    <asp:GridView ID="moProductPolicyDatagrid" runat="server" Width="100%" OnRowCreated="RowCreated" OnRowCommand="RowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
                         <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                         <EditRowStyle Wrap="False"></EditRowStyle>
                         <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -629,41 +619,36 @@
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="../Navigation/images/edit.png"
-                                        CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="../Navigation/images/edit.png" CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                        Text="Cancel"></asp:LinkButton>
+                                    <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Cancel"></asp:LinkButton>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton Style="cursor: pointer; cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png"
-                                        runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                    <asp:ImageButton Style="cursor: pointer; cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png" runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                        Text="Save" SkinID="PrimaryRightButton"></asp:Button>
+                                    <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                         </Columns>
-                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                        <PagerStyle />
+                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                        <PagerStyle></PagerStyle>
                     </asp:GridView>
 
                     <table class="tabBtnAreaZone" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
                             <tr>
-                                <td />
+                                <td></td>
                             </tr>
                             <tr>
                                 <td>
-                                    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261" />
-                                    <asp:Button runat="server" ID="btnNewProductPolicy_WRITE" SkinID="PrimaryLeftButton"
-                                        Text="ADD_NEW" />
+                                    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+                                    <asp:Button runat="server" ID="btnNewProductPolicy_WRITE" SkinID="PrimaryLeftButton" Text="ADD_NEW"></asp:Button>
                                 </td>
                             </tr>
                         </tbody>
@@ -750,15 +735,12 @@
                 </table>
             </div>
             <div id="tab_moAttributes_WRITE">
-                <Elita:UserControlAttrtibutes runat="server" ID="AttributeValues" />
+                <Elita:UserControlAttrtibutes runat="server" ID="AttributeValues"></Elita:UserControlAttrtibutes>
             </div>
             <div id="tab_ExtendedAttributes">
-                <input id="hdnOperationType" type="hidden" runat="server" />
+                <input id="hdnOperationType" type="hidden" runat="server">
                 <div class="Page" runat="server" id="mo_ExtendedAttributes" style="height: 100%; overflow: auto">
-                    <asp:GridView ID="mo_ParentsGrid" runat="server" Width="100%" OnRowCreated="RowCreated"
-                            OnRowDataBound="mo_ParentsGrid_RowDataBound" OnRowCommand="mo_ParentsGrid_OnRowCommand"
-                            AllowPaging="True" AllowSorting="False" CellPadding="1"
-                            AutoGenerateColumns="False" SkinID="DetailPageGridView" DataKeyNames="product_code_parent_id">
+                    <asp:GridView ID="mo_ParentsGrid" runat="server" Width="100%" OnRowCreated="RowCreated" OnRowDataBound="mo_ParentsGrid_RowDataBound" OnRowCommand="mo_ParentsGrid_OnRowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView" DataKeyNames="product_code_parent_id">
                         <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                         <EditRowStyle Wrap="False"></EditRowStyle>
                         <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -766,34 +748,25 @@
                         <Columns>
                             <asp:TemplateField>
                                 <ItemTemplate>
-                                    <img alt="" style="cursor: pointer; cursor: hand;" src="..\\App_Themes\\Default\\Images\\sort_indicator_des.png" />
+                                    <img alt="" style="cursor: pointer; cursor: hand;" src="..\\App_Themes\\Default\\Images\\sort_indicator_des.png">
                                     <asp:Panel ID="pnlChild" runat="server" Style="display: none">
-                                        <asp:GridView ID="gvChilds" runat="server" AutoGenerateColumns="false" SkinID="DetailPageGridView" OnRowDataBound="gvChilds_RowDataBound"
-                                            DataKeyNames="product_code_detail_id">
+                                        <asp:GridView ID="gvChilds" runat="server" AutoGenerateColumns="false" SkinID="DetailPageGridView" OnRowDataBound="gvChilds_RowDataBound" DataKeyNames="product_code_detail_id">
                                             <Columns>
-                                                <asp:BoundField ItemStyle-Width="150px" DataField="company_code" HeaderText="Company" />
-                                                <asp:BoundField ItemStyle-Width="150px" DataField="dealer_code" HeaderText="Dealer" />
-                                                <asp:BoundField ItemStyle-Width="150px" DataField="child_product_code" HeaderText="Child Product Code" />
-                                                <asp:BoundField ItemStyle-Width="150px" DataField="Effective" HeaderText="Effective Date" />
-                                                <asp:BoundField ItemStyle-Width="150px" DataField="Expiration" HeaderText="Expiration Date" />
+                                                <asp:BoundField ItemStyle-Width="150px" DataField="company_code" HeaderText="Company"></asp:BoundField>
+                                                <asp:BoundField ItemStyle-Width="150px" DataField="dealer_code" HeaderText="Dealer"></asp:BoundField>
+                                                <asp:BoundField ItemStyle-Width="150px" DataField="child_product_code" HeaderText="Child Product Code"></asp:BoundField>
+                                                <asp:BoundField ItemStyle-Width="150px" DataField="Effective" HeaderText="Effective Date"></asp:BoundField>
+                                                <asp:BoundField ItemStyle-Width="150px" DataField="Expiration" HeaderText="Expiration Date"></asp:BoundField>
                                             </Columns>
                                         </asp:GridView>
                                     </asp:Panel>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:BoundField DataField="product_code" SortExpression="product_code"
-                                ReadOnly="true" HeaderText="PARENT CODE" HeaderStyle-HorizontalAlign="Center"
-                                HtmlEncode="false" />
-                            <asp:BoundField DataField="effective" SortExpression="effective"
-                                ReadOnly="true" HeaderText="EFFECTIVE" HeaderStyle-HorizontalAlign="Center"
-                                HtmlEncode="false" />
-                            <asp:BoundField DataField="expiration" SortExpression="expiration"
-                                ReadOnly="true" HeaderText="EXPIRATION" HeaderStyle-HorizontalAlign="Center"
-                                HtmlEncode="false" />
-                            <asp:BoundField DataField="smart_bundle_flat_amt" SortExpression="smart_bundle_flat_amt" ReadOnly="true"
-                                HeaderText="SMART BUNDLE AMOUNT" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                            <asp:BoundField DataField="smart_bundle_flat_amt_currency" SortExpression="smart_bundle_flat_amt_currency" ReadOnly="true"
-                                HeaderText="SMART BUNDLE CURRENCY" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                            <asp:BoundField DataField="product_code" SortExpression="product_code" ReadOnly="true" HeaderText="PARENT CODE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                            <asp:BoundField DataField="effective" SortExpression="effective" ReadOnly="true" HeaderText="EFFECTIVE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                            <asp:BoundField DataField="expiration" SortExpression="expiration" ReadOnly="true" HeaderText="EXPIRATION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                            <asp:BoundField DataField="smart_bundle_flat_amt" SortExpression="smart_bundle_flat_amt" ReadOnly="true" HeaderText="SMART BUNDLE AMOUNT" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
+                            <asp:BoundField DataField="smart_bundle_flat_amt_currency" SortExpression="smart_bundle_flat_amt_currency" ReadOnly="true" HeaderText="SMART BUNDLE CURRENCY" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false"></asp:BoundField>
                              <asp:TemplateField HeaderText="PAYMENT_SPLIT_RULE">
                                 <ItemTemplate>
                                     <asp:Label ID="lblPaymentSplitRule" runat="server"></asp:Label>
@@ -806,12 +779,10 @@
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton ID="BtnEditRecordParent" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="../Navigation/images/edit.png"
-                                       CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                    <asp:ImageButton ID="BtnEditRecordParent" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="../Navigation/images/edit.png" CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:LinkButton ID="BtnCancelRecordParent" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>" 
-                                                    Text="Cancel"></asp:LinkButton>
+                                    <asp:LinkButton ID="BtnCancelRecordParent" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Cancel"></asp:LinkButton>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
@@ -819,14 +790,13 @@
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate></ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:Button ID="BtnSaveRecordParent" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                        Text="Save" SkinID="PrimaryRightButton"></asp:Button>
+                                    <asp:Button ID="BtnSaveRecordParent" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
                                 </EditItemTemplate>
                             </asp:TemplateField>
-                            <asp:BoundField DataField="product_code_parent_id" ReadOnly="true" Visible="false" />
+                            <asp:BoundField DataField="product_code_parent_id" ReadOnly="true" Visible="false"></asp:BoundField>
                         </Columns>
-                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                        <PagerStyle />
+                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                        <PagerStyle></PagerStyle>
                     </asp:GridView>
                 </div>
             </div>
@@ -842,9 +812,7 @@
                     <tr>
                         <td align="Center" colspan="2">
                             <div id="scroller" style="overflow: auto; width: 96%; height: 125px" align="center">
-                                <asp:GridView ID="ProductEquipmentGridView" runat="server" OnRowCommand="ItemCommand"
-                                    AllowPaging="False" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False"
-                                    SkinID="DetailPageGridView" Width="100%">
+                                <asp:GridView ID="ProductEquipmentGridView" runat="server" OnRowCommand="ItemCommand" AllowPaging="False" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView" Width="100%">
                                     <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                                     <EditRowStyle Wrap="False"></EditRowStyle>
                                     <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -854,61 +822,52 @@
                                         <asp:TemplateField ShowHeader="false">
                                             <ItemStyle HorizontalAlign="Center" Width="3%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="~/Navigation/images/icons/edit2.gif"
-                                                    CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                                <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="~/Navigation/images/icons/edit2.gif" CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="False">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblProductEquipmentID" Text='<%# GetGuidStringFromByteArray(Container.DataItem("PROD_ITEM_MANUF_EQUIP_ID"))%>'
-                                                    runat="server">
+                                                <asp:Label ID="lblProductEquipmentID" Text='<%# GetGuidStringFromByteArray(Container.DataItem("PROD_ITEM_MANUF_EQUIP_ID"))%>' runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="Product_Equipment_Make">
                                             <ItemStyle HorizontalAlign="center"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="lblEquipmentMake" Text='<%# Container.DataItem("EQUIPMENT_MAKE")%>'
-                                                    runat="server">
+                                                <asp:Label ID="lblEquipmentMake" Text='<%# Container.DataItem("EQUIPMENT_MAKE")%>' runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="Product_Equipment_Model">
                                             <ItemStyle HorizontalAlign="center"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="lblEquipmentModel" Text='<%# Container.DataItem("EQUIPMENT_MODEL")%>'
-                                                    runat="server">
+                                                <asp:Label ID="lblEquipmentModel" Text='<%# Container.DataItem("EQUIPMENT_MODEL")%>' runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="Product_Equipment_Effective_Date">
                                             <ItemStyle HorizontalAlign="center"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="lblProdEquipmentEffectiveDate" Text='<%# GetDateFormattedStringNullable(Container.DataItem("EFFECTIVE_DATE_PRODUCT_EQUIP"))%>'
-                                                    runat="server">
+                                                <asp:Label ID="lblProdEquipmentEffectiveDate" Text='<%# GetDateFormattedStringNullable(Container.DataItem("EFFECTIVE_DATE_PRODUCT_EQUIP"))%>' runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="Product_Equipment_Expiration_Date">
                                             <ItemStyle HorizontalAlign="center"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="lblProdEquipmentExpirationDate" Text='<%# GetDateFormattedStringNullable(Container.DataItem("EXPIRATION_DATE_PRODUCT_EQUIP"))%>'
-                                                    runat="server">
+                                                <asp:Label ID="lblProdEquipmentExpirationDate" Text='<%# GetDateFormattedStringNullable(Container.DataItem("EXPIRATION_DATE_PRODUCT_EQUIP"))%>' runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="txtProdEquipmentExpirationDate" Text='<%# GetDateFormattedStringNullable(Container.DataItem("EXPIRATION_DATE_PRODUCT_EQUIP"))%>'
-                                                    runat="server">
+                                                <asp:TextBox ID="txtProdEquipmentExpirationDate" Text='<%# GetDateFormattedStringNullable(Container.DataItem("EXPIRATION_DATE_PRODUCT_EQUIP"))%>' runat="server">
                                                 </asp:TextBox>
-                                                <asp:ImageButton ID="ProdEquipmentExpirationDateImageButton" runat="server" Style="vertical-align: bottom"
-                                                    ImageUrl="~/App_Themes/Default/Images/calendar.png" />
+                                                <asp:ImageButton ID="ProdEquipmentExpirationDateImageButton" runat="server" Style="vertical-align: bottom" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="Product_Equipment_ModifyCreate_Date">
                                             <ItemStyle HorizontalAlign="center"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="lblProdEquipmentCreateDate" Text='<%# GetDateFormattedStringNullable(Container.DataItem("CREATE_DATE_PRODUCT_EQUIP"))%>'
-                                                    runat="server">
+                                                <asp:Label ID="lblProdEquipmentCreateDate" Text='<%# GetDateFormattedStringNullable(Container.DataItem("CREATE_DATE_PRODUCT_EQUIP"))%>' runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -929,9 +888,7 @@
 
             <div id="tab_moProductRewards">
                 <div class="Page" runat="server" id="Div1" style="height: 100%; overflow: auto">
-                    <asp:GridView ID="ProductRewardsGridView" runat="server" Width="100%" OnRowCreated="ProductRewardsGridView_RowCreated"
-                        OnRowCommand="ProductRewardsGridView_RowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1"
-                        AutoGenerateColumns="False" SkinID="DetailPageGridView">
+                    <asp:GridView ID="ProductRewardsGridView" runat="server" Width="100%" OnRowCreated="ProductRewardsGridView_RowCreated" OnRowCommand="ProductRewardsGridView_RowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
                         <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                         <EditRowStyle Wrap="False"></EditRowStyle>
                         <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -1007,8 +964,7 @@
                                     <asp:TextBox ID="txtToRenewal" runat="server"></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField Visible="True" HeaderText="Start_Date" ItemStyle-Wrap="false"
-                                ItemStyle-HorizontalAlign="Left">
+                            <asp:TemplateField Visible="True" HeaderText="Start_Date" ItemStyle-Wrap="false" ItemStyle-HorizontalAlign="Left">
                                 <ItemTemplate>
                                     <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
                                 </ItemTemplate>
@@ -1017,8 +973,7 @@
                                     <asp:ImageButton ID="btnStartDate" runat="server" align="AbsMiddle" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                                 </EditItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField Visible="True" HeaderText="End_Date" ItemStyle-Wrap="false"
-                                ItemStyle-HorizontalAlign="Left">
+                            <asp:TemplateField Visible="True" HeaderText="End_Date" ItemStyle-Wrap="false" ItemStyle-HorizontalAlign="Left">
                                 <ItemTemplate>
                                     <asp:Label ID="lblEndDate" runat="server"> </asp:Label>
                                 </ItemTemplate>
@@ -1037,41 +992,36 @@
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="../Navigation/images/edit.png"
-                                        CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="../Navigation/images/edit.png" CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                        Text="Cancel"></asp:LinkButton>
+                                    <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Cancel"></asp:LinkButton>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton Style="cursor: pointer; cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png"
-                                        runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                    <asp:ImageButton Style="cursor: pointer; cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png" runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                        Text="Save" SkinID="PrimaryRightButton"></asp:Button>
+                                    <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                         </Columns>
-                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                        <PagerStyle />
+                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                        <PagerStyle></PagerStyle>
                     </asp:GridView>
 
                     <table class="tabBtnAreaZone" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
                             <tr>
-                                <td />
+                                <td></td>
                             </tr>
                             <tr>
                                 <td>
-                                    <input id="Hidden1" type="hidden" runat="server" designtimedragdrop="261" />
-                                    <asp:Button runat="server" ID="btnNewProductRewards_WRITE" SkinID="PrimaryLeftButton"
-                                        Text="ADD_NEW" />
+                                    <input id="Hidden1" type="hidden" runat="server" designtimedragdrop="261">
+                                    <asp:Button runat="server" ID="btnNewProductRewards_WRITE" SkinID="PrimaryLeftButton" Text="ADD_NEW"></asp:Button>
                                 </td>
                             </tr>
                         </tbody>
@@ -1094,9 +1044,7 @@
                     <tr>
                         <td align="center" colspan="3">
                             <div id="DeviceTypesDetails" style="overflow: auto; width: 96%; height: 125px" align="center">
-                                <asp:GridView ID="GridViewDeviceTypesDetails" runat="server"
-                                    AllowPaging="false" AllowSorting="False" CellPadding="1" PageSize="50"
-                                    AutoGenerateColumns="False" SkinID="DetailPageGridView" Width="100%">
+                                <asp:GridView ID="GridViewDeviceTypesDetails" runat="server" AllowPaging="false" AllowSorting="False" CellPadding="1" PageSize="50" AutoGenerateColumns="False" SkinID="DetailPageGridView" Width="100%">
                                     <SelectedRowStyle Wrap="True"></SelectedRowStyle>
                                     <EditRowStyle Wrap="True"></EditRowStyle>
                                     <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
@@ -1106,8 +1054,7 @@
                                             <HeaderStyle></HeaderStyle>
                                             <ItemStyle HorizontalAlign="Left"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="labelDeviceType"
-                                                    runat="server">
+                                                <asp:Label ID="labelDeviceType" runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -1115,7 +1062,7 @@
                                             <HeaderStyle></HeaderStyle>
                                             <ItemStyle HorizontalAlign="Left"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="labelMethodOfRepair" runat="server" Visible="True" />
+                                                <asp:Label ID="labelMethodOfRepair" runat="server" Visible="True"></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:DropDownList ID="ddlMethodOfRepair" runat="server" Visible="true" Width="220px"></asp:DropDownList>
@@ -1125,24 +1072,20 @@
                                             <HeaderStyle ForeColor="#12135B" Wrap="False"></HeaderStyle>
                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="~/Navigation/images/icons/edit2.gif"
-                                                    CommandName="EditRecord" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "DeviceTypeId") %>'></asp:ImageButton>
+                                                <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="~/Navigation/images/icons/edit2.gif" CommandName="EditRecord" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "DeviceTypeId") %>'></asp:ImageButton>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                                    Text="Cancel"></asp:LinkButton>
+                                                <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Cancel"></asp:LinkButton>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField ItemStyle-Width="30px">
                                             <HeaderStyle ForeColor="#12135B" Wrap="False"></HeaderStyle>
                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:ImageButton Style="cursor: pointer; cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="~/Navigation/images/icons/trash.gif"
-                                                    runat="server" CommandName="DeleteRecord" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "DeviceTypeId") %>'></asp:ImageButton>
+                                                <asp:ImageButton Style="cursor: pointer; cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="~/Navigation/images/icons/trash.gif" runat="server" CommandName="DeleteRecord" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "DeviceTypeId") %>'></asp:ImageButton>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                                    Text="Save" SkinID="PrimaryRightButton"></asp:Button>
+                                                <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -1155,9 +1098,7 @@
             </div>
             <div id="tab_moProductBenefits">
                 <div class="Page" runat="server" id="Div2" style="height: 100%; overflow: auto">
-                    <asp:GridView ID="ProductBenefitsGridView" runat="server" Width="100%" OnRowCreated="ProductBenefitsGridView_RowCreated"
-                        OnRowCommand="ProductBenefitsGridView_RowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1" 
-                        AutoGenerateColumns="False"  SkinID="DetailPageGridView" >
+                    <asp:GridView ID="ProductBenefitsGridView" runat="server" Width="100%" OnRowCreated="ProductBenefitsGridView_RowCreated" OnRowCommand="ProductBenefitsGridView_RowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
                         <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                         <EditRowStyle Wrap="False"></EditRowStyle>
                         <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -1190,7 +1131,7 @@
                             <asp:TemplateField Visible="True" HeaderText="Product_Equipment_Effective_Date">
                                 <ItemStyle HorizontalAlign="center"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblProdBenefitsEffectiveDate" ></asp:Label>
+                                    <asp:Label runat="server" ID="lblProdBenefitsEffectiveDate"></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:TextBox ID="txtProdBenefitsEffectiveDate" runat="server" Visible="True" SkinID="exSmallTextBox"></asp:TextBox>
@@ -1218,32 +1159,57 @@
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="../Navigation/images/edit.png"
-                                        CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="../Navigation/images/edit.png" CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                        Text="Cancel"></asp:LinkButton>
+                                    <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Cancel"></asp:LinkButton>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton Style="cursor: pointer; cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png"
-                                        runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                    <asp:ImageButton Style="cursor: pointer; cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png" runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                        Text="Save" SkinID="PrimaryRightButton"></asp:Button>
+                                    <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                         </Columns>
-                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
+                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
                         <PagerStyle HorizontalAlign="Center" CssClass="PAGER"></PagerStyle>
                     </asp:GridView>
                     <table class="tabBtnAreaZone" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="Hidden2" type="hidden" runat="server" designtimedragdrop="261">
+                                    <asp:Button runat="server" ID="btnNewProductBenefits_WRITE" SkinID="PrimaryLeftButton" Text="ADD_NEW"></asp:Button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="btnZone">
+        <asp:Button ID="btnApply_WRITE" runat="server" CausesValidation="False" Text="SAVE" SkinID="PrimaryRightButton"></asp:Button>
+        <asp:Button ID="btnUndo_WRITE" runat="server" CausesValidation="False" Text="UNDO" SkinID="AlternateRightButton"></asp:Button>
+        <asp:Button ID="btnBack" runat="server" CausesValidation="False" Text="BACK" SkinID="AlternateLeftButton"></asp:Button>
+        <asp:Button ID="btnNew_WRITE" runat="server" CausesValidation="False" Text="New" SkinID="AlternateLeftButton"></asp:Button>
+        <asp:Button ID="btnCopy_WRITE" runat="server" CausesValidation="False" Text="New_With_Copy" SkinID="AlternateLeftButton"></asp:Button>
+        <asp:Button ID="btnDelete_WRITE" runat="server" CausesValidation="False" Text="Delete" SkinID="CenterButton"></asp:Button>
+        <asp:Button ID="btnProdRepairPrice_WRITE" runat="server" Text="Method_of_repair_by_price" SkinID="CenterButton"></asp:Button>
+    </div>
+
+</asp:Content>
+      <tbody>
                             <tr>
                                 <td />
                             </tr>

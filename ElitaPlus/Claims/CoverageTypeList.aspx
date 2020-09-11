@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CoverageTypeList.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CoverageTypeList.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.CoverageTypeList" Theme="Default"
     MasterPageFile="../Navigation/masters/ElitaBase.Master" EnableViewState="true" %>
 
@@ -23,15 +23,13 @@
                     <asp:Label ID="moClaimNumberLabel" runat="server" Text="Claim_Number"></asp:Label>:&nbsp;
                 </td>
                 <td nowrap="nowrap">
-                    <asp:TextBox ID="moClaimNumberText" runat="server" SkinID="MediumTextBox" ReadOnly="true"
-                        Enabled="false"></asp:TextBox>
+                    <asp:TextBox ID="moClaimNumberText" runat="server" SkinID="MediumTextBox" ReadOnly="true" Enabled="false"></asp:TextBox>
                 </td>
                 <td nowrap="nowrap" align="right">
                     <asp:Label ID="moCertificateLabel" runat="server" Text="Certificate"></asp:Label>:&nbsp;
                 </td>
                 <td>
-                    <asp:TextBox ID="moCertificateText" runat="server" SkinID="MediumTextBox" ReadOnly="true"
-                        Enabled="false"></asp:TextBox>
+                    <asp:TextBox ID="moCertificateText" runat="server" SkinID="MediumTextBox" ReadOnly="true" Enabled="false"></asp:TextBox>
                 </td>
             </tr>
             <tr>
@@ -39,8 +37,7 @@
                     <asp:Label ID="moDealerLabel" runat="server" Text="Dealer"></asp:Label>:&nbsp;
                 </td>
                 <td nowrap="nowrap">
-                    <asp:TextBox ID="moDealerText" runat="server" SkinID="MediumTextBox" ReadOnly="true"
-                        Enabled="false"></asp:TextBox>
+                    <asp:TextBox ID="moDealerText" runat="server" SkinID="MediumTextBox" ReadOnly="true" Enabled="false"></asp:TextBox>
                 </td>
             </tr>
         </table>
@@ -49,14 +46,14 @@
 <asp:Content ID="Content4" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
         <Scripts>
-            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js"></asp:ScriptReference>
         </Scripts>
     </asp:ScriptManager>
     <asp:Panel ID="EditPanel" runat="server">
         <div class="dataContainer" style="width: 100%;">
             <div id="tabs" class="style-tabs">
                 <ul>
-                    <li><a href="#tabsCoverageType">
+                    <li><a href="#tabsCoverageType" rel="noopener noreferrer">
                         <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Coverage_Type</asp:Label></a></li>
                 </ul>
                <table width="100%" class="dataGrid" border="0" cellspacing="0" cellpadding="0">
@@ -84,37 +81,35 @@
             </tbody>
         </table>
                 <div id="tabsCoverageType">
-                    <asp:GridView ID="Grid" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" SkinID="DetailPageGridView"
-                        PageSize="15" Width="100%">
+                    <asp:GridView ID="Grid" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" SkinID="DetailPageGridView" PageSize="15" Width="100%">
                         <Columns>
                             <asp:TemplateField Visible="False">
                                 <ItemTemplate>
                                     <asp:Label ID="moCertItemCoverageId" runat="server" Text='<%# GetGuidStringFromByteArray(Container.DataItem("CERT_ITEM_COVERAGE_ID")) %>'> </asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Risk_type" Visible="true" SortExpression="risk_type_description" >
-                                <HeaderStyle HorizontalAlign="Center" />
-                                <ItemStyle HorizontalAlign="Center" />
+                            <asp:TemplateField HeaderText="Risk_type" Visible="true" SortExpression="risk_type_description">
+                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Coverage_Type" Visible="true" SortExpression="coverage_type_description" >
-                                <HeaderStyle HorizontalAlign="Center" Wrap="false" />
-                                <ItemStyle HorizontalAlign="Center" />
+                            <asp:TemplateField HeaderText="Coverage_Type" Visible="true" SortExpression="coverage_type_description">
+                                <HeaderStyle HorizontalAlign="Center" Wrap="false"></HeaderStyle>
+                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="CAUSE_OF_LOSS" Visible="true" >
-                                <HeaderStyle HorizontalAlign="Center" Wrap="False" />
-                                <ItemStyle BackColor="White" HorizontalAlign="Left" Width="25%" Wrap="False" />
+                            <asp:TemplateField HeaderText="CAUSE_OF_LOSS" Visible="true">
+                                <HeaderStyle HorizontalAlign="Center" Wrap="False"></HeaderStyle>
+                                <ItemStyle BackColor="White" HorizontalAlign="Left" Width="25%" Wrap="False"></ItemStyle>
                                 <ItemTemplate>
                                     <asp:Label ID="lblCauseofLoss" runat="server"> </asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:DropDownList ID="cboCauseOfLossId" runat="server"
-                                        DataValueField="CODE" AutoPostBack="True" Enabled="false" Width="250px" OnSelectedIndexChanged="cboCauseOfLossId_SelectedIndexChanged">
+                                    <asp:DropDownList ID="cboCauseOfLossId" runat="server" DataValueField="CODE" AutoPostBack="True" Enabled="false" Width="250px" OnSelectedIndexChanged="cboCauseOfLossId_SelectedIndexChanged">
                                     </asp:DropDownList>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="AUTHORIZED_AMOUNT" Visible="true">
-                                <HeaderStyle HorizontalAlign="Center" Wrap="False" />
-                                <ItemStyle BackColor="White" HorizontalAlign="Left" Width="25%" Wrap="False" />
+                                <HeaderStyle HorizontalAlign="Center" Wrap="False"></HeaderStyle>
+                                <ItemStyle BackColor="White" HorizontalAlign="Left" Width="25%" Wrap="False"></ItemStyle>
                                 <ItemTemplate>
                                     <asp:Label ID="lblAUTHORIZATION_AMOUNT" runat="server"> </asp:Label>
                                 </ItemTemplate>
@@ -124,29 +119,28 @@
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Begin_Date" Visible="true" SortExpression="begin_date">
-                                <HeaderStyle HorizontalAlign="Center" />
-                                <ItemStyle HorizontalAlign="left" />
+                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                <ItemStyle HorizontalAlign="left"></ItemStyle>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="End_Date" Visible="true" SortExpression="end_date">
-                                <HeaderStyle HorizontalAlign="Center" />
-                                <ItemStyle HorizontalAlign="left" />
+                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                <ItemStyle HorizontalAlign="left"></ItemStyle>
                             </asp:TemplateField>
                             <asp:TemplateField>
-                                <HeaderStyle HorizontalAlign="Center" Width="5%" />
-                                <ItemStyle HorizontalAlign="Center" Width="30px" />
+                                <HeaderStyle HorizontalAlign="Center" Width="5%"></HeaderStyle>
+                                <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton ID="btnSelect" runat="server" CommandName="SelectRecord" ImageUrl="~/App_Themes/Default/Images/edit.png"
-                                        Style="cursor: hand" ImageAlign="AbsMiddle" CommandArgument="<%#Container.DisplayIndex %>" />
+                                    <asp:ImageButton ID="btnSelect" runat="server" CommandName="SelectRecord" ImageUrl="~/App_Themes/Default/Images/edit.png" Style="cursor: hand" ImageAlign="AbsMiddle" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
-                        <PagerSettings Mode="Numeric" PageButtonCount="15" Position="TopAndBottom" />
+                        <PagerSettings Mode="Numeric" PageButtonCount="15" Position="TopAndBottom"></PagerSettings>
                     </asp:GridView>
                     <table width="100%" class="formGrid" border="0">
                         <tbody>
                             <tr style="background-color: #f2f2f2">
                                 <td>
-                                    <asp:Button ID="btnChangeCoverage" SkinID="PrimaryRightButton" runat="server" Text="Save" />
+                                    <asp:Button ID="btnChangeCoverage" SkinID="PrimaryRightButton" runat="server" Text="Save"></asp:Button>
                                 </td>
                             </tr>
                         </tbody>
@@ -155,9 +149,8 @@
             </div>
         </div>
         <div class="btnZone">
-            <asp:Button ID="btnBack" runat="server" SkinID="AlternateLeftButton" Text="BACK" />
+            <asp:Button ID="btnBack" runat="server" SkinID="AlternateLeftButton" Text="BACK"></asp:Button>
         </div>
     </asp:Panel>
-    <input id="HiddenSaveChangesPromptResponse" runat="server" designtimedragdrop="261"
-        name="HiddenSaveChangesPromptResponse" type="hidden" />
+    <input id="HiddenSaveChangesPromptResponse" runat="server" designtimedragdrop="261" name="HiddenSaveChangesPromptResponse" type="hidden">
 </asp:Content>

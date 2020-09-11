@@ -67,11 +67,9 @@
             <table width="100%" class="dataGrid">
                 <tr id="trPageSize" runat="server">
                     <td class="bor" align="left">
-                        <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label><asp:Label ID="colonSepertor"
-                            runat="server">:</asp:Label>
+                        <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label><asp:Label ID="colonSepertor" runat="server">:</asp:Label>
                         &nbsp;
-                        <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true"
-                            SkinID="SmallDropDown">
+                        <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true" SkinID="SmallDropDown">
                             <asp:ListItem Value="10">10</asp:ListItem>
                             <asp:ListItem Value="20">20</asp:ListItem>
                             <asp:ListItem Value="30">30</asp:ListItem>
@@ -84,44 +82,36 @@
             </table>
         </div>
         <input id="HiddenIsDeleteImagesAllowed" type="hidden" name="HiddenIsDeleteImagesAllowed" runat="server">
-        <asp:GridView ID="CertificateDocumentsGridView" runat="server" Width="100%" AutoGenerateColumns="False"
-            AllowPaging="True" SkinID="DetailPageGridView" EnableViewState="true" OnRowCommand="CertificateDocumentsGridView_RowCommand">
-            <SelectedRowStyle Wrap="True" />
-            <EditRowStyle Wrap="True" />
-            <AlternatingRowStyle Wrap="True" />
-            <RowStyle Wrap="True" />
-            <HeaderStyle />
+        <asp:GridView ID="CertificateDocumentsGridView" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True" SkinID="DetailPageGridView" EnableViewState="true" OnRowCommand="CertificateDocumentsGridView_RowCommand">
+            <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+            <EditRowStyle Wrap="True"></EditRowStyle>
+            <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+            <RowStyle Wrap="True"></RowStyle>
+            <HeaderStyle></HeaderStyle>
             <Columns>
                 <asp:TemplateField HeaderText="FILE_NAME" SortExpression="FILE_NAME">
                     <ItemTemplate>
-                        <asp:LinkButton runat="server" ID="btnImageLink" CommandName="SelectActionImage"
-                            Text="Image Link"></asp:LinkButton>
+                        <asp:LinkButton runat="server" ID="btnImageLink" CommandName="SelectActionImage" Text="Image Link"></asp:LinkButton>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:BoundField DataField="FILE_TYPE" SortExpression="FILE_TYPE" ReadOnly="true"
-                    HtmlEncode="false" HeaderText="FILE_TYPE" HeaderStyle-HorizontalAlign="Center" />
+                <asp:BoundField DataField="FILE_TYPE" SortExpression="FILE_TYPE" ReadOnly="true" HtmlEncode="false" HeaderText="FILE_TYPE" HeaderStyle-HorizontalAlign="Center"></asp:BoundField>
                 <asp:TemplateField HeaderText="SIZE" SortExpression="FILE_SIZE_BYTES">
                     <ItemTemplate>
                         <asp:Label runat="server" ID="FileSizeLabel"></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:BoundField DataField="SCAN_DATE" SortExpression="SCAN_DATE" ReadOnly="true"
-                    HtmlEncode="false" HeaderText="SCAN_DATE" HeaderStyle-HorizontalAlign="Center" />
-                <asp:BoundField DataField="USER_NAME" SortExpression="USER_NAME" ReadOnly="true"
-                    HtmlEncode="false" HeaderText="USER_NAME" HeaderStyle-HorizontalAlign="Center" />
-                <asp:BoundField DataField="DOCUMENT_TYPE" SortExpression="DOCUMENT_TYPE" ReadOnly="true"
-                    HtmlEncode="false" HeaderText="DOCUMENT_TYPE" HeaderStyle-HorizontalAlign="Center" />
-                <asp:BoundField DataField="COMMENTS" ReadOnly="true" HtmlEncode="false" HeaderText="COMMENTS"
-                    HeaderStyle-HorizontalAlign="Center" />
+                <asp:BoundField DataField="SCAN_DATE" SortExpression="SCAN_DATE" ReadOnly="true" HtmlEncode="false" HeaderText="SCAN_DATE" HeaderStyle-HorizontalAlign="Center"></asp:BoundField>
+                <asp:BoundField DataField="USER_NAME" SortExpression="USER_NAME" ReadOnly="true" HtmlEncode="false" HeaderText="USER_NAME" HeaderStyle-HorizontalAlign="Center"></asp:BoundField>
+                <asp:BoundField DataField="DOCUMENT_TYPE" SortExpression="DOCUMENT_TYPE" ReadOnly="true" HtmlEncode="false" HeaderText="DOCUMENT_TYPE" HeaderStyle-HorizontalAlign="Center"></asp:BoundField>
+                <asp:BoundField DataField="COMMENTS" ReadOnly="true" HtmlEncode="false" HeaderText="COMMENTS" HeaderStyle-HorizontalAlign="Center"></asp:BoundField>
                 <asp:TemplateField HeaderText="ADD_REMOVE_IMAGE">
                     <ItemTemplate>
-                        <asp:LinkButton runat="server" ID="btnAddRemoveImage"
-                            Text="Image Link"></asp:LinkButton>
+                        <asp:LinkButton runat="server" ID="btnAddRemoveImage" Text="Image Link"></asp:LinkButton>
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>
-            <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-            <PagerStyle />
+            <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+            <PagerStyle></PagerStyle>
         </asp:GridView>
     </div>
     <asp:Panel runat="server" ID="AddImagePanel" CssClass="dataContainer">
@@ -136,13 +126,13 @@
                             <asp:Label runat="server" ID="DocumentTypeLabel" Text="DOCUMENT_TYPE"></asp:Label>
                         </td>
                         <td nowrap="nowrap">
-                            <asp:DropDownList runat="server" ID="DocumentTypeDropDown" SkinID="MediumDropDown" />
+                            <asp:DropDownList runat="server" ID="DocumentTypeDropDown" SkinID="MediumDropDown"></asp:DropDownList>
                         </td>
                         <td align="right" nowrap="nowrap">
                             <asp:Label runat="server" ID="ScanDateLabel" Text="SCAN_DATE"></asp:Label>
                         </td>
                         <td nowrap="nowrap">
-                            <asp:TextBox runat="server" ID="ScanDateTextBox" ReadOnly="true" SkinID="MediumTextBox" />
+                            <asp:TextBox runat="server" ID="ScanDateTextBox" ReadOnly="true" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -150,8 +140,7 @@
                             <asp:Label runat="server" ID="FileNameLabel" Text="FileName"></asp:Label>
                         </td>
                         <td colspan="3" nowrap="nowrap">
-                            <input id="ImageFileUpload" style="width: 80%" type="file" name="ImageFileUpload"
-                                runat="server" />
+                            <input id="ImageFileUpload" style="width: 80%" type="file" name="ImageFileUpload" runat="server">
                         </td>
                     </tr>
                     <tr>
@@ -181,12 +170,15 @@
         <div id="Div3" class="overlay_message_content" style="width: 1100px; left: 8%">
             <p class="modalTitle">
                 <asp:Label ID="lblCertificateImage" runat="server" Text="CERTIFICATE_IMAGE"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('modalCertificateImages');">
-                    <img id="img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                        width="16" height="18" align="absmiddle" class="floatR" /></a></p>
+                <a href="javascript:void(0)" onclick="hideModal('modalCertificateImages');" rel="noopener noreferrer">
+                    <img id="img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR"></a></p>
             <iframe class="pdfContainer" align="left" runat="server" id="pdfIframe"></iframe>
         </div>
         <div id="Div5" class="black_overlay">
+        </div>
+    </div>
+</asp:Content>
+" class="black_overlay">
         </div>
     </div>
 </asp:Content>

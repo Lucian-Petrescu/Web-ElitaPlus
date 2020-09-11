@@ -31,28 +31,28 @@ Theme="Default" EnableSessionState="True"%>
 <asp:Content ID="Content2" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
-    <Elita:CaseHeaderInformation ID="ucCaseHeaderInformation" runat="server" align="center" />
+    <Elita:CaseHeaderInformation ID="ucCaseHeaderInformation" runat="server" align="center"></Elita:CaseHeaderInformation>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.6.1.min.js"></script>
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
         <Scripts>
-            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js"></asp:ScriptReference>
         </Scripts>
     </asp:ScriptManager>
     <div id="ModalCancel" class="overlay">
         <div class="overlay_message_content">
             <p class="modalTitle">
                 <asp:Label ID="lblModalTitle" runat="server" Text="CONFIRM"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');">
-                    <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR" alt="" />
+                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');" rel="noopener noreferrer">
+                    <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR" alt="">
                 </a>
             </p>
             <table class="formGrid" width="98%">
                 <tbody>
                 <tr>
                     <td>
-                        <img id="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png" height="28" />
+                        <img id="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png" height="28">
                     </td>
                     <td id="tdModalMessage" colspan="2" runat="server">
                         <asp:Label ID="lblCancelMessage" runat="server"></asp:Label>
@@ -63,8 +63,7 @@ Theme="Default" EnableSessionState="True"%>
                     </td>
                     <td id="tdBtnArea" runat="server" colspan="2">
                         <asp:Button ID="btnCancelYes" class="primaryBtn floatR" runat="server" Text="Yes"></asp:Button>
-                        <input id="btnModalCancelNo" class="popWindowAltbtn floatR" runat="server" type="button"
-                               value="No" onclick="hideModal('ModalCancel');" />
+                        <input id="btnModalCancelNo" class="popWindowAltbtn floatR" runat="server" type="button" value="No" onclick="hideModal('ModalCancel');">
                     </td>
                 </tr>
                 </tbody>
@@ -87,7 +86,7 @@ Theme="Default" EnableSessionState="True"%>
                         </tr>
                         <tr>
                             <td style="text-align: center">
-                                <Elita:UserControlCallerInfo runat="server" ID="ucCallerInfo" />
+                                <Elita:UserControlCallerInfo runat="server" ID="ucCallerInfo"></Elita:UserControlCallerInfo>
                             </td>
                         </tr>                        
 
@@ -101,7 +100,7 @@ Theme="Default" EnableSessionState="True"%>
                     <table style="width: 100%; height: 100%" class="dataGrid">                                            
                         <tr>
                             <td style="text-align: center">
-                                <Elita:UserControlCallerInfo runat="server" ID="ucPrevCallerInfo" />
+                                <Elita:UserControlCallerInfo runat="server" ID="ucPrevCallerInfo"></Elita:UserControlCallerInfo>
                             </td>
                         </tr>
                     </table>
@@ -110,7 +109,7 @@ Theme="Default" EnableSessionState="True"%>
         </asp:View>                                
         <asp:View ID="vQuestion" runat="server">
             <div class="dataContainer">
-                <Elita:UserControlQuestion runat="server" ID="questionUserControl" />
+                <Elita:UserControlQuestion runat="server" ID="questionUserControl"></Elita:UserControlQuestion>
             </div>
         </asp:View>
         <asp:View ID="vCaseInteraction" runat="server">
@@ -142,9 +141,8 @@ Theme="Default" EnableSessionState="True"%>
         </asp:View>
     </asp:MultiView>
     <div class="btnZone">
-        <asp:Button ID="button_Continue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
-        <asp:LinkButton ID="btn_Cancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
-                        OnClientClick="return revealModal('ModalCancel');" />
+        <asp:Button ID="button_Continue" runat="server" SkinID="PrimaryRightButton" Text="Continue"></asp:Button>
+        <asp:LinkButton ID="btn_Cancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel" OnClientClick="return revealModal('ModalCancel');"></asp:LinkButton>
     </div>
 
 </asp:Content>

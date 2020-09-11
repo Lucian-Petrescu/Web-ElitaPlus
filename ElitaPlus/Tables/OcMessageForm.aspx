@@ -11,12 +11,12 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
-    <Elita:MessageController runat="server" ID="moMessageController" Visible="false" />
+    <Elita:MessageController runat="server" ID="moMessageController" Visible="false"></Elita:MessageController>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
         <Scripts>
-            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js"></asp:ScriptReference>
         </Scripts>
     </asp:ScriptManager>
     <div class="dataContainer">
@@ -55,17 +55,16 @@
         </div>
     </div>
     <div class="dataContainer">
-        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
-        <asp:HiddenField ID="hdnDisabledTab" runat="server" />
+        <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
+        <asp:HiddenField ID="hdnDisabledTab" runat="server"></asp:HiddenField>
         <div id="tabs" class="style-tabs">
 	        <ul>
-		        <li><a href="#tab_MessageParameters"><asp:Label ID="lblParametersTab" runat="server" CssClass="tabHeaderText">PARAMETERS_TAB</asp:Label></a></li>
-		        <li><a href="#tab_MessageAttempts"><asp:Label ID="lblMessageAttemptsTab" runat="server" CssClass="tabHeaderText">MESSAGEATTEMPTS_TAB</asp:Label></a></li>
+		        <li><a href="#tab_MessageParameters" rel="noopener noreferrer"><asp:Label ID="lblParametersTab" runat="server" CssClass="tabHeaderText">PARAMETERS_TAB</asp:Label></a></li>
+		        <li><a href="#tab_MessageAttempts" rel="noopener noreferrer"><asp:Label ID="lblMessageAttemptsTab" runat="server" CssClass="tabHeaderText">MESSAGEATTEMPTS_TAB</asp:Label></a></li>
 	        </ul>
             <div id="tab_MessageParameters">
                 <div class="Page" runat="server" style="height: 100%; overflow: auto">
-                    <asp:GridView ID="MessageParametersGrid" runat="server" Width="100%" OnRowCreated="ParametersGrid_RowCreated"
-                        AllowPaging="False" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
+                    <asp:GridView ID="MessageParametersGrid" runat="server" Width="100%" OnRowCreated="ParametersGrid_RowCreated" AllowPaging="False" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
                         <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                         <EditRowStyle Wrap="False"></EditRowStyle>
                         <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -92,16 +91,15 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
-                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                        <PagerStyle />
+                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                        <PagerStyle></PagerStyle>
                     </asp:GridView>
-                    <br />
+                    <br>
                 </div>
             </div>
             <div id="tab_MessageAttempts">
                 <div class="Page" runat="server" style="height: 100%; overflow: auto">
-                    <asp:GridView ID="MessageAttemptsGrid" runat="server" Width="100%" OnRowCreated="MessageAttemptsGrid_RowCreated"
-                        AllowPaging="False" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
+                    <asp:GridView ID="MessageAttemptsGrid" runat="server" Width="100%" OnRowCreated="MessageAttemptsGrid_RowCreated" AllowPaging="False" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
                         <SelectedRowStyle BackColor="lightsteelblue"></SelectedRowStyle>
                         <EditRowStyle Wrap="False"></EditRowStyle>
                         <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -117,9 +115,7 @@
                                 <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton Style="cursor: hand;" ID="btnSelect" CommandName="SelectRecord"
-                                        ImageUrl="../Navigation/images/icons/yes_icon.gif" runat="server" CommandArgument="<%#Container.DisplayIndex %>"
-                                        CausesValidation="false"></asp:ImageButton>
+                                    <asp:ImageButton Style="cursor: hand;" ID="btnSelect" CommandName="SelectRecord" ImageUrl="../Navigation/images/icons/yes_icon.gif" runat="server" CommandArgument="<%#Container.DisplayIndex %>" CausesValidation="false"></asp:ImageButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="RECIPIENT_ADDRESS">
@@ -169,22 +165,21 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
-                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                        <PagerStyle />
+                        <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                        <PagerStyle></PagerStyle>
                     </asp:GridView>
                 </div>
                 <div class="btnZone">
-                    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-                                        runat="server" />
-                    <asp:Button ID="btnResend_WRITE" runat="server" CausesValidation="False" Text="MESSAGE_RESEND"
-                        SkinID="AlternateRightButton"></asp:Button>
-                    <asp:Button ID="btnResendDiffEmail_WRITE" runat="server" CausesValidation="False" Text="MESSAGE_RESEND_DIFF_EMAIL"
-                        SkinID="AlternateRightButton"></asp:Button>
+                    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server">
+                    <asp:Button ID="btnResend_WRITE" runat="server" CausesValidation="False" Text="MESSAGE_RESEND" SkinID="AlternateRightButton"></asp:Button>
+                    <asp:Button ID="btnResendDiffEmail_WRITE" runat="server" CausesValidation="False" Text="MESSAGE_RESEND_DIFF_EMAIL" SkinID="AlternateRightButton"></asp:Button>
                 </div>
             </div>
         </div>
     </div>
     <div class="btnZone">
         <asp:Button ID="btnBack" runat="server" CausesValidation="False" Text="BACK" SkinID="AlternateLeftButton"></asp:Button>
+    </div>
+</asp:Content>Button"></asp:Button>
     </div>
 </asp:Content>

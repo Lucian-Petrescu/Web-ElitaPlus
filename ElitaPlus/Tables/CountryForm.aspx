@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CountryForm.aspx.vb" Theme="Default"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CountryForm.aspx.vb" Theme="Default"
 	Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.CountryForm" EnableSessionState="True"
 	MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
@@ -15,13 +15,12 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
 		<Scripts>
-			<asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+			<asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js"></asp:ScriptReference>
 		</Scripts>
 	</asp:ScriptManager>
 		<script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js"></script>
 	<div class="dataContainer">
-		<table class="formGrid" border="0" cellspacing="0" cellpadding="0" style="padding-left: 0px;"
-			width="100%">
+		<table class="formGrid" border="0" cellspacing="0" cellpadding="0" style="padding-left: 0px;" width="100%">
 			<tr>
 				<td align="right" nowrap="nowrap" class="borderLeft">
 					<asp:Label ID="LabelCode" runat="server" Font-Bold="false">Code</asp:Label></td>
@@ -43,8 +42,7 @@
 				<td align="right" nowrap="nowrap">
 					<asp:Label ID="LabelRegulatoryReporting" class="borderRight" runat="server" Font-Bold="false">Regulatory_Reporting_ID</asp:Label></td>
 				<td align="left" nowrap="nowrap">
-					<asp:DropDownList ID="cboRegulatoryReporting" TabIndex="20" runat="server" 
-                        Width="140px"></asp:DropDownList></td>
+					<asp:DropDownList ID="cboRegulatoryReporting" TabIndex="20" runat="server" Width="140px"></asp:DropDownList></td>
 			</tr>
 			<tr>
 				<td align="right" nowrap="nowrap" class="borderLeft">
@@ -52,10 +50,9 @@
 				<td align="left" nowrap="nowrap">
 					<asp:DropDownList ID="cboEuropeanCountry" TabIndex="20" runat="server" Width="140px"></asp:DropDownList></td>
 				<td align="right" nowrap="nowrap">
-					<asp:Label ID="LabelRegulatoryNotifyGroupEmail"  class="borderRight" runat="server" Font-Bold="false">Notify_Group_Email</asp:Label></td>
+					<asp:Label ID="LabelRegulatoryNotifyGroupEmail" class="borderRight" runat="server" Font-Bold="false">Notify_Group_Email</asp:Label></td>
 				<td align="left" nowrap="nowrap">
-					<asp:TextBox ID="TextboxRegulatoryNotifyGroupEmail" TabIndex="5" runat="server" 
-                        Width="280px" CssClass="FLATTEXTBOX"></asp:TextBox></td>
+					<asp:TextBox ID="TextboxRegulatoryNotifyGroupEmail" TabIndex="5" runat="server" Width="280px" CssClass="FLATTEXTBOX"></asp:TextBox></td>
 			</tr>
 			<tr>
 				<td align="right" class="borderLeft" nowrap="nowrap">
@@ -63,10 +60,9 @@
 				<td align="left" nowrap="nowrap">
 					<asp:DropDownList ID="cboPrimaryCurrencyId" TabIndex="25" runat="server" Width="140px"></asp:DropDownList></td>
 				<td align="right" nowrap="nowrap">
-					<asp:Label ID="LabelLastRegulatoryExtractDate"  class="borderRight" runat="server" Font-Bold="false" ClientIDMode="Static">Last_Regulatory_Extract_Date</asp:Label></td>
+					<asp:Label ID="LabelLastRegulatoryExtractDate" class="borderRight" runat="server" Font-Bold="false" ClientIDMode="Static">Last_Regulatory_Extract_Date</asp:Label></td>
 				<td align="left" nowrap="nowrap"> 
-					<asp:TextBox ID="TextboxLastRegulatoryExtractDate" TabIndex="5" Enabled="false" 
-                        runat="server" Width="280px" CssClass="FLATTEXTBOX" ClientIDMode="Static"></asp:TextBox></td>
+					<asp:TextBox ID="TextboxLastRegulatoryExtractDate" TabIndex="5" Enabled="false" runat="server" Width="280px" CssClass="FLATTEXTBOX" ClientIDMode="Static"></asp:TextBox></td>
 			</tr>
 			<tr>
 				<td align="right" nowrap="nowrap" class="borderLeft">
@@ -94,7 +90,7 @@
 				<td align="left" nowrap="nowrap">
 					<asp:TextBox ID="TextboxBankAcctNoLength" TabIndex="40" runat="server" Width="140px"></asp:TextBox></td>
 		        <td align="right" nowrap="nowrap">
-					<asp:Label ID="LabelCertCountSuspOp"  runat="server" Font-Bold="false">Cert_Count_Susp_Op</asp:Label></td>
+					<asp:Label ID="LabelCertCountSuspOp" runat="server" Font-Bold="false">Cert_Count_Susp_Op</asp:Label></td>
 				<td align="left" nowrap="nowrap"> 
 					<asp:TextBox ID="TextboxCertCountSuspOp" TabIndex="5" runat="server" Width="280px"></asp:TextBox></td>
 			</tr>
@@ -102,7 +98,7 @@
 				<td align="right" class="borderLeft" nowrap="nowrap">
 					<asp:Label ID="LabelAddrInfoReqFields" runat="server" Font-Bold="false">AddrInfoReqFields</asp:Label></td>
 				<td align="left" nowrap="nowrap">
-					<asp:TextBox ID="TextboxAddrInfoReqFields" TabIndex="45" runat="server" Width="337px" />
+					<asp:TextBox ID="TextboxAddrInfoReqFields" TabIndex="45" runat="server" Width="337px"></asp:TextBox>
 					<asp:Button ID="btnAddrInfoReqFields" Style="cursor: hand" runat="server" Text="..." OnClientClick="return RevealModalWithMessage('ModalIssue','1');"></asp:Button>
 				</td>
 				<td align="right" nowrap="nowrap">
@@ -114,10 +110,10 @@
 				<td align="right" class="borderLeft" nowrap="nowrap">
 					<asp:Label ID="LabelMailAddrFormat" runat="server" Font-Bold="false">MailAddrFormat</asp:Label></td>
 				<td align="left" nowrap="nowrap">
-					<asp:TextBox ID="TextboxMailAddrFormat" TabIndex="45" runat="server" Width="337px" />
+					<asp:TextBox ID="TextboxMailAddrFormat" TabIndex="45" runat="server" Width="337px"></asp:TextBox>
 					<asp:Button ID="btnMailAddrFormat" Style="cursor: hand" runat="server" Text="..." OnClientClick="return RevealModalWithMessage('ModalIssue','2');"></asp:Button>
 				</td>
-				<td align="right" nowrap="nowrap" >
+				<td align="right" nowrap="nowrap">
 					<asp:Label ID="LabelTaxByProductType" runat="server" Font-Bold="false">Tax_By_Product_Type</asp:Label></td>
 				<td align="left" nowrap="nowrap">
 					<asp:DropDownList ID="cboTaxByProductType" TabIndex="55" runat="server" Width="140px"></asp:DropDownList></td>
@@ -126,10 +122,10 @@
 				<td align="right" class="borderLeft" nowrap="nowrap">
 					<asp:Label ID="LabelCONTACT_INFO_REQ_FIELDS" runat="server" Font-Bold="False">CONTACT_INFO_REQ_FIELDS</asp:Label></td>
 				<td align="left" nowrap="nowrap">
-					<asp:TextBox ID="TextboxCONTACT_INFO_REQ_FIELDS" runat="server" TabIndex="45" Width="337px" />
-					<asp:Button ID="btnCONTACT_INFO_REQ_FIELDS" runat="server" Style="cursor: hand" Text="..." OnClientClick="return RevealModalWithMessage('ModalIssue','3');"/>
+					<asp:TextBox ID="TextboxCONTACT_INFO_REQ_FIELDS" runat="server" TabIndex="45" Width="337px"></asp:TextBox>
+					<asp:Button ID="btnCONTACT_INFO_REQ_FIELDS" runat="server" Style="cursor: hand" Text="..." OnClientClick="return RevealModalWithMessage('ModalIssue','3');"></asp:Button>
 				</td>
-				<td align="right" nowrap="nowrap" >
+				<td align="right" nowrap="nowrap">
 					<asp:Label ID="lblUseBankList" runat="server" Font-Bold="false">Use_Bank_List</asp:Label></td>
 				<td align="left" nowrap="nowrap">
 					<asp:DropDownList ID="cboUseBankList" TabIndex="55" runat="server" Width="140px"></asp:DropDownList></td>
@@ -139,11 +135,9 @@
 					<asp:Label ID="lblDefaultSCForDeniedClaims" runat="server" Font-Bold="false">DEFAULT_SC_FOR_DENIED_CLAIMS:</asp:Label></td>
 				<td align="left" nowrap="nowrap">
 					<asp:TextBox ID="txtDefaultSCForDeniedClaims" TabIndex="60" runat="server" Width="337px" CssClass="FLATTEXTBOX"></asp:TextBox>
-					<input id="inpDefaultSCFDCId" type="hidden" name="inpDefaultSCFDCId" runat="server" />
-					<input id="inpDefaultSCFDCDesc" type="hidden" name="inpDefaultSCFDCDesc" runat="server" />
-					<cc1:AutoCompleteExtender ID="aDefaultSCFDC" OnClientItemSelected="comboSelectedDefaultSCFDC"
-						runat="server" TargetControlID="txtDefaultSCForDeniedClaims" ServiceMethod="PopulateServiceCenterDropFDC"
-						MinimumPrefixLength='1' CompletionListCssClass="autocomplete_completionListElement">
+					<input id="inpDefaultSCFDCId" type="hidden" name="inpDefaultSCFDCId" runat="server">
+					<input id="inpDefaultSCFDCDesc" type="hidden" name="inpDefaultSCFDCDesc" runat="server">
+					<cc1:AutoCompleteExtender ID="aDefaultSCFDC" OnClientItemSelected="comboSelectedDefaultSCFDC" runat="server" TargetControlID="txtDefaultSCForDeniedClaims" ServiceMethod="PopulateServiceCenterDropFDC" MinimumPrefixLength='1' CompletionListCssClass="autocomplete_completionListElement">
 					</cc1:AutoCompleteExtender>
 					<script language="javascript" type="text/javascript">
 						function comboSelectedDefaultSCFDC(source, eventArgs) {
@@ -171,11 +165,9 @@
 					<asp:Label ID="lblDefaultSC" runat="server" Font-Bold="false">DEFAULT_SC:</asp:Label></td>
 				<td align="left" nowrap="nowrap">
 					<asp:TextBox ID="txtDefaultSC" runat="server" Width="337px" CssClass="FLATTEXTBOX"></asp:TextBox>
-					<input id="inpDefaultSCId" type="hidden" name="inpDefaultSCId" runat="server" />
-					<input id="inpDefaultSCDesc" type="hidden" name="inpDefaultSCDesc" runat="server" />
-					<cc1:AutoCompleteExtender ID="aDefaultSC" OnClientItemSelected="comboSelectedDefaultSC"
-						runat="server" TargetControlID="txtDefaultSC" ServiceMethod="PopulateServiceCenterDrop"
-						MinimumPrefixLength='1' CompletionListCssClass="autocomplete_completionListElement">
+					<input id="inpDefaultSCId" type="hidden" name="inpDefaultSCId" runat="server">
+					<input id="inpDefaultSCDesc" type="hidden" name="inpDefaultSCDesc" runat="server">
+					<cc1:AutoCompleteExtender ID="aDefaultSC" OnClientItemSelected="comboSelectedDefaultSC" runat="server" TargetControlID="txtDefaultSC" ServiceMethod="PopulateServiceCenterDrop" MinimumPrefixLength='1' CompletionListCssClass="autocomplete_completionListElement">
 					</cc1:AutoCompleteExtender>
 					<script language="javascript" type="text/javascript">
 					    function comboSelectedDefaultSC(source, eventArgs) {
@@ -202,8 +194,7 @@
                 <td align="right" nowrap="nowrap">
                     <asp:Label ID="lblUseAddressValidation" class="borderRight" runat="server" Font-Bold="false">USE_ADDRESS_VALIDATION</asp:Label></td>
                 <td align="left" nowrap="nowrap">
-                    <asp:DropDownList ID="cboUseAddressValidation" TabIndex="68" runat="server"  
-                                      Width="140px"></asp:DropDownList></td>
+                    <asp:DropDownList ID="cboUseAddressValidation" TabIndex="68" runat="server" Width="140px"></asp:DropDownList></td>
                   <td align="right" nowrap="nowrap">
                     <asp:Label ID="lblAllowForget" class="borderRight" runat="server" Font-Bold="false">ALLOW_FORGET</asp:Label></td>
                 <td align="left" nowrap="nowrap">
@@ -256,7 +247,7 @@
 							<td style="height: 118px" align="left">
 								<asp:ListBox ID="AvailPostalCodeList" runat="server" Width="216px" Height="100px" AutoPostBack="false"></asp:ListBox></td>
 							<td style="height: 118px" align="center">
-								<asp:Button ID="AddFormat" Style="cursor: hand" runat="server" Text=">>" UseSubmitBehavior="false" OnClick="AddFormat_Click"></asp:Button><br /><br />
+								<asp:Button ID="AddFormat" Style="cursor: hand" runat="server" Text=">>" UseSubmitBehavior="false" OnClick="AddFormat_Click"></asp:Button><br><br>
 								<asp:Button ID="RemoveFormat" Style="cursor: hand" runat="server" Text="<<" UseSubmitBehavior="false" OnClick="RemoveFormat_Click"></asp:Button></td>
 							<td style="height: 118px" align="left">
 								<asp:ListBox ID="SelectedPostalCodeList" runat="server" Width="216px" Height="100px" AutoPostBack="false"></asp:ListBox></td>
@@ -269,7 +260,7 @@
             <div id="tabs" class="style-tabs">
 
                 <ul>
-                    <li><a href="#tabsLineOfBusiness">
+                    <li><a href="#tabsLineOfBusiness" rel="noopener noreferrer">
                         <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">LINE_OF_BUSINESS</asp:Label></a></li>
                 </ul>
                 <div id="tabsLineOfBusiness">
@@ -284,24 +275,21 @@
                         <tr>
                         <td align="center" colspan="2">
                            <%-- <div id="scrollerlineOfBusinessGrid" style="overflow: auto; width: 96%; height: 125px" align="center">--%>
-                                <asp:GridView ID="moLineOfBusinessGridView" runat="server" Width="100%"
-                                                AllowPaging="False" AllowSorting="false" PageSize="50" CellPadding="1" AutoGenerateColumns="False"
-                                                SkinID="DetailPageGridView"
-                                                EnableViewState="true">
+                                <asp:GridView ID="moLineOfBusinessGridView" runat="server" Width="100%" AllowPaging="False" AllowSorting="false" PageSize="50" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView" EnableViewState="true">
                                                 <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                                                 <EditRowStyle Wrap="False"></EditRowStyle>
                                                 <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
                                                 <RowStyle Wrap="False"></RowStyle>
                                                 <HeaderStyle Wrap="False"></HeaderStyle>
                                                 <Columns>
-                                                    <asp:TemplateField Visible="True"  HeaderText="CODE"> 
+                                                    <asp:TemplateField Visible="True" HeaderText="CODE"> 
                                                         <ItemStyle HorizontalAlign="Left"></ItemStyle>
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblLineBusinessCode" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "code")%>' Visible="True" SkinID="SmallTextBox">
                                                             </asp:Label>
                                                         </ItemTemplate>
                                                         <EditItemTemplate>
-                                                            <asp:TextBox ID="txtLineBusinessCode" runat="server" Visible="True" SkinID="SmallTextBox" />
+                                                            <asp:TextBox ID="txtLineBusinessCode" runat="server" Visible="True" SkinID="SmallTextBox"></asp:TextBox>
                                                         </EditItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField Visible="True" HeaderText="DESCRIPTION">
@@ -311,7 +299,7 @@
                                                             </asp:Label>
                                                         </ItemTemplate>
                                                         <EditItemTemplate>
-                                                            <asp:TextBox ID="txtLineBusinessDescription" Width="220px" runat="server" Visible="True" SkinID="SmallTextBox" />
+                                                            <asp:TextBox ID="txtLineBusinessDescription" Width="220px" runat="server" Visible="True" SkinID="SmallTextBox"></asp:TextBox>
 
                                                         </EditItemTemplate>
                                                     </asp:TemplateField>
@@ -329,7 +317,7 @@
                                                     <asp:TemplateField Visible="True" HeaderText="IN_USE">
                                                         <ItemStyle HorizontalAlign="Left"></ItemStyle>
                                                         <ItemTemplate>
-                                                                        <asp:CheckBox ID="chkLineBusinessInUse" Enabled="false"  Checked='<%# DataBinder.Eval(Container.DataItem, "InUse") = "Y"%>'  runat="server"></asp:CheckBox>
+                                                                        <asp:CheckBox ID="chkLineBusinessInUse" Enabled="false" Checked='<%# DataBinder.Eval(Container.DataItem, "InUse") = "Y"%>' runat="server"></asp:CheckBox>
                                                         </ItemTemplate>
 
 
@@ -339,29 +327,25 @@
                                                         <HeaderStyle ForeColor="#12135B" Wrap="False"></HeaderStyle>
                                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                         <ItemTemplate>
-                                                            <asp:ImageButton ID="EditButton_WRITE"  Style="cursor: hand" runat="server" ImageUrl="~/Navigation/images/icons/edit2.gif"
-                                                                CommandName="EditRecord" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "id") %>'></asp:ImageButton>
+                                                            <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="~/Navigation/images/icons/edit2.gif" CommandName="EditRecord" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "id") %>'></asp:ImageButton>
                                                         </ItemTemplate>
                                                         <EditItemTemplate>
-                                                            <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                                                Text="Cancel"></asp:LinkButton>
+                                                            <asp:LinkButton ID="BtnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Cancel"></asp:LinkButton>
                                                         </EditItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField ItemStyle-Width="30px">
                                                         <HeaderStyle ForeColor="#12135B" Wrap="False"></HeaderStyle>
                                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                         <ItemTemplate>
-                                                            <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="~/Navigation/images/icons/trash.gif"
-                                                                runat="server" CommandName="DeleteRecord" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "id") %>'></asp:ImageButton>
+                                                            <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="~/Navigation/images/icons/trash.gif" runat="server" CommandName="DeleteRecord" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "id") %>'></asp:ImageButton>
                                                         </ItemTemplate>
                                                         <EditItemTemplate>
-                                                            <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                                                                Text="Save" SkinID="PrimaryRightButton"></asp:Button>
+                                                            <asp:Button ID="BtnSave_WRITE" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
                                                         </EditItemTemplate>
                                                     </asp:TemplateField>
                                                 </Columns>
-                                                <PagerSettings PageButtonCount="10" Mode="Numeric" Position="TopAndBottom" />
-                                                <PagerStyle />
+                                                <PagerSettings PageButtonCount="10" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                                                <PagerStyle></PagerStyle>
                                             </asp:GridView>
                                <%-- </div>--%>
                             </td>
@@ -380,16 +364,15 @@
 			<div id="Div2" class="overlay_message_content" style="width: 630px;">
 				<p class="modalTitle">
                     <label id="Label1"></label>
-					<a href="javascript:void(0)" onclick="hideModal('ModalIssue');">
-						<img id="img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-							width="16" height="18" align="middle" class="floatR" /></a></p>
+					<a href="javascript:void(0)" onclick="hideModal('ModalIssue');" rel="noopener noreferrer">
+						<img id="img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="middle" class="floatR"></a></p>
 				<table cellspacing="0" cellpadding="0" width="100%" bgcolor="#f4f3f8" border="0">
 					<tr>
 						<td valign="top" width="100%" height="264">
 							<table style="BACKGROUND-REPEAT: repeat" height="100%" cellspacing="0" cellpadding="0" width="100%" border="0">
 								<tr>
 									<td width="2" height="3"></td>
-									<td width="100%" background="../Navigation/images/body_top_back.jpg" height="3"><img height="3" src="../Navigation/images/trans_spacer.gif" width="100%" /></td>
+									<td width="100%" background="../Navigation/images/body_top_back.jpg" height="3"><img height="3" src="../Navigation/images/trans_spacer.gif" width="100%"></td>
 									<td width="2" height="3"></td>
 								</tr>
 								<tr>
@@ -398,17 +381,14 @@
 										<table style="BACKGROUND-REPEAT: repeat" cellspacing="2" cellpadding="2" width="100%" border="0">
 											<tr>
 												<td valign="top">
-													<table id="tblMain" style="BACKGROUND-REPEAT: repeat" cellspacing="2" cellpadding="2" width="100%"
-														bgcolor="#f4f3f8" border="0">
+													<table id="tblMain" style="BACKGROUND-REPEAT: repeat" cellspacing="2" cellpadding="2" width="100%" bgcolor="#f4f3f8" border="0">
 														<tr>
 															<td valign="top" colspan="4" height="100%">
 																<div id="scroller4" style=" WIDTH: 100%; font-size: 13px;">
-																	<table style="BACKGROUND-REPEAT: repeat" height="100%" cellspacing="2" cellpadding="2"
-																		width="100%" border="0">
+																	<table style="BACKGROUND-REPEAT: repeat" height="100%" cellspacing="2" cellpadding="2" width="100%" border="0">
 																		<tr>
 																			<td>
-																				<table style="BACKGROUND-REPEAT: repeat" height="100%" cellspacing="0" cellpadding="0"
-																					width="100%" border="0">
+																				<table style="BACKGROUND-REPEAT: repeat" height="100%" cellspacing="0" cellpadding="0" width="100%" border="0">
 																					<tr>
 																						<td colspan="4">
 																							<asp:Label id="Label7" runat="server" Width="608px" Font-Italic="True" Visible="False">COUNTRY_STATIC_MSG</asp:Label></td>
@@ -425,26 +405,24 @@
 																						<td align="left" style="width: 230px;">
                                                                                             <select id="AvailList" style="width:275px; height:130px;" size="20" onchange="handleSpecialChar();"></select></td>
 																						<td style="WIDTH: 18px" align="center">
-																							<input type="button" id="btnAdd" value=">" onclick="addItem();" title="Add selected items"/><br />
-																							<br />
-																							<input type="button" id="btnRemove" value="<" onclick="removeItem();" title="Remove selected items"/>
+																							<input type="button" id="btnAdd" value=">" onclick="addItem();" title="Add selected items"><br>
+																							<br>
+																							<input type="button" id="btnRemove" value="<" onclick="removeItem();" title="Remove selected items">
 																						</td>
 																						<td style="WIDTH: 230px" align="left">
                                                                                             <select id="MailAddrFormatList" style="width:275px; height:130px;" size="20" onchange="handleOptionalListItem();"></select></td>
 																						<td>
-																							<input type="button" id="btnMoveUp" style="BACKGROUND-IMAGE: url(../Navigation/images/icons/up.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat; width: 25px; height: 21px;"
-																								onclick="moveItemUp();" class="FLATBUTTON" title="Move up"/>
-																							<br />
-																							<input type="button" id="btnMoveDown" style="BACKGROUND-IMAGE: url(../Navigation/images/icons/down.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat; width: 25px; height: 21px;"
-																								onclick="moveItemDown();" class="FLATBUTTON" title="Move down"/>
+																							<input type="button" id="btnMoveUp" style="BACKGROUND-IMAGE: url(../Navigation/images/icons/up.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat; width: 25px; height: 21px;" onclick="moveItemUp();" class="FLATBUTTON" title="Move up">
+																							<br>
+																							<input type="button" id="btnMoveDown" style="BACKGROUND-IMAGE: url(../Navigation/images/icons/down.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat; width: 25px; height: 21px;" onclick="moveItemDown();" class="FLATBUTTON" title="Move down">
 																						</td>
 																					</tr>
 																					<tr>
 																						<td style="WIDTH: 271px" colspan="2">
-                                                                                            <label id="SpecialCharLabel" style="display:none;">Enter Character and Press Tab:</label><input type="text" id="SpecialChar" maxlength="1" size="1" style="display:none;" onkeydown="AddSpecialChar();" />
+                                                                                            <label id="SpecialCharLabel" style="display:none;">Enter Character and Press Tab:</label><input type="text" id="SpecialChar" maxlength="1" size="1" style="display:none;" onkeydown="AddSpecialChar();">
 																						    </td>
 																						<td style="WIDTH: 271px" colspan="2">
-                                                                                            <input type="checkbox" id="chkOptional" onclick="handleSelectedListItemForOptional();" value="Address token optional" />
+                                                                                            <input type="checkbox" id="chkOptional" onclick="handleSelectedListItemForOptional();" value="Address token optional">
                                                                                             <label id="chkText">Address token optional</label></td>
 																					</tr>
 																					<tr>
@@ -455,18 +433,17 @@
 																					<tr>
 																						<td style="WIDTH: 271px;" align="left" colspan="2" valign="top">
 																							<asp:ListBox id="PreviewList" runat="server" Width="304px" Height="100px" BackColor="whitesmoke"></asp:ListBox></td>
-																						<td align="left" colspan="2"><asp:TextBox id="TextBox2" runat="server" Width="180px" Height="58px" TextMode="MultiLine"
-																								ReadOnly="True" style="display:none;"></asp:TextBox></td>
+																						<td align="left" colspan="2"><asp:TextBox id="TextBox2" runat="server" Width="180px" Height="58px" TextMode="MultiLine" ReadOnly="True" style="display:none;"></asp:TextBox></td>
 																					</tr>
 																				</table>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td valign="top" align="center" class="btnZone">
-																				<input type="button" id="Button1" title="Save changes to database" class="altBtn" skinid="AlternateLeftButton" onclick="SubmitData('ModalIssue')" value = "Save"/>&nbsp; 
-																				<input class="altBtn" id="Button2" title="Cancel" skinid="AlternateLeftButton" onclick="hideModal('ModalIssue')" type="button" value="Cancel"/>
-                                                                                <input type="button" id="ClearButton" skinid="AlternateRightButton" class="altBtn" value="Clear" onclick="ResetSelectedItems();" />
-																				<input type="button" id="RefreshButton" skinid="AlternateRightButton" class="altBtn" value="Refresh Preview" onclick="refreshPreview();" />
+																				<input type="button" id="Button1" title="Save changes to database" class="altBtn" skinid="AlternateLeftButton" onclick="SubmitData('ModalIssue')" value="Save">&nbsp; 
+																				<input class="altBtn" id="Button2" title="Cancel" skinid="AlternateLeftButton" onclick="hideModal('ModalIssue')" type="button" value="Cancel">
+                                                                                <input type="button" id="ClearButton" skinid="AlternateRightButton" class="altBtn" value="Clear" onclick="ResetSelectedItems();">
+																				<input type="button" id="RefreshButton" skinid="AlternateRightButton" class="altBtn" value="Refresh Preview" onclick="refreshPreview();">
 																			</td>
 																		</tr>
 																	</table>
@@ -480,12 +457,11 @@
 								</tr>
 							</table>
 						</td>
-						<td width="2" height="100%"><IMG height="100%" src="../Navigation/images/body_mid_right.jpg" width="2"/></td>
+						<td width="2" height="100%"><IMG height="100%" src="../Navigation/images/body_mid_right.jpg" width="2"></td>
 					</tr>
 					<tr>
 						<td width="2" height="3"></td>
-						<td style="BACKGROUND-REPEAT: repeat" width="100%" background="../Common/images/body_bot_back.jpg"
-							height="3"><IMG height="3" src="../Navigation/images/trans_spacer.gif" width="100%"/></td>
+						<td style="BACKGROUND-REPEAT: repeat" width="100%" background="../Common/images/body_bot_back.jpg" height="3"><IMG height="3" src="../Navigation/images/trans_spacer.gif" width="100%"></td>
 						<td width="2" height="3"></td>
 					</tr>
 				</table>                
@@ -493,9 +469,9 @@
 			<div id="Div3" class="black_overlay">
 			</div>
 		</div>
-		<input id="ModelType" type="hidden" name="ModelType" />
-        <input type="hidden" id="calledDialog" name="calledDialog" />
-		<input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server" designtimedragdrop="261" />
+		<input id="ModelType" type="hidden" name="ModelType">
+        <input type="hidden" id="calledDialog" name="calledDialog">
+		<input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server" designtimedragdrop="261">
 	</div>
 	<script language="JavaScript" type="text/javascript">        
         function AddSpecialChar() {
@@ -1165,9 +1141,15 @@
         }
 	</script>
 	<div class="btnZone">
-		<asp:Button ID="btnSave_WRITE" runat="server" Text="Save" CausesValidation="False"
-			SkinID="PrimaryRightButton"></asp:Button>
-        <asp:Button ID="btnUndo_Write" runat="server" Text="Undo" CausesValidation="False"
+		<asp:Button ID="btnSave_WRITE" runat="server" Text="Save" CausesValidation="False" SkinID="PrimaryRightButton"></asp:Button>
+        <asp:Button ID="btnUndo_Write" runat="server" Text="Undo" CausesValidation="False" SkinID="AlternateRightButton"></asp:Button>
+        <asp:Button ID="btnBack" runat="server" Text="Back" CausesValidation="False" SkinID="AlternateLeftButton"></asp:Button>
+		<asp:Button ID="btnNew_WRITE" runat="server" Text="New" CausesValidation="False" SkinID="AlternateLeftButton"></asp:Button>
+		<asp:Button ID="btnCopy_WRITE" runat="server" Text="NEW_WITH_COPY" CausesValidation="False" SkinID="AlternateRightButton"></asp:Button>
+		<asp:Button ID="btnDelete_WRITE" runat="server" Text="Delete" CausesValidation="False" SkinID="CenterButton"></asp:Button>
+	</div>
+</asp:Content>
+
 			SkinID="AlternateRightButton"></asp:Button>
         <asp:Button ID="btnBack" runat="server" Text="Back" CausesValidation="False"
 			SkinID="AlternateLeftButton"></asp:Button>

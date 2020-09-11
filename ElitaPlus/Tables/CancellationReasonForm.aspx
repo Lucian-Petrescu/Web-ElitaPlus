@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CancellationReasonForm.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CancellationReasonForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.CancellationReasonForm" EnableSessionState="True"  Theme="Default"
     MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
@@ -15,13 +15,12 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <div class="dataContainer">
         <div class="stepformZone">
-            <table class="formGrid" border="0" cellspacing="0" cellpadding="0" style="padding-left: 0px;"
-                width="100%">
+            <table class="formGrid" border="0" cellspacing="0" cellpadding="0" style="padding-left: 0px;" width="100%">
                  <tr>
                     <td id="Td1" runat="server" colspan="2">
                         <table>
                             <tbody>
-                                    <Elita:MultipleColumnDDLabelControl runat="server" ID="CompanyDropControl" />
+                                    <Elita:MultipleColumnDDLabelControl runat="server" ID="CompanyDropControl"></Elita:MultipleColumnDDLabelControl>
                              </tbody>
                         </table>
                     </td>
@@ -82,8 +81,7 @@
                                 <td align="left" nowrap="nowrap">
                                     <asp:DropDownList ID="cboDisplayCode" runat="server" SkinID="MediumDropDown">
                                     </asp:DropDownList>
-                                    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-                                        runat="server" />
+                                    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server">
                                 </td>
                                 <td align="right" nowrap="nowrap">
                                     <asp:Label ID="labelIsLawful" runat="server">Is_Lawful:</asp:Label>
@@ -113,7 +111,7 @@
        <div class="dataContainer">    
             <div id="tabs" class="style-tabs">
             <ul>
-                <li><a href="#tabsRoles">
+                <li><a href="#tabsRoles" rel="noopener noreferrer">
                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Roles</asp:Label></a></li>
             </ul>
 
@@ -125,18 +123,17 @@
         </div>
        </div>
     <div class="btnZone">
-        <asp:Button ID="btnSave_WRITE" runat="server" CausesValidation="False" Text="SAVE"
-            SkinID="PrimaryRightButton"></asp:Button>
-        <asp:Button ID="btnUndo_WRITE" runat="server" CausesValidation="False" Text="UNDO"
-            SkinID="AlternateRightButton"></asp:Button>
-        <asp:Button ID="btnCopy_WRITE" runat="server" CausesValidation="False" Text="New_With_Copy"
-            SkinID="AlternateRightButton"></asp:Button>
+        <asp:Button ID="btnSave_WRITE" runat="server" CausesValidation="False" Text="SAVE" SkinID="PrimaryRightButton"></asp:Button>
+        <asp:Button ID="btnUndo_WRITE" runat="server" CausesValidation="False" Text="UNDO" SkinID="AlternateRightButton"></asp:Button>
+        <asp:Button ID="btnCopy_WRITE" runat="server" CausesValidation="False" Text="New_With_Copy" SkinID="AlternateRightButton"></asp:Button>
          <asp:Button ID="btnBack" runat="server" CausesValidation="False" Text="BACK" SkinID="AlternateLeftButton">
         </asp:Button>
-        <asp:Button ID="btnNew_WRITE" runat="server" CausesValidation="False" Text="New"
-            SkinID="AlternateLeftButton"></asp:Button>
-        <asp:Button ID="btnDelete_WRITE" runat="server" CausesValidation="False" Text="Delete"
-            SkinID="CenterButton"></asp:Button>
+        <asp:Button ID="btnNew_WRITE" runat="server" CausesValidation="False" Text="New" SkinID="AlternateLeftButton"></asp:Button>
+        <asp:Button ID="btnDelete_WRITE" runat="server" CausesValidation="False" Text="Delete" SkinID="CenterButton"></asp:Button>
+    </div>    
+
+</asp:Content>
+nterButton"></asp:Button>
     </div>    
 
 </asp:Content>

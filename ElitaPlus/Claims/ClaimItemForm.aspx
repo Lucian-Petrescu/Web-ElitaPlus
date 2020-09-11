@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ClaimItemForm.aspx.vb" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" EnableSessionState="True"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ClaimItemForm.aspx.vb" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" EnableSessionState="True"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.ClaimItemForm" %>
 
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimInfo" Src="UserControlClaimInfo.ascx" %>
@@ -45,16 +45,16 @@
              <div class="stepformZone">
              <div id="tabs" class="style-tabs">
                  <ul>
-                     <li><a href="#tbClaimItem">
+                     <li><a href="#tbClaimItem" rel="noopener noreferrer">
                          <asp:Label ID="lblClaimItem" runat="server" CssClass="tabHeaderText">CLAIM_ITEM</asp:Label></a></li>
-                     <li><a href="#tbReplacementItems">
+                     <li><a href="#tbReplacementItems" rel="noopener noreferrer">
                          <asp:Label ID="lblRelacementItem" runat="server" CssClass="tabHeaderText">REPLACEMENT_ITEMS</asp:Label></a></li>
 
                  </ul>
 
-                   <div  id="tbClaimItem"  class="Page">
+                   <div id="tbClaimItem" class="Page">
                      
-                         <div >
+                         <div>
                              <asp:Panel ID="EditPanel_WRITE" runat="server">
                                 
                                  <table id="moTableOuter" class="formGrid" width="90%">
@@ -93,7 +93,7 @@
                                      </tr>
                                      <tr>
                                          <td colspan="4">
-                                             <hr style="width: 100%; height: 1px" />
+                                             <hr style="width: 100%; height: 1px">
                                          </td>
                                      </tr>
                                  </table>
@@ -101,7 +101,7 @@
                          </div>
                    </div>
 
-                     <div  id="tbReplacementItems"  class="Page">
+                     <div id="tbReplacementItems" class="Page">
                          <div>
                              <table width="100%" class="dataGrid">
                                  <tr>
@@ -112,36 +112,34 @@
                                  </tr>
                              </table>
                          </div>
-                         <asp:GridView ID="GridViewReplacementItems" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false"
-                            SkinID="DetailPageGridView" AllowSorting="false" PageSize="50" DataKeyNames="claim_equipment_id">
+                         <asp:GridView ID="GridViewReplacementItems" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false" SkinID="DetailPageGridView" AllowSorting="false" PageSize="50" DataKeyNames="claim_equipment_id">
                             <Columns>
                                 <asp:TemplateField ItemStyle-Width="3%">
                                     <ItemTemplate>
-                                        <img alt="" style="cursor: pointer" src="../App_Themes/Default/Images/plus.png" />
+                                        <img alt="" style="cursor: pointer" src="../App_Themes/Default/Images/plus.png">
                                         <asp:Panel ID="pnlConseqDamageIssue" runat="server" Style="display: none">
-                                            <asp:GridView ID="GridViewReplacementItemsStatus" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false"
-                                                SkinID="DetailPageGridView" AllowSorting="false" >
+                                            <asp:GridView ID="GridViewReplacementItemsStatus" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false" SkinID="DetailPageGridView" AllowSorting="false">
                                                 <Columns>
-                                                     <asp:BoundField DataField="claim_equipment_status_xcd" HeaderText="STATUS_DESCRIPTION" ItemStyle-Width="15%" />
-                                                    <asp:BoundField DataField="claim_equipment_status_date" HeaderText="STATUS_DATE" ItemStyle-Width="20%" />
+                                                     <asp:BoundField DataField="claim_equipment_status_xcd" HeaderText="STATUS_DESCRIPTION" ItemStyle-Width="15%"></asp:BoundField>
+                                                    <asp:BoundField DataField="claim_equipment_status_date" HeaderText="STATUS_DATE" ItemStyle-Width="20%"></asp:BoundField>
                                                    
                                                      </Columns>
                                                 
-                                                <PagerStyle />
+                                                <PagerStyle></PagerStyle>
                                             </asp:GridView>
                                         </asp:Panel>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:BoundField DataField="authorization_number" HeaderText="CLAIM_AUTHORIZATION_NUMBER" ItemStyle-Width="30%" />
-                                <asp:BoundField DataField="Type" HeaderText="Type" ItemStyle-Width="15%" />
-                                <asp:BoundField DataField="Make" HeaderText="Make" ItemStyle-Width="15%" />
-                                <asp:BoundField DataField="Model" HeaderText="Model" ItemStyle-Width="20%" />
-                                <asp:BoundField DataField="Serial_Number" HeaderText="SERIAL_NUMBER" ItemStyle-Width="17%" />
-                                 <asp:BoundField DataField="IMEI_NUMBER" HeaderText="IMEI_Number" ItemStyle-Width="17%" />
-                                <asp:BoundField DataField="Device_Type" HeaderText="Device_Type" ItemStyle-Width="17%" />
-                                <asp:BoundField DataField="void_reason_xcd"  HeaderText="VOID_REASON" ItemStyle-Width="17%" />
+                                <asp:BoundField DataField="authorization_number" HeaderText="CLAIM_AUTHORIZATION_NUMBER" ItemStyle-Width="30%"></asp:BoundField>
+                                <asp:BoundField DataField="Type" HeaderText="Type" ItemStyle-Width="15%"></asp:BoundField>
+                                <asp:BoundField DataField="Make" HeaderText="Make" ItemStyle-Width="15%"></asp:BoundField>
+                                <asp:BoundField DataField="Model" HeaderText="Model" ItemStyle-Width="20%"></asp:BoundField>
+                                <asp:BoundField DataField="Serial_Number" HeaderText="SERIAL_NUMBER" ItemStyle-Width="17%"></asp:BoundField>
+                                 <asp:BoundField DataField="IMEI_NUMBER" HeaderText="IMEI_Number" ItemStyle-Width="17%"></asp:BoundField>
+                                <asp:BoundField DataField="Device_Type" HeaderText="Device_Type" ItemStyle-Width="17%"></asp:BoundField>
+                                <asp:BoundField DataField="void_reason_xcd" HeaderText="VOID_REASON" ItemStyle-Width="17%"></asp:BoundField>
                             </Columns>
-                            <PagerStyle />
+                            <PagerStyle></PagerStyle>
                         </asp:GridView>
                      </div>
              </div>

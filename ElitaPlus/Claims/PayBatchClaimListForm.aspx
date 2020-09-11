@@ -1,4 +1,4 @@
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+﻿<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <%@ Page Language="vb" AutoEventWireup="false" MasterPageFile="../Navigation/masters/ElitaBase.Master"
     CodeBehind="PayBatchClaimListForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.PayBatchClaimListForm"
@@ -9,8 +9,8 @@
 <asp:Content ID="MessageContent" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="SummaryContent" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
-    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet" />
-    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet" />
+    <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet">
+    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet">
     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js"> </script>
     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js"> </script>
     <table cellspacing="0" cellpadding="0" width="100%" border="0" class="searchGrid">
@@ -44,22 +44,19 @@
             </td>
         </tr>
         <tr>
-            <td nowrap align="left" width="10%">
-                <asp:TextBox ID="TextBoxSearchInvoiceNumber" runat="server" SkinID="SmallTextBox"
-                    AutoPostBack="False"></asp:TextBox>
+            <td nowrap="" align="left" width="10%">
+                <asp:TextBox ID="TextBoxSearchInvoiceNumber" runat="server" SkinID="SmallTextBox" AutoPostBack="False"></asp:TextBox>
             </td>
             <td width="5%">&nbsp;&nbsp;
             </td>
-            <td nowrap align="left" width="10%">
-                <asp:TextBox ID="TextBoxSearchInvoiceAmount" runat="server" SkinID="SmallTextBox"
-                    AutoPostBack="False"></asp:TextBox>
+            <td nowrap="" align="left" width="10%">
+                <asp:TextBox ID="TextBoxSearchInvoiceAmount" runat="server" SkinID="SmallTextBox" AutoPostBack="False"></asp:TextBox>
             </td>
             <td width="5%">&nbsp;&nbsp;
             </td>
-            <td nowrap align="left" width="10%">
+            <td nowrap="" align="left" width="10%">
                 <asp:TextBox ID="TextBoxSearchInvoiceDate" runat="server" SkinID="SmallTextBox" AutoPostBack="False"></asp:TextBox>
-                <asp:ImageButton ID="ImageButtonInvoiceDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"
-                    Visible="True" CausesValidation="False" ImageAlign="AbsMiddle"></asp:ImageButton>
+                <asp:ImageButton ID="ImageButtonInvoiceDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="True" CausesValidation="False" ImageAlign="AbsMiddle"></asp:ImageButton>
             </td>
             <td width="5%">&nbsp;&nbsp;
             </td>
@@ -115,25 +112,24 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 10%" nowrap align="left">
+            <td style="width: 10%" nowrap="" align="left">
                 <asp:TextBox ID="TextBoxBatchNumber" runat="server" SkinID="SmallTextBox" AutoPostBack="False"></asp:TextBox>
             </td>
             <td style="width: 5%">&nbsp;&nbsp;
             </td>
-            <td style="width: 10%" nowrap align="left">
+            <td style="width: 10%" nowrap="" align="left">
                 <asp:TextBox ID="txtboxInvRecDt" runat="server" SkinID="SmallTextBox" AutoPostBack="False"></asp:TextBox>
-                <asp:ImageButton ID="imgBtnInvRecDt" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"
-                    Visible="True" CausesValidation="False" ImageAlign="AbsMiddle"></asp:ImageButton>
+                <asp:ImageButton ID="imgBtnInvRecDt" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="True" CausesValidation="False" ImageAlign="AbsMiddle"></asp:ImageButton>
             </td>
             <td style="width: 5%">&nbsp;&nbsp;
             </td>
-            <td style="width: 10%" nowrap align="left">
+            <td style="width: 10%" nowrap="" align="left">
                 <asp:DropDownList ID="ddlInvTyp" runat="server" SkinID="SmallDropDown" AutoPostBack="False">
                 </asp:DropDownList>
             </td>
             <td style="width: 5%">&nbsp;&nbsp;
             </td>
-            <td style="width: 10%" nowrap align="left">
+            <td style="width: 10%" nowrap="" align="left">
                 <table border="0">
                     <tr>
                         <td style="width: 10%">
@@ -149,7 +145,7 @@
             </td>
             <td style="width: 5%">&nbsp;&nbsp;
             </td>
-            <td style="width: 10%" nowrap align="left"></td>
+            <td style="width: 10%" nowrap="" align="left"></td>
             <td style="width: 5%">&nbsp;&nbsp;
             </td>
             <td style="width: 25%">&nbsp;&nbsp;
@@ -162,14 +158,10 @@
                         <td style="width: 20%">&nbsp;&nbsp;
                         </td>
                         <td style="width: 80%; text-align: right;">
-                            <asp:Button ID="btnEditBatch_Write" runat="server" SkinID="AlternateLeftButton" Text="Edit"
-                                Visible="False"></asp:Button>
-                            <asp:Button ID="btnSaveBatch_Write" runat="server" SkinID="AlternateLeftButton" Text="Save"
-                                Visible="False"></asp:Button>
-                            <asp:Button ID="btnUndo_Write" runat="server" SkinID="AlternateLeftButton" Text="Undo"
-                                Visible="False"></asp:Button>
-                            <asp:Button ID="btnClear" runat="server" SkinID="AlternateLeftButton" Text="Clear"
-                                Visible="true"></asp:Button>
+                            <asp:Button ID="btnEditBatch_Write" runat="server" SkinID="AlternateLeftButton" Text="Edit" Visible="False"></asp:Button>
+                            <asp:Button ID="btnSaveBatch_Write" runat="server" SkinID="AlternateLeftButton" Text="Save" Visible="False"></asp:Button>
+                            <asp:Button ID="btnUndo_Write" runat="server" SkinID="AlternateLeftButton" Text="Undo" Visible="False"></asp:Button>
+                            <asp:Button ID="btnClear" runat="server" SkinID="AlternateLeftButton" Text="Clear" Visible="true"></asp:Button>
                             <asp:Button ID="btnExisting" runat="server" SkinID="SearchButton" Text="SEARCH"></asp:Button>
                         </td>
                     </tr>
@@ -245,34 +237,29 @@
         <h2 class="dataGridHeader">Search results for Pay Invoice</h2>
 
         <div style="width: 100%">
-            <asp:GridView ID="GridInvoices" runat="server" Width="100%" AllowPaging="True" CellPadding="1"
-                AutoGenerateColumns="False" SkinID="DetailPageGridView">
-                <SelectedRowStyle Wrap="True" />
-                <EditRowStyle Wrap="True" />
-                <AlternatingRowStyle Wrap="True" />
-                <RowStyle Wrap="True" />
+            <asp:GridView ID="GridInvoices" runat="server" Width="100%" AllowPaging="True" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
+                <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                <EditRowStyle Wrap="True"></EditRowStyle>
+                <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                <RowStyle Wrap="True"></RowStyle>
                 <Columns>
                     <asp:BoundField Visible="false" HeaderText="invoice_trans_id"></asp:BoundField>
                     <asp:BoundField SortExpression="Status" HeaderText="Status" Visible="False">
                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                     </asp:BoundField>
-                    <asp:TemplateField Visible="False" HeaderText="Add_Remove_Claims" HeaderStyle-HorizontalAlign="Center"
-                        HeaderStyle-Width="1%">
+                    <asp:TemplateField Visible="False" HeaderText="Add_Remove_Claims" HeaderStyle-HorizontalAlign="Center" HeaderStyle-Width="1%">
                         <ItemTemplate>
-                            <asp:ImageButton ID="btnAddClaims" runat="server" CausesValidation="False" CommandName="SelectAction"
-                                ImageUrl="~/Navigation/images/icons/edit2.gif" CommandArgument="<%#Container.DisplayIndex %>" />
+                            <asp:ImageButton ID="btnAddClaims" runat="server" CausesValidation="False" CommandName="SelectAction" ImageUrl="~/Navigation/images/icons/edit2.gif" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderStyle-HorizontalAlign="Center" HeaderStyle-Width="1%">
                         <ItemTemplate>
-                            <asp:ImageButton ID="btnEditClaims" Style="cursor: hand" runat="server" CommandName="EditClaimsAction"
-                                ImageUrl="../Navigation/images/edit.png"></asp:ImageButton>
+                            <asp:ImageButton ID="btnEditClaims" Style="cursor: hand" runat="server" CommandName="EditClaimsAction" ImageUrl="../Navigation/images/edit.png"></asp:ImageButton>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderStyle-HorizontalAlign="Center" HeaderStyle-Width="1%">
                         <ItemTemplate>
-                            <asp:ImageButton ID="btnDeleteClaims" Style="cursor: hand" runat="server" CommandName="DeleteInvoiceAction"
-                                ImageUrl="../Navigation/images/icon_delete.png"></asp:ImageButton>
+                            <asp:ImageButton ID="btnDeleteClaims" Style="cursor: hand" runat="server" CommandName="DeleteInvoiceAction" ImageUrl="../Navigation/images/icon_delete.png"></asp:ImageButton>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField SortExpression="svc_control_number" HeaderText="Invoice_Number"></asp:BoundField>
@@ -280,14 +267,10 @@
                     <asp:BoundField SortExpression="Invoice_Date" HeaderText="Invoice_Date"></asp:BoundField>
                     <asp:BoundField SortExpression="Invoice_Amount" HeaderText="Invoice_Amount"></asp:BoundField>
                     <asp:BoundField SortExpression="Invoice_Status" HeaderText="Invoice_Status"></asp:BoundField>
-                    <asp:TemplateField ItemStyle-VerticalAlign="Middle" HeaderStyle-CssClass="NormalCell"
-                        HeaderStyle-Wrap="false" ItemStyle-HorizontalAlign="Center" HeaderText="Invoice_Comments"
-                        ItemStyle-Width="10px">
+                    <asp:TemplateField ItemStyle-VerticalAlign="Middle" HeaderStyle-CssClass="NormalCell" HeaderStyle-Wrap="false" ItemStyle-HorizontalAlign="Center" HeaderText="Invoice_Comments" ItemStyle-Width="10px">
                         <ItemTemplate>
-                            <asp:Image ID="Image1" runat="server" ImageUrl="../Navigation/images/edit.png" />
-                            <asp:PopupControlExtender ID="PopupControlExtender1" runat="server" PopupControlID="Panel1"
-                                TargetControlID="Image1" DynamicContextKey='<%# New Guid(CType(Eval("invoice_trans_id"), Byte())).ToString()%>'
-                                DynamicControlID="Panel1" DynamicServiceMethod="GetInvoiceComments" Position="Bottom">
+                            <asp:Image ID="Image1" runat="server" ImageUrl="../Navigation/images/edit.png"></asp:Image>
+                            <asp:PopupControlExtender ID="PopupControlExtender1" runat="server" PopupControlID="Panel1" TargetControlID="Image1" DynamicContextKey='<%# New Guid(CType(Eval("invoice_trans_id"), Byte())).ToString()%>' DynamicControlID="Panel1" DynamicServiceMethod="GetInvoiceComments" Position="Bottom">
                             </asp:PopupControlExtender>
                         </ItemTemplate>
                     </asp:TemplateField>
@@ -296,22 +279,22 @@
                     <asp:BoundField Visible="False" HeaderText="svc_control_amount"></asp:BoundField>
                     <asp:BoundField HeaderText="BONUS_PAID"></asp:BoundField>
                 </Columns>
-                <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                <PagerStyle />
+                <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                <PagerStyle></PagerStyle>
             </asp:GridView>
 
 
             <div class="dataContainer" id="InvoiceTabs" visible="false" runat="server" style="width: 100%;">
-                <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
+                <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
                 <div id="tabs" class="style-tabs">
                     <ul>
                         <li>
-                            <a href="#tabsSearchInvoice">
+                            <a href="#tabsSearchInvoice" rel="noopener noreferrer">
                                 <asp:Label ID="lblsearchInvoice" runat="server" CssClass="tabHeaderText">Claim Details</asp:Label>
                             </a>
                         </li>
                         <li>
-                            <a href="#tabsIIBBtaxes">
+                            <a href="#tabsIIBBtaxes" rel="noopener noreferrer">
                                 <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">REGION_TAXES</asp:Label>
                             </a>
                         </li>
@@ -344,12 +327,11 @@
                             </table>
                         </div>
                         <div>
-                            <asp:GridView ID="GridClaims" runat="server" Width="100%" AllowPaging="True" AllowSorting="False"
-                                CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
-                                <SelectedRowStyle Wrap="True" />
-                                <EditRowStyle Wrap="True" />
-                                <AlternatingRowStyle Wrap="True" />
-                                <RowStyle Wrap="True" />
+                            <asp:GridView ID="GridClaims" runat="server" Width="100%" AllowPaging="True" AllowSorting="False" CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
+                                <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                                <EditRowStyle Wrap="True"></EditRowStyle>
+                                <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                <RowStyle Wrap="True"></RowStyle>
                                 <Columns>
                                     <asp:BoundField Visible="false" HeaderText="invoice_trans_id"></asp:BoundField>
                                     <asp:TemplateField>
@@ -365,7 +347,7 @@
                                             <asp:CheckBox ID="chkExcludeDeductible" runat="server" Checked="False"></asp:CheckBox>
                                         </ItemTemplate>
                                         <HeaderTemplate>
-                                            <asp:CheckBox ID="chkExcludeDedAll" runat="server" />
+                                            <asp:CheckBox ID="chkExcludeDedAll" runat="server"></asp:CheckBox>
                                         </HeaderTemplate>
                                     </asp:TemplateField>
                                     <asp:BoundField Visible="False" HeaderText="claim_id"></asp:BoundField>
@@ -386,14 +368,13 @@
                                     <asp:BoundField Visible="False" HeaderText="exclude_deductible"></asp:BoundField>
                                     <asp:BoundField SortExpression="claim_extended_status" HeaderText="claim_extended_status"></asp:BoundField>
                                 </Columns>
-                                <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                                <PagerStyle />
+                                <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                                <PagerStyle></PagerStyle>
                             </asp:GridView>
                         </div>
                     </div>
                     <div id="tabsIIBBtaxes">
-                        <Elita:UserControlInvoiceRegionTaxes runat="server" ID="IIBBTaxes"
-                            RequestIIBBTaxesData="IIBBTaxes_RequestIIBBTaxes">
+                        <Elita:UserControlInvoiceRegionTaxes runat="server" ID="IIBBTaxes" RequestIIBBTaxesData="IIBBTaxes_RequestIIBBTaxes">
                         </Elita:UserControlInvoiceRegionTaxes>
                     </div>
                 </div>
@@ -404,12 +385,16 @@
         <asp:Panel ID="Panel1" runat="server">
         </asp:Panel>
         <div class="btnZone">
-            <asp:Button ID="btnCancelSearch_WRITE" runat="server" SkinID="AlternateLeftButton"
-                Text="Back" Visible="false"></asp:Button>
+            <asp:Button ID="btnCancelSearch_WRITE" runat="server" SkinID="AlternateLeftButton" Text="Back" Visible="false"></asp:Button>
             <asp:Button ID="btnNew" runat="server" SkinID="AlternateLeftButton" Text="NEW"></asp:Button>
-            <asp:Button ID="btnCancelEdit_WRITE" runat="server" SkinID="AlternateLeftButton"
-                Text="Back" Visible="false"></asp:Button>
-            <asp:Button ID="btnSave_WRITE" runat="server" SkinID="AlternateLeftButton" Text="SAVE"
+            <asp:Button ID="btnCancelEdit_WRITE" runat="server" SkinID="AlternateLeftButton" Text="Back" Visible="false"></asp:Button>
+            <asp:Button ID="btnSave_WRITE" runat="server" SkinID="AlternateLeftButton" Text="SAVE" Visible="false"></asp:Button>
+            <asp:Button ID="btnNEXT_WRITE" runat="server" SkinID="AlternateLeftButton" Text="NEXT" Visible="false"></asp:Button>
+        </div>
+    </div>
+
+</asp:Content>
+_WRITE" runat="server" SkinID="AlternateLeftButton" Text="SAVE"
                 Visible="false"></asp:Button>
             <asp:Button ID="btnNEXT_WRITE" runat="server" SkinID="AlternateLeftButton" Text="NEXT"
                 Visible="false"></asp:Button>

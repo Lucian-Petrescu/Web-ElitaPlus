@@ -21,8 +21,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyPlaceHolder" runat="server"> 
     <table id="tblOuter2" style="border-right: black 1px solid; border-top: black 1px solid;
-        margin: 5px; border-left: black 1px solid; border-bottom: black 1px solid" height="93%"
-        cellspacing="0" cellpadding="0" rules="none" width="98%" bgcolor="#d5d6e4" border="0">
+        margin: 5px; border-left: black 1px solid; border-bottom: black 1px solid" height="93%" cellspacing="0" cellpadding="0" rules="none" width="98%" bgcolor="#d5d6e4" border="0">
         <!--d5d6e4-->
         <tr>
             <td>
@@ -33,35 +32,30 @@
             <td valign="top" align="center">
                 <asp:Panel ID="WorkingPanel" runat="server" Height="98%" Width="100%">
                     <table id="tblMain1" style="border-right: #999999 1px solid; border-top: #999999 1px solid;
-                        border-left: #999999 1px solid; border-bottom: #999999 1px solid; height: 95%"
-                        cellspacing="0" cellpadding="6" rules="cols" width="95%" align="center" bgcolor="#fef9ea"
-                        border="0">                      
+                        border-left: #999999 1px solid; border-bottom: #999999 1px solid; height: 95%" cellspacing="0" cellpadding="6" rules="cols" width="95%" align="center" bgcolor="#fef9ea" border="0">                      
                         <tr>
                             <td valign="top">
                                 <asp:Panel ID="EditPanel" runat="server" Width="100%">
-                                    <table id="Table4" style="width: 100%" cellspacing="1" cellpadding="0" width="710"
-                                        border="0">
+                                    <table id="Table4" style="width: 100%" cellspacing="1" cellpadding="0" width="710" border="0">
                                         <tr>
                                             <td>
                                                 <asp:Panel ID="PanelMasterFields_Write" runat="server" Width="100%">
                                                     <table cellspacing="0" cellpadding="0" width="100%" border="0">
                                                         <tr>
-                                                            <td nowrap align="right" colspan="1">
+                                                            <td nowrap="" align="right" colspan="1">
                                                                 &nbsp;
                                                                 <asp:Label ID="moManufacturerLabel" runat="server" Font-Bold="false">Manufacturer</asp:Label>&nbsp;
                                                             </td>
                                                             <td colspan="1" rowspan="1" align="left">
-                                                                <asp:DropDownList ID="moManufacturerDrop" TabIndex="1" runat="server" Width="210px"
-                                                                    AutoPostBack="true">
+                                                                <asp:DropDownList ID="moManufacturerDrop" TabIndex="1" runat="server" Width="210px" AutoPostBack="true">
                                                                 </asp:DropDownList>
                                                             </td>
-                                                            <td nowrap align="right" colspan="1">
+                                                            <td nowrap="" align="right" colspan="1">
                                                                 &nbsp;
                                                                 <asp:Label ID="moIsMasterModelLabel" runat="server" Font-Bold="false">IS_MASTER</asp:Label>&nbsp;
                                                             </td>
                                                             <td colspan="1" rowspan="1" align="left">
-                                                                <asp:DropDownList ID="moIsMasterModelDrop" TabIndex="2" runat="server" Width="60px"
-                                                                    AutoPostBack="true">
+                                                                <asp:DropDownList ID="moIsMasterModelDrop" TabIndex="2" runat="server" Width="60px" AutoPostBack="true">
                                                                 </asp:DropDownList>
                                                             </td>
                                                         </tr>
@@ -105,8 +99,7 @@
                                                                 <asp:Label ID="moManufacturerWarrentyLabel" runat="server" Font-Bold="false">MFG_WARRANTY</asp:Label>&nbsp;
                                                             </td>
                                                             <td colspan="1" align="left">
-                                                                <asp:TextBox ID="moManufacturerWarrentyText" TabIndex="6" Width="210px" runat="server"
-                                                                    CssClass="FLATTEXTBOX"></asp:TextBox>
+                                                                <asp:TextBox ID="moManufacturerWarrentyText" TabIndex="6" Width="210px" runat="server" CssClass="FLATTEXTBOX"></asp:TextBox>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -115,7 +108,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td nowrap align="right" colspan="1">
+                                                            <td nowrap="" align="right" colspan="1">
                                                                 &nbsp;
                                                                 <asp:Label ID="moEquipmentClassLabel" runat="server" Font-Bold="false">EQUIPMENT_CLASS</asp:Label>&nbsp;
                                                             </td>
@@ -138,7 +131,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td nowrap align="right" colspan="1">
+                                                            <td nowrap="" align="right" colspan="1">
                                                                 &nbsp;
                                                                 <asp:Label ID="moRepairableLabel" runat="server" Font-Bold="false">REPAIRABLE</asp:Label>&nbsp;
                                                             </td>
@@ -191,31 +184,28 @@
                                         </tr>
                                         <tr>
                                             <td valign="middle" align="center">
-                                                <hr />
+                                                <hr>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td valign="middle" align="left" colspan="4">
-                                                <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
-                                                 <asp:HiddenField ID="hdnDisabledTabs" runat="server" Value="2" />
+                                                <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0"></asp:HiddenField>
+                                                 <asp:HiddenField ID="hdnDisabledTabs" runat="server" Value="2"></asp:HiddenField>
                                                     <div id="tabs" class="style-tabs-old" style="border:none;">
                                                        <%-- <div id="tabs" class="style-tabs-old style-tabs-oldBG" style="border:none;background:#fef9ea">--%>
                                                         <ul>
-                                                            <li style="background:#d5d6e4"><a href="#tabNotes"><asp:Label ID="Label1" runat="server" CssClass="tabHeaderTextOld">Notes</asp:Label></a></li>                                                                
-                                                            <li style="background:#d5d6e4"><a href="#tabAttributes"><asp:Label ID="Label17" runat="server" CssClass="tabHeaderTextOld">Attributes</asp:Label></a></li>                                                                
-                                                            <li style="background:#d5d6e4"><a href="#tabImages"><asp:Label ID="Label18" runat="server" CssClass="tabHeaderTextOld">Images</asp:Label></a></li>                                                                
-                                                            <li style="background:#d5d6e4"><a href="#tabRelatedEquipment"><asp:Label ID="Label19" runat="server" CssClass="tabHeaderTextOld">RELATED_EQUIPMENT</asp:Label></a></li>                                                                
+                                                            <li style="background:#d5d6e4"><a href="#tabNotes" rel="noopener noreferrer"><asp:Label ID="Label1" runat="server" CssClass="tabHeaderTextOld">Notes</asp:Label></a></li>                                                                
+                                                            <li style="background:#d5d6e4"><a href="#tabAttributes" rel="noopener noreferrer"><asp:Label ID="Label17" runat="server" CssClass="tabHeaderTextOld">Attributes</asp:Label></a></li>                                                                
+                                                            <li style="background:#d5d6e4"><a href="#tabImages" rel="noopener noreferrer"><asp:Label ID="Label18" runat="server" CssClass="tabHeaderTextOld">Images</asp:Label></a></li>                                                                
+                                                            <li style="background:#d5d6e4"><a href="#tabRelatedEquipment" rel="noopener noreferrer"><asp:Label ID="Label19" runat="server" CssClass="tabHeaderTextOld">RELATED_EQUIPMENT</asp:Label></a></li>                                                                
                                                         </ul>
                                                     <div id="tabNotes" style="background:#d5d6e4;border:1px solid; border-color:black;">
                                                             <!-- Tab begin -->
                                                             <div id="commentScroller" style="overflow: auto; width: 99.53%; height: 200px" align="center">
-                                                                <table id="tblCommentDetail" style="width: 100%; height: 100%" cellspacing="2" cellpadding="2"
-                                                                    rules="cols" border="0">
+                                                                <table id="tblCommentDetail" style="width: 100%; height: 100%" cellspacing="2" cellpadding="2" rules="cols" border="0">
                                                                     <tr>
                                                                         <td valign="top" align="left">
-                                                                            <asp:DataGrid ID="DataGridCommentDetail" runat="server" Width="100%" AutoGenerateColumns="False"
-                                                                                BorderStyle="Solid" BorderWidth="1px" BackColor="#DEE3E7" BorderColor="#999999"
-                                                                                CellPadding="1" AllowPaging="True" AllowSorting="True">
+                                                                            <asp:DataGrid ID="DataGridCommentDetail" runat="server" Width="100%" AutoGenerateColumns="False" BorderStyle="Solid" BorderWidth="1px" BackColor="#DEE3E7" BorderColor="#999999" CellPadding="1" AllowPaging="True" AllowSorting="True">
                                                                                 <SelectedItemStyle Wrap="False" BackColor="LavenderBlush"></SelectedItemStyle>
                                                                                 <EditItemStyle Wrap="False" BackColor="AliceBlue"></EditItemStyle>
                                                                                 <AlternatingItemStyle Wrap="False" BackColor="#F1F1F1"></AlternatingItemStyle>
@@ -226,8 +216,7 @@
                                                                                         <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                                                                         <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                                                                         <ItemTemplate>
-                                                                                            <asp:ImageButton ID="EditButton" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/icons/edit2.gif"
-                                                                                                CommandName="ViewRecord"></asp:ImageButton>
+                                                                                            <asp:ImageButton ID="EditButton" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/icons/edit2.gif" CommandName="ViewRecord"></asp:ImageButton>
                                                                                         </ItemTemplate>
                                                                                     </asp:TemplateColumn>
                                                                                     <asp:BoundColumn HeaderText="Notes">
@@ -235,16 +224,14 @@
                                                                                     </asp:BoundColumn>
                                                                                     <asp:BoundColumn Visible="False"></asp:BoundColumn>
                                                                                 </Columns>
-                                                                                <PagerStyle HorizontalAlign="Center" ForeColor="DarkSlateBlue" BackColor="#DEE3E7"
-                                                                                    PageButtonCount="15" Mode="NumericPages"></PagerStyle>
+                                                                                <PagerStyle HorizontalAlign="Center" ForeColor="DarkSlateBlue" BackColor="#DEE3E7" PageButtonCount="15" Mode="NumericPages"></PagerStyle>
                                                                             </asp:DataGrid>
                                                                         </td>
                                                                     </tr>
                                                                     <tr valign="bottom">
                                                                         <td align="left">
                                                                             <asp:Button ID="btnAddNewCommentFromGrid_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif);
-                                                                                cursor: hand; background-repeat: no-repeat" runat="server" Font-Bold="false"
-                                                                                Width="90px" CssClass="FLATBUTTON" Height="20px" Text="New"></asp:Button>
+                                                                                cursor: hand; background-repeat: no-repeat" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="New"></asp:Button>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
@@ -256,12 +243,11 @@
                                                                                             <asp:Panel ID="PanelEditDetail_Write" runat="server" Width="100%" Height="100%">
                                                                                                 <table cellspacing="0" cellpadding="0" border="0" width="100%">
                                                                                                     <tr>
-                                                                                                        <td width="30%" nowrap style="text-align: right; vertical-align: top">
+                                                                                                        <td width="30%" nowrap="" style="text-align: right; vertical-align: top">
                                                                                                             <asp:Label ID="moCommentLabel" runat="server" Font-Bold="false">Notes</asp:Label>:
                                                                                                         </td>
                                                                                                         <td width="70%">
-                                                                                                            <asp:TextBox ID="moCommentTextBox" runat="server" TextMode="MultiLine" Height="60"
-                                                                                                                Width="50%" />
+                                                                                                            <asp:TextBox ID="moCommentTextBox" runat="server" TextMode="MultiLine" Height="60" Width="50%"></asp:TextBox>
                                                                                                         </td>
                                                                                                     </tr>
                                                                                                     <tr>
@@ -283,17 +269,13 @@
                                                                                                 <tr>
                                                                                                     <td>
                                                                                                         <asp:Button ID="btnCommentBackChild" Style="background-image: url(../Navigation/images/icons/back_icon.gif);
-                                                                                                            cursor: hand; background-repeat: no-repeat" TabIndex="140" runat="server" Font-Bold="false"
-                                                                                                            Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Back"></asp:Button>&nbsp;
+                                                                                                            cursor: hand; background-repeat: no-repeat" TabIndex="140" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Back"></asp:Button>&nbsp;
                                                                                                         <asp:Button ID="btnCommentOkChild_Write" Style="background-image: url(../Navigation/images/icons/save_icon.gif);
-                                                                                                            cursor: hand; background-repeat: no-repeat" TabIndex="145" runat="server" Font-Bold="false"
-                                                                                                            Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Save"></asp:Button>&nbsp;&nbsp;
+                                                                                                            cursor: hand; background-repeat: no-repeat" TabIndex="145" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Save"></asp:Button>&nbsp;&nbsp;
                                                                                                         <asp:Button ID="btnCommentCancelChild" Style="background-image: url(../Navigation/images/icons/cancel_icon.gif);
-                                                                                                            cursor: hand; background-repeat: no-repeat" TabIndex="150" runat="server" Font-Bold="false"
-                                                                                                            Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Undo"></asp:Button>
+                                                                                                            cursor: hand; background-repeat: no-repeat" TabIndex="150" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Undo"></asp:Button>
                                                                                                         <asp:Button ID="btnCommentDeleteChild_Write" Style="background-image: url(../Navigation/images/icons/clear_icon.gif);
-                                                                                                            cursor: hand; background-repeat: no-repeat" TabIndex="165" runat="server" Font-Bold="false"
-                                                                                                            Width="100px" CssClass="FLATBUTTON" Text="Delete" Height="20px"></asp:Button>
+                                                                                                            cursor: hand; background-repeat: no-repeat" TabIndex="165" runat="server" Font-Bold="false" Width="100px" CssClass="FLATBUTTON" Text="Delete" Height="20px"></asp:Button>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             </table>
@@ -309,19 +291,16 @@
                                                     </div>
                                                     <div id="tabAttributes" style="background:#d5d6e4;border:1px solid; border-color:black;">
                                                         <!-- Tab begin -->
-                                                        <Elita:UserControlAttrtibutes runat="server" ID="AttributeValues" />
+                                                        <Elita:UserControlAttrtibutes runat="server" ID="AttributeValues"></Elita:UserControlAttrtibutes>
                                                         <!-- Tab end -->
                                                     </div>
                                                     <div id="tabImages" style="background:#d5d6e4;border:1px solid; border-color:black;">
                                                         <!-- Tab begin -->
                                                         <div id="imageScroller" style="overflow: auto; width: 99.53%; height: 200px" align="center">
-                                                            <table id="tblImageDetail" style="width: 100%; height: 100%" cellspacing="2" cellpadding="2"
-                                                                rules="cols" border="0">
+                                                            <table id="tblImageDetail" style="width: 100%; height: 100%" cellspacing="2" cellpadding="2" rules="cols" border="0">
                                                                 <tr>
                                                                     <td valign="top" align="left">
-                                                                        <asp:DataGrid ID="DataGridImageDetail" runat="server" Width="100%" AutoGenerateColumns="False"
-                                                                            BorderStyle="Solid" BorderWidth="1px" BackColor="#DEE3E7" BorderColor="#999999"
-                                                                            CellPadding="1" AllowPaging="True" AllowSorting="True">
+                                                                        <asp:DataGrid ID="DataGridImageDetail" runat="server" Width="100%" AutoGenerateColumns="False" BorderStyle="Solid" BorderWidth="1px" BackColor="#DEE3E7" BorderColor="#999999" CellPadding="1" AllowPaging="True" AllowSorting="True">
                                                                             <SelectedItemStyle Wrap="False" BackColor="LavenderBlush"></SelectedItemStyle>
                                                                             <EditItemStyle Wrap="False" BackColor="AliceBlue"></EditItemStyle>
                                                                             <AlternatingItemStyle Wrap="False" BackColor="#F1F1F1"></AlternatingItemStyle>
@@ -332,8 +311,7 @@
                                                                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                                                                     <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                                                                     <ItemTemplate>
-                                                                                        <asp:ImageButton ID="EditButton" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/icons/edit2.gif"
-                                                                                            CommandName="ViewRecord"></asp:ImageButton>
+                                                                                        <asp:ImageButton ID="EditButton" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/icons/edit2.gif" CommandName="ViewRecord"></asp:ImageButton>
                                                                                     </ItemTemplate>
                                                                                 </asp:TemplateColumn>
                                                                                 <asp:BoundColumn HeaderText="Code">
@@ -350,16 +328,14 @@
                                                                                 </asp:BoundColumn>
                                                                                 <asp:BoundColumn Visible="False"></asp:BoundColumn>
                                                                             </Columns>
-                                                                            <PagerStyle HorizontalAlign="Center" ForeColor="DarkSlateBlue" BackColor="#DEE3E7"
-                                                                                PageButtonCount="15" Mode="NumericPages"></PagerStyle>
+                                                                            <PagerStyle HorizontalAlign="Center" ForeColor="DarkSlateBlue" BackColor="#DEE3E7" PageButtonCount="15" Mode="NumericPages"></PagerStyle>
                                                                         </asp:DataGrid>
                                                                     </td>
                                                                 </tr>
                                                                 <tr valign="bottom">
                                                                     <td align="left">
                                                                         <asp:Button ID="btnAddNewImageFromGrid_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif);
-                                                                            cursor: hand; background-repeat: no-repeat" runat="server" Font-Bold="false"
-                                                                            Width="90px" CssClass="FLATBUTTON" Height="20px" Text="New"></asp:Button>
+                                                                            cursor: hand; background-repeat: no-repeat" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="New"></asp:Button>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -371,7 +347,7 @@
                                                                                         <asp:Panel ID="Panel2" runat="server" Width="100%" Height="100%">
                                                                                             <table cellspacing="0" cellpadding="0" border="0" width="100%">
                                                                                                 <tr>
-                                                                                                    <td width="1%" nowrap style="text-align: right">
+                                                                                                    <td width="1%" nowrap="" style="text-align: right">
                                                                                                         <asp:Label ID="Label2" runat="server" Font-Bold="false">Risk_Type</asp:Label>:
                                                                                                     </td>
                                                                                                     <td width="50%">
@@ -388,15 +364,15 @@
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
-                                                                                                    <td nowrap style="text-align: right">
+                                                                                                    <td nowrap="" style="text-align: right">
                                                                                                         <asp:Label ID="Label3" runat="server" Font-Bold="false">Effective_Date</asp:Label>:
                                                                                                     </td>
-                                                                                                    <td nowrap width="50%">
+                                                                                                    <td nowrap="" width="50%">
                                                                                                         <asp:TextBox ID="Textbox1" TabIndex="10" runat="server" CssClass="FLATTEXTBOX" Width="80%"></asp:TextBox>
                                                                                                         <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg">
                                                                                                         </asp:ImageButton>
                                                                                                     </td>
-                                                                                                    <td nowrap style="text-align: right">
+                                                                                                    <td nowrap="" style="text-align: right">
                                                                                                         <asp:Label ID="Label4" runat="server" Font-Bold="false">SELECT_TAX_TYPE</asp:Label>:
                                                                                                     </td>
                                                                                                     <td width="49%">
@@ -410,13 +386,13 @@
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
-                                                                                                    <td nowrap style="text-align: right">
+                                                                                                    <td nowrap="" style="text-align: right">
                                                                                                         <asp:Label ID="Label5" runat="server" Font-Bold="false">Low_Price</asp:Label>:
                                                                                                     </td>
-                                                                                                    <td nowrap>
+                                                                                                    <td nowrap="">
                                                                                                         <asp:TextBox ID="Textbox2" TabIndex="10" runat="server" CssClass="FLATTEXTBOX" Width="80%"></asp:TextBox>
                                                                                                     </td>
-                                                                                                    <td nowrap style="text-align: right">
+                                                                                                    <td nowrap="" style="text-align: right">
                                                                                                         <asp:Label ID="Label6" runat="server" Font-Bold="false">High_Price</asp:Label>:
                                                                                                     </td>
                                                                                                     <td>
@@ -429,13 +405,13 @@
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
-                                                                                                    <td nowrap style="text-align: right">
+                                                                                                    <td nowrap="" style="text-align: right">
                                                                                                         <asp:Label ID="Label7" runat="server" Font-Bold="false">Home_Price</asp:Label>:
                                                                                                     </td>
-                                                                                                    <td nowrap>
+                                                                                                    <td nowrap="">
                                                                                                         <asp:TextBox ID="Textbox4" TabIndex="10" runat="server" CssClass="FLATTEXTBOX" Width="80%"></asp:TextBox>
                                                                                                     </td>
-                                                                                                    <td nowrap style="text-align: right">
+                                                                                                    <td nowrap="" style="text-align: right">
                                                                                                         <asp:Label ID="Label8" runat="server" Font-Bold="false">Carry_In_Price</asp:Label>:
                                                                                                     </td>
                                                                                                     <td>
@@ -448,13 +424,13 @@
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
-                                                                                                    <td nowrap style="text-align: right">
+                                                                                                    <td nowrap="" style="text-align: right">
                                                                                                         <asp:Label ID="Label10" runat="server" Font-Bold="false">Send_In_Price</asp:Label>:
                                                                                                     </td>
-                                                                                                    <td nowrap>
+                                                                                                    <td nowrap="">
                                                                                                         <asp:TextBox ID="Textbox6" TabIndex="10" runat="server" CssClass="FLATTEXTBOX" Width="80%"></asp:TextBox>
                                                                                                     </td>
-                                                                                                    <td nowrap style="text-align: right">
+                                                                                                    <td nowrap="" style="text-align: right">
                                                                                                         <asp:Label ID="Label11" runat="server" Font-Bold="false">Pick_Up_Price</asp:Label>:
                                                                                                     </td>
                                                                                                     <td>
@@ -467,13 +443,13 @@
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
-                                                                                                    <td nowrap style="text-align: right">
+                                                                                                    <td nowrap="" style="text-align: right">
                                                                                                         <asp:Label ID="Label12" runat="server" Font-Bold="false">Cleaning_Price</asp:Label>:
                                                                                                     </td>
-                                                                                                    <td nowrap>
+                                                                                                    <td nowrap="">
                                                                                                         <asp:TextBox ID="Textbox8" TabIndex="10" runat="server" CssClass="FLATTEXTBOX" Width="80%"></asp:TextBox>
                                                                                                     </td>
-                                                                                                    <td nowrap style="text-align: right">
+                                                                                                    <td nowrap="" style="text-align: right">
                                                                                                         <asp:Label ID="Label13" runat="server" Font-Bold="false">Estimate_Price</asp:Label>:
                                                                                                     </td>
                                                                                                     <td>
@@ -486,13 +462,13 @@
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
-                                                                                                    <td nowrap style="text-align: right">
+                                                                                                    <td nowrap="" style="text-align: right">
                                                                                                         <asp:Label ID="Label14" runat="server" Font-Bold="false">Replacement_Price</asp:Label>:
                                                                                                     </td>
-                                                                                                    <td nowrap>
+                                                                                                    <td nowrap="">
                                                                                                         <asp:TextBox ID="TextBox10" TabIndex="10" runat="server" CssClass="FLATTEXTBOX" Width="80%"></asp:TextBox>
                                                                                                     </td>
-                                                                                                    <td nowrap style="text-align: right">
+                                                                                                    <td nowrap="" style="text-align: right">
                                                                                                         <asp:Label ID="Label15" runat="server" Font-Bold="false">Hourly_Rate</asp:Label>:
                                                                                                     </td>
                                                                                                     <td>
@@ -505,13 +481,13 @@
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>
-                                                                                                    <td nowrap style="text-align: right">
+                                                                                                    <td nowrap="" style="text-align: right">
                                                                                                         <asp:Label ID="Label16" runat="server" Font-Bold="false">Discounted_Price</asp:Label>:
                                                                                                     </td>
-                                                                                                    <td nowrap>
+                                                                                                    <td nowrap="">
                                                                                                         <asp:TextBox ID="Textbox12" TabIndex="11" runat="server" CssClass="FLATTEXTBOX" Width="80%"></asp:TextBox>
                                                                                                     </td>
-                                                                                                    <td nowrap style="text-align: right">
+                                                                                                    <td nowrap="" style="text-align: right">
                                                                                                     </td>
                                                                                                     <td>
                                                                                                     </td>
@@ -535,17 +511,13 @@
                                                                                             <tr>
                                                                                                 <td>
                                                                                                     <asp:Button ID="Button4" Style="background-image: url(../Navigation/images/icons/back_icon.gif);
-                                                                                                        cursor: hand; background-repeat: no-repeat" TabIndex="140" runat="server" Font-Bold="false"
-                                                                                                        Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Back"></asp:Button>&nbsp;
+                                                                                                        cursor: hand; background-repeat: no-repeat" TabIndex="140" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Back"></asp:Button>&nbsp;
                                                                                                     <asp:Button ID="Button5" Style="background-image: url(../Navigation/images/icons/save_icon.gif);
-                                                                                                        cursor: hand; background-repeat: no-repeat" TabIndex="145" runat="server" Font-Bold="false"
-                                                                                                        Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Save"></asp:Button>&nbsp;&nbsp;
+                                                                                                        cursor: hand; background-repeat: no-repeat" TabIndex="145" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Save"></asp:Button>&nbsp;&nbsp;
                                                                                                     <asp:Button ID="Button6" Style="background-image: url(../Navigation/images/icons/cancel_icon.gif);
-                                                                                                        cursor: hand; background-repeat: no-repeat" TabIndex="150" runat="server" Font-Bold="false"
-                                                                                                        Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Undo"></asp:Button>
+                                                                                                        cursor: hand; background-repeat: no-repeat" TabIndex="150" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Undo"></asp:Button>
                                                                                                     <asp:Button ID="Button9" Style="background-image: url(../Navigation/images/icons/clear_icon.gif);
-                                                                                                        cursor: hand; background-repeat: no-repeat" TabIndex="165" runat="server" Font-Bold="false"
-                                                                                                        Width="100px" CssClass="FLATBUTTON" Text="Delete" Height="20px"></asp:Button>
+                                                                                                        cursor: hand; background-repeat: no-repeat" TabIndex="165" runat="server" Font-Bold="false" Width="100px" CssClass="FLATBUTTON" Text="Delete" Height="20px"></asp:Button>
                                                                                                 </td>
                                                                                             </tr>
                                                                                         </table>
@@ -561,16 +533,11 @@
                                                     </div>
                                                     <div id="tabRelatedEquipment" style="background:#d5d6e4;border:1px solid; border-color:black;">
                                                         <!-- Tab begin -->
-                                                        <asp:Panel id="RelatedEquipmentScroller" style="overflow: auto; width: 99.53%; height: 255px"
-                                                            align="center" runat="server">
-                                                            <table id="tblRelatedEquipmentDetail" style="width: 100%; height: 100%" cellspacing="2"
-                                                                cellpadding="2" rules="cols" border="0">
+                                                        <asp:Panel id="RelatedEquipmentScroller" style="overflow: auto; width: 99.53%; height: 255px" align="center" runat="server">
+                                                            <table id="tblRelatedEquipmentDetail" style="width: 100%; height: 100%" cellspacing="2" cellpadding="2" rules="cols" border="0">
                                                                 <tr>
                                                                     <td valign="top" align="left">
-                                                                        <asp:GridView id="GVRelatedEquipmentDetail" runat="server" Width="100%" AutoGenerateColumns="False"
-                                                                            BorderStyle="Solid" BorderWidth="1px" PageSize="10" CellPadding="1" AllowPaging="True" AllowSorting="True" 
-                                                                            OnRowCommand="GVRelatedEquipmentDetail_RowCommand"
-                                                                            OnRowCreated="GVRelatedEquipmentDetail_ItemCreated" CssClass="DATAGRID">
+                                                                        <asp:GridView id="GVRelatedEquipmentDetail" runat="server" Width="100%" AutoGenerateColumns="False" BorderStyle="Solid" BorderWidth="1px" PageSize="10" CellPadding="1" AllowPaging="True" AllowSorting="True" OnRowCommand="GVRelatedEquipmentDetail_RowCommand" OnRowCreated="GVRelatedEquipmentDetail_ItemCreated" CssClass="DATAGRID">
                                                                             <SelectedRowStyle CssClass="SELECTED"></SelectedRowStyle>
                                                                             <EditRowStyle CssClass="EDITROW"></EditRowStyle>
                                                                             <AlternatingRowStyle Wrap="False" CssClass="ALTROW"></AlternatingRowStyle>
@@ -581,20 +548,18 @@
                                                                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                                                                     <ItemStyle HorizontalAlign="Center" Width="3%"></ItemStyle>
                                                                                     <ItemTemplate>
-                                                                                        <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/icons/edit2.gif"
-                                                                                            CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>" ></asp:ImageButton>
+                                                                                        <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/icons/edit2.gif" CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                                                                     </ItemTemplate>
                                                                                 </asp:TemplateField>
                                                                                 <asp:TemplateField HeaderText=" ">
                                                                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                                                                     <ItemStyle HorizontalAlign="Center" Width="3%"></ItemStyle>
                                                                                     <ItemTemplate>
-                                                                                        <asp:ImageButton ID="DeleteButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/icons/trash.gif"
-                                                                                            CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>" ></asp:ImageButton>
+                                                                                        <asp:ImageButton ID="DeleteButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/icons/trash.gif" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                                                                     </ItemTemplate>
                                                                                 </asp:TemplateField>
-                                                                                <asp:TemplateField HeaderText="" Visible ="false">
-                                                                                    <HeaderStyle HorizontalAlign="Center" ></HeaderStyle>
+                                                                                <asp:TemplateField HeaderText="" Visible="false">
+                                                                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                                                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                                                     <ItemTemplate>
                                                                                         <asp:Label ID="lblRelatedEquipmentId" runat="server" Text='<%#GetGuidStringFromByteArray(Container.DataItem("related_equipment_id")) %>'></asp:Label>
@@ -651,7 +616,7 @@
                                                                                     </EditItemTemplate>
                                                                                 </asp:TemplateField>
                                                                             </Columns>
-                                                                            <PagerSettings PageButtonCount="15" Mode="Numeric" />
+                                                                            <PagerSettings PageButtonCount="15" Mode="Numeric"></PagerSettings>
                                                                             <PagerStyle HorizontalAlign="Center" CssClass="PAGER"></PagerStyle>
                                                                         </asp:GridView>
                                                                     </td>
@@ -662,14 +627,11 @@
                                                                             <tr>
                                                                                 <td>
                                                                                     <asp:Button ID="btnRelatedEquipmentSelectChild_Write" Style="background-image: url(../Navigation/images/icons/edit2.gif);
-                                                                                        cursor: hand; background-repeat: no-repeat" TabIndex="145" runat="server" Font-Bold="false"
-                                                                                        Width="90px" CssClass="FLATBUTTON" Height="20px" Text="EDIT"></asp:Button>&nbsp;&nbsp;
+                                                                                        cursor: hand; background-repeat: no-repeat" TabIndex="145" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="EDIT"></asp:Button>&nbsp;&nbsp;
                                                                                     <asp:Button ID="btnRelatedEquipmentOkChild_Write" Style="background-image: url(../Navigation/images/icons/save_icon.gif);
-                                                                                        cursor: hand; background-repeat: no-repeat" TabIndex="145" runat="server" Font-Bold="false"
-                                                                                        Width="90px" CssClass="FLATBUTTON" Height="20px" Text="SAVE"></asp:Button>&nbsp;&nbsp;
+                                                                                        cursor: hand; background-repeat: no-repeat" TabIndex="145" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="SAVE"></asp:Button>&nbsp;&nbsp;
                                                                                     <asp:Button ID="btnRelatedEquipmentCancelChild_Write" Style="background-image: url(../Navigation/images/icons/cancel_icon.gif);
-                                                                                        cursor: hand; background-repeat: no-repeat" TabIndex="150" runat="server" Font-Bold="false"
-                                                                                        Width="90px" CssClass="FLATBUTTON" Height="20px" Text="UNDO"></asp:Button>
+                                                                                        cursor: hand; background-repeat: no-repeat" TabIndex="150" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="UNDO"></asp:Button>
                                                                                 </td>
                                                                             </tr>
                                                                         </table>
@@ -677,12 +639,11 @@
                                                                 </tr>
                                                         </table>
                                                         </asp:Panel>
-                                                        <asp:Panel id="divSearchAvailableSelected" style="overflow: auto; width: 99.53%; height: 255px"  align="center" runat="server">
-                                                              <table id="tblUserControl" style="width: 100%; height: 100%" cellspacing="2"
-                                                                cellpadding="2" rules="cols" border="0">
+                                                        <asp:Panel id="divSearchAvailableSelected" style="overflow: auto; width: 99.53%; height: 255px" align="center" runat="server">
+                                                              <table id="tblUserControl" style="width: 100%; height: 100%" cellspacing="2" cellpadding="2" rules="cols" border="0">
                                                                 <tr>
                                                                     <td>
-                                                                    <url:UserControlSearchAvailable  id="UserControlSearchAvailableEquipment" runat="server" >
+                                                                    <url:UserControlSearchAvailable id="UserControlSearchAvailableEquipment" runat="server">
                                                                     </url:UserControlSearchAvailable>
                                                                     </td>
                                                                 </tr>
@@ -695,6 +656,36 @@
                                     </table>
                                 </asp:Panel>
                             </td>
+                        </tr>
+                        <tr>
+                            <td align="left" colspan="4">
+                                <hr style="width: 100%; height: 1px" size="1">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="bottom" nowrap="" align="left" height="20">
+                                <asp:Button ID="btnBack" Style="background-image: url(../Navigation/images/icons/back_icon.gif);
+                                    cursor: hand; background-repeat: no-repeat" TabIndex="185" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Back"></asp:Button>&nbsp;
+                                <asp:Button ID="btnSave_WRITE" Style="background-image: url(../Navigation/images/icons/save_icon.gif);
+                                    cursor: hand; background-repeat: no-repeat" TabIndex="190" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Save"></asp:Button>&nbsp;
+                                <asp:Button ID="btnUndo_Write" Style="background-image: url(../Navigation/images/icons/cancel_icon.gif);
+                                    cursor: hand; background-repeat: no-repeat" TabIndex="195" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Undo"></asp:Button>&nbsp;
+                                <asp:Button ID="btnNew_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif);
+                                    cursor: hand; background-repeat: no-repeat" TabIndex="200" runat="server" Font-Bold="false" Width="81px" CssClass="FLATBUTTON" Height="20px" Text="New"></asp:Button>&nbsp;&nbsp;
+                                <asp:Button ID="btnCopy_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif);
+                                    cursor: hand; background-repeat: no-repeat" TabIndex="205" runat="server" Width="136px" Height="20px" CssClass="FLATBUTTON" Text="NEW_WITH_COPY" CausesValidation="False">
+                                </asp:Button>
+                                <asp:Button ID="btnDelete_WRITE" Style="background-image: url(../Navigation/images/icons/clear_icon.gif);
+                                    cursor: hand; background-repeat: no-repeat" TabIndex="210" runat="server" Font-Bold="false" Width="100px" CssClass="FLATBUTTON" Height="20px" Text="Delete"></asp:Button>
+                            </td>
+                        </tr>
+                    </table>
+                    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server" designtimedragdrop="261">
+                </asp:Panel>
+            </td>
+        </tr>
+    </table>
+</asp:Content>/td>
                         </tr>
                         <tr>
                             <td align="left" colspan="4">

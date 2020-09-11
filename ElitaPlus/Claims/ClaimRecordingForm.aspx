@@ -12,7 +12,7 @@
 <%@ Register TagPrefix="Elita" TagName="UserControlServiceCenterSelection" Src="../Common/UserControlServiceCenterSelection.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://*.core.windows.net/ 'unsafe-eval'; style-src 'self' https://*.core.windows.net/ 'unsafe-inline'; script-src 'self' https://*.core.windows.net/ 'unsafe-inline' 'unsafe-eval';  media-src *" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://*.core.windows.net/ 'unsafe-eval'; style-src 'self' https://*.core.windows.net/ 'unsafe-inline'; script-src 'self' https://*.core.windows.net/ 'unsafe-inline' 'unsafe-eval';  media-src *">
     <style type="text/css">
         .ModalBackground {
             background-color: Gray;
@@ -38,7 +38,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
-    <Elita:ProtectionAndEventDetails ID="moProtectionEvtDtl" runat="server" align="center" />
+    <Elita:ProtectionAndEventDetails ID="moProtectionEvtDtl" runat="server" align="center"></Elita:ProtectionAndEventDetails>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.6.1.min.js"></script>
@@ -85,22 +85,22 @@
     </script>
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
         <Scripts>
-            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js"></asp:ScriptReference>
         </Scripts>
     </asp:ScriptManager>
     <div id="ModalCancel" class="overlay">
         <div class="overlay_message_content">
             <p class="modalTitle">
                 <asp:Label ID="lblModalTitle" runat="server" Text="CONFIRM"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');">
-                    <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR" alt="" />
+                <a href="javascript:void(0)" onclick="hideModal('ModalCancel');" rel="noopener noreferrer">
+                    <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR" alt="">
                 </a>
             </p>
             <table class="formGrid" width="98%">
                 <tbody>
                     <tr>
                         <td>
-                            <img id="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png" height="28" />
+                            <img id="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png" height="28">
                         </td>
                         <td id="tdModalMessage" colspan="2" runat="server">
                             <asp:Label ID="lblCancelMessage" runat="server"></asp:Label>
@@ -111,8 +111,7 @@
                         </td>
                         <td id="tdBtnArea" runat="server" colspan="2">
                             <asp:Button ID="btnCancelYes" class="primaryBtn floatR" runat="server" Text="Yes"></asp:Button>
-                            <input id="btnModalCancelNo" class="popWindowAltbtn floatR" runat="server" type="button"
-                                value="No" onclick="hideModal('ModalCancel');" />
+                            <input id="btnModalCancelNo" class="popWindowAltbtn floatR" runat="server" type="button" value="No" onclick="hideModal('ModalCancel');">
                         </td>
                     </tr>
                 </tbody>
@@ -127,7 +126,7 @@
                 <table width="100%">
                     <tr>
                         <td width="100%">
-                            <hr style="height: 1px" />
+                            <hr style="height: 1px">
                         </td>
                     </tr>
                     <tr>
@@ -135,8 +134,7 @@
                             <table style="width: 100%; height: 100%" class="dataGrid">
                                 <tr id="trPurpose" runat="server">
                                     <td class="bor" align="left">
-                                        <asp:Label ID="lblPurpose" runat="server">Purpose_Type</asp:Label><asp:Label ID="Label4"
-                                            runat="server">:</asp:Label>
+                                        <asp:Label ID="lblPurpose" runat="server">Purpose_Type</asp:Label><asp:Label ID="Label4" runat="server">:</asp:Label>
                                         &nbsp;
                                 <asp:DropDownList ID="moPurposecode" runat="server" SkinID="MediumDropDown">
                                 </asp:DropDownList>
@@ -144,7 +142,7 @@
                                 </tr>
                                 <tr id="trCallers" runat="server">
                                     <td style="text-align: center">
-                                        <Elita:UserControlCallerInfo runat="server" ID="ucCallerInfo" />
+                                        <Elita:UserControlCallerInfo runat="server" ID="ucCallerInfo"></Elita:UserControlCallerInfo>
                                     </td>
                                 </tr>
                             </table>
@@ -159,34 +157,33 @@
                     <table style="width: 100%; height: 100%" class="dataGrid">
                         <tr>
                             <td style="text-align: center">
-                                <Elita:UserControlCallerInfo runat="server" ID="ucPrevCallerInfo" />
+                                <Elita:UserControlCallerInfo runat="server" ID="ucPrevCallerInfo"></Elita:UserControlCallerInfo>
                             </td>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="btnZone">
-                <asp:Button ID="btn_Caller_Cont" runat="server" ValidationGroup="CallerGroup" SkinID="PrimaryRightButton" Text="Continue" />
-                <asp:Button ID="btn_Caller_SaveExit" TabIndex="190" runat="server" Text="Save_Exit" SkinID="PrimaryRightButton" Visible="false" />
-                <asp:LinkButton ID="btn_Caller_Cancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
-                    OnClientClick="return revealModal('ModalCancel');" />
+                <asp:Button ID="btn_Caller_Cont" runat="server" ValidationGroup="CallerGroup" SkinID="PrimaryRightButton" Text="Continue"></asp:Button>
+                <asp:Button ID="btn_Caller_SaveExit" TabIndex="190" runat="server" Text="Save_Exit" SkinID="PrimaryRightButton" Visible="false"></asp:Button>
+                <asp:LinkButton ID="btn_Caller_Cancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel" OnClientClick="return revealModal('ModalCancel');"></asp:LinkButton>
             </div>
         </asp:View>
         <asp:View ID="vDevice" runat="server">
             <div class="dataContainer">
                 <h2 class="dataGridHeader" runat="server" id="Device_Selection">
-                    <asp:Label runat="server" ID="lblDevice" Text="DEVICE_INFO" /></h2>
+                    <asp:Label runat="server" ID="lblDevice" Text="DEVICE_INFO"></asp:Label></h2>
 
                 <div id="Device" style="width: 99.53%; height: 100%">
                     <table id="tblDeviceInfo" border="0" rules="cols" width="100%">
                         <tr>
                             <td align="center">
                                 <asp:GridView ID="GridItems" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false" SkinID="DetailPageGridView" AllowSorting="False" EnableModelValidation="True">
-                                    <SelectedRowStyle Wrap="True" />
-                                    <EditRowStyle Wrap="True" />
-                                    <AlternatingRowStyle Wrap="True" />
-                                    <RowStyle Wrap="True" />
-                                    <HeaderStyle />
+                                    <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                                    <EditRowStyle Wrap="True"></EditRowStyle>
+                                    <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                    <RowStyle Wrap="True"></RowStyle>
+                                    <HeaderStyle></HeaderStyle>
                                     <Columns>
                                         <asp:TemplateField ShowHeader="false" ItemStyle-Width="2%" ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Top">
                                             <ItemTemplate>
@@ -236,7 +233,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="False" HeaderText="RISK_TYPE" ItemStyle-Width="7%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
                                             <ItemTemplate>
-                                                <asp:HiddenField ID="HiddenRiskType" runat="server" Value='<%#Eval("RiskTypeCode") %>' />
+                                                <asp:HiddenField ID="HiddenRiskType" runat="server" Value='<%#Eval("RiskTypeCode") %>'></asp:HiddenField>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Color" ItemStyle-Width="7%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
@@ -255,19 +252,18 @@
                         </tr>
 
                     </table>
-                    <br />
+                    <br>
                     <table>
                         <tbody>
                             <tr style="background-color: #f2f2f2">
                                 <td>
-                                    <asp:Button ID="btnNewCertRegItem_WRITE" runat="server" SkinID="PrimaryRightButton"
-                                        Text="Register_New_Item" />
+                                    <asp:Button ID="btnNewCertRegItem_WRITE" runat="server" SkinID="PrimaryRightButton" Text="Register_New_Item"></asp:Button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <br />
-                    <div  runat="server" id="divDeviceInfoContainer">
+                    <br>
+                    <div runat="server" id="divDeviceInfoContainer">
                      <div class="dataContainer">
                          <h2 class="dataGridHeader" runat="server" id="headerDeviceInfo">
                             <asp:Label runat="server" ID="lblModifyDvcInfo" Text="MODIFY_DEVICE_INFORMATION"></asp:Label></h2>
@@ -283,12 +279,12 @@
                                                 <asp:Label ID="lblDvcSelected" runat="server" Font-Bold="true" Text="CLAIM_DEVICE_ENROLLED"></asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:Label ID="lblDvcCorrected" runat="server"  Font-Bold="true" Text="CLAIM_DEVICE_MODIFIED"></asp:Label>
+                                                <asp:Label ID="lblDvcCorrected" runat="server" Font-Bold="true" Text="CLAIM_DEVICE_MODIFIED"></asp:Label>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td align="right" width="20%">
-                                                <asp:Label ID="lblDvcMake"  runat="server">Make</asp:Label>:
+                                                <asp:Label ID="lblDvcMake" runat="server">Make</asp:Label>:
                                             </td>
                                             <td align="left">
                                                 <asp:Label ID="lblDvcMakeValue" runat="server"></asp:Label>
@@ -300,7 +296,7 @@
                                         </tr>
                                         <tr>
                                             <td align="right" width="20%">
-                                                <asp:Label ID="lblDvcModel"  runat="server">Model</asp:Label>:
+                                                <asp:Label ID="lblDvcModel" runat="server">Model</asp:Label>:
                                             </td>
                                             <td align="left">
                                                 <asp:Label ID="lblDvcModelValue" runat="server"></asp:Label>
@@ -366,21 +362,19 @@
                 </div>
             </div>
             <div class="btnZone">
-                <asp:Button ID="btn_Device_Cont" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
-                <asp:Button ID="btn_Device_SaveExit" TabIndex="190" runat="server" Text="Save_Exit" SkinID="PrimaryRightButton" Visible="True" />
-                <asp:LinkButton ID="btn_Device_Cancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
-                    OnClientClick="return revealModal('ModalCancel');" />
+                <asp:Button ID="btn_Device_Cont" runat="server" SkinID="PrimaryRightButton" Text="Continue"></asp:Button>
+                <asp:Button ID="btn_Device_SaveExit" TabIndex="190" runat="server" Text="Save_Exit" SkinID="PrimaryRightButton" Visible="True"></asp:Button>
+                <asp:LinkButton ID="btn_Device_Cancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel" OnClientClick="return revealModal('ModalCancel');"></asp:LinkButton>
             </div>
         </asp:View>
 
         <asp:View ID="vQuestion" runat="server">
             <div class="dataContainer">
-                <Elita:UserControlQuestion runat="server" ID="questionUserControl" />
+                <Elita:UserControlQuestion runat="server" ID="questionUserControl"></Elita:UserControlQuestion>
                 <div class="btnZone" runat="server">
-                    <asp:Button ID="btn_Quest_Cont" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
-                    <asp:Button ID="btn_Quest_SaveExit" TabIndex="190" runat="server" Text="Save_Exit" SkinID="PrimaryRightButton" Visible="true" />
-                    <asp:LinkButton ID="btn_Quest_Cancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
-                        OnClientClick="return revealModal('ModalCancel');" />
+                    <asp:Button ID="btn_Quest_Cont" runat="server" SkinID="PrimaryRightButton" Text="Continue"></asp:Button>
+                    <asp:Button ID="btn_Quest_SaveExit" TabIndex="190" runat="server" Text="Save_Exit" SkinID="PrimaryRightButton" Visible="true"></asp:Button>
+                    <asp:LinkButton ID="btn_Quest_Cancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel" OnClientClick="return revealModal('ModalCancel');"></asp:LinkButton>
                 </div>
             </div>
 
@@ -389,7 +383,7 @@
         <asp:View ID="vTroubleShooting" runat="server">
             <div class="dataContainer">
                 <h2 class="dataGridHeader" runat="server" id="hTroubleShooting">
-                    <asp:Label runat="server" ID="lblTroubleShooting" Text="CLR_TROUBLESHOOTING" /></h2>
+                    <asp:Label runat="server" ID="lblTroubleShooting" Text="CLR_TROUBLESHOOTING"></asp:Label></h2>
                 <div style="width: 100%">
                     <table id="tblTroubleShooting" class="formGrid" width="100%" border="0" runat="server">
                         <tr>
@@ -416,10 +410,9 @@
                 </div>
             </div>
             <div class="btnZone">
-                <asp:Button ID="ButtonTBcontinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
-                <asp:Button ID="ButtonTBSaveExit" TabIndex="190" runat="server" Text="Save_Exit" SkinID="PrimaryRightButton" Visible="false" />
-                <asp:LinkButton ID="LinkButtonTBCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
-                    OnClientClick="return revealModal('ModalCancel');" />
+                <asp:Button ID="ButtonTBcontinue" runat="server" SkinID="PrimaryRightButton" Text="Continue"></asp:Button>
+                <asp:Button ID="ButtonTBSaveExit" TabIndex="190" runat="server" Text="Save_Exit" SkinID="PrimaryRightButton" Visible="false"></asp:Button>
+                <asp:LinkButton ID="LinkButtonTBCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel" OnClientClick="return revealModal('ModalCancel');"></asp:LinkButton>
             </div>
         </asp:View>
         <asp:View ID="vBestReplacementDevice" runat="server">
@@ -447,20 +440,19 @@
                                             <div id="sub-title">
                                                 <div id="sub-left">
                                                     <asp:Panel runat="server" ID="panelCurrentDevice">
-                                                        <asp:Label ID="lblCurrentDevice" runat="server" Font-Bold="true" CssClass="highlightText"/>
-                                                        <br />
+                                                        <asp:Label ID="lblCurrentDevice" runat="server" Font-Bold="true" CssClass="highlightText"></asp:Label>
+                                                        <br>
                                                     </asp:Panel>
-                                                    <asp:Label ID="lblDeviceDescription1" runat="server" Font-Bold="true"/>
-                                                    <br />
-                                                    <asp:Label ID="lblDeviceDescription2" runat="server" />
+                                                    <asp:Label ID="lblDeviceDescription1" runat="server" Font-Bold="true"></asp:Label>
+                                                    <br>
+                                                    <asp:Label ID="lblDeviceDescription2" runat="server"></asp:Label>
 
                                                 </div>
                                                 <div id="sub-right" style="text-align: right; vertical-align: top;">
                                                     <asp:Label ID="lblQuantity" runat="server" Font-Bold="true"></asp:Label>
-                                                    <br />
+                                                    <br>
                                                     <asp:Label ID="lblDeviceShipped" runat="server"></asp:Label> &nbsp;
-                                        <asp:LinkButton CommandName="SelectDeviceAction" ID="btnSelectDevice" runat="server" Visible="true"
-                                            OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
+                                        <asp:LinkButton CommandName="SelectDeviceAction" ID="btnSelectDevice" runat="server" Visible="true" OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
                                                 </div>
                                                 <div class="clear-both"></div>
                                             </div>
@@ -475,9 +467,8 @@
             </div>
             <div class="btnZone">
 
-                <asp:Button ID="btnBestReplacementNotSelectedContinue" runat="server" SkinID="PrimaryRightButton" Text="BR_NOT_SELECTED_CONTINUE" />
-                <asp:LinkButton ID="LinkButtonBestReplacementCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
-                    OnClientClick="return revealModal('ModalCancel');" />
+                <asp:Button ID="btnBestReplacementNotSelectedContinue" runat="server" SkinID="PrimaryRightButton" Text="BR_NOT_SELECTED_CONTINUE"></asp:Button>
+                <asp:LinkButton ID="LinkButtonBestReplacementCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel" OnClientClick="return revealModal('ModalCancel');"></asp:LinkButton>
             </div>
         </asp:View>
         <asp:View ID="vFulfillmentOptions" runat="server">
@@ -493,19 +484,16 @@
                         </tr>
                         <tr>
                             <td>
-                                <asp:GridView ID="GridViewFulfillmentOptions" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false"
-                                    AllowSorting="false" ShowHeader="false" GridLines="None" BorderStyle="None"
-                                    BorderWidth="0" BorderColor="Transparent" SkinID="DetailPageGridView">
-                                    <SelectedRowStyle Wrap="True" />
-                                    <EditRowStyle Wrap="True" />
-                                    <AlternatingRowStyle Wrap="True" />
-                                    <RowStyle Wrap="True" />
+                                <asp:GridView ID="GridViewFulfillmentOptions" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false" AllowSorting="false" ShowHeader="false" GridLines="None" BorderStyle="None" BorderWidth="0" BorderColor="Transparent" SkinID="DetailPageGridView">
+                                    <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                                    <EditRowStyle Wrap="True"></EditRowStyle>
+                                    <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                    <RowStyle Wrap="True"></RowStyle>
                                     <Columns>
-                                        <asp:BoundField DataField="Code" Visible="false" />
+                                        <asp:BoundField DataField="Code" Visible="false"></asp:BoundField>
                                         <asp:TemplateField ShowHeader="false" ItemStyle-Width="5%" ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Top">
                                             <ItemTemplate>
-                                                <asp:RadioButton ID="rdoFulfillmentOptions" runat="server" Visible="True"
-                                                    OnCheckedChanged="rdoFulfillmentOptions_CheckedChanged" AutoPostBack="true" Checked='<%#Eval("Selected")%>'></asp:RadioButton>
+                                                <asp:RadioButton ID="rdoFulfillmentOptions" runat="server" Visible="True" OnCheckedChanged="rdoFulfillmentOptions_CheckedChanged" AutoPostBack="true" Checked='<%#Eval("Selected")%>'></asp:RadioButton>
                                                 <asp:Label ID="lblFulfillmentOptionCode" runat="server" Visible="false" Text='<%#Eval("Code")%>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -513,37 +501,33 @@
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFulfillmentOption" runat="server" Font-Bold="true" Text='<%#Eval("Name")%>'></asp:Label>
                                                 &nbsp;
-                                        <br />
-                                                <asp:Label ID="lblFulfillmentOptionDesc"
-                                                    runat="server" Text='<%#Eval("Description")%>'></asp:Label>
-                                                <br />
-                                                <asp:GridView ID="GridViewFulfillmentOptionFee" runat="server" Width="40%" AutoGenerateColumns="False" AllowPaging="false"
-                                                    AllowSorting="false" Visible="false" CssClass="formGrid" SkinID="DetailPageGridView"
-                                                    OnRowDataBound="GridViewFulfillmentOptionFee_RowDataBound">
+                                        <br>
+                                                <asp:Label ID="lblFulfillmentOptionDesc" runat="server" Text='<%#Eval("Description")%>'></asp:Label>
+                                                <br>
+                                                <asp:GridView ID="GridViewFulfillmentOptionFee" runat="server" Width="40%" AutoGenerateColumns="False" AllowPaging="false" AllowSorting="false" Visible="false" CssClass="formGrid" SkinID="DetailPageGridView" OnRowDataBound="GridViewFulfillmentOptionFee_RowDataBound">
                                                     <Columns>
-                                                        <asp:BoundField DataField="ServiceTypeCode" HeaderText="FEE" ItemStyle-Width="70%" />
-                                                        <asp:BoundField DataField="NetPrice" HeaderText="AMOUNT" ItemStyle-Width="30%" />
+                                                        <asp:BoundField DataField="ServiceTypeCode" HeaderText="FEE" ItemStyle-Width="70%"></asp:BoundField>
+                                                        <asp:BoundField DataField="NetPrice" HeaderText="AMOUNT" ItemStyle-Width="30%"></asp:BoundField>
                                                     </Columns>
-                                                    <PagerStyle />
+                                                    <PagerStyle></PagerStyle>
                                                 </asp:GridView>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
-                                    <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                                    <PagerStyle />
+                                    <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                                    <PagerStyle></PagerStyle>
                                 </asp:GridView>
                             </td>
                         </tr>
                     </table>
                 </div>
 
-                <Elita:UserControlQuestion runat="server" ID="fulfillmentOptionQuestions" />
+                <Elita:UserControlQuestion runat="server" ID="fulfillmentOptionQuestions"></Elita:UserControlQuestion>
 
             </div>
             <div class="btnZone">
-                <asp:Button ID="btnFulfillmentOptionsContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
-                <asp:LinkButton ID="LinkButtonFulfillmentOptionsCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
-                    OnClientClick="return revealModal('ModalCancel');" />
+                <asp:Button ID="btnFulfillmentOptionsContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue"></asp:Button>
+                <asp:LinkButton ID="LinkButtonFulfillmentOptionsCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel" OnClientClick="return revealModal('ModalCancel');"></asp:LinkButton>
             </div>
         </asp:View>
         <asp:View ID="vLogisticsOptions" runat="server">
@@ -555,24 +539,21 @@
                         <tr>
                             <td>
                                 <asp:Label ID="lblLogisticsOptionNoRecordsFound" Font-Bold="true" runat="server" Visible="false"></asp:Label>
-                                <asp:Label ID="lblLogisticStageName" Font-Bold="true" runat="server"></asp:Label><br />
+                                <asp:Label ID="lblLogisticStageName" Font-Bold="true" runat="server"></asp:Label><br>
                                 <asp:Label ID="lblLogisticStageDescription" runat="server"></asp:Label>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <asp:GridView ID="GridViewLogisticsOptions" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false"
-                                    AllowSorting="false" ShowHeader="false" GridLines="None" BorderStyle="None"
-                                    BorderWidth="0" BorderColor="Transparent" SkinID="DetailPageGridView">
-                                    <SelectedRowStyle Wrap="True" />
-                                    <EditRowStyle Wrap="True" />
-                                    <AlternatingRowStyle Wrap="True" />
-                                    <RowStyle Wrap="True" />
+                                <asp:GridView ID="GridViewLogisticsOptions" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false" AllowSorting="false" ShowHeader="false" GridLines="None" BorderStyle="None" BorderWidth="0" BorderColor="Transparent" SkinID="DetailPageGridView">
+                                    <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                                    <EditRowStyle Wrap="True"></EditRowStyle>
+                                    <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                                    <RowStyle Wrap="True"></RowStyle>
                                     <Columns>
                                         <asp:TemplateField ShowHeader="false" ItemStyle-Width="5%" ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Top">
                                             <ItemTemplate>
-                                                <asp:RadioButton ID="rdoLogisticsOption" runat="server" Visible="True"
-                                                    OnCheckedChanged="rdoLogisticsOption_CheckedChanged" AutoPostBack="true" Checked='<%#Eval("Selected")%>'></asp:RadioButton>
+                                                <asp:RadioButton ID="rdoLogisticsOption" runat="server" Visible="True" OnCheckedChanged="rdoLogisticsOption_CheckedChanged" AutoPostBack="true" Checked='<%#Eval("Selected")%>'></asp:RadioButton>
                                                 <asp:Label ID="lblLogisticsOptionCode" runat="server" Visible="false" Text='<%#Eval("Code")%>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -586,8 +567,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td align="left">
-                                                            <asp:Label ID="lblLogisticsOptionDesc"
-                                                                runat="server" Text='<%#Eval("Description")%>'></asp:Label>
+                                                            <asp:Label ID="lblLogisticsOptionDesc" runat="server" Text='<%#Eval("Description")%>'></asp:Label>
                                                         </td>
                                                     </tr>
                                                     <tr runat="server" id="trShippingAddress">
@@ -596,13 +576,13 @@
                                                                 <tbody>
                                                                     <tr runat="server" id="trStoreNumber">
                                                                         <td align="left" colspan="4">
-                                                                            <asp:Label runat="server" ID="lblStoreNumber" />&nbsp;&nbsp;
+                                                                            <asp:Label runat="server" ID="lblStoreNumber"></asp:Label>&nbsp;&nbsp;
                                                                 <asp:TextBox ID="txtStoreNumber" runat="server" MaxLength="20" SkinID="smallTextBox"></asp:TextBox>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="left" colspan="4">
-                                                                            <asp:Label runat="server" ID="lblLoShippingAddress" />
+                                                                            <asp:Label runat="server" ID="lblLoShippingAddress"></asp:Label>
                                                                         </td>
                                                                     </tr>
                                                                     <Elita:UserControlAddressInfo ID="ucAddressControllerLogisticsOptions" runat="server"></Elita:UserControlAddressInfo>
@@ -617,7 +597,7 @@
                                                                     <td align="left">
                                                                         <asp:Label ID="lblDeliveryOptions" runat="server" Font-Bold="true"></asp:Label>&nbsp;
                                                                 <asp:Label ID="lblDeliveryDate" runat="server"></asp:Label>:&nbsp;&nbsp;
-                                                                <asp:Button ID="btnEstimateDeliveryDate" runat="server" SkinID="AlternateRightButton" Enabled="false" OnClick="btnEstimateDeliveryDate_OnClick" CommandArgument="<%#Container.DisplayIndex %>" />
+                                                                <asp:Button ID="btnEstimateDeliveryDate" runat="server" SkinID="AlternateRightButton" Enabled="false" OnClick="btnEstimateDeliveryDate_OnClick" CommandArgument="<%#Container.DisplayIndex %>"></asp:Button>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -632,21 +612,21 @@
                                                         <td align="left">
                                                             <div class="dataContainer">
                                                                 <h2 class="dataGridHeader" runat="server">
-                                                                    <asp:Label runat="server" ID="moServiceCenterSelectedLabel" Text="SERVICE_CENTER_SELECTED" />
+                                                                    <asp:Label runat="server" ID="moServiceCenterSelectedLabel" Text="SERVICE_CENTER_SELECTED"></asp:Label>
                                                                 </h2>
                                                                 <div class="dataGridHeader">
                                                                     <table border="0" class="searchGrid" runat="server">
                                                                         <tbody>
                                                                             <tr style="width: 100%">
                                                                                 <td align="right" nowrap="nowrap">
-                                                                                    <asp:Label runat="server" ID="moServiceCenterCodeLabel" Text="SERVICE_CENTER_CODE" />
+                                                                                    <asp:Label runat="server" ID="moServiceCenterCodeLabel" Text="SERVICE_CENTER_CODE"></asp:Label>
                                                                                     :
                                                                                 </td>
                                                                                 <td align="left" nowrap="nowrap">
                                                                                     <asp:TextBox ID="txtServiceCenterCode" runat="server" ReadOnly="true" SkinID="smallTextBox" style="width: 100px"></asp:TextBox>
                                                                                 </td>
                                                                                 <td align="right" nowrap="nowrap">
-                                                                                    <asp:Label runat="server" ID="moServiceCenterNameLabel" Text="SERVICE_CENTER_NAME" />
+                                                                                    <asp:Label runat="server" ID="moServiceCenterNameLabel" Text="SERVICE_CENTER_NAME"></asp:Label>
                                                                                     :
                                                                                 </td>
                                                                                 <td align="left" nowrap="nowrap" style="width: 100%">
@@ -658,21 +638,21 @@
                                                                 </div>
                                                             </div>
                                                             &nbsp;&nbsp;
-                                                                <Elita:UserControlServiceCenterSelection runat="server" ID="ucServiceCenterUserControl" />
+                                                                <Elita:UserControlServiceCenterSelection runat="server" ID="ucServiceCenterUserControl"></Elita:UserControlServiceCenterSelection>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                     </tr>
                                                 </table>
 
-                                                <br/>
-                                                <Elita:UserControlQuestion runat="server" ID="logisticsOptionsQuestions"/>
+                                                <br>
+                                                <Elita:UserControlQuestion runat="server" ID="logisticsOptionsQuestions"></Elita:UserControlQuestion>
 
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
-                                    <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
-                                    <PagerStyle />
+                                    <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom"></PagerSettings>
+                                    <PagerStyle></PagerStyle>
                                 </asp:GridView>
                             </td>
                         </tr>
@@ -680,10 +660,9 @@
                 </div>
             </div>
             <div class="btnZone">
-                <asp:Button ID="btnLogisticsOptionsBack" runat="server" SkinID="AlternateLeftButton" Text="Back" />
-                <asp:Button ID="btnLogisticsOptionsContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
-                <asp:LinkButton ID="LinkButtonLogisticsOptionsCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
-                    OnClientClick="return revealModal('ModalCancel');" />
+                <asp:Button ID="btnLogisticsOptionsBack" runat="server" SkinID="AlternateLeftButton" Text="Back"></asp:Button>
+                <asp:Button ID="btnLogisticsOptionsContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue"></asp:Button>
+                <asp:LinkButton ID="LinkButtonLogisticsOptionsCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel" OnClientClick="return revealModal('ModalCancel');"></asp:LinkButton>
             </div>
         </asp:View>
 
@@ -691,19 +670,17 @@
             <div id="dvStep4" runat="server">
                 <div class="dataContainer">
                     <h2 class="dataGridHeader" runat="server" id="ShippingAddress">
-                        <asp:Label runat="server" ID="LabelShippingAddress" Text="DCM_SHIPPING_ADDRESS" /></h2>
+                        <asp:Label runat="server" ID="LabelShippingAddress" Text="DCM_SHIPPING_ADDRESS"></asp:Label></h2>
                     <div class="stepformZone">
                         <table id="tblShippingAddressDetail" class="formGrid" cellpadding="0" cellspacing="0" style="border: 1px solid;" width="80%">
                             <tr>
                                 <td align="right" nowrap="nowrap" width="30%">
-                                    <asp:Label runat="server" ID="LabelSelectShippingAddress" Text="DCM_SELECT_SHIPPING_ADDRESS" />
+                                    <asp:Label runat="server" ID="LabelSelectShippingAddress" Text="DCM_SELECT_SHIPPING_ADDRESS"></asp:Label>
                                     :
                                 </td>
                                 <td align="left" nowrap="nowrap" width="70%">
-                                    <asp:RadioButton ID="RadioButtonBillingAddress" runat="server" AutoPostBack="True" Text="DCM_BILLING_ADDRESS"
-                                        GroupName="SELECT_TYPE"></asp:RadioButton>&nbsp;&nbsp;
-                            <asp:RadioButton ID="RadioButtonOtherAddress" runat="server" AutoPostBack="True"
-                                Text="DCM_OTHER_ADDRESS" GroupName="SELECT_TYPE"></asp:RadioButton>
+                                    <asp:RadioButton ID="RadioButtonBillingAddress" runat="server" AutoPostBack="True" Text="DCM_BILLING_ADDRESS" GroupName="SELECT_TYPE"></asp:RadioButton>&nbsp;&nbsp;
+                            <asp:RadioButton ID="RadioButtonOtherAddress" runat="server" AutoPostBack="True" Text="DCM_OTHER_ADDRESS" GroupName="SELECT_TYPE"></asp:RadioButton>
                                 </td>
                             </tr>
                             <tr>
@@ -718,10 +695,10 @@
                             </tr>
                             <tr id="trDeliveryDates" runat="server">
                                 <td align="right" width="30%">
-                                    <asp:Label runat="server" ID="lblGetDeliveryDates" Text="DELIVERY_DATE_TEXT" />
+                                    <asp:Label runat="server" ID="lblGetDeliveryDates" Text="DELIVERY_DATE_TEXT"></asp:Label>
                                 </td>
                                 <td align="left" nowrap="nowrap" width="70%">
-                                    <asp:Button ID="btnGetDeliveryDate" runat="server" SkinID="AlternateLeftButton" Text="GET_DELIVERY_DATE" />
+                                    <asp:Button ID="btnGetDeliveryDate" runat="server" SkinID="AlternateLeftButton" Text="GET_DELIVERY_DATE"></asp:Button>
                                 </td>
                             </tr>
                             <tbody>
@@ -732,10 +709,9 @@
                 </div>
             </div>
             <div class="btnZone">
-                <asp:Button ID="ButtonShippingAddressContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
-                <asp:Button ID="ButtonShippingAddressSaveExit" TabIndex="190" runat="server" Text="Save_Exit" SkinID="PrimaryRightButton" Visible="false" />
-                <asp:LinkButton ID="LinkButtonShippingAddressCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
-                    OnClientClick="return revealModal('ModalCancel');" />
+                <asp:Button ID="ButtonShippingAddressContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue"></asp:Button>
+                <asp:Button ID="ButtonShippingAddressSaveExit" TabIndex="190" runat="server" Text="Save_Exit" SkinID="PrimaryRightButton" Visible="false"></asp:Button>
+                <asp:LinkButton ID="LinkButtonShippingAddressCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel" OnClientClick="return revealModal('ModalCancel');"></asp:LinkButton>
             </div>
         </asp:View>
         <asp:View ID="vDynamicFulfillment" runat="server">
@@ -745,13 +721,12 @@
             </div>
             <div class="btnZone">
                 <div style="visibility:hidden">
-                    <asp:Button ID="btnContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
-                    <asp:Button ID="btnLegacyContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
-                    <input type="hidden" id="hdnInput" value="<%=hdnData.ClientID %>" />
-                    <asp:HiddenField ID="hdnData" runat="server" />
+                    <asp:Button ID="btnContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue"></asp:Button>
+                    <asp:Button ID="btnLegacyContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue"></asp:Button>
+                    <input type="hidden" id="hdnInput" value="<%=hdnData.ClientID %>">
+                    <asp:HiddenField ID="hdnData" runat="server"></asp:HiddenField>
                 </div>                
-                <asp:LinkButton ID="lnkCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
-                                OnClientClick="return revealModal('ModalCancel');" />
+                <asp:LinkButton ID="lnkCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel" OnClientClick="return revealModal('ModalCancel');"></asp:LinkButton>
             </div>
         </asp:View>
     </asp:MultiView>

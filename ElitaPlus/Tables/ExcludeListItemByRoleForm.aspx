@@ -15,18 +15,17 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
         <Scripts>
-            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js"></asp:ScriptReference>
         </Scripts>
     </asp:ScriptManager>
     <div class="dataContainer">
         <div class="stepformZone">
-            <table class="formGrid" border="0" cellspacing="0" cellpadding="0" style="padding-left: 0px;"
-                width="100%">
+            <table class="formGrid" border="0" cellspacing="0" cellpadding="0" style="padding-left: 0px;" width="100%">
                 <tr>
                     <td id="Td1" runat="server" colspan="2">
                         <table>
                             <tbody>
-                                <Elita:MultipleColumnDDLabelControl runat="server" ID="CompanyDropControl" />
+                                <Elita:MultipleColumnDDLabelControl runat="server" ID="CompanyDropControl"></Elita:MultipleColumnDDLabelControl>
                             </tbody>
                         </table>
                     </td>
@@ -36,7 +35,7 @@
                     <td id="Td2" runat="server">
                         <table>
                             <tbody>
-                                <Elita:MultipleColumnDDLabelControl runat="server" ID="ListDropControl" />
+                                <Elita:MultipleColumnDDLabelControl runat="server" ID="ListDropControl"></Elita:MultipleColumnDDLabelControl>
                             </tbody>
                         </table>
                     </td>
@@ -46,44 +45,38 @@
                     <td id="TD3" runat="server" colspan="2">
                         <table>
                             <tbody>
-                                <Elita:MultipleColumnDDLabelControl runat="server" ID="ListItemDropControl" />
+                                <Elita:MultipleColumnDDLabelControl runat="server" ID="ListItemDropControl"></Elita:MultipleColumnDDLabelControl>
                             </tbody>
                         </table>
                     </td>
                 </tr>
             </table>
         </div>
-        <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server" />
-        <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261" />
+        <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server">
+        <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
     </div>
     <div class="dataContainer">
         <%--     changes for tab--%>
         <div id="tabs" class="style-tabs">
             <ul>
-                <li><a href="#tabsExcludeRoles">
+                <li><a href="#tabsExcludeRoles" rel="noopener noreferrer">
                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Exclude_Roles</asp:Label></a></li>
             </ul>
 
             <div id="tabsExcludeRoles">
                  <div class="Page" runat="server" id="moExcludeRoles1" style="height: 100%; overflow: auto">
-                    <Elita:UserControlAvailableSelected tabindex="12" ID="UserControlAvailableSelectedExcludeRoles"
-                        runat="server"></Elita:UserControlAvailableSelected>
+                    <Elita:UserControlAvailableSelected tabindex="12" ID="UserControlAvailableSelectedExcludeRoles" runat="server"></Elita:UserControlAvailableSelected>
                 </div>
             </div>
         </div>
     </div>
     <div class="btnZone">
-        <asp:Button ID="btnApply_WRITE" runat="server" CausesValidation="False" Text="SAVE"
-            SkinID="PrimaryRightButton"></asp:Button>
-        <asp:Button ID="btnUndo_WRITE" runat="server" CausesValidation="False" Text="UNDO"
-            SkinID="AlternateRightButton"></asp:Button>
+        <asp:Button ID="btnApply_WRITE" runat="server" CausesValidation="False" Text="SAVE" SkinID="PrimaryRightButton"></asp:Button>
+        <asp:Button ID="btnUndo_WRITE" runat="server" CausesValidation="False" Text="UNDO" SkinID="AlternateRightButton"></asp:Button>
         <asp:Button ID="btnBack" runat="server" CausesValidation="False" Text="BACK" SkinID="AlternateLeftButton"></asp:Button>
-        <asp:Button ID="btnNew_WRITE" runat="server" CausesValidation="False" Text="New"
-            SkinID="AlternateLeftButton"></asp:Button>
-        <asp:Button ID="btnCopy_WRITE" runat="server" CausesValidation="False" Text="New_With_Copy"
-            SkinID="AlternateRightButton"></asp:Button>
-        <asp:Button ID="btnDelete_WRITE" runat="server" CausesValidation="False" Text="Delete"
-            SkinID="CenterButton"></asp:Button>
+        <asp:Button ID="btnNew_WRITE" runat="server" CausesValidation="False" Text="New" SkinID="AlternateLeftButton"></asp:Button>
+        <asp:Button ID="btnCopy_WRITE" runat="server" CausesValidation="False" Text="New_With_Copy" SkinID="AlternateRightButton"></asp:Button>
+        <asp:Button ID="btnDelete_WRITE" runat="server" CausesValidation="False" Text="Delete" SkinID="CenterButton"></asp:Button>
 
     </div>
 
