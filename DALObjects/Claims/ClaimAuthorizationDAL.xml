@@ -104,8 +104,10 @@
                 ) as service_order_Type,
                 (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount,
                 ca.locator,
-                ca.refund_method_xcd
+                ca.refund_method_xcd,
+                u.user_name
         FROM    elp_claim_authorization ca 
+        LEFT JOIN elp_user u on ca.created_by = u.network_id
         WHERE		ca.claim_id = hextoraw(:claim_id)
         --dynamic_where_clause
 		]]>
