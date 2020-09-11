@@ -1805,6 +1805,15 @@ Partial Public Class ClaimWizardForm
     Protected WithEvents Label5 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''lblClaimRefundDetails control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblClaimRefundDetails As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''dvGridPager control.
     '''</summary>
     '''<remarks>
@@ -2073,6 +2082,15 @@ Partial Public Class ClaimWizardForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ucClaimConsequentialDamage As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlConsequentialDamage
+
+    '''<summary>
+    '''ucClaimRefundDetails control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ucClaimRefundDetails As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlRefundDetailsInfo
 
     '''<summary>
     '''PanelPoliceReport control.

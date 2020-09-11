@@ -173,6 +173,7 @@ Public Class ClaimWizardForm
         Public ClaimCaseDeviceInfoDV As DataView = Nothing
 
         Public IsCallerAuthenticated As Boolean = False
+        Public claimAuthList As List(Of ClaimAuthorization)
     End Class
 
     Public Enum LocateServiceCenterSearchType
@@ -1181,6 +1182,7 @@ Public Class ClaimWizardForm
                 TranslateGridHeader(GridClaimImages)
                 TranslateGridHeader(GridClaimAuthorization)
                 ucClaimConsequentialDamage.Translate()
+                ucClaimRefundDetails.Translate()
                 EnableDisableWizardControls(wizardStep)
 
 
@@ -2256,7 +2258,7 @@ Public Class ClaimWizardForm
         PopulateClaimActionGrid()
         PopulateQuestionAnswerGrid()
         PopulateConsequentialDamageGrid()
-
+        PopulateClaimRefundDetailsGrid()
 
         Dim oTranslate As Boolean = True
         Dim oCauseOfLoss As String
@@ -3893,6 +3895,10 @@ Public Class ClaimWizardForm
             ucClaimConsequentialDamage.UpdateConsequentialDamagestatus(CType(Me.State.ClaimBO, ClaimBase))
         End If
         ucClaimConsequentialDamage.PopulateConsequentialDamage(CType(Me.State.ClaimBO, ClaimBase))
+    End Sub
+    Public Sub PopulateClaimRefundDetailsGrid()
+        Me.State.claimAuthList = CType(Me.State.ClaimBO, MultiAuthClaim).ClaimAuthorizationChildren.OrderBy(Function(i) i.AuthorizationNumber).ToList
+        ucClaimRefundDetails.PopulateClaimRefundDetails(Me.State.claimAuthList)
     End Sub
 #End Region
 #End Region

@@ -1,26 +1,27 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BOEditingWebFormCodeBehind.cst (11/2/2004)  ********************
+Imports Microsoft.VisualBasic
+Imports Codes = Assurant.ElitaPlus.BusinessObjectsNew.Codes
+Imports Assurant.ElitaPlus.DALObjects
 Imports System.Collections.Generic
-Imports System.Net
-Imports System.Net.Http
-Imports System.Net.Http.Headers
-Imports System.Threading
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentService
 Imports Assurant.Elita.ClientIntegration
 Imports Assurant.Elita.ClientIntegration.Headers
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService
+
+Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
-Imports Assurant.Elita.Configuration
-Imports Assurant.Elita.ExternalKeyHandler.DynamicFulfillment
 Imports Assurant.Elita.Web.Forms
-Imports Assurant.ElitaPlus.DALObjects
-Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentService
-Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService
-Imports Assurant.ElitaPlus.Security
-Imports Microsoft.VisualBasic
-Imports Newtonsoft.Json
-Imports Newtonsoft.Json.Linq
+Imports System.Threading
+Imports System.Net
+
 Imports RestSharp
-Imports ClientEventPayLoad = Assurant.ElitaPlus.DataEntities.DFEventPayLoad
-Imports Codes = Assurant.ElitaPlus.BusinessObjectsNew.Codes
+Imports Newtonsoft.Json
+Imports System.Net.Http
+Imports System.Net.Http.Headers
+Imports Newtonsoft.Json.Linq
+Imports Assurant.Elita.ExternalKeyHandler.DynamicFulfillment
+Imports Assurant.Elita.Configuration
 
 Partial Class ClaimForm
     Inherits ElitaPlusSearchPage
@@ -69,6 +70,7 @@ Partial Class ClaimForm
     Public Const Tab_ShippingInfo As String = "1"
     Public Const Tab_ClaimAuthorization As String = "2"
     Public Const Tab_ConsequentialDamage As String = "3"
+    Public Const Tab_ClaimRefund As String = "4"
 
     Dim DisabledTabsList As New List(Of String)()
 
@@ -333,6 +335,7 @@ Partial Class ClaimForm
                     Me.dvClaimAuthorizationDetails.Visible = False
                     DisabledTabsList.Add(Tab_ClaimAuthorization)
                     DisabledTabsList.Add(Tab_ConsequentialDamage)
+                    DisabledTabsList.Add(Tab_ClaimRefund)
                 End If
 
                 If Me.State.MyBO.CertificateItem.IsEquipmentRequired Then
@@ -346,6 +349,7 @@ Partial Class ClaimForm
                     dvClaimEquipment.Visible = False
                     dvClaimAuthorizationDetails.Visible = False
                     ucClaimConsequentialDamage.Visible = False
+                    ucClaimRefundDetails.Visible = False
                     'ViewPanel_READ1.Visible = False
                 Else
                     ViewPanel_READ1.Visible = True
@@ -1251,15 +1255,6 @@ Partial Class ClaimForm
             'disable the replace item button if change fulfillmen button is enabled
             btnReplaceItem.Enabled = False
             ControlMgr.SetVisibleControl(Me, btnReplaceItem, False)
-        End If
-
-        'For Deductible refund button
-        If (claim.IsDeductibleRefundAllowed AndAlso
-            Not claim.IsDeductibleRefundExist) Then
-
-            'Make Deductible refund enabled
-            Me.btnClaimDeductibleRefund.Enabled = True
-            ControlMgr.SetVisibleControl(Me, btnClaimDeductibleRefund, True)
         End If
     End Sub
 
@@ -2196,23 +2191,17 @@ Partial Class ClaimForm
             End If
         Else
             Dim claim As MultiAuthClaim = CType(Me.State.MyBO, MultiAuthClaim)
-            Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, claim.AuthorizedAmount)
+            Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, Decimal.Zero)
             'Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, State.AuthorizedAmount)
             Me.State.claimAuthList = CType(Me.State.MyBO, MultiAuthClaim).ClaimAuthorizationChildren.OrderBy(Function(i) i.AuthorizationNumber).ToList
             ucClaimConsequentialDamage.PopulateConsequentialDamage(Me.State.MyBO)
+            ucClaimRefundDetails.PopulateClaimRefundDetails(Me.State.claimAuthList)
         End If
-
-        ControlMgr.SetVisibleControl(Me, Me.LabelMethodOfRepair, Not IsDfFulfillment())
-        ControlMgr.SetVisibleControl(Me, Me.TextboxMethodOfRepair, Not IsDfFulfillment())
 
         PopulateRefurbReplaceClaimEquipment()
         PopulateClaimShipping()
 
     End Sub
-
-    Private Function IsDfFulfillment() As Boolean
-        Return Me.State.MyBO.FulfillmentProviderType = FulfillmentProviderType.DynamicFulfillment
-    End Function
 
     Protected Sub PopulateClaimDetailContactInfoBOsFromForm()
 
@@ -2637,7 +2626,11 @@ Partial Class ClaimForm
                                                             TranslationBase.TranslateLabelOrMessage("Authorization_Limit_Exceeded"), False))
         End If
 
-        If (State.IsMultiAuthClaim) Then ucClaimConsequentialDamage.Translate()
+        If (State.IsMultiAuthClaim) Then
+            ucClaimConsequentialDamage.Translate()
+            ucClaimRefundDetails.Translate()
+        End If
+
 
     End Sub
 
@@ -3388,6 +3381,7 @@ Partial Class ClaimForm
 
         End Try
     End Sub
+
     Protected Sub btnClaimIssues_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClaimIssues.Click
         Try
             Me.NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_ISSUES, New ClaimIssueForm.Parameters(Me.State.MyBO))
@@ -3398,6 +3392,7 @@ Partial Class ClaimForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
+
     Private Sub btnClaimImages_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClaimImages.Click
         Try
             Dim URL As String = "~/Claims/ClaimDocumentForm.aspx"
@@ -3489,12 +3484,12 @@ Partial Class ClaimForm
     End Sub
 
     Private Sub btnChangeFulfillment_Click(sender As Object, e As EventArgs) Handles btnChangeFulfillment.Click
-
-        ChangeFulfillmentAction(State.MyBO.Certificate.Id,
-                                State.MyBO.Id,
-                                Nothing,
-                                Codes.CasePurposeChangeFulfillment,
-                                Me.State.IsCallerAuthenticated)
+        Try
+            NavController.Navigate(Me, FlowEvents.EventClaimRecordingChangeFulfillment, New ClaimRecordingForm.Parameters(State.MyBO.Certificate.Id, State.MyBO.Id, Nothing, Codes.CasePurposeChangeFulfillment, Me.State.IsCallerAuthenticated))
+        Catch ex As Threading.ThreadAbortException
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
     End Sub
 
     Private Sub btnReplacementQuote_Click(sender As Object, e As EventArgs) Handles btnReplacementQuote.Click
@@ -3505,7 +3500,6 @@ Partial Class ClaimForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
-
     Protected Sub btnClaimDeductibleRefund_Click(sender As Object, e As EventArgs) Handles btnClaimDeductibleRefund.Click
         Try
             Me.NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_DEDUCTIBLE_REFUND, New ClaimDeductibleRefundForm.Parameters(Me.State.MyBO))
@@ -3516,8 +3510,6 @@ Partial Class ClaimForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
-
-
 #End Region
 
 #Region "Page Control Events"
@@ -4133,26 +4125,11 @@ Partial Class ClaimForm
     Private Function getClaimKey(ByVal companyCode As String, ByVal claimNumber As String) As String
         Dim handler As New DynamicFulfillmentKeyHandler()
         Dim keys As New Dictionary(Of String, String)
-        Dim tenant As String = $"{GetTenant(ElitaConfig.Current.General.Environment)}-{ElitaConfig.Current.General.Hub}"
+        Dim tenant As String = $"{ElitaConfig.Current.General.Environment}-{ElitaConfig.Current.General.Hub}"
         keys.Add("Tenant", tenant)
         keys.Add("CompanyCode", companyCode)
         keys.Add("ClaimNumber", claimNumber)
         Return handler.Encode(keys)
-    End Function
-
-    Private Function GetTenant(value As Environments) As String
-        Select Case value
-            Case Environments.Development
-                Return "dev"
-            Case Environments.Model
-                Return "modl"
-            Case Environments.Production
-                Return "prod"
-            Case Environments.Test
-                Return "test"
-            Case Else
-                Throw New ArgumentException($"Environment value {value}, not implemented")
-        End Select
     End Function
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
@@ -4198,46 +4175,6 @@ Partial Class ClaimForm
         End Try
 
     End Function
-
-#End Region
-
-#Region "Change Fulfillment"
-    Protected Sub btnLegacyContinue_Click(sender As Object, e As EventArgs) Handles btnLegacyContinue.Click
-
-
-        Try
-            Dim payLoad As ClientEventPayLoad = JsonConvert.DeserializeObject(Of ClientEventPayLoad)(hdnData.Value)
-
-            ChangeFulfillmentAction(State.MyBO.Certificate.Id,
-                                    State.MyBO.Id,
-                                    Nothing,
-                                    Codes.CasePurposeChangeFulfillment,
-                                    Me.State.IsCallerAuthenticated)
-        Catch ex As Threading.ThreadAbortException
-        Catch ex As Exception
-            HandleErrors(ex, MasterPage.MessageController)
-        End Try
-
-    End Sub
-
-    Private Sub ChangeFulfillmentAction(certificateId As Guid,
-                                        claimId As Guid,
-                                        caseId As Guid,
-                                        casePurpose As String,
-                                        isCallerAuthenticated As Boolean)
-        Try
-            Dim claimRecordingParameters = New ClaimRecordingForm.Parameters(certificateId,
-                                                                             claimId,
-                                                                             caseId,
-                                                                             casePurpose,
-                                                                             isCallerAuthenticated)
-
-            NavController.Navigate(Me, FlowEvents.EventClaimRecordingChangeFulfillment, claimRecordingParameters)
-        Catch ex As Threading.ThreadAbortException
-        Catch ex As Exception
-            HandleErrors(ex, MasterPage.MessageController)
-        End Try
-    End Sub
 #End Region
 End Class
 

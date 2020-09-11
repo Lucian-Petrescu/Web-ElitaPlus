@@ -976,6 +976,13 @@
       <DependentUpon>UserControlConsequentialDamage.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Claims\UserControlRefundDetailsInfo.ascx.designer.vb">
+      <DependentUpon>UserControlRefundDetailsInfo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\UserControlRefundDetailsInfo.ascx.vb">
+      <DependentUpon>UserControlRefundDetailsInfo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Common\DynamicFulfillmentUI.ascx.designer.vb">
       <DependentUpon>DynamicFulfillmentUI.ascx</DependentUpon>
     </Compile>
@@ -5846,6 +5853,7 @@
     <Content Include="Claims\ClaimRecordingForm.aspx" />
     <Content Include="Claims\ClaimReimbursementForm.aspx" />
     <Content Include="Claims\UserControlConsequentialDamage.ascx" />
+    <Content Include="Claims\UserControlRefundDetailsInfo.ascx" />
     <Content Include="Common\DynamicFulfillmentUI.ascx" />
     <Content Include="Common\UserControlApInvoiceLinesSearch.ascx" />
     <Content Include="Common\UserControlCallerInfo.ascx" />

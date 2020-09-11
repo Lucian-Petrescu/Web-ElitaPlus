@@ -6,6 +6,7 @@
 <%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlSelectServiceCenter" Src="~/Certificates/UserControlSelectServiceCenter.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlConsequentialDamage" Src="UserControlConsequentialDamage.ascx" %>
+<%@ Register TagPrefix="Elita" TagName="UserControlRefundDetailsInfo" Src="UserControlRefundDetailsInfo.ascx" %>
 <%@ Register Assembly="Microsoft.Web.UI.WebControls" Namespace="Microsoft.Web.UI.WebControls" TagPrefix="iewc" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://*.core.windows.net/ 'unsafe-eval'; style-src 'self' https://*.core.windows.net/ 'unsafe-inline'; script-src 'self' https://*.core.windows.net/ 'unsafe-inline' 'unsafe-eval';  media-src *" />
@@ -597,6 +598,8 @@
                                 <asp:Label ID="Label2" runat="server" CssClass="tabHeaderText">CLAIM_CONSEQUENTIAL_DAMAGE</asp:Label></a></li>
                             <li><a href="#tbClaimFulfillmentDetails">
                                 <asp:Label ID="lblClaimFulfillmentDetails" runat="server" CssClass="tabHeaderText">CLAIM_FULFILLMENT</asp:Label></a></li>
+                            <li><a href="#tbClaimRefundDetails">
+                                <asp:Label ID="lblClaimRefundDetails" runat="server" CssClass="tabHeaderText">CLAIM_REFUND</asp:Label></a></li>
                         </ul>
 
                         <div id="tbDeviceInfo">
@@ -1045,18 +1048,12 @@
                                     </table>
                                 </div>
                                 <script type="text/javascript" src="../Scripts/df_ui.js"></script>
-                                <div class="dataContainer">
-                                    <asp:PlaceHolder runat="server" ID="phDynamicFulfillmentUI"></asp:PlaceHolder>
-                                </div>
-                                <div class="btnZone">
-                                    <div style="visibility:hidden">
-                                        <asp:Button runat="server" ID="btnContinue" SkinID="PrimaryRightButton" Text="Continue"/>
-                                        <asp:Button runat="server" ID="btnLegacyContinue" SkinID="PrimaryRightButton" Text="Continue"/>
-                                        <input type="hidden" id="hdnInput" value="<%=hdnData.ClientID %>"/>
-                                        <asp:HiddenField ID="hdnData" runat="server" />
-                                    </div>
-                                </div>
+                                <asp:PlaceHolder runat="server" ID="phDynamicFulfillmentUI"></asp:PlaceHolder>
                             </div>
+                        </div>
+
+                         <div id="tbClaimRefundDetails">
+                            <Elita:UserControlRefundDetailsInfo ID="ucClaimRefundDetails" runat="server"></Elita:UserControlRefundDetailsInfo>
                         </div>
                     </div>
 
@@ -1344,7 +1341,8 @@
                     <asp:Button ID="btnPriceRetailSearch" Visible="false" runat="server" Text="RETAIL_PRICE_SEARCH" SkinID="PopMenuButton" />
                     <asp:Button ID="btnChangeFulfillment" runat="server" Text="CHANGE_FULFILLMENT" SkinID="PopMenuButton" Enabled="false" Visible="false"/>
                     <asp:Button ID="btnReplacementQuote" runat="server" Text="REPLACEMENT_QUOTE" SkinID="PopMenuButton" Enabled="True" Visible="True"/>
-                    <asp:Button ID="btnClaimDeductibleRefund" runat="server" Text="CLAIM_DEDUCTIBLE_REFUND" SkinID="PopMenuButton" Enabled="false" Visible="false"/>
+                    <asp:Button ID="btnClaimDeductibleRefund" runat="server" Text="CLAIM_DEDUCTIBLE_REFUND" SkinID="PopMenuButton" Enabled="True" Visible="True"/>
+
                 </asp:Panel>
             </div>
         </div>

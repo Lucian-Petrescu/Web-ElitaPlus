@@ -318,6 +318,51 @@ Public NotInheritable Class ClaimAuthorization
             Me.SetValue(ClaimAuthorizationDAL.COL_NAME_WHO_PAYS_ID, Value)
         End Set
     End Property
+    <ValidStringLength("", Max:=50)>
+    Public Property RefundMethodXcd() As String
+        Get
+            CheckDeleted()
+            If Row(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD, Value)
+        End Set
+    End Property
+    <ValidStringLength("", Max:=50)>
+    Public Property RefundCreatedBy() As String
+        Get
+            CheckDeleted()
+            If Row(ClaimAuthorizationDAL.COL_NAME_REFUND_CREATED_BY) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ClaimAuthorizationDAL.COL_NAME_REFUND_CREATED_BY), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_REFUND_CREATED_BY, Value)
+        End Set
+    End Property
+    <ValidStringLength("", Max:=50)>
+    Public Property RefundAuthorizationStatus() As String
+        Get
+            CheckDeleted()
+            If Row(ClaimAuthorizationDAL.COL_NAME_REFUND_AUTHORIZATION_STATUS) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ClaimAuthorizationDAL.COL_NAME_REFUND_AUTHORIZATION_STATUS), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_REFUND_AUTHORIZATION_STATUS, Value)
+        End Set
+    End Property
 
     <ValidStringLength("", Max:=200)>
     Public Property DefectReason() As String
@@ -561,7 +606,7 @@ Public NotInheritable Class ClaimAuthorization
                 Case ClaimAuthorizationStatus.OnHold
                     Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__ONHOLD)
                 Case ClaimAuthorizationStatus.Cancelled
-                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__CANCELLED)          
+                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__CANCELLED)
                 Case ClaimAuthorizationStatus.Collected
                     Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__COLLECTED)
                 Case ClaimAuthorizationStatus.Reversed
@@ -570,6 +615,15 @@ Public NotInheritable Class ClaimAuthorization
                     Throw New NotSupportedException
             End Select
         End Set
+    End Property
+    Public ReadOnly Property IsAuthorizationDeductibleRefund As Boolean
+        Get
+            If (Me.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE AndAlso Me.PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER) Then
+                Return True
+            Else
+                Return False
+            End If
+        End Get
     End Property
 
     Public Property AuthorizedAmount As DecimalType Implements IInvoiceable.AuthorizedAmount
@@ -610,17 +664,6 @@ Public NotInheritable Class ClaimAuthorization
 
             Next
             Return amount
-        End Get
-    End Property
-
-    Public ReadOnly Property IsAuthorizationDeductibleRefund As Boolean
-
-        Get
-            If (Me.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE AndAlso Me.PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER) Then
-                Return True
-            Else
-                Return False
-            End If
         End Get
     End Property
 
@@ -902,21 +945,6 @@ Public NotInheritable Class ClaimAuthorization
         Set(ByVal Value As String)
             CheckDeleted()
             Me.SetValue(ClaimAuthorizationDAL.COL_NAME_AUTH_TYPE_XCD, Value)
-        End Set
-    End Property
-
-    Public Property RefundMethodXcd() As String
-        Get
-            CheckDeleted()
-            If Row(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD) Is DBNull.Value Then
-                Return Nothing
-            Else
-                Return CType(Row(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD), String)
-            End If
-        End Get
-        Set(ByVal Value As String)
-            CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD, Value)
         End Set
     End Property
 
@@ -1384,7 +1412,7 @@ Public NotInheritable Class ClaimAuthorization
             If (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized Or Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending) AndAlso Not Me.IsSupervisorAuthorizationRequired AndAlso Me.IsAuthorizationDeductibleRefund() Then
                 Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
             End If
-        End If
+        End If        
 
         Try
 
@@ -1439,27 +1467,6 @@ Public NotInheritable Class ClaimAuthorization
         If (Me.IsSupervisorAuthorizationRequired) Then Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
 
     End Sub
-
-    Friend Sub PopulateClaimAuthItems(ByVal priceListDetailDV As PriceListDetail.PriceListResultsDV)
-        If (priceListDetailDV Is Nothing Or priceListDetailDV.Count = 0) Then
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, Messages.PRICE_LIST_NOT_FOUND)
-        End If
-        Me.ContainsDeductible = False
-
-        For Each item As DataRowView In priceListDetailDV
-            Dim claimAuthItem As ClaimAuthItem = CType(Me.ClaimAuthorizationItemChildren.GetNewChild(Me.Id), ClaimAuthItem)
-            claimAuthItem.ClaimAuthorizationId = Me.Id
-            claimAuthItem.ServiceClassId = New Guid(CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_SERVICE_CLASS_ID), Byte()))
-            claimAuthItem.ServiceTypeId = New Guid(CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_SERVICE_TYPE_ID), Byte()))
-            claimAuthItem.VendorSku = CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_VENDOR_SKU), String)
-            claimAuthItem.VendorSkuDescription = CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_VENDOR_SKU_DESC), String)
-            claimAuthItem.Amount = CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_PRICE), Decimal)
-            If LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y") = New Guid(CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_CONTAINS_DEDUCTIBLE_ID), Byte())) Then
-                Me.ContainsDeductible = True
-            End If
-        Next
-    End Sub
-
     Public Sub PrepopulateClaimAuthForDeductibleRefund(ByVal serviceCenterId As Guid, ByVal claimid As Guid, ByVal certid As Guid, ByVal refundMethod As String)
         Me.ServiceCenterId = serviceCenterId
         Me.ClaimId = claimid
@@ -1479,6 +1486,45 @@ Public NotInheritable Class ClaimAuthorization
 
     End Sub
 
+    Public Sub PrepopulateAuthorization(ByVal serviceCenterId As Guid, ByVal claimid As Guid)
+        Me.ServiceCenterId = serviceCenterId
+        Me.ClaimId = claimid
+        Me.WhoPaysId = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
+        Me.IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        Me.ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        Me.ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        Try
+            Dim dv As PriceListDetail.PriceListResultsDV = Me.GetRepairPricesforMethodofRepair(Me.ServiceCenterId)
+            PopulateClaimAuthItems(dv)
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, ex.InnerException, Messages.PRICE_LIST_NOT_FOUND)
+        End Try
+
+        If (Me.IsSupervisorAuthorizationRequired) Then Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
+
+    End Sub
+
+    Friend Sub PopulateClaimAuthItems(ByVal priceListDetailDV As PriceListDetail.PriceListResultsDV)
+        If (priceListDetailDV Is Nothing Or priceListDetailDV.Count = 0) Then
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, Messages.PRICE_LIST_NOT_FOUND)
+        End If
+        Me.ContainsDeductible = False
+
+        For Each item As DataRowView In priceListDetailDV
+            Dim claimAuthItem As ClaimAuthItem = CType(Me.ClaimAuthorizationItemChildren.GetNewChild(Me.Id), ClaimAuthItem)
+            claimAuthItem.ClaimAuthorizationId = Me.Id
+            claimAuthItem.ServiceClassId = New Guid(CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_SERVICE_CLASS_ID), Byte()))
+            claimAuthItem.ServiceTypeId = New Guid(CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_SERVICE_TYPE_ID), Byte()))
+            claimAuthItem.VendorSku = CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_VENDOR_SKU), String)
+            claimAuthItem.VendorSkuDescription = CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_VENDOR_SKU_DESC), String)
+            claimAuthItem.Amount = CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_PRICE), Decimal)
+
+            If LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y") = New Guid(CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_CONTAINS_DEDUCTIBLE_ID), Byte())) Then
+                Me.ContainsDeductible = True
+            End If
+        Next
+    End Sub
+
     Public Sub Void()
         Me.ClaimAuthStatus = ClaimAuthorizationStatus.Void
         Me.Save()
@@ -1496,6 +1542,17 @@ Public NotInheritable Class ClaimAuthorization
         Next
         Return amount
     End Function
+    Friend Sub AddDeductibleRefundLineItem(ByVal refundAmount As Decimal)
+        Dim serviceClassType As ServiceClassType = ServiceCLassTypeList.Instance.GetDetails(Codes.SERVICE_CLASS__DEDUCTIBLE, Codes.SERVICE_CLASS__DEDUCTIBLE)
+        Dim claimAuthItem As ClaimAuthItem = CType(Me.ClaimAuthorizationItemChildren.GetNewChild(Me.Id), ClaimAuthItem)
+        claimAuthItem.ClaimAuthorizationId = Me.Id
+        claimAuthItem.ServiceClassId = serviceClassType.ServiceClassId
+        claimAuthItem.ServiceTypeId = serviceClassType.ServiceTypeId
+        claimAuthItem.VendorSku = Codes.VENDOR_SKU_DEDUCTIBLE
+        claimAuthItem.VendorSkuDescription = Codes.VENDOR_SKU_DESC_DEDUCTIBLE
+        claimAuthItem.Amount = refundAmount * -1D
+
+    End Sub
     Private Function CalculateReimbursementAmount() As DecimalType
         Dim amount As Decimal = New Decimal(0)
         Dim Item As ClaimAuthItem
@@ -1529,18 +1586,6 @@ Public NotInheritable Class ClaimAuthorization
         claimAuthItem.VendorSku = Codes.VENDOR_SKU_PAY_DEDUCTIBLE
         claimAuthItem.VendorSkuDescription = Codes.VENDOR_SKU_DESC_PAY_DEDUCTIBLE
         claimAuthItem.Amount = Me.Claim.Deductible
-
-    End Sub
-
-    Friend Sub AddDeductibleRefundLineItem(ByVal refundAmount As Decimal)
-        Dim serviceClassType As ServiceClassType = ServiceCLassTypeList.Instance.GetDetails(Codes.SERVICE_CLASS__DEDUCTIBLE, Codes.SERVICE_CLASS__DEDUCTIBLE)
-        Dim claimAuthItem As ClaimAuthItem = CType(Me.ClaimAuthorizationItemChildren.GetNewChild(Me.Id), ClaimAuthItem)
-        claimAuthItem.ClaimAuthorizationId = Me.Id
-        claimAuthItem.ServiceClassId = serviceClassType.ServiceClassId
-        claimAuthItem.ServiceTypeId = serviceClassType.ServiceTypeId
-        claimAuthItem.VendorSku = Codes.VENDOR_SKU_DEDUCTIBLE
-        claimAuthItem.VendorSkuDescription = Codes.VENDOR_SKU_DESC_DEDUCTIBLE
-        claimAuthItem.Amount = refundAmount * -1D
 
     End Sub
 

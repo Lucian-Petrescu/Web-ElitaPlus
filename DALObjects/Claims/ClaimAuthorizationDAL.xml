@@ -51,7 +51,9 @@
                 ) as service_order_Type,
                 (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount,
                 ca.locator,
-                ca.refund_method_xcd
+                getitemcodefromextendedcode(ca.refund_method_xcd) as refund_method_xcd,
+                (select nvl(u.user_name, 'ELITA') from elp_user u  where u.network_id = ca.created_by) as refund_created_by,
+                elp_utl_lov.Description(ca.claim_authorization_status_id) as refund_authorization_status
         FROM    elp_claim_authorization ca
 			  WHERE   ca.claim_authorization_id = hextoraw(:claim_authorization_id)
 		]]>
@@ -104,7 +106,9 @@
                 ) as service_order_Type,
                 (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount,
                 ca.locator,
-                ca.refund_method_xcd
+                getitemcodefromextendedcode(ca.refund_method_xcd) as refund_method_xcd,
+                (select nvl(u.user_name, 'ELITA') from elp_user u  where u.network_id = ca.created_by) as refund_created_by,
+                elp_utl_lov.Description(ca.claim_authorization_status_id) as refund_authorization_status
         FROM    elp_claim_authorization ca 
         WHERE		ca.claim_id = hextoraw(:claim_id)
         --dynamic_where_clause
@@ -153,7 +157,9 @@
                ) as service_order_Type,
                (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount,
                ca.locator,
-               ca.refund_method_xcd
+               getitemcodefromextendedcode(ca.refund_method_xcd) as refund_method_xcd,
+                (select nvl(u.user_name, 'ELITA') from elp_user u  where u.network_id = ca.created_by) as refund_created_by,
+                elp_utl_lov.Description(ca.claim_authorization_status_id) as refund_authorization_status
          FROM  elp_claim_authorization ca
          WHERE ca.claim_authorization_id in (select ii.claim_authorization_id from elp_invoice_item ii where ii.invoice_id = hextoraw(:invoice_id))
 		]]>
@@ -192,8 +198,7 @@
         auth_type_xcd = :auth_type_xcd,
         party_type_xcd = :party_type_xcd,
         party_reference_id = :party_reference_id,
-        locator = :locator,
-        refund_method_xcd = :refund_method_xcd
+        locator = :locator
 			WHERE
 				claim_authorization_id = hextoraw(:claim_authorization_id)
 		]]>
@@ -230,8 +235,7 @@
     auth_type_xcd,
     party_type_xcd,
     party_reference_id,
-    locator,
-    refund_method_xcd
+    locator
     )
     VALUES
     (
@@ -264,8 +268,7 @@
     :auth_type_xcd,
     :party_type_xcd,
     :party_reference_id,
-    :locator,
-    :refund_method_xcd
+    :locator
     )
   </INSERT>
   <DELETE>

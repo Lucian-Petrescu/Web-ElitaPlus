@@ -13,6 +13,7 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register TagPrefix="Elita" TagName="BestReplacementOption" Src="~/Interfaces/ReplacementOptions.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlConsequentialDamage" Src="UserControlConsequentialDamage.ascx" %>
+<%@ Register TagPrefix="Elita" TagName="UserControlRefundDetailsInfo" Src="UserControlRefundDetailsInfo.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimDeviceInfo" Src="~/Interfaces/ClaimDeviceInformationController.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
@@ -922,6 +923,8 @@
                                     <asp:Label ID="ActionInfoLabel" runat="server" CssClass="tabHeaderText">CASE_ACTION</asp:Label></a></li>
                                 <li><a href="#tbClaimConsequentialDamage">
                                     <asp:Label ID="Label5" runat="server" CssClass="tabHeaderText">CLAIM_CONSEQUENTIAL_DAMAGE</asp:Label></a></li>                        
+                                <li><a href="#tbClaimRefundDetails">
+                                <asp:Label ID="lblClaimRefundDetails" runat="server" CssClass="tabHeaderText">CLAIM_REFUND</asp:Label></a></li>  
                             </ul>
 
                             <div id="tabClaimIssues">
@@ -1147,6 +1150,9 @@
                             <div id="tbClaimConsequentialDamage">
                                 <Elita:UserControlConsequentialDamage ID="ucClaimConsequentialDamage" runat="server"></Elita:UserControlConsequentialDamage>
                             </div>
+                             <div id="tbClaimRefundDetails">
+                            <Elita:UserControlRefundDetailsInfo ID="ucClaimRefundDetails" runat="server"></Elita:UserControlRefundDetailsInfo>
+                        </div>
                         </div>
 
                     </div>
