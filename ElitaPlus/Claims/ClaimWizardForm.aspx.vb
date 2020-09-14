@@ -1201,6 +1201,11 @@ Public Class ClaimWizardForm
             Case ClaimWizardSteps.Step5
         End Select
 
+        If (Me.State.ClaimBO.IsDeductibleRefundAllowed AndAlso
+            Not Me.State.ClaimBO.IsDeductibleRefundExist) Then
+            ControlMgr.SetVisibleControl(Me, btnClaimDeductibleRefund, True)
+        End If
+
         HandleButtons(wizardStep)
 
     End Sub

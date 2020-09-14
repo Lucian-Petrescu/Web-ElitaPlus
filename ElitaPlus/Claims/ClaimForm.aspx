@@ -1351,7 +1351,7 @@
                     <asp:Button ID="btnPriceRetailSearch" Visible="false" runat="server" Text="RETAIL_PRICE_SEARCH" SkinID="PopMenuButton" />
                     <asp:Button ID="btnChangeFulfillment" runat="server" Text="CHANGE_FULFILLMENT" SkinID="PopMenuButton" Enabled="false" Visible="false"/>
                     <asp:Button ID="btnReplacementQuote" runat="server" Text="REPLACEMENT_QUOTE" SkinID="PopMenuButton" Enabled="True" Visible="True"/>
-                    <asp:Button ID="btnClaimDeductibleRefund" runat="server" Text="CLAIM_DEDUCTIBLE_REFUND" SkinID="PopMenuButton" Enabled="True" Visible="True"/>
+                    <asp:Button ID="btnClaimDeductibleRefund" runat="server" Text="CLAIM_DEDUCTIBLE_REFUND" SkinID="PopMenuButton" Enabled="false" Visible="false"/>
                 </asp:Panel>
             </div>
         </div>
