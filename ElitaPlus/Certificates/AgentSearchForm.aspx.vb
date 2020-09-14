@@ -48,7 +48,8 @@ Namespace Certificates
         Private Const CodeSearchFieldZip As String = "ZIP"
         Private Const SearchTypeXCD As String = "SEARCH_TYPE-AGENT_SEARCH"
         Private Const CodeSearchFieldDob As String = "BIRTH_DATE_CAL"
-
+        Private Const CodeSearchFieldBranchCode As String = "BRANCH_CODE"
+        Private Const CodeSearchFieldBranchName As String = "BRANCH_NAME"
 
 
 #End Region
@@ -91,6 +92,8 @@ Namespace Certificates
             Public PreviousDealerId As Guid = Guid.Empty
             Public ShowAdditionalSearchFields As Boolean = False
             Public Dob As String = String.Empty
+            Public BranchCode As String = String.Empty
+            Public BranchName As String = String.Empty
             Sub New()
             End Sub
         End Class
@@ -268,6 +271,8 @@ Namespace Certificates
             State.ServiceLineNumber = String.Empty
             State.AccountNumber = String.Empty
             State.GlobalCustomerNumber = String.Empty
+            State.BranchCode = String.Empty
+            State.BranchName = String.Empty
         End Sub
         Private Sub SetStateFieldsValue()
 
@@ -297,6 +302,8 @@ Namespace Certificates
             State.ServiceLineNumber = GetSearchTextBoxValue(CodeSearchFieldServiceLineNumber)
             State.AccountNumber = GetSearchTextBoxValue(CodeSearchFieldAccountNumber)
             State.GlobalCustomerNumber = GetSearchTextBoxValue(CodeSearchFieldGlobalCustomerNumber)
+            State.BranchCode = GetSearchTextBoxValue(CodeSearchFieldBranchCode)
+            State.BranchName = GetSearchTextBoxValue(CodeSearchFieldBranchName)
 
             ' Dynamic controls - drop down
             State.CertificateStatus = GetSearchDropDownValue(CodeSearchFieldCertificateStatus)
@@ -324,6 +331,9 @@ Namespace Certificates
             ClearSearchTextBox(CodeSearchFieldAccountNumber)
             ClearSearchTextBox(CodeSearchFieldGlobalCustomerNumber)
             ClearSearchTextBox(CodeSearchFieldDob)
+            ClearSearchTextBox(CodeSearchFieldBranchCode)
+            ClearSearchTextBox(CodeSearchFieldBranchName)
+
 
             ' Reset drop down
             ResetSearchDropDown(CodeSearchFieldCertificateStatus)
@@ -361,6 +371,8 @@ Namespace Certificates
             SetSearchTextBox(CodeSearchFieldAccountNumber, State.AccountNumber)
             SetSearchTextBox(CodeSearchFieldGlobalCustomerNumber, State.GlobalCustomerNumber)
             SetSearchTextBox(CodeSearchFieldDob, State.Dob)
+            SetSearchTextBox(CodeSearchFieldBranchCode, State.BranchCode)
+            SetSearchTextBox(CodeSearchFieldBranchName, State.BranchName)
 
             ' Dynamic controls - Drop down
             SetSearchDropDown(CodeSearchFieldCertificateStatus, State.CertificateStatus)
@@ -789,7 +801,9 @@ Namespace Certificates
                                                            State.AccountNumber,
                                                            State.GlobalCustomerNumber,
                                                            State.Dob,
-                                                           Authentication.CurrentUser.LanguageId)
+                                                           Authentication.CurrentUser.LanguageId,
+                                                           State.BranchCode,
+                                                           State.BranchName)
 
                     ValidSearchResultCountNew(State.SearchDv.Count, True)
 
