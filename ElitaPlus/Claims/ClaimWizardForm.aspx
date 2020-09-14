@@ -1075,7 +1075,13 @@
                                                     <asp:BoundField DataField="ServiceCenterName" SortExpression="ServiceCenterName"
                                                         ReadOnly="true" HtmlEncode="false" HeaderText="SERVICE_CENTER_NAME" HeaderStyle-HorizontalAlign="Center" />
                                                     <asp:BoundField DataField="AuthorizedAmount" SortExpression="AuthorizedAmount" ReadOnly="true"
-                                                        HtmlEncode="false" HeaderText="AUTHORIZED_AMOUNT" HeaderStyle-HorizontalAlign="Center" />
+                                                        HtmlEncode="false" HeaderText="AUTHORIZED_AMOUNT" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Right" />
+                                                    <asp:BoundField DataField="AuthorizationType" SortExpression="AuthorizationType" ReadOnly="true"
+                                                                    HtmlEncode="false" HeaderText="AUTHORIZATION_TYPE" HeaderStyle-HorizontalAlign="Center" />
+                                                    <asp:BoundField DataField="RefundMethod" SortExpression="RefundMethod" ReadOnly="true"
+                                                                    HtmlEncode="false" HeaderText="REFUND_METHOD" HeaderStyle-HorizontalAlign="Center" />
+                                                    <asp:BoundField DataField="CreatedBy" SortExpression="CreatedBy" ReadOnly="true"
+                                                                    HtmlEncode="false" HeaderText="CREATED_BY" HeaderStyle-HorizontalAlign="Center" />
                                                     <asp:BoundField DataField="CreatedDate" SortExpression="CreatedDate" ReadOnly="true"
                                                         HtmlEncode="false" HeaderText="CREATED_DATE" HeaderStyle-HorizontalAlign="Center" />
                                                     <asp:BoundField DataField="ClaimAuthStatus" ReadOnly="true" HeaderText="Status" SortExpression="ClaimAuthStatus"
@@ -1493,7 +1499,8 @@
                 <asp:Button ID="btnClaimOverride_Write" TabIndex="190" runat="server" Text="Override"
                     SkinID="AlternateLeftButton" />
                 <asp:Button ID="btnComment" TabIndex="190" runat="server" Text="Comments" SkinID="AlternateLeftButton" />
-                <asp:Button ID="btnDenyClaim" runat="server" Font-Bold="false" TabIndex="195" Text="Deny_Claim"
+                <asp:Button ID="btnClaimDeductibleRefund" TabIndex="190"  runat="server" Text="CLAIM_DEDUCTIBLE_REFUND" SkinID="AlternateLeftButton" />
+               <asp:Button ID="btnDenyClaim" runat="server" Font-Bold="false" TabIndex="195" Text="Deny_Claim"
                     SkinID="AlternateLeftButton" />
                 <asp:LinkButton ID="btnCancel_Write" TabIndex="190" runat="server" Text="Cancel"
                     OnClientClick="return revealModal('ModalCancel');" SkinID="AlternateRightButton"
