@@ -1253,6 +1253,14 @@ Partial Class ClaimForm
             btnReplaceItem.Enabled = False
             ControlMgr.SetVisibleControl(Me, btnReplaceItem, False)
         End If
+
+        'For Deductible refund button
+        If (claim.IsDeductibleRefundAllowed AndAlso
+            Not claim.IsDeductibleRefundExist) Then
+            'Make Deductible refund enabled
+            Me.btnClaimDeductibleRefund.Enabled = True
+            ControlMgr.SetVisibleControl(Me, btnClaimDeductibleRefund, True)
+        End If
     End Sub
 
     Private Sub EnableDisableButtonsConditionally()

@@ -1499,7 +1499,7 @@
                 <asp:Button ID="btnClaimOverride_Write" TabIndex="190" runat="server" Text="Override"
                     SkinID="AlternateLeftButton" />
                 <asp:Button ID="btnComment" TabIndex="190" runat="server" Text="Comments" SkinID="AlternateLeftButton" />
-                <asp:Button ID="btnClaimDeductibleRefund" TabIndex="190"  runat="server" Text="CLAIM_DEDUCTIBLE_REFUND" SkinID="AlternateLeftButton" />
+                <asp:Button ID="btnClaimDeductibleRefund" TabIndex="190"  runat="server" Text="CLAIM_DEDUCTIBLE_REFUND" SkinID="AlternateLeftButton" Visible="false" />
                <asp:Button ID="btnDenyClaim" runat="server" Font-Bold="false" TabIndex="195" Text="Deny_Claim"
                     SkinID="AlternateLeftButton" />
                 <asp:LinkButton ID="btnCancel_Write" TabIndex="190" runat="server" Text="Cancel"
