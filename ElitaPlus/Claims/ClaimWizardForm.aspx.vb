@@ -1570,6 +1570,8 @@ Public Class ClaimWizardForm
         ControlMgr.SetVisibleControl(Me, btnSave_WRITE, False)
         ControlMgr.SetVisibleControl(Me, btnClaimOverride_Write, False)
         ControlMgr.SetVisibleControl(Me, btnComment, False)
+        ControlMgr.SetVisibleControl(Me, btnClaimDeductibleRefund, False)
+
         Me.btnContinue.Text = TranslationBase.TranslateLabelOrMessage("CONTINUE")
 
         Select Case wizardStep
@@ -1586,6 +1588,7 @@ Public Class ClaimWizardForm
                     ControlMgr.SetVisibleControl(Me, Me.btnCancelClaim, True)
                     ControlMgr.SetVisibleControl(Me, Me.btnClaimOverride_Write, False)
                     ControlMgr.SetVisibleControl(Me, Me.btnSave_WRITE, False)
+                    ControlMgr.SetVisibleControl(Me, Me.btnClaimDeductibleRefund, True)
                 Else
                     ControlMgr.SetVisibleControl(Me, Me.btnCancelClaim, False)
                 End If
@@ -3965,11 +3968,7 @@ Public Class ClaimWizardForm
 
     Private Sub btnClaimDeductibleRefund_Click(sender As Object, e As EventArgs) Handles btnClaimDeductibleRefund.Click
         Try
-            Dim FlowName As String = CLAIM_WIZARD_FROM_EVENT_DETAILS
-            Dim nav As New ElitaPlusNavigation
-            Me.NavController = New NavControllerBase(nav.Flow(FlowName))
-            Me.NavController.State = New MyState
-            Me.NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_DEDUCTIBLE_REFUND, New ClaimDeductibleRefundForm.Parameters(CType(Me.State.ClaimBO, ClaimBase)))
+            Me.callPage(ClaimDeductibleRefundForm.URL, New ClaimDeductibleRefundForm.Parameters(CType(Me.State.ClaimBO, ClaimBase)))
 
         Catch ex As Threading.ThreadAbortException
 

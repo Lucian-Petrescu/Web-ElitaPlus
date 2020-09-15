@@ -1502,7 +1502,7 @@ Public NotInheritable Class ClaimAuthorization
         Me.RefundMethodXcd = refundMethod
         Me._isDSCreator = True
         Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
-        Me.SetCreatedAuditInfo()
+        'Me.SetCreatedAuditInfo()
 
     End Sub
 
