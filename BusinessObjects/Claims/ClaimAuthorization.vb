@@ -477,7 +477,7 @@ Public NotInheritable Class ClaimAuthorization
             Me.SetValue(ClaimAuthorizationDAL.COL_NAME_SOURCE, Value)
         End Set
     End Property
-    Public _reversed As boolean = False
+    Public _reversed As Boolean = False
     Public Property Reversed() As Boolean
         Get
             Return _reversed
@@ -561,7 +561,7 @@ Public NotInheritable Class ClaimAuthorization
                 Case ClaimAuthorizationStatus.OnHold
                     Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__ONHOLD)
                 Case ClaimAuthorizationStatus.Cancelled
-                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__CANCELLED)          
+                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__CANCELLED)
                 Case ClaimAuthorizationStatus.Collected
                     Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__COLLECTED)
                 Case ClaimAuthorizationStatus.Reversed
@@ -700,8 +700,8 @@ Public NotInheritable Class ClaimAuthorization
     Public ReadOnly Property CanVoidClaimAuthorization() As Boolean
         Get
             If ClaimAuthStatus = ClaimAuthorizationStatus.Authorized OrElse ClaimAuthStatus = ClaimAuthorizationStatus.Pending OrElse ClaimAuthStatus = ClaimAuthorizationStatus.Sent Then
-                return True
-            Else 
+                Return True
+            Else
                 Return False
             End If
         End Get
@@ -759,13 +759,13 @@ Public NotInheritable Class ClaimAuthorization
         End Get
 
     End Property
-    public _revAdjReasonId as Guid         
+    Public _revAdjReasonId As Guid
     Public Property RevAdjustmentReasonId() As Guid
-        Get           
-            Return me._revAdjReasonId          
+        Get
+            Return Me._revAdjReasonId
         End Get
-        Set(ByVal Value As guid)          
-            _revAdjReasonId = value        
+        Set(ByVal Value As Guid)
+            _revAdjReasonId = Value
         End Set
 
     End Property
@@ -1324,14 +1324,14 @@ Public NotInheritable Class ClaimAuthorization
         End Get
     End Property
 
-    <ValidStringLength("", Max:=10)> _
+    <ValidStringLength("", Max:=10)>
     Public Property Locator() As String
         Get
             CheckDeleted()
-            If row(ClaimAuthorizationDAL.COL_NAME_LOCATOR) Is DBNull.Value Then
+            If Row(ClaimAuthorizationDAL.COL_NAME_LOCATOR) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(row(ClaimAuthorizationDAL.COL_NAME_LOCATOR), String)
+                Return CType(Row(ClaimAuthorizationDAL.COL_NAME_LOCATOR), String)
             End If
         End Get
         Set(ByVal Value As String)
@@ -1375,7 +1375,7 @@ Public NotInheritable Class ClaimAuthorization
 #End Region
 
 #End Region
-    
+
 #Region "Instance Methods"
     Public Sub Save()
         'Check Claim AuthorizationItem list should have atleast one Auth item
@@ -1417,7 +1417,7 @@ Public NotInheritable Class ClaimAuthorization
 
         Try
 
-           MyBase.Save()
+            MyBase.Save()
             If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimAuthorizationDAL
                 dal.UpdateFamily(Me.Dataset, Me.Claim.CompanyId)
@@ -1502,7 +1502,6 @@ Public NotInheritable Class ClaimAuthorization
         Me.RefundMethodXcd = refundMethod
         Me._isDSCreator = True
         Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
-        Me.SetCreatedAuditInfo()
 
     End Sub
 
@@ -1589,32 +1588,32 @@ Public NotInheritable Class ClaimAuthorization
 
     End Sub
 
-    Friend function ReverseClaimAuthFromExiting(ByVal claimauth As ClaimAuthorization) As guid
-       dim newAuthItemId As Guid
-       dim oClaimAuthItem As New ClaimAuthItem
-       oClaimAuthItem = (From item As ClaimAuthItem In Me.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False) Select item Order By item.CreatedDate Descending).FirstOrDefault()
+    Friend Function ReverseClaimAuthFromExiting(ByVal claimauth As ClaimAuthorization) As Guid
+        Dim newAuthItemId As Guid
+        Dim oClaimAuthItem As New ClaimAuthItem
+        oClaimAuthItem = (From item As ClaimAuthItem In Me.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False) Select item Order By item.CreatedDate Descending).FirstOrDefault()
 
-       ' For Each item As ClaimAuthItem In claimauth.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False)
-            If Not oClaimAuthItem.IsDeleted Then
-                Dim newclaimAuthItem As ClaimAuthItem = me.GetNewAuthorizationItemChild() 
-                newAuthItemId = newclaimAuthItem.Id
-                'CType(Me.ClaimAuthorizationItemChildren.GetNewChild(Me.Id), ClaimAuthItem)
-                newclaimAuthItem.CopyFrom(oClaimAuthItem)                
-               newclaimAuthItem.LineItemNumber = ctype(oClaimAuthItem.LineItemNumber,Integer) + 1
-                newclaimAuthItem.ClaimAuthorizationId = Me.Id
-                newclaimAuthItem.Amount = oClaimAuthItem.Amount * -1D
-                newclaimAuthItem.AdjustmentReasonId = me.RevAdjustmentReasonId
-                newclaimAuthItem.Save()
-                oClaimAuthItem.Amount = oClaimAuthItem.OrginalAmount
-                If (oClaimAuthItem.IsNew) Then
-                    oClaimAuthItem.Delete()
-                End If
+        ' For Each item As ClaimAuthItem In claimauth.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False)
+        If Not oClaimAuthItem.IsDeleted Then
+            Dim newclaimAuthItem As ClaimAuthItem = Me.GetNewAuthorizationItemChild()
+            newAuthItemId = newclaimAuthItem.Id
+            'CType(Me.ClaimAuthorizationItemChildren.GetNewChild(Me.Id), ClaimAuthItem)
+            newclaimAuthItem.CopyFrom(oClaimAuthItem)
+            newclaimAuthItem.LineItemNumber = CType(oClaimAuthItem.LineItemNumber, Integer) + 1
+            newclaimAuthItem.ClaimAuthorizationId = Me.Id
+            newclaimAuthItem.Amount = oClaimAuthItem.Amount * -1D
+            newclaimAuthItem.AdjustmentReasonId = Me.RevAdjustmentReasonId
+            newclaimAuthItem.Save()
+            oClaimAuthItem.Amount = oClaimAuthItem.OrginalAmount
+            If (oClaimAuthItem.IsNew) Then
+                oClaimAuthItem.Delete()
             End If
+        End If
         'Next
-        Me.CopyFrom(claimauth)  
+        Me.CopyFrom(claimauth)
         Return newAuthItemId
 
-    End function
+    End Function
 
 
 
@@ -2071,10 +2070,10 @@ Public NotInheritable Class ClaimAuthorization
 
 #Region "Claim Authorization -Reshipment"
 
-    Public Function RefundFee(ByVal claimAutorizationId As Guid, ByVal refundReasonId As Guid, byval claimAuthItemId As Guid, byref errCode as integer, byref errMsg as string) As boolean
+    Public Function RefundFee(ByVal claimAutorizationId As Guid, ByVal refundReasonId As Guid, ByVal claimAuthItemId As Guid, ByRef errCode As Integer, ByRef errMsg As String) As Boolean
         Try
             Dim dal As New ClaimAuthorizationDAL
-            return dal.RefundFee(claimAutorizationId,refundReasonId, claimAuthItemId,errCode ,errMsg )
+            Return dal.RefundFee(claimAutorizationId, refundReasonId, claimAuthItemId, errCode, errMsg)
             'If dal.RefundFee(claimAutorizationId,refundReasonId, claimAuthItemId,errCode ,errMsg )
             '    Dim claimAuth As ClaimAuthorization = new ClaimAuthorization(claimAutorizationId)
             '    Me.ClaimAuthStatus = ClaimAuthorizationStatus.Reversed
@@ -2084,35 +2083,35 @@ Public NotInheritable Class ClaimAuthorization
             '    Return False
 
             'End if  
-           
+
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    #End Region
+#End Region
 
- #region "Claim Authorization Reversed"
+#Region "Claim Authorization Reversed"
 
     Public Sub RefundAmount()
-        If Me.Reversed = True then
+        If Me.Reversed = True Then
             If (Me.ClaimAuthorizationItemChildren.Count > 1) Then
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, "CLAIM_AUTH_ITEM_COUNT_CANNOT_BE_MORE_THAN_ONE")
             End If
-            dim newAuthItemId As Guid =  ReverseClaimAuthFromExiting(Me)             
-            Me.ClaimAuthStatus = ClaimAuthorizationStatus.Reversed            
-            dim errCode, errMsg As String
-            If Not RefundFee(Me.Id,Me.RevAdjustmentReasonId, newAuthItemId, errCode, errMsg) then                
+            Dim newAuthItemId As Guid = ReverseClaimAuthFromExiting(Me)
+            Me.ClaimAuthStatus = ClaimAuthorizationStatus.Reversed
+            Dim errCode, errMsg As String
+            If Not RefundFee(Me.Id, Me.RevAdjustmentReasonId, newAuthItemId, errCode, errMsg) Then
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, errMsg)
-            End If  
-        End if
-    
+            End If
+        End If
+
     End Sub
 
 #End Region
 
 
-    Public Function ManualCashpayRequest(ByVal claimAutorizationId As Guid, ByVal bankInfoId As Guid, byref errCode as integer, byref errMsg as string) As Boolean
+    Public Function ManualCashpayRequest(ByVal claimAutorizationId As Guid, ByVal bankInfoId As Guid, ByRef errCode As Integer, ByRef errMsg As String) As Boolean
         Try
             Dim dal As New ClaimAuthorizationDAL
             Return dal.ManualCashpayRequest(claimAutorizationId, bankInfoId, errCode, errMsg)

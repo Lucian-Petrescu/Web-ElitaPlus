@@ -17,6 +17,7 @@ Public Class ClaimDeductibleRefundForm
     Private Const LIST_CODE_RFM As String = "RFM"
     Private Const LBL_TXT_CLAIM_DEDUCTIBLE_REFUND As String = "CLAIM_DEDUCTIBLE_REFUND"
     Private Const LBL_TXT_CLAIM_SUMMARY As String = "CLAIM_SUMMARY"
+    Public Const URL As String = "~/Claims/ClaimDeductibleRefundForm.aspx"
 
 #End Region
 
@@ -34,11 +35,15 @@ Public Class ClaimDeductibleRefundForm
 
     Protected Shadows ReadOnly Property State() As MyState
         Get
-            If Me.NavController.State Is Nothing Then
-                Me.NavController.State = New MyState
-                InitializeFromFlowSession()
+            If (Me.NavController Is Nothing) Then
+                Return CType(MyBase.State, MyState)
+            Else
+                If Me.NavController.State Is Nothing Then
+                    Me.NavController.State = New MyState
+                    InitializeFromFlowSession()
+                End If
+                Return CType(Me.NavController.State, MyState)
             End If
-            Return CType(Me.NavController.State, MyState)
         End Get
     End Property
 
@@ -49,12 +54,27 @@ Public Class ClaimDeductibleRefundForm
             If Not Me.State.InputParameters Is Nothing Then
                 Me.State.MyBO = CType(Me.State.InputParameters.ClaimBO, ClaimBase)
             End If
-
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
+#End Region
+
+#Region "Page Return Type"
+    Public Class ReturnType
+        Public LastOperation As DetailPageCommand
+        Public EditingBo As ClaimBase
+        Public BoChanged As Boolean = False
+        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As ClaimBase, Optional ByVal boChanged As Boolean = False)
+            Me.LastOperation = LastOp
+            Me.EditingBo = curEditingBo
+            Me.BoChanged = boChanged
+        End Sub
+        Public Sub New(ByVal LastOp As DetailPageCommand)
+            Me.LastOperation = LastOp
+        End Sub
+    End Class
 #End Region
 
 #Region "Page Parameters"
@@ -70,6 +90,17 @@ Public Class ClaimDeductibleRefundForm
 #Region "Page Events"
     Private Sub UpdateBreadCrum()
         Me.MasterPage.BreadCrum = Me.MasterPage.BreadCrum & TranslationBase.TranslateLabelOrMessage("CLAIM") & ElitaBase.Sperator & Me.MasterPage.PageTab
+    End Sub
+
+    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Try
+            If Not Me.CallingParameters Is Nothing Then
+                Me.State.InputParameters = CType(CallingPar, Parameters)
+                State.MyBO = Me.State.InputParameters.ClaimBO
+            End If
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
     End Sub
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -151,9 +182,8 @@ Public Class ClaimDeductibleRefundForm
 
     Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
         If (Me.State.MyBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple AndAlso Me.State.MyBO.StatusCode = Codes.CLAIM_STATUS__PENDING) Then
-            Dim claimId As Guid = Me.State.MyBO.Id
-            Me.RestoreState(Me.State)
-            Me.callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step3, Nothing, claimId, Nothing))
+            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO)
+            MyBase.ReturnToCallingPage(retObj)
         Else
             Me.NavController.Navigate(Me, FlowEvents.EVENT_CANCEL, New ClaimForm.Parameters(Me.State.MyBO.Id))
         End If
