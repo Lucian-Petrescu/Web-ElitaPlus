@@ -80,7 +80,7 @@ Public Class ClaimWizardForm
     Public Const Manufacture As String = "M"
     Public Const PDF_URL As String = "DisplayPdf.aspx?ImageId="
     Public Const GRID_COL_CREATED_DATE_IDX As Integer = 1
-    Public Const GRID_COL_PROCESSED_DATE_IDX As Integer = 6
+    Public Const GRID_COL_PROCESSED_DATE_IDX As Integer = 3
     Public Const GRIDCLA_COL_STATUS_CODE_IDX As Integer = 7
     Public Const GRIDCLA_COL_AMOUNT_IDX As Integer = 2
     Public Const GRID_COL_STATUS_CODE_IDX As Integer = 5
