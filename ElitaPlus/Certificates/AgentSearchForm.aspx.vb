@@ -782,6 +782,24 @@ Namespace Certificates
         End Sub
         Private Sub PopulateSearchResultInRepeater()
             Try
+                '' check if the search string contains branch code and branch name then include either customer firstName / LastName/ Policy status,
+                ''and invoice Number
+
+                if State.BranchCode <> String.Empty Or State.BranchCode <> "" Or 
+                   State.BranchName <> String.Empty Or State.BranchName <> "" Then
+
+                    if State.CustomerFirstName ="" Or  State.CustomerFirstName = String.Empty Or  
+                       State.CustomerLastName ="" Or State.CustomerLastName = String.Empty Or 
+                       State.InvoiceNumber  ="" Or State.InvoiceNumber = String.Empty 
+
+                        Me.MasterPage.MessageController.AddMessage(Message.MSG_BRANCH_FIELD_SELECT)
+                        Exit sub
+
+                    End If
+
+                End If
+
+
                 If (State.SearchDv Is Nothing) Then
                     State.SearchDv = CaseBase.GetAgentList(State.CompanyId,
                                                            State.DealerId,
