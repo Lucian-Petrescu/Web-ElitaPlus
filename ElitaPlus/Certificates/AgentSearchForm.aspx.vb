@@ -794,7 +794,7 @@ Namespace Certificates
                        string.IsNullOrEmpty(State.InvoiceNumber) AND
                        string.IsNullOrEmpty(State.CertificateStatus) Then
 
-                        Me.MasterPage.MessageController.AddMessage(Message.MSG_BRANCH_FIELD_SELECT)
+                        Me.MasterPage.MessageController.AddError(Message.MSG_BRANCH_FIELD_SELECT)
                         Exit sub
                     End If
                 End If
