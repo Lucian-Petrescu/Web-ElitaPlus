@@ -772,19 +772,19 @@ Namespace Certificates
             Try
                 '' check if the search string contains branch code and branch name then include either customer firstName / LastName/ Policy status,
                 ''and invoice Number
+                Me.MasterPage.MessageController.Clear()
 
-                if State.BranchCode <> String.Empty Or State.BranchCode <> "" Or 
-                   State.BranchName <> String.Empty Or State.BranchName <> "" Then
+                if NOT string.IsNullOrEmpty(State.BranchCode) Or
+                   NOT string.IsNullOrEmpty(State.BranchName)  Then
 
-                    if State.CustomerFirstName ="" Or  State.CustomerFirstName = String.Empty Or  
-                       State.CustomerLastName ="" Or State.CustomerLastName = String.Empty Or 
-                       State.InvoiceNumber  ="" Or State.InvoiceNumber = String.Empty 
+                    if string.IsNullOrEmpty(State.CustomerFirstName) AND 
+                       string.IsNullOrEmpty(State.CustomerLastName) AND
+                       string.IsNullOrEmpty(State.InvoiceNumber) AND
+                       string.IsNullOrEmpty(State.CertificateStatus) Then
 
                         Me.MasterPage.MessageController.AddMessage(Message.MSG_BRANCH_FIELD_SELECT)
                         Exit sub
-
                     End If
-
                 End If
 
 
