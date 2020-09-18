@@ -126,7 +126,8 @@
                                                                     <td style="vertical-align:top;" colspan="2" width="50%">
                                                                         <asp:DataGrid ID="DataGridDetail" Width="100%" runat="server" AutoGenerateColumns="False"
                                                                             BorderStyle="Solid" TabIndex="18" BorderWidth="1px" BackColor="#DEE3E7" BorderColor="#999999"
-                                                                            CellPadding="1" AllowPaging="True" AllowSorting="True" OnItemCreated="ItemCreated">
+                                                                            CellPadding="1" AllowPaging="True" AllowSorting="True" OnItemCreated="ItemCreated"
+                                                                            PageIndexChanged="DataGridDetail_PageIndexChanged" PageSize="10">
                                                                             <SelectedItemStyle Wrap="False" BackColor="LavenderBlush"></SelectedItemStyle>
                                                                             <EditItemStyle Wrap="False" BackColor="AliceBlue"></EditItemStyle>
                                                                             <AlternatingItemStyle Wrap="False" BackColor="#F1F1F1"></AlternatingItemStyle>

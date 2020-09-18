@@ -29,28 +29,7 @@
   <LOAD_LIST>
   </LOAD_LIST>
   <LOAD_LIST_CLAIM_ID>
-    <![CDATA[
-      SELECT 
-        CLAIM_IMAGE_ID,
-        CLAIM_ID,
-        IMAGE_ID,
-        DOCUMENT_TYPE_ID,
-        IMAGE_STATUS_ID,
-        SCAN_DATE,
-        created_date,
-				created_by,
-				modified_date,
-				modified_by,
-        file_name,
-        file_size_bytes,
-        comments,
-        user_name,
-        is_local_repository
-      FROM 
-        ELP_CLAIM_IMAGE 
-      WHERE 
-        CLAIM_ID =:CLAIM_ID
-    ]]>
+    <![CDATA[elita.elp_utl_documents.LoadDocumentList]]>
   </LOAD_LIST_CLAIM_ID>
   <UPDATE>
     <![CDATA[	
@@ -68,6 +47,9 @@
 				claim_image_id = :claim_image_id
 		]]>
   </UPDATE>
+  <UPDATE_DOCUMENT_DELETE_FLAG>
+    <![CDATA[elita.elp_utl_documents.update_delete_flag]]>
+  </UPDATE_DOCUMENT_DELETE_FLAG>
   <INSERT>
     INSERT INTO elp_claim_image
     (

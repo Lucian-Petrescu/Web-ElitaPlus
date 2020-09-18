@@ -96,6 +96,7 @@ Public Class ClaimWizardForm
     Public Const gridClaimCaseDeviceInfoPurchasedDate As Integer = 3
     Private Const LABEL_SERVICE_CENTER As String = "SERVICE_CENTER"
     Public Const SESSION_KEY_CLAIM_WIZARD_BACKUP_STATE As String = "SESSION_KEY_CLAIM_WIZARD_BACKUP_STATE"
+    Public Const ISSUE_CODE_CR_DEVICE_MIS As String = "CR_DEVICE_MIS"
 
 #End Region
 
@@ -320,6 +321,7 @@ Public Class ClaimWizardForm
 
             End If
             BindBoPropertiesToLabels(Me.State.StepName)
+            PopulateClaimedEnrolledDetails()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2240,8 +2242,7 @@ Public Class ClaimWizardForm
         Me.State.ClaimBO.RecalculateDeductibleForChanges()
         Me.State.ClaimIssuesView = Me.State.ClaimBO.GetClaimIssuesView()
         Me.State.ClaimImagesView = Me.State.ClaimBO.GetClaimImagesView()
-       
-        'populateClaimEquipment()
+
         PopulateClaimIssuesGrid()
         PopulateClaimImagesGrid()
         PopulateClaimAuthorizationGrid()
@@ -2389,15 +2390,6 @@ Public Class ClaimWizardForm
             End With
         End If
 
-        With Me.State.ClaimBO
-            If Not .EnrolledEquipment Is Nothing Or Not .ClaimedEquipment Is Nothing Then
-                With Me.ucClaimDeviceInfo
-                    .thisPage = Me
-                    .ClaimBO = CType(Me.State.ClaimBO, ClaimBase)
-                End With
-            End If
-        End With
-
         If Me.State.ClaimBO.CertificateItem.IsEquipmentRequired Then
             'populate best replacement record
             With Me.step3_ReplacementOption
@@ -2501,6 +2493,31 @@ Public Class ClaimWizardForm
     '    End With
 
     'End Sub
+
+    Sub PopulateClaimedEnrolledDetails()
+        Dim allowEnrolledDeviceUpdate As AttributeValue = State.DealerBO.AttributeValues.FirstOrDefault(Function(attributeValue) attributeValue.Attribute.UiProgCode = Codes.DLR_ATTR_ALLOW_MODIFY_CLAIMED_DEVICE)
+        With State.ClaimBO
+            If Not .EnrolledEquipment Is Nothing Or Not .ClaimedEquipment Is Nothing Then
+                With ucClaimDeviceInfo
+                    .thisPage = Me
+                    .ClaimBO = CType(State.ClaimBO, ClaimBase)
+                    If Not allowEnrolledDeviceUpdate Is Nothing AndAlso allowEnrolledDeviceUpdate.Value = Codes.YESNO_Y Then
+                        For Each i As ClaimIssue In State.ClaimBO.ClaimIssuesList
+                            If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS and i.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Then
+                                .ShowDeviceEditImg = True
+                                Exit For
+                            Else 
+                                .ShowDeviceEditImg = False
+                            End If
+                        Next
+                    else
+                       .ShowDeviceEditImg = False
+                    End If
+                    
+                End With
+            End If
+        End With
+    End Sub
 
     Private Sub PopulateBOFromFormForStep3()
 
@@ -3901,7 +3918,11 @@ Public Class ClaimWizardForm
 
 
         Try
-            If (Not String.IsNullOrWhiteSpace(Me.State.CertItemCoverageBO.FulfillmentProfileCode)) Then
+            if Me.State.ClaimBO?.FulfillmentProviderType = FulfillmentProviderType.DynamicFulfillment then
+
+                return True
+            
+            else If (Not String.IsNullOrWhiteSpace(Me.State.CertItemCoverageBO.FulfillmentProfileCode)) Then
 
                 wsResponseObject = WcfClientHelper.Execute(Of Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGatewayClient, Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGateway, Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse)(
                                     GetClaimFulfillmentWebAppGatewayClient(),

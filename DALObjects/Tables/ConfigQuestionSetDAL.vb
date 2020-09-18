@@ -1,4 +1,6 @@
-﻿Public Class ConfigQuestionSetDAL
+﻿Imports Assurant.ElitaPlus.DALObjects.DBHelper
+
+Public Class ConfigQuestionSetDAL
     Inherits OracleDALBase
 
 #Region "Constants"
@@ -124,7 +126,7 @@
     End Sub
 
     Public Function LoadList(ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal DealerGrpID As Guid, ByVal DealerID As Guid,
-                             ByVal ProductCodeID As Guid, ByVal CoverageTypeID As Guid, ByVal RiskTypeID As Guid,
+                             ByVal ProductCode As String, ByVal CoverageTypeID As Guid, ByVal RiskTypeID As Guid,
                              ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String, ByVal LanguageID As Guid,
                              ByVal networkID As String) As DataSet
 
@@ -152,8 +154,8 @@
             cmd.AddParameter("pi_dealer_id", OracleDbType.Raw, DealerID.ToByteArray())
         End If
 
-        If ProductCodeID <> Guid.Empty Then
-            cmd.AddParameter("pi_product_code_id", OracleDbType.Raw, ProductCodeID.ToByteArray())
+        If ProductCode <> String.Empty Then
+            cmd.AddParameter("pi_product_code", OracleDbType.Varchar2, ProductCode)
         End If
 
         If CoverageTypeID <> Guid.Empty Then
@@ -191,6 +193,20 @@
         If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
             MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
         End If
+    End Sub
+
+    Public Sub DeleteConfiguration(ByVal configQuestionSetId As Guid)
+        Dim selectStmt As String = Me.Config("/SQL/DELETE")
+        Dim inputParameters(0) As DBHelperParameter
+
+        inputParameters(0) = New DBHelperParameter(Me.COL_NAME_CONFIG_QUESTION_SET_ID, configQuestionSetId, GetType(Guid))
+
+        Try
+            ' Call DBHelper Store Procedure
+            DBHelper.ExecuteSp(selectStmt, inputParameters, Nothing)
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
     End Sub
 
     Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)

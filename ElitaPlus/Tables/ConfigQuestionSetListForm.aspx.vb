@@ -12,8 +12,8 @@ Namespace Tables
 
 #Region "Constants"
         Public Const URL As String = "Tables/ConfigQuestionSetListForm.aspx"
-        Public Const PAGETITLE As String = "CONFIG_QUESTION_SET"
-        Public Const PAGETAB As String = "ADMIN"
+        Public Const PAGETITLE As String = "CONFIG_QUESTION_SET_LIST"
+        Public Const PAGETAB As String = "TABLES"
         Public Const SUMMARYTITLE As String = "SEARCH"
 
         Private Const GRID_COL_CONFIG_QUESTION_SET_ID_IDX As Integer = 0
@@ -40,7 +40,7 @@ Namespace Tables
             Public searchCompany As Guid = Guid.Empty
             Public searchDealerGrp As Guid = Guid.Empty
             Public searchDealer As Guid = Guid.Empty
-            Public searchProductCode As Guid = Guid.Empty
+            Public searchProductCode As String = String.Empty
             Public searchRiskType As Guid = Guid.Empty
             Public searchCoverageType As Guid = Guid.Empty
             Public searchQuestionSetCode As String = String.Empty
@@ -93,7 +93,7 @@ Namespace Tables
                     SetDefaultButton(Me.ddlSearchCompany, btnSearch)
                     SetDefaultButton(Me.ddlSearchDealerGroup, btnSearch)
                     SetDefaultButton(Me.ddlSearchDealer, btnSearch)
-                    SetDefaultButton(Me.ddlSearchProductCode, btnSearch)
+                    SetDefaultButton(Me.txtSearchProductCode, btnSearch)
                     SetDefaultButton(Me.ddlSearchRiskType, btnSearch)
                     SetDefaultButton(Me.ddlSearchCoverageType, btnSearch)
                     SetDefaultButton(Me.ddlSearchQuestionSetCode, btnSearch)
@@ -159,7 +159,7 @@ Namespace Tables
                 Me.ddlSearchRiskType.SelectedIndex = -1
                 Me.ddlSearchCoverageType.SelectedIndex = -1
                 Me.ddlSearchPurposeCode.SelectedIndex = -1
-                Me.ddlSearchProductCode.SelectedIndex = -1
+                Me.txtSearchProductCode.Text = String.Empty
                 Me.ddlSearchQuestionSetCode.SelectedIndex = -1
 
                 Grid.EditIndex = NO_ITEM_SELECTED_INDEX
@@ -170,7 +170,7 @@ Namespace Tables
                     .searchCompany = Guid.Empty
                     .searchDealerGrp = Guid.Empty
                     .searchDealer = Guid.Empty
-                    .searchProductCode = Guid.Empty
+                    .searchProductCode = String.Empty
                     .searchCoverageType = Guid.Empty
                     .searchQuestionSetCode = String.Empty
                     .searchPurposeCode = String.Empty
@@ -193,7 +193,7 @@ Namespace Tables
                     .searchCompany = GetSelectedItem(ddlSearchCompany)
                     .searchDealerGrp = GetSelectedItem(ddlSearchDealerGroup)
                     .searchDealer = GetSelectedItem(ddlSearchDealer)
-                    .searchProductCode = GetSelectedItem(ddlSearchProductCode)
+                    .searchProductCode = txtSearchProductCode.Text
                     .searchCoverageType = GetSelectedItem(ddlSearchCoverageType)
                     .searchQuestionSetCode = GetSelectedValue(ddlSearchQuestionSetCode)
                     .searchPurposeCode = GetSelectedValue(ddlSearchPurposeCode)
@@ -221,14 +221,8 @@ Namespace Tables
                 End If
 
                 'Company
-                Dim compLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("Company", Thread.CurrentPrincipal.GetLanguageCode())
-                Dim list As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-
-                Dim filteredList As ListItem() = (From x In compLkl
-                                                  Where list.Contains(x.ListItemId)
-                                                  Select x).ToArray()
-
-                Me.ddlSearchCompany.Populate(filteredList, New PopulateOptions() With
+                Dim oCompanyList = GetCompanyListByCompanyGroup(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
+                Me.ddlSearchCompany.Populate(oCompanyList, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -248,16 +242,8 @@ Namespace Tables
                     .AddBlankItem = True
                 })
 
-                'ProductCode
-                Dim oProductCodeList = GetProductCodeListByCompanyForUser()
-                Me.ddlSearchProductCode.Populate(oProductCodeList, New PopulateOptions() With
-                {
-                    .AddBlankItem = True,
-                    .TextFunc = textFun
-                })
-
                 'Coverage Type
-                ddlSearchCoverageType.Populate(CommonConfigManager.Current.ListManager.GetList("CTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                ddlSearchCoverageType.Populate(CommonConfigManager.Current.ListManager.GetList("CTYP", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -266,14 +252,14 @@ Namespace Tables
                 Dim listcontext As ListContext = New ListContext()
                 Dim compGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                 listcontext.CompanyGroupId = compGroupId
-                Dim riskLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
+                Dim riskLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCompanyGroup", Authentication.CurrentUser.LanguageCode, listcontext)
                 ddlSearchRiskType.Populate(riskLkl, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
 
                 'Purpose
-                ddlSearchPurposeCode.Populate(CommonConfigManager.Current.ListManager.GetList("CASEPUR", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                ddlSearchPurposeCode.Populate(CommonConfigManager.Current.ListManager.GetList("CASEPUR", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
                 {
                     .BlankItemValue = String.Empty,
                     .AddBlankItem = True,
@@ -282,7 +268,7 @@ Namespace Tables
                 })
 
                 'Question Set Code
-                Me.ddlSearchQuestionSetCode.Populate(CommonConfigManager.Current.ListManager.GetList("DcmQuestionSet", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                Me.ddlSearchQuestionSetCode.Populate(CommonConfigManager.Current.ListManager.GetList("DcmQuestionSet", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
                 {
                     .BlankItemValue = String.Empty,
                     .AddBlankItem = True,
@@ -306,8 +292,8 @@ Namespace Tables
                     SetSelectedItem(ddlSearchDealer, Me.State.searchDealer)
                 End If
 
-                If Me.State.searchProductCode <> Guid.Empty Then
-                    SetSelectedItem(ddlSearchProductCode, Me.State.searchProductCode)
+                If Me.State.searchProductCode <> String.Empty Then
+                    txtSearchProductCode.Text = Me.State.searchProductCode
                 End If
 
                 If Me.State.searchCoverageType <> Guid.Empty Then
@@ -332,7 +318,16 @@ Namespace Tables
 
         End Sub
 
-        Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
+        Private Function GetCompanyListByCompanyGroup(ByVal companyGroupId As Guid) As ListItem()
+            Dim listcontext As ListContext = New ListContext()
+
+            listcontext.CompanyGroupId = companyGroupId
+            Dim companyListForCompanyGroup As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="GetCompanyByCompanyGroup", context:=listcontext)
+
+            Return companyListForCompanyGroup.ToArray()
+        End Function
+
+        Private Function GetDealerListByCompanyForUser() As ListItem()
             Dim Index As Integer
             Dim oListContext As New ListContext
 
@@ -342,7 +337,7 @@ Namespace Tables
 
             For Index = 0 To UserCompanies.Count - 1
                 oListContext.CompanyId = UserCompanies(Index)
-                Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
+                Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
                     If Not oDealerList Is Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
@@ -401,43 +396,12 @@ Namespace Tables
             Return oProductListForCompany.ToArray()
         End Function
 
-        Private Function GetProductListByDealer() As ListItem()
-            Dim oListContext As New ListContext
-            oListContext.DealerId = Guid.Parse(ddlSearchDealer.SelectedValue)
-            Dim oProductListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByDealer", context:=oListContext)
-            Return oProductListForCompany.ToArray()
-        End Function
-
-        Private Function GetProductCodeListByCompanyForUser() As ListItem()
-            Dim Index As Integer
-            Dim oListContext As New ListContext
-
-            Dim UserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-
-            Dim oProductCodeList As New Collections.Generic.List(Of ListItem)
-
-            For Index = 0 To UserCompanies.Count - 1
-                oListContext.CompanyId = UserCompanies(Index)
-                Dim oProductCodeListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByCompany", context:=oListContext)
-                If oProductCodeListForCompany.Count > 0 Then
-                    If oProductCodeList IsNot Nothing Then
-                        oProductCodeList.AddRange(oProductCodeListForCompany)
-                    Else
-                        oProductCodeList = oProductCodeListForCompany.Clone()
-                    End If
-                End If
-            Next
-
-            Return oProductCodeList.ToArray()
-
-        End Function
-
         Public Sub PopulateGrid()
             Dim blnNewSearch As Boolean = False
             With State
                 If ((.searchDV Is Nothing) OrElse (.HasDataChanged)) Then
                     .searchDV = ConfigQuestionSet.getList(CompGrpID:= .searchCompanyGrp, CompanyID:= .searchCompany, DealerGrpID:= .searchDealerGrp, DealerID:= .searchDealer,
-                                                  ProductCodeID:= .searchProductCode, CoverageTypeID:= .searchCoverageType,
+                                                  ProductCode:= .searchProductCode, CoverageTypeID:= .searchCoverageType,
                                                   RiskTypeID:= .searchRiskType, strPurposeXCD:= .searchPurposeCode, strQuestionSetCode:= .searchQuestionSetCode)
                     blnNewSearch = True
                 End If
@@ -568,56 +532,37 @@ Namespace Tables
                                                                     End Function
 
             If ddlSearchCompany.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-
                 If ddlSearchCompany.SelectedIndex = BLANK_ITEM_SELECTED Then
-                    Exit Sub
+                    'DealerGroup
+                    Dim oDealerGroupList = GetDealerGroupListByCompanyForUser()
+                    Me.ddlSearchDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
+                    {
+                        .AddBlankItem = True,
+                        .SortFunc = AddressOf .GetCode
+                    })
+
+                    'Dealer
+                    Dim oDealerList = GetDealerListByCompanyForUser()
+                    Me.ddlSearchDealer.Populate(oDealerList, New PopulateOptions() With
+                    {
+                        .AddBlankItem = True
+                    })
+                Else
+                    'DealerGroup
+                    Dim oDealerGroupList = GetDealerGroupListByCompany()
+                    Me.ddlSearchDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
+                    {
+                        .AddBlankItem = True,
+                        .SortFunc = AddressOf .GetCode
+                    })
+
+                    'Dealer
+                    Dim oDealerList = GetDealerListByCompany()
+                    Me.ddlSearchDealer.Populate(oDealerList, New PopulateOptions() With
+                    {
+                        .AddBlankItem = True
+                    })
                 End If
-
-                'DealerGroup
-                Dim oDealerGroupList = GetDealerGroupListByCompany()
-                Me.ddlSearchDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
-                {
-                    .AddBlankItem = True,
-                    .SortFunc = AddressOf .GetCode
-                })
-
-                'Dealer
-                Dim oDealerList = GetDealerListByCompany()
-                Me.ddlSearchDealer.Populate(oDealerList, New PopulateOptions() With
-                {
-                    .AddBlankItem = True
-                })
-
-                'ProductCode
-                Dim oProductCodeList = GetProductListByCompany()
-                Me.ddlSearchProductCode.Populate(oProductCodeList, New PopulateOptions() With
-                {
-                    .AddBlankItem = True,
-                    .TextFunc = textFun
-                })
-
-            End If
-        End Sub
-
-        Private Sub ddlSearchDealer_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlSearchDealer.SelectedIndexChanged
-            Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
-                                                                        Return li.Code + " - " + li.Translation
-                                                                    End Function
-
-            If ddlSearchDealer.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-
-                If ddlSearchCompany.SelectedIndex = BLANK_ITEM_SELECTED Then
-                    Exit Sub
-                End If
-
-                'ProductCode
-                Dim oProductCodeList = GetProductListByDealer()
-                Me.ddlSearchProductCode.Populate(oProductCodeList, New PopulateOptions() With
-                {
-                    .AddBlankItem = True,
-                    .TextFunc = textFun
-                })
-
             End If
         End Sub
 

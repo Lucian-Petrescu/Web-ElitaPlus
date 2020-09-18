@@ -354,6 +354,11 @@ Public Class UserControlQuestion
                             End If
                         End If
                     Else
+                        Dim length As Integer? = DirectCast(e.Row.DataItem, Question).Length
+                        If (length.HasValue) Then
+                            txt.MaxLength = length.Value
+                        End If
+
                         If (Not source Is Nothing) Then
                             Dim da As TextAnswer = CType(source.First(Function(f) f.Code = DirectCast(e.Row.DataItem, Question).Code).Answer, TextAnswer)
 

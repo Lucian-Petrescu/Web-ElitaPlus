@@ -1,5 +1,4 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (8/16/2007)********************
-Imports System.Windows.Forms
 
 Public Class AcctTransLogDAL
     Inherits DALBase

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    ELP_TBL_COMM_PLAN.load
+  </LOAD>
+  <LOAD_LIST>
+    ELP_TBL_COMM_PLAN.loadCommPlanDealerCompList
+  </LOAD_LIST>
+  <MAX_EXPIRATION>
+    ELP_TBL_COMM_PLAN.getMaxExpPeriod
+  </MAX_EXPIRATION>
+  <OVERLAP_EXPIRATION>
+    ELP_TBL_COMM_PLAN.getExpOverlapping
+  </OVERLAP_EXPIRATION>
+  <COMM_PAYMENT_EXIST>
+    ELP_TBL_COMM_PLAN.commpaymentexists
+  </COMM_PAYMENT_EXIST>
+  <CHECK_FOR_DATES_OVERLAP>
+    ELP_TBL_COMM_PLAN.checkdatesoverlap
+  </CHECK_FOR_DATES_OVERLAP>
+  <UPDATE>
+    ELP_TBL_COMM_PLAN.modify
+  </UPDATE>
+  <INSERT>
+    ELP_TBL_COMM_PLAN.add
+  </INSERT>
+  <DELETE>
+    ELP_TBL_COMM_PLAN.del
+  </DELETE>
+</SQL>
+
+
+

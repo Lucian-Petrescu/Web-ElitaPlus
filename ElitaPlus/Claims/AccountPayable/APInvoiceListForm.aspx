@@ -132,17 +132,13 @@
                 <tr id="trPageSize" runat="server">
                     <td class="bor" align="left">
                         <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label>:&nbsp;
-                        <asp:DropDownList ID="cboPageSize" runat="server" AutoPostBack="true" Width="50px" SkinID="SmallDropDown">
-                            <asp:ListItem Value="5">5</asp:ListItem>
-                            <asp:ListItem Value="10">10</asp:ListItem>
-                            <asp:ListItem Value="15">15</asp:ListItem>
-                            <asp:ListItem Value="20">20</asp:ListItem>
-                            <asp:ListItem Value="25" Selected="True">25</asp:ListItem>
-                            <asp:ListItem Value="30">30</asp:ListItem>
-                            <asp:ListItem Value="35">35</asp:ListItem>
-                            <asp:ListItem Value="40">40</asp:ListItem>
-                            <asp:ListItem Value="45">45</asp:ListItem>
-                            <asp:ListItem Value="50">50</asp:ListItem>
+                        <asp:DropDownList ID="cboPageSize" runat="server" AutoPostBack="true" Width="60px" SkinID="SmallDropDown">
+                            <asp:ListItem Value="50" Selected="True">50</asp:ListItem>
+                            <asp:ListItem Value="100">100</asp:ListItem>
+                            <asp:ListItem Value="200">200</asp:ListItem>
+                            <asp:ListItem Value="400">400</asp:ListItem>
+                            <asp:ListItem Value="500">500</asp:ListItem>
+                            <asp:ListItem Value="1000">1000</asp:ListItem>
                         </asp:DropDownList>
                     </td>
                     <td class="bor" align="right">
@@ -181,7 +177,8 @@
                     <asp:BoundField DataField="paid_amount" HeaderText="PAID_AMOUNT" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="payment_date" HeaderText="PAYMENT_DATE" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="unmatched_line_count" HeaderText="UNMATCHED_LINES" HtmlEncode="false"></asp:BoundField>
-                    <asp:BoundField Visible="False" DataField="ap_invoice_header_id"></asp:BoundField>                    
+                    <asp:BoundField Visible="False" DataField="ap_invoice_header_id"></asp:BoundField> 
+                    <asp:BoundField Visible="False" DataField="payment_status_xcd"></asp:BoundField>   
                 </Columns>
                 <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
                 <PagerStyle />
@@ -192,6 +189,10 @@
             <asp:Label ID="lblBatchNum" runat="server" CssClass="formFont">BATCH_NUMBER:</asp:Label>
             <asp:TextBox ID="txtBatchNum" runat="server" SkinID="LargeTextBox" AutoPostBack="False" style="width:300px;"></asp:TextBox>
             <asp:Button ID="btnCreatePaymentBatch_WRITE" runat="server" SkinID="AlternateLeftButton" Text="CREATE_PAYMENT"></asp:Button>            
+        </div>
+        
+        <div id="divNewAPInvoice" class="btnZone" >
+            <asp:Button runat="server" ID="btnAdd_WRITE" Text="New" SkinID="AlternateLeftButton" />
         </div>
     </div>    
 </asp:Content>

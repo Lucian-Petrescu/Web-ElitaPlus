@@ -79,23 +79,6 @@ Partial Class ServiceOrderPreview
                 Response.BinaryWrite(pdfImg)
                 Response.End()
 
-                'ElseIf System.IO.File.Exists(Server.MapPath(strReportName.Replace(EXTENSION_XSLT, EXTENSION_RPT))) Then ' revert back to PDF format if it exists
-
-                '    Me.Controls.Remove(xmlSource)
-
-                '    If oServiceOrder.ServiceOrderImage Is Nothing Then
-                '        pdfImg = soController.PrintServiceOrder(oServiceOrder)
-                '    Else
-                '        pdfImg = oServiceOrder.ServiceOrderImage
-                '    End If
-
-                '    Response.ClearHeaders()
-                '    Response.ClearContent()
-                '    Response.Cache.SetMaxAge(New System.TimeSpan(0))
-                '    Response.AddHeader("Content-Type", "application/pdf")
-                '    Response.BinaryWrite(pdfImg)
-                '    Response.End()
-
             Else 'ALR-- Added default Service Order to catch all others.
 
                 Dim xdoc As New System.Xml.XmlDocument

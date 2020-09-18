@@ -124,8 +124,18 @@ Public Class ServiceOrderReportHandler
                 If Not Address.CountryId.Equals(Guid.Empty) Then
                     soRow.SHIPPING_COUNTRY = New Country(Address.CountryId).Description
                 End If
+                soRow.ADDRESS1 = Address.Address1
+                soRow.ADDRESS2 = Address.Address2
+                soRow.ADDRESS3 = Address.Address3
+                soRow.CITY = Address.City
+                soRow.ZIP = Address.PostalCode
+                If Not Address.RegionId.Equals(Guid.Empty) Then
+                    soRow.STATE_PROVINCE = New Region(Address.RegionId).Description
+                    soRow.STATE_PROVINCE_CODE = New Region(Address.RegionId).ShortDesc
+                End If
+
             End If
-        End If
+            End If
         ' EndReqs-784
 
         Dim certCov As CertItemCoverage = New CertItemCoverage(ClaimBO.CertItemCoverageId)
@@ -184,6 +194,7 @@ Public Class ServiceOrderReportHandler
         soRow.IMEI = oCertItem.IMEINumber
         soRow.PRODUCT_SALES_DATE = cert.ProductSalesDate.Value
         soRow.DEALER_NAME = oDealer.DealerName
+        soRow.DEALER_CODE = oDealer.Dealer
         soRow.NAME_OF_CONTACT = ClaimBO.ContactName
         soRow.DEDUCTIBLE_AMOUNT = ClaimBO.Deductible.Value
 
