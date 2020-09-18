@@ -198,7 +198,8 @@
         auth_type_xcd = :auth_type_xcd,
         party_type_xcd = :party_type_xcd,
         party_reference_id = :party_reference_id,
-        locator = :locator
+        locator = :locator, 
+        refund_method_xcd = :refund_method_xcd
 			WHERE
 				claim_authorization_id = hextoraw(:claim_authorization_id)
 		]]>
@@ -235,7 +236,8 @@
     auth_type_xcd,
     party_type_xcd,
     party_reference_id,
-    locator
+    locator,
+    refund_method_xcd
     )
     VALUES
     (
@@ -268,7 +270,8 @@
     :auth_type_xcd,
     :party_type_xcd,
     :party_reference_id,
-    :locator
+    :locator,
+    :refund_method_xcd
     )
   </INSERT>
   <DELETE>

@@ -2191,7 +2191,7 @@ Partial Class ClaimForm
             End If
         Else
             Dim claim As MultiAuthClaim = CType(Me.State.MyBO, MultiAuthClaim)
-            Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, Decimal.Zero)
+            Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, claim.AuthorizedAmount)
             'Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, State.AuthorizedAmount)
             Me.State.claimAuthList = CType(Me.State.MyBO, MultiAuthClaim).ClaimAuthorizationChildren.OrderBy(Function(i) i.AuthorizationNumber).ToList
             ucClaimConsequentialDamage.PopulateConsequentialDamage(Me.State.MyBO)
