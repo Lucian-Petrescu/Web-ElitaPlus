@@ -18,7 +18,8 @@
         billing_run_date_offset_days,
         date_of_payment_option_id,
         date_of_payment_offset_days,
-        number_of_digits_roundoff_id
+        number_of_digits_roundoff_id,
+        billing_cool_off_days
 			FROM elp_billing_cycle 
 			WHERE
 				billing_cycle_id = :billing_cycle_id
@@ -54,39 +55,42 @@
         date_of_payment_option_id = :date_of_payment_option_id,
         date_of_payment_offset_days = :date_of_payment_offset_days,
         number_of_digits_roundoff_id = :number_of_digits_roundoff_id,
+        billing_cool_off_days = :billing_cool_off_days,
 				modified_by = :modified_by
 			WHERE
 				billing_cycle_id = :billing_cycle_id
 		]]>
 	</UPDATE>
 	<INSERT>
-        INSERT INTO elp_billing_cycle
-        (
-        billing_cycle_id,
-        dealer_id,
-        billing_cycle_code,
-        start_day,
-        end_day,
-        billing_run_date_offset_days,
-        date_of_payment_option_id,
-        date_of_payment_offset_days,
-        number_of_digits_roundoff_id,
-        created_by
-        )
-        VALUES
-        (
-        :billing_cycle_id,
-        :dealer_id,
-        :billing_cycle_code,
-        :start_day,
-        :end_day,
-        :billing_run_date_offset_days,
-        :date_of_payment_option_id,
-        :date_of_payment_offset_days,
-        :number_of_digits_roundoff_id,
-        :created_by
-        )
-    </INSERT>
+    INSERT INTO elp_billing_cycle
+    (
+    billing_cycle_id,
+    dealer_id,
+    billing_cycle_code,
+    start_day,
+    end_day,
+    billing_run_date_offset_days,
+    date_of_payment_option_id,
+    date_of_payment_offset_days,
+    number_of_digits_roundoff_id,
+    billing_cool_off_days,
+    created_by
+    )
+    VALUES
+    (
+    :billing_cycle_id,
+    :dealer_id,
+    :billing_cycle_code,
+    :start_day,
+    :end_day,
+    :billing_run_date_offset_days,
+    :date_of_payment_option_id,
+    :date_of_payment_offset_days,
+    :number_of_digits_roundoff_id,
+    :billing_cool_off_days,
+    :created_by
+    )
+  </INSERT>
 	<DELETE>
 			DELETE FROM elp_billing_cycle
 			WHERE

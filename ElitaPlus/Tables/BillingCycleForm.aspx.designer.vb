@@ -11,9 +11,9 @@ Option Strict On
 Option Explicit On
 
 Namespace Tables
-    
+
     Partial Public Class BillingCycleForm
-        
+
         '''<summary>
         '''ScriptManager1 control.
         '''</summary>
@@ -22,7 +22,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
-        
+
         '''<summary>
         '''Td1 control.
         '''</summary>
@@ -31,7 +31,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Td1 As Global.System.Web.UI.HtmlControls.HtmlTableCell
-        
+
         '''<summary>
         '''DealerDropControl control.
         '''</summary>
@@ -40,7 +40,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents DealerDropControl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New
-        
+
         '''<summary>
         '''moBillingCycleCodeLabel control.
         '''</summary>
@@ -49,7 +49,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBillingCycleCodeLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moBillingCycleCodeText control.
         '''</summary>
@@ -58,7 +58,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBillingCycleCodeText As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''moStartDayLabel control.
         '''</summary>
@@ -67,7 +67,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moStartDayLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moStartDayText control.
         '''</summary>
@@ -76,7 +76,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moStartDayText As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''moEndDayLabel control.
         '''</summary>
@@ -85,7 +85,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moEndDayLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moEndDayText control.
         '''</summary>
@@ -94,7 +94,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moEndDayText As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''moBillingRunDateOffsetDaysLabel control.
         '''</summary>
@@ -103,7 +103,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBillingRunDateOffsetDaysLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moBillingRunDateOffsetDaysText control.
         '''</summary>
@@ -112,7 +112,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBillingRunDateOffsetDaysText As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''moNumberOfDigitsRoundoffLabel control.
         '''</summary>
@@ -121,7 +121,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moNumberOfDigitsRoundoffLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moNumberOfDigitsRoundoffDrop control.
         '''</summary>
@@ -130,7 +130,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moNumberOfDigitsRoundoffDrop As Global.System.Web.UI.WebControls.DropDownList
-        
+
         '''<summary>
         '''moDateOfPaymentOptionLabel control.
         '''</summary>
@@ -139,7 +139,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moDateOfPaymentOptionLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moDateOfPaymentOptionDrop control.
         '''</summary>
@@ -148,7 +148,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moDateOfPaymentOptionDrop As Global.System.Web.UI.WebControls.DropDownList
-        
+
         '''<summary>
         '''moDateOfPaymentOffsetDaysLabel control.
         '''</summary>
@@ -157,7 +157,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moDateOfPaymentOffsetDaysLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moDateOfPaymentOffsetDaysText control.
         '''</summary>
@@ -166,7 +166,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moDateOfPaymentOffsetDaysText As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''moNextRunDateLabel control.
         '''</summary>
@@ -175,7 +175,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moNextRunDateLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moNextRunDateText control.
         '''</summary>
@@ -184,7 +184,25 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moNextRunDateText As Global.System.Web.UI.WebControls.TextBox
-        
+
+        '''<summary>
+        '''moBillingCoolOffDaysLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moBillingCoolOffDaysLabel As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''moBillingCoolOffDaysText control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moBillingCoolOffDaysText As Global.System.Web.UI.WebControls.TextBox
+
         '''<summary>
         '''moPrePaidDateOfPaymentLabel control.
         '''</summary>
@@ -193,7 +211,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPrePaidDateOfPaymentLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moPrePaidDateOfPaymentText control.
         '''</summary>
@@ -202,7 +220,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPrePaidDateOfPaymentText As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''moPrePaidFromDateLabel control.
         '''</summary>
@@ -211,7 +229,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPrePaidFromDateLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moPrePaidFromDateText control.
         '''</summary>
@@ -220,7 +238,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPrePaidFromDateText As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''moPrePaidToDateLabel control.
         '''</summary>
@@ -229,7 +247,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPrePaidToDateLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moPrePaidToDateText control.
         '''</summary>
@@ -238,7 +256,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPrePaidToDateText As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''moPostPaidDateOfPaymentLabel control.
         '''</summary>
@@ -247,7 +265,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPostPaidDateOfPaymentLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moPostPaidDateOfPaymentText control.
         '''</summary>
@@ -256,7 +274,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPostPaidDateOfPaymentText As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''moPostPaidFromDateLabel control.
         '''</summary>
@@ -265,7 +283,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPostPaidFromDateLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moPostPaidFromDateText control.
         '''</summary>
@@ -274,7 +292,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPostPaidFromDateText As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''moPostPaidToDateLabel control.
         '''</summary>
@@ -283,7 +301,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPostPaidToDateLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moPostPaidToDateText control.
         '''</summary>
@@ -292,7 +310,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPostPaidToDateText As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''moIsNewBillingCycleLabel control.
         '''</summary>
@@ -301,7 +319,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moIsNewBillingCycleLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moBillingCycleIdLabel control.
         '''</summary>
@@ -310,7 +328,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBillingCycleIdLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''HiddenSaveChangesPromptResponse control.
         '''</summary>
@@ -319,7 +337,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-        
+
         '''<summary>
         '''btnApply_WRITE control.
         '''</summary>
@@ -328,7 +346,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnApply_WRITE As Global.System.Web.UI.WebControls.Button
-        
+
         '''<summary>
         '''btnUndo_WRITE control.
         '''</summary>
@@ -337,7 +355,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnUndo_WRITE As Global.System.Web.UI.WebControls.Button
-        
+
         '''<summary>
         '''btnBack control.
         '''</summary>
@@ -346,7 +364,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
-        
+
         '''<summary>
         '''btnNew_WRITE control.
         '''</summary>
@@ -355,7 +373,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnNew_WRITE As Global.System.Web.UI.WebControls.Button
-        
+
         '''<summary>
         '''btnCopy_WRITE control.
         '''</summary>
@@ -364,7 +382,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnCopy_WRITE As Global.System.Web.UI.WebControls.Button
-        
+
         '''<summary>
         '''btnDelete_WRITE control.
         '''</summary>

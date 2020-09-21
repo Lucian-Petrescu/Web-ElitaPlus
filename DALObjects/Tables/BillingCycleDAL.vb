@@ -19,6 +19,7 @@ Public Class BillingCycleDAL
     Public Const COL_NAME_DATE_OF_PAYMENT_OPTION_ID As String = "date_of_payment_option_id"
     Public Const COL_NAME_DATE_OF_PAYMENT_OFFSET_DAYS As String = "date_of_payment_offset_days"
     Public Const COL_NAME_NUMBER_OF_DIGITS_ROUNDOFF_ID As String = "number_of_digits_roundoff_id"
+    Public Const COL_NAME_BILLING_COOL_OFF_DAYS As String = "billing_cool_off_days"
 #End Region
 
 #Region "Constructors"
