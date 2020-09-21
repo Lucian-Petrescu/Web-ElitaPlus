@@ -254,11 +254,6 @@ Public Class BillingCycle
 #End Region
 
 #Region "Public Members"
-    Public Shared Sub DeleteBillingCycle(ByVal billingCycleId As Guid)
-        Dim dal As New BillingCycleDAL
-        dal.Delete(billingCycleId)
-    End Sub
-
     Public Overrides Sub Save()
         Try
             MyBase.Save()
