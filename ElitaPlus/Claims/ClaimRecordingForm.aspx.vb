@@ -14,6 +14,7 @@ Imports Microsoft.Practices.ObjectBuilder2
 Imports Newtonsoft.Json
 Imports ClientEventPayLoad = Assurant.ElitaPlus.DataEntities.DFEventPayLoad
 Imports System.IO
+Imports Assurant.Elita.Questions.Contracts
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.UtilityService
 
 Public Class ClaimRecordingForm
@@ -557,9 +558,9 @@ Public Class ClaimRecordingForm
     ''' <returns>Instance of <see cref="ClaimRecordingServiceClient"/></returns>
     Private Shared Function GetClient() As ClaimRecordingServiceClient
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-        Dim client = New ClaimRecordingServiceClient(EndPointName, ConfigurationManager.AppSettings(ServiceUrl))
-        client.ClientCredentials.UserName.UserName = ConfigurationManager.AppSettings(UserName)
-        client.ClientCredentials.UserName.Password = ConfigurationManager.AppSettings(Password)
+        Dim client = New ClaimRecordingServiceClient(EndPointName, "http://localhost:20377/ClaimRecordingService.svc") 'ConfigurationManager.AppSettings(ServiceUrl)
+        client.ClientCredentials.UserName.UserName = "elita1" 'ConfigurationManager.AppSettings(UserName)
+        client.ClientCredentials.UserName.Password = "elita1" 'ConfigurationManager.AppSettings(Password)
         Return client
     End Function
 
@@ -2480,6 +2481,32 @@ Public Class ClaimRecordingForm
         If fulfillmentOptionQuestions.Visible = True Then
 
             fulfillmentOptionQuestions.GetQuestionAnswer()
+            'Run any validation attached to question
+            Dim questionObjects = fulfillmentOptionQuestions.QuestionDataSource
+            For each questionObject  as Assurant.Elita.Questions.Contracts.Question in questionObjects
+                For each validation as BaseValidation  in questionObject.Validations
+                    If Not validation.Validate(questionObject) then
+                        If validation.GetType() is GetType(ComparisonValidation)
+                            Dim comparisionValidation= DirectCast(validation,ComparisonValidation)
+                            select Case comparisionValidation.Operator
+                                Case ComparisonValidationOperatorType.LessThanOrEqualTo
+                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_OR_EQUAL_TO_REF_VALUE & comparisionValidation.ReferenceValue.ToString(), True)
+                                Case ComparisonValidationOperatorType.LessThan
+                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_TO_REF_VALUE & comparisionValidation.ReferenceValue.ToString(), True)
+                                Case ComparisonValidationOperatorType.GreaterThanOrEqualTo
+                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_OR_EQUAL_TO_REF_VALUE & comparisionValidation.ReferenceValue.ToString(), True)
+                                Case ComparisonValidationOperatorType.GreaterThan
+                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_TO_REF_VALUE & comparisionValidation.ReferenceValue.ToString(), True)
+                            End Select
+                            Return False
+                        Else 
+                            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
+                            Return False
+                        End If
+                    End If
+                Next
+            Next
+
             If (questionUserControl.ErrAnswerMandatory IsNot Nothing AndAlso String.IsNullOrEmpty(questionUserControl.ErrAnswerMandatory.ToString()) = False) Then
                 MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, True)
                 Return False
