@@ -1473,7 +1473,7 @@ Partial Class ClaimAuthorizationDetailForm
                         If  State.ClaimBO.ClaimAuthorizationChildren.Where(Function(item) item.ClaimAuthStatus = ClaimAuthorizationStatus.Paid Or
                                                                                              item.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid Or
                                                                                              item.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled).Count > 0 Then
-                            Throw New GUIException("CLAIM_CANNOT_BE_CLOSED_CONTAINS_RECONSILED_PAID_AUTH", "CLAIM_CANNOT_BE_CLOSED_CONTAINS_RECONSILED_PAID_AUTH")
+                            Throw New GUIException(Message.CLAIM_CANNOT_BE_CLOSED_CONTAINS_RECONSILED_PAID_AUTH, Message.CLAIM_CANNOT_BE_CLOSED_CONTAINS_RECONSILED_PAID_AUTH)
                         End If
                     End If
 
