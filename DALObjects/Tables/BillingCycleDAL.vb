@@ -2,7 +2,7 @@
 
 
 Public Class BillingCycleDAL
-    Inherits DALBase
+    Inherits OracleDALBase
 
 
 #Region "Constants"
@@ -36,13 +36,16 @@ Public Class BillingCycleDAL
     End Sub
 
     Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("billing_cycle_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD"))
+                cmd.AddParameter("pi_billing_cycle_id", OracleDbType.Raw, id.ToByteArray())
+                cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+            End Using        
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
+
     End Sub
 
     Public Function LoadList(ByVal dealerId As Guid, ByVal billingCycleCodeMask As String, ByVal companyIds As ArrayList, _
@@ -81,24 +84,54 @@ Public Class BillingCycleDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If ds Is Nothing Then
-            Return
-        End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
-        End If
+    'Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    '    If ds Is Nothing Then
+    '        Return
+    '    End If
+    '    If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
+    '        MyBase.UpdateFromSP(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    '    End If
+    'End Sub
+
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+        command.AddParameter("pi_billing_cycle_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)
+        command.AddParameter("po_exec_status", OracleDbType.Int32, ParameterDirection.Output)
     End Sub
 
-    Public Sub Delete(ByVal billingPlanId As Guid)
-        Try
-            Dim deleteStatement As String = Me.Config("/SQL/DELETE")
-            Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_BILLING_CYCLE_ID, billingPlanId.ToByteArray)}
-            DBHelper.Execute(deleteStatement, parameters)
-        Catch ex As Exception
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-        End Try
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+        With command
+            .AddParameter("pi_dealer_id", OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_ID)
+            .AddParameter("pi_billing_cycle_code", OracleDbType.Varchar2, sourceColumn:=COL_NAME_BILLING_CYCLE_CODE)
+            .AddParameter("pi_start_day", OracleDbType.Int32, sourceColumn:=COL_NAME_START_DAY)
+            .AddParameter("pi_end_day", OracleDbType.Int32, sourceColumn:=COL_NAME_END_DAY)
+            .AddParameter("pi_billing_run_dt_offset_days", OracleDbType.Int32, sourceColumn:=COL_NAME_BILLING_RUN_DATE_OFFSET_DAYS)
+            .AddParameter("pi_date_of_payment_option_id", OracleDbType.Raw, sourceColumn:=COL_NAME_DATE_OF_PAYMENT_OPTION_ID)
+            .AddParameter("pi_date_of_payment_offset_days", OracleDbType.Int32, sourceColumn:=COL_NAME_DATE_OF_PAYMENT_OFFSET_DAYS)
+            .AddParameter("pi_num_of_digits_roundoff_id", OracleDbType.Raw, sourceColumn:=COL_NAME_NUMBER_OF_DIGITS_ROUNDOFF_ID)
+            .AddParameter("pi_billing_cool_off_days", OracleDbType.Int32, sourceColumn:=COL_NAME_BILLING_COOL_OFF_DAYS)
+            .AddParameter("pi_created_by", OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY)
+            .AddParameter("pi_billing_cycle_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)
+            .AddParameter("po_exec_status", OracleDbType.Int32, ParameterDirection.Output)
+        End With
     End Sub
+
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+        With command
+            .AddParameter("pi_dealer_id", OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_ID)
+            .AddParameter("pi_billing_cycle_code", OracleDbType.Varchar2, sourceColumn:=COL_NAME_BILLING_CYCLE_CODE)
+            .AddParameter("pi_start_day", OracleDbType.Int32, sourceColumn:=COL_NAME_START_DAY)
+            .AddParameter("pi_end_day", OracleDbType.Int32, sourceColumn:=COL_NAME_END_DAY)
+            .AddParameter("pi_billing_run_dt_offset_days", OracleDbType.Int32, sourceColumn:=COL_NAME_BILLING_RUN_DATE_OFFSET_DAYS)
+            .AddParameter("pi_date_of_payment_option_id", OracleDbType.Raw, sourceColumn:=COL_NAME_DATE_OF_PAYMENT_OPTION_ID)
+            .AddParameter("pi_date_of_payment_offset_days", OracleDbType.Int32, sourceColumn:=COL_NAME_DATE_OF_PAYMENT_OFFSET_DAYS)
+            .AddParameter("pi_num_of_digits_roundoff_id", OracleDbType.Raw, sourceColumn:=COL_NAME_NUMBER_OF_DIGITS_ROUNDOFF_ID)
+            .AddParameter("pi_billing_cool_off_days", OracleDbType.Int32, sourceColumn:=COL_NAME_BILLING_COOL_OFF_DAYS)
+            .AddParameter("pi_modified_by", OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY)
+            .AddParameter("pi_billing_cycle_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)
+            .AddParameter("po_exec_status", OracleDbType.Int32, ParameterDirection.Output)
+        End With
+    End Sub
+
 #End Region
 
 
