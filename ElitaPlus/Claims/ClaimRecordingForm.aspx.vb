@@ -558,9 +558,9 @@ Public Class ClaimRecordingForm
     ''' <returns>Instance of <see cref="ClaimRecordingServiceClient"/></returns>
     Private Shared Function GetClient() As ClaimRecordingServiceClient
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-        Dim client = New ClaimRecordingServiceClient(EndPointName, "http://localhost:20377/ClaimRecordingService.svc") 'ConfigurationManager.AppSettings(ServiceUrl)
-        client.ClientCredentials.UserName.UserName = "elita1" 'ConfigurationManager.AppSettings(UserName)
-        client.ClientCredentials.UserName.Password = "elita1" 'ConfigurationManager.AppSettings(Password)
+        Dim client = New ClaimRecordingServiceClient(EndPointName, ConfigurationManager.AppSettings(ServiceUrl)) 
+        client.ClientCredentials.UserName.UserName = ConfigurationManager.AppSettings(UserName)
+        client.ClientCredentials.UserName.Password = ConfigurationManager.AppSettings(Password)
         Return client
     End Function
 
@@ -2490,13 +2490,13 @@ Public Class ClaimRecordingForm
                             Dim comparisionValidation= DirectCast(validation,ComparisonValidation)
                             select Case comparisionValidation.Operator
                                 Case ComparisonValidationOperatorType.LessThanOrEqualTo
-                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_OR_EQUAL_TO_REF_VALUE & comparisionValidation.ReferenceValue.ToString(), True)
+                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_OR_EQUAL_TO_REF_VALUE & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue, True)
                                 Case ComparisonValidationOperatorType.LessThan
-                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_TO_REF_VALUE & comparisionValidation.ReferenceValue.ToString(), True)
+                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_TO_REF_VALUE & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue, True)
                                 Case ComparisonValidationOperatorType.GreaterThanOrEqualTo
-                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_OR_EQUAL_TO_REF_VALUE & comparisionValidation.ReferenceValue.ToString(), True)
+                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_OR_EQUAL_TO_REF_VALUE & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue, True)
                                 Case ComparisonValidationOperatorType.GreaterThan
-                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_TO_REF_VALUE & comparisionValidation.ReferenceValue.ToString(), True)
+                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_TO_REF_VALUE & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue, True)
                             End Select
                             Return False
                         Else 
