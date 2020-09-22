@@ -556,6 +556,47 @@ Public NotInheritable Class MultiAuthClaim
 
         Next
     End Sub
+
+    Public Function AddClaimAuthForDeductibleRefund(ByVal serviceCenterId As Guid, ByVal refundAmount As Decimal, ByVal refundMethod As String) As ClaimAuthorization
+        Dim newClaimAuth As ClaimAuthorization
+        Try
+            newClaimAuth = CType(Me.ClaimAuthorizationChildren.GetNewChild(), BusinessObjectsNew.ClaimAuthorization)
+            newClaimAuth.PrepopulateClaimAuthForDeductibleRefund(serviceCenterId, Me.Id, Me.CertificateId, refundMethod)
+            newClaimAuth.AddDeductibleRefundLineItem(refundAmount)
+            newClaimAuth.Save()
+            Return newClaimAuth
+        Catch ex As DataBaseAccessException
+            Me.ClaimAuthorizationChildren.GetChild(newClaimAuth.Id).Delete()
+            Throw ex
+        End Try
+    End Function
+
+    Public Function IsDeductibleRefundAllowed() As Boolean
+        Dim flag As Boolean = False
+        For Each auth As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
+            If (auth.ClaimAuthStatus = ClaimAuthorizationStatus.Collected And auth.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_SALES_ORDER) Then
+
+                Dim authItem = auth.ClaimAuthorizationItemChildren.Where(Function(i) i.ServiceTypeCode = Codes.SERVICE_TYPE__DEDUCTIBLE).ToList()
+
+                If authItem.Count > 0 Then
+                    flag = True
+                End If
+            End If
+        Next
+        Return flag
+
+    End Function
+
+    Public Function IsDeductibleRefundExist() As Boolean
+        Dim flag As Boolean = False
+        Dim auth = Me.NonVoidClaimAuthorizationList.Where(Function(c) c.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE And c.PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER And
+                                                                    (c.ClaimAuthStatus = ClaimAuthorizationStatus.Pending Or c.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized)).ToList()
+        If auth.Count > 0 Then
+            flag = True
+        End If
+        Return flag
+
+    End Function
 #End Region
 
 #Region "Validations"

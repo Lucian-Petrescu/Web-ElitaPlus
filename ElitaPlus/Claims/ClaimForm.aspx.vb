@@ -44,8 +44,8 @@ Partial Class ClaimForm
     Public Const SELECT_ACTION_COMMAND As String = "SelectAction"
     Public Const GRID_COL_SERVICE_CENTER_NAME_IDX As Integer = 1
     Public Const GRID_COL_AMOUNT_IDX As Integer = 2
-    Public Const GRID_COL_CREATED_DATETIME_IDX As Integer = 3
-    Public Const GRID_COL_STATUS_CODE_IDX As Integer = 4
+    Public Const GRID_COL_CREATED_DATETIME_IDX As Integer = 6
+    Public Const GRID_COL_STATUS_CODE_IDX As Integer = 7
     Public params As New ArrayList
 
     'Req-784
@@ -1251,6 +1251,14 @@ Partial Class ClaimForm
             'disable the replace item button if change fulfillmen button is enabled
             btnReplaceItem.Enabled = False
             ControlMgr.SetVisibleControl(Me, btnReplaceItem, False)
+        End If
+
+        'For Deductible refund button
+        If (claim.IsDeductibleRefundAllowed AndAlso
+            Not claim.IsDeductibleRefundExist) Then
+            'Make Deductible refund enabled
+            Me.btnClaimDeductibleRefund.Enabled = True
+            ControlMgr.SetVisibleControl(Me, btnClaimDeductibleRefund, True)
         End If
     End Sub
 
@@ -3379,7 +3387,6 @@ Partial Class ClaimForm
 
         End Try
     End Sub
-
     Protected Sub btnClaimIssues_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClaimIssues.Click
         Try
             Me.NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_ISSUES, New ClaimIssueForm.Parameters(Me.State.MyBO))
@@ -3390,7 +3397,6 @@ Partial Class ClaimForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
-
     Private Sub btnClaimImages_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClaimImages.Click
         Try
             Dim URL As String = "~/Claims/ClaimDocumentForm.aspx"
@@ -3498,6 +3504,19 @@ Partial Class ClaimForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
+
+    Protected Sub btnClaimDeductibleRefund_Click(sender As Object, e As EventArgs) Handles btnClaimDeductibleRefund.Click
+        Try
+            Me.NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_DEDUCTIBLE_REFUND, New ClaimDeductibleRefundForm.Parameters(Me.State.MyBO))
+
+        Catch ex As Threading.ThreadAbortException
+
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+
 #End Region
 
 #Region "Page Control Events"
@@ -4178,6 +4197,7 @@ Partial Class ClaimForm
         End Try
 
     End Function
+
 #End Region
 
 #Region "Change Fulfillment"
