@@ -190,6 +190,8 @@ Public Class Codes
     Public Const CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE As String = "AUTH_TYPE-CREDIT_NOTE"
     Public Const CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER As String = "PARTY_TYPE-CUSTOMER"
     Public Const CLAIM_EXTENDED_STATUS_AUTH_TYPE_SALES_ORDER As String = "AUTH_TYPE-SALES_ORDER"
+
+
     'Accounting Status
     Public Const ACCT_STATUS__REQUESTED As String = "R"
     Public Const ACCT_STATUS__ISSUED As String = "I"

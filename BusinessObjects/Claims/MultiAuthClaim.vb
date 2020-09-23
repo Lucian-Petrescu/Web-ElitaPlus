@@ -594,7 +594,6 @@ Public NotInheritable Class MultiAuthClaim
         If auth.Count > 0 Then
             flag = True
         End If
-
         Return flag
 
     End Function
