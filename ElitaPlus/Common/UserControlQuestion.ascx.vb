@@ -152,10 +152,10 @@ Public Class UserControlQuestion
     End Property
     Public Property ErrorQuestionValidation As StringBuilder
         Get
-            Return DirectCast(ViewState(ViewStateItems.ErrAnswerMandatory), StringBuilder)
+            Return DirectCast(ViewState(ViewStateItems.ErrorQuestionValidation), StringBuilder)
         End Get
         Set(value As StringBuilder)
-            ViewState(ViewStateItems.ErrAnswerMandatory) = value
+            ViewState(ViewStateItems.ErrorQuestionValidation) = value
         End Set
     End Property
 
