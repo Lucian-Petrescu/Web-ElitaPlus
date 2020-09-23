@@ -48,7 +48,7 @@ Namespace Certificates
         Private Const CodeSearchFieldZip As String = "ZIP"
         Private Const SearchTypeXCD As String = "SEARCH_TYPE-AGENT_SEARCH"
         Private Const CodeSearchFieldDob As String = "BIRTH_DATE_CAL"
-        Private Const CodeSearchFieldBranchCode As String = "BRANCH_CODE"
+        Private Const CodeSearchFieldBranchCode As String = "DEALER_BRANCH_CODE"
         Private Const CodeSearchFieldBranchName As String = "BRANCH_NAME"
 
 
@@ -788,6 +788,16 @@ Namespace Certificates
 
                 if NOT string.IsNullOrEmpty(State.BranchCode) Or
                    NOT string.IsNullOrEmpty(State.BranchName)  Then
+
+                    if NOT string.IsNullOrEmpty(State.CertificateStatus) AND
+                           string.IsNullOrEmpty(State.CustomerFirstName) AND 
+                           string.IsNullOrEmpty(State.CustomerLastName) AND
+                           string.IsNullOrEmpty(State.InvoiceNumber)
+
+                        Me.MasterPage.MessageController.AddError(Message.MSG_BRANCH_CERTFICATE_STATUS_FIELD_SELECT)
+                        Exit sub
+                    End If
+
 
                     if string.IsNullOrEmpty(State.CustomerFirstName) AND 
                        string.IsNullOrEmpty(State.CustomerLastName) AND
