@@ -14,7 +14,6 @@ Imports Microsoft.Practices.ObjectBuilder2
 Imports Newtonsoft.Json
 Imports ClientEventPayLoad = Assurant.ElitaPlus.DataEntities.DFEventPayLoad
 Imports System.IO
-Imports Assurant.Elita.Questions.Contracts
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.UtilityService
 
 Public Class ClaimRecordingForm
@@ -2481,31 +2480,6 @@ Public Class ClaimRecordingForm
         If fulfillmentOptionQuestions.Visible = True Then
 
             fulfillmentOptionQuestions.GetQuestionAnswer()
-            'Run any validation attached to question
-            Dim questionObjects = fulfillmentOptionQuestions.QuestionDataSource
-            For each questionObject  as Assurant.Elita.Questions.Contracts.Question in questionObjects
-                For each validation as BaseValidation  in questionObject.Validations
-                    If Not validation.Validate(questionObject) then
-                        If validation.GetType() is GetType(ComparisonValidation)
-                            Dim comparisionValidation= DirectCast(validation,ComparisonValidation)
-                            select Case comparisionValidation.Operator
-                                Case ComparisonValidationOperatorType.LessThanOrEqualTo
-                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_OR_EQUAL_TO_REF_VALUE & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue, True)
-                                Case ComparisonValidationOperatorType.LessThan
-                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_TO_REF_VALUE & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue, True)
-                                Case ComparisonValidationOperatorType.GreaterThanOrEqualTo
-                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_OR_EQUAL_TO_REF_VALUE & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue, True)
-                                Case ComparisonValidationOperatorType.GreaterThan
-                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_TO_REF_VALUE & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue, True)
-                            End Select
-                            Return False
-                        Else 
-                            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
-                            Return False
-                        End If
-                    End If
-                Next
-            Next
 
             If (questionUserControl.ErrAnswerMandatory IsNot Nothing AndAlso String.IsNullOrEmpty(questionUserControl.ErrAnswerMandatory.ToString()) = False) Then
                 MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, True)
@@ -2515,6 +2489,9 @@ Public Class ClaimRecordingForm
                 Return False
             ElseIf (questionUserControl.ErrTextAnswerLength IsNot Nothing AndAlso String.IsNullOrEmpty(questionUserControl.ErrTextAnswerLength.ToString()) = False) Then
                 MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_LENGTH_TO_QUESTION_TOO_LONG_ERR, True)
+                Return False
+            ElseIf (questionUserControl.ErrorQuestionValidation IsNot Nothing AndAlso String.IsNullOrEmpty(questionUserControl.ErrorQuestionValidation.ToString()) = False) Then
+                MasterPage.MessageController.AddError(questionUserControl.ErrorQuestionValidation.ToString(), false)
                 Return False
             End If
 
