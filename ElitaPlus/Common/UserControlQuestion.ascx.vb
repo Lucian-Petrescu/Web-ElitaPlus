@@ -579,6 +579,8 @@ Public Class UserControlQuestion
         ErrAnswerMandatory = New StringBuilder()
         ErrorQuestionCodes = New StringBuilder()
         ErrTextAnswerLength = new StringBuilder()
+        ErrorQuestionValidation = new StringBuilder()
+
         Try
             For Each row In GridQuestions.Rows
 
@@ -592,28 +594,7 @@ Public Class UserControlQuestion
                 'End If
 
                 Dim questionObject = questionObjects.FirstOrDefault(Function(x) x.Code = code)
-                'Run any validation attached to question
-                For each validation as BaseValidation  in questionObject.Validations
-                    If Not validation.Validate(questionObject) then
-                        If validation.GetType() is GetType(ComparisonValidation)
-                            Dim comparisionValidation= DirectCast(validation,ComparisonValidation)
-                            select Case comparisionValidation.Operator
-                                Case ComparisonValidationOperatorType.LessThanOrEqualTo
-                                    ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_OR_EQUAL_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
-                                Case ComparisonValidationOperatorType.LessThan
-                                     ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
-                                Case ComparisonValidationOperatorType.GreaterThanOrEqualTo
-                                    ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_OR_EQUAL_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
-                                Case ComparisonValidationOperatorType.GreaterThan
-                                    ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
-                            End Select
-                            
-                        Else 
-                            ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR))
-                        End If
-                    End If
-                Next
-
+               
                 Select Case answerType.Trim().ToUpper()
                     Case AnswerTypes.ChoiceAnswer
                         Dim answer As String = CType(row.FindControl("rblChoice"), RadioButtonList).SelectedValue
@@ -693,6 +674,29 @@ Public Class UserControlQuestion
                     Case AnswerTypes.ContentAnswer
                         ' do nothing skip
                 End Select
+                'Run any validation attached to question
+                If Not questionObject.Validations is Nothing then
+                    For each validation as BaseValidation  in questionObject.Validations
+                        If Not validation.Validate(questionObject) then
+                            If validation.GetType() is GetType(ComparisonValidation)
+                                Dim comparisionValidation= DirectCast(validation,ComparisonValidation)
+                                select Case comparisionValidation.Operator
+                                    Case ComparisonValidationOperatorType.LessThanOrEqualTo
+                                        ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_OR_EQUAL_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
+                                    Case ComparisonValidationOperatorType.LessThan
+                                         ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
+                                    Case ComparisonValidationOperatorType.GreaterThanOrEqualTo
+                                        ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_OR_EQUAL_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
+                                    Case ComparisonValidationOperatorType.GreaterThan
+                                        ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
+                                End Select
+                                
+                            Else If validation.GetType() is GetType(RegularExpressionValidation)
+                                ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR) & DirectCast(validation,RegularExpressionValidation).RegularExpressionPattern)
+                            End If
+                        End If
+                    Next
+                End if
             Next
         Catch ex As ThreadAbortException
         Catch ex As Exception

@@ -557,9 +557,9 @@ Public Class ClaimRecordingForm
     ''' <returns>Instance of <see cref="ClaimRecordingServiceClient"/></returns>
     Private Shared Function GetClient() As ClaimRecordingServiceClient
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-        Dim client = New ClaimRecordingServiceClient(EndPointName, ConfigurationManager.AppSettings(ServiceUrl)) 
-        client.ClientCredentials.UserName.UserName = ConfigurationManager.AppSettings(UserName)
-        client.ClientCredentials.UserName.Password = ConfigurationManager.AppSettings(Password)
+        Dim client = New ClaimRecordingServiceClient(EndPointName, "http://localhost:20377/ClaimRecordingService.svc") 'ConfigurationManager.AppSettings(ServiceUrl)
+        client.ClientCredentials.UserName.UserName = "elita1" 'ConfigurationManager.AppSettings(UserName)
+        client.ClientCredentials.UserName.Password = "elita1" 'ConfigurationManager.AppSettings(Password)
         Return client
     End Function
 
@@ -1550,6 +1550,9 @@ Public Class ClaimRecordingForm
                 ElseIf (Not String.IsNullOrEmpty(questionUserControl.ErrTextAnswerLength.ToString())) Then
                     MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_LENGTH_TO_QUESTION_TOO_LONG_ERR, True)
                     Exit Sub
+                ElseIf (questionUserControl.ErrorQuestionValidation IsNot Nothing AndAlso String.IsNullOrEmpty(questionUserControl.ErrorQuestionValidation.ToString()) = False) Then
+                    MasterPage.MessageController.AddError(questionUserControl.ErrorQuestionValidation.ToString(), false)
+                    Exit sub
                 End If
 
 
@@ -2490,8 +2493,8 @@ Public Class ClaimRecordingForm
             ElseIf (questionUserControl.ErrTextAnswerLength IsNot Nothing AndAlso String.IsNullOrEmpty(questionUserControl.ErrTextAnswerLength.ToString()) = False) Then
                 MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_LENGTH_TO_QUESTION_TOO_LONG_ERR, True)
                 Return False
-            ElseIf (questionUserControl.ErrorQuestionValidation IsNot Nothing AndAlso String.IsNullOrEmpty(questionUserControl.ErrorQuestionValidation.ToString()) = False) Then
-                MasterPage.MessageController.AddError(questionUserControl.ErrorQuestionValidation.ToString(), false)
+            ElseIf (fulfillmentOptionQuestions.ErrorQuestionValidation IsNot Nothing AndAlso String.IsNullOrEmpty(fulfillmentOptionQuestions.ErrorQuestionValidation.ToString()) = False) Then
+                MasterPage.MessageController.AddError(fulfillmentOptionQuestions.ErrorQuestionValidation.ToString(), false)
                 Return False
             End If
 
