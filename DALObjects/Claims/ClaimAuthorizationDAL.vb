@@ -38,7 +38,8 @@ Public Class ClaimAuthorizationDAL
     Public Const COL_NAME_AUTH_TYPE_XCD As String = "auth_type_xcd"
     Public Const COL_NAME_PARTY_TYPE_XCD As String = "party_type_xcd"
     Public Const COL_NAME_PARTY_REFERENCE_ID As String = "party_reference_id"
-
+    Public Const COL_NAME_REFUND_METHOD_XCD As String = "refund_method_xcd"
+    Public Const COL_NAME_USER_NAME As String = "user_name"
 
     Public Const PAR_NAME_COMPANY As String = "p_company_id"
     Public Const PAR_NAME_COVERAGE_CODE_INPUT As String = "p_coverage_code_input"
