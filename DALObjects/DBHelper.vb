@@ -905,7 +905,10 @@ Public NotInheritable Class DBHelper
         Catch ex As Exception
         End Try
         Try
-            transaction.Connection.Close()
+            If (Not IsNothing(transaction.Connection)) Then
+                 transaction.Connection.Close()
+            End If
+
         Catch ex As Exception
         End Try
     End Sub
