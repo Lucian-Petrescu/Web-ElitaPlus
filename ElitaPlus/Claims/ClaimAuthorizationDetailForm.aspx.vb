@@ -1420,7 +1420,7 @@ Partial Class ClaimAuthorizationDetailForm
                 End If
 
                 If Not State.ClaimBO.ReasonClosedId = Guid.Empty Then
-                    HandleCloseClaimLogic()
+                    CloseClaim()
                     State.ClaimBO.Save()
                     lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED_AND_CLAIM_CLOSED)
                 End If
@@ -1462,6 +1462,22 @@ Partial Class ClaimAuthorizationDetailForm
         HiddenFieldVoidAuth.Value = "N"
         ReturnBackToCallingPage()
     End Sub
+	
+	Protected Sub CloseClaim()
+        'Try to Close the Claim
+        Select Case State.ClaimBO.ClaimAuthorizationType
+            Case ClaimAuthorizationType.Single
+                State.ClaimBO.CloseTheClaim()
+            Case ClaimAuthorizationType.Multiple
+                State.ClaimBO.CloseTheClaim()
+                If  State.ClaimBO.Status = BasicClaimStatus.Closed Then
+                    State.ClaimBO.VoidAuthorizations()
+                End If
+            Case ClaimAuthorizationType.None
+                Throw New NotSupportedException
+        End Select
+    End sub
+
     Protected Sub HandleCloseClaimLogic()
         'Try to Close the Claim
         Select Case State.ClaimBO.ClaimAuthorizationType
