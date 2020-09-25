@@ -254,9 +254,23 @@ Public Class CaseDAL
 
         param = New DBHelper.DBHelperParameter("pi_branch_code", branchCode)
         inParameters.Add(param)
+       
+       
 
-        param = New DBHelper.DBHelperParameter("pi_branch_name", branchName)
-        inParameters.Add(param)
+        If (Not (branchName Is Nothing)) Then
+            
+            Dim strBranchName =  branchName.Replace(ASTERISK, WILDCARD_CHAR)
+            param = New DBHelper.DBHelperParameter("pi_branch_name", strBranchName.ToUpper)
+            inParameters.Add(param)
+            
+        Else
+            
+
+            param = New DBHelper.DBHelperParameter("pi_branch_name",branchName)
+            inParameters.Add(param)
+        End If
+       
+        
 
         outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter("po_cursor", GetType(DataSet))
 
