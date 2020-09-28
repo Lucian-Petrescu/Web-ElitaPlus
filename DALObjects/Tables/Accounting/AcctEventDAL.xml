@@ -74,7 +74,8 @@
 				event_name, 
         dit.translation AS event_type,
         event_description,
-        journal_level
+        journal_level,
+        li.code as event_code
      FROM elp_acct_event, 
                 elp_list_item li,
                 elp_dictionary_item di,
