@@ -936,30 +936,30 @@ Public Class AcctTransLog
                     'Check if the allEvents flag is set.  if so, generate all, else, determine if the eventID exists, and 
                     '  generate just that event.  If not, no events will be generated.
                     If oFelitaEngineData.AllEvents Then
-                        Dim dv As DataView = LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False)
+                        Dim dv As AcctEvent.AcctEventSearchDV = AcctEvent.getList(Guid.Empty, oFelitaEngineData.AccountingCompanyId)
                         Dim dsTemp As DataSet
                         Dim dtTemp As DataTable
                         Dim dsTempAP As DataSet
                         Dim dsTempPurge As DataSet
 
                         For Each dvItem As System.Data.DataRowView In dv
-                            If Not dvItem(LookupListNew.COL_CODE_NAME).ToString.Equals(VENDOR_EVENT) Then
+                            If Not dvItem(AcctEvent.AcctEventSearchDV.COL_EVENT_CODE).ToString.Equals(VENDOR_EVENT) Then
                                 dsTemp = New DataSet(dal.DatasetName)
 
-                                dsTemp = dal.GetJournalEntries(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(LookupListNew.COL_ID_NAME), Byte())),
-                                GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), dvItem(LookupListNew.COL_CODE_NAME), ElitaPlusIdentity.Current.ActiveUser.NetworkId, BatchNumber, False)
+                                dsTemp = dal.GetJournalEntries(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(AcctEvent.AcctEventSearchDV.COL_ACCT_EVENT_TYPE_ID), Byte())),
+                                GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), dvItem(AcctEvent.AcctEventSearchDV.COL_EVENT_CODE), ElitaPlusIdentity.Current.ActiveUser.NetworkId, BatchNumber, False)
 
                                 'Check if items balance before adding to our dataset.
-                                isBalanced = MergeDataSets(oFelitaEngineData.CompanyId, _acctExtension, dvItem(LookupListNew.COL_CODE_NAME).ToString, ds, dsTemp, oFelitaEngineData.EventId)
+                                isBalanced = MergeDataSets(oFelitaEngineData.CompanyId, _acctExtension, dvItem(AcctEvent.AcctEventSearchDV.COL_EVENT_CODE).ToString, ds, dsTemp, oFelitaEngineData.EventId)
 
                                 'ALR - added if we are smartstream AND this is claims or refunds
                                 If isBalanced AndAlso
                                     _acctExtension = FelitaEngine.SMARTSTREAM_PREFIX AndAlso
-                                    (dvItem(LookupListNew.COL_CODE_NAME).ToString.Equals(EVENT_REFUNDS) OrElse
-                                     dvItem(LookupListNew.COL_CODE_NAME).ToString.Equals(EVENT_CLAIMS)) Then
+                                    (dvItem(AcctEvent.AcctEventSearchDV.COL_EVENT_CODE).ToString.Equals(EVENT_REFUNDS) OrElse
+                                     dvItem(AcctEvent.AcctEventSearchDV.COL_EVENT_CODE).ToString.Equals(EVENT_CLAIMS)) Then
 
-                                    dsTempAP = dal.GetJournalEntriesAP(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(LookupListNew.COL_ID_NAME), Byte())),
-                                    GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), dvItem(LookupListNew.COL_CODE_NAME))
+                                    dsTempAP = dal.GetJournalEntriesAP(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(AcctEvent.AcctEventSearchDV.COL_ACCT_EVENT_TYPE_ID), Byte())),
+                                    GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), AcctEvent.AcctEventSearchDV.COL_EVENT_CODE)
 
                                     If Not dsTempAP Is Nothing AndAlso dsTempAP.Tables.Count > 0 AndAlso dsTempAP.Tables(0).Rows.Count > 0 Then
                                         If ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM) Is Nothing Then
@@ -981,8 +981,8 @@ Public Class AcctTransLog
                                     End If
 
                                     'Get Records to purge
-                                    dsTempPurge = dal.GetPurgeTable(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(LookupListNew.COL_ID_NAME), Byte())),
-                                    GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), dvItem(LookupListNew.COL_CODE_NAME))
+                                    dsTempPurge = dal.GetPurgeTable(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(AcctEvent.AcctEventSearchDV.COL_ACCT_EVENT_TYPE_ID), Byte())),
+                                    GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), dvItem(AcctEvent.AcctEventSearchDV.COL_EVENT_CODE))
                                     If dsTempPurge IsNot Nothing AndAlso dsTempPurge.Tables(dal.Table_AP_PURGE) IsNot Nothing AndAlso dsTempPurge.Tables(dal.Table_AP_PURGE).Rows.Count > 0 Then
                                         If ds.Tables(AcctTransLogDAL.Table_AP_PURGE) Is Nothing Then
                                             ds.Tables.Add(dsTempPurge.Tables(AcctTransLogDAL.Table_AP_PURGE).Copy)
@@ -993,7 +993,7 @@ Public Class AcctTransLog
                                 End If
 
                                 'Update the exec log table with a success or failure based on balancing
-                                boAcctExecLog = New AcctExecLog(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(LookupListNew.COL_ID_NAME), Byte())))
+                                boAcctExecLog = New AcctExecLog(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(AcctEvent.AcctEventSearchDV.COL_ACCT_EVENT_TYPE_ID), Byte())))
                                 boAcctExecLog.UpdateExecStatus(isBalanced)
 
                                 If ((Not dsTemp.Tables(dal.Table_LINEITEM) Is Nothing AndAlso dsTemp.Tables(dal.Table_LINEITEM).Rows.Count > 0) _
@@ -1001,9 +1001,9 @@ Public Class AcctTransLog
                                     (Not dsTemp.Tables(dal.Table_AP_LINEITEM) Is Nothing AndAlso dsTemp.Tables(dal.Table_AP_LINEITEM).Rows.Count > 0)) Then
 
                                     If ds.Tables(dal.TABLE_POSTINGPARAMETERS) Is Nothing Then
-                                        ds.Tables.Add(dal.GetJournalPostingParams(oFelitaEngineData.AccountingCompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(LookupListNew.COL_ID_NAME), Byte())), GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte()))).Tables(0).Copy)
+                                        ds.Tables.Add(dal.GetJournalPostingParams(oFelitaEngineData.AccountingCompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(AcctEvent.AcctEventSearchDV.COL_ACCT_EVENT_TYPE_ID), Byte())), GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte()))).Tables(0).Copy)
                                     Else
-                                        ds.Tables(dal.TABLE_POSTINGPARAMETERS).Merge(dal.GetJournalPostingParams(oFelitaEngineData.AccountingCompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(LookupListNew.COL_ID_NAME), Byte())), GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte()))).Tables(0).Copy)
+                                        ds.Tables(dal.TABLE_POSTINGPARAMETERS).Merge(dal.GetJournalPostingParams(oFelitaEngineData.AccountingCompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(AcctEvent.AcctEventSearchDV.COL_ACCT_EVENT_TYPE_ID), Byte())), GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte()))).Tables(0).Copy)
                                     End If
 
                                     If ds.Relations(dal.REL_JOURNAL_TYPE) Is Nothing AndAlso ds.Tables(dal.Table_LINEITEM) IsNot Nothing Then
