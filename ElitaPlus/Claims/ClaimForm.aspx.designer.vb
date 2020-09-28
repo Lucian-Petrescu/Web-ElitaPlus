@@ -3074,6 +3074,15 @@ Partial Public Class ClaimForm
     Protected WithEvents btnReplacementQuote As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''btnClaimDeductibleRefund control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnClaimDeductibleRefund As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
     '''HiddenSaveChangesPromptResponse control.
     '''</summary>
     '''<remarks>
