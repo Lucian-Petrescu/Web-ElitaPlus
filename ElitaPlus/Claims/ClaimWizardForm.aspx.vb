@@ -211,7 +211,7 @@ Public Class ClaimWizardForm
     End Sub
 
     Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
-        If (Me.CalledUrl = ClaimIssueDetailForm.URL) Then
+        If (Me.CalledUrl = ClaimIssueDetailForm.URL OrElse Me.CalledUrl = ClaimDeductibleRefundForm.URL) Then
 
             If (Not Me.State.ClaimBO.Id.Equals(Guid.Empty)) Then
                 Me.State.ClaimBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.State.ClaimBO.Id)
