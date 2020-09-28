@@ -60,6 +60,7 @@ Public Class ClaimWizardForm
     Public Const URL As String = "~/Claims/ClaimWizardForm.aspx"
     Public Const AbsoluteURL As String = "/ElitaPlus/Claims/ClaimWizardForm.aspx"
     Private Const PROTECTION_AND_EVENT_DETAILS As String = "PROTECTION_AND_EVENT_DETAILS"
+    Private Const CLAIM_WIZARD_FROM_EVENT_DETAILS As String = "CLAIM_WIZARD_FROM_EXISTING_CLAIM"
     Private Const CERTIFICATES As String = "CERTIFICATES"
     Private Const VSCCode As String = "2"
     Public Const CLOSED As String = "C"
@@ -80,7 +81,7 @@ Public Class ClaimWizardForm
     Public Const PDF_URL As String = "DisplayPdf.aspx?ImageId="
     Public Const GRID_COL_CREATED_DATE_IDX As Integer = 1
     Public Const GRID_COL_PROCESSED_DATE_IDX As Integer = 3
-    Public Const GRIDCLA_COL_STATUS_CODE_IDX As Integer = 4
+    Public Const GRIDCLA_COL_STATUS_CODE_IDX As Integer = 7
     Public Const GRIDCLA_COL_AMOUNT_IDX As Integer = 2
     Public Const GRID_COL_STATUS_CODE_IDX As Integer = 5
     Public Const CaseQuestionAnswerGridColQuestionIdx As Integer = 2
@@ -210,7 +211,7 @@ Public Class ClaimWizardForm
     End Sub
 
     Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
-        If (Me.CalledUrl = ClaimIssueDetailForm.URL) Then
+        If (Me.CalledUrl = ClaimIssueDetailForm.URL OrElse Me.CalledUrl = ClaimDeductibleRefundForm.URL) Then
 
             If (Not Me.State.ClaimBO.Id.Equals(Guid.Empty)) Then
                 Me.State.ClaimBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.State.ClaimBO.Id)
@@ -441,11 +442,14 @@ Public Class ClaimWizardForm
                         ' REQ- 6156 - Skipping this step of choosing Service Center and copied the required code to step 5
 
                         For Each claimAuth As ClaimAuthorization In Me.State.ClaimBO.ClaimAuthorizationChildren
-                            If Not claimAuth.IsNew Then
-                                claimAuth.Void()
-                            Else
-                                claimAuth.DeleteChildren()
-                                claimAuth.Delete()
+                            'below line is to skip voiding or deleting authorizations if they are of claim deductible refund related
+                            If Not claimAuth.IsAuthorizationDeductibleRefund Then
+                                If Not claimAuth.IsNew Then
+                                    claimAuth.Void()
+                                Else
+                                    claimAuth.DeleteChildren()
+                                    claimAuth.Delete()
+                                End If
                             End If
                         Next
                         ' REQ- 6156 - Call Start Fulfillment process web method in Fulfillment Web Service
@@ -462,11 +466,14 @@ Public Class ClaimWizardForm
                         If Not attvalue Is Nothing AndAlso attvalue.Value = Codes.YESNO_Y Then
                             If (Me.State.ClaimBO.Status = BasicClaimStatus.Active) Then
                                 For Each claimAuth As ClaimAuthorization In Me.State.ClaimBO.ClaimAuthorizationChildren
-                                    If Not claimAuth.IsNew Then
-                                        claimAuth.Void()
-                                    Else
-                                        claimAuth.DeleteChildren()
-                                        claimAuth.Delete()
+                                    'below line is to skip voiding or deleting authorizations if they are of claim deductible refund related
+                                    If Not claimAuth.IsAuthorizationDeductibleRefund Then
+                                        If Not claimAuth.IsNew Then
+                                            claimAuth.Void()
+                                        Else
+                                            claimAuth.DeleteChildren()
+                                            claimAuth.Delete()
+                                        End If
                                     End If
                                 Next
                                 Me.State.DoesActiveTradeInExistForIMEI = DoesAcceptedOfferExistForIMEI()
@@ -1569,6 +1576,7 @@ Public Class ClaimWizardForm
         ControlMgr.SetVisibleControl(Me, btnSave_WRITE, False)
         ControlMgr.SetVisibleControl(Me, btnClaimOverride_Write, False)
         ControlMgr.SetVisibleControl(Me, btnComment, False)
+        ControlMgr.SetVisibleControl(Me, btnClaimDeductibleRefund, False)
         Me.btnContinue.Text = TranslationBase.TranslateLabelOrMessage("CONTINUE")
 
         Select Case wizardStep
@@ -1600,6 +1608,10 @@ Public Class ClaimWizardForm
                 ControlMgr.SetVisibleControl(Me, btnDenyClaim, Not Me.State.IsEditMode)
                 ControlMgr.SetVisibleControl(Me, Me.btnContinue, Not Me.State.InputParameters.ComingFromDenyClaim)
 
+                If (Me.State.ClaimBO.IsDeductibleRefundAllowed AndAlso
+                            Not Me.State.ClaimBO.IsDeductibleRefundExist) Then
+                    ControlMgr.SetVisibleControl(Me, btnClaimDeductibleRefund, True)
+                End If
             Case ClaimWizardSteps.Step4
             Case ClaimWizardSteps.Step5
                 Me.btnContinue.Text = TranslationBase.TranslateLabelOrMessage("SUBMIT_CLAIM")
@@ -2503,17 +2515,17 @@ Public Class ClaimWizardForm
                     .ClaimBO = CType(State.ClaimBO, ClaimBase)
                     If Not allowEnrolledDeviceUpdate Is Nothing AndAlso allowEnrolledDeviceUpdate.Value = Codes.YESNO_Y Then
                         For Each i As ClaimIssue In State.ClaimBO.ClaimIssuesList
-                            If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS and i.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Then
+                            If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS And i.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Then
                                 .ShowDeviceEditImg = True
                                 Exit For
-                            Else 
+                            Else
                                 .ShowDeviceEditImg = False
                             End If
                         Next
-                    else
-                       .ShowDeviceEditImg = False
+                    Else
+                        .ShowDeviceEditImg = False
                     End If
-                    
+
                 End With
             End If
         End With
@@ -3965,6 +3977,14 @@ Public Class ClaimWizardForm
         End If
         Return blnSuccess
     End Function
+
+    Private Sub btnClaimDeductibleRefund_Click(sender As Object, e As EventArgs) Handles btnClaimDeductibleRefund.Click
+        Try
+            Me.callPage(ClaimDeductibleRefundForm.URL, New ClaimDeductibleRefundForm.Parameters(CType(Me.State.ClaimBO, ClaimBase)))
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
 
 #End Region
 
