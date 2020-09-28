@@ -155,9 +155,8 @@
       <HintPath>..\packages\Elita.Assurant.Common.Localization.2.0.0\lib\net462\Assurant.Common.Localization.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.0\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.3\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Common.Types, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Elita.Assurant.Common.Types.2.0.0\lib\net462\Assurant.Common.Types.dll</HintPath>
@@ -175,9 +174,11 @@
       <HintPath>..\packages\Assurant.Elita.AddressvalidationProvider.1.0.3\lib\net46\Assurant.Elita.AddressValidationProvider.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Elita.Base.DataAccess">
-      <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.2\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Assurant.Elita.Base.DataAccess, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.8\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Assurant.Elita.BaseDataElements, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Base.DataElements.1.0.0\lib\net462\Assurant.Elita.BaseDataElements.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Caching, Version=1.0.18.18085, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Caching.1.1.0\lib\net46\Assurant.Elita.Caching.dll</HintPath>
@@ -186,11 +187,14 @@
       <HintPath>..\packages\Assurant.Elita.ClientIntegration.4.0.0\lib\net462\Assurant.Elita.ClientIntegration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.9\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
+    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.13\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Configuration, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.Configuration.5.0.1\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
+      <HintPath>..\packages\Assurant.Elita.Configuration.5.0.3\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Assurant.Elita.Primitives, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Primitives.2.1.2\lib\netstandard2.0\Assurant.Elita.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="IdentityModel, Version=3.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -250,9 +254,6 @@
     </Reference>
     <Reference Include="Assurant.Elita.Logging.OracleLogger">
       <HintPath>..\packages\Assurant.Elita.Logging.OracleLogger.1.0.1\lib\net462\Assurant.Elita.Logging.OracleLogger.dll</HintPath>
-    </Reference>
-    <Reference Include="Assurant.Elita.Primitives, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.Primitives.2.0.0\lib\netstandard2.0\Assurant.Elita.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
@@ -905,6 +906,13 @@
       <DependentUpon>APInvoiceListForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="Claims\ClaimReplacementQuoteForm.aspx.designer.vb">
+      <DependentUpon>ClaimReplacementQuoteForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\ClaimReplacementQuoteForm.aspx.vb">
+      <DependentUpon>ClaimReplacementQuoteForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Claims\PoAdjustmentForm.aspx.designer.vb">
       <DependentUpon>PoAdjustmentForm.aspx</DependentUpon>
     </Compile>
@@ -1066,21 +1074,8 @@
       <DependentUpon>ClaimDetailsForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
-    <Compile Include="GlobalConfig\QuestionSetForm.aspx.designer.vb">
-      <DependentUpon>QuestionSetForm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GlobalConfig\QuestionSetForm.aspx.vb">
-      <DependentUpon>QuestionSetForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GlobalConfig\QuestionSetListForm.aspx.designer.vb">
-      <DependentUpon>QuestionSetListForm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GlobalConfig\QuestionSetListForm.aspx.vb">
-      <DependentUpon>QuestionSetListForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Helpers\ceHelperParameter.vb" />
+    <Compile Include="Helpers\ExtensionHelper.vb" />
     <Compile Include="Helpers\ListHelper.vb" />
     <Compile Include="Helpers\SSHelper.vb" />
     <Compile Include="Helpers\ssHelperParameter.vb" />
@@ -1445,11 +1440,6 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\GiftCardService\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\QuestionService\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -5839,6 +5829,7 @@
     <Content Include="Claims\AccountPayable\AddAPInvoiceForm.aspx" />
     <Content Include="Claims\AccountPayable\APInvoiceDetailForm.aspx" />
     <Content Include="Claims\AccountPayable\APInvoiceListForm.aspx" />
+    <Content Include="Claims\ClaimReplacementQuoteForm.aspx" />
     <Content Include="Claims\PoAdjustmentForm.aspx" />
     <Content Include="Claims\ClaimIndixSearchForm.aspx" />
     <Content Include="Claims\InventorySearchForm.aspx" />
@@ -5868,8 +5859,6 @@
     <Content Include="ElitaSecurity.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="GlobalConfig\QuestionSetForm.aspx" />
-    <Content Include="GlobalConfig\QuestionSetListForm.aspx" />
     <Content Include="Interfaces\AppleGBIFileForm.aspx" />
     <Content Include="Interfaces\AppleGBIFileFormDetail.aspx" />
     <Content Include="Interfaces\ARInvoiceReconWrkForm.aspx" />
@@ -5944,6 +5933,7 @@
     <Content Include="Reports\ReplacementOrder_AAU_TWG_DE.xslt" />
     <Content Include="Reports\ReplacementOrder_AAU_TWG_ESC.xslt" />
     <Content Include="Reports\ReplacementOrder_ANZ_TWG_ESC.xslt" />
+    <Content Include="Reports\ReplacementOrder_APT.xslt" />
     <Content Include="Reports\ReportCeProgressForm_New.aspx" />
     <Content Include="Reports\ReconciliationReportForm.aspx" />
     <Content Include="Reports\ReportExtractInputControl.ascx" />
@@ -5954,6 +5944,8 @@
     <Content Include="Reports\ServiceOrder_ANZ_TWG_ESC.xslt" />
     <Content Include="Reports\ServiceOrder_AAU_TWG_DE.xslt" />
     <Content Include="Reports\ServiceOrder_AAU_TWG_ESC.xslt" />
+    <Content Include="Reports\ServiceOrder_APT.xslt" />
+    <Content Include="Reports\ServiceWarranty_APT.xslt" />
     <Content Include="Reports\SummaryPaymentByCertificate.aspx" />
     <Content Include="Reports\UpgradeReconciliationReportForm.aspx" />
     <Content Include="Reports\TIMMCertificateExtractForm.aspx" />
@@ -6312,12 +6304,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
-    <Content Include="Service References\QuestionService\Assurant.ElitaPlus.ElitaPlusWebApp.QuestionService.QuestionSet.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\QuestionService\Assurant.ElitaPlus.ElitaPlusWebApp.QuestionService.QuestionSetInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <None Include="Service References\GiftCardService\GiftCardService.wsdl" />
     <None Include="Service References\GiftCardService\GiftCardService.xsd">
       <SubType>Designer</SubType>
@@ -6331,13 +6317,6 @@
     </None>
     <None Include="Service References\GiftCardService\GiftCardService3.xsd">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\QuestionService\QuestionService.disco" />
-    <None Include="Service References\QuestionService\configuration91.svcinfo" />
-    <None Include="Service References\QuestionService\configuration.svcinfo" />
-    <None Include="Service References\QuestionService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
     <None Include="Service References\UtilityService\UtilityWcf.disco" />
     <None Include="Service References\UtilityService\configuration91.svcinfo" />
@@ -7658,14 +7637,6 @@
     <None Include="Service References\GalaxyWcfRef\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
-    <None Include="Service References\QuestionService\QuestionService.wsdl" />
-    <None Include="Service References\QuestionService\QuestionService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\QuestionService\QuestionService1.wsdl" />
-    <None Include="Service References\QuestionService\QuestionService1.xsd">
-      <SubType>Designer</SubType>
     </None>
     <None Include="Service References\TestWcfRef\WcfTest.disco" />
     <None Include="Service References\TestWcfRef\configuration.svcinfo" />
@@ -9082,7 +9053,6 @@
     <WCFMetadataStorage Include="Service References\GalaxyWcfRef\" />
     <WCFMetadataStorage Include="Service References\GiftCardService\" />
     <WCFMetadataStorage Include="Service References\OlitaWcfRef\" />
-    <WCFMetadataStorage Include="Service References\QuestionService\" />
     <WCFMetadataStorage Include="Service References\TestWcfRef\" />
     <WCFMetadataStorage Include="Service References\UtilityService\" />
   </ItemGroup>

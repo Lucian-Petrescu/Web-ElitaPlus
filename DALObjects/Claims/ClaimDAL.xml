@@ -2323,52 +2323,7 @@ select claim.claim_number,
     SELECT nvl(elp_claims.CalcRemainCovLiabilityLimit(:cert_item_coverage_id,:lossDate),0) from dual
   </COVERAGE_REMAIN_LIABILITY_LIMIT>
   <WS_CLAIMS_GET_CLAIMS>
-    select     cl.claim_id            as claim_id,
-    cm.code                as company_code,
-    cl.claim_number        as claim_number,
-    c.cert_number          as cert_number,
-    d.dealer               as dealer_code,
-    cl.status_code         as claim_status,
-    cl.repair_date         as claim_fullfillment_date,
-    cl.problem_description as problem_description,
-    es.created_date        as created_date,
-    es.extended_status     as extended_status,
-    case when getcodefromlistitem(Cic.Coverage_Type_Id) in ('T','T1','T2') then 'Theft'
-    when getcodefromlistitem(Cic.Coverage_Type_Id) in ('A','AR','ARP') then 'Accidental'
-    when getcodefromlistitem(Cic.Coverage_Type_Id) = 'B' then 'MechanicalBreakdown'
-    when getcodefromlistitem(Cic.Coverage_Type_Id) = 'M' then 'Manufacturer'
-    when getcodefromlistitem(Cic.Coverage_Type_Id) = 'UPG' then 'Upgrade'
-    else 'Other'
-    end as Coverage_Type
-    from       elp_claim_equipment    ce
-    inner join elp_claim              cl  on ce.claim_id               = cl.claim_id
-    inner join elp_cert_item_coverage cic on cl.cert_item_coverage_id  = cic.cert_item_coverage_id
-    inner join elp_cert_item          ci  on cic.cert_item_id          = ci.cert_item_id
-    inner join elp_cert               c   on c.cert_id                 = ci.cert_id
-    inner join elp_dealer             d   on d.dealer_id               = c.dealer_id
-    inner join elp_company            cm  on cm.company_id             = d.company_id
-    inner join elp_country            cu  on cu.country_id             = cm.country_id
-    left join  ( select     getcodefromlistitem(csg.list_item_id) extended_status, cs.claim_id, cs.created_date
-    from       elp_claim_status          cs
-    inner join elp_claim_status_by_group csg on cs.claim_status_by_group_id = csg.claim_status_by_group_id
-    )                      es  on es.claim_id = cl.claim_id
-    where      d.dealer = nvl(:dealer_code, d.dealer)
-    and        cm.code = nvl(:company_code, cm.code)
-    and        cu.code = nvl(:country_code,cu.code)
-    and        ce.claim_equipment_type_id = getitemidfromlistanditem('CLAIM_EQUIP_TYPE', 'C')
-    and        ce.serial_number = :serial_number
-    and        (
-    exists ( select     *
-    from       elp_user_role  ur
-    inner join elp_role       r  on ur.role_id = r.role_id
-    where      ur.user_id = :user_id
-    and        r.ihq_only = 'Y')
-    or
-    exists ( select *
-    from   elp_user_company_assigned uca
-    where  uca.user_id = :user_id
-    and    c.company_id = uca.company_id)
-    )
+    elita.elp_tbl_claim.get_claims_by_serial
   </WS_CLAIMS_GET_CLAIMS>
   <WS_CLAIMS_GET_CLAIMS_BY_IMEI_NUMBER>
     elita.elp_tbl_claim.get_claims_by_imei
@@ -2442,6 +2397,10 @@ select claim.claim_number,
     and rownum = 1
   </GET_REGISTERED_ITEM_INDIXID>
 
+  <VALIDATE_SERVICE_WARRANTY>
+     select elita.elp_claims.is_equip_cover_by_srv_warranty(:claim_id) from dual
+  </VALIDATE_SERVICE_WARRANTY>
+      
   <LOAD_LIST_BY_ISSUE>
     elita.elp_tbl_entity_issue.SearchClaimsByIssue
   </LOAD_LIST_BY_ISSUE>

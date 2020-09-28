@@ -123,6 +123,10 @@ Public Class ClaimRecordingForm
         Public LogisticsStage As Integer = 0 ' 0 is first stage
         Public LogisticsOption As LogisticOption = Nothing
         Public EnableModifyClaimedDevice As Boolean = False
+        
+        Public serviceCentreCity As string 
+        Public serviceCentrePostalCode As string
+
     End Class
 
     Public Sub New()
@@ -185,12 +189,16 @@ Public Class ClaimRecordingForm
         Public CasePurpose As String = String.Empty
         Public IsCallerAuthenticated As Boolean = False
 
-        Public Sub New(ByVal certificateId As Guid, ByVal claimId As Guid, ByVal caseId As Guid, Optional ByVal casePurpose As String = "", Optional IsCallerAuthenticated As Boolean = False)
+        Public Sub New(certificateId As Guid,
+                       claimId As Guid,
+                       caseId As Guid,
+                       Optional ByVal casePurpose As String = "",
+                       Optional isCallerAuthenticated As Boolean = False)
             Me.CertificateId = certificateId
             Me.CaseId = caseId
             Me.ClaimId = claimId
             Me.CasePurpose = casePurpose
-            Me.IsCallerAuthenticated = IsCallerAuthenticated
+            Me.IsCallerAuthenticated = isCallerAuthenticated
         End Sub
 
     End Class
@@ -202,8 +210,8 @@ Public Class ClaimRecordingForm
         Public CertificateId As Guid
         Public IsCallerAuthenticated As Boolean = False
         Public Sub New(ByVal lastOp As DetailPageCommand, ByVal certId As Guid, Optional ByVal isCallerAuthenticated As Boolean = False)
-            Me.LastOperation = lastOp
-            Me.CertificateId = certId
+            LastOperation = lastOp
+            CertificateId = certId
             Me.IsCallerAuthenticated = isCallerAuthenticated
         End Sub
         Public Sub New(ByVal lastOp As DetailPageCommand)
@@ -304,15 +312,6 @@ Public Class ClaimRecordingForm
         Next
     End Sub
 
-    Private Sub EnableServiceCenterSelection(value As Boolean, gridRow As GridViewRow)
-        Dim trServiceCenter As HtmlTableRow = CType(gridRow.FindControl(GridLoServiceCenterTr), HtmlTableRow)
-        If trServiceCenter Is Nothing Then Throw New ArgumentNullException("TableRow for Service Center not found")
-        If Not value Then
-            trServiceCenter.Attributes("style") = "display: none"
-        Else
-            trServiceCenter.Attributes("style") = "display: block"
-        End If
-    End Sub
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         MasterPage.MessageController.Clear()
 
@@ -543,7 +542,8 @@ Public Class ClaimRecordingForm
         End If
         If Not State.ClaimBo Is Nothing Then
             moProtectionEvtDtl.ClaimNumber = State.ClaimBo.ClaimNumber
-            moProtectionEvtDtl.ClaimStatus = LookupListNew.GetClaimStatusFromCode(Authentication.CurrentUser.LanguageId, State.ClaimBo.StatusCode)
+            moProtectionEvtDtl.ClaimStatus = LookupListNew.GetClaimStatusFromCode(Authentication.CurrentUser.LanguageId,
+                                                                                  State.ClaimBo.StatusCode)
             moProtectionEvtDtl.ClaimStatusCss = If(State.ClaimBo.Status = BasicClaimStatus.Active, "StatActive", "StatClosed")
             moProtectionEvtDtl.DateOfLoss = GetDateFormattedStringNullable(State.ClaimBo.LossDate.Value)
             moProtectionEvtDtl.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListNew.LK_RISKTYPES, State.ClaimBo.CertificateItem.RiskTypeId)
@@ -750,7 +750,8 @@ Public Class ClaimRecordingForm
         Dim errClaimRecordingWs As String = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR)
 
         If fex.GetType() Is GetType(FaultException(Of ValidationFault)) AndAlso (DirectCast(fex, FaultException(Of ValidationFault)).Detail.Items.Count > 0) Then
-            Dim items As List(Of ValidationFaultItem) = DirectCast(fex, FaultException(Of ValidationFault)).Detail.Items.ToList()
+            Dim items As List(Of ValidationFaultItem)
+            items = DirectCast(fex, FaultException(Of ValidationFault)).Detail.Items.ToList()
 
             For Each vf As ValidationFaultItem In items
                 MasterPage.MessageController.AddError(errClaimRecordingWs & " - " & vf.Message, False)
@@ -883,9 +884,6 @@ Public Class ClaimRecordingForm
 
 #End Region
 #Region "Caller View - Other Function"
-    Private Sub SetEnabled(ByVal webControl As WebControl, ByVal enabled As Boolean)
-        webControl.Enabled = enabled
-    End Sub
 
     Protected Sub CaseContinue()
         If Not State.CaseId.Equals(Guid.Empty) Then
@@ -1246,8 +1244,8 @@ Public Class ClaimRecordingForm
 
         Try
             Dim oCertificate As Certificate = New Certificate(State.CertificateId)
-            Dim Dealer = oCertificate.Dealer.Dealer
-            Dim makesAndModels = GetMakesAndModels(Dealer)
+            Dim dealer = oCertificate.Dealer.Dealer
+            Dim makesAndModels = GetMakesAndModels(dealer)
 
             If (makesAndModels IsNot Nothing) Then
                 Dim ds As New DataSet()
@@ -1278,9 +1276,9 @@ Public Class ClaimRecordingForm
             If (e.Row.RowType = DataControlRowType.DataRow) Then
                 If e.Row.RowType <> DataControlRowType.Header AndAlso e.Row.RowType <> DataControlRowType.Footer Then
                     If DirectCast(GridItems.DataSource, IEnumerable(Of DeviceInfo))(e.Row.RowIndex).PurchasedDate IsNot Nothing Then
-                        Dim PurchasedDate = DirectCast(GridItems.DataSource, IEnumerable(Of DeviceInfo))(e.Row.RowIndex).PurchasedDate
-                        If (String.IsNullOrEmpty(PurchasedDate.ToString) = False) Then
-                            e.Row.Cells(gridItemDeviceInfoPurchasedDate).Text = GetDateFormattedString(PurchasedDate)
+                        Dim purchasedDate = DirectCast(GridItems.DataSource, IEnumerable(Of DeviceInfo))(e.Row.RowIndex).PurchasedDate
+                        If (String.IsNullOrEmpty(purchasedDate.ToString) = False) Then
+                            e.Row.Cells(gridItemDeviceInfoPurchasedDate).Text = GetDateFormattedString(purchasedDate)
                         End If
                     End If
                 End If
@@ -1289,7 +1287,7 @@ Public Class ClaimRecordingForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Protected Sub rdoItemSelectChanged(sender As Object, e As EventArgs)
+    Protected Sub DeviceItemSelectChanged(sender As Object, e As EventArgs)
         Dim rdoActive As RadioButton
         rdoActive = DirectCast(sender, RadioButton)
         BindModifiedDeviceInfo(rdoActive)
@@ -1315,7 +1313,7 @@ Public Class ClaimRecordingForm
                     If rdoSelect IsNot Nothing Then
                         If rdoSelect.Checked Then
                            
-                            If (Me.State.EnableModifyClaimedDevice) Then
+                            If (State.EnableModifyClaimedDevice) Then
 
                                 If ddlDvcMake.Items.Count > 0 Then
                                     claimdevice.Manufacturer = ddlDvcMake.SelectedItem.Text
@@ -1590,7 +1588,9 @@ Public Class ClaimRecordingForm
                             If Not oClaimBase Is Nothing Then
                                 State.ClaimBo = oClaimBase
                                 moProtectionEvtDtl.ClaimNumber = oClaimBase.ClaimNumber
-                                moProtectionEvtDtl.ClaimStatus = LookupListNew.GetClaimStatusFromCode(Authentication.CurrentUser.LanguageId, oClaimBase.StatusCode)
+                                moProtectionEvtDtl.ClaimStatus =
+                                    LookupListNew.GetClaimStatusFromCode(Authentication.CurrentUser.LanguageId,
+                                                                         oClaimBase.StatusCode)
                                 moProtectionEvtDtl.ClaimStatusCss = If(oClaimBase.Status = BasicClaimStatus.Active, "StatActive", "StatClosed")
                                 moProtectionEvtDtl.DateOfLoss = GetDateFormattedStringNullable(oClaimBase.LossDate.Value)
                                 moProtectionEvtDtl.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListNew.LK_RISKTYPES, oClaimBase.CertificateItem.RiskTypeId)
@@ -1894,7 +1894,7 @@ Public Class ClaimRecordingForm
                 End If
 
                 shippingAddRequest.ShippingAddress = userSelectedShippingAddress
-
+                
 
                 If UserControlDeliverySlot.Visible Then
                     If userSelectedShippingAddress.Country <> UserControlDeliverySlot.CountryCode OrElse userSelectedShippingAddress.PostalCode <> UserControlDeliverySlot.DeliveryAddress.PostalCode Then
@@ -1916,6 +1916,8 @@ Public Class ClaimRecordingForm
 
                     If wsResponse IsNot Nothing Then
                         State.SubmitWsBaseClaimRecordingResponse = wsResponse
+                        state.serviceCentreCity = userSelectedShippingAddress.City
+                        state.serviceCentrePostalCode = userSelectedShippingAddress.PostalCode
                     End If
                 Catch ex As FaultException
                     ThrowWsFaultExceptions(ex)
@@ -2585,7 +2587,6 @@ Public Class ClaimRecordingForm
     Private Const GridLoServiceCenterNameLblCtrl As String = "moServiceCenterNameLabel"
     Private Const GridLoServiceCenterSelectedLblCtrl As String = "moServiceCenterSelectedLabel"
     Private Const GridLoShippingAddressLblCtrl As String = "lblLoShippingAddress"
-    Private Const GridLoShippingServiceCenterLblCtrl As String = "lblLoServiceCenter"
     Private Const GridLoAddressCtrl As String = "ucAddressControllerLogisticsOptions"
     Private Const GridLoServiceCenterCtrl As String = "ucServiceCenterUserControl"
     Private Const GridLoDeliveryDateLblCtrl As String = "lblDeliveryDate"
@@ -2644,8 +2645,7 @@ Public Class ClaimRecordingForm
             ControlMgr.SetEnableControl(Me, rb, True)
             Dim isEnableControl As Boolean = rb.Checked
 
-            Dim moAddressController As UserControlAddress_New
-            moAddressController = CType(gridViewTarget.Rows(i).FindControl(GridLoAddressCtrl), UserControlAddress_New)
+            Dim moAddressController As UserControlAddress_New = CType(gridViewTarget.Rows(i).FindControl(GridLoAddressCtrl), UserControlAddress_New)
 
             If (rb.Checked) Then
                 EnableDisableAddressValidation(moAddressController)
@@ -3134,14 +3134,15 @@ Public Class ClaimRecordingForm
             rdoLogisticsOptions.Checked = isEnableControl
 
             Dim addressDetail As New BusinessObjectsNew.Address()
-
+            
             ' Logistics Options - Address
             If Not logisticsOptionItem Is Nothing _
                AndAlso (logisticsOptionItem.Type = LogisticOptionType.CustomerAddress OrElse logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress) Then
 
                 Dim lblLoShippingAddress As Label = CType(e.Row.FindControl(GridLoShippingAddressLblCtrl), Label)
 
-                Dim moAddressController As UserControlAddress_New = CType(e.Row.FindControl(GridLoAddressCtrl), UserControlAddress_New)
+                Dim moAddressController As UserControlAddress_New
+                moAddressController = CType(e.Row.FindControl(GridLoAddressCtrl), UserControlAddress_New)
                 moAddressController.Visible = True
 
                 If (rdoLogisticsOptions.Checked) Then
@@ -3320,6 +3321,10 @@ Public Class ClaimRecordingForm
         userControl.NewCurrentPageIndexFunc = Function(grid As GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer)
                                                   Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
                                               End Function
+
+        userControl.City = state.serviceCentreCity
+        userControl.PostalCode = state.serviceCentrePostalCode
+
         userControl.HostMessageController = MasterPage.MessageController
     End Sub
 

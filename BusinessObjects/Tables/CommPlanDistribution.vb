@@ -114,7 +114,6 @@ Public Class CommPlanDistribution
         End Set
     End Property
     
-    <ValueMandatory("")>
     Public Property EntityId() As Guid
         Get
             CheckDeleted()
@@ -130,8 +129,7 @@ Public Class CommPlanDistribution
         End Set
     End Property
 
-    '<ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)>
-    '<ValueMandatory("")>
+    <ValidNumericRange("", Min:=0)>
     Public Property CommissionAmount() As DecimalType
         Get
             CheckDeleted()
@@ -147,8 +145,7 @@ Public Class CommPlanDistribution
         End Set
     End Property
 
-    '<ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0)>
-    '<ValueMandatory("")>
+    <ValidNumericRange("", Min:=0)>
     Public Property CommissionPercent() As DecimalType
         Get
             CheckDeleted()
@@ -164,6 +161,7 @@ Public Class CommPlanDistribution
         End Set
     End Property
 
+    <ValueMandatory(""), ValidNumericRange("", Min:=1)>
     Public Property Position() As LongType
         Get
             CheckDeleted()
@@ -273,29 +271,7 @@ Public Class CommPlanDistribution
         End Try
     End Sub
 #End Region
-    'Public Function HasDealerConfiguredForAcctBucket(ByVal CommissionTolerenceId As Guid) As Boolean
-
-    '    Dim oCommissionTolerence As New CommissionTolerance(CommissionTolerenceId)
-    '    Dim oCommissionPeriod As New CommissionPeriod(oCommissionTolerence.CommissionPeriodId)
-    '    Dim oDealer As New Dealer(oCommissionPeriod.DealerId)
-    '    Dim isDealerConfiguredForAcctBucket As Boolean = False
-
-    '    If (oCommissionPeriod.DealerId <> Guid.Empty) Then
-    '        If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
-    '            If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
-    '                isDealerConfiguredForAcctBucket = True
-    '            Else
-    '                isDealerConfiguredForAcctBucket = False
-    '            End If
-    '        Else
-    '            isDealerConfiguredForAcctBucket = False
-    '        End If
-    '    Else
-    '        isDealerConfiguredForAcctBucket = False
-    '    End If
-
-    '    Return isDealerConfiguredForAcctBucket
-    'End Function
+    
 #Region "DataView Retrieveing Methods"
 
     Public Shared Function getList(ByVal CommissionToleranceId As Guid) As SearchDV
@@ -343,6 +319,18 @@ Public Class CommPlanDistribution
         End Try
 
     End Function
+
+    Public Shared Function CheckPositionExists(ByVal pi_position As Integer, ByVal pi_comm_plan_dist_id As Guid, ByVal pi_commmission_plan_id As Guid ) As String
+        Try
+            Dim dal As New CommPlanDistributionDAL
+            'Return dal.CheckDatesOverLap(pi_dealer_id ,pi_effective_date , pi_expiration_date )
+            Return dal.CheckPositionExist(pi_position, pi_comm_plan_dist_id, pi_commmission_plan_id )
+       Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+
+    End Function
+    
 #End Region
 
 #Region "SearchDV"

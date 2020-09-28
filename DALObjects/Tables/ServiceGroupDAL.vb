@@ -1,6 +1,6 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (9/20/2004)********************
 
-
+Imports System.Threading
 Public Class ServiceGroupDAL
     Inherits DALBase
 
@@ -14,6 +14,13 @@ Public Class ServiceGroupDAL
     Public Const COL_NAME_SHORT_DESC = "short_desc"
     Public Const COL_NAME_DESCRIPTION = "description"
     Public Const WILDCARD As Char = "%"
+    Public Const PAR_IN_SERVICE_GROUP_ID As String = "pi_service_group_id"
+    Public Const PAR_IN_RISK_TYPE_ID As String = "pi_risk_type_id"
+    Public Const PAR_IN_SGRT_MANU As String = "pi_sgrt_manu"
+    Public Const PAR_IN_PAGE_INDEX As String = "pi_page_index"
+    Public Const PAR_IN_NAME_SORT_EXPRESSION As String = "pi_sort_expression"
+    Public Const PAR_OU_RESULT_SET As String = "po_result"
+
 
 #End Region
 
@@ -24,6 +31,7 @@ Public Class ServiceGroupDAL
 
 #End Region
 
+    Public Delegate Sub AsyncCaller(ByVal ServiceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal SgrtManu As String)
 #Region "Load Methods"
 
     Public Sub LoadSchema(ByVal ds As DataSet)
@@ -40,6 +48,56 @@ Public Class ServiceGroupDAL
         End Try
     End Sub
 
+    Public Function countofrecords(ByVal servicegroupid As Guid) As DataSet
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/COUNTOFRECORDS"))
+                cmd.AddParameter(PAR_IN_SERVICE_GROUP_ID, OracleDbType.Raw, servicegroupid.ToByteArray())
+                cmd.AddParameter(PAR_OU_RESULT_SET, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                Return OracleDbHelper.Fetch(cmd, "countofrecords")
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+
+    Public Sub sgrtmanusave(ByVal ServiceGroupId As Guid, ByVal risktypeid As Guid, ByVal sgrtmanu As String)
+
+        Dim aSyncHandler As New AsyncCaller(AddressOf Asyncsgrtmanusave)
+        aSyncHandler.BeginInvoke(ServiceGroupId, risktypeid, sgrtmanu, Nothing, Nothing)
+
+
+    End Sub
+
+    Private Sub Asyncsgrtmanusave(ByVal ServiceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal SgrtManu As String)
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/SGRTMANU_SAVE"))
+                cmd.AddParameter(PAR_IN_SERVICE_GROUP_ID, OracleDbType.Raw, ServiceGroupId.ToByteArray())
+                cmd.AddParameter(PAR_IN_RISK_TYPE_ID, OracleDbType.Raw, value:=RiskTypeId)
+                cmd.AddParameter(PAR_IN_SGRT_MANU, OracleDbType.Clob, value:=SgrtManu)
+                OracleDbHelper.ExecuteNonQuery(cmd)
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
+
+    Public Function LoadGrid(ByVal servicegroupID As Guid,
+                                ByVal pageindex As Integer,
+                                ByVal sortExpression As String) As DataSet
+        Try
+
+
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_GRID"))
+                cmd.AddParameter(PAR_IN_SERVICE_GROUP_ID, OracleDbType.Raw, servicegroupID.ToByteArray())
+                cmd.AddParameter(PAR_IN_PAGE_INDEX, OracleDbType.Int64, value:=pageindex)
+                cmd.AddParameter(PAR_IN_NAME_SORT_EXPRESSION, OracleDbType.Varchar2, value:=sortExpression)
+                cmd.AddParameter(PAR_OU_RESULT_SET, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                Return OracleDbHelper.Fetch(cmd, "sgrtmanu")
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
     Public Function LoadList(ByVal oCountryIds As ArrayList, ByVal searchCode As String, ByVal searchDesc As String) As DataSet
         Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
 
