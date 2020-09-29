@@ -794,6 +794,7 @@ Namespace Certificates
                            string.IsNullOrEmpty(State.CustomerLastName) AND
                            string.IsNullOrEmpty(State.InvoiceNumber)
 
+                        ResetSearchResult()
                         Me.MasterPage.MessageController.AddError(Message.MSG_BRANCH_CERTFICATE_STATUS_FIELD_SELECT)
                         Exit sub
                     End If
@@ -805,7 +806,6 @@ Namespace Certificates
                        string.IsNullOrEmpty(State.CertificateStatus) Then
 
                         ResetSearchResult()
-
                         Me.MasterPage.MessageController.AddError(Message.MSG_BRANCH_FIELD_SELECT)
                         Exit sub
                     End If
