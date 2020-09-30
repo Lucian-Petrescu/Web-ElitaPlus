@@ -105,6 +105,7 @@ Public Class ClaimRecordingForm
         Public DefaultDeliveryDay As DeliveryDay
         Public DeliverySlotTimeSpan As TimeSpan
         Public IsExpeditedBtnClicked As Boolean = False
+        Public BankInfoBO As Assurant.ElitaPlus.BusinessObjectsNew.BankInfo
 
 #Region "SubmitWsBaseClaimRecordingResponse"
         Private _mSubmitWsBaseClaimRecordingResponse As BaseClaimRecordingResponse = Nothing
@@ -123,9 +124,9 @@ Public Class ClaimRecordingForm
         Public LogisticsStage As Integer = 0 ' 0 is first stage
         Public LogisticsOption As LogisticOption = Nothing
         Public EnableModifyClaimedDevice As Boolean = False
-        
-        Public serviceCentreCity As string 
-        Public serviceCentrePostalCode As string
+
+        Public serviceCentreCity As String
+        Public serviceCentrePostalCode As String
 
     End Class
 
@@ -300,8 +301,16 @@ Public Class ClaimRecordingForm
     Private Sub ReWireUserControl()
         For i As Integer = 0 To GridViewLogisticsOptions.Rows.Count - 1
             Dim rb As RadioButton
+            Dim lb As Label
+            Dim logisticsStage As LogisticStage
+            Dim wsResponse As LogisticStagesResponse
+            wsResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, LogisticStagesResponse)
+
+            logisticsStage = wsResponse.Stages(State.LogisticsStage)
             rb = CType(GridViewLogisticsOptions.Rows(i).FindControl("rdoLogisticsOption"), RadioButton)
-            If rb.Checked Then
+            lb = CType(GridViewLogisticsOptions.Rows(i).FindControl(GridLoCodeLblCtrl), Label)
+            Dim lOption As LogisticOption = wsResponse.Stages(State.LogisticsStage).Options.FirstOrDefault(Function(q) q.Code = lb.Text)
+            If rb.Checked AndAlso lOption.Type = LogisticOptionType.ServiceCenter Then
                 Dim uc As UserControlServiceCenterSelection
                 uc = CType(GridViewLogisticsOptions.Rows(i).FindControl("ucServiceCenterUserControl"), UserControlServiceCenterSelection)
 
@@ -1312,7 +1321,7 @@ Public Class ClaimRecordingForm
                     rdoSelect = DirectCast(row.FindControl("rdoItems"), RadioButton)
                     If rdoSelect IsNot Nothing Then
                         If rdoSelect.Checked Then
-                           
+
                             If (State.EnableModifyClaimedDevice) Then
 
                                 If ddlDvcMake.Items.Count > 0 Then
@@ -1350,7 +1359,7 @@ Public Class ClaimRecordingForm
                                 itemSelectionRequest.ClaimedDevice = claimdevice
                                 itemSelectionRequest.EnrolledDevice = enrolleddevice
                                 Exit For
-                            else
+                            Else
                                 claimdevice.Manufacturer = DirectCast(row.FindControl("lblManufacturer"), Label).Text
                                 claimdevice.Model = DirectCast(row.FindControl("lblModel"), Label).Text
                                 claimdevice.ImeiNumber = DirectCast(row.FindControl("lblImeiNo"), Label).Text
@@ -1897,7 +1906,7 @@ Public Class ClaimRecordingForm
                 End If
 
                 shippingAddRequest.ShippingAddress = userSelectedShippingAddress
-                
+
 
                 If UserControlDeliverySlot.Visible Then
                     If userSelectedShippingAddress.Country <> UserControlDeliverySlot.CountryCode OrElse userSelectedShippingAddress.PostalCode <> UserControlDeliverySlot.DeliveryAddress.PostalCode Then
@@ -1919,8 +1928,8 @@ Public Class ClaimRecordingForm
 
                     If wsResponse IsNot Nothing Then
                         State.SubmitWsBaseClaimRecordingResponse = wsResponse
-                        state.serviceCentreCity = userSelectedShippingAddress.City
-                        state.serviceCentrePostalCode = userSelectedShippingAddress.PostalCode
+                        State.serviceCentreCity = userSelectedShippingAddress.City
+                        State.serviceCentrePostalCode = userSelectedShippingAddress.PostalCode
                     End If
                 Catch ex As FaultException
                     ThrowWsFaultExceptions(ex)
@@ -2600,9 +2609,11 @@ Public Class ClaimRecordingForm
     Private Const GridLoEstimateDeliveryDateBtnCtrl As String = "btnEstimateDeliveryDate"
     Private Const LogisticsOptionsQuestionsCtrl As String = "logisticsOptionsQuestions"
     Private Const LogisticsOptionsEstimateDeliveryDateCtrl As String = "UCDeliverySlotLogisticOptions"
+    Private Const LogisticsOptionsBankInfoCtrl As String = "moBankInfoController"
     Private Const LogisticsOptionsServiceCenterCodeTxtCtrl As String = "txtServiceCenterCode"
     Private Const LogisticsOptionsServiceCenterNameTxtCtrl As String = "txtServiceCenterName"
     Private Const GridLoServiceCenterTr As String = "trServiceCenter"
+    Private Const GridBankInfoLblCtrl As String = "moBankInfoLabel"
     'KDDI
     Private Const ValidateAddressButton As String = "btnValidate_Address"
 
@@ -2876,12 +2887,33 @@ Public Class ClaimRecordingForm
                         MasterPage.MessageController.AddError(Message.MSG_ERR_DEFAULT_SERVICE_CENTER, True)
                         Return False
                     End If
-
                 End If
+
+                ' Bank transfer
+                If Not lOption Is Nothing _
+                    AndAlso lOption.Type = LogisticOptionType.BankTransfer Then
+                    Dim moBankInfoController As UserControlBankInfo_New = CType(gvr.FindControl(LogisticsOptionsBankInfoCtrl), UserControlBankInfo_New)
+                    Dim logisticOptionInfoBankTransfer As LogisticOptionInfoBankTransfer = CType(lOption.LogisticOptionInfo, LogisticOptionInfoBankTransfer)
+                    If moBankInfoController IsNot Nothing Then
+
+                        moBankInfoController.PopulateBOFromControl()
+
+                        Dim logisticStage As LogisticStage
+                        logisticStage = wsResponse.Stages(State.LogisticsStage)
+                        logisticOptionInfoBankTransfer.BankInfo = New BankInfo With {
+                            .ReferenceId = moBankInfoController.State.myBankInfoBo.Id.ToString
+                        }
+                    Else
+                        MasterPage.MessageController.AddError(Message.MSG_BANK_NAME_VALUE_REQUIRED, True)
+                        Return False
+                    End If
+                End If
+
 
                 islogisticsOptionSelected = True
                 Exit For
             End If
+
         Next
 
         If Not islogisticsOptionSelected Then
@@ -3141,7 +3173,7 @@ Public Class ClaimRecordingForm
             rdoLogisticsOptions.Checked = isEnableControl
 
             Dim addressDetail As New BusinessObjectsNew.Address()
-            
+
             ' Logistics Options - Address
             If Not logisticsOptionItem Is Nothing _
                AndAlso (logisticsOptionItem.Type = LogisticOptionType.CustomerAddress OrElse logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress) Then
@@ -3214,10 +3246,15 @@ Public Class ClaimRecordingForm
                 trShippingAddress.Attributes("style") = "display: none"
             End If
 
-            ' Logistic Options - Service Center
+            'Logistic Options - Service Center
 
             If Not logisticsOptionItem Is Nothing _
                    AndAlso (logisticsOptionItem.Type = LogisticOptionType.ServiceCenter) Then
+
+                Dim trServiceCenter As HtmlTableRow = CType(e.Row.FindControl(GridLoServiceCenterTr), HtmlTableRow)
+                Dim trBankInfo As HtmlTableRow = CType(e.Row.FindControl("trBankInfo"), HtmlTableRow)
+                ControlMgr.SetVisibleControl(Me, trServiceCenter, True)
+                ControlMgr.SetVisibleControl(Me, trBankInfo, False)
 
                 Dim oCertificate As Certificate = New Certificate(State.CertificateId)
                 Dim oCountry As Country = New Country(oCertificate.Company.CountryId)
@@ -3304,8 +3341,34 @@ Public Class ClaimRecordingForm
                 Else
                     ControlMgr.SetVisibleControl(Me, logisticsOptionsQuestionsItemCtrl, False)
                 End If
+
+                'Bank transfer 
+                If Not logisticsOptionItem Is Nothing AndAlso
+                                 (logisticsOptionItem.Type = LogisticOptionType.BankTransfer) Then
+
+                    Dim lblBankInfo As Label = CType(e.Row.FindControl(GridBankInfoLblCtrl), Label)
+                    lblBankInfo.Text = TranslationBase.TranslateLabelOrMessage("CUSTOMER_BANK_INFO")
+
+                    Dim trServiceCenter As HtmlTableRow = CType(e.Row.FindControl(GridLoServiceCenterTr), HtmlTableRow)
+                    Dim trBankInfo As HtmlTableRow = CType(e.Row.FindControl("trBankInfo"), HtmlTableRow)
+
+                    ControlMgr.SetVisibleControl(Me, trServiceCenter, False)
+                    ControlMgr.SetVisibleControl(Me, trBankInfo, True)
+
+
+                    Dim moBankInfoController As UserControlBankInfo_New = CType(e.Row.FindControl(LogisticsOptionsBankInfoCtrl), UserControlBankInfo_New)
+                    moBankInfoController.Visible = True
+                    Dim ddlCountry As DropDownList = CType(moBankInfoController.FindControl("moCountryDrop_WRITE"), DropDownList)
+                    Me.State.BankInfoBO = New BusinessObjectsNew.BankInfo With {
+                        .CountryID = Me.State.ClaimBo.Certificate.CountryPurchaseId
+                    }
+                    moBankInfoController.State.myBankInfoBo = Me.State.BankInfoBO
+                    moBankInfoController.Bind(Me.State.BankInfoBO)
+                    ddlCountry.Enabled = False
+                End If
+
             End If
-        End If
+            End If
     End Sub
 
     Private Sub ServiceCenterSelectionHandler(userControl As UserControlServiceCenterSelection)
