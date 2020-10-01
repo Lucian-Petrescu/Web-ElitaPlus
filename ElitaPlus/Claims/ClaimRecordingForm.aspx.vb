@@ -3348,9 +3348,9 @@ Public Class ClaimRecordingForm
                     ControlMgr.SetVisibleControl(Me, trServiceCenter, False)
                     ControlMgr.SetVisibleControl(Me, trBankInfo, True)
 
-
                     Dim moBankInfoController As UserControlBankInfo_New = CType(e.Row.FindControl(LogisticsOptionsBankInfoCtrl), UserControlBankInfo_New)
                     moBankInfoController.Visible = True
+                    moBankInfoController.LabelTranslations()
                     Dim ddlCountry As DropDownList = CType(moBankInfoController.FindControl("moCountryDrop_WRITE"), DropDownList)
                     Me.State.BankInfoBO = New BusinessObjectsNew.BankInfo With {
                         .CountryID = Me.State.ClaimBo.Certificate.CountryPurchaseId
@@ -3358,10 +3358,11 @@ Public Class ClaimRecordingForm
                     moBankInfoController.State.myBankInfoBo = Me.State.BankInfoBO
                     moBankInfoController.Bind(Me.State.BankInfoBO)
                     ddlCountry.Enabled = False
+                    moBankInfoController.EnableControlsBasedOnCountry(Me.State.BankInfoBO.CountryID)
                 End If
 
             End If
-            End If
+        End If
     End Sub
 
     Private Sub ServiceCenterSelectionHandler(userControl As UserControlServiceCenterSelection)
