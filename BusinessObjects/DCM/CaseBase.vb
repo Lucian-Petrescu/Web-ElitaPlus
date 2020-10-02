@@ -469,13 +469,13 @@ Public Class CaseBase
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetAgentList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal customerFirstName As String, ByVal customerLastName As String,
+   Public Shared Function GetAgentList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal customerFirstName As String, ByVal customerLastName As String,
                                         ByVal caseNumber As String, ByVal claimNumber As String, ByVal certificateNumber As String,
                                         ByVal serialNumber As String, ByVal invoiceNumber As String, ByVal phoneNumber As String, ByVal zipcode As String,
                                         ByVal certificateStatus As String, ByVal email As String,
                                         ByVal taxId As String, ByVal serviceLineNumber As String, ByVal accountNumber As String,
                                         ByVal globalCustomerNumber As String, ByVal dateofbirth As String,
-                                        ByVal languageId As Guid) As AgentSearchDv
+                                        ByVal languageId As Guid,ByVal branchCode As String,ByVal branchName As String) As AgentSearchDv
 
         If (customerFirstName.Equals(String.Empty) AndAlso
             customerLastName.Equals(String.Empty) AndAlso
@@ -491,6 +491,8 @@ Public Class CaseBase
             taxId.Equals(String.Empty) AndAlso
             accountNumber.Equals(String.Empty) AndAlso
             globalCustomerNumber.Equals(String.Empty) AndAlso
+            branchCode.Equals(String.Empty) AndAlso
+            branchName.Equals(String.Empty) AndAlso
             Not dateofbirth.Equals(String.Empty)) Then
             Dim errors() As ValidationError = {New ValidationError(MinimumSearchCriterion, GetType(CaseBase), Nothing, "Search", Nothing)}
             Throw New BOValidationException(errors, GetType(CaseBase).FullName)
@@ -519,7 +521,9 @@ Public Class CaseBase
                                                              globalCustomerNumber,
                                                              dateofbirth,
                                                              Authentication.CurrentUser.NetworkId,
-                                                             languageId).Tables(0))
+                                                             languageId,
+                                                             branchCode,
+                                                             branchName).Tables(0))
         Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
