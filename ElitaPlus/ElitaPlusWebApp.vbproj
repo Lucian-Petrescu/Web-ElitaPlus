@@ -196,9 +196,15 @@
     <Reference Include="Assurant.Elita.Primitives, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Primitives.2.1.2\lib\netstandard2.0\Assurant.Elita.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="Assurant.Elita.Questions.Contracts, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Questions.Contracts.3.0.0\lib\netstandard2.0\Assurant.Elita.Questions.Contracts.dll</HintPath>
+    </Reference>
     <Reference Include="IdentityModel, Version=3.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IdentityModel.3.9.0\lib\net452\IdentityModel.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=2018.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.2018.2.1\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -258,9 +264,6 @@
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
     </Reference>
@@ -272,9 +275,6 @@
     </Reference>
     <Reference Include="Assurant.Elita.Logging.OracleLogger">
       <HintPath>..\packages\Assurant.Elita.Logging.OracleLogger.1.0.1\lib\net462\Assurant.Elita.Logging.OracleLogger.dll</HintPath>
-    </Reference>
-    <Reference Include="Assurant.Elita.Questions.Contracts">
-      <HintPath>..\packages\Assurant.Elita.Questions.Contracts.2.0.1\lib\netstandard2.0\Assurant.Elita.Questions.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.ServiceIntegration.Validation">
       <HintPath>..\packages\Assurant.Elita.ServiceIntegration.Validation.1.0.0\lib\net462\Assurant.Elita.ServiceIntegration.Validation.dll</HintPath>
