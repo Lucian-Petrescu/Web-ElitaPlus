@@ -48,7 +48,8 @@ Namespace Certificates
         Private Const CodeSearchFieldZip As String = "ZIP"
         Private Const SearchTypeXCD As String = "SEARCH_TYPE-AGENT_SEARCH"
         Private Const CodeSearchFieldDob As String = "BIRTH_DATE_CAL"
-
+        Private Const CodeSearchFieldBranchCode As String = "DEALER_BRANCH_CODE"
+        Private Const CodeSearchFieldBranchName As String = "BRANCH_NAME"
 
 
 #End Region
@@ -91,6 +92,8 @@ Namespace Certificates
             Public PreviousDealerId As Guid = Guid.Empty
             Public ShowAdditionalSearchFields As Boolean = False
             Public Dob As String = String.Empty
+            Public BranchCode As String = String.Empty
+            Public BranchName As String = String.Empty
             Sub New()
             End Sub
         End Class
@@ -268,6 +271,8 @@ Namespace Certificates
             State.ServiceLineNumber = String.Empty
             State.AccountNumber = String.Empty
             State.GlobalCustomerNumber = String.Empty
+            State.BranchCode = String.Empty
+            State.BranchName = String.Empty
         End Sub
         Private Sub SetStateFieldsValue()
 
@@ -297,6 +302,8 @@ Namespace Certificates
             State.ServiceLineNumber = GetSearchTextBoxValue(CodeSearchFieldServiceLineNumber)
             State.AccountNumber = GetSearchTextBoxValue(CodeSearchFieldAccountNumber)
             State.GlobalCustomerNumber = GetSearchTextBoxValue(CodeSearchFieldGlobalCustomerNumber)
+            State.BranchCode = GetSearchTextBoxValue(CodeSearchFieldBranchCode)
+            State.BranchName = GetSearchTextBoxValue(CodeSearchFieldBranchName)
 
             ' Dynamic controls - drop down
             State.CertificateStatus = GetSearchDropDownValue(CodeSearchFieldCertificateStatus)
@@ -324,6 +331,9 @@ Namespace Certificates
             ClearSearchTextBox(CodeSearchFieldAccountNumber)
             ClearSearchTextBox(CodeSearchFieldGlobalCustomerNumber)
             ClearSearchTextBox(CodeSearchFieldDob)
+            ClearSearchTextBox(CodeSearchFieldBranchCode)
+            ClearSearchTextBox(CodeSearchFieldBranchName)
+
 
             ' Reset drop down
             ResetSearchDropDown(CodeSearchFieldCertificateStatus)
@@ -361,6 +371,8 @@ Namespace Certificates
             SetSearchTextBox(CodeSearchFieldAccountNumber, State.AccountNumber)
             SetSearchTextBox(CodeSearchFieldGlobalCustomerNumber, State.GlobalCustomerNumber)
             SetSearchTextBox(CodeSearchFieldDob, State.Dob)
+            SetSearchTextBox(CodeSearchFieldBranchCode, State.BranchCode)
+            SetSearchTextBox(CodeSearchFieldBranchName, State.BranchName)
 
             ' Dynamic controls - Drop down
             SetSearchDropDown(CodeSearchFieldCertificateStatus, State.CertificateStatus)
@@ -770,6 +782,36 @@ Namespace Certificates
         End Sub
         Private Sub PopulateSearchResultInRepeater()
             Try
+                '' check if the search string contains branch code and branch name then include either customer firstName / LastName/ Policy status,
+                ''and invoice Number
+                Me.MasterPage.MessageController.Clear()
+
+                if NOT string.IsNullOrEmpty(State.BranchCode) Or
+                   NOT string.IsNullOrEmpty(State.BranchName)  Then
+
+                    if NOT string.IsNullOrEmpty(State.CertificateStatus) AND
+                           string.IsNullOrEmpty(State.CustomerFirstName) AND 
+                           string.IsNullOrEmpty(State.CustomerLastName) AND
+                           string.IsNullOrEmpty(State.InvoiceNumber)
+
+                        ResetSearchResult()
+                        Me.MasterPage.MessageController.AddError(Message.MSG_BRANCH_CERTFICATE_STATUS_FIELD_SELECT)
+                        Exit sub
+                    End If
+
+
+                    if string.IsNullOrEmpty(State.CustomerFirstName) AND 
+                       string.IsNullOrEmpty(State.CustomerLastName) AND
+                       string.IsNullOrEmpty(State.InvoiceNumber) AND
+                       string.IsNullOrEmpty(State.CertificateStatus) Then
+
+                        ResetSearchResult()
+                        Me.MasterPage.MessageController.AddError(Message.MSG_BRANCH_FIELD_SELECT)
+                        Exit sub
+                    End If
+                End If
+
+
                 If (State.SearchDv Is Nothing) Then
                     State.SearchDv = CaseBase.GetAgentList(State.CompanyId,
                                                            State.DealerId,
@@ -789,7 +831,9 @@ Namespace Certificates
                                                            State.AccountNumber,
                                                            State.GlobalCustomerNumber,
                                                            State.Dob,
-                                                           Authentication.CurrentUser.LanguageId)
+                                                           Authentication.CurrentUser.LanguageId,
+                                                           State.BranchCode,
+                                                           State.BranchName)
 
                     ValidSearchResultCountNew(State.SearchDv.Count, True)
 

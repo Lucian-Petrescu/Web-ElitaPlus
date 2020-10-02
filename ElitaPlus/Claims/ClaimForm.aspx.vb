@@ -4147,7 +4147,7 @@ Partial Class ClaimForm
     Private Function getClaimKey(ByVal companyCode As String, ByVal claimNumber As String) As String
         Dim handler As New DynamicFulfillmentKeyHandler()
         Dim keys As New Dictionary(Of String, String)
-        Dim tenant As String = $"{GetTenant(ElitaConfig.Current.General.Environment)}-{ElitaConfig.Current.General.Hub}"
+        Dim tenant As String = $"{GetTenant(ElitaConfig.Current.General.Environment)}-{ElitaConfig.Current.General.Hub.ToLower()}"
         keys.Add("Tenant", tenant)
         keys.Add("CompanyCode", companyCode)
         keys.Add("ClaimNumber", claimNumber)
