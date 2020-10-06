@@ -633,6 +633,7 @@
                 <asp:Button ID="btnVoidAuthorization" runat="server" Text="VOID_AUTHORIZATION" SkinID="PopMenuButton" />
                 <asp:Button ID="btnRefundFee" runat="server" Text="Refund_Fee" SkinID="PopMenuButton" />
                 <asp:Button ID="btnResendShippingLabel" runat="server" Text="Resend_Shipping_Label" SkinID="PopMenuButton"/>
+                <asp:Button ID="btnCancelServiceOrder" runat="server" Text="Cancel_Service_Order" SkinID="PopMenuButton"/>
                 <asp:Button ID="btnServiceCenterInfo" runat="server" Text="Center_Info" SkinID="PopMenuButton" />
                 <asp:Button ID="btnCancelShipment" runat="server" Text="Cancel_Shipment" SkinID="PopMenuButton"  />
                 <asp:Button ID="btnNewServiceCenter" runat="server" Text="New_Center" SkinID="PopMenuButton" />

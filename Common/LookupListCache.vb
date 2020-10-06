@@ -657,6 +657,9 @@ Public Class LookupListCache
 
     'US 489857
     Public Const LK_ACCTBUCKETSSOURCEOPTION As String = "ACCTBUCKETSSOURCEOPTION"
+    Public Const LK_AUTH_TYPE As String = "AUTH_TYPE"
+    Public Const LK_RFM As String = "RFM"
+
 #End Region
 
 End Class

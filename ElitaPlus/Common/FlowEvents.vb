@@ -45,7 +45,8 @@ Public Class FlowEvents
     Public Const EVENT_DENIED_CLAIM_CREATED As String = "denied_claim_created"
     Public Const EVENT_DENIED_CASE_CRATED As String = "denied_case_created"
     Public const EVENT_DENIED_CERT_CANCEL_CRATED As String ="denied_cert_cancel_created"
-    Public const EVENT_CLAIM_ISSUE_APPROVED As String ="claim_issue_approved"
+    Public Const EVENT_CLAIM_ISSUE_APPROVED As String = "claim_issue_approved"
+    Public Const EVENT_CLAIM_DEDUCTIBLE_REFUND As String = "claim_deductible_refund"
 
 
     Public Const EVENT_CLAIM_RECORDING_CONSEQUENTIAL_DAMAGE As String = "consequential_damage"

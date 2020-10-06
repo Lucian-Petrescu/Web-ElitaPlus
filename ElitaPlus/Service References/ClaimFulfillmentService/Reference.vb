@@ -2465,6 +2465,7 @@ Namespace ClaimFulfillmentService
      System.SerializableAttribute(),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimFulfillmentService.OrderStatusRequest)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimFulfillmentService.ProcessServiceOrderRequest)),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimFulfillmentService.CancelServiceOrderRequest)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimFulfillmentService.UpdateServiceOrderRequest)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimFulfillmentService.GetAuthorizationDetailsRequest)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimFulfillmentService.SubmitIssueAnswerRequest))>  _
@@ -2645,6 +2646,61 @@ Namespace ClaimFulfillmentService
                 If (Object.ReferenceEquals(Me.AuthorizationNumberField, value) <> true) Then
                     Me.AuthorizationNumberField = value
                     Me.RaisePropertyChanged("AuthorizationNumber")
+                End If
+            End Set
+        End Property
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="CancelServiceOrderRequest", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contrac"& _ 
+        "ts.Fulfillment.Orders"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class CancelServiceOrderRequest
+        Inherits ClaimFulfillmentService.BaseFulfillmentRequest
+        
+        Private OrderUpdateField As ClaimFulfillmentService.OrderInfo
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private addrDetailsField As String
+        
+        Private AuthorizationIdField As System.Guid
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, EmitDefaultValue:=false)>  _
+        Public Property OrderUpdate() As ClaimFulfillmentService.OrderInfo
+            Get
+                Return Me.OrderUpdateField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.OrderUpdateField, value) <> true) Then
+                    Me.OrderUpdateField = value
+                    Me.RaisePropertyChanged("OrderUpdate")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue:=false)>  _
+        Public Property addrDetails() As String
+            Get
+                Return Me.addrDetailsField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.addrDetailsField, value) <> true) Then
+                    Me.addrDetailsField = value
+                    Me.RaisePropertyChanged("addrDetails")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, EmitDefaultValue:=false, Order:=2)>  _
+        Public Property AuthorizationId() As System.Guid
+            Get
+                Return Me.AuthorizationIdField
+            End Get
+            Set
+                If (Me.AuthorizationIdField.Equals(value) <> true) Then
+                    Me.AuthorizationIdField = value
+                    Me.RaisePropertyChanged("AuthorizationId")
                 End If
             End Set
         End Property
@@ -4785,6 +4841,26 @@ Namespace ClaimFulfillmentService
             "iceOrderResponse")>  _
         Function UpdateServiceOrderAsync(ByVal request As ClaimFulfillmentService.UpdateServiceOrderRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentService.ProcessServiceOrderResponse)
         
+        <System.ServiceModel.OperationContractAttribute(Action:="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CancelServ"& _ 
+            "iceOrder", ReplyAction:="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CancelServ"& _ 
+            "iceOrderResponse")>  _
+        Function CancelServiceOrder(ByVal request As ClaimFulfillmentService.UpdateServiceOrderRequest) As ClaimFulfillmentService.ProcessServiceOrderResponse
+        
+        <System.ServiceModel.OperationContractAttribute(Action:="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CancelServ"& _ 
+            "iceOrder", ReplyAction:="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CancelServ"& _ 
+            "iceOrderResponse")>  _
+        Function CancelServiceOrderAsync(ByVal request As ClaimFulfillmentService.UpdateServiceOrderRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentService.ProcessServiceOrderResponse)
+        
+        <System.ServiceModel.OperationContractAttribute(Action:="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CancelServ"& _ 
+            "iceOrderAndUpdateAuthorization", ReplyAction:="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CancelServ"& _ 
+            "iceOrderAndUpdateAuthorizationResponse")>  _
+        Function CancelServiceOrderAndUpdateAuthorization(ByVal request As ClaimFulfillmentService.CancelServiceOrderRequest) As ClaimFulfillmentService.ProcessServiceOrderResponse
+        
+        <System.ServiceModel.OperationContractAttribute(Action:="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CancelServ"& _ 
+            "iceOrderAndUpdateAuthorization", ReplyAction:="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CancelServ"& _ 
+            "iceOrderAndUpdateAuthorizationResponse")>  _
+        Function CancelServiceOrderAndUpdateAuthorizationAsync(ByVal request As ClaimFulfillmentService.CancelServiceOrderRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentService.ProcessServiceOrderResponse)
+        
         <System.ServiceModel.OperationContractAttribute(Action:="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/GetAuthori"& _ 
             "zationDetails", ReplyAction:="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/GetAuthori"& _ 
             "zationDetailsResponse")>  _
@@ -4959,6 +5035,22 @@ Namespace ClaimFulfillmentService
         
         Public Function UpdateServiceOrderAsync(ByVal request As ClaimFulfillmentService.UpdateServiceOrderRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentService.ProcessServiceOrderResponse) Implements ClaimFulfillmentService.IFulfillmentService.UpdateServiceOrderAsync
             Return MyBase.Channel.UpdateServiceOrderAsync(request)
+        End Function
+        
+        Public Function CancelServiceOrder(ByVal request As ClaimFulfillmentService.UpdateServiceOrderRequest) As ClaimFulfillmentService.ProcessServiceOrderResponse Implements ClaimFulfillmentService.IFulfillmentService.CancelServiceOrder
+            Return MyBase.Channel.CancelServiceOrder(request)
+        End Function
+        
+        Public Function CancelServiceOrderAsync(ByVal request As ClaimFulfillmentService.UpdateServiceOrderRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentService.ProcessServiceOrderResponse) Implements ClaimFulfillmentService.IFulfillmentService.CancelServiceOrderAsync
+            Return MyBase.Channel.CancelServiceOrderAsync(request)
+        End Function
+        
+        Public Function CancelServiceOrderAndUpdateAuthorization(ByVal request As ClaimFulfillmentService.CancelServiceOrderRequest) As ClaimFulfillmentService.ProcessServiceOrderResponse Implements ClaimFulfillmentService.IFulfillmentService.CancelServiceOrderAndUpdateAuthorization
+            Return MyBase.Channel.CancelServiceOrderAndUpdateAuthorization(request)
+        End Function
+        
+        Public Function CancelServiceOrderAndUpdateAuthorizationAsync(ByVal request As ClaimFulfillmentService.CancelServiceOrderRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentService.ProcessServiceOrderResponse) Implements ClaimFulfillmentService.IFulfillmentService.CancelServiceOrderAndUpdateAuthorizationAsync
+            Return MyBase.Channel.CancelServiceOrderAndUpdateAuthorizationAsync(request)
         End Function
         
         Public Function GetAuthorizationDetails(ByVal request As ClaimFulfillmentService.GetAuthorizationDetailsRequest) As ClaimFulfillmentService.GetAuthorizationDetailsResponse Implements ClaimFulfillmentService.IFulfillmentService.GetAuthorizationDetails
