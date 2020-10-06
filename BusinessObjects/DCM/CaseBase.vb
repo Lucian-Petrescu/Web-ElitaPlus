@@ -469,7 +469,7 @@ Public Class CaseBase
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetAgentList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal customerFirstName As String, ByVal customerLastName As String,
+   Public Shared Function GetAgentList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal customerFirstName As String, ByVal customerLastName As String,
                                         ByVal caseNumber As String, ByVal claimNumber As String, ByVal certificateNumber As String,
                                         ByVal serialNumber As String, ByVal invoiceNumber As String, ByVal phoneNumber As String, ByVal zipcode As String,
                                         ByVal certificateStatus As String, ByVal email As String,

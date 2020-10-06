@@ -579,5 +579,3 @@ Public Class CaseDAL
 #End Region
 
 End Class
-
-

@@ -566,7 +566,7 @@ Public Class ClaimRecordingForm
     ''' <returns>Instance of <see cref="ClaimRecordingServiceClient"/></returns>
     Private Shared Function GetClient() As ClaimRecordingServiceClient
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-        Dim client = New ClaimRecordingServiceClient(EndPointName, ConfigurationManager.AppSettings(ServiceUrl))
+        Dim client = New ClaimRecordingServiceClient(EndPointName,ConfigurationManager.AppSettings(ServiceUrl)) 
         client.ClientCredentials.UserName.UserName = ConfigurationManager.AppSettings(UserName)
         client.ClientCredentials.UserName.Password = ConfigurationManager.AppSettings(Password)
         Return client
