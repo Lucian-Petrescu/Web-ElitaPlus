@@ -72,7 +72,7 @@ Public MustInherit Class ElitaMethodBase
         strB.AppendLine(String.Format("Error Message:  {0}", ex.Message))
         strB.AppendLine(String.Format("StackTrace:  {0}", ex.StackTrace))
 
-        If Not ex.InnerException Is Nothing Then hasInnerExc = True
+        If ex.InnerException IsNot Nothing Then hasInnerExc = True
         While hasInnerExc
             ex = ex.InnerException
             strB.AppendLine("------- Next Error -------")

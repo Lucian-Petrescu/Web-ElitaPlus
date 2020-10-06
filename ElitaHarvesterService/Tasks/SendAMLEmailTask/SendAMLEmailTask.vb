@@ -74,7 +74,7 @@ Public Class SendAMLEmailTask
 
         emailBody.Nationality = LookupListNew.GetDescriptionFromId(LookupListNew.LK_NATIONALITY, oClaim.Certificate.Nationality)
         emailBody.Gender = LookupListNew.GetDescriptionFromId(LookupListNew.LK_GENDER, oClaim.Certificate.Gender)
-        If Not oAddress Is Nothing Then
+        If oAddress IsNot Nothing Then
             emailBody.Address1 = oAddress.Address1
             emailBody.Address2 = oAddress.Address2
             emailBody.Address3 = oAddress.Address3
@@ -86,7 +86,7 @@ Public Class SendAMLEmailTask
         emailBody.Deductible = CDec(oClaim.Deductible)
         emailBody.Cert_Number = oClaim.Certificate.CertNumber
         emailBody.Dealer_Name = oClaim.Dealer.Dealer
-        If Not dv Is Nothing Then
+        If dv IsNot Nothing Then
             emailBody.TaxId = Convert.ToString(dv.Table.Rows(0)("tax_id"))
             emailBody.CustomerFirstName = Convert.ToString(dv.Table.Rows(0)("first_name"))
             emailBody.CustomerLastName = Convert.ToString(dv.Table.Rows(0)("last_name"))

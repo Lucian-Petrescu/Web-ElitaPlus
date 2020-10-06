@@ -725,7 +725,7 @@ Public Class SendClaimGiftCardEMailTask
         Try
 
 
-            If (Not response Is Nothing) Then
+            If (response IsNot Nothing) Then
                 If (Not certificate.AddressId.Equals(Guid.Empty)) Then
                     customerAddress = New Assurant.ElitaPlus.BusinessObjectsNew.Address(certificate.AddressId)
                 End If
@@ -745,7 +745,7 @@ Public Class SendClaimGiftCardEMailTask
                     encryptionSource = encryptionSource + "SNO:" + .GiftCardSerialNumber + "|"
                     encryptionSource = encryptionSource + "Created:" + DateTime.UtcNow.ToString("MM/dd/yyyy") + "|"
                     encryptionSource = encryptionSource + "ClaimNo:" + If(claim Is Nothing, oCertificate.CertNumber, claim.ClaimNumber) + "|"
-                    If (Not claim Is Nothing AndAlso Not claim.ClaimedEquipment Is Nothing) Then
+                    If (claim IsNot Nothing AndAlso claim.ClaimedEquipment IsNot Nothing) Then
                         encryptionSource = encryptionSource + "Make:" + If(Not String.IsNullOrEmpty(claim.ClaimedEquipment.Manufacturer), claim.ClaimedEquipment.Manufacturer, String.Empty) + "|"
                         encryptionSource = encryptionSource + "Model:" + claim.ClaimedEquipment.Model + "|"
                     End If

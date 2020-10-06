@@ -28,7 +28,7 @@ Public Class BaseDbContext
         Dim objectStateEnties As IEnumerable(Of ObjectStateEntry)
         objectStateEnties = ObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added Or EntityState.Modified)
 
-        If ((Not objectStateEnties Is Nothing) AndAlso (objectStateEnties.Any)) Then
+        If ((objectStateEnties IsNot Nothing) AndAlso (objectStateEnties.Any)) Then
 
             Dim networkId As String = System.Threading.Thread.CurrentPrincipal.GetNetworkId()
 

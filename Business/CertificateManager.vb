@@ -45,7 +45,7 @@ Public Class CertificateManager
         objCert = m_CertificateRepository.Get(Function(c) searchResultIdList.Contains(c.CertificateId), Nothing, "Item, Item.ItemCoverages, Item.ItemCoverages.ItemCoverageDeductibles, Cancellations,BillingDetails, CertificateInstallments").FirstOrDefault()
 
         'load endorsement separately to avoid error "Oracle 11.2.0.4.0 does not support APPLY" when add the Item.Endorsements to the include list
-        If Not objCert Is Nothing Then
+        If objCert IsNot Nothing Then
             objCertEndorse = m_CertificateRepository.Get(Function(c) c.CertificateId = objCert.CertificateId, Nothing, "Item, Item.Endorsements").FirstOrDefault()
             For Each objItem In objCert.Item
                 For Each objE In objCertEndorse.Item
@@ -61,7 +61,7 @@ Public Class CertificateManager
     Public Function GetCertNumber(pCertId As Guid) As String Implements ICertificateManager.GetCertNumber
         Dim objCert As Certificate
         objCert = m_CertificateRepository.Get(Function(c) c.CertificateId = pCertId).FirstOrDefault()
-        If Not objCert Is Nothing Then
+        If objCert IsNot Nothing Then
             Return objCert.CertificateNumber
         Else
             Return String.Empty

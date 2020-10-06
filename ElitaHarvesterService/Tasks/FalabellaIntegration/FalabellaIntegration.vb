@@ -66,7 +66,7 @@ Public Class FalabellaIntegration
             'check whether the update has already happened from the extended status history
             Dim dvClaimStatuses = ClaimStatus.GetClaimStatusHistoryOnly(OClaim.Id)
 
-            If (Not dvClaimStatuses Is Nothing) Then
+            If (dvClaimStatuses IsNot Nothing) Then
 
                 'check whether the SLA extended status has already updated
                 If (OClaim.CertificateItemCoverage.CoverageTypeCode = Codes.COVERAGE_TYPE__THEFT) Then
@@ -99,7 +99,7 @@ Public Class FalabellaIntegration
                         dvClaimStatuses.RowFilter = "code= '" & EXT_STAT_COMPENSATION_PROCESS_INITIATED & "'"
                         If (dvClaimStatuses.Count > 0) Then
                             Dim tDate As Date
-                            If (Not dvClaimStatuses(0)("status_date") Is Nothing And Not dvClaimStatuses(0)("status_date") Is DBNull.Value) Then
+                            If (dvClaimStatuses(0)("status_date") IsNot Nothing And dvClaimStatuses(0)("status_date") IsNot DBNull.Value) Then
                                 'If (dvClaimStatuses(0)("status_date") Is Nothing Or Not dvClaimStatuses(0)("status_date") Is DBNull.Value) Then
                                 tDate = CType(dvClaimStatuses(0)("status_date"), Date)
                             Else
@@ -132,7 +132,7 @@ Public Class FalabellaIntegration
         Dim request As GetWorkOrderNumberRequest = New GetWorkOrderNumberRequest()
         Dim response As GetWorkOrderNumberResponse = New GetWorkOrderNumberResponse()
 
-        If (Not OClaim Is Nothing) Then
+        If (OClaim IsNot Nothing) Then
 
             If (OClaim.CertificateItemCoverage.CoverageTypeCode = Codes.COVERAGE_TYPE__THEFT AndAlso String.IsNullOrEmpty(OClaim.RemAuthNumber)) Then
                 Logger.AddInfo("InvokeFalabellaService new claim Fill claim request: " + PublishedTask.CLAIM_ID)
@@ -161,7 +161,7 @@ Public Class FalabellaIntegration
 
                     name = .Certificate.CustomerName
 
-                    If (Not name Is Nothing And Not name Is DBNull.Value And name.IndexOf(" ") > 0) Then
+                    If (name IsNot Nothing And name IsNot DBNull.Value And name.IndexOf(" ") > 0) Then
 
                         request.FirstName = name.Substring(0, name.IndexOf(" "))
                         request.LastName = name.Substring(name.IndexOf(" "))
@@ -213,7 +213,7 @@ Public Class FalabellaIntegration
         Dim request As UpdateClaimInfoRequest = New UpdateClaimInfoRequest()
         Dim response As UpdateClaimInfoResponse = New UpdateClaimInfoResponse()
 
-        If (Not OClaim Is Nothing) Then
+        If (OClaim IsNot Nothing) Then
 
             With OClaim
                 request.AuthorizedAmount = If(OClaim.Status.ToString() = BasicClaimStatus.Denied.ToString(), "0", (CType(OCertificate.SalesPrice, Decimal) - CType(.Deductible, Decimal)).ToString())
@@ -246,7 +246,7 @@ Public Class FalabellaIntegration
 
     End Function
     Private Sub AddCommentToClaim(comments As String, oclaim As ClaimBase)
-        If (Not oclaim Is Nothing) Then
+        If (oclaim IsNot Nothing) Then
             Dim comment As Comment = oclaim.AddNewComment()
 
             With comment

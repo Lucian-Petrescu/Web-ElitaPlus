@@ -48,7 +48,7 @@ Public Class TaskManager
 
         Catch ex As Exception
             Dim message As String = ex.Message
-            If (Not ex.InnerException Is Nothing) Then
+            If (ex.InnerException IsNot Nothing) Then
                 message += "|Inner Exception Message: " + ex.InnerException.Message
             End If
             Logger.AddError(String.Format("Exception while fetching next task| Exception:{0}", message), ex)
@@ -67,7 +67,7 @@ Public Class TaskManager
 
             Dim ptask As PublishedTask = GetNextTask()
 
-            If (Not ptask Is Nothing) Then
+            If (ptask IsNot Nothing) Then
                 'Process the Task based on Event Type
                 'Todo Call dynamically using Reflection
                 Logger.AddDebugLog(String.Format("Processing Task|Task Name:{0}|START", ptask.Task.Description))
@@ -104,7 +104,7 @@ Public Class TaskManager
             Return True
         Catch ex As Exception
             errMsg = ex.Message
-            If (Not ex.InnerException Is Nothing) Then
+            If (ex.InnerException IsNot Nothing) Then
                 errMsg += " Inner Exception Message" + ex.InnerException.Message
                 Logger.AddError(String.Format("Error in logging in : {0}", logging), ex)
             End If

@@ -341,7 +341,7 @@ Public Class ClaimContext
         CheckDBConnection()
         dbCommand.ExecuteNonQuery()
 
-        If (Not dbCommand.Parameters(3).Value.IsNull AndAlso Not dbCommand.Parameters(3).Value Is Nothing) Then
+        If (Not dbCommand.Parameters(3).Value.IsNull AndAlso dbCommand.Parameters(3).Value IsNot Nothing) Then
             Return New Guid(DirectCast(dbCommand.Parameters(3).Value.Value, Byte())) '''' ManufacturerId
         End If
         Return Nothing

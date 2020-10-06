@@ -73,7 +73,7 @@ Public Class CertificateContext
         End Try
 
 
-        If (Not dbCommand.Parameters("po_total_rec_found") Is DBNull.Value) Then
+        If (dbCommand.Parameters("po_total_rec_found") IsNot DBNull.Value) Then
             totalRecordFound = DirectCast(dbCommand.Parameters("po_total_rec_found").Value, Int16)
         Else
             totalRecordFound = 0
