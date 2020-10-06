@@ -25,7 +25,7 @@
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -33,7 +33,7 @@
 
 #End Region
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         If Not Page.IsPostBack Then
             ListItemValue = 0            
@@ -44,17 +44,17 @@
             LoadContactInfoReqFieldsList(False)
         End If
 
-        btnSave_WRITE.Attributes.Add("OnClick", "SaveFormat(document.getElementById('" & Me.ContactInfoReqFieldsList.ClientID & "'));return false;")        
+        btnSave_WRITE.Attributes.Add("OnClick", "SaveFormat(document.getElementById('" & ContactInfoReqFieldsList.ClientID & "'));return false;")        
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
+    Private Sub Page_PreRender(sender As Object, e As System.EventArgs) Handles Me.PreRender
         Dim strContactInfoReqFields As String = ""
 
         For Each tempItem As ListItem In ContactInfoReqFieldsList.Items
             strContactInfoReqFields = strContactInfoReqFields + tempItem.Text
         Next
         strContactInfoReqFields = strContactInfoReqFields.Replace("[\n]", "[\\n]")
-        Me.literalJS.Text = "<SCRIPT>document.getElementById(""hiddenContactInfoReqFields"").value = """ & strContactInfoReqFields & """;</SCRIPT>"
+        literalJS.Text = "<SCRIPT>document.getElementById(""hiddenContactInfoReqFields"").value = """ & strContactInfoReqFields & """;</SCRIPT>"
     End Sub
 
     Private Sub LoadContactInfoReqFieldsList(Optional ByVal blnInit As Boolean = True)
@@ -89,7 +89,7 @@
 
     End Sub
 
-    Private Sub CreateTokenFormat(ByVal tokenValue As String, Optional ByVal insertAtEnd As Boolean = True)
+    Private Sub CreateTokenFormat(tokenValue As String, Optional ByVal insertAtEnd As Boolean = True)
         'TokenBox.Text = TokenBox.Text & tokenValue
         If insertAtEnd Then
             ContactInfoReqFieldsList.Items.Add(New ListItem(tokenValue, ListItemValue.ToString))
@@ -107,7 +107,7 @@
 
 
 
-    Private Function StripTokenFlag(ByVal strToken As String) As String
+    Private Function StripTokenFlag(strToken As String) As String
         If strToken.Trim.EndsWith("]*") Then
             Return strToken.Substring(0, strToken.Length - 1)
         Else
@@ -172,17 +172,17 @@
         End If
     End Sub
 
-    Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
+    Private Sub btnAdd_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd.Click
         AddToFormatList()
     End Sub
 
-    Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
+    Private Sub btnRemove_Click(sender As System.Object, e As System.EventArgs) Handles btnRemove.Click
 
         ContactInfoReqFieldsList.Items.Remove(ContactInfoReqFieldsList.SelectedItem)
         RefreshPreview()
     End Sub
 
-    Private Sub btnMoveUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMoveUp.Click
+    Private Sub btnMoveUp_Click(sender As System.Object, e As System.EventArgs) Handles btnMoveUp.Click
 
         Dim iSelectedIndex As Integer = ContactInfoReqFieldsList.SelectedIndex
         If iSelectedIndex > 0 Then 'not the first one
@@ -193,7 +193,7 @@
         End If
     End Sub
 
-    Private Sub btnMoveDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMoveDown.Click
+    Private Sub btnMoveDown_Click(sender As System.Object, e As System.EventArgs) Handles btnMoveDown.Click
 
         Dim iSelectedIndex As Integer = ContactInfoReqFieldsList.SelectedIndex
         If iSelectedIndex <> ContactInfoReqFieldsList.Items.Count - 1 Then 'Not the last one
@@ -205,7 +205,7 @@
     End Sub
 
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
 
         Dim ContactInfoReqFieldsStr As String = ""
 
@@ -219,7 +219,7 @@
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "parent.SaveCountryContactInfo('" & ContactInfoReqFieldsStr & "');" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("SaveCountryContactInfo", sJavaScript)
+        RegisterStartupScript("SaveCountryContactInfo", sJavaScript)
         'End If
     End Sub
 

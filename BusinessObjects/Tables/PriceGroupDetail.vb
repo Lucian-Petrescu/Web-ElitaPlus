@@ -8,46 +8,46 @@ Public Class PriceGroupDetail
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New PriceGroupDetailDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -58,20 +58,20 @@ Public Class PriceGroupDetail
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New PriceGroupDetailDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -83,16 +83,16 @@ Public Class PriceGroupDetail
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        Me.CarryInPrice = New DecimalType(0)
-        Me.CleaningPrice = New DecimalType(0)
-        Me.EffectiveDate = New DateType(Date.Parse(Date.Now.ToShortDateString))
-        Me.EstimatePrice = New DecimalType(0)
-        Me.HomePrice = New DecimalType(0)
-        Me.SendInPrice = New DecimalType(0)
-        Me.PickUpPrice = New DecimalType(0)
-        Me.HourlyRate = New DecimalType(0)
-        Me.ReplacementPrice = New DecimalType(0)
-        Me.DiscountedPrice = New DecimalType(0)
+        CarryInPrice = New DecimalType(0)
+        CleaningPrice = New DecimalType(0)
+        EffectiveDate = New DateType(Date.Parse(Date.Now.ToShortDateString))
+        EstimatePrice = New DecimalType(0)
+        HomePrice = New DecimalType(0)
+        SendInPrice = New DecimalType(0)
+        PickUpPrice = New DecimalType(0)
+        HourlyRate = New DecimalType(0)
+        ReplacementPrice = New DecimalType(0)
+        DiscountedPrice = New DecimalType(0)
     End Sub
 #End Region
 
@@ -137,7 +137,7 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_GROUP_ID, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_GROUP_ID, Value)
         End Set
     End Property
 
@@ -154,11 +154,11 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_RISK_TYPE_ID, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_RISK_TYPE_ID, Value)
             'Set RiskType Description
             Dim dv As DataView = LookupListNew.GetRiskTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
             Dim riskTypeDesc As String = LookupListNew.GetDescriptionFromId(dv, Value)
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_RISK_TYPE_DESC, riskTypeDesc)
+            SetValue(PriceGroupDetailDAL.COL_NAME_RISK_TYPE_DESC, riskTypeDesc)
         End Set
     End Property
 
@@ -175,7 +175,7 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
@@ -192,7 +192,7 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_HOME_PRICE, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_HOME_PRICE, Value)
         End Set
     End Property
 
@@ -209,7 +209,7 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_CARRY_IN_PRICE, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_CARRY_IN_PRICE, Value)
         End Set
     End Property
 
@@ -226,7 +226,7 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_SEND_IN_PRICE, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_SEND_IN_PRICE, Value)
         End Set
     End Property
 
@@ -243,7 +243,7 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_PICK_UP_PRICE, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_PICK_UP_PRICE, Value)
         End Set
     End Property
 
@@ -259,7 +259,7 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_CLEANING_PRICE, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_CLEANING_PRICE, Value)
         End Set
     End Property
 
@@ -276,7 +276,7 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_HOURLY_RATE, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_HOURLY_RATE, Value)
         End Set
     End Property
 
@@ -293,7 +293,7 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_ESTIMATE_PRICE, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_ESTIMATE_PRICE, Value)
         End Set
     End Property
 
@@ -320,7 +320,7 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_REPLACEMENT_PRICE, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_REPLACEMENT_PRICE, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidNumericRange("LowPrice", MIN:=MIN_DOUBLE, Max:=NEW_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM001), ValidPriceBandRange("")> _
@@ -335,7 +335,7 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_FROM, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_FROM, Value)
         End Set
     End Property
 
@@ -351,7 +351,7 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_TO, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_PRICE_BAND_RANGE_TO, Value)
         End Set
     End Property
 
@@ -366,7 +366,7 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_REPLACEMENT_TAX_TYPE, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_REPLACEMENT_TAX_TYPE, Value)
         End Set
     End Property
 
@@ -382,7 +382,7 @@ Public Class PriceGroupDetail
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(PriceGroupDetailDAL.COL_NAME_DISCOUNTED_PRICE, Value)
+            SetValue(PriceGroupDetailDAL.COL_NAME_DISCOUNTED_PRICE, Value)
         End Set
     End Property
 #End Region
@@ -391,15 +391,15 @@ Public Class PriceGroupDetail
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New PriceGroupDetailDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -408,7 +408,7 @@ Public Class PriceGroupDetail
     End Sub
 
     Public Sub Copy(ByVal original As PriceGroupDetail)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Service Group")
         End If
         MyBase.CopyFrom(original)
@@ -448,10 +448,10 @@ Public Class PriceGroupDetail
 
     Protected Function CheckForDuplicateRiskTypeEffectiveDateRangeFromCombination() As Boolean
         Dim row As DataRow
-        For Each row In Me.Dataset.Tables(PriceGroupDetailDAL.TABLE_NAME).Rows
+        For Each row In Dataset.Tables(PriceGroupDetailDAL.TABLE_NAME).Rows
             If row.RowState <> DataRowState.Deleted And row.RowState <> DataRowState.Detached Then
                 Dim bo As New PriceGroupDetail(row)
-                If Not bo.Id.Equals(Me.Id) AndAlso bo.RiskTypeId.Equals(Me.RiskTypeId) AndAlso bo.EffectiveDate.Equals(Me.EffectiveDate) AndAlso bo.PriceBandRangeFrom.Equals(Me.PriceBandRangeFrom) Then
+                If Not bo.Id.Equals(Id) AndAlso bo.RiskTypeId.Equals(RiskTypeId) AndAlso bo.EffectiveDate.Equals(EffectiveDate) AndAlso bo.PriceBandRangeFrom.Equals(PriceBandRangeFrom) Then
                     Return True
                 End If
             End If
@@ -474,10 +474,10 @@ Public Class PriceGroupDetail
 
             If Not obj.PriceBandRangeFrom Is Nothing And Not obj.PriceBandRangeTo Is Nothing Then
                 If Convert.ToSingle(obj.PriceBandRangeFrom.Value) > Convert.ToSingle(obj.PriceBandRangeTo.Value) Then
-                    Me.Message = COVERAGE_RATE_FORM009
+                    Message = COVERAGE_RATE_FORM009
                     bValid = False
                 ElseIf ValidateRange(obj.PriceBandRangeFrom, obj.PriceBandRangeTo, obj) = False Then
-                    Me.Message = COVERAGE_RATE_FORM011
+                    Message = COVERAGE_RATE_FORM011
                     bValid = False
                 End If
             End If

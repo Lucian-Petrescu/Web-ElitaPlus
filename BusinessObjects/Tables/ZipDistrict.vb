@@ -20,46 +20,46 @@ Public Class ZipDistrict
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ZipDistrictDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             '   Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -70,20 +70,20 @@ Public Class ZipDistrict
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New ZipDistrictDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -141,7 +141,7 @@ Public Class ZipDistrict
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ZipDistrictDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(ZipDistrictDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
@@ -158,7 +158,7 @@ Public Class ZipDistrict
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ZipDistrictDAL.COL_NAME_SHORT_DESC, Value)
+            SetValue(ZipDistrictDAL.COL_NAME_SHORT_DESC, Value)
         End Set
     End Property
 
@@ -175,7 +175,7 @@ Public Class ZipDistrict
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ZipDistrictDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(ZipDistrictDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -198,16 +198,16 @@ Public Class ZipDistrict
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ZipDistrictDAL
                 'dal.Update(Me.Row) 'Original code generated replced by the code below
-                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+                dal.UpdateFamily(Dataset) 'New Code Added Manually
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -218,7 +218,7 @@ Public Class ZipDistrict
     'Added manually to the code
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 #End Region
@@ -275,7 +275,7 @@ Public Class ZipDistrict
     Public Function GetZipCodeSelectionView() As ZipCodeSelectionView
         Dim t As DataTable = ZipCodeSelectionView.CreateTable
         Dim detail As ZipDistrictDetail
-        For Each detail In Me.ZipCodeChildren
+        For Each detail In ZipCodeChildren
             Dim row As DataRow = t.NewRow
             row(ZipCodeSelectionView.COL_NAME_DETAIL_ID) = detail.Id.ToByteArray
             row(ZipCodeSelectionView.COL_NAME_ZIP_CODE) = detail.ZipCode
@@ -302,18 +302,18 @@ Public Class ZipDistrict
     End Class
 
     Public Function GetChild(ByVal childId As Guid) As ZipDistrictDetail
-        Return CType(Me.ZipCodeChildren.GetChild(childId), ZipDistrictDetail)
+        Return CType(ZipCodeChildren.GetChild(childId), ZipDistrictDetail)
     End Function
 
     Public Function GetNewChild() As ZipDistrictDetail
-        Dim newZdDetail As ZipDistrictDetail = CType(Me.ZipCodeChildren.GetNewChild, ZipDistrictDetail)
-        newZdDetail.ZipDistrictId = Me.Id
+        Dim newZdDetail As ZipDistrictDetail = CType(ZipCodeChildren.GetNewChild, ZipDistrictDetail)
+        newZdDetail.ZipDistrictId = Id
         Return newZdDetail
     End Function
 
     Public Sub AddZipCode(ByVal zipCode As String)
         ValidateZipCode(zipCode)
-        Dim newzipDistrictDetail As ZipDistrictDetail = Me.GetNewChild
+        Dim newzipDistrictDetail As ZipDistrictDetail = GetNewChild
         newzipDistrictDetail.ZipCode = zipCode
         newzipDistrictDetail.Save()
     End Sub
@@ -325,15 +325,15 @@ Public Class ZipDistrict
             endZc = Integer.Parse(endZipCode)
         Catch ex As Exception
             Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_INVALID_ZIP_CODE_FORMAT, GetType(ZipDistrictDetail), Nothing, "ZipCode", Nothing)
-            Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+            Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
         End Try
 
         If endZc - startZc >= ZIP_CODES_MAX_RANGE Then
             Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_MAX_RANGE_ERROR, GetType(ZipDistrictDetail), Nothing, "ZipCode", Nothing)
-            Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+            Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
         ElseIf endZc - startZc < 0 Then
             Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_INVALID_RANGE, GetType(ZipDistrictDetail), Nothing, "ZipCode", Nothing)
-            Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+            Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
         End If
 
         Dim zipCode As Integer
@@ -345,7 +345,7 @@ Public Class ZipDistrict
                     zc = "0000000000000".Substring(0, startZipCode.Length - zc.Length) & zc
                 End If
                 '''ValidateZipCode(zc)
-                Dim newzipDistrictDetail As ZipDistrictDetail = Me.GetNewChild
+                Dim newzipDistrictDetail As ZipDistrictDetail = GetNewChild
                 newzipDistrictDetail.ZipCode = zc
                 '''newzipDistrictDetail.Save()
                 addedList.Add(newzipDistrictDetail)
@@ -368,15 +368,15 @@ Public Class ZipDistrict
             endZc = Integer.Parse(endZipCode)
         Catch ex As Exception
             Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_INVALID_ZIP_CODE_FORMAT, GetType(ZipDistrictDetail), Nothing, "ZipCode", Nothing)
-            Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+            Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
         End Try
 
         If endZc - startZc >= ZIP_CODES_MAX_RANGE Then
             Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_MAX_RANGE_ERROR, GetType(ZipDistrictDetail), Nothing, "ZipCode", Nothing)
-            Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+            Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
         ElseIf endZc - startZc < 0 Then
             Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_INVALID_RANGE, GetType(ZipDistrictDetail), Nothing, "ZipCode", Nothing)
-            Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+            Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
         End If
 
         Dim zipCode As Integer
@@ -388,7 +388,7 @@ Public Class ZipDistrict
                     zc = "0000000000000".Substring(0, startZipCode.Length - zc.Length) & zc
                 End If
                 ValidateZipCode(zc)
-                Dim newzipDistrictDetail As ZipDistrictDetail = Me.GetNewChild
+                Dim newzipDistrictDetail As ZipDistrictDetail = GetNewChild
                 newzipDistrictDetail.ZipCode = zc
                 newzipDistrictDetail.Save()
                 addedList.Add(newzipDistrictDetail)
@@ -408,7 +408,7 @@ Public Class ZipDistrict
         If Not zcIdList Is Nothing AndAlso zcIdList.Length > 0 Then
             Dim zipCodeId As String
             For Each zipCodeId In zcIdList
-                Dim zipDistrictDetail As zipDistrictDetail = Me.GetChild(New Guid(zipCodeId))
+                Dim zipDistrictDetail As zipDistrictDetail = GetChild(New Guid(zipCodeId))
                 zipDistrictDetail.Delete()
                 zipDistrictDetail.Save()
             Next
@@ -419,7 +419,7 @@ Public Class ZipDistrict
     Private ReadOnly Property ZipCodesInUseByOtherZipDistricts() As DataView
         Get
             If zipCodesInUseByOtherZipDistrictsDv Is Nothing Then
-                zipCodesInUseByOtherZipDistrictsDv = ZipDistrictDetail.GetZipCodesUsedInOtherZipDistricts(Me.Id)
+                zipCodesInUseByOtherZipDistrictsDv = ZipDistrictDetail.GetZipCodesUsedInOtherZipDistricts(Id)
             End If
             Return zipCodesInUseByOtherZipDistrictsDv
         End Get
@@ -427,25 +427,25 @@ Public Class ZipDistrict
 
 
     public Sub ValidateZipCode(ByVal zipCode As String)
-        If Not Me.ZipCodeChildren.Find(zipCode) Is Nothing Then
+        If Not ZipCodeChildren.Find(zipCode) Is Nothing Then
             Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_DUPLICATE_ZIP_CODE, GetType(ZipDistrictDetail), Nothing, "ZipCode", zipCode)
-            Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+            Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
         End If
 
-        Dim pc As New PostalCodeValidator(Me.CountryId, zipCode)
+        Dim pc As New PostalCodeValidator(CountryId, zipCode)
 
         Dim objPostalCodeFormatResult As PostalCodeFormatResult
         If zipCode <> "*" Then
             objPostalCodeFormatResult = pc.IsValid()
             If Not objPostalCodeFormatResult.IsValid Then
                 Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_INVALID_ZIP_CODE_FORMAT, GetType(ZipDistrictDetail), Nothing, "ZipCode", Nothing)
-                Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+                Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
             Else
                 Try
                     Dim intPostalCode As String = zipCode
                 Catch ex As Exception
                     Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_INVALID_ZIP_CODE_FORMAT_AND_INVALID_LOCATOR, GetType(ZipDistrictDetail), Nothing, "ZipCode", Nothing)
-                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
                 End Try
             End If
         End If
@@ -460,59 +460,59 @@ Public Class ZipDistrict
         Dim intZipCodeLowValue, intZipCodeHighValue, index As Integer
 
         Try
-            intZipCodeLowValue = Integer.Parse(Me.ZipCodeChildren.Table.Rows(0).Item(ZipDistrictDetailDAL.COL_NAME_ZIP_CODE))
-            intZipCodeHighValue = Integer.Parse(Me.ZipCodeChildren.Table.Rows(Me.ZipCodeChildren.Table.Rows.Count - 1).Item(ZipDistrictDetailDAL.COL_NAME_ZIP_CODE))
+            intZipCodeLowValue = Integer.Parse(ZipCodeChildren.Table.Rows(0).Item(ZipDistrictDetailDAL.COL_NAME_ZIP_CODE))
+            intZipCodeHighValue = Integer.Parse(ZipCodeChildren.Table.Rows(ZipCodeChildren.Table.Rows.Count - 1).Item(ZipDistrictDetailDAL.COL_NAME_ZIP_CODE))
         Catch ex As Exception
             Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_INVALID_ZIP_CODE_FORMAT, GetType(ZipDistrictDetail), Nothing, "ZipCode", Nothing)
-            Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+            Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
         End Try
 
-        If Me.ZipCodeChildren.Table.Rows.Count - 1 <> (intZipCodeHighValue - intZipCodeLowValue) Then
+        If ZipCodeChildren.Table.Rows.Count - 1 <> (intZipCodeHighValue - intZipCodeLowValue) Then
             Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_INVALID_RANGE, GetType(ZipDistrictDetail), Nothing, "ZipCode", Nothing)
-            Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+            Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
         End If
 
         If intZipCodeHighValue - intZipCodeLowValue >= ZIP_CODES_MAX_RANGE Then
             Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_MAX_RANGE_ERROR, GetType(ZipDistrictDetail), Nothing, "ZipCode", Nothing)
-            Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+            Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
         ElseIf intZipCodeHighValue - intZipCodeLowValue < 0 Then
             Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_INVALID_RANGE, GetType(ZipDistrictDetail), Nothing, "ZipCode", Nothing)
-            Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+            Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
         End If
 
         Try
             Dim dal As New ZipDistrictDAL
-            Dim intResult As Integer = dal.ZDAndDetail_Batch_Insert(Me.Id, Me.CountryId, Me.ShortDesc, Me.Description, intZipCodeLowValue, intZipCodeHighValue)
+            Dim intResult As Integer = dal.ZDAndDetail_Batch_Insert(Id, CountryId, ShortDesc, Description, intZipCodeLowValue, intZipCodeHighValue)
             Dim err As ValidationError
 
             Select Case intResult
                 Case PARENT_EXIST
                     err = New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_ADDING_ZIP_DISTRICT, GetType(ZipDistrictDetail), Nothing, Nothing, Nothing)
-                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
                 Case ZIP_FORMAT_NOT_VALID
                     err = New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_INVALID_ZIP_CODE_FORMAT, GetType(ZipDistrictDetail), Nothing, Nothing, Nothing)
-                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
                 Case CHILD_EXIST
                     err = New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ZIP_DISTRICT_DUPLICATE_ZIP_CODE, GetType(ZipDistrictDetail), Nothing, Nothing, Nothing)
-                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
                 Case INSERTING_CHILD_FAILD
                     err = New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_ADDING_ZIP_DISTRICT_DETAL, GetType(ZipDistrictDetail), Nothing, Nothing, Nothing)
-                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
                 Case COUNTRY_ID_NOT_FOUND
                     err = New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_COUNTRY_ID_NOT_FOUND, GetType(ZipDistrictDetail), Nothing, Nothing, Nothing)
-                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
                 Case LOCATOR_LENGTH_NOT_FOUND
                     err = New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_ZIP_LOCATOR_LENGTH_NOT_FOUND, GetType(ZipDistrictDetail), Nothing, Nothing, Nothing)
-                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
                 Case NO_ERROR
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                     Return NO_ERROR
                 Case Else
                     err = New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_UNKNOWN_ERROR_IN_ZIP_DISTRICT_BATCH_INSERT, GetType(ZipDistrictDetail), Nothing, Nothing, Nothing)
-                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
             End Select
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
@@ -523,16 +523,16 @@ Public Class ZipDistrict
 
         Try
             Dim dal As New ZipDistrictDAL
-            Dim intResult As Integer = dal.ZDAndDetail_Batch_Delete(Me.Id)
+            Dim intResult As Integer = dal.ZDAndDetail_Batch_Delete(Id)
             Dim err As ValidationError
 
             Select Case intResult
-                Case Me.DELETING_CHILD_FAILD
+                Case DELETING_CHILD_FAILD
                     err = New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_DELETING_ZIP_DISTRICT_DETAIL, GetType(ZipDistrictDetail), Nothing, Nothing, Nothing)
-                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
-                Case Me.DELETING_PARENT_FAILD
+                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
+                Case DELETING_PARENT_FAILD
                     err = New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_DELETING_ZIP_DISTRICT, GetType(ZipDistrictDetail), Nothing, Nothing, Nothing)
-                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
                 Case NO_ERROR
                     'Dim objId As Guid = Me.Id
                     'Me.Dataset = New Dataset
@@ -541,7 +541,7 @@ Public Class ZipDistrict
                     Return NO_ERROR
                 Case Else
                     err = New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.BO_UNKNOWN_ERROR_IN_ZIP_DISTRICT_BATCH_INSERT, GetType(ZipDistrictDetail), Nothing, Nothing, Nothing)
-                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", Me.UniqueId)
+                    Throw New BOValidationException(New ValidationError() {err}, "Zip District", UniqueId)
             End Select
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)

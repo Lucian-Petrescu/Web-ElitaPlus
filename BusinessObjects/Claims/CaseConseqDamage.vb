@@ -9,7 +9,7 @@ Public Class CaseConseqDamage
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -23,14 +23,14 @@ Public Class CaseConseqDamage
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDs As DataSet)
+    Public Sub New(id As Guid, familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDs As DataSet)
+    Public Sub New(familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load()
@@ -58,7 +58,7 @@ Public Class CaseConseqDamage
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
 
             If _isDSCreator Then
@@ -114,7 +114,7 @@ Public Class CaseConseqDamage
                 Return New Guid(CType(Row(CaseConseqDamageDal.ColNameCaseId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             CheckDeleted()
             SetValue(CaseConseqDamageDal.ColNameCaseId, value)
         End Set
@@ -131,7 +131,7 @@ Public Class CaseConseqDamage
                 Return New Guid(CType(Row(CaseConseqDamageDal.ColNameClaimId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             CheckDeleted()
             SetValue(CaseConseqDamageDal.ColNameClaimId, value)
         End Set
@@ -148,7 +148,7 @@ Public Class CaseConseqDamage
                 Return CType(Row(CaseConseqDamageDal.ColNameConseqDamageXcd), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             CheckDeleted()
             SetValue(CaseConseqDamageDal.ColNameConseqDamageXcd, value)
         End Set
@@ -165,7 +165,7 @@ Public Class CaseConseqDamage
                 Return New Guid(CType(Row(CaseConseqDamageDal.ColNameCoverageConseqDamageId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             CheckDeleted()
             SetValue(CaseConseqDamageDal.ColNameCoverageConseqDamageId, value)
         End Set
@@ -182,7 +182,7 @@ Public Class CaseConseqDamage
                 Return CType(Row(CaseConseqDamageDal.ColNameStatusXcd), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             CheckDeleted()
             SetValue(CaseConseqDamageDal.ColNameStatusXcd, value)
         End Set
@@ -199,7 +199,7 @@ Public Class CaseConseqDamage
                 Return New DecimalType(CType(Row(CaseConseqDamageDal.ColNameRequestedAmount), Decimal))
             End If
         End Get
-        Set(ByVal value As DecimalType)
+        Set(value As DecimalType)
             CheckDeleted()
             SetValue(CaseConseqDamageDal.ColNameRequestedAmount, value)
         End Set
@@ -216,7 +216,7 @@ Public Class CaseConseqDamage
                 Return New DecimalType(CType(Row(CaseConseqDamageDal.ColNameApprovedAmount), Decimal))
             End If
         End Get
-        Set(ByVal value As DecimalType)
+        Set(value As DecimalType)
             CheckDeleted()
             SetValue(CaseConseqDamageDal.ColNameApprovedAmount, value)
         End Set
@@ -249,7 +249,7 @@ Public Class CaseConseqDamage
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Shared Function LoadListConsequentialDamage(ByVal claimId As Guid) As DataView
+    Shared Function LoadListConsequentialDamage(claimId As Guid) As DataView
         Try
             Dim dal As New CaseConseqDamageDal
             Dim ds As DataSet
@@ -271,7 +271,7 @@ Public Class CaseConseqDamage
 
         Try
 
-            For Each detail In Me.ConseqDamageIssueList
+            For Each detail In ConseqDamageIssueList
                 Dim row As DataRow = t.NewRow
                 row(ConsequentialDamageIssuesView.COL_ENTITY_ISSUE_ID) = detail.ClaimIssueId.ToByteArray
                 row(ConsequentialDamageIssuesView.COL_ISSUE_DESC) = detail.IssueDescription
@@ -304,7 +304,7 @@ Public Class CaseConseqDamage
         Public Const COL_STATUS_CODE As String = "Status_Code"
 
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -338,7 +338,7 @@ Public Class CaseConseqDamage
 
     Public ReadOnly Property HasIssues() As Boolean
         Get
-            If (Me.ConseqDamageIssueList.Count > 0) Then
+            If (ConseqDamageIssueList.Count > 0) Then
                 Return True
             Else
                 Return False
@@ -362,7 +362,7 @@ Public Class CaseConseqDamage
     Private Function EvaluateIssues() As String
         Dim issuesStatus As String = Codes.CONSEQUENTIAL_DAMAGE_STATUS__APPROVED
 
-        For Each Item As ClaimIssue In Me.ConseqDamageIssueList
+        For Each Item As ClaimIssue In ConseqDamageIssueList
             If (Item.StatusCode = Codes.CLAIMISSUE_STATUS__REJECTED) Then
                 issuesStatus = Codes.CONSEQUENTIAL_DAMAGE_STATUS__DENIED
                 Exit For

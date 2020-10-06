@@ -4,10 +4,10 @@ Imports Assurant.ElitaPlus.Common
 Public Class TestService
     Implements ITestService
 
-    Function HealthCheck(ByVal networkID As String, _
-                           ByVal password As String, _
-                           ByVal LDAPGroup As String, _
-                           ByVal hubRegion As String) As String Implements ITestService.HealthCheck
+    Function HealthCheck(networkID As String, _
+                           password As String, _
+                           LDAPGroup As String, _
+                           hubRegion As String) As String Implements ITestService.HealthCheck
 
         Dim bs As New BatchService
         Dim returnStr As String

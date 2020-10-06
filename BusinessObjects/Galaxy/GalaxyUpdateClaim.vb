@@ -111,67 +111,67 @@ Public Class GalaxyUpdateClaim
         Try
             If ds.GalaxyUpdateClaim.Count = 0 Then Exit Sub
             With ds.GalaxyUpdateClaim.Item(0)
-                Me.ClaimNumber = .CLAIM_NUMBER  ' Galaxy Claim Number
-                Me.UnitNumber = .UNIT_NUMBER
-                Me.CauseOfLossCode = .CAUSE_OF_LOSS_CODE
-                CauseOfLossId = LookupListNew.GetIdFromCode(LookupListNew.LK_CAUSES_OF_LOSS, Me.CauseOfLossCode)
+                ClaimNumber = .CLAIM_NUMBER  ' Galaxy Claim Number
+                UnitNumber = .UNIT_NUMBER
+                CauseOfLossCode = .CAUSE_OF_LOSS_CODE
+                CauseOfLossId = LookupListNew.GetIdFromCode(LookupListNew.LK_CAUSES_OF_LOSS, CauseOfLossCode)
 
                 If CauseOfLossId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("GalaxyUpdateClaim Error: ", INVALID_CAUSE_OF_LOSS_CODE)
                 End If
-                Me.LossDate = .LOSS_DATE
+                LossDate = .LOSS_DATE
 
                 If Not .IsSTATUS_CODENull Then
-                    Me.StatusCode = .STATUS_CODE
+                    StatusCode = .STATUS_CODE
                     IsStatusCodeNull = False
 
-                    If Not (Me.StatusCode.Equals(Codes.CLAIM_STATUS__PENDING) Or _
-                        Me.StatusCode.Equals(Codes.CLAIM_STATUS__ACTIVE) Or _
-                        Me.StatusCode.Equals(Codes.CLAIM_STATUS__CLOSED)) Then
+                    If Not (StatusCode.Equals(Codes.CLAIM_STATUS__PENDING) Or _
+                        StatusCode.Equals(Codes.CLAIM_STATUS__ACTIVE) Or _
+                        StatusCode.Equals(Codes.CLAIM_STATUS__CLOSED)) Then
                         Throw New BOValidationException("GalaxyUpdateClaim Error: ", INVALID_STATUS_CODE)
                     End If
                 End If
 
                 If Not .IsSERVICE_CENTER_CODENull Then
-                    Me.ServiceCenterCode = .SERVICE_CENTER_CODE
+                    ServiceCenterCode = .SERVICE_CENTER_CODE
                     IsServiceCenterCodeNull = False
                 End If
 
                 If Not .IsPROBLEM_DESCRIPTIONNull Then
-                    Me.ProblemDescription = .PROBLEM_DESCRIPTION
+                    ProblemDescription = .PROBLEM_DESCRIPTION
                     IsProblemDescriptionNull = False
                 End If
 
                 If Not .IsSPECIAL_INSTRUCTIONNull Then
-                    Me.SpecialInstruction = .SPECIAL_INSTRUCTION
+                    SpecialInstruction = .SPECIAL_INSTRUCTION
                     IsSpecialInstructionNull = False
                 End If
 
                 If Not .IsVISIT_DATENull Then
-                    Me.VisitDate = .VISIT_DATE
+                    VisitDate = .VISIT_DATE
                     IsVisitDateNull = False
                 End If
 
                 If Not .IsREASON_CLOSED_CODENull Then
-                    Me.ReasonClosedCode = .REASON_CLOSED_CODE
+                    ReasonClosedCode = .REASON_CLOSED_CODE
                     IsReasonClosedCodeNull = False
                 End If
 
                 If Not .IsLIABILITY_LIMITNull Then
-                    Me.LiabilityLimit = .LIABILITY_LIMIT
+                    LiabilityLimit = .LIABILITY_LIMIT
                     IsLiabilityLimitNull = False
                 End If
 
                 'Added for Def-1782
                 If Not .IsINVOICE_DATENull Then
-                    Me.InvoiceDate = .INVOICE_DATE
+                    InvoiceDate = .INVOICE_DATE
                 End If
                 If Not .IsCURRENT_ODOMETERNull Then
-                    Me.CurrentOdometer = .CURRENT_ODOMETER
+                    CurrentOdometer = .CURRENT_ODOMETER
                 End If
                 ' For Galaxy web service, ClaimNumber = MasterClaimNumber in Elita.
                 ' For Elita, ClaimNumber = ClaimNumber + CoverageTypeCode in Galaxy web service
-                dsItemCoverages = CertItemCoverage.LoadAllItemCoveragesForGalaxyClaimUpdate(Me.ClaimNumber)  ' Galaxy Claim Number
+                dsItemCoverages = CertItemCoverage.LoadAllItemCoveragesForGalaxyClaimUpdate(ClaimNumber)  ' Galaxy Claim Number
 
                 If dsItemCoverages Is Nothing OrElse dsItemCoverages.Tables.Count <= 0 OrElse dsItemCoverages.Tables(0).Rows.Count <= 0 Then
                     Throw New BOValidationException("GalaxyUpdateClaim Error: ", Common.ErrorCodes.INVALID_CLAIM_NUMBER_ERR)
@@ -190,7 +190,7 @@ Public Class GalaxyUpdateClaim
 
                     deductible = ds.COVERAGES(i).DEDUCTIBLE
 
-                    If CType(Me.UnitNumber, Long) = 1 Then
+                    If CType(UnitNumber, Long) = 1 Then
                         'primary claim
                         If (assurant_pay_amount + deductible) < 0 Then
                             Throw New BOValidationException("GalaxyUpdateClaim Error: ", INVALID_AMOUNT)
@@ -220,7 +220,7 @@ Public Class GalaxyUpdateClaim
                     newRow(SOURCE_COL_ASSURANT_PAY_AMOUNT) = assurant_pay_amount
                     Try
                         ' Returns Elita Claim Number           Input  Galaxy Claim Number
-                        newRow(SOURCE_COL_CLAIM_NUMBER) = claimTmpBO.GetExistClaimNumber(companyId, .CLAIM_NUMBER, coverageCode, Me.UnitNumber)
+                        newRow(SOURCE_COL_CLAIM_NUMBER) = claimTmpBO.GetExistClaimNumber(companyId, .CLAIM_NUMBER, coverageCode, UnitNumber)
                     Catch ex As Exception
                         ' If the Claim does not exists, It will not qualify for closing or update.  It will need to be inserted
                         newRow(SOURCE_COL_CLAIM_NUMBER) = DBNull.Value
@@ -251,12 +251,12 @@ Public Class GalaxyUpdateClaim
 
         Try
 
-            Me.Validate()
+            Validate()
 
             ' Get call the claims based on the master claim number
             ' Me.ClaimNumber is Galaxy claim number and Elita master claim number
             Dim closeClaimBO As Claim = ClaimFacade.Instance.CreateClaim(Of Claim)()
-            Dim dsCloseClaims As DataSet = closeClaimBO.GetClaimsByMasterClaimNumber(Me.ClaimNumber)
+            Dim dsCloseClaims As DataSet = closeClaimBO.GetClaimsByMasterClaimNumber(ClaimNumber)
             Dim isFirstOne As Boolean = True
             Dim defaultServiceCenterID As Guid = Guid.Empty
 
@@ -269,7 +269,7 @@ Public Class GalaxyUpdateClaim
             End If
 
             ' Close primary claims ONLY
-            If (CType(Me.UnitNumber, Long) = 1) Then
+            If (CType(UnitNumber, Long) = 1) Then
                 For Each row In dsCloseClaims.Tables(0).Rows
                     Dim closeClaimID As New Guid(CType(row(SOURCE_COL_CLAIM_ID), Byte()))
                     Dim claimBO As Claim
@@ -308,7 +308,7 @@ Public Class GalaxyUpdateClaim
                     claimID = claimFamilyBO.GetClaimID(ElitaPlusIdentity.Current.ActiveUser.Companies, CType(row(SOURCE_COL_CLAIM_NUMBER), String))
                 End If
 
-                If Not (CType(Me.UnitNumber, Long) = 1) Then
+                If Not (CType(UnitNumber, Long) = 1) Then
                     ' Here is supplymental claim   
                     If claimID.Equals(Guid.Empty) Then
                         Throw New BOValidationException("GalaxyUpdateClaim Error: ", Common.ErrorCodes.ERR_PRIMARY_CLAIM_NOT_FOUND)
@@ -329,18 +329,18 @@ Public Class GalaxyUpdateClaim
                         claimBO.CertItemCoverageId = CType(row(SOURCE_COL_CERT_ITEM_COVERAGE_ID), Guid)
                         claimBO.ServiceCenterId = defaultServiceCenterID
                         claimBO.ClaimNumber = Nothing
-                        claimBO.CauseOfLossId = Me.CauseOfLossId
-                        claimBO.LossDate = Me.LossDate
+                        claimBO.CauseOfLossId = CauseOfLossId
+                        claimBO.LossDate = LossDate
                         '  claimBO.ClaimNumber = CType(row(SOURCE_COL_CLAIM_NUMBER), String)
 
                         '  claimBO.PrePopulate(claimBO.ServiceCenterId, claimBO.CertItemCoverageId, claimBO.ClaimNumber, claimBO.LossDate)
-                        claimBO.PrePopulate(claimBO.ServiceCenterId, claimBO.CertItemCoverageId, Me.ClaimNumber, claimBO.LossDate)
+                        claimBO.PrePopulate(claimBO.ServiceCenterId, claimBO.CertItemCoverageId, ClaimNumber, claimBO.LossDate)
                         claimBO.ContactName = "."
                         claimBO.CallerName = "."
 
                         'Added for Def-1782
-                        claimBO.InvoiceDate = Me.InvoiceDate
-                        claimBO.CurrentOdometer = Me.CurrentOdometer
+                        claimBO.InvoiceDate = InvoiceDate
+                        claimBO.CurrentOdometer = CurrentOdometer
                         ' assign ClaimGroupId, ClaimNumber, MasterClaimNumber
                         'If (Not claimBO.AssignClaimNumberInfo(claimBO.ClaimNumber, CType(row(SOURCE_COL_COVERAGE_CODE), String), Me.UnitNumber)) Then
                         '    arrClaimGroup.Add(claimBO.ClaimGroupId)
@@ -351,8 +351,8 @@ Public Class GalaxyUpdateClaim
                         ' claimBO.MasterClaimNumber = Me.ClaimNumber
                         ' It pass Galaxy Claim Number
                         oGalaxyClaimNumber = New ClaimDAL.GalaxyClaimNumber(claimBO.Id, _
-                                                Me.ClaimNumber, _
-                                                CType(row(SOURCE_COL_COVERAGE_CODE), String), Me.UnitNumber)
+                                                ClaimNumber, _
+                                                CType(row(SOURCE_COL_COVERAGE_CODE), String), UnitNumber)
                         galaxyClaimNumberList.Add(oGalaxyClaimNumber)
 
                     Else
@@ -366,7 +366,7 @@ Public Class GalaxyUpdateClaim
                     claimBO.AuthorizedAmount = CType(row(SOURCE_COL_ASSURANT_PAY_AMOUNT), Decimal) + CType(row(SOURCE_COL_DEDUCTIBLE), Decimal)
                     claimBO.Deductible = CType(row(SOURCE_COL_DEDUCTIBLE), Decimal)
                     'Added for Def-1782
-                    claimBO.InvoiceDate = Me.InvoiceDate
+                    claimBO.InvoiceDate = InvoiceDate
 
                 End If
 
@@ -377,7 +377,7 @@ Public Class GalaxyUpdateClaim
                     Else
                         Dim dvServiceCenter As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
                         If Not dvServiceCenter Is Nothing AndAlso dvServiceCenter.Count > 0 Then
-                            Dim ServiceCenterId As Guid = LookupListNew.GetIdFromCode(dvServiceCenter, Me.ServiceCenterCode)
+                            Dim ServiceCenterId As Guid = LookupListNew.GetIdFromCode(dvServiceCenter, ServiceCenterCode)
                             If ServiceCenterId.Equals(Guid.Empty) Then
                                 selfThrownException = True
                                 Throw New BOValidationException("GalaxyUpdateClaim Error: ", INVALID_SERVICE_CENTER_CODE)
@@ -393,67 +393,67 @@ Public Class GalaxyUpdateClaim
                     End If
                 End If
 
-                claimBO.CurrentOdometer = Me.CurrentOdometer
+                claimBO.CurrentOdometer = CurrentOdometer
 
                 If (IsReasonClosedCodeNull = False) Then
-                    If (Me.StatusCode Is Nothing OrElse Me.StatusCode <> Codes.CLAIM_STATUS__CLOSED) Then
+                    If (StatusCode Is Nothing OrElse StatusCode <> Codes.CLAIM_STATUS__CLOSED) Then
                         Throw New BOValidationException("GalaxyUpdateClaim Error: ", ERR_STATUS_CODE_AND_REASON_CLOSED_CODE_CONFLICT)
                     Else
                         Dim dv As DataView = LookupListNew.GetReasonClosedLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-                        claimBO.ReasonClosedId = LookupListNew.GetIdFromCode(dv, Me.ReasonClosedCode)
+                        claimBO.ReasonClosedId = LookupListNew.GetIdFromCode(dv, ReasonClosedCode)
                         If (claimBO.ReasonClosedId.Equals(Guid.Empty)) Then
                             selfThrownException = True
                             Throw New BOValidationException("GalaxyUpdateClaim Error: ", ERR_REASON_CLOSED_CODE_NOT_FOUND)
                         End If
                     End If
                 Else
-                    If (IsStatusCodeNull = False AndAlso Me.StatusCode = Codes.CLAIM_STATUS__CLOSED) Then
+                    If (IsStatusCodeNull = False AndAlso StatusCode = Codes.CLAIM_STATUS__CLOSED) Then
                         selfThrownException = True
                         Throw New BOValidationException("GalaxyUpdateClaim Error: ", ERR_REASON_CLOSED_CODE_REQUIRED)
                     Else
-                        If (IsStatusCodeNull = False AndAlso Me.StatusCode <> Codes.CLAIM_STATUS__CLOSED) Then
+                        If (IsStatusCodeNull = False AndAlso StatusCode <> Codes.CLAIM_STATUS__CLOSED) Then
                             claimBO.ReasonClosedId = Nothing
                         End If
                     End If
                 End If
 
                 If (IsStatusCodeNull = False) Then
-                    claimBO.StatusCode = Me.StatusCode
+                    claimBO.StatusCode = StatusCode
                 Else
                     claimBO.StatusCode = Codes.CLAIM_STATUS__ACTIVE
                     claimBO.ReasonClosedId = Nothing
                 End If
 
                 If (IsProblemDescriptionNull = False) Then
-                    claimBO.ProblemDescription = Me.ProblemDescription
+                    claimBO.ProblemDescription = ProblemDescription
                 End If
 
                 If (IsSpecialInstructionNull = False) Then
-                    claimBO.SpecialInstruction = Me.SpecialInstruction
+                    claimBO.SpecialInstruction = SpecialInstruction
                 End If
 
                 If (IsLiabilityLimitNull = False) Then
 
                     If claimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Then
-                        If Me.LiabilityLimit <> 0 Then
+                        If LiabilityLimit <> 0 Then
                             Throw New BOValidationException("GalaxyUpdateClaim Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_LIABILITY_LIMIT_ERR)
                         End If
                     End If
 
-                    If Me.LiabilityLimit < 0 Then
+                    If LiabilityLimit < 0 Then
                         Throw New BOValidationException("GalaxyUpdateClaim Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_LIABILITY_LIMIT_ERR)
                     End If
 
                     'if entered amount > existing liability limit then
-                    If Me.LiabilityLimit > claimBO.LiabilityLimit.Value Then
+                    If LiabilityLimit > claimBO.LiabilityLimit.Value Then
                         Throw New BOValidationException("GalaxyUpdateClaim Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_LIABILITY_LIMIT_ERR)
                     End If
 
-                    claimBO.LiabilityLimit = CType(Me.LiabilityLimit, DecimalType)
+                    claimBO.LiabilityLimit = CType(LiabilityLimit, DecimalType)
                 End If
 
                 If (IsVisitDateNull = False) Then
-                    claimBO.VisitDate = CType(Me.VisitDate, DateType)
+                    claimBO.VisitDate = CType(VisitDate, DateType)
                 End If
 
                 claimBO.CalculateFollowUpDate()
@@ -507,18 +507,18 @@ Public Class GalaxyUpdateClaim
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
     Private Sub Load(ByVal ds As GalaxyUpdateClaimDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -579,7 +579,7 @@ Public Class GalaxyUpdateClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CLAIM_NUMBER, Value)
+            SetValue(SOURCE_COL_CLAIM_NUMBER, Value)
         End Set
     End Property
 
@@ -594,7 +594,7 @@ Public Class GalaxyUpdateClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_STATUS_CODE, Value)
+            SetValue(SOURCE_COL_STATUS_CODE, Value)
         End Set
     End Property
 
@@ -609,7 +609,7 @@ Public Class GalaxyUpdateClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_SERVICE_CENTER_CODE, Value)
+            SetValue(SOURCE_COL_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
@@ -624,7 +624,7 @@ Public Class GalaxyUpdateClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_PROBLEM_DESCRIPTION, Value)
+            SetValue(SOURCE_COL_PROBLEM_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -639,7 +639,7 @@ Public Class GalaxyUpdateClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_SPECIAL_INSTRUCTION, Value)
+            SetValue(SOURCE_COL_SPECIAL_INSTRUCTION, Value)
         End Set
     End Property
 
@@ -654,7 +654,7 @@ Public Class GalaxyUpdateClaim
         End Get
         Set(ByVal Value As Decimal)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_ASSURANT_PAY_AMOUNT, Value)
+            SetValue(SOURCE_COL_ASSURANT_PAY_AMOUNT, Value)
         End Set
     End Property
 
@@ -669,7 +669,7 @@ Public Class GalaxyUpdateClaim
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_VISIT_DATE, Value)
+            SetValue(SOURCE_COL_VISIT_DATE, Value)
         End Set
     End Property
 
@@ -684,7 +684,7 @@ Public Class GalaxyUpdateClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_REASON_CLOSED_CODE, Value)
+            SetValue(SOURCE_COL_REASON_CLOSED_CODE, Value)
         End Set
     End Property
 
@@ -699,7 +699,7 @@ Public Class GalaxyUpdateClaim
         End Get
         Set(ByVal Value As Decimal)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_LIABILITY_LIMIT, Value)
+            SetValue(SOURCE_COL_LIABILITY_LIMIT, Value)
         End Set
     End Property
 
@@ -714,7 +714,7 @@ Public Class GalaxyUpdateClaim
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_UNIT_NUMBER, Value)
+            SetValue(SOURCE_COL_UNIT_NUMBER, Value)
         End Set
     End Property
 
@@ -729,7 +729,7 @@ Public Class GalaxyUpdateClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CAUSE_OF_LOSS_CODE, Value)
+            SetValue(SOURCE_COL_CAUSE_OF_LOSS_CODE, Value)
         End Set
     End Property
 
@@ -745,7 +745,7 @@ Public Class GalaxyUpdateClaim
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_LOSS_DATE, Value)
+            SetValue(SOURCE_COL_LOSS_DATE, Value)
         End Set
     End Property
 
@@ -761,7 +761,7 @@ Public Class GalaxyUpdateClaim
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_INVOICE_DATE, Value)
+            SetValue(SOURCE_COL_INVOICE_DATE, Value)
         End Set
     End Property
 
@@ -776,7 +776,7 @@ Public Class GalaxyUpdateClaim
         End Get
         Set(ByVal Value As Integer)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CURRENT_ODOMETER, Value)
+            SetValue(SOURCE_COL_CURRENT_ODOMETER, Value)
         End Set
     End Property
 #End Region

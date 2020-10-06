@@ -77,8 +77,8 @@ Public NotInheritable Class VendorAuthorizationFileLoad
 #End Region
 
     Protected Overrides Function CreateFileLoadHeader(ByVal fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
-        Me.ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
-        Return Me.ClaimLoadFileProcessed
+        ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
+        Return ClaimLoadFileProcessed
     End Function
 
     Protected Overrides Function CreateFileLoadDetail(ByVal fileLoadDetailId As System.Guid, ByVal headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
@@ -91,7 +91,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
         MyBase.AfterCreateFileLoadHeader()
         _finalStatusList = New List(Of Guid)
         _finalStatusLookupList = New Dictionary(Of String, Guid)
-        Dim oCompany As New Company(Me.ClaimLoadFileProcessed.CompanyId, Me.ClaimLoadFileProcessed.Dataset)
+        Dim oCompany As New Company(ClaimLoadFileProcessed.CompanyId, ClaimLoadFileProcessed.Dataset)
         Dim dv As DataView
         dv = ClaimStatusByGroup.getListByCompanyGroupOrDealer(ClaimStatusByGroupDAL.SearchByType.CompanyGroup, oCompany.CompanyGroupId, Guid.Empty)
         For Each dvr As DataRowView In dv
@@ -147,7 +147,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
         claimAuthorization.DeliveryDate = reconRecord.DeliveryDate
         claimAuthorization.ServiceLevelId = LookupListNew.GetIdFromCode(LookupListNew.LK_SERVICE_LEVEL, reconRecord.ServiceLevel)
         claimAuthorization.ServiceCenterReferenceNumber = reconRecord.AuthorizationNum
-        claimAuthorization.Source = Me.ClaimLoadFileProcessed.Filename
+        claimAuthorization.Source = ClaimLoadFileProcessed.Filename
         If ((Not reconRecord.BatchNumber Is Nothing) AndAlso (reconRecord.BatchNumber.Trim().Length > 0)) Then
             claimAuthorization.BatchNumber = reconRecord.BatchNumber
         End If
@@ -757,7 +757,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
             ' Check if Claim has Final Status
             For Each row As DataRowView In oClaimStatusSearchDv
                 Dim cs As New ClaimStatus(GuidControl.ByteArrayToGuid(row(oClaimStatusSearchDv.COL_CLAIM_STATUS_ID)))
-                If (Me.FinalStatusList.Contains(cs.ClaimStatusByGroupId)) Then
+                If (FinalStatusList.Contains(cs.ClaimStatusByGroupId)) Then
                     ' Final Status is already updated on Claim
                     oClaimStatus = cs
                     Exit For
@@ -769,7 +769,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                 oClaimStatus = New ClaimStatus(familyDataSet)
                 With oClaimStatus
                     .ClaimId = claim.Id
-                    .ClaimStatusByGroupId = Me.FinalStatusLookupList(oFinalStatus)
+                    .ClaimStatusByGroupId = FinalStatusLookupList(oFinalStatus)
                     .StatusDate = DateTime.Now.AddSeconds(-1)
                     .Save()
                 End With
@@ -898,6 +898,6 @@ Public NotInheritable Class VendorAuthorizationFileLoad
 
     Protected Overrides Sub CustomSave(ByVal headerRecord As ClaimloadFileProcessed)
         MyBase.CustomSave(headerRecord)
-        headerRecord.Save(Me.Claim)
+        headerRecord.Save(Claim)
     End Sub
 End Class

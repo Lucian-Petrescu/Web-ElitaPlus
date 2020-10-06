@@ -202,21 +202,21 @@ Partial Public Class ClaimLoadReconWrkForm
     End Property
 
     Private Sub SetStateProperties()
-        If Not CallingParameters Is Nothing Then
-            Me.State.ClaimloadfileName = CType(Me.CallingParameters, String)
+        If CallingParameters IsNot Nothing Then
+            State.ClaimloadfileName = CType(CallingParameters, String)
         End If
     End Sub
 
 #End Region
 
 #Region "Page events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
-        Me.ErrController2.Clear_Hide()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
+        ErrController2.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
                 TranslateGridHeader(Grid)
                 SetStateProperties()
                 populateReadyOnly()
@@ -225,27 +225,27 @@ Partial Public Class ClaimLoadReconWrkForm
                 CheckIfComingFromSaveConfirm()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 #End Region
 
 #Region "Helper Function"
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSavePagePromptResponse.Value
+        Dim confResponse As String = HiddenSavePagePromptResponse.Value
         Try
             If Not confResponse.Equals(String.Empty) Then
-                If confResponse = Me.MSG_VALUE_YES Then
+                If confResponse = MSG_VALUE_YES Then
                     'SavePage()
                 End If
-                Me.HiddenSavePagePromptResponse.Value = String.Empty
-                Me.HiddenIsPageDirty.Value = String.Empty
+                HiddenSavePagePromptResponse.Value = String.Empty
+                HiddenIsPageDirty.Value = String.Empty
 
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
                         Dim retType As New ClaimLoadForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimloadfileName)
-                        Me.ReturnToCallingPage(retType)
+                        ReturnToCallingPage(retType)
                     Case ElitaPlusPage.DetailPageCommand.GridPageSize
                         Grid.PageIndex = NewCurrentPageIndex(Grid, State.RecordCount, State.PageSize)
                         State.PageSize = CType(cboPageSize.SelectedValue, Integer)
@@ -255,25 +255,25 @@ Partial Public Class ClaimLoadReconWrkForm
                 PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
     Public Sub PopulateGrid()
         Dim dv As DataView
         dv = ClaimloadReconWrk.LoadList(State.ClaimloadfileName)
-        If Not dv Is Nothing AndAlso dv.Count > 0 Then
+        If dv IsNot Nothing AndAlso dv.Count > 0 Then
             State.RecordCount = dv.Count
-            SetPageAndSelectedIndexFromGuid(dv, Nothing, Me.Grid, Me.State.PageIndex, False)
-            Me.Grid.DataSource = dv
-            Me.Grid.DataBind()
-            Me.lblRecordCount.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
-            If Not Grid.BottomPagerRow Is Nothing Then
+            SetPageAndSelectedIndexFromGuid(dv, Nothing, Grid, State.PageIndex, False)
+            Grid.DataSource = dv
+            Grid.DataBind()
+            lblRecordCount.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.BottomPagerRow IsNot Nothing Then
                 If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
             End If
         Else
             State.RecordCount = 0
-            Me.lblRecordCount.Text = "0 " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            lblRecordCount.Text = "0 " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         End If
     End Sub
 
@@ -282,14 +282,14 @@ Partial Public Class ClaimLoadReconWrkForm
     End Sub
 
     Function IsDataGPageDirty() As Boolean
-        Dim Result As String = Me.HiddenIsPageDirty.Value.ToUpper
+        Dim Result As String = HiddenIsPageDirty.Value.ToUpper
         Return Result.Equals("YES")
     End Function
 
     Private Sub SavePage()
         Dim index As Integer = 0
         Dim objRecon As ClaimloadReconWrk
-        Dim totItems As Integer = Me.Grid.Rows.Count
+        Dim totItems As Integer = Grid.Rows.Count
 
         If totItems > 0 Then
             objRecon = CreateBoFromGrid(0)
@@ -308,7 +308,7 @@ Partial Public Class ClaimLoadReconWrkForm
         Next
     End Sub
 
-    Private Function CreateBoFromGrid(ByVal index As Integer) As ClaimloadReconWrk
+    Private Function CreateBoFromGrid(index As Integer) As ClaimloadReconWrk
         Dim ReconWrkId As Guid
         Dim objReconWrk As ClaimloadReconWrk
         Dim sModifiedDate As String
@@ -321,7 +321,7 @@ Partial Public Class ClaimLoadReconWrkForm
         Return objReconWrk
     End Function
 
-    Private Sub PopulateBOFromForm(ByVal objReconWrk As ClaimloadReconWrk)
+    Private Sub PopulateBOFromForm(objReconWrk As ClaimloadReconWrk)
         PopulateBOItem(objReconWrk, "RecordType", COL_Record_Type)
         PopulateBOItem(objReconWrk, "DealerCode", COL_Dealer_Code)
         PopulateBOItem(objReconWrk, "Certificate", COL_Cert_Num)
@@ -397,118 +397,118 @@ Partial Public Class ClaimLoadReconWrkForm
         'End If
     End Sub
 
-    Private Sub PopulateBOItem(ByVal objReconWrk As ClaimloadReconWrk, ByVal oPropertyName As String, ByVal oCellPosition As Integer)
-        PopulateBOProperty(objReconWrk, oPropertyName, CType(Me.GetSelectedGridControl(Grid, oCellPosition), TextBox))
+    Private Sub PopulateBOItem(objReconWrk As ClaimloadReconWrk, oPropertyName As String, oCellPosition As Integer)
+        PopulateBOProperty(objReconWrk, oPropertyName, CType(GetSelectedGridControl(Grid, oCellPosition), TextBox))
     End Sub
 
-    Protected Sub BindBoPropertiesToGridHeaders(ByVal objRecon As ClaimloadReconWrk)
-        Me.BindBOPropertyToGridHeader(objRecon, "RecordType", Grid.Columns(COL_Record_Type))
-        Me.BindBOPropertyToGridHeader(objRecon, "DealerCode", Grid.Columns(COL_Dealer_Code))
-        Me.BindBOPropertyToGridHeader(objRecon, "Certificate", Grid.Columns(COL_Cert_Num))
-        Me.BindBOPropertyToGridHeader(objRecon, "ClaimType", Grid.Columns(COL_Claim_Type))
-        Me.BindBOPropertyToGridHeader(objRecon, "AuthorizationNum", Grid.Columns(COL_Auth_Num))
-        Me.BindBOPropertyToGridHeader(objRecon, "ExternalCreatedDate", Grid.Columns(COL_External_Date))
-        Me.BindBOPropertyToGridHeader(objRecon, "CoverageCode", Grid.Columns(COL_Coverage_Code))
-        Me.BindBOPropertyToGridHeader(objRecon, "DateOfLoss", Grid.Columns(COL_Loss_Date))
-        Me.BindBOPropertyToGridHeader(objRecon, "CauseOfLoss", Grid.Columns(COL_Loss_Cause))
-        Me.BindBOPropertyToGridHeader(objRecon, "ProblemDescription", Grid.Columns(COL_Problem_Desc))
-        Me.BindBOPropertyToGridHeader(objRecon, "Comments", Grid.Columns(COL_Comments))
-        Me.BindBOPropertyToGridHeader(objRecon, "SpecialInstructions", Grid.Columns(COL_Special_Instruction))
-        Me.BindBOPropertyToGridHeader(objRecon, "RepairDate", Grid.Columns(COL_Repair_Date))
-        Me.BindBOPropertyToGridHeader(objRecon, "VisitDate", Grid.Columns(COL_Visit_Date))
-        Me.BindBOPropertyToGridHeader(objRecon, "InvoiceDate", Grid.Columns(COL_Invoice_Date))
-        Me.BindBOPropertyToGridHeader(objRecon, "PickupDate", Grid.Columns(COL_Pickup_Date))
-        Me.BindBOPropertyToGridHeader(objRecon, "ReasonClosed", Grid.Columns(COL_Reason_Closed))
-        Me.BindBOPropertyToGridHeader(objRecon, "Manufacturer", Grid.Columns(COL_Manufacturer))
-        Me.BindBOPropertyToGridHeader(objRecon, "Model", Grid.Columns(COL_Model))
-        Me.BindBOPropertyToGridHeader(objRecon, "SerialNumber", Grid.Columns(COL_Serial_Num))
-        Me.BindBOPropertyToGridHeader(objRecon, "ServiceCenterCode", Grid.Columns(COL_Service_Center))
-        Me.BindBOPropertyToGridHeader(objRecon, "ProductCode", Grid.Columns(COL_Product_Code))
-        Me.BindBOPropertyToGridHeader(objRecon, "DefectReason", Grid.Columns(COL_Defect_Reason))
-        Me.BindBOPropertyToGridHeader(objRecon, "RepairCode", Grid.Columns(COL_Repair_Code))
-        Me.BindBOPropertyToGridHeader(objRecon, "CallerName", Grid.Columns(COL_Caller_Name))
-        Me.BindBOPropertyToGridHeader(objRecon, "ContactName", Grid.Columns(COL_Contact_Name))
-        Me.BindBOPropertyToGridHeader(objRecon, "InvoiceNumber", Grid.Columns(COL_Invoice_Num))
-        Me.BindBOPropertyToGridHeader(objRecon, "Amount", Grid.Columns(COL_Amount))
-        Me.BindBOPropertyToGridHeader(objRecon, "EstimateAmount", Grid.Columns(COL_Estimate_Amount))
-        Me.BindBOPropertyToGridHeader(objRecon, "PoliceReportNum", Grid.Columns(COL_Police_Rpt_Num))
-        Me.BindBOPropertyToGridHeader(objRecon, "OfficerName", Grid.Columns(COL_Officer_Name))
-        Me.BindBOPropertyToGridHeader(objRecon, "PoliceStationCode", Grid.Columns(COL_Police_Station))
-        Me.BindBOPropertyToGridHeader(objRecon, "DocumentType", Grid.Columns(COL_Document_Type))
-        Me.BindBOPropertyToGridHeader(objRecon, "RgNumber", Grid.Columns(COL_RG_Num))
-        Me.BindBOPropertyToGridHeader(objRecon, "DocumentAgency", Grid.Columns(COL_Document_Agency))
-        Me.BindBOPropertyToGridHeader(objRecon, "DocumentIssueDate", Grid.Columns(COL_Doc_Issue_Date))
-        Me.BindBOPropertyToGridHeader(objRecon, "IdType", Grid.Columns(COL_ID_Type))
-        Me.BindBOPropertyToGridHeader(objRecon, "DeviceReceptionDate", Grid.Columns(COL_Device_Reception_Date))
-        Me.BindBOPropertyToGridHeader(objRecon, "ReplacementType", Grid.Columns(COL_Replacement_Type))
-        Me.BindBOPropertyToGridHeader(objRecon, "ReplacementManufacturer", Grid.Columns(COL_Manufacturer_Replacement_Device))
-        Me.BindBOPropertyToGridHeader(objRecon, "ReplacementModel", Grid.Columns(COL_Model_Replacement_Device))
-        Me.BindBOPropertyToGridHeader(objRecon, "ReplacementSerialNumber", Grid.Columns(COL_SerialNumber_Replacement_Device))
-        Me.BindBOPropertyToGridHeader(objRecon, "ReplacementSku", Grid.Columns(COL_SKU_Replacement_Device))
-        Me.BindBOPropertyToGridHeader(objRecon, "DeductibleCollected", Grid.Columns(COL_Deductible_Collected))
-        Me.BindBOPropertyToGridHeader(objRecon, "LaborAmount", Grid.Columns(COL_Labor_Amount))
-        Me.BindBOPropertyToGridHeader(objRecon, "PartsAmount", Grid.Columns(COL_Parts_Amount))
-        Me.BindBOPropertyToGridHeader(objRecon, "ServiceAmount", Grid.Columns(COL_Service_Charge))
-        Me.BindBOPropertyToGridHeader(objRecon, "ShippingAmount", Grid.Columns(COL_Shipping_Amount))
-        Me.BindBOPropertyToGridHeader(objRecon, "ServiceLevel", Grid.Columns(COL_Service_Level))
-        Me.BindBOPropertyToGridHeader(objRecon, "DealerReference", Grid.Columns(COL_Dealers_Reference))
-        Me.BindBOPropertyToGridHeader(objRecon, "Pos", Grid.Columns(COL_POS))
-        Me.BindBOPropertyToGridHeader(objRecon, "ProblemFound", Grid.Columns(COL_Problem_Found))
-        Me.BindBOPropertyToGridHeader(objRecon, "FinalStatus", Grid.Columns(COL_Final_Status))
-        Me.BindBOPropertyToGridHeader(objRecon, "TechnicalReport", Grid.Columns(COL_Technical_Report))
-        Me.BindBOPropertyToGridHeader(objRecon, "DeliveryDate", Grid.Columns(COL_Delivery_Date))
-        Me.BindBOPropertyToGridHeader(objRecon, "BatchNumber", Grid.Columns(COL_Batch_Number))
-        Me.BindBOPropertyToGridHeader(objRecon, "CommentType", Grid.Columns(COL_Comment_Type))
-        Me.BindBOPropertyToGridHeader(objRecon, "RiskTypeEnglish", Grid.Columns(COL_Risk_Type_English))
-        Me.BindBOPropertyToGridHeader(objRecon, "ItemDescription", Grid.Columns(COL_Item_Description))
-        Me.BindBOPropertyToGridHeader(objRecon, "TripAmount", Grid.Columns(COL_Trip_Amount))
-        Me.BindBOPropertyToGridHeader(objRecon, "OtherAmount", Grid.Columns(COL_Other_Amount))
-        Me.BindBOPropertyToGridHeader(objRecon, "OtherExplanation", Grid.Columns(COL_Other_Explanation))
-        Me.BindBOPropertyToGridHeader(objRecon, "ClaimNumber", Grid.Columns(COL_Claim_Number))
-        Me.BindBOPropertyToGridHeader(objRecon, "ExtendedStatusCode", Grid.Columns(COL_Extended_Status_Code))
-        Me.BindBOPropertyToGridHeader(objRecon, "ExtendedStatusDate", Grid.Columns(COL_Extended_Status_Date))
-        Me.BindBOPropertyToGridHeader(objRecon, "TrackingNumber", Grid.Columns(COL_Tracking_Number))
-        Me.BindBOPropertyToGridHeader(objRecon, "DeductibleIncluded", Grid.Columns(COL_Deductible_Included))
-        Me.ClearGridViewHeadersAndLabelsErrSign()
+    Protected Sub BindBoPropertiesToGridHeaders(objRecon As ClaimloadReconWrk)
+        BindBOPropertyToGridHeader(objRecon, "RecordType", Grid.Columns(COL_Record_Type))
+        BindBOPropertyToGridHeader(objRecon, "DealerCode", Grid.Columns(COL_Dealer_Code))
+        BindBOPropertyToGridHeader(objRecon, "Certificate", Grid.Columns(COL_Cert_Num))
+        BindBOPropertyToGridHeader(objRecon, "ClaimType", Grid.Columns(COL_Claim_Type))
+        BindBOPropertyToGridHeader(objRecon, "AuthorizationNum", Grid.Columns(COL_Auth_Num))
+        BindBOPropertyToGridHeader(objRecon, "ExternalCreatedDate", Grid.Columns(COL_External_Date))
+        BindBOPropertyToGridHeader(objRecon, "CoverageCode", Grid.Columns(COL_Coverage_Code))
+        BindBOPropertyToGridHeader(objRecon, "DateOfLoss", Grid.Columns(COL_Loss_Date))
+        BindBOPropertyToGridHeader(objRecon, "CauseOfLoss", Grid.Columns(COL_Loss_Cause))
+        BindBOPropertyToGridHeader(objRecon, "ProblemDescription", Grid.Columns(COL_Problem_Desc))
+        BindBOPropertyToGridHeader(objRecon, "Comments", Grid.Columns(COL_Comments))
+        BindBOPropertyToGridHeader(objRecon, "SpecialInstructions", Grid.Columns(COL_Special_Instruction))
+        BindBOPropertyToGridHeader(objRecon, "RepairDate", Grid.Columns(COL_Repair_Date))
+        BindBOPropertyToGridHeader(objRecon, "VisitDate", Grid.Columns(COL_Visit_Date))
+        BindBOPropertyToGridHeader(objRecon, "InvoiceDate", Grid.Columns(COL_Invoice_Date))
+        BindBOPropertyToGridHeader(objRecon, "PickupDate", Grid.Columns(COL_Pickup_Date))
+        BindBOPropertyToGridHeader(objRecon, "ReasonClosed", Grid.Columns(COL_Reason_Closed))
+        BindBOPropertyToGridHeader(objRecon, "Manufacturer", Grid.Columns(COL_Manufacturer))
+        BindBOPropertyToGridHeader(objRecon, "Model", Grid.Columns(COL_Model))
+        BindBOPropertyToGridHeader(objRecon, "SerialNumber", Grid.Columns(COL_Serial_Num))
+        BindBOPropertyToGridHeader(objRecon, "ServiceCenterCode", Grid.Columns(COL_Service_Center))
+        BindBOPropertyToGridHeader(objRecon, "ProductCode", Grid.Columns(COL_Product_Code))
+        BindBOPropertyToGridHeader(objRecon, "DefectReason", Grid.Columns(COL_Defect_Reason))
+        BindBOPropertyToGridHeader(objRecon, "RepairCode", Grid.Columns(COL_Repair_Code))
+        BindBOPropertyToGridHeader(objRecon, "CallerName", Grid.Columns(COL_Caller_Name))
+        BindBOPropertyToGridHeader(objRecon, "ContactName", Grid.Columns(COL_Contact_Name))
+        BindBOPropertyToGridHeader(objRecon, "InvoiceNumber", Grid.Columns(COL_Invoice_Num))
+        BindBOPropertyToGridHeader(objRecon, "Amount", Grid.Columns(COL_Amount))
+        BindBOPropertyToGridHeader(objRecon, "EstimateAmount", Grid.Columns(COL_Estimate_Amount))
+        BindBOPropertyToGridHeader(objRecon, "PoliceReportNum", Grid.Columns(COL_Police_Rpt_Num))
+        BindBOPropertyToGridHeader(objRecon, "OfficerName", Grid.Columns(COL_Officer_Name))
+        BindBOPropertyToGridHeader(objRecon, "PoliceStationCode", Grid.Columns(COL_Police_Station))
+        BindBOPropertyToGridHeader(objRecon, "DocumentType", Grid.Columns(COL_Document_Type))
+        BindBOPropertyToGridHeader(objRecon, "RgNumber", Grid.Columns(COL_RG_Num))
+        BindBOPropertyToGridHeader(objRecon, "DocumentAgency", Grid.Columns(COL_Document_Agency))
+        BindBOPropertyToGridHeader(objRecon, "DocumentIssueDate", Grid.Columns(COL_Doc_Issue_Date))
+        BindBOPropertyToGridHeader(objRecon, "IdType", Grid.Columns(COL_ID_Type))
+        BindBOPropertyToGridHeader(objRecon, "DeviceReceptionDate", Grid.Columns(COL_Device_Reception_Date))
+        BindBOPropertyToGridHeader(objRecon, "ReplacementType", Grid.Columns(COL_Replacement_Type))
+        BindBOPropertyToGridHeader(objRecon, "ReplacementManufacturer", Grid.Columns(COL_Manufacturer_Replacement_Device))
+        BindBOPropertyToGridHeader(objRecon, "ReplacementModel", Grid.Columns(COL_Model_Replacement_Device))
+        BindBOPropertyToGridHeader(objRecon, "ReplacementSerialNumber", Grid.Columns(COL_SerialNumber_Replacement_Device))
+        BindBOPropertyToGridHeader(objRecon, "ReplacementSku", Grid.Columns(COL_SKU_Replacement_Device))
+        BindBOPropertyToGridHeader(objRecon, "DeductibleCollected", Grid.Columns(COL_Deductible_Collected))
+        BindBOPropertyToGridHeader(objRecon, "LaborAmount", Grid.Columns(COL_Labor_Amount))
+        BindBOPropertyToGridHeader(objRecon, "PartsAmount", Grid.Columns(COL_Parts_Amount))
+        BindBOPropertyToGridHeader(objRecon, "ServiceAmount", Grid.Columns(COL_Service_Charge))
+        BindBOPropertyToGridHeader(objRecon, "ShippingAmount", Grid.Columns(COL_Shipping_Amount))
+        BindBOPropertyToGridHeader(objRecon, "ServiceLevel", Grid.Columns(COL_Service_Level))
+        BindBOPropertyToGridHeader(objRecon, "DealerReference", Grid.Columns(COL_Dealers_Reference))
+        BindBOPropertyToGridHeader(objRecon, "Pos", Grid.Columns(COL_POS))
+        BindBOPropertyToGridHeader(objRecon, "ProblemFound", Grid.Columns(COL_Problem_Found))
+        BindBOPropertyToGridHeader(objRecon, "FinalStatus", Grid.Columns(COL_Final_Status))
+        BindBOPropertyToGridHeader(objRecon, "TechnicalReport", Grid.Columns(COL_Technical_Report))
+        BindBOPropertyToGridHeader(objRecon, "DeliveryDate", Grid.Columns(COL_Delivery_Date))
+        BindBOPropertyToGridHeader(objRecon, "BatchNumber", Grid.Columns(COL_Batch_Number))
+        BindBOPropertyToGridHeader(objRecon, "CommentType", Grid.Columns(COL_Comment_Type))
+        BindBOPropertyToGridHeader(objRecon, "RiskTypeEnglish", Grid.Columns(COL_Risk_Type_English))
+        BindBOPropertyToGridHeader(objRecon, "ItemDescription", Grid.Columns(COL_Item_Description))
+        BindBOPropertyToGridHeader(objRecon, "TripAmount", Grid.Columns(COL_Trip_Amount))
+        BindBOPropertyToGridHeader(objRecon, "OtherAmount", Grid.Columns(COL_Other_Amount))
+        BindBOPropertyToGridHeader(objRecon, "OtherExplanation", Grid.Columns(COL_Other_Explanation))
+        BindBOPropertyToGridHeader(objRecon, "ClaimNumber", Grid.Columns(COL_Claim_Number))
+        BindBOPropertyToGridHeader(objRecon, "ExtendedStatusCode", Grid.Columns(COL_Extended_Status_Code))
+        BindBOPropertyToGridHeader(objRecon, "ExtendedStatusDate", Grid.Columns(COL_Extended_Status_Date))
+        BindBOPropertyToGridHeader(objRecon, "TrackingNumber", Grid.Columns(COL_Tracking_Number))
+        BindBOPropertyToGridHeader(objRecon, "DeductibleIncluded", Grid.Columns(COL_Deductible_Included))
+        ClearGridViewHeadersAndLabelsErrSign()
     End Sub
 
-    Protected Sub BindBoPropertiesToPartsGridHeaders(ByVal claimReconWrkPartsInfo As ClaimReconWrkParts)
-        Me.BindBOPropertyToGridHeader(claimReconWrkPartsInfo, "PartNumber", Me.gvPop.Columns(Me.PART_NUMBER_COL))
-        Me.BindBOPropertyToGridHeader(claimReconWrkPartsInfo, "PartSKU", Me.gvPop.Columns(Me.PART_SKU_COL))
-        Me.BindBOPropertyToGridHeader(claimReconWrkPartsInfo, "PartDescription", Me.gvPop.Columns(Me.PART_DESCRIPTION_COL))
-        Me.ClearGridViewHeadersAndLabelsErrSign()
+    Protected Sub BindBoPropertiesToPartsGridHeaders(claimReconWrkPartsInfo As ClaimReconWrkParts)
+        BindBOPropertyToGridHeader(claimReconWrkPartsInfo, "PartNumber", gvPop.Columns(PART_NUMBER_COL))
+        BindBOPropertyToGridHeader(claimReconWrkPartsInfo, "PartSKU", gvPop.Columns(PART_SKU_COL))
+        BindBOPropertyToGridHeader(claimReconWrkPartsInfo, "PartDescription", gvPop.Columns(PART_DESCRIPTION_COL))
+        ClearGridViewHeadersAndLabelsErrSign()
     End Sub
 #End Region
 
 #Region "Grid related"
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = Grid.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             BaseItemBound(sender, e)
             If e.Row.RowType = DataControlRowType.DataRow Then
@@ -541,10 +541,10 @@ Partial Public Class ClaimLoadReconWrkForm
                 ctlTxt = CType(e.Row.Cells(COL_External_Date).FindControl(Ctl_External_Date), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
                 ctlCanlendar = CType(e.Row.Cells(COL_External_Date).FindControl(Ctl_External_Date_Calendar), ImageButton)
-                If (Not ctlCanlendar Is Nothing) Then
-                    Me.AddCalendar(ctlCanlendar, ctlTxt)
+                If (ctlCanlendar IsNot Nothing) Then
+                    AddCalendar(ctlCanlendar, ctlTxt)
                 End If
-                Me.PopulateControlFromBOProperty(ctlTxt, dvRow(ClaimloadReconWrk.COL_NAME_EXTERNAL_CREATED_DATE))
+                PopulateControlFromBOProperty(ctlTxt, dvRow(ClaimloadReconWrk.COL_NAME_EXTERNAL_CREATED_DATE))
 
                 ctlTxt = CType(e.Row.Cells(COL_Coverage_Code).FindControl(Ctl_Coverage_Code), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
@@ -553,10 +553,10 @@ Partial Public Class ClaimLoadReconWrkForm
                 ctlTxt = CType(e.Row.Cells(COL_Loss_Date).FindControl(Ctl_Loss_Date), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
                 ctlCanlendar = CType(e.Row.Cells(COL_Loss_Date).FindControl(Ctl_Loss_Date_Calendar), ImageButton)
-                If (Not ctlCanlendar Is Nothing) Then
-                    Me.AddCalendar(ctlCanlendar, ctlTxt)
+                If (ctlCanlendar IsNot Nothing) Then
+                    AddCalendar(ctlCanlendar, ctlTxt)
                 End If
-                Me.PopulateControlFromBOProperty(ctlTxt, dvRow(ClaimloadReconWrk.COL_NAME_DATE_OF_LOSS))
+                PopulateControlFromBOProperty(ctlTxt, dvRow(ClaimloadReconWrk.COL_NAME_DATE_OF_LOSS))
 
                 ctlTxt = CType(e.Row.Cells(COL_Loss_Cause).FindControl(Ctl_Loss_Cause), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
@@ -577,34 +577,34 @@ Partial Public Class ClaimLoadReconWrkForm
                 ctlTxt = CType(e.Row.Cells(COL_Repair_Date).FindControl(Ctl_Repair_Date), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
                 ctlCanlendar = CType(e.Row.Cells(COL_Repair_Date).FindControl(Ctl_Repair_Date_Calendar), ImageButton)
-                If (Not ctlCanlendar Is Nothing) Then
-                    Me.AddCalendar(ctlCanlendar, ctlTxt)
+                If (ctlCanlendar IsNot Nothing) Then
+                    AddCalendar(ctlCanlendar, ctlTxt)
                 End If
-                Me.PopulateControlFromBOProperty(ctlTxt, dvRow(ClaimloadReconWrk.COL_NAME_REPAIR_DATE))
+                PopulateControlFromBOProperty(ctlTxt, dvRow(ClaimloadReconWrk.COL_NAME_REPAIR_DATE))
 
                 ctlTxt = CType(e.Row.Cells(COL_Visit_Date).FindControl(Ctl_Visit_Date), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
                 ctlCanlendar = CType(e.Row.Cells(COL_Visit_Date).FindControl(Ctl_Visit_Date_Calendar), ImageButton)
-                If (Not ctlCanlendar Is Nothing) Then
-                    Me.AddCalendar(ctlCanlendar, ctlTxt)
+                If (ctlCanlendar IsNot Nothing) Then
+                    AddCalendar(ctlCanlendar, ctlTxt)
                 End If
-                Me.PopulateControlFromBOProperty(ctlTxt, dvRow(ClaimloadReconWrk.COL_NAME_VISIT_DATE))
+                PopulateControlFromBOProperty(ctlTxt, dvRow(ClaimloadReconWrk.COL_NAME_VISIT_DATE))
 
                 ctlTxt = CType(e.Row.Cells(COL_Invoice_Date).FindControl(Ctl_Invoice_Date), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
                 ctlCanlendar = CType(e.Row.Cells(COL_Invoice_Date).FindControl(Ctl_Invoice_Date_Calendar), ImageButton)
-                If (Not ctlCanlendar Is Nothing) Then
-                    Me.AddCalendar(ctlCanlendar, ctlTxt)
+                If (ctlCanlendar IsNot Nothing) Then
+                    AddCalendar(ctlCanlendar, ctlTxt)
                 End If
-                Me.PopulateControlFromBOProperty(ctlTxt, dvRow(ClaimloadReconWrk.COL_NAME_INVOICE_DATE))
+                PopulateControlFromBOProperty(ctlTxt, dvRow(ClaimloadReconWrk.COL_NAME_INVOICE_DATE))
 
                 ctlTxt = CType(e.Row.Cells(COL_Pickup_Date).FindControl(Ctl_Pickup_Date), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
                 ctlCanlendar = CType(e.Row.Cells(COL_Pickup_Date).FindControl(Ctl_Pickup_Date_Calendar), ImageButton)
-                If (Not ctlCanlendar Is Nothing) Then
-                    Me.AddCalendar(ctlCanlendar, ctlTxt)
+                If (ctlCanlendar IsNot Nothing) Then
+                    AddCalendar(ctlCanlendar, ctlTxt)
                 End If
-                Me.PopulateControlFromBOProperty(ctlTxt, dvRow(ClaimloadReconWrk.COL_NAME_PICKUP_DATE))
+                PopulateControlFromBOProperty(ctlTxt, dvRow(ClaimloadReconWrk.COL_NAME_PICKUP_DATE))
 
                 ctlTxt = CType(e.Row.Cells(COL_Reason_Closed).FindControl(Ctl_Reason_Closed), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
@@ -685,10 +685,10 @@ Partial Public Class ClaimLoadReconWrkForm
                 ctlTxt = CType(e.Row.Cells(COL_Doc_Issue_Date).FindControl(Ctl_Document_Issue_Date), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
                 ctlCanlendar = CType(e.Row.Cells(COL_Doc_Issue_Date).FindControl(Ctl_Document_Issue_Date_Calendar), ImageButton)
-                If (Not ctlCanlendar Is Nothing) Then
-                    Me.AddCalendar(ctlCanlendar, ctlTxt)
+                If (ctlCanlendar IsNot Nothing) Then
+                    AddCalendar(ctlCanlendar, ctlTxt)
                 End If
-                Me.PopulateControlFromBOProperty(ctlTxt, dvRow(ClaimloadReconWrk.COL_NAME_DOCUMENT_ISSUE_DATE))
+                PopulateControlFromBOProperty(ctlTxt, dvRow(ClaimloadReconWrk.COL_NAME_DOCUMENT_ISSUE_DATE))
 
                 ctlTxt = CType(e.Row.Cells(COL_ID_Type).FindControl(Ctl_ID_Type), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
@@ -697,8 +697,8 @@ Partial Public Class ClaimLoadReconWrkForm
                 ctlTxt = CType(e.Row.Cells(COL_Device_Reception_Date).FindControl(Ctl_Device_Reception_Date), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
                 ctlCanlendar = CType(e.Row.Cells(COL_Device_Reception_Date).FindControl(Ctl_Device_Reception_Date_Calendar), ImageButton)
-                If (Not ctlCanlendar Is Nothing) Then
-                    Me.AddCalendar(ctlCanlendar, ctlTxt)
+                If (ctlCanlendar IsNot Nothing) Then
+                    AddCalendar(ctlCanlendar, ctlTxt)
                 End If
                 ctlTxt.Text = dvRow(ClaimloadReconWrk.COL_NAME_DEVICE_RECEPTION_DATE).ToString
 
@@ -769,8 +769,8 @@ Partial Public Class ClaimLoadReconWrkForm
                 ctlTxt = CType(e.Row.Cells(COL_Delivery_Date).FindControl(Ctl_Delivery_Date), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
                 ctlCanlendar = CType(e.Row.Cells(COL_Delivery_Date).FindControl(Ctl_Delivery_Date_Calendar), ImageButton)
-                If (Not ctlCanlendar Is Nothing) Then
-                    Me.AddCalendar(ctlCanlendar, ctlTxt)
+                If (ctlCanlendar IsNot Nothing) Then
+                    AddCalendar(ctlCanlendar, ctlTxt)
                 End If
                 ctlTxt.Text = dvRow(ClaimloadReconWrk.COL_NAME_DELIVERY_DATE).ToString
 
@@ -814,8 +814,8 @@ Partial Public Class ClaimLoadReconWrkForm
                 ctlTxt = CType(e.Row.Cells(COL_Extended_Status_Date).FindControl(Ctl_Extended_Status_Date), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
                 ctlCanlendar = CType(e.Row.Cells(COL_Delivery_Date).FindControl(Ctl_Extended_Status_date_Calendar), ImageButton)
-                If (Not ctlCanlendar Is Nothing) Then
-                    Me.AddCalendar(ctlCanlendar, ctlTxt)
+                If (ctlCanlendar IsNot Nothing) Then
+                    AddCalendar(ctlCanlendar, ctlTxt)
                 End If
                 ctlTxt.Text = dvRow(ClaimloadReconWrk.COL_NAME_EXTENDED_STATUS_DATE).ToString
 
@@ -830,62 +830,62 @@ Partial Public Class ClaimLoadReconWrkForm
 
             End If
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             If IsDataGPageDirty() Then
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
-                DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
+                DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
             Else
-                Me.State.PageIndex = NewCurrentPageIndex(Grid, State.RecordCount, State.PageSize)
-                Me.PopulateGrid()
+                State.PageIndex = NewCurrentPageIndex(Grid, State.RecordCount, State.PageSize)
+                PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 
 
-    Protected Sub BtnViewParts_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim claimReconWorkID As String = CType(Me.Grid.Rows(Me.Grid.SelectedIndex).FindControl("lblReconWrkID"), Label).Text
+    Protected Sub BtnViewParts_Click(sender As Object, e As System.EventArgs)
+        Dim claimReconWorkID As String = CType(Grid.Rows(Grid.SelectedIndex).FindControl("lblReconWrkID"), Label).Text
         Dim claimReconWorkIDGUID As Guid = GetGuidFromString(claimReconWorkID)
-        Me.State.ClaimReconWrkId = claimReconWorkIDGUID
+        State.ClaimReconWrkId = claimReconWorkIDGUID
         PopulatePartsGrid(claimReconWorkIDGUID)
 
         'update the contents in the detail panel
-        Me.updPnlParts.Update()
+        updPnlParts.Update()
         'show the modal popup
-        Me.mdlPopup.Show()
+        mdlPopup.Show()
     End Sub
 #End Region
 
 #Region "Populate"
-    Private Sub PopulatePartsGrid(ByVal guid As Guid)
+    Private Sub PopulatePartsGrid(guid As Guid)
 
         Dim dv As DataView
 
         Try
-            If Me.State.PartsHashTable Is Nothing Then
+            If State.PartsHashTable Is Nothing Then
                 dv = GetPartsDV()
             Else
-                If Me.State.PartsHashTable.Contains(guid) Then
-                    dv = CType(Me.State.PartsHashTable.Item(guid), DataSet).Tables(ClaimReconWrkPartsDAL.TABLE_NAME).DefaultView
+                If State.PartsHashTable.Contains(guid) Then
+                    dv = CType(State.PartsHashTable.Item(guid), DataSet).Tables(ClaimReconWrkPartsDAL.TABLE_NAME).DefaultView
                 Else
                     dv = GetPartsDV()
                 End If
             End If
 
-            Me.gvPop.DataSource = dv
-            Me.gvPop.DataBind()
+            gvPop.DataSource = dv
+            gvPop.DataBind()
             'ControlMgr.DisableAllGridControlsIfNotEditAuth(Me, gvPop)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController2)
+            HandleErrors(ex, ErrController2)
         End Try
 
     End Sub
@@ -903,61 +903,61 @@ Partial Public Class ClaimLoadReconWrkForm
         End With
     End Function
 
-    Private Sub PopulateBOFromPartsForm(ByVal claimReconWrkPartsInfo As ClaimReconWrkParts)
+    Private Sub PopulateBOFromPartsForm(claimReconWrkPartsInfo As ClaimReconWrkParts)
         PopulatePartsBOItem(claimReconWrkPartsInfo, PART_NUMBER, PART_NUMBER_COL)
         PopulatePartsBOItem(claimReconWrkPartsInfo, PART_SKU, PART_SKU_COL)
         PopulatePartsBOItem(claimReconWrkPartsInfo, PART_DESCRIPTION, PART_DESCRIPTION_COL)
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
-    Private Sub PopulatePartsBOItem(ByVal claimReconWrkPartsInfo As ClaimReconWrkParts, ByVal oPropertyName As String, ByVal oCellPosition As Integer)
-        Me.PopulateBundlesBOProperty(claimReconWrkPartsInfo, oPropertyName, _
-                                        CType(Me.GetSelectedGridControl(gvPop, oCellPosition), TextBox))
+    Private Sub PopulatePartsBOItem(claimReconWrkPartsInfo As ClaimReconWrkParts, oPropertyName As String, oCellPosition As Integer)
+        PopulateBundlesBOProperty(claimReconWrkPartsInfo, oPropertyName, _
+                                        CType(GetSelectedGridControl(gvPop, oCellPosition), TextBox))
     End Sub
 #End Region
 
 #Region "button event handlers"
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
             If IsDataGPageDirty() Then
-                DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
                 Dim retType As New ClaimLoadForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimloadfileName)
-                Me.ReturnToCallingPage(retType)
+                ReturnToCallingPage(retType)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+    Private Sub btnUndo_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
         Try
             PopulateGrid()
-            Me.HiddenIsPageDirty.Value = String.Empty
+            HiddenIsPageDirty.Value = String.Empty
         Catch ex As Exception
-            Me.HandleErrors(ex, ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub SaveButton_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+    Private Sub SaveButton_WRITE_Click(sender As Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
         Try
             SavePage()
             Select Case SaveParts()
                 Case 1, 2
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End Select
-            Me.HiddenIsPageDirty.Value = String.Empty
+            HiddenIsPageDirty.Value = String.Empty
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
 
-    Protected Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
+    Protected Sub btnApply_Click(sender As System.Object, e As System.EventArgs) Handles btnApply.Click
         Dim hashTable As New Hashtable
         ApplyParts()
     End Sub
@@ -982,21 +982,21 @@ Partial Public Class ClaimLoadReconWrkForm
                 End With
             Next
 
-            If Me.State.PartsHashTable Is Nothing Then
-                Me.State.PartsHashTable = New Hashtable
+            If State.PartsHashTable Is Nothing Then
+                State.PartsHashTable = New Hashtable
             End If
-            If Me.State.PartsHashTable.Contains(Me.State.ClaimReconWrkId) Then
-                Me.State.PartsHashTable.Item(Me.State.ClaimReconWrkId) = ds
+            If State.PartsHashTable.Contains(State.ClaimReconWrkId) Then
+                State.PartsHashTable.Item(State.ClaimReconWrkId) = ds
             Else
-                Me.State.PartsHashTable.Add(Me.State.ClaimReconWrkId, ds)
+                State.PartsHashTable.Add(State.ClaimReconWrkId, ds)
             End If
 
-            Me.updPnlParts.Update()
+            updPnlParts.Update()
             'hide the modal popup
-            Me.mdlPopup.Hide()
+            mdlPopup.Hide()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController2)
-            Me.mdlPopup.Show()
+            HandleErrors(ex, ErrController2)
+            mdlPopup.Show()
 
         End Try
     End Sub
@@ -1008,9 +1008,9 @@ Partial Public Class ClaimLoadReconWrkForm
         For i As Integer = 0 To Grid.Rows.Count - 1
             Dim claimReconWrkIdLabel As String = CType(Grid.Rows(i).FindControl("lblReconWrkID"), Label).Text.Trim
             Dim claimReconWrkIdLabelID As Guid = GetGuidFromString(claimReconWrkIdLabel)
-            If Not Me.State.PartsHashTable Is Nothing Then
-                If Me.State.PartsHashTable.ContainsKey(claimReconWrkIdLabelID) Then
-                    ds = CType(Me.State.PartsHashTable.Item(claimReconWrkIdLabelID), DataSet)
+            If State.PartsHashTable IsNot Nothing Then
+                If State.PartsHashTable.ContainsKey(claimReconWrkIdLabelID) Then
+                    ds = CType(State.PartsHashTable.Item(claimReconWrkIdLabelID), DataSet)
                     If ds.HasChanges Then
                         For Each row As DataRow In ds.Tables(ClaimReconWrkPartsDAL.TABLE_NAME).Rows
                             If row.RowState = DataRowState.Unchanged Then
@@ -1022,7 +1022,7 @@ Partial Public Class ClaimLoadReconWrkForm
                         Dim ret As Integer = claimReconWrkPartsInfo.SaveParts(ds)
                         If ret = 0 Then
                             ds = GetPartsDataSet()
-                            Me.State.PartsHashTable.Item(claimReconWrkIdLabelID) = ds
+                            State.PartsHashTable.Item(claimReconWrkIdLabelID) = ds
                             Return 2
                         Else
                             'Me.ErrController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_WRITE_ERROR)

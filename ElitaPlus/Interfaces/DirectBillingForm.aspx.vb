@@ -15,7 +15,7 @@ Partial Public Class DirectBillingForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -105,7 +105,7 @@ Partial Public Class DirectBillingForm
             Get
                 Return mnPageSize
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 mnPageSize = Value
             End Set
         End Property
@@ -123,207 +123,207 @@ Partial Public Class DirectBillingForm
 #End Region
 
 #Region "Page_Return"
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
-        Me.MenuEnabled = True
-        Me.IsReturningFromChild = True
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
+        MenuEnabled = True
+        IsReturningFromChild = True
     End Sub
 #End Region
 
 #Region "Page_Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.ErrController.Clear_Hide()
+        ErrController.Clear_Hide()
 
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 PopulateBillingByDealerFlag()
-                Me.AddCalendar(Me.btnBeginDate, Me.txtBeginDate)
-                Me.AddCalendar(Me.btnEndDate, Me.txtEndDate)
+                AddCalendar(btnBeginDate, txtBeginDate)
+                AddCalendar(btnEndDate, txtEndDate)
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                If Me.IsReturningFromChild And Me.State.IsGridVisible Then
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                    If Me.State.BillingFileByDealerForAllUserCompanies Or Me.State.SelectedComanyBillingFileByDealer Then
-                        moBillingGrid.PageSize = Me.State.PageSize
+                If IsReturningFromChild And State.IsGridVisible Then
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
+                    If State.BillingFileByDealerForAllUserCompanies Or State.SelectedComanyBillingFileByDealer Then
+                        moBillingGrid.PageSize = State.PageSize
                     Else
-                        moVSCBillingGrid.PageSize = Me.State.PageSize
+                        moVSCBillingGrid.PageSize = State.PageSize
                     End If
-                    If Not Me.State.SearchedComanyID.Equals(Guid.Empty) Then
-                        TheCompanyControl.SelectedGuid = Me.State.SearchedComanyID
+                    If Not State.SearchedComanyID.Equals(Guid.Empty) Then
+                        TheCompanyControl.SelectedGuid = State.SearchedComanyID
                     End If
-                    If Not Me.State.SearchedDealerID.Equals(Guid.Empty) Then
-                        TheDealerControl.SelectedGuid = Me.State.SearchedDealerID
+                    If Not State.SearchedDealerID.Equals(Guid.Empty) Then
+                        TheDealerControl.SelectedGuid = State.SearchedDealerID
                         TheDealerControl.ChangeEnabledControlProperty(True)
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
             Else
-                If Me.State.errLabel <> "" Then
-                    Me.ClearLabelErrSign(CType(Me.FindControl(Me.State.errLabel), Label))
-                    Me.State.errLabel = ""
+                If State.errLabel <> "" Then
+                    ClearLabelErrSign(CType(FindControl(State.errLabel), Label))
+                    State.errLabel = ""
                 End If
             End If
 
-            If Me.IsReturningFromChild = True Then
-                Me.IsReturningFromChild = False
+            If IsReturningFromChild = True Then
+                IsReturningFromChild = False
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
-        Me.ShowMissingTranslations(Me.ErrController)
+        ShowMissingTranslations(ErrController)
     End Sub
 
 #End Region
 
 #Region "Button Handlers"
-    Private Sub mobtnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles mobtnSearch.Click
+    Private Sub mobtnSearch_Click(sender As Object, e As System.EventArgs) Handles mobtnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.IsGridVisible = True
-            Me.State.BillingHeaderID = Guid.Empty
-            Me.State.searchDV = Nothing
-            If Me.State.BillingFileByDealerForAllUserCompanies Or Me.State.MixedBillingFileByDealerForUserCompanies Then
-                Me.State.SearchedComanyID = TheCompanyControl.SelectedGuid
-                If Me.State.alCompanies.Count > 1 AndAlso Me.State.SearchedComanyID.Equals(Guid.Empty) Then
+            State.PageIndex = 0
+            State.IsGridVisible = True
+            State.BillingHeaderID = Guid.Empty
+            State.searchDV = Nothing
+            If State.BillingFileByDealerForAllUserCompanies Or State.MixedBillingFileByDealerForUserCompanies Then
+                State.SearchedComanyID = TheCompanyControl.SelectedGuid
+                If State.alCompanies.Count > 1 AndAlso State.SearchedComanyID.Equals(Guid.Empty) Then
                     ElitaPlusPage.SetLabelError(TheCompanyControl.CaptionLabel)
                     Throw New GUIException(Message.MSG_INVALID_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_REQUIRED)
                 End If
             End If
 
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Private Sub mobtnClear_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles mobtnClear.Click
+    Private Sub mobtnClear_Click(sender As Object, e As System.EventArgs) Handles mobtnClear.Click
         TheDealerControl.SelectedIndex = 0
-        Me.txtBeginDate.Text = ""
-        Me.txtEndDate.Text = ""
+        txtBeginDate.Text = ""
+        txtEndDate.Text = ""
     End Sub
 #End Region
 
 #Region "Grid Handler"
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         Dim lblControl As Label
         Try
             Dim blnBillingFileByDealer As Boolean
             If e.CommandName = "SelectAction" Then
-                If Me.State.BillingFileByDealerForAllUserCompanies Or Me.State.SelectedComanyBillingFileByDealer Then
-                    lblControl = CType(Me.moBillingGrid.Items(e.Item.ItemIndex).Cells(Me.GRID_COL_BILLING_IDX).FindControl(Me.GRID_CONTROL_NAME_BILLING_IDX), Label)
+                If State.BillingFileByDealerForAllUserCompanies Or State.SelectedComanyBillingFileByDealer Then
+                    lblControl = CType(moBillingGrid.Items(e.Item.ItemIndex).Cells(GRID_COL_BILLING_IDX).FindControl(GRID_CONTROL_NAME_BILLING_IDX), Label)
                     blnBillingFileByDealer = True
                 Else
-                    lblControl = CType(Me.moVSCBillingGrid.Items(e.Item.ItemIndex).Cells(Me.GRID_COL_BILLING_IDX).FindControl(Me.GRID_CONTROL_NAME_BILLING_IDX), Label)
+                    lblControl = CType(moVSCBillingGrid.Items(e.Item.ItemIndex).Cells(GRID_COL_BILLING_IDX).FindControl(GRID_CONTROL_NAME_BILLING_IDX), Label)
                     blnBillingFileByDealer = False
                 End If
 
-                Me.State.BillingHeaderID = New Guid(lblControl.Text)
-                Me.callPage(DirectBillingDetailForm.URL, New DirectBillingDetailForm.Parameters(Me.State.BillingHeaderID, blnBillingFileByDealer, Me.State.SearchedDealerID))
+                State.BillingHeaderID = New Guid(lblControl.Text)
+                callPage(DirectBillingDetailForm.URL, New DirectBillingDetailForm.Parameters(State.BillingHeaderID, blnBillingFileByDealer, State.SearchedDealerID))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub moBillingGrid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moBillingGrid.SortCommand
+    Private Sub moBillingGrid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moBillingGrid.SortCommand
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
-    Private Sub moVSCBillingGrid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moVSCBillingGrid.SortCommand
+    Private Sub moVSCBillingGrid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moVSCBillingGrid.SortCommand
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
-    Private Sub moBillingGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moBillingGrid.PageIndexChanged
+    Private Sub moBillingGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moBillingGrid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.BillingHeaderID = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.BillingHeaderID = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
-    Private Sub moVSCBillingGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moVSCBillingGrid.PageIndexChanged
+    Private Sub moVSCBillingGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moVSCBillingGrid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.BillingHeaderID = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.BillingHeaderID = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            If Me.State.BillingFileByDealerForAllUserCompanies Or Me.State.SelectedComanyBillingFileByDealer Then
-                Me.State.PageIndex = NewCurrentPageIndex(moBillingGrid, State.searchDV.Count, State.PageSize)
-                Me.moBillingGrid.CurrentPageIndex = Me.State.PageIndex
+            If State.BillingFileByDealerForAllUserCompanies Or State.SelectedComanyBillingFileByDealer Then
+                State.PageIndex = NewCurrentPageIndex(moBillingGrid, State.searchDV.Count, State.PageSize)
+                moBillingGrid.CurrentPageIndex = State.PageIndex
             Else
-                Me.State.PageIndex = NewCurrentPageIndex(moVSCBillingGrid, State.searchDV.Count, State.PageSize)
-                Me.moVSCBillingGrid.CurrentPageIndex = Me.State.PageIndex
+                State.PageIndex = NewCurrentPageIndex(moVSCBillingGrid, State.searchDV.Count, State.PageSize)
+                moVSCBillingGrid.CurrentPageIndex = State.PageIndex
             End If
 
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moVSCBillingGrid.ItemDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moVSCBillingGrid.ItemDataBound
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
         Try
-            If Not dvRow Is Nothing And Me.State.searchDV.Count > 0 Then
+            If dvRow IsNot Nothing And State.searchDV.Count > 0 Then
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    If dvRow(BillingHeader.BillingSearchDV.COL_SOURCE).ToString = Me.BILLING_HEADER_REJECT_SOURCE Then
-                        CType(e.Item.Cells(Me.GRID_COL_EDIT_IDX).FindControl(Me.GRID_CTRL_EDIT_BUTTON_IMAGE_ID), ImageButton).Visible = False
+                    If dvRow(BillingHeader.BillingSearchDV.COL_SOURCE).ToString = BILLING_HEADER_REJECT_SOURCE Then
+                        CType(e.Item.Cells(GRID_COL_EDIT_IDX).FindControl(GRID_CTRL_EDIT_BUTTON_IMAGE_ID), ImageButton).Visible = False
                     End If
 
                 End If
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
 #End Region
 
 #Region "Populate"
-    Private Sub PopulateDealer(ByVal objCompanyIds As ArrayList)
+    Private Sub PopulateDealer(objCompanyIds As ArrayList)
         Try
             Dim oDealerview As DataView = LookupListNew.GetDealerLookupList(objCompanyIds)
             TheDealerControl.SetControl(False,
@@ -349,14 +349,14 @@ Partial Public Class DirectBillingForm
 
         TheCompanyControl.NothingSelected = True
 
-        If Me.State.companyDV Is Nothing Then
-            Me.State.companyDV = LookupListNew.GetUserCompaniesLookupList()
+        If State.companyDV Is Nothing Then
+            State.companyDV = LookupListNew.GetUserCompaniesLookupList()
         End If
 
         TheCompanyControl.SetControl(True,
                             TheCompanyControl.MODES.NEW_MODE,
                             True,
-                            Me.State.companyDV,
+                            State.companyDV,
                             " " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY),
                             True, True,
                             ,
@@ -385,9 +385,9 @@ Partial Public Class DirectBillingForm
             Dim index As Integer
             Dim indexByDelaer As Integer = 0
             Dim indexByCompany As Integer = 0
-            Me.State.alCompanies = ElitaPlusIdentity.Current.ActiveUser.Companies
+            State.alCompanies = ElitaPlusIdentity.Current.ActiveUser.Companies
             For index = 0 To ElitaPlusIdentity.Current.ActiveUser.Companies.Count - 1
-                Dim objCompany As Company = New Company(CType(Me.State.alCompanies(index), Guid))
+                Dim objCompany As Company = New Company(CType(State.alCompanies(index), Guid))
                 If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objCompany.BillingByDealerId) = Codes.YESNO_N Then
                     'Me.State.BillingFileByDealer = False
                     indexByCompany = indexByCompany + 1
@@ -396,33 +396,33 @@ Partial Public Class DirectBillingForm
                 End If
             Next
 
-            If indexByCompany = Me.State.alCompanies.Count Then
-                Me.State.NoBillingFileByDealerForAllUserCompanies = True
-            ElseIf indexByDelaer = Me.State.alCompanies.Count Then
-                Me.State.BillingFileByDealerForAllUserCompanies = True
+            If indexByCompany = State.alCompanies.Count Then
+                State.NoBillingFileByDealerForAllUserCompanies = True
+            ElseIf indexByDelaer = State.alCompanies.Count Then
+                State.BillingFileByDealerForAllUserCompanies = True
             Else
-                Me.State.MixedBillingFileByDealerForUserCompanies = True
+                State.MixedBillingFileByDealerForUserCompanies = True
             End If
 
 
-            If Me.State.companyDV Is Nothing Then
-                Me.State.companyDV = LookupListNew.GetUserCompaniesLookupList()
+            If State.companyDV Is Nothing Then
+                State.companyDV = LookupListNew.GetUserCompaniesLookupList()
             End If
 
-            If Me.State.NoBillingFileByDealerForAllUserCompanies Then 'Billing Header file by company
-                Me.moCompanyInformation.Attributes("style") = "display: none"
+            If State.NoBillingFileByDealerForAllUserCompanies Then 'Billing Header file by company
+                moCompanyInformation.Attributes("style") = "display: none"
                 TheDealerControl.ChangeEnabledControlProperty(False)
-                PopulateDealer(Me.State.alCompanies)
+                PopulateDealer(State.alCompanies)
             Else 'Billing Header file by dealer or mix
-                If Me.State.alCompanies.Count > 1 Then
-                    TheCompanyControl.SetControl(True, TheCompanyControl.MODES.NEW_MODE, True, Me.State.companyDV, "* " & TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True, False)
+                If State.alCompanies.Count > 1 Then
+                    TheCompanyControl.SetControl(True, TheCompanyControl.MODES.NEW_MODE, True, State.companyDV, "* " & TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True, False)
                     TheDealerControl.ChangeEnabledControlProperty(False)
-                    PopulateDealer(Me.State.alCompanies)
+                    PopulateDealer(State.alCompanies)
                     TheCompanyControl.Visible = True
                     TheCompanyControl.ChangeEnabledControlProperty(True)
-                ElseIf Me.State.alCompanies.Count = 1 Then
-                    Me.moCompanyInformation.Attributes("style") = "display: none"
-                    PopulateDealer(Me.State.alCompanies)
+                ElseIf State.alCompanies.Count = 1 Then
+                    moCompanyInformation.Attributes("style") = "display: none"
+                    PopulateDealer(State.alCompanies)
                 End If
 
             End If
@@ -437,63 +437,63 @@ Partial Public Class DirectBillingForm
 
     Private Sub PopulateGrid(Optional ByVal refreshData As Boolean = False)
 
-        If Me.State.searchDV Is Nothing Then
+        If State.searchDV Is Nothing Then
             GetBillingData()
         End If
 
 
-        If Me.State.BillingFileByDealerForAllUserCompanies Or Me.State.SelectedComanyBillingFileByDealer Then  'Company dropdown is hidden, no company selection
+        If State.BillingFileByDealerForAllUserCompanies Or State.SelectedComanyBillingFileByDealer Then  'Company dropdown is hidden, no company selection
             ' hide the VSC grid
-            Me.moVSCBillingInformation.Attributes("style") = "display: none"
+            moVSCBillingInformation.Attributes("style") = "display: none"
             ' Show the ESC grid
-            Me.moESCBillingInformation.Attributes("style") = ""
-            Me.moBillingGrid.AutoGenerateColumns = False
-            Me.moBillingGrid.AllowSorting = True
-            Me.State.searchDV.Sort = Me.State.SortExpression
-            Me.moBillingGrid.Columns(Me.GRID_COL_DEALER_CODE_IDX).SortExpression = COL_DEALER_CODE
-            Me.moBillingGrid.Columns(Me.GRID_COL_DATE_FILE_SENT_IDX).SortExpression = COL_DATE_FILE_SENT
-            Me.moBillingGrid.Columns(Me.GRID_COL_FILENAME_IDX).SortExpression = COL_FILE_NAME
-            Me.moBillingGrid.Columns(Me.GRID_COL_TOTAL_BILLED_AMT_IDX).SortExpression = COL_TOTAL_BILLED_AMT
+            moESCBillingInformation.Attributes("style") = ""
+            moBillingGrid.AutoGenerateColumns = False
+            moBillingGrid.AllowSorting = True
+            State.searchDV.Sort = State.SortExpression
+            moBillingGrid.Columns(GRID_COL_DEALER_CODE_IDX).SortExpression = COL_DEALER_CODE
+            moBillingGrid.Columns(GRID_COL_DATE_FILE_SENT_IDX).SortExpression = COL_DATE_FILE_SENT
+            moBillingGrid.Columns(GRID_COL_FILENAME_IDX).SortExpression = COL_FILE_NAME
+            moBillingGrid.Columns(GRID_COL_TOTAL_BILLED_AMT_IDX).SortExpression = COL_TOTAL_BILLED_AMT
 
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.BillingHeaderID, Me.moBillingGrid, Me.State.PageIndex, (moBillingGrid.EditItemIndex > GRID_NO_SELECTEDITEM_INX))
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.BillingHeaderID, moBillingGrid, State.PageIndex, (moBillingGrid.EditItemIndex > GRID_NO_SELECTEDITEM_INX))
 
-            Me.State.PageIndex = Me.moBillingGrid.CurrentPageIndex
-            Me.moBillingGrid.DataSource = Me.State.searchDV
-            HighLightSortColumn(moBillingGrid, Me.State.SortExpression)
-            Me.moBillingGrid.DataBind()
-            ControlMgr.SetVisibleControl(Me, moBillingGrid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.moBillingGrid.Visible)
+            State.PageIndex = moBillingGrid.CurrentPageIndex
+            moBillingGrid.DataSource = State.searchDV
+            HighLightSortColumn(moBillingGrid, State.SortExpression)
+            moBillingGrid.DataBind()
+            ControlMgr.SetVisibleControl(Me, moBillingGrid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, moBillingGrid.Visible)
 
-            If Me.moBillingGrid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If moBillingGrid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
 
         Else
             ' hide the ESC grid
-            Me.moESCBillingInformation.Attributes("style") = "display: none"
+            moESCBillingInformation.Attributes("style") = "display: none"
             ' Show the VSC grid
-            Me.moVSCBillingInformation.Attributes("style") = ""
+            moVSCBillingInformation.Attributes("style") = ""
 
-            Me.moVSCBillingGrid.AutoGenerateColumns = False
-            Me.moVSCBillingGrid.AllowSorting = True
-            Me.State.searchDV.Sort = Me.State.SortExpression_ByCompany
+            moVSCBillingGrid.AutoGenerateColumns = False
+            moVSCBillingGrid.AllowSorting = True
+            State.searchDV.Sort = State.SortExpression_ByCompany
             'Me.moVSCBillingGrid.Columns(Me.GRID_COL_DEALER_CODE_IDX).SortExpression = COL_DEALER_CODE
-            Me.moVSCBillingGrid.Columns(Me.GRID_COL_DATE_FILE_SENT_IDX).SortExpression = COL_DATE_FILE_SENT
-            Me.moVSCBillingGrid.Columns(Me.GRID_COL_FILENAME_IDX).SortExpression = COL_FILE_NAME
-            Me.moVSCBillingGrid.Columns(Me.GRID_COL_REFERENCE_NUMBER_IDX).SortExpression = COL_REFERENCE_NUMBER
-            Me.moVSCBillingGrid.Columns(Me.GRID_VSC_COL_TOTAL_BILLED_AMT_IDX).SortExpression = COL_TOTAL_BILLED_AMT
+            moVSCBillingGrid.Columns(GRID_COL_DATE_FILE_SENT_IDX).SortExpression = COL_DATE_FILE_SENT
+            moVSCBillingGrid.Columns(GRID_COL_FILENAME_IDX).SortExpression = COL_FILE_NAME
+            moVSCBillingGrid.Columns(GRID_COL_REFERENCE_NUMBER_IDX).SortExpression = COL_REFERENCE_NUMBER
+            moVSCBillingGrid.Columns(GRID_VSC_COL_TOTAL_BILLED_AMT_IDX).SortExpression = COL_TOTAL_BILLED_AMT
 
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.BillingHeaderID, Me.moVSCBillingGrid, Me.State.PageIndex, (moVSCBillingGrid.EditItemIndex > GRID_NO_SELECTEDITEM_INX))
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.BillingHeaderID, moVSCBillingGrid, State.PageIndex, (moVSCBillingGrid.EditItemIndex > GRID_NO_SELECTEDITEM_INX))
 
-            Me.State.PageIndex = Me.moVSCBillingGrid.CurrentPageIndex
-            Me.moVSCBillingGrid.DataSource = Me.State.searchDV
-            HighLightSortColumn(moVSCBillingGrid, Me.State.SortExpression)
-            Me.moVSCBillingGrid.DataBind()
-            ControlMgr.SetVisibleControl(Me, moVSCBillingGrid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.moVSCBillingGrid.Visible)
+            State.PageIndex = moVSCBillingGrid.CurrentPageIndex
+            moVSCBillingGrid.DataSource = State.searchDV
+            HighLightSortColumn(moVSCBillingGrid, State.SortExpression)
+            moVSCBillingGrid.DataBind()
+            ControlMgr.SetVisibleControl(Me, moVSCBillingGrid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, moVSCBillingGrid.Visible)
 
-            If Me.moVSCBillingGrid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If moVSCBillingGrid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
 
 
@@ -501,30 +501,30 @@ Partial Public Class DirectBillingForm
 
 
     End Sub
-    Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+    Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
     Handles companyMultipleDropControl.SelectedDropChanged
         Try
-            Me.State.SearchedComanyID = TheCompanyControl.SelectedGuid
+            State.SearchedComanyID = TheCompanyControl.SelectedGuid
             Dim index As Integer
             Dim alCompanies As New ArrayList
-            alCompanies.Add(Me.State.SearchedComanyID)
+            alCompanies.Add(State.SearchedComanyID)
             PopulateDealer(alCompanies)
 
-            Dim objCompany As Company = New Company(Me.State.SearchedComanyID)
+            Dim objCompany As Company = New Company(State.SearchedComanyID)
             If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objCompany.BillingByDealerId) = Codes.YESNO_N Then
-                Me.State.SelectedComanyBillingFileByDealer = False
+                State.SelectedComanyBillingFileByDealer = False
                 TheDealerControl.ChangeEnabledControlProperty(False)
             Else
-                Me.State.SelectedComanyBillingFileByDealer = True
+                State.SelectedComanyBillingFileByDealer = True
                 TheDealerControl.ChangeEnabledControlProperty(True)
             End If
 
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
-    Public Function formatDateTime(ByVal objDate As Object) As String
+    Public Function formatDateTime(objDate As Object) As String
         Dim strRet As String = objDate.ToString
         Try
             Dim dtVal As DateTime = CType(objDate, DateTime)
@@ -541,71 +541,71 @@ Partial Public Class DirectBillingForm
         Dim strEndDtTemp As String = String.Empty
 
         'clear stored search criteria
-        Me.State.SearchedComanyID = Guid.Empty
-        Me.State.SearchedDealerID = Guid.Empty
-        Me.State.SearchedBeginDate = Date.MinValue
-        Me.State.SearchedEndDate = Date.MinValue
+        State.SearchedComanyID = Guid.Empty
+        State.SearchedDealerID = Guid.Empty
+        State.SearchedBeginDate = Date.MinValue
+        State.SearchedEndDate = Date.MinValue
 
-        If Me.State.BillingFileByDealerForAllUserCompanies Or Me.State.MixedBillingFileByDealerForUserCompanies Then
-            Me.State.SearchedComanyID = TheCompanyControl.SelectedGuid
+        If State.BillingFileByDealerForAllUserCompanies Or State.MixedBillingFileByDealerForUserCompanies Then
+            State.SearchedComanyID = TheCompanyControl.SelectedGuid
         End If
 
         DealerID = TheDealerControl.SelectedGuid
 
-        strBeginDtTemp = Me.txtBeginDate.Text.Trim()
+        strBeginDtTemp = txtBeginDate.Text.Trim()
         If strBeginDtTemp <> "" Then
             If Not Date.TryParse(strBeginDtTemp, dtStart) Then
-                Me.SetLabelError(Me.moBeginDateLabel)
-                Me.State.errLabel = Me.moBeginDateLabel.UniqueID
+                SetLabelError(moBeginDateLabel)
+                State.errLabel = moBeginDateLabel.UniqueID
                 Throw New GUIException(Message.MSG_INVALID_DATE, Message.MSG_INVALID_DATE)
             End If
         Else
             dtStart = Date.MinValue
         End If
 
-        strEndDtTemp = Me.txtEndDate.Text.Trim()
+        strEndDtTemp = txtEndDate.Text.Trim()
         If strEndDtTemp <> "" Then
             If Not Date.TryParse(strEndDtTemp, dtEnd) Then
-                Me.SetLabelError(Me.moEndDateLabel)
-                Me.State.errLabel = Me.moEndDateLabel.UniqueID
+                SetLabelError(moEndDateLabel)
+                State.errLabel = moEndDateLabel.UniqueID
                 Throw New GUIException(Message.MSG_INVALID_DATE, Message.MSG_INVALID_DATE)
             End If
         Else
             dtEnd = Date.MinValue
         End If
         If strBeginDtTemp = "" And strEndDtTemp <> "" Then
-            Me.SetLabelError(Me.moBeginDateLabel)
-            Me.State.errLabel = Me.moBeginDateLabel.UniqueID
+            SetLabelError(moBeginDateLabel)
+            State.errLabel = moBeginDateLabel.UniqueID
             Throw New GUIException(Message.MSG_INVALID_DATE, Message.MSG_INVALID_DATE)
         End If
 
         If strBeginDtTemp <> "" And strEndDtTemp = "" Then
-            Me.SetLabelError(Me.moEndDateLabel)
-            Me.State.errLabel = Me.moEndDateLabel.UniqueID
+            SetLabelError(moEndDateLabel)
+            State.errLabel = moEndDateLabel.UniqueID
             Throw New GUIException(Message.MSG_INVALID_DATE, Message.MSG_INVALID_DATE)
         End If
 
         If dtEnd < dtStart Then
-            Me.SetLabelError(moEndDateLabel)
-            Me.SetLabelError(moBeginDateLabel)
+            SetLabelError(moEndDateLabel)
+            SetLabelError(moBeginDateLabel)
             Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_END_DATE_ERR)
         End If
 
-        Me.State.SearchedDealerID = DealerID
-        Me.State.SearchedBeginDate = dtStart
-        Me.State.SearchedEndDate = dtEnd
+        State.SearchedDealerID = DealerID
+        State.SearchedBeginDate = dtStart
+        State.SearchedEndDate = dtEnd
 
-        If Me.State.BillingFileByDealerForAllUserCompanies Then
-            Me.State.searchDV = BillingHeader.getList(Me.State.alCompanies, DealerID, dtStart, dtEnd)
-        ElseIf Me.State.NoBillingFileByDealerForAllUserCompanies Then
-            Me.State.searchDV = BillingHeader.getListByCompany(Me.State.alCompanies, dtStart, dtEnd)
+        If State.BillingFileByDealerForAllUserCompanies Then
+            State.searchDV = BillingHeader.getList(State.alCompanies, DealerID, dtStart, dtEnd)
+        ElseIf State.NoBillingFileByDealerForAllUserCompanies Then
+            State.searchDV = BillingHeader.getListByCompany(State.alCompanies, dtStart, dtEnd)
         Else ' Mix
             Dim alCompanies As New ArrayList
-            alCompanies.Add(Me.State.SearchedComanyID)
-            If Me.State.SelectedComanyBillingFileByDealer Then
-                Me.State.searchDV = BillingHeader.getList(alCompanies, DealerID, dtStart, dtEnd)
+            alCompanies.Add(State.SearchedComanyID)
+            If State.SelectedComanyBillingFileByDealer Then
+                State.searchDV = BillingHeader.getList(alCompanies, DealerID, dtStart, dtEnd)
             Else
-                Me.State.searchDV = BillingHeader.getListByCompany(alCompanies, dtStart, dtEnd)
+                State.searchDV = BillingHeader.getListByCompany(alCompanies, dtStart, dtEnd)
             End If
         End If
 

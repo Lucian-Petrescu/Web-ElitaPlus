@@ -68,20 +68,20 @@ Namespace Certificates
 #End Region
 
 #Region "Page event handlers"
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Dim objPrincipal As ElitaPlusIdentity
-            Me.MasterPage.MessageController.Clear()
-            Me.Form.DefaultButton = btnSearch.UniqueID
+            MasterPage.MessageController.Clear()
+            Form.DefaultButton = btnSearch.UniqueID
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
 
-                    ShowPanel(Me.State.ActivePanel)
-                    Me.MasterPage.MessageController.Clear()
+                    ShowPanel(State.ActivePanel)
+                    MasterPage.MessageController.Clear()
 
                     ' Populate the header and bredcrumb
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.UsePageTabTitleInBreadCrum = False
                     ' Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Solicitations")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Solicitations")
 
                     UpdateBreadCrum()
 
@@ -91,20 +91,20 @@ Namespace Certificates
                         Throw New BOValidationException(errors, GetType(Solicit).FullName)
                     End If
                     'TranslateGridHeader(Grid)
-                    Me.AddCalendar_New(Me.btnApplyDate, Me.txtApplyDate)
+                    AddCalendar_New(btnApplyDate, txtApplyDate)
 
                     GetStateProperties()
                     PopulateSearchControls()
 
-                    If Me.IsReturningFromChild Then
+                    If IsReturningFromChild Then
                         ' It is returning from detail
-                        Me.PopulateGrid()
+                        PopulateGrid()
                     End If
 
-                    SetFocus(Me.txtInitialSalesOrder)
+                    SetFocus(txtInitialSalesOrder)
                     objPrincipal = CType(System.Threading.Thread.CurrentPrincipal, ElitaPlusPrincipal).Identity
                     If objPrincipal.PrivacyUserType = AppConfig.DataProtectionPrivacyLevel.Privacy_DataProtection Then
-                        Me.State.isDPO = True
+                        State.isDPO = True
                     End If
 
                     If ddlDealer.Items.Count = 0 Then
@@ -120,38 +120,38 @@ Namespace Certificates
                     End If
                 End If
 
-                Me.DisplayNewProgressBarOnClick(Me.btnSearch, "LOADING_SOLICITATIONS")
+                DisplayNewProgressBarOnClick(btnSearch, "LOADING_SOLICITATIONS")
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
-        Protected Sub Page_LoadComplete(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LoadComplete
+        Protected Sub Page_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
 
         End Sub
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                         TranslationBase.TranslateLabelOrMessage("SOLICITATION_SEARCH")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("SOLICITATION_SEARCH")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("SOLICITATION_SEARCH")
                 End If
             End If
         End Sub
 
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
+                MenuEnabled = True
+                IsReturningFromChild = True
                 Dim retObj As CertificateForm.ReturnType = CType(ReturnPar, CertificateForm.ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
                     'Me.State.searchDV = Nothing
                 End If
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
                                 ' Me.State.selectedSolicitId = retObj.EditingBo.Id
                             End If
@@ -159,24 +159,24 @@ Namespace Certificates
                         End If
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 #End Region
 
 #Region "Button event handlers"
-        Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+        Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
             Try
                 If txtInitialSalesOrder.Text = String.Empty And txtCustomerId.Text = String.Empty And txtApplyDate.Text = String.Empty And
                     txtSimPhoneNumber.Text = String.Empty And ddlDealer.SelectedIndex = &H0 Then
 
-                    Me.MasterPage.MessageController.AddErrorAndShow(SEARCH_EXCEPTION, True)
+                    MasterPage.MessageController.AddErrorAndShow(SEARCH_EXCEPTION, True)
                     Return
                 End If
                 If ddlDealer.SelectedIndex = &H0 Or ddlDealer.SelectedValue Is Nothing Then
 
-                    Me.MasterPage.MessageController.AddErrorAndShow("SELECT_DEALER", True)
+                    MasterPage.MessageController.AddErrorAndShow("SELECT_DEALER", True)
                     Return
                 End If
                 Dim selectedDealer As Assurant.Elita.CommonConfiguration.DataElements.ListItem
@@ -189,7 +189,7 @@ Namespace Certificates
                 End If
 
                 If selectedDealer.Code <> "RSIM" Then
-                    Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
+                    MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
                     Return
                 End If
 
@@ -200,57 +200,57 @@ Namespace Certificates
                         Throw New BOValidationException(errors, GetType(Solicit).FullName)
                     End If
                 End If
-                Me.SetStateProperties()
-                Me.State.selectedSolicitId = Guid.Empty
+                SetStateProperties()
+                State.selectedSolicitId = Guid.Empty
 
-                Me.State.searchClick = True
+                State.searchClick = True
                 'Me.State.searchDV = Nothing
-                Me.PopulateGrid()
+                PopulateGrid()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+        Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
             Try
 
                 ' Clear all search options typed or selected by the user
-                Me.ClearAllSearchOptions()
+                ClearAllSearchOptions()
 
                 ' Update the Bo state properties with the new value
-                Me.ClearStateValues()
+                ClearStateValues()
 
-                Me.SetStateProperties()
+                SetStateProperties()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub ClearStateValues()
             Try
                 'clear State
-                Me.State.initialSalesOrderNumber = String.Empty
-                Me.State.customerId = String.Empty
-                Me.State.simPhoneNumber = String.Empty
-                Me.State.dealerId = Nothing
-                Me.State.applyDate = String.Empty
-                Me.State.dealerName = Nothing
+                State.initialSalesOrderNumber = String.Empty
+                State.customerId = String.Empty
+                State.simPhoneNumber = String.Empty
+                State.dealerId = Nothing
+                State.applyDate = String.Empty
+                State.dealerName = Nothing
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
         Protected Sub ClearAllSearchOptions()
             ' Clear Solicit search panel
-            Me.txtInitialSalesOrder.Text = String.Empty
-            Me.txtCustomerId.Text = String.Empty
-            Me.txtSimPhoneNumber.Text = String.Empty
-            Me.txtApplyDate.Text = String.Empty
-            If Not ElitaPlusIdentity.Current.ActiveUser.IsDealer Then Me.ddlDealer.SelectedIndex = 0
+            txtInitialSalesOrder.Text = String.Empty
+            txtCustomerId.Text = String.Empty
+            txtSimPhoneNumber.Text = String.Empty
+            txtApplyDate.Text = String.Empty
+            If Not ElitaPlusIdentity.Current.ActiveUser.IsDealer Then ddlDealer.SelectedIndex = 0
 
 
         End Sub
@@ -258,7 +258,7 @@ Namespace Certificates
 
         Protected Sub ShowPanel(selectedpanel As String)
             'First hide all
-            For Each sPanel As String In Me.State.searchTypes
+            For Each sPanel As String In State.searchTypes
                 searchTable.FindControl(sPanel).Visible = False
             Next
             ' Now show selected
@@ -273,14 +273,14 @@ Namespace Certificates
             Try
                 'Populate Solicit Search Dropdowns
 
-                Me.PopulateDealerDropdown(Me.ddlDealer, Me.State.dealerId)
+                PopulateDealerDropdown(ddlDealer, State.dealerId)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub PopulateDealerDropdown(ByVal dealerDropDownList As DropDownList, ByVal setvalue As Guid)
+        Private Sub PopulateDealerDropdown(dealerDropDownList As DropDownList, setvalue As Guid)
             Try
                 Dim oDealerList
                 If Authentication.CurrentUser.IsDealerGroup Then
@@ -299,12 +299,12 @@ Namespace Certificates
 
 
                 If setvalue <> Guid.Empty Then
-                    Me.SetSelectedItem(dealerDropDownList, setvalue)
+                    SetSelectedItem(dealerDropDownList, setvalue)
                 End If
 
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -327,7 +327,7 @@ Namespace Certificates
                 oListContext.CompanyId = UserCompanies(Index)
                 Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = oDealerListForCompany.Clone()
@@ -345,21 +345,21 @@ Namespace Certificates
             Try
 
                 ' Set state based on panel selected
-                If Me.State.ActivePanel.Equals(Me.State.searchTypes.Item(0)) Then ' solicit panel
+                If State.ActivePanel.Equals(State.searchTypes.Item(0)) Then ' solicit panel
 
-                    Me.txtInitialSalesOrder.Text = Me.State.initialSalesOrderNumber
+                    txtInitialSalesOrder.Text = State.initialSalesOrderNumber
 
-                    Me.State.dealerId = Me.GetSelectedItem(Me.ddlDealer)
-                    If Me.State.dealerId <> Guid.Empty And ddlDealer.Items.Count > 0 Then Me.SetSelectedItem(ddlDealer, State.dealerId)
+                    State.dealerId = GetSelectedItem(ddlDealer)
+                    If State.dealerId <> Guid.Empty And ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.dealerId)
 
-                    Me.txtCustomerId.Text = Me.State.customerId
+                    txtCustomerId.Text = State.customerId
 
-                    Me.txtApplyDate.Text = Me.State.applyDate
-                    Me.txtSimPhoneNumber.Text = Me.State.simPhoneNumber
+                    txtApplyDate.Text = State.applyDate
+                    txtSimPhoneNumber.Text = State.simPhoneNumber
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -367,21 +367,21 @@ Namespace Certificates
             Dim oCompanyId As Guid = ElitaPlusIdentity.Current.ActiveUser.ScDealerId
 
             Try
-                If Me.State Is Nothing Then
-                    Me.RestoreState(New MyState)
+                If State Is Nothing Then
+                    RestoreState(New MyState)
                 End If
 
-                Me.ClearStateValues()
-                If Me.State.ActivePanel.Equals(Me.State.searchTypes.Item(0)) Then 'solicit panel
-                    Me.State.initialSalesOrderNumber = Me.txtInitialSalesOrder.Text.ToUpper.Trim
-                    Me.State.dealerId = Me.GetSelectedItem(Me.ddlDealer)
-                    Me.State.dealerName = LookupListNew.GetCodeFromId("DEALERS", Me.State.dealerId)
-                    Me.State.customerId = Me.txtCustomerId.Text.ToUpper.Trim
-                    Me.State.simPhoneNumber = Me.txtSimPhoneNumber.Text.ToUpper.Trim
+                ClearStateValues()
+                If State.ActivePanel.Equals(State.searchTypes.Item(0)) Then 'solicit panel
+                    State.initialSalesOrderNumber = txtInitialSalesOrder.Text.ToUpper.Trim
+                    State.dealerId = GetSelectedItem(ddlDealer)
+                    State.dealerName = LookupListNew.GetCodeFromId("DEALERS", State.dealerId)
+                    State.customerId = txtCustomerId.Text.ToUpper.Trim
+                    State.simPhoneNumber = txtSimPhoneNumber.Text.ToUpper.Trim
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -437,7 +437,7 @@ Namespace Certificates
                     Try
                         Dim jsonSolicitsArray As Newtonsoft.Json.Linq.JArray = New Newtonsoft.Json.Linq.JArray(json)
                         If jsonSolicitsArray.Count = 0 Then
-                            Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
+                            MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
                             'Throw New Exception($"No Records Found for SOLICIT Data. {response.ReasonPhrase}"
                         End If
                     Catch ex As Exception
@@ -469,13 +469,13 @@ Namespace Certificates
                     ShowGridData(solicitDetailsListXml)
 
                 Catch ex As Exception
-                    Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
+                    MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
 
                 End Try
                 Session("recCount") = ""
             Catch ex As Exception
                 Dim GetExceptionType As String = ex.GetBaseException.GetType().Name
-                Me.MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
+                MasterPage.MessageController.AddInformation(NO_RECORDS_FOUND, True)
 
             End Try
         End Sub
@@ -512,19 +512,19 @@ Namespace Certificates
             Return solicitLabel
         End Function
 
-        Public Function ConvertJsonToXML(ByVal solicitDetailsList As List(Of Solicit.SolicitDetails)) As String
+        Public Function ConvertJsonToXML(solicitDetailsList As List(Of Solicit.SolicitDetails)) As String
             Dim solicitStringWriter As StringWriter = New StringWriter()
             Dim solicitSerializer As New XmlSerializer(solicitDetailsList.GetType())
             solicitSerializer.Serialize(solicitStringWriter, solicitDetailsList)
             Return solicitStringWriter.ToString()
         End Function
-        Public Function ConvertJsonToXML(ByVal solicitDetailsLabelList As Dictionary(Of String, String)) As String
+        Public Function ConvertJsonToXML(solicitDetailsLabelList As Dictionary(Of String, String)) As String
             Dim solicitStringWriter As StringWriter = New StringWriter()
             Dim solicitSerializer As New XmlSerializer(solicitDetailsLabelList.GetType())
             solicitSerializer.Serialize(solicitStringWriter, solicitDetailsLabelList)
             Return solicitStringWriter.ToString()
         End Function
-        Private Sub ShowGridData(ByVal solicitListXml As String)
+        Private Sub ShowGridData(solicitListXml As String)
             Try
                 Dim xdoc As New System.Xml.XmlDocument
                 xdoc.LoadXml(solicitListXml)
@@ -533,7 +533,7 @@ Namespace Certificates
                 'xmlSource.TransformArgumentList.AddParam("recordCount", String.Empty, 30)
                 xmlSource.Document = xdoc
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region

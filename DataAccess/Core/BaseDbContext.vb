@@ -26,7 +26,7 @@ Public Class BaseDbContext
     Private Sub UpdateAuditInformation(ByVal sender As Object, ByVal e As EventArgs)
 
         Dim objectStateEnties As IEnumerable(Of ObjectStateEntry)
-        objectStateEnties = Me.ObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added Or EntityState.Modified)
+        objectStateEnties = ObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added Or EntityState.Modified)
 
         If ((Not objectStateEnties Is Nothing) AndAlso (objectStateEnties.Any)) Then
 
@@ -61,7 +61,7 @@ Public Class BaseDbContext
     End Function
 
     Private Sub Initialize()
-        Me.Configuration.ProxyCreationEnabled = False
-        Me.Configuration.ValidateOnSaveEnabled = False
+        Configuration.ProxyCreationEnabled = False
+        Configuration.ValidateOnSaveEnabled = False
     End Sub
 End Class

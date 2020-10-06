@@ -6,48 +6,48 @@ Public Class CertRegisteredItemHist
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()             
         Try
             Dim dal As New CertRegisteredItemHistDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize() 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class CertRegisteredItemHist
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(id As Guid)               
         Try
             Dim dal As New CertRegisteredItemHistDAL            
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class CertRegisteredItemHist
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CertRegisteredItemHistDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class CertRegisteredItemHist
     End Property
 	
     
-    Public Property CertRegisteredItemId() As Guid
+    Public Property CertRegisteredItemId As Guid
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_CERT_REGISTERED_ITEM_ID) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class CertRegisteredItemHist
                 Return New Guid(CType(row(CertRegisteredItemHistDAL.COL_NAME_CERT_REGISTERED_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_CERT_REGISTERED_ITEM_ID, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_CERT_REGISTERED_ITEM_ID, Value)
         End Set
     End Property
 	
 	
     
-    Public Property CertItemId() As Guid
+    Public Property CertItemId As Guid
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_CERT_ITEM_ID) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class CertRegisteredItemHist
                 Return New Guid(CType(row(CertRegisteredItemHistDAL.COL_NAME_CERT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_CERT_ITEM_ID, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_CERT_ITEM_ID, Value)
         End Set
     End Property
 	
 	
     
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class CertRegisteredItemHist
                 Return New Guid(CType(row(CertRegisteredItemHistDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_MANUFACTURER_ID, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
     End Property
 	
 	
     
-    Public Property ProdItemManufEquipId() As Guid
+    Public Property ProdItemManufEquipId As Guid
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_PROD_ITEM_MANUF_EQUIP_ID) Is DBNull.Value Then
@@ -161,15 +161,15 @@ Public Class CertRegisteredItemHist
                 Return New Guid(CType(row(CertRegisteredItemHistDAL.COL_NAME_PROD_ITEM_MANUF_EQUIP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_PROD_ITEM_MANUF_EQUIP_ID, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_PROD_ITEM_MANUF_EQUIP_ID, Value)
         End Set
     End Property
 	
 	
     <ValidStringLength("", Max:=1020)> _
-    Public Property Manufacturer() As String
+    Public Property Manufacturer As String
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_MANUFACTURER) Is DBNull.Value Then
@@ -178,15 +178,15 @@ Public Class CertRegisteredItemHist
                 Return CType(row(CertRegisteredItemHistDAL.COL_NAME_MANUFACTURER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_MANUFACTURER, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_MANUFACTURER, Value)
         End Set
     End Property
 	
 	
     <ValidStringLength("", Max:=200)> _
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -195,15 +195,15 @@ Public Class CertRegisteredItemHist
                 Return CType(row(CertRegisteredItemHistDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_MODEL, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 	
 	
     <ValidStringLength("", Max:=120)> _
-    Public Property SerialNumber() As String
+    Public Property SerialNumber As String
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_SERIAL_NUMBER) Is DBNull.Value Then
@@ -212,15 +212,15 @@ Public Class CertRegisteredItemHist
                 Return CType(row(CertRegisteredItemHistDAL.COL_NAME_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_SERIAL_NUMBER, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_SERIAL_NUMBER, Value)
         End Set
     End Property
 	
 	
     <ValidStringLength("", Max:=400)> _
-    Public Property ItemDescription() As String
+    Public Property ItemDescription As String
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_ITEM_DESCRIPTION) Is DBNull.Value Then
@@ -229,15 +229,15 @@ Public Class CertRegisteredItemHist
                 Return CType(row(CertRegisteredItemHistDAL.COL_NAME_ITEM_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_ITEM_DESCRIPTION, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_ITEM_DESCRIPTION, Value)
         End Set
     End Property
 	
 	
     
-    Public Property RetailPrice() As DecimalType
+    Public Property RetailPrice As DecimalType
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_RETAIL_PRICE) Is DBNull.Value Then
@@ -246,15 +246,15 @@ Public Class CertRegisteredItemHist
                 Return New DecimalType(CType(row(CertRegisteredItemHistDAL.COL_NAME_RETAIL_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_RETAIL_PRICE, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_RETAIL_PRICE, Value)
         End Set
     End Property
 	
 	
     
-    Public Property PurchasedDate() As DateType
+    Public Property PurchasedDate As DateType
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_PURCHASED_DATE) Is DBNull.Value Then
@@ -263,15 +263,15 @@ Public Class CertRegisteredItemHist
                 Return New DateType(CType(row(CertRegisteredItemHistDAL.COL_NAME_PURCHASED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_PURCHASED_DATE, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_PURCHASED_DATE, Value)
         End Set
     End Property
 	
 	
     
-    Public Property PurchasePrice() As DecimalType
+    Public Property PurchasePrice As DecimalType
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_PURCHASE_PRICE) Is DBNull.Value Then
@@ -280,15 +280,15 @@ Public Class CertRegisteredItemHist
                 Return New DecimalType(CType(row(CertRegisteredItemHistDAL.COL_NAME_PURCHASE_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_PURCHASE_PRICE, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_PURCHASE_PRICE, Value)
         End Set
     End Property
 	
 	
     <ValidStringLength("", Max:=4)> _
-    Public Property EnrollmentItem() As String
+    Public Property EnrollmentItem As String
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_ENROLLMENT_ITEM) Is DBNull.Value Then
@@ -297,15 +297,15 @@ Public Class CertRegisteredItemHist
                 Return CType(row(CertRegisteredItemHistDAL.COL_NAME_ENROLLMENT_ITEM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_ENROLLMENT_ITEM, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_ENROLLMENT_ITEM, Value)
         End Set
     End Property
 	
 	
     <ValidStringLength("", Max:=120)> _
-    Public Property ItemStatus() As String
+    Public Property ItemStatus As String
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_ITEM_STATUS) Is DBNull.Value Then
@@ -314,15 +314,15 @@ Public Class CertRegisteredItemHist
                 Return CType(row(CertRegisteredItemHistDAL.COL_NAME_ITEM_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_ITEM_STATUS, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_ITEM_STATUS, Value)
         End Set
     End Property
 	
 	
     <ValidStringLength("", Max:=120)> _
-    Public Property ValidatedBy() As String
+    Public Property ValidatedBy As String
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_VALIDATED_BY) Is DBNull.Value Then
@@ -331,15 +331,15 @@ Public Class CertRegisteredItemHist
                 Return CType(row(CertRegisteredItemHistDAL.COL_NAME_VALIDATED_BY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_VALIDATED_BY, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_VALIDATED_BY, Value)
         End Set
     End Property
 	
 	
     
-    Public Property ValidatedDate() As DateType
+    Public Property ValidatedDate As DateType
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_VALIDATED_DATE) Is DBNull.Value Then
@@ -348,15 +348,15 @@ Public Class CertRegisteredItemHist
                 Return New DateType(CType(row(CertRegisteredItemHistDAL.COL_NAME_VALIDATED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_VALIDATED_DATE, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_VALIDATED_DATE, Value)
         End Set
     End Property
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=120)> _
-    Public Property HistCreatedBy() As String
+    Public Property HistCreatedBy As String
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_HIST_CREATED_BY) Is DBNull.Value Then
@@ -365,15 +365,15 @@ Public Class CertRegisteredItemHist
                 Return CType(row(CertRegisteredItemHistDAL.COL_NAME_HIST_CREATED_BY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_HIST_CREATED_BY, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_HIST_CREATED_BY, Value)
         End Set
     End Property
 	
 	
     <ValueMandatory("")> _
-    Public Property HistCreatedDate() As DateType
+    Public Property HistCreatedDate As DateType
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_HIST_CREATED_DATE) Is DBNull.Value Then
@@ -382,15 +382,15 @@ Public Class CertRegisteredItemHist
                 Return New DateType(CType(row(CertRegisteredItemHistDAL.COL_NAME_HIST_CREATED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_HIST_CREATED_DATE, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_HIST_CREATED_DATE, Value)
         End Set
     End Property
 	
 	
     <ValidStringLength("", Max:=120)> _
-    Public Property HistModifiedBy() As String
+    Public Property HistModifiedBy As String
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_HIST_MODIFIED_BY) Is DBNull.Value Then
@@ -399,15 +399,15 @@ Public Class CertRegisteredItemHist
                 Return CType(row(CertRegisteredItemHistDAL.COL_NAME_HIST_MODIFIED_BY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_HIST_MODIFIED_BY, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_HIST_MODIFIED_BY, Value)
         End Set
     End Property
 	
 	
     
-    Public Property HistModifiedDate() As DateType
+    Public Property HistModifiedDate As DateType
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_HIST_MODIFIED_DATE) Is DBNull.Value Then
@@ -416,15 +416,15 @@ Public Class CertRegisteredItemHist
                 Return New DateType(CType(row(CertRegisteredItemHistDAL.COL_NAME_HIST_MODIFIED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_HIST_MODIFIED_DATE, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_HIST_MODIFIED_DATE, Value)
         End Set
     End Property
 	
 	
     
-    Public Property DeviceTypeId() As Guid
+    Public Property DeviceTypeId As Guid
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_DEVICE_TYPE_ID) Is DBNull.Value Then
@@ -433,15 +433,15 @@ Public Class CertRegisteredItemHist
                 Return New Guid(CType(row(CertRegisteredItemHistDAL.COL_NAME_DEVICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_DEVICE_TYPE_ID, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_DEVICE_TYPE_ID, Value)
         End Set
     End Property
 	
 	
     <ValidStringLength("", Max:=1020)> _
-    Public Property RegisteredItemName() As String
+    Public Property RegisteredItemName As String
         Get
             CheckDeleted()
             If row(CertRegisteredItemHistDAL.COL_NAME_REGISTERED_ITEM_NAME) Is DBNull.Value Then
@@ -450,9 +450,9 @@ Public Class CertRegisteredItemHist
                 Return CType(row(CertRegisteredItemHistDAL.COL_NAME_REGISTERED_ITEM_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertRegisteredItemHistDAL.COL_NAME_REGISTERED_ITEM_NAME, Value)
+            SetValue(CertRegisteredItemHistDAL.COL_NAME_REGISTERED_ITEM_NAME, Value)
         End Set
     End Property
 	
@@ -465,15 +465,15 @@ Public Class CertRegisteredItemHist
     Public Overrides Sub Save()         
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CertRegisteredItemHistDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -511,13 +511,13 @@ Public Class CertRegisteredItemHist
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 #End Region
-    Public Shared Function getHistoryList(ByVal CertRegItemId As Guid) As CertRegItemHistSearchDV
+    Public Shared Function getHistoryList(CertRegItemId As Guid) As CertRegItemHistSearchDV
         Try
             Dim dal As New CertRegisteredItemHistDAL
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId

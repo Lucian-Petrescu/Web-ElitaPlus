@@ -10,13 +10,13 @@ Namespace AppServices.SA.SNMPortal
             <OperationContract(Name:="GetClaimCharterReport"), _
                 ElitaPermission(PermissionCodes.WS_CHLMobileSCPortal_GetCertClaimInfo), _
                 FaultContract(GetType(Faults.InvalidRequestFault))> _
-            Function GetClaimCharterReport (ByVal request As GetClaimCharterReportRequest) As GetClaimCharterReportResponse
+            Function GetClaimCharterReport (request As GetClaimCharterReportRequest) As GetClaimCharterReportResponse
 #End Region
 
             <OperationContract(Name:="GetClaimCharterReportNextPage"), _
                 ElitaPermission(PermissionCodes.WS_CHLMobileSCPortal_GetCertClaimInfo), _
                 FaultContract(GetType(Faults.InvalidRequestFault))> _
-            Function GetClaimCharterReportNextPage (ByVal request As GetClaimCharterReportNextPageRequest) As GetClaimCharterReportResponse
+            Function GetClaimCharterReportNextPage (request As GetClaimCharterReportNextPageRequest) As GetClaimCharterReportResponse
         End Interface
     
 End Namespace

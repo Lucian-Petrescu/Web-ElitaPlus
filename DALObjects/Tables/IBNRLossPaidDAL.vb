@@ -38,15 +38,15 @@ Public Class IbnrLossPaidDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("ibnr_loss_paid_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -57,14 +57,14 @@ Public Class IbnrLossPaidDAL
     '    Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
     'End Function
 
-    Public Function GetIBNRLossPaidAccountingDate(ByVal companyId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_DATES")
+    Public Function GetIBNRLossPaidAccountingDate(companyId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_DATES")
         Dim parameters(TOTAL_PARAM) As DBHelper.DBHelperParameter
 
         parameters(COMPANY_ID) = New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, companyId.ToByteArray)
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -74,9 +74,9 @@ Public Class IbnrLossPaidDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

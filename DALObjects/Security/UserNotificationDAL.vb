@@ -31,42 +31,42 @@ Public Class UserNotificationDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("user_notification_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
     Public Function UserHasNotifications(userId As Guid, ExternalUser As String, _
-                                    ByVal AudianceTypeExternalId As Guid, ByVal AudianceTypeInternalId As Guid, ByVal AudianceTypeAllId As Guid) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/USER_NOTIFICATIONS_COUNT")
+                                    AudianceTypeExternalId As Guid, AudianceTypeInternalId As Guid, AudianceTypeAllId As Guid) As Boolean
+        Dim selectStmt As String = Config("/SQL/USER_NOTIFICATIONS_COUNT")
         Dim whereClauseConditions As String = ""
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("user_id", userId.ToByteArray)}
         Dim count As Integer
 
         If ExternalUser.Equals("Y") Then
-            whereClauseConditions &= " AND (N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & Me.GuidToSQLString(AudianceTypeExternalId) & "') OR N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & Me.GuidToSQLString(AudianceTypeAllId) & "'))"
+            whereClauseConditions &= " AND (N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & GuidToSQLString(AudianceTypeExternalId) & "') OR N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & GuidToSQLString(AudianceTypeAllId) & "'))"
         Else
-            whereClauseConditions &= " AND (N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & Me.GuidToSQLString(AudianceTypeInternalId) & "') OR N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & Me.GuidToSQLString(AudianceTypeAllId) & "'))"
+            whereClauseConditions &= " AND (N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & GuidToSQLString(AudianceTypeInternalId) & "') OR N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & GuidToSQLString(AudianceTypeAllId) & "'))"
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
@@ -82,13 +82,13 @@ Public Class UserNotificationDAL
     End Function
 
 
-    Public Function InsertUserNotifications(ByVal userId As Guid) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/INSERT_USER_NOTIFICATIONS")
-        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_NAME_USER_ID, userId.ToByteArray)}
+    Public Function InsertUserNotifications(userId As Guid) As Boolean
+        Dim selectStmt As String = Config("/SQL/INSERT_USER_NOTIFICATIONS")
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(PAR_NAME_USER_ID, userId.ToByteArray)}
 
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                                                        New DBHelper.DBHelperParameter(Me.PAR_NAME_P_RETURN, GetType(Integer)), _
-                                                        New DBHelper.DBHelperParameter(Me.PAR_NAME_P_EXCEPTION_MSG, GetType(String), 50)}
+                                                        New DBHelper.DBHelperParameter(PAR_NAME_P_RETURN, GetType(Integer)), _
+                                                        New DBHelper.DBHelperParameter(PAR_NAME_P_EXCEPTION_MSG, GetType(String), 50)}
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
@@ -104,13 +104,13 @@ Public Class UserNotificationDAL
     End Function
 
 
-    Public Function DeleteUserNotifications(ByVal NotificationId As Guid) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/DELETE_USER_NOTIFICATIONS")
-        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_NAME_NOTIFICATION_ID, NotificationId.ToByteArray)}
+    Public Function DeleteUserNotifications(NotificationId As Guid) As Boolean
+        Dim selectStmt As String = Config("/SQL/DELETE_USER_NOTIFICATIONS")
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(PAR_NAME_NOTIFICATION_ID, NotificationId.ToByteArray)}
 
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                                                        New DBHelper.DBHelperParameter(Me.PAR_NAME_P_RETURN, GetType(Integer)), _
-                                                        New DBHelper.DBHelperParameter(Me.PAR_NAME_P_EXCEPTION_MSG, GetType(String), 50)}
+                                                        New DBHelper.DBHelperParameter(PAR_NAME_P_RETURN, GetType(Integer)), _
+                                                        New DBHelper.DBHelperParameter(PAR_NAME_P_EXCEPTION_MSG, GetType(String), 50)}
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
@@ -129,12 +129,12 @@ Public Class UserNotificationDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

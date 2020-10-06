@@ -41,17 +41,17 @@ Namespace Tables
         End Property
 
         Private Sub SetStateProperties()
-            Me.State.moCFOrderDetailId = CType(Me.CallingParameters, Guid)
-            If Me.State.moCFOrderDetailId.Equals(Guid.Empty) Then
-                Me.State.IsCFOrderDetailNew = True
+            State.moCFOrderDetailId = CType(CallingParameters, Guid)
+            If State.moCFOrderDetailId.Equals(Guid.Empty) Then
+                State.IsCFOrderDetailNew = True
                 BindBoPropertiesToLabels()
-                Me.AddLabelDecorations(TheClaimFulfillmentOrderDetail)
+                AddLabelDecorations(TheClaimFulfillmentOrderDetail)
                 ClearAll()
                 PopulateAll()
             Else
-                Me.State.IsCFOrderDetailNew = False
+                State.IsCFOrderDetailNew = False
                 BindBoPropertiesToLabels()
-                Me.AddLabelDecorations(TheClaimFulfillmentOrderDetail)
+                AddLabelDecorations(TheClaimFulfillmentOrderDetail)
                 PopulateAll()
             End If
         End Sub
@@ -100,9 +100,9 @@ Namespace Tables
             Public LastOperation As DetailPageCommand
             Public moCFOrderDetailleId As Guid
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal oCFOrderDetaileId As Guid, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.moCFOrderDetailleId = oCFOrderDetaileId
+            Public Sub New(LastOp As DetailPageCommand, oCFOrderDetaileId As Guid, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                moCFOrderDetailleId = oCFOrderDetaileId
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
@@ -112,18 +112,18 @@ Namespace Tables
 #Region "Properties"
         Private ReadOnly Property TheClaimFulfillmentOrderDetail As ClaimFulfillmentOrderDetail
             Get
-                If Me.State.moClaimFulfillmentOrderDetail Is Nothing Then
-                    If Me.State.IsCFOrderDetailNew = True Then
+                If State.moClaimFulfillmentOrderDetail Is Nothing Then
+                    If State.IsCFOrderDetailNew = True Then
                         ' For creating, inserting
-                        Me.State.moClaimFulfillmentOrderDetail = New ClaimFulfillmentOrderDetail
-                        Me.State.moCFOrderDetailId = Me.State.moClaimFulfillmentOrderDetail.Id
+                        State.moClaimFulfillmentOrderDetail = New ClaimFulfillmentOrderDetail
+                        State.moCFOrderDetailId = State.moClaimFulfillmentOrderDetail.Id
                     Else
                         ' For updating, deleting
-                        Me.State.moClaimFulfillmentOrderDetail = New ClaimFulfillmentOrderDetail(Me.State.moCFOrderDetailId)
+                        State.moClaimFulfillmentOrderDetail = New ClaimFulfillmentOrderDetail(State.moCFOrderDetailId)
                     End If
                 End If
 
-                Return Me.State.moClaimFulfillmentOrderDetail
+                Return State.moClaimFulfillmentOrderDetail
             End Get
         End Property
 
@@ -148,7 +148,7 @@ Namespace Tables
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -156,21 +156,21 @@ Namespace Tables
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 ClearLabelsErrSign()
                 If Not Page.IsPostBack Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                     UpdateBreadCrum()
-                    Me.SetStateProperties()
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO,
+                    SetStateProperties()
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO,
                                                                         MSG_TYPE_CONFIRM, True)
 
-                    If Me.State.IsCFOrderDetailNew = True Then
+                    If State.IsCFOrderDetailNew = True Then
                         CreateNew()
                     End If
 
@@ -178,34 +178,34 @@ Namespace Tables
 
                 BindBoPropertiesToLabels()
                 CheckIfComingFromConfirm()
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(TheClaimFulfillmentOrderDetail)
+                If Not IsPostBack Then
+                    AddLabelDecorations(TheClaimFulfillmentOrderDetail)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
 
             End Try
             If Me.State.LastOperation = DetailPageCommand.Redirect_ Then
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 ClearLabelsErrSign()
-                Me.State.LastOperation = DetailPageCommand.Nothing_
+                State.LastOperation = DetailPageCommand.Nothing_
             Else
-                Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+                ShowMissingTranslations(MasterPage.MessageController)
             End If
         End Sub
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
 
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Me.State.moClaimFulfillmentOrderDetail = New ClaimFulfillmentOrderDetail(CType(Me.CallingParameters, Guid))
+                    State.moClaimFulfillmentOrderDetail = New ClaimFulfillmentOrderDetail(CType(CallingParameters, Guid))
                 Else
-                    Me.State.IsCFOrderDetailNew = True
+                    State.IsCFOrderDetailNew = True
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -214,58 +214,58 @@ Namespace Tables
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnApply_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+        Private Sub btnApply_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
             ApplyChanges()
         End Sub
 
         Private Sub GoBack()
             Dim retType As New BillingCycleForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                                Me.State.moCFOrderDetailId, Me.State.boChanged)
-            Me.ReturnToCallingPage(retType)
+                                                                State.moCFOrderDetailId, State.boChanged)
+            ReturnToCallingPage(retType)
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
-                                                Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                                HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
-                If Not Me.State.IsCFOrderDetailNew Then
+                If Not State.IsCFOrderDetailNew Then
                     'Reload from the DB
-                    Me.State.moClaimFulfillmentOrderDetail = New ClaimFulfillmentOrderDetail(Me.State.moCFOrderDetailId)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                    State.moClaimFulfillmentOrderDetail = New ClaimFulfillmentOrderDetail(State.moCFOrderDetailId)
+                ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                     'It was a new with copy
-                    Me.State.moClaimFulfillmentOrderDetail.Clone(Me.State.ScreenSnapShotBO)
+                    State.moClaimFulfillmentOrderDetail.Clone(State.ScreenSnapShotBO)
                 Else
-                    Me.State.moClaimFulfillmentOrderDetail = New ClaimFulfillmentOrderDetail
+                    State.moClaimFulfillmentOrderDetail = New ClaimFulfillmentOrderDetail
                 End If
                 PopulateAll()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CreateNew()
-            Me.State.ScreenSnapShotBO = Nothing
-            Me.State.moCFOrderDetailId = Guid.Empty
-            Me.State.IsCFOrderDetailNew = True
-            Me.State.moClaimFulfillmentOrderDetail = New ClaimFulfillmentOrderDetail
+            State.ScreenSnapShotBO = Nothing
+            State.moCFOrderDetailId = Guid.Empty
+            State.IsCFOrderDetailNew = True
+            State.moClaimFulfillmentOrderDetail = New ClaimFulfillmentOrderDetail
             ClearAll()
-            Me.SetButtonsState(True)
-            Me.PopulateAll()
+            SetButtonsState(True)
+            PopulateAll()
             DisablePriceFields()
 
-            If Me.State.IsCFOrderDetailNew Then
+            If State.IsCFOrderDetailNew Then
                 ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -273,66 +273,66 @@ Namespace Tables
 
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CreateNewCopy()
 
-            Me.PopulateBOsFromForm()
-            Me.State.moCFOrderDetailId = Guid.Empty
+            PopulateBOsFromForm()
+            State.moCFOrderDetailId = Guid.Empty
             Dim newObj As New ClaimFulfillmentOrderDetail
             newObj.Copy(TheClaimFulfillmentOrderDetail)
 
-            Me.State.moClaimFulfillmentOrderDetail = newObj
+            State.moClaimFulfillmentOrderDetail = newObj
 
-            Me.State.IsCFOrderDetailNew = True
+            State.IsCFOrderDetailNew = True
 
-            Me.SetButtonsState(True)
+            SetButtonsState(True)
 
             'create the backup copy
-            Me.State.ScreenSnapShotBO = New ClaimFulfillmentOrderDetail
-            Me.State.ScreenSnapShotBO.Copy(TheClaimFulfillmentOrderDetail)
+            State.ScreenSnapShotBO = New ClaimFulfillmentOrderDetail
+            State.ScreenSnapShotBO.Copy(TheClaimFulfillmentOrderDetail)
 
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     CreateNewCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                HandleErrors(ex, MasterPage.MessageController)
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
                 Try
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
                 Catch ex As Threading.ThreadAbortException
                 Catch ex As Exception
-                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    HandleErrors(ex, MasterPage.MessageController)
                 End Try
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -362,10 +362,10 @@ Namespace Tables
 #Region "Populate"
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("CLAIM_FULFILLMENT_ORDER_DETAIL")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CLAIM_FULFILLMENT_ORDER_DETAIL")
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("CLAIM_FULFILLMENT_ORDER_DETAIL")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CLAIM_FULFILLMENT_ORDER_DETAIL")
                 End If
             End If
         End Sub
@@ -384,7 +384,7 @@ Namespace Tables
                 Dim UserCountries As DataElements.ListItem() = (From Country In CountryList
                                                                 Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(Country.ListItemId)
                                                                 Select Country).ToArray()
-                Me.moCountryDrop.Populate(UserCountries.ToArray(),
+                moCountryDrop.Populate(UserCountries.ToArray(),
                                     New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
@@ -420,42 +420,42 @@ Namespace Tables
                                                         .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                                                        })
                 'Price List information
-                If Not Me.State.moClaimFulfillmentOrderDetail.CountryId.Equals(Guid.Empty) Then
+                If Not State.moClaimFulfillmentOrderDetail.CountryId.Equals(Guid.Empty) Then
                     Dim oListContext1 As New ListContext
-                    oListContext1.CountryId = Me.State.moClaimFulfillmentOrderDetail.CountryId
+                    oListContext1.CountryId = State.moClaimFulfillmentOrderDetail.CountryId
                     Dim PriceList As DataElements.ListItem() =
                                             CommonConfigManager.Current.ListManager.GetList(listCode:="PriceListByCountry", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext1)
-                    Me.moPriceListCodeDrop.Populate(PriceList.ToArray(), New PopulateOptions() With
+                    moPriceListCodeDrop.Populate(PriceList.ToArray(), New PopulateOptions() With
                                 {
                                     .AddBlankItem = False
                                 })
                 End If
 
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(CF_ORDER_DETAIL_FORM001)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(CF_ORDER_DETAIL_FORM001)
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
         End Sub
 
         Private Sub PopulateTexts()
             Try
                 With TheClaimFulfillmentOrderDetail
-                    If Me.State.IsCFOrderDetailNew = True Then
+                    If State.IsCFOrderDetailNew = True Then
                         moCodeText.Text = Nothing
                         moDescriptionText.Text = Nothing
                     Else
                         BindSelectItem(.PriceListSourceXcd, moPriceListSourceDrop)
                         BindSelectItem(.EquipmentTypeXcd, moEquipmentTypeDrop)
-                        Me.PopulateControlFromBOProperty(Me.moCodeText, .Code)
-                        Me.PopulateControlFromBOProperty(Me.moDescriptionText, .Description)
+                        PopulateControlFromBOProperty(moCodeText, .Code)
+                        PopulateControlFromBOProperty(moDescriptionText, .Description)
                         SetSelectedItem(moCountryDrop, .CountryId)
                         If moPriceListSourceDrop.SelectedValue = "PRICE_LIST_SOURCE-PRICE_LIST" Then
                             EnablePriceFields()
                             If Not .CountryId.Equals(Guid.Empty) Then
                                 Dim list As DataView = LookupListNew.GetPriceListLookupList(.CountryId)
                                 Dim selectedItemId As Guid = LookupListNew.GetIdFromCode(list, .PriceListCode)
-                                Me.PopulateControlFromBOProperty(Me.moPriceListCodeDrop, selectedItemId)
+                                PopulateControlFromBOProperty(moPriceListCodeDrop, selectedItemId)
                             End If
                         Else
                             DisablePriceFields()
@@ -465,12 +465,12 @@ Namespace Tables
 
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub PopulateAll()
-            If Me.State.IsCFOrderDetailNew = True Then
+            If State.IsCFOrderDetailNew = True Then
                 PopulateDropDowns()
             Else
                 ClearAll()
@@ -481,25 +481,25 @@ Namespace Tables
 
         Protected Sub PopulateBOsFromForm()
 
-            With Me.TheClaimFulfillmentOrderDetail
+            With TheClaimFulfillmentOrderDetail
                 Dim strPriceListCode As String
-                Me.PopulateBOProperty(TheClaimFulfillmentOrderDetail, CLAIM_FULLFILLMENT_CODE_PROPERTY, Me.moCodeText)
-                Me.PopulateBOProperty(TheClaimFulfillmentOrderDetail, CLAIM_FULLFILLMENT_DESCRIPTION_PROPERTY, Me.moDescriptionText)
-                Me.PopulateBOProperty(TheClaimFulfillmentOrderDetail, COUNTRY_PROPERTY, Me.moCountryDrop)
-                Me.PopulateBOProperty(TheClaimFulfillmentOrderDetail, PRICE_LIST_SOURCE_PROPERTY, Me.moPriceListSourceDrop, False, True)
+                PopulateBOProperty(TheClaimFulfillmentOrderDetail, CLAIM_FULLFILLMENT_CODE_PROPERTY, moCodeText)
+                PopulateBOProperty(TheClaimFulfillmentOrderDetail, CLAIM_FULLFILLMENT_DESCRIPTION_PROPERTY, moDescriptionText)
+                PopulateBOProperty(TheClaimFulfillmentOrderDetail, COUNTRY_PROPERTY, moCountryDrop)
+                PopulateBOProperty(TheClaimFulfillmentOrderDetail, PRICE_LIST_SOURCE_PROPERTY, moPriceListSourceDrop, False, True)
                 If moPriceListCodeDrop.SelectedValue.Equals(String.Empty) Then
                     strPriceListCode = String.Empty
                 ElseIf moPriceListCodeDrop.SelectedValue <> LookupListNew.GetIdFromCode(LookupListCache.LK_PRICE_LIST, .PriceListCode).ToString() Then
                     strPriceListCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PRICE_LIST, New Guid(moPriceListCodeDrop.SelectedValue))
-                    Me.PopulateBOProperty(TheClaimFulfillmentOrderDetail, PRICE_LIST_CODE_PROPERTY, strPriceListCode)
+                    PopulateBOProperty(TheClaimFulfillmentOrderDetail, PRICE_LIST_CODE_PROPERTY, strPriceListCode)
                 End If
-                Me.PopulateBOProperty(TheClaimFulfillmentOrderDetail, EQUIPMENT_TYPE_PROPERTY, Me.moEquipmentTypeDrop, False, True)
-                Me.PopulateBOProperty(TheClaimFulfillmentOrderDetail, SERVICE_CLASS_PROPERTY, Me.moServiceClassDrop, False, True)
-                Me.PopulateBOProperty(TheClaimFulfillmentOrderDetail, SERVICE_TYPE_PROPERTY, Me.moServiceTypeDrop, False, True)
-                Me.PopulateBOProperty(TheClaimFulfillmentOrderDetail, SERVICE_LEVEL_PROPERTY, Me.moServiceLevelDrop, False, True)
-                Me.PopulateBOProperty(TheClaimFulfillmentOrderDetail, STOCK_ITEM_TYPE_PROPERTY, Me.moStockItemTypeDrop, False, True)
+                PopulateBOProperty(TheClaimFulfillmentOrderDetail, EQUIPMENT_TYPE_PROPERTY, moEquipmentTypeDrop, False, True)
+                PopulateBOProperty(TheClaimFulfillmentOrderDetail, SERVICE_CLASS_PROPERTY, moServiceClassDrop, False, True)
+                PopulateBOProperty(TheClaimFulfillmentOrderDetail, SERVICE_TYPE_PROPERTY, moServiceTypeDrop, False, True)
+                PopulateBOProperty(TheClaimFulfillmentOrderDetail, SERVICE_LEVEL_PROPERTY, moServiceLevelDrop, False, True)
+                PopulateBOProperty(TheClaimFulfillmentOrderDetail, STOCK_ITEM_TYPE_PROPERTY, moStockItemTypeDrop, False, True)
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
 
@@ -509,7 +509,7 @@ Namespace Tables
 
 #Region "Gui-Validation"
 
-        Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetButtonsState(bIsNew As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
@@ -529,9 +529,9 @@ Namespace Tables
                     bIsDirty = .IsDirty
                 End With
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(CF_ORDER_DETAIL_FORM001)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(CF_ORDER_DETAIL_FORM001)
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
             Return bIsDirty
         End Function
@@ -540,37 +540,37 @@ Namespace Tables
 
             Try
                 Dim bIsOk As Boolean = True
-                Me.PopulateBOsFromForm()
+                PopulateBOsFromForm()
 
                 If TheClaimFulfillmentOrderDetail.IsDirty() Then
-                    If Me.State.IsCFOrderDetailNew = True Then
+                    If State.IsCFOrderDetailNew = True Then
                         If TheClaimFulfillmentOrderDetail.CFCodeExists(TheClaimFulfillmentOrderDetail.Code) Then
-                            Me.MasterPage.MessageController.AddError(Message.MSG_CODE_EXISTS_PROMPT)
-                            Me.MasterPage.MessageController.Show()
+                            MasterPage.MessageController.AddError(Message.MSG_CODE_EXISTS_PROMPT)
+                            MasterPage.MessageController.Show()
                             bIsOk = False
                         Else
-                            Me.TheClaimFulfillmentOrderDetail.Save()
+                            TheClaimFulfillmentOrderDetail.Save()
                         End If
                     Else
-                        Me.TheClaimFulfillmentOrderDetail.Save()
+                        TheClaimFulfillmentOrderDetail.Save()
                     End If
                     If bIsOk = True Then
-                        Me.State.boChanged = True
-                        If Me.State.IsCFOrderDetailNew = True Then
-                            Me.State.IsCFOrderDetailNew = False
+                        State.boChanged = True
+                        If State.IsCFOrderDetailNew = True Then
+                            State.IsCFOrderDetailNew = False
                         End If
                         PopulateAll()
-                        Me.SetButtonsState(Me.State.IsCFOrderDetailNew)
-                        Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                        SetButtonsState(State.IsCFOrderDetailNew)
+                        MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                     Else
-                        Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                        MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                     End If
 
                 Else
-                        Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                        MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Function
 #End Region
@@ -578,7 +578,7 @@ Namespace Tables
 #Region "State-Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
@@ -587,7 +587,7 @@ Namespace Tables
                     Case MSG_VALUE_YES
                         ' Save and go back to Search Page
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             GoBack()
                         End If
                     Case MSG_VALUE_NO
@@ -598,7 +598,7 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromNewCopy()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Copy Button
@@ -607,7 +607,7 @@ Namespace Tables
                     Case MSG_VALUE_YES
                         ' Save and create a new Copy BO
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             CreateNewCopy()
                         End If
                     Case MSG_VALUE_NO
@@ -618,7 +618,7 @@ Namespace Tables
 
         End Sub
         Protected Sub ComingFromNew()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Copy Button
@@ -627,7 +627,7 @@ Namespace Tables
                     Case MSG_VALUE_YES
                         ' Save and create a new Copy BO
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             CreateNew()
                         End If
                     Case MSG_VALUE_NO
@@ -640,19 +640,19 @@ Namespace Tables
 
         Private Sub DoDelete()
             Try
-                Me.State.moClaimFulfillmentOrderDetail.DeleteAndSave()
-                Me.State.HasDataChanged = True
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.moCFOrderDetailId, Me.State.HasDataChanged))
+                State.moClaimFulfillmentOrderDetail.DeleteAndSave()
+                State.HasDataChanged = True
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.moCFOrderDetailId, State.HasDataChanged))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 
         Protected Sub CheckIfComingFromConfirm()
             Try
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     ' Period
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
@@ -665,10 +665,10 @@ Namespace Tables
                 End Select
 
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -677,43 +677,43 @@ Namespace Tables
 #Region "Handlers-Labels"
 
         Private Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "Code", moCodeLabel)
-            Me.BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "Description", moDescriptionLabel)
-            Me.BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "PriceListSourceXcd", moPriceListSourceLabel)
-            Me.BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "CountryId", moCountryLabel)
-            Me.BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "PriceListCode", moPriceListCodeLabel)
-            Me.BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "EquipmentTypeXcd", moEquipmentTypeLabel)
-            Me.BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "ServiceClassXcd", moServiceClassLabel)
-            Me.BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "ServiceTypeXcd", moServiceClassLabel)
-            Me.BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "ServiceLevelXcd", moServiceLevelLabel)
-            Me.BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "StockItemTypeXcd", moStockItemTypeLabel)
+            BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "Code", moCodeLabel)
+            BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "Description", moDescriptionLabel)
+            BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "PriceListSourceXcd", moPriceListSourceLabel)
+            BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "CountryId", moCountryLabel)
+            BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "PriceListCode", moPriceListCodeLabel)
+            BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "EquipmentTypeXcd", moEquipmentTypeLabel)
+            BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "ServiceClassXcd", moServiceClassLabel)
+            BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "ServiceTypeXcd", moServiceClassLabel)
+            BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "ServiceLevelXcd", moServiceLevelLabel)
+            BindBOPropertyToLabel(TheClaimFulfillmentOrderDetail, "StockItemTypeXcd", moStockItemTypeLabel)
         End Sub
 
         Private Sub ClearLabelsErrSign()
-            Me.ClearLabelErrSign(moCodeLabel)
-            Me.ClearLabelErrSign(moDescriptionLabel)
-            Me.ClearLabelErrSign(moPriceListSourceLabel)
-            Me.ClearLabelErrSign(moCountryLabel)
-            Me.ClearLabelErrSign(moPriceListCodeLabel)
-            Me.ClearLabelErrSign(moEquipmentTypeLabel)
-            Me.ClearLabelErrSign(moServiceClassLabel)
-            Me.ClearLabelErrSign(moServiceTypeLabel)
-            Me.ClearLabelErrSign(moServiceLevelLabel)
-            Me.ClearLabelErrSign(moStockItemTypeLabel)
+            ClearLabelErrSign(moCodeLabel)
+            ClearLabelErrSign(moDescriptionLabel)
+            ClearLabelErrSign(moPriceListSourceLabel)
+            ClearLabelErrSign(moCountryLabel)
+            ClearLabelErrSign(moPriceListCodeLabel)
+            ClearLabelErrSign(moEquipmentTypeLabel)
+            ClearLabelErrSign(moServiceClassLabel)
+            ClearLabelErrSign(moServiceTypeLabel)
+            ClearLabelErrSign(moServiceLevelLabel)
+            ClearLabelErrSign(moStockItemTypeLabel)
         End Sub
 
-        Public Shared Sub SetLabelColor(ByVal lbl As Label)
+        Public Shared Sub SetLabelColor(lbl As Label)
             lbl.ForeColor = Color.Black
         End Sub
 
         Protected Sub moCountryDrop_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moCountryDrop.SelectedIndexChanged
 
-            If Not moCountryDrop.SelectedItem Is Nothing Then
+            If moCountryDrop.SelectedItem IsNot Nothing Then
                 Dim oListContext1 As New ListContext
                 oListContext1.CountryId = New Guid(moCountryDrop.SelectedValue)
                 Dim PriceList As DataElements.ListItem() =
                                         CommonConfigManager.Current.ListManager.GetList(listCode:="PriceListByCountry", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext1)
-                Me.moPriceListCodeDrop.Populate(PriceList.ToArray(), New PopulateOptions() With
+                moPriceListCodeDrop.Populate(PriceList.ToArray(), New PopulateOptions() With
                             {
                                 .AddBlankItem = True
                             })
@@ -722,7 +722,7 @@ Namespace Tables
 
         Protected Sub moPriceListSourceDrop_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moPriceListSourceDrop.SelectedIndexChanged
 
-            If Not moPriceListSourceDrop.SelectedItem Is Nothing And moPriceListSourceDrop.SelectedValue = "PRICE_LIST_SOURCE-PRICE_LIST" Then
+            If moPriceListSourceDrop.SelectedItem IsNot Nothing And moPriceListSourceDrop.SelectedValue = "PRICE_LIST_SOURCE-PRICE_LIST" Then
                 EnablePriceFields()
             Else
                 DisablePriceFields()

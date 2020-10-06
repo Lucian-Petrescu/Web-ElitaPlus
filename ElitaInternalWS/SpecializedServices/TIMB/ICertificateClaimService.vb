@@ -16,7 +16,7 @@ Namespace SpecializedServices.Timb
         FaultContract(GetType(CertificateNotFoundFault)),
         FaultContract(GetType(ValidationFault)),
         FaultContract(GetType(DatabaseErrorFault))>
-        Function GetCertClaimInfo(ByVal CertClaimInfo As CertificateClaimRequest) As CertClaimInfoResponseDC
+        Function GetCertClaimInfo(CertClaimInfo As CertificateClaimRequest) As CertClaimInfoResponseDC
 #End Region
 
         ReadOnly Property UserID() As Guid

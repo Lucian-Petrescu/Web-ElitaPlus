@@ -26,43 +26,43 @@ Public Class ListItemByEntityDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("list_item_by_entity_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function    
     
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
 		If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 
-    Public Function LoadSelectedListItem(ByVal oLanguageCode As String, ByVal entityRefId As Guid, ByVal listCode As String) As DataSet
+    Public Function LoadSelectedListItem(oLanguageCode As String, entityRefId As Guid, listCode As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/SelectedListItem")
+        Dim selectStmt As String = Config("/SQL/SelectedListItem")
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_cursor_Result", GetType(DataSet))}
         Dim ds As New DataSet
         ' Dim tbl As String = "LoadEntityList"
@@ -88,8 +88,8 @@ Public Class ListItemByEntityDAL
 
     End Function
 
-    Public Function LoadAvailableListItem(ByVal oLanguageCode As String, ByVal entityRefId As Guid, ByVal listCode As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/AvailableListItem")
+    Public Function LoadAvailableListItem(oLanguageCode As String, entityRefId As Guid, listCode As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/AvailableListItem")
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_cursor_Result", GetType(DataSet))}
         Dim ds As New DataSet
         ' Dim tbl As String = "LoadEntityList"
@@ -113,9 +113,9 @@ Public Class ListItemByEntityDAL
         End Try
     End Function
 
-    Public Sub UpdateListItem(ByVal oEntityRefId As Guid, ByVal listCode As String, ByVal oDataset As DataSet)
+    Public Sub UpdateListItem(oEntityRefId As Guid, listCode As String, oDataset As DataSet)
         Dim tr As IDbTransaction = DBHelper.GetNewTransaction
-        Dim deleteStmt As String = Me.Config("/SQL/DELETE_ENTITY_ITEM")
+        Dim deleteStmt As String = Config("/SQL/DELETE_ENTITY_ITEM")
         Dim inputParameters(1) As DBHelper.DBHelperParameter
 
         Try
@@ -125,7 +125,7 @@ Public Class ListItemByEntityDAL
             DBHelper.Execute(deleteStmt, inputParameters, tr)
 
             ' Insert User Companies
-            Me.Update(oDataset, tr, DataRowState.Added Or DataRowState.Modified)
+            Update(oDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
             'We are the creator of the transaction we shoul commit it  and close the connection
             DBHelper.Commit(tr)
@@ -137,9 +137,9 @@ Public Class ListItemByEntityDAL
         End Try
     End Sub
 
-    Public Function LoadEntityList(ByVal oLanguageCode As String, ByVal oEntityRefId As Guid, ByVal listCode As String, ByVal entityType As String, ByVal shortExpression As String) As DataSet
+    Public Function LoadEntityList(oLanguageCode As String, oEntityRefId As Guid, listCode As String, entityType As String, shortExpression As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LoadEntityList")
+        Dim selectStmt As String = Config("/SQL/LoadEntityList")
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_cursor_Result", GetType(DataSet))}
         Dim ds As New DataSet
         ' Dim tbl As String = "LoadEntityList"
@@ -169,10 +169,10 @@ Public Class ListItemByEntityDAL
 
     End Function
 
-    Public Sub DeleteDropdown(ByVal listCode As String, ByVal oEntityRefId As Guid)
+    Public Sub DeleteDropdown(listCode As String, oEntityRefId As Guid)
 
         Dim tr As IDbTransaction = DBHelper.GetNewTransaction
-        Dim deleteStmt As String = Me.Config("/SQL/DELETE_ENTITY_ITEM")
+        Dim deleteStmt As String = Config("/SQL/DELETE_ENTITY_ITEM")
         Dim inputParameters(1) As DBHelper.DBHelperParameter
         Try
             ' Delete User Companies

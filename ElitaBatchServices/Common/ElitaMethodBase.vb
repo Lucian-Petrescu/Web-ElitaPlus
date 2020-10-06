@@ -22,7 +22,7 @@ Public MustInherit Class ElitaMethodBase
     Public MustOverride Function Execute() As String
     Public MustOverride Function ExecuteAsync() As String
     Protected MustOverride Function AsyncMethodSub() As String
-    Public MustOverride Sub SetDS(ByVal xmlData As String)
+    Public MustOverride Sub SetDS(xmlData As String)
 
     Public Class MethodParams
 
@@ -30,14 +30,14 @@ Public MustInherit Class ElitaMethodBase
         Public ObjectType As String = String.Empty
         Public Value As Object
 
-        Sub New(ByVal Name As String, ByVal Value As String)
+        Sub New(Name As String, Value As String)
             Me.Name = Name
-            Me.ObjectType = ObjectType
+            ObjectType = ObjectType
             Me.Value = Value
         End Sub
     End Class
 
-    Protected Sub SetIsProcessing(ByVal isProcessing As Boolean)
+    Protected Sub SetIsProcessing(isProcessing As Boolean)
 
         My.Settings.isRunning = isProcessing
 
@@ -57,14 +57,14 @@ Public MustInherit Class ElitaMethodBase
 
     End Sub
 
-    Protected Sub WriteLogs(ByVal logEntry As String, ByVal className As String, ByVal messageType As EventLogEntryType)
+    Protected Sub WriteLogs(logEntry As String, className As String, messageType As EventLogEntryType)
 
         AppConfig.DebugMessage.Trace("ElitaBatchServices", className, logEntry)
         _eventLog.WriteEntry(String.Format("ElitaBatchServices:  {0} : {1}", className, logEntry), messageType)
 
     End Sub
 
-    Protected Function GetErrorMessages(ByVal ex As Exception) As String
+    Protected Function GetErrorMessages(ex As Exception) As String
 
         Dim strB As New Text.StringBuilder
         Dim hasInnerExc As Boolean = False

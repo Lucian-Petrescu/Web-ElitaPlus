@@ -31,7 +31,7 @@ Partial Class BranchListForm
             Get
                 Return mnPageSize
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 mnPageSize = Value
             End Set
         End Property
@@ -40,7 +40,7 @@ Partial Class BranchListForm
             Get
                 Return msPageSort
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 msPageSort = Value
             End Set
         End Property
@@ -49,7 +49,7 @@ Partial Class BranchListForm
             Get
                 Return searchDV
             End Get
-            Set(ByVal Value As Branch.BranchSearchDV)
+            Set(Value As Branch.BranchSearchDV)
                 searchDV = Value
             End Set
         End Property
@@ -71,30 +71,30 @@ Partial Class BranchListForm
 
     Private IsReturningFromChild As Boolean = False
 
-    Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
             Dim retObj As BranchForm.ReturnType = CType(ReturnPar, BranchForm.ReturnType)
-            Me.State.HasDataChanged = retObj.HasDataChanged
+            State.HasDataChanged = retObj.HasDataChanged
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
-                        Me.State.BranchId = retObj.moBranchId
-                        Me.State.IsGridVisible = True
+                    If retObj IsNot Nothing Then
+                        State.BranchId = retObj.moBranchId
+                        State.IsGridVisible = True
                     End If
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
-                    Me.State.BranchId = Guid.Empty
+                    AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                    State.BranchId = Guid.Empty
                 Case Else
-                    Me.State.BranchId = Guid.Empty
+                    State.BranchId = Guid.Empty
             End Select
-            moDataGrid.CurrentPageIndex = Me.State.PageIndex
-            cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-            moDataGrid.PageSize = Me.State.PageSize
+            moDataGrid.CurrentPageIndex = State.PageIndex
+            cboPageSize.SelectedValue = CType(State.PageSize, String)
+            moDataGrid.PageSize = State.PageSize
             ControlMgr.SetVisibleControl(Me, trPageSize, moDataGrid.Visible)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -103,9 +103,9 @@ Partial Class BranchListForm
         Public moBranchId As Guid
         Public BoChanged As Boolean = False
 
-        Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal oBranchId As Guid, Optional ByVal boChanged As Boolean = False)
-            Me.LastOperation = LastOp
-            Me.moBranchId = oBranchId
+        Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, oBranchId As Guid, Optional ByVal boChanged As Boolean = False)
+            LastOperation = LastOp
+            moBranchId = oBranchId
             Me.BoChanged = boChanged
         End Sub
 
@@ -154,7 +154,7 @@ Partial Class BranchListForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -162,46 +162,46 @@ Partial Class BranchListForm
 
 #End Region
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put User code to initialize the page here
         Try
-            Me.MasterPage.MessageController.Clear_Hide()
+            MasterPage.MessageController.Clear_Hide()
 
             If Not Page.IsPostBack Then
 
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                 UpdateBreadCrum()
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                Me.SetGridItemStyleColor(moDataGrid)
+                SetGridItemStyleColor(moDataGrid)
                 PopulateDealer()
-                If Not Me.IsReturningFromChild Then
+                If Not IsReturningFromChild Then
                     ' It is The First Time
                     ' It is not Returning from Detail
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
                 Else
                     ' It is returning from detail
-                    ControlMgr.SetVisibleControl(Me, moDataGrid, Me.State.IsGridVisible)
-                    ControlMgr.SetVisibleControl(Me, trPageSize, Me.State.IsGridVisible)
-                    If Me.State.IsGridVisible Then
-                        Me.PopulateGrid(Me.POPULATE_ACTION_SAVE)
+                    ControlMgr.SetVisibleControl(Me, moDataGrid, State.IsGridVisible)
+                    ControlMgr.SetVisibleControl(Me, trPageSize, State.IsGridVisible)
+                    If State.IsGridVisible Then
+                        PopulateGrid(POPULATE_ACTION_SAVE)
                     End If
                 End If
             Else
                 ClearErrLabels()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("BRANCH_INFO")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("BRANCH_INFO")
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("BRANCH_INFO")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("BRANCH_INFO")
             End If
         End If
     End Sub
@@ -210,40 +210,40 @@ Partial Class BranchListForm
 
 #Region "Handlers-Buttons"
 
-    Private Sub moBtnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub moBtnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
         Try
             If TheDealerControl.SelectedGuid.Equals(Guid.Empty) Then
                 ElitaPlusPage.SetLabelError(TheDealerControl.CaptionLabel)
                 Throw New GUIException(Message.MSG_INVALID_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
             End If
-            If TheDealerControl.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX Then
-                moDataGrid.CurrentPageIndex = Me.NO_PAGE_INDEX
-                Me.State.SortExpression = Branch.COL_BRANCH_NAME
+            If TheDealerControl.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                moDataGrid.CurrentPageIndex = NO_PAGE_INDEX
+                State.SortExpression = Branch.COL_BRANCH_NAME
                 moDataGrid.DataMember = Nothing
-                Me.State.searchDV = Nothing
-                Me.State.searchBtnClicked = True
+                State.searchDV = Nothing
+                State.searchBtnClicked = True
                 PopulateGrid()
-                Me.State.searchBtnClicked = False
+                State.searchBtnClicked = False
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub moBtnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub moBtnClear_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
         Try
             ClearSearch()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub BtnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNew_WRITE.Click
+    Private Sub BtnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnNew_WRITE.Click
         Try
             SetSession()
-            Me.callPage(BranchForm.URL)
+            callPage(BranchForm.URL)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -255,59 +255,59 @@ Partial Class BranchListForm
         Get
             Return ViewState("SortDirection").ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
 
-    Private Sub moDataGrid_PageIndexChanged(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
+    Private Sub moDataGrid_PageIndexChanged(source As System.Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
         Try
             moDataGrid.CurrentPageIndex = e.NewPageIndex
             PopulateGrid(POPULATE_ACTION_NO_EDIT)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         Dim sBranchId As String
         Try
             If e.CommandSource.GetType.Equals(GetType(ImageButton)) Then
                 'this only runs when they click the pencil button for editing.
                 sBranchId = CType(e.Item.FindControl("branch_id"), Label).Text
-                Me.State.BranchId = Me.GetGuidFromString(sBranchId)
+                State.BranchId = GetGuidFromString(sBranchId)
                 SetSession()
-                Me.callPage(BranchForm.URL, Me.State.BranchId)
+                callPage(BranchForm.URL, State.BranchId)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub moDataGrid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moDataGrid.SortCommand
+    Private Sub moDataGrid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moDataGrid.SortCommand
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.moDataGrid.CurrentPageIndex = 0
-            Me.moDataGrid.SelectedIndex = -1
-            Me.PopulateGrid()
+            moDataGrid.CurrentPageIndex = 0
+            moDataGrid.SelectedIndex = -1
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -325,7 +325,7 @@ Partial Class BranchListForm
             TheDealerControl.Caption = TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_DEALERCODE)
             TheDealerControl.NothingSelected = True
             TheDealerControl.BindData(oDataView)
-            TheDealerControl.SelectedGuid = Me.State.DealerId
+            TheDealerControl.SelectedGuid = State.DealerId
             TheDealerControl.AutoPostBackDD = True
         Catch ex As Exception
             moErrorController.AddError(BRANCH_LIST_FORM001)
@@ -334,7 +334,7 @@ Partial Class BranchListForm
         End Try
     End Sub
 
-    Private Sub BindDataGrid(ByVal oDataView As DataView)
+    Private Sub BindDataGrid(oDataView As DataView)
         moDataGrid.DataSource = oDataView
         moDataGrid.DataBind()
     End Sub
@@ -342,35 +342,35 @@ Partial Class BranchListForm
     Private Sub PopulateGrid(Optional ByVal oAction As String = POPULATE_ACTION_NONE)
 
         Try
-            Me.State.DealerId = TheDealerControl.SelectedGuid
+            State.DealerId = TheDealerControl.SelectedGuid
 
-            If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-                Me.State.searchDV = Branch.getList(Me.SearchDescriptionTextBox.Text, Me.SearchCodeTextBox.Text, Me.State.DealerId)
+            If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+                State.searchDV = Branch.getList(SearchDescriptionTextBox.Text, SearchCodeTextBox.Text, State.DealerId)
             End If
-            Me.State.searchDV.Sort = Me.State.SortExpression
+            State.searchDV.Sort = State.SortExpression
             moDataGrid.AutoGenerateColumns = False
-            HighLightSortColumn(moDataGrid, Me.State.SortExpression)
-            BasePopulateGrid(moDataGrid, Me.State.searchDV, Me.State.BranchId, oAction)
+            HighLightSortColumn(moDataGrid, State.SortExpression)
+            BasePopulateGrid(moDataGrid, State.searchDV, State.BranchId, oAction)
 
             ControlMgr.SetVisibleControl(Me, trPageSize, moDataGrid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.moDataGrid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If moDataGrid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
-            Me.moDataGrid.CurrentPageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.PopulateGrid()
+            moDataGrid.CurrentPageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.moErrorController)
+            HandleErrors(ex, moErrorController)
         End Try
     End Sub
 
@@ -386,18 +386,18 @@ Partial Class BranchListForm
             TheDealerControl.SelectedIndex = 0
             'moDealerDrop.SelectedIndex = 0
             'Update Page State
-            With Me.State
+            With State
                 .DescriptionMask = SearchDescriptionTextBox.Text
                 .CodeMask = SearchCodeTextBox.Text
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
     Private Sub ClearErrLabels()
-        Me.ClearLabelErrSign(TheDealerControl.CaptionLabel)
+        ClearLabelErrSign(TheDealerControl.CaptionLabel)
     End Sub
 
 #End Region
@@ -405,23 +405,23 @@ Partial Class BranchListForm
 #Region "State-Management"
 
     Private Sub SetSession()
-        With Me.State
-            .CodeMask = Me.SearchCodeTextBox.Text
-            .DescriptionMask = Me.SearchDescriptionTextBox.Text
-            .DealerId = Me.State.DealerId 'Me.GetSelectedItem(moDealerDrop)
+        With State
+            .CodeMask = SearchCodeTextBox.Text
+            .DescriptionMask = SearchDescriptionTextBox.Text
+            .DealerId = State.DealerId 'Me.GetSelectedItem(moDealerDrop)
             .PageIndex = moDataGrid.CurrentPageIndex
             .PageSize = moDataGrid.PageSize
-            .PageSort = Me.State.SortExpression
-            .SearchDataView = Me.State.searchDV
+            .PageSort = State.SortExpression
+            .SearchDataView = State.searchDV
         End With
     End Sub
 
     Private Sub GetSession()
         'Dim oDataView As DataView
-        With Me.State
-            Me.SearchCodeTextBox.Text = .CodeMask
-            Me.SearchDescriptionTextBox.Text = .DescriptionMask
-            Me.moDataGrid.PageSize = .PageSize
+        With State
+            SearchCodeTextBox.Text = .CodeMask
+            SearchDescriptionTextBox.Text = .DescriptionMask
+            moDataGrid.PageSize = .PageSize
             cboPageSize.SelectedValue = CType(.PageSize, String)
             'oDataView.Sort = .PageSort
         End With

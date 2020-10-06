@@ -107,7 +107,7 @@ Namespace Interfaces
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -118,28 +118,28 @@ Namespace Interfaces
 #Region "Handlers-Init"
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
             End If
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             'Me.ErrorCtrl.Clear_Hide()
-            Me.MasterPage.MessageController.Clear_Hide()
+            MasterPage.MessageController.Clear_Hide()
             Try
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-                Me.UpdateBreadCrum()
-                If Not Me.IsPostBack Then
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+                UpdateBreadCrum()
+                If Not IsPostBack Then
                     InitializeForm()
                 End If
-                Me.InstallReportViewer()
+                InstallReportViewer()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
             '   InstallInterfaceProgressBar()
         End Sub
 
@@ -147,14 +147,14 @@ Namespace Interfaces
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnCopyTable_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopyTable_WRITE.Click
+        Private Sub btnCopyTable_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopyTable_WRITE.Click
             Dim dv As DataView
             Dim params As DownLoadBase.DownLoadParams
 
             Try
-                Me.State.SelectedTableId = Me.GetSelectedItem(moTableDrop)
+                State.SelectedTableId = GetSelectedItem(moTableDrop)
                 dv = LookupListNew.GetVscUploadsLookupList(Authentication.LangId, False)
-                Me.State.SelectedTableLayout = LookupListNew.GetCodeFromId(dv, Me.State.SelectedTableId)
+                State.SelectedTableLayout = LookupListNew.GetCodeFromId(dv, State.SelectedTableId)
                 UploadFile()
                 'UploadTable(params)
                 DisplayMessage(Message.MSG_THE_FILE_TRANSFER_HAS_COMPLETED, "", MSG_BTN_OK, MSG_TYPE_INFO)
@@ -163,7 +163,7 @@ Namespace Interfaces
                 '  DownLoadDs(params)
 
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Private Sub uploadFile()
@@ -171,7 +171,7 @@ Namespace Interfaces
 
             Using sr As New StreamReader(tableInput.PostedFile.InputStream, Encoding.Default)
                 Dim line As String = sr.ReadLine()
-                While Not line Is Nothing
+                While line IsNot Nothing
                     If line.Trim <> String.Empty Then
                         fileLines.Add(line.Trim)
                     End If
@@ -184,7 +184,7 @@ Namespace Interfaces
                 strUploadType = moTableDrop.SelectedItem.Text
                 If strUploadType = "Coverage Rate" Then
                     strUploadType = "VSCCOVRATE"
-                    Me.State.UploadType = strUploadType
+                    State.UploadType = strUploadType
                 End If
 
                 strResult = commonUpload.InitUpload(System.IO.Path.GetFileName(tableInput.PostedFile.FileName), strUploadType, strErrMsg)
@@ -203,7 +203,7 @@ Namespace Interfaces
                         afterUpload()
                     Catch ex As Threading.ThreadAbortException
                     Catch ex As Exception
-                        HandleErrors(ex, Me.MasterPage.MessageController)
+                        HandleErrors(ex, MasterPage.MessageController)
                     End Try
                 ElseIf strResult = "F" Then   'display the error message
                     Dim ErrList() As String = {"UPLOAD_FILE_PROGRESS"}
@@ -222,7 +222,7 @@ Namespace Interfaces
             State.searchDV = Nothing
             PopulateGrid()
             'panelResult.Visible = True
-            Me.MasterPage.MessageController.AddInformation(Message.MSG_INTERFACES_HAS_COMPLETED)
+            MasterPage.MessageController.AddInformation(Message.MSG_INTERFACES_HAS_COMPLETED)
         End Sub
 
         Private Sub PopulateGrid()
@@ -250,7 +250,7 @@ Namespace Interfaces
 #Region "Progress Bar"
 
         Public Sub InstallInterfaceProgressBar()
-            Me.InstallDisplayProgressBar()
+            InstallDisplayProgressBar()
         End Sub
 
         Private Sub ExecuteAndWait()
@@ -269,7 +269,7 @@ Namespace Interfaces
             'End Try
         End Sub
 
-        Function SetParameters(ByVal intStatusId As Guid, ByVal baseController As String) As InterfaceBaseForm.Params
+        Function SetParameters(intStatusId As Guid, baseController As String) As InterfaceBaseForm.Params
             Dim params As New InterfaceBaseForm.Params
 
             With params
@@ -295,7 +295,7 @@ Namespace Interfaces
                 moTableDrop.Populate(CommonConfigManager.Current.ListManager.GetList("VSCU", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions())
                 '  BindSelectItem(Me.State.SelectedSplitId.ToString, ddSplit)
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -313,7 +313,7 @@ Namespace Interfaces
 
             With oVscTableProcessedData
                 '   .allDs = Me.State.allDs
-                .layout = Me.State.SelectedTableLayout
+                .layout = State.SelectedTableLayout
                 ' .filename = Me.State.FileName
             End With
 
@@ -576,7 +576,7 @@ Namespace Interfaces
             'params.fileName = MiscUtil.GetUniqueFullPath(String.Empty, _
             '                        ElitaPlusPrincipal.Current.Identity.Name, _
             '                        filename & ".csv")
-            params.layout = Me.State.SelectedTableLayout
+            params.layout = State.SelectedTableLayout
             params.fileName = "VSC_" & params.layout & "_EXT.csv"
             'webServerFullPathFile = AppConfig.UnixServer.InterfaceDirectory & params.fileName
             webServerFullPathFile = webServerPath & "\" & params.fileName

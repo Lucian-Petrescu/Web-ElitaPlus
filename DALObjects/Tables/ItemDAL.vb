@@ -35,30 +35,30 @@ Public Class ItemDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("item_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal compIds As ArrayList, ByVal dealerId As Guid, _
-                         ByVal productCodeId As Guid, ByVal riskTypeId As Guid) As DataSet
+    Public Function LoadList(compIds As ArrayList, dealerId As Guid, _
+                         productCodeId As Guid, riskTypeId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim inClauseCondition As String
         Dim whereClauseConditions As String = ""
         Dim ds As New DataSet
 
-        inClauseCondition &= " AND edealer." & MiscUtil.BuildListForSql(Me.COL_NAME_COMPANY_ID, compIds, True)
+        inClauseCondition &= " AND edealer." & MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds, True)
 
         If Not dealerId.Equals(Guid.Empty) Then
             whereClauseConditions &= Environment.NewLine & "AND " & "EDEALER.DEALER_ID = " & MiscUtil.GetDbStringFromGuid(dealerId)
@@ -75,47 +75,47 @@ Public Class ItemDAL
         Try
 
             If Not inClauseCondition = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
+                selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
             End If
 
             If Not whereClauseConditions = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
 
             End If
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
                                     Environment.NewLine & "ORDER BY " & Environment.NewLine & _
-                                    "UPPER(" & Me.COL_NAME_DEALER_NAME & "), UPPER(" & _
-                                    Me.COL_NAME_PRODUCT_CODE & "), " & Me.COL_NAME_ITEM_NUMBER & _
-                                    ", UPPER(" & Me.COL_NAME_RISK_TYPE & ") DESC")
+                                    "UPPER(" & COL_NAME_DEALER_NAME & "), UPPER(" & _
+                                    COL_NAME_PRODUCT_CODE & "), " & COL_NAME_ITEM_NUMBER & _
+                                    ", UPPER(" & COL_NAME_RISK_TYPE & ") DESC")
             '			ORDER BY UPPER(DEALER_NAME), UPPER(PRODUCT_CODE), ITEM_NUMBER, UPPER(RISK_TYPE)
 
             parameters = New DBHelper.DBHelperParameter() _
-                                        {New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)}
+                                        {New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)}
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function getDealerId(ByVal id As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALER_ID")
+    Public Function getDealerId(id As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_DEALER_ID")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("item_id", id.ToByteArray)}
         Dim ds As New DataSet
         Try
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadDealerItemsInfo(ByRef ds As DataSet, ByVal dealerId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_DEALER_ITMES_INFO_FOR_WS")
+    Public Function LoadDealerItemsInfo(ByRef ds As DataSet, dealerId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_DEALER_ITMES_INFO_FOR_WS")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
         Dim OrderByClause As String = ""
@@ -136,17 +136,17 @@ Public Class ItemDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Function ProductCodeExists(ByVal product_code_id As Guid, ByVal risk_type_id As Guid, ByVal item_number As Long) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/ITEM_UNIQUE")
+    Public Function ProductCodeExists(product_code_id As Guid, risk_type_id As Guid, item_number As Long) As Boolean
+        Dim selectStmt As String = Config("/SQL/ITEM_UNIQUE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                                     New DBHelper.DBHelperParameter("product_code_id", product_code_id.ToByteArray), _
                                     New DBHelper.DBHelperParameter("risk_type_id", risk_type_id.ToByteArray), _
@@ -154,7 +154,7 @@ Public Class ItemDAL
         Dim ds As New DataSet
         Try
             Dim bExists As Boolean = True
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             If CType(ds.Tables(0).Rows(0).Item(0), Integer) = 0 Then
                 bExists = False
             End If
@@ -165,8 +165,8 @@ Public Class ItemDAL
 
     End Function
 
-    Public Function OptionalItemCodeExists(ByVal product_code_id As Guid, ByVal item_number As Long, ByVal OptionalItemCode As String) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/OPTIONAL_ITEM_UNIQUE")
+    Public Function OptionalItemCodeExists(product_code_id As Guid, item_number As Long, OptionalItemCode As String) As Boolean
+        Dim selectStmt As String = Config("/SQL/OPTIONAL_ITEM_UNIQUE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                                     New DBHelper.DBHelperParameter("product_code_id", product_code_id.ToByteArray), _
                                     New DBHelper.DBHelperParameter("item_number", item_number), _
@@ -174,7 +174,7 @@ Public Class ItemDAL
         Dim ds As New DataSet
         Try
             Dim bExists As Boolean = True
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             If CType(ds.Tables(0).Rows(0).Item(0), Integer) = 0 Then
                 bExists = False
             End If

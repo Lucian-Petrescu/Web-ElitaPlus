@@ -42,8 +42,8 @@ Public Class GetClaimsByDateRange
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -54,10 +54,10 @@ Public Class GetClaimsByDateRange
     Private Sub Load(ByVal ds As GetClaimsByDateRangeDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As BOValidationException
             Throw ex
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -73,9 +73,9 @@ Public Class GetClaimsByDateRange
         Try
             If ds.GetClaimsByDateRange.Count = 0 Then Exit Sub
             With ds.GetClaimsByDateRange.Item(0)
-                Me.StartDate = ds.GetClaimsByDateRange.Item(0).START_DATE
-                Me.EndDate = ds.GetClaimsByDateRange.Item(0).END_DATE
-                Me.ServiceCenterCode = ds.GetClaimsByDateRange.Item(0).SERVICE_CENTER_CODE
+                StartDate = ds.GetClaimsByDateRange.Item(0).START_DATE
+                EndDate = ds.GetClaimsByDateRange.Item(0).END_DATE
+                ServiceCenterCode = ds.GetClaimsByDateRange.Item(0).SERVICE_CENTER_CODE
             End With
         Catch ex As BOValidationException
             Throw ex
@@ -102,7 +102,7 @@ Public Class GetClaimsByDateRange
         End Get
         Set(ByVal Value As Date)
             CheckDeleted()
-            Me.SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE, Value)
+            SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE, Value)
         End Set
     End Property
 
@@ -117,7 +117,7 @@ Public Class GetClaimsByDateRange
         End Get
         Set(ByVal Value As Date)
             CheckDeleted()
-            Me.SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE, Value)
+            SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE, Value)
         End Set
     End Property
 
@@ -133,20 +133,20 @@ Public Class GetClaimsByDateRange
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DATA_COL_NAME_SERVICE_CENTER_CODE, Value)
+            SetValue(DATA_COL_NAME_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
     Public ReadOnly Property ServiceCenterID() As Guid
         Get
-            If Me._serviceCenterId.Equals(Guid.Empty) AndAlso Not Me.ServiceCenterCode Is Nothing AndAlso Me.ServiceCenterCode <> "" Then
+            If _serviceCenterId.Equals(Guid.Empty) AndAlso Not ServiceCenterCode Is Nothing AndAlso ServiceCenterCode <> "" Then
 
                 Dim dvServiceCenter As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
 
                 If Not dvServiceCenter Is Nothing AndAlso dvServiceCenter.Count > 0 Then
-                    Me._serviceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, Me.ServiceCenterCode)
+                    _serviceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, ServiceCenterCode)
 
-                    If Me._serviceCenterId.Equals(Guid.Empty) Then
+                    If _serviceCenterId.Equals(Guid.Empty) Then
                         Throw New BOValidationException("GetClaimsByDateRange Error: ", INVALID_SERVICE_CENTER_CODE)
                     End If
                 Else
@@ -155,7 +155,7 @@ Public Class GetClaimsByDateRange
 
             End If
 
-            Return Me._serviceCenterId
+            Return _serviceCenterId
         End Get
     End Property
 
@@ -165,12 +165,12 @@ Public Class GetClaimsByDateRange
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
 
             Dim excludeTags As ArrayList = New ArrayList()
 
-            Dim dsClaim As DataSet = PickupListHeader.GetClaimsByDateRange(Me.StartDate, Me.EndDate, Me.ServiceCenterID)
-            dsClaim.DataSetName = Me.DATASET_NAME
+            Dim dsClaim As DataSet = PickupListHeader.GetClaimsByDateRange(StartDate, EndDate, ServiceCenterID)
+            dsClaim.DataSetName = DATASET_NAME
 
             If dsClaim.Tables(0).Rows.Count > MAX_NUM_CLAIMS Then
                 Throw New BOValidationException("GetClaimsByDateRange Error: ", MAX_NUM_CLAIMS_EXCEEDED)

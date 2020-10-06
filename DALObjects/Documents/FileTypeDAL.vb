@@ -30,23 +30,23 @@ Public Class FileTypeDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
         If ds Is Nothing Then
             Return
         End If
         If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
             Throw New NotSupportedException()
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         Throw New NotSupportedException()
     End Sub
 
-    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter(PAR_I_NAME_FILE_TYPE_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_FILE_TYPE_ID)
             .AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE)
@@ -58,7 +58,7 @@ Public Class FileTypeDAL
 
     End Sub
 
-    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter(PAR_I_NAME_FILE_TYPE_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_FILE_TYPE_ID)
             .AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE)

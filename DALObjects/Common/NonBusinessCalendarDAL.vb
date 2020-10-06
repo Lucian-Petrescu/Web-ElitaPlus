@@ -35,71 +35,71 @@ Public Class NonBusinessCalendarDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("nonbusiness_calendar_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal companyGroupID As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(companyGroupID As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter
 
         parameters = New OracleParameter() _
-                                    {New OracleParameter(COL_NAME_COMPANY_GROUP_ID, Me.GuidToSQLString(companyGroupID))}
+                                    {New OracleParameter(COL_NAME_COMPANY_GROUP_ID, GuidToSQLString(companyGroupID))}
 
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function GetNonBusinessDaysCount(ByVal defaultFollowUp As Integer, ByVal companyGroupID As Guid) As DataSet
+    Public Function GetNonBusinessDaysCount(defaultFollowUp As Integer, companyGroupID As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GetNonBusinessDaysCount")
+        Dim selectStmt As String = Config("/SQL/GetNonBusinessDaysCount")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_COMPANY_GROUP_ID, companyGroupID.ToByteArray), _
                                             New OracleParameter("default_followup", defaultFollowUp)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
-    Public Function GetSameBusinessDaysCount(ByVal followupDate As Date, ByVal companyGroupID As Guid) As DataSet
+    Public Function GetSameBusinessDaysCount(followupDate As Date, companyGroupID As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GetSameBusinessDaysCount")
+        Dim selectStmt As String = Config("/SQL/GetSameBusinessDaysCount")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_COMPANY_GROUP_ID, companyGroupID.ToByteArray), _
                                             New OracleParameter(COL_NAME_NONBUSINESS_DATE, followupDate)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
-    Public Function GetNextBusinessDate(ByVal defaultFollowUp As Integer, ByVal companyGroupID As Guid) As Date
+    Public Function GetNextBusinessDate(defaultFollowUp As Integer, companyGroupID As Guid) As Date
         Dim ds As New DataSet
         Dim nextBusinessDate As DateType
-        Dim selectStmt As String = Me.Config("/SQL/GET_NEXT_BUSINESS_DATE")
+        Dim selectStmt As String = Config("/SQL/GET_NEXT_BUSINESS_DATE")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-        {New DBHelper.DBHelperParameter(Me.P_COMPANY_GROUP_ID, companyGroupID.ToByteArray) _
-        , New DBHelper.DBHelperParameter(Me.P_COL_NAME_DEFAULT_FOLLOWUP, defaultFollowUp)}
+        {New DBHelper.DBHelperParameter(P_COMPANY_GROUP_ID, companyGroupID.ToByteArray) _
+        , New DBHelper.DBHelperParameter(P_COL_NAME_DEFAULT_FOLLOWUP, defaultFollowUp)}
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             nextBusinessDate = New DateType(Convert.ToDateTime(ds.Tables(0).Rows(0)(0)))
 
             Return nextBusinessDate
@@ -110,25 +110,25 @@ Public Class NonBusinessCalendarDAL
 
     End Function
 
-    Public Function GetNonBusinessDates(ByVal companyGroupCode As String, ByVal dtStart As Date, ByVal dtEnd As Date) As DataSet
+    Public Function GetNonBusinessDates(companyGroupCode As String, dtStart As Date, dtEnd As Date) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GetNonBusinessDateByCompanyGroupCode")
+        Dim selectStmt As String = Config("/SQL/GetNonBusinessDateByCompanyGroupCode")
 
         parameters = New OracleParameter() {New OracleParameter("company_group_code", companyGroupCode), _
                                             New OracleParameter("start_date", dtStart), _
                                             New OracleParameter("end_date", dtEnd)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

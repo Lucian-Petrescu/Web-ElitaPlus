@@ -68,25 +68,25 @@ Public Class CommPlanDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("commission_plan_id", id.ToByteArray)}
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
         Try
-            DBHelper.FetchSp(selectStmt, parameters, outParameters, familyDS, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, parameters, outParameters, familyDS, TABLE_NAME)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal oCommPlanData As CommPlanData, ByVal activeUserId As Guid) As DataSet
+    Public Function LoadList(oCommPlanData As CommPlanData, activeUserId As Guid) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+            Dim selectStmt As String = Config("/SQL/LOAD_LIST")
             Dim inparameters() As DBHelper.DBHelperParameter
 
             With oCommPlanData
@@ -104,7 +104,7 @@ Public Class CommPlanDAL
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
 
             Dim ds As New DataSet
-            Dim tbl As String = Me.TABLE_NAME
+            Dim tbl As String = TABLE_NAME
 
             DBHelper.FetchSp(selectStmt, inparameters, outParameters, ds, tbl)
             Return ds
@@ -114,9 +114,9 @@ Public Class CommPlanDAL
         End Try
     End Function
 
-    Public Function LoadExpiration(ByVal oCommPlanData As CommPlanData) As DataSet
+    Public Function LoadExpiration(oCommPlanData As CommPlanData) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/MAX_EXPIRATION")
+            Dim selectStmt As String = Config("/SQL/MAX_EXPIRATION")
             Dim inparameters() As DBHelper.DBHelperParameter
 
             With oCommPlanData
@@ -127,7 +127,7 @@ Public Class CommPlanDAL
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
 
             Dim ds As New DataSet
-            Dim tbl As String = Me.TABLE_NAME
+            Dim tbl As String = TABLE_NAME
 
             DBHelper.FetchSp(selectStmt, inparameters, outParameters, ds, tbl)
             Return ds
@@ -138,10 +138,10 @@ Public Class CommPlanDAL
 
     End Function
 
-    Public Function GetExpirationOverlap(ByVal oCommPlanData As CommPlanDataExp) As DataSet
+    Public Function GetExpirationOverlap(oCommPlanData As CommPlanDataExp) As DataSet
         Try
             'Dim selectStmt As String = Me.Config("/SQL/OVERLAP_EXPIRATION")
-            Dim selectStmt As String = Me.Config("/SQL/CHECK_FOR_DATES_OVERLAP")
+            Dim selectStmt As String = Config("/SQL/CHECK_FOR_DATES_OVERLAP")
             Dim inparameters() As DBHelper.DBHelperParameter
 
             With oCommPlanData
@@ -152,7 +152,7 @@ Public Class CommPlanDAL
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
 
             Dim ds As New DataSet
-            Dim tbl As String = Me.TABLE_NAME
+            Dim tbl As String = TABLE_NAME
 
             DBHelper.FetchSp(selectStmt, inparameters, outParameters, ds, tbl)
             Return ds
@@ -163,9 +163,9 @@ Public Class CommPlanDAL
 
     End Function
 
-    Public Function CommPaymentExist(ByVal pi_commmission_plan_id As Guid) As String
+    Public Function CommPaymentExist(pi_commmission_plan_id As Guid) As String
         Try
-            Dim selectStmt As String = Me.Config("/SQL/COMM_PAYMENT_EXIST")
+            Dim selectStmt As String = Config("/SQL/COMM_PAYMENT_EXIST")
 
             Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_Commmission_Plan_id", pi_commmission_plan_id.ToByteArray)}
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_status", GetType(String))}
@@ -180,9 +180,9 @@ Public Class CommPlanDAL
     End Function
 
     'Public Function CheckDatesOverLap(ByVal pi_dealer_id As Guid, ByVal pi_effective_date As Date, pi_expiration_date As Date) As String
-    Public Function CheckDatesOverLap(ByVal pi_dealer_id As Guid, ByVal pi_expiration_date As Date, ByVal pi_commmission_plan_id As Guid) As String
+    Public Function CheckDatesOverLap(pi_dealer_id As Guid, pi_expiration_date As Date, pi_commmission_plan_id As Guid) As String
         Try
-            Dim selectStmt As String = Me.Config("/SQL/CHECK_FOR_DATES_OVERLAP")
+            Dim selectStmt As String = Config("/SQL/CHECK_FOR_DATES_OVERLAP")
 
             'Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_dealer_id", pi_dealer_id.ToByteArray),
             '                                                                                     New DBHelper.DBHelperParameter("pi_effective_date", pi_effective_date),
@@ -204,9 +204,9 @@ Public Class CommPlanDAL
 
     End Function
 
-    Public Function CheckExpirationOverlap(ByVal oCommPlanData As CommPlanDataExp) As DataSet
+    Public Function CheckExpirationOverlap(oCommPlanData As CommPlanDataExp) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/CHECK_FOR_DATES_OVERLAP")
+            Dim selectStmt As String = Config("/SQL/CHECK_FOR_DATES_OVERLAP")
             Dim inparameters() As DBHelper.DBHelperParameter
 
             With oCommPlanData
@@ -217,7 +217,7 @@ Public Class CommPlanDAL
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
 
             Dim ds As New DataSet
-            Dim tbl As String = Me.TABLE_NAME
+            Dim tbl As String = TABLE_NAME
 
             DBHelper.FetchSp(selectStmt, inparameters, outParameters, ds, tbl)
             Return ds
@@ -231,7 +231,7 @@ Public Class CommPlanDAL
 
 #Region "Overloaded Methods"
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         Dim commPlanDAL As New CommPlanDAL 'CommPlanDistributionDAL  
 
@@ -270,19 +270,19 @@ Public Class CommPlanDAL
     End Sub
 #End Region
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
             'MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
-            MyBase.UpdateFromSP(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+            MyBase.UpdateFromSP(ds.Tables(TABLE_NAME), Transaction, changesFilter)
             'MyBase.UpdateWithParam(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
     Private Function FetchStoredProcedure(methodName As String, storedProc As String, parameters() As OracleParameter, Optional familyDS As DataSet = Nothing) As DataSet
-        Dim tbl As String = Me.TABLE_NAME
+        Dim tbl As String = TABLE_NAME
         Dim ds As DataSet = If(familyDS Is Nothing, New DataSet(), familyDS)
 
         ds.Tables.Add(tbl)
@@ -296,7 +296,7 @@ Public Class CommPlanDAL
                     OracleDbHelper.Fetch(cmd, tbl, ds)
                 End Using
             End Using
-            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(Me.PAR_OUT_NAME_RETURN_CODE))
+            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
             If (Not par Is Nothing AndAlso par.Value = 200) Then
                 Throw New ElitaPlusException("ELP_COMMISSION_PLAN - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If
@@ -307,12 +307,12 @@ Public Class CommPlanDAL
         Return ds
     End Function
 
-    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         command.AddParameter("pi_commission_plan_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)
         command.AddParameter("po_exec_status", OracleDbType.Int32, ParameterDirection.Output)
     End Sub
 
-    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter("pi_dealer_id", OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_ID)
             .AddParameter("pi_code", OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE)
@@ -326,7 +326,7 @@ Public Class CommPlanDAL
         End With
     End Sub
 
-    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter("pi_dealer_id", OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_ID)
             .AddParameter("pi_code", OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE)

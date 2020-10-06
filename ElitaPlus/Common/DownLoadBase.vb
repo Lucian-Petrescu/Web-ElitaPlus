@@ -31,7 +31,7 @@ Public Class DownLoadBase
 #End Region
 
 #Region "Process"
-        Public Sub SendFile(ByVal sourceFileName As String, ByVal deleteFileAfterDownload As Boolean)
+        Public Sub SendFile(sourceFileName As String, deleteFileAfterDownload As Boolean)
             Dim fInfo As FileInfo = New FileInfo(sourceFileName)
 
             Response.ClearContent()
@@ -51,11 +51,11 @@ Public Class DownLoadBase
 
         End Sub
 
-        Public Sub SendFile(ByVal sourceFileName As String)
+        Public Sub SendFile(sourceFileName As String)
             SendFile(sourceFileName, False)
         End Sub
 
-        Public Sub CreateExcelHeader(ByVal sourceFileName As String)
+        Public Sub CreateExcelHeader(sourceFileName As String)
             Response.ClearContent()
             Response.ClearHeaders()
             Response.ContentType = "application/vnd.ms-excel"

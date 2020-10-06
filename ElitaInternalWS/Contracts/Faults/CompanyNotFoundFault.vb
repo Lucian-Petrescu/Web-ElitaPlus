@@ -7,8 +7,8 @@ Public Class CompanyNotFoundFault
 
     End Sub
 
-    Public Sub New(ByVal pCompanyNotfound As CompanyNotFoundException)
-        Me.CompanyCode = pCompanyNotfound.CompanyCode
+    Public Sub New(pCompanyNotfound As CompanyNotFoundException)
+        CompanyCode = pCompanyNotfound.CompanyCode
     End Sub
 
     <DataMember(Name:="CompanyCode", IsRequired:=True)>

@@ -15,7 +15,7 @@ Partial Class AccountingSettingListForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -84,7 +84,7 @@ Partial Class AccountingSettingListForm
             Get
                 Return selectedPageSize
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 selectedPageSize = Value
             End Set
         End Property
@@ -106,10 +106,10 @@ Partial Class AccountingSettingListForm
 
 #Region "PAGE EVENTS"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
         'Put user code to initialize the page here
-        Me.moErrorController.Clear_Hide()
+        moErrorController.Clear_Hide()
 
         Try
             If Not Page.IsPostBack Then
@@ -123,59 +123,59 @@ Partial Class AccountingSettingListForm
                 SetNoPostBackAttributes()
             End If
             SetClientAttributes()
-            If Me.IsReturningFromChild = True Then
-                Me.IsReturningFromChild = False
+            If IsReturningFromChild = True Then
+                IsReturningFromChild = False
             End If
             'Write the scripts to toggle the search Field from dealer to svc center
             WritePageScripts()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.moErrorController)
+            HandleErrors(ex, moErrorController)
         End Try
-        Me.ShowMissingTranslations(Me.moErrorController)
+        ShowMissingTranslations(moErrorController)
 
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
             Dim retObj As AccountingSettingForm.ReturnType = CType(ReturnPar, AccountingSettingForm.ReturnType)
 
-            Me.State.HasDataChanged = retObj.HasDataChanged
+            State.HasDataChanged = retObj.HasDataChanged
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
-                        If Not retObj.EditingBo Is Nothing Then
-                            Me.State.AcctSettingsId = retObj.EditingBo.Id
+                    If retObj IsNot Nothing Then
+                        If retObj.EditingBo IsNot Nothing Then
+                            State.AcctSettingsId = retObj.EditingBo.Id
                         End If
-                        Me.State.IsGridVisible = True
+                        State.IsGridVisible = True
                     End If
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                    AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.moErrorController)
+            HandleErrors(ex, moErrorController)
         End Try
     End Sub
 #End Region
 
 #Region "BUTTON CLICKS"
 
-    Private Sub moBtnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnSearch.Click
+    Private Sub moBtnSearch_Click(sender As System.Object, e As System.EventArgs) Handles moBtnSearch.Click
         'Determine if they are searching for dealers, service centers, branches, or commission entity
         ClearSearchStrings()
-        If Me.rdoDealer.Checked Then
+        If rdoDealer.Checked Then
             'Dealers
             With State
                 .sDealerName = txtDealerName.Text.Trim
                 .sDealerCode = txtDealerCode.Text.Trim
                 If .sDealerName.Length = 0 And .sDealerCode.Length = 0 Then
-                    Me.moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
+                    moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
                     Exit Sub
                 End If
 
                 If .sDealerName.Length > 0 And .sDealerCode.Length > 0 Then
-                    Me.moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_ENTER_ONLY_DEALER_NAME_OR_CODE_ERR)
+                    moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_ENTER_ONLY_DEALER_NAME_OR_CODE_ERR)
                     Exit Sub
                 End If
                 .TransType = SearchType.Dealer
@@ -186,51 +186,51 @@ Partial Class AccountingSettingListForm
                 .sDealerGroupName = txtDealerGroupName.Text.Trim
                 .sDealerGroupCode = txtDealerGroupCode.Text.Trim
                 If .sDealerGroupName.Length = 0 And .sDealerGroupCode.Length = 0 Then
-                    Me.moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
+                    moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
                     Exit Sub
                 End If
 
                 If .sDealerGroupName.Length > 0 And .sDealerGroupCode.Length > 0 Then
-                    Me.moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_ENTER_ONLY_DEALER_NAME_OR_CODE_ERR)
+                    moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_ENTER_ONLY_DEALER_NAME_OR_CODE_ERR)
                     Exit Sub
                 End If
                 .TransType = SearchType.DealerGroup
             End With
-        ElseIf Me.rdoServiceCenter.Checked Then
+        ElseIf rdoServiceCenter.Checked Then
             ' Service Center
             With State
                 .sSCCode = txtSCCode.Text.Trim
                 .sSCName = txtSCName.Text.Trim
                 If .sSCCode.Length = 0 And .sSCName.Length = 0 Then
-                    Me.moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
+                    moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
                     Exit Sub
                 End If
                 If .sSCCode.Length > 0 And .sSCName.Length > 0 Then
-                    Me.moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_ENTER_ONLY_SERVICE_CENTER_NAME_OR_CODE_ERR)
+                    moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_ENTER_ONLY_SERVICE_CENTER_NAME_OR_CODE_ERR)
                     Exit Sub
                 End If
                 .TransType = SearchType.ServiceCenter
             End With
-        ElseIf Me.rdoBranch.Checked Then
+        ElseIf rdoBranch.Checked Then
             'Branches
             With State
                 .sBranchCode = txtBranchCode.Text.Trim
                 .sBranchName = txtBranchName.Text.Trim
                 If .sBranchName.Length = 0 And .sBranchCode.Length = 0 Then
-                    Me.moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
+                    moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
                     Exit Sub
                 End If
 
                 If .sBranchName.Length > 0 And .sBranchCode.Length > 0 Then
-                    Me.moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_ENTER_ONLY_BRANCH_NAME_OR_CODE_ERR)
+                    moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_ENTER_ONLY_BRANCH_NAME_OR_CODE_ERR)
                     Exit Sub
                 End If
                 .TransType = SearchType.Branch
             End With
         Else 'commission entity
             State.sCommissionEntity = txtCommEntity.Text.Trim
-            If Me.txtCommEntity.Text.Trim.Length = 0 Then
-                Me.moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
+            If txtCommEntity.Text.Trim.Length = 0 Then
+                moErrorController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
                 Exit Sub
             End If
             State.TransType = SearchType.CommissionEntity
@@ -241,70 +241,70 @@ Partial Class AccountingSettingListForm
         PopulateGrid(True)
     End Sub
 
-    Private Sub moBtnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnClear.Click
+    Private Sub moBtnClear_Click(sender As System.Object, e As System.EventArgs) Handles moBtnClear.Click
         ClearSearchCriteria()
         ClearSearchStrings()
     End Sub
 
-    Private Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+    Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
         'SetSession()
         ClearSearchStrings()
 
-        If Me.rdoDealer.Checked Then
+        If rdoDealer.Checked Then
             ' Dealer
             State.sDealerName = txtDealerName.Text.Trim
             State.sDealerCode = txtDealerCode.Text.Trim
-            Me.callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(AccountingSettingForm.ReturnType.TargetType.Dealer, False))
+            callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(AccountingSettingForm.ReturnType.TargetType.Dealer, False))
         ElseIf rdoDealerGroup.Checked Then
             'dealer group
             State.sDealerGroupName = txtDealerGroupName.Text.Trim
             State.sDealerGroupCode = txtDealerGroupCode.Text.Trim
-            Me.callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(AccountingSettingForm.ReturnType.TargetType.DealerGroup, False))
-        ElseIf Me.rdoServiceCenter.Checked Then
+            callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(AccountingSettingForm.ReturnType.TargetType.DealerGroup, False))
+        ElseIf rdoServiceCenter.Checked Then
             State.sSCCode = txtSCCode.Text.Trim
             State.sSCName = txtSCName.Text.Trim
             ' Service Center
-            Me.callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(AccountingSettingForm.ReturnType.TargetType.ServiceCenter, False))
+            callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(AccountingSettingForm.ReturnType.TargetType.ServiceCenter, False))
         ElseIf rdoBranch.Checked Then
             'Branch
             State.sBranchCode = txtBranchCode.Text.Trim
             State.sBranchName = txtBranchName.Text.Trim
-            Me.callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(AccountingSettingForm.ReturnType.TargetType.Branch, False))
+            callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(AccountingSettingForm.ReturnType.TargetType.Branch, False))
         ElseIf rdoCommEntity.Checked Then
             'Commission Entity
             State.sCommissionEntity = txtCommEntity.Text.Trim
-            Me.callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(AccountingSettingForm.ReturnType.TargetType.CommissionEntity, False))
+            callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(AccountingSettingForm.ReturnType.TargetType.CommissionEntity, False))
         End If
     End Sub
 #End Region
 
 #Region "GridView Related"
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
-            Me.State.AcctSettingsId = Guid.Empty
+            State.PageIndex = Grid.PageIndex
+            State.AcctSettingsId = Guid.Empty
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
-    Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             If e.CommandName = "Select" Then
                 Dim lblCtrl As Label
                 Dim row As GridViewRow = CType(CType(e.CommandSource, Control).Parent.Parent, GridViewRow)
                 Dim RowInd As Integer = row.RowIndex
-                lblCtrl = CType(Grid.Rows(RowInd).Cells(GRID_COL_ACCT_SETTING_ID_IDX).FindControl(Me.GRID_CTRL_ACCT_SETTING_ID), Label)
-                Me.State.AcctSettingsId = New Guid(lblCtrl.Text)
+                lblCtrl = CType(Grid.Rows(RowInd).Cells(GRID_COL_ACCT_SETTING_ID_IDX).FindControl(GRID_CTRL_ACCT_SETTING_ID), Label)
+                State.AcctSettingsId = New Guid(lblCtrl.Text)
                 'Todo: call detail pages
                 Dim TargetType As AccountingSettingForm.ReturnType.TargetType, strTitle As String, strOtherParam As String
                 Select Case State.TransType
@@ -330,27 +330,27 @@ Partial Class AccountingSettingListForm
                 callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(State.AcctSettingsId, TargetType, Guid.Empty, strTitle, False, strOtherParam))
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             BaseItemBound(sender, e)
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_Sorting(sender As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
             Dim strSort As String = e.SortExpression
             With State
@@ -363,18 +363,18 @@ Partial Class AccountingSettingListForm
             End With
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.selectedPageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.selectedPageSize)
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region
@@ -382,15 +382,15 @@ Partial Class AccountingSettingListForm
 #Region "Client Attributes"
 
     Private Sub SetDefaultButtons()
-        Me.SetDefaultButton(Me.txtDealerGroupName, moBtnSearch)
-        Me.SetDefaultButton(Me.txtDealerGroupCode, moBtnSearch)
-        Me.SetDefaultButton(Me.txtDealerName, moBtnSearch)
-        Me.SetDefaultButton(Me.txtDealerCode, moBtnSearch)
-        Me.SetDefaultButton(Me.txtSCName, moBtnSearch)
-        Me.SetDefaultButton(Me.txtSCCode, moBtnSearch)
-        Me.SetDefaultButton(Me.txtBranchName, moBtnSearch)
-        Me.SetDefaultButton(Me.txtBranchCode, moBtnSearch)
-        Me.SetDefaultButton(Me.txtCommEntity, moBtnSearch)
+        SetDefaultButton(txtDealerGroupName, moBtnSearch)
+        SetDefaultButton(txtDealerGroupCode, moBtnSearch)
+        SetDefaultButton(txtDealerName, moBtnSearch)
+        SetDefaultButton(txtDealerCode, moBtnSearch)
+        SetDefaultButton(txtSCName, moBtnSearch)
+        SetDefaultButton(txtSCCode, moBtnSearch)
+        SetDefaultButton(txtBranchName, moBtnSearch)
+        SetDefaultButton(txtBranchCode, moBtnSearch)
+        SetDefaultButton(txtCommEntity, moBtnSearch)
     End Sub
 
     Private Sub SetNoPostBackAttributes()
@@ -514,7 +514,7 @@ Partial Class AccountingSettingListForm
         str.Append("}}")
         str.Append("</script>")
 
-        Me.RegisterClientScriptBlock("TOGGLESEARCH", str.ToString)
+        RegisterClientScriptBlock("TOGGLESEARCH", str.ToString)
 
     End Sub
 
@@ -523,13 +523,13 @@ Partial Class AccountingSettingListForm
 #Region "CONTROLLING LOGIC"
 
     Protected Sub CheckIfComingFromAcctSettTypeConfirm()
-        Dim confResponse As String = Me.HiddenASTypePromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = TYPE_DEALER Then
-            Me.callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(AccountingSettingForm.ReturnType.TargetType.Dealer, False))
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = TYPE_SERVICE_CENTER Then
-            Me.callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(AccountingSettingForm.ReturnType.TargetType.ServiceCenter, False))
+        Dim confResponse As String = HiddenASTypePromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = TYPE_DEALER Then
+            callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(AccountingSettingForm.ReturnType.TargetType.Dealer, False))
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = TYPE_SERVICE_CENTER Then
+            callPage(AccountingSettingForm.URL, New AccountingSettingForm.ReturnType(AccountingSettingForm.ReturnType.TargetType.ServiceCenter, False))
         End If
-        Me.HiddenASTypePromptResponse.Value = ""
+        HiddenASTypePromptResponse.Value = ""
     End Sub
 
     Private Sub ClearSearchStrings()
@@ -546,7 +546,7 @@ Partial Class AccountingSettingListForm
         End With
     End Sub
 
-    Private Sub AddColumnsToGrid(ByVal st As SearchType)
+    Private Sub AddColumnsToGrid(st As SearchType)
         Select Case st
             Case SearchType.Dealer
                 With CType(Grid.Columns(1), BoundField)
@@ -653,7 +653,7 @@ Partial Class AccountingSettingListForm
         End Select
     End Sub
 
-    Sub GetSearchDataView(ByVal st As SearchType)
+    Sub GetSearchDataView(st As SearchType)
         Dim _d As AcctSetting
         Select Case st
             Case SearchType.Dealer
@@ -665,7 +665,7 @@ Partial Class AccountingSettingListForm
                 State.SortBy = AcctSetting.DealerGroupAcctSettingsDV.DEALER_GROUP_NAME
             Case SearchType.ServiceCenter
                 _d = New AcctSetting
-                State.searchDV = _d.GetServiceCenters(Me.txtSCName.Text.Trim, Me.txtSCCode.Text.Trim)
+                State.searchDV = _d.GetServiceCenters(txtSCName.Text.Trim, txtSCCode.Text.Trim)
                 State.SortBy = AcctSetting.ServiceCenterAcctSettingsDV.DESCRIPTION
             Case SearchType.Branch
                 _d = New AcctSetting
@@ -678,7 +678,7 @@ Partial Class AccountingSettingListForm
         State.searchDV.Sort = State.SortBy
     End Sub
 
-    Private Function AddNewRowToEmptyDV(ByVal st As SearchType) As DataView
+    Private Function AddNewRowToEmptyDV(st As SearchType) As DataView
         Select Case st
             Case SearchType.Dealer
                 Return CType(State.searchDV, AcctSetting.DealerAcctSettingsDV).AddNewRowToEmptyDV
@@ -703,23 +703,23 @@ Partial Class AccountingSettingListForm
 
             If State.searchDV.Count = 0 Then
                 Dim dv As DataView = AddNewRowToEmptyDV(State.TransType)
-                SetPageAndSelectedIndexFromGuid(dv, Me.State.AcctSettingsId, Me.Grid, Me.State.PageIndex)
-                Me.Grid.DataSource = dv
+                SetPageAndSelectedIndexFromGuid(dv, State.AcctSettingsId, Grid, State.PageIndex)
+                Grid.DataSource = dv
             Else
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.AcctSettingsId, Me.Grid, Me.State.PageIndex)
-                Me.Grid.DataSource = Me.State.searchDV
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.AcctSettingsId, Grid, State.PageIndex)
+                Grid.DataSource = State.searchDV
             End If
 
-            Me.State.PageIndex = Me.Grid.PageIndex
-            Me.Grid.DataBind()
+            State.PageIndex = Grid.PageIndex
+            Grid.DataBind()
 
 
             HighLightGridViewSortColumn(Grid, State.SortBy)
             ControlMgr.SetVisibleControl(Me, Grid, True)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
@@ -735,15 +735,15 @@ Partial Class AccountingSettingListForm
     End Sub
 
     Private Sub PopulateFormFromState()
-        With Me.State
-            Me.txtDealerGroupCode.Text = .sDealerGroupCode
-            Me.txtDealerGroupName.Text = .sDealerGroupName
-            Me.txtDealerCode.Text = .sDealerCode
-            Me.txtDealerName.Text = .sDealerName
-            Me.txtSCCode.Text = .sSCCode
-            Me.txtSCName.Text = .sSCName
-            Me.txtBranchCode.Text = .sBranchCode
-            Me.txtBranchName.Text = .sBranchName
+        With State
+            txtDealerGroupCode.Text = .sDealerGroupCode
+            txtDealerGroupName.Text = .sDealerGroupName
+            txtDealerCode.Text = .sDealerCode
+            txtDealerName.Text = .sDealerName
+            txtSCCode.Text = .sSCCode
+            txtSCName.Text = .sSCName
+            txtBranchCode.Text = .sBranchCode
+            txtBranchName.Text = .sBranchName
             If Not (.selectedPageSize = DEFAULT_PAGE_SIZE) Then
                 cboPageSize.SelectedValue = CType(.selectedPageSize, String)
                 Grid.PageSize = .selectedPageSize
@@ -777,7 +777,7 @@ Partial Class AccountingSettingListForm
             txtBranchName.Text = String.Empty
             txtBranchCode.Text = String.Empty
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.moErrorController)
+            HandleErrors(ex, moErrorController)
         End Try
     End Sub
 

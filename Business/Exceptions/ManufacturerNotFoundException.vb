@@ -6,18 +6,18 @@ Public Class ManufacturerNotFoundException
     Inherits Exception
 
     Public ReadOnly ManufacturerCode As String
-    Public ReadOnly ManufacturerId As Nullable(Of Guid)
+    Public ReadOnly ManufacturerId As Guid?
 
-    Public Sub New(ByVal pManufacturerId As Nullable(Of Guid), ByVal pManufacturerCode As String)
+    Public Sub New(pManufacturerId As Guid?, pManufacturerCode As String)
         ManufacturerCode = pManufacturerCode
         ManufacturerId = pManufacturerId
     End Sub
-    Public Sub New(ByVal pManufacturerId As Nullable(Of Guid), ByVal pManufacturerCode As String, pMessage As String)
+    Public Sub New(pManufacturerId As Guid?, pManufacturerCode As String, pMessage As String)
         MyBase.New(pMessage)
         ManufacturerCode = pManufacturerCode
         ManufacturerId = pManufacturerId
     End Sub
-    Public Sub New(ByVal pManufacturerId As Nullable(Of Guid), ByVal pManufacturerCode As String, pMessage As String, pInner As Exception)
+    Public Sub New(pManufacturerId As Guid?, pManufacturerCode As String, pMessage As String, pInner As Exception)
         MyBase.New(pMessage, pInner)
         ManufacturerCode = pManufacturerCode
         ManufacturerId = pManufacturerId

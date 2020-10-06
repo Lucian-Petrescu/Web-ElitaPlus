@@ -58,7 +58,7 @@ Namespace Security
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -67,20 +67,20 @@ Namespace Security
 #End Region
 
 #Region "Handlers"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrControllerMaster.Clear_Hide()
+            ErrControllerMaster.Clear_Hide()
             If Not Page.IsPostBack Then
 
-                Me.SetFormTab(Me.PAGETAB)
-                Me.SetFormTitle(Me.PAGETITLE)
+                SetFormTab(PAGETAB)
+                SetFormTitle(PAGETITLE)
 
                 populateTabs()
             End If
         End Sub
 
 
-        Private Sub BtnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSave_WRITE.Click
+        Private Sub BtnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnSave_WRITE.Click
             Try
                 ProcessChanges()
             Catch ex As Exception
@@ -88,7 +88,7 @@ Namespace Security
             End Try
         End Sub
 
-        Private Sub BtnReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnReset.Click
+        Private Sub BtnReset_Click(sender As System.Object, e As System.EventArgs) Handles BtnReset.Click
             tvFormList.Nodes.Clear()
             populateTabs()
         End Sub
@@ -96,7 +96,7 @@ Namespace Security
 #End Region
 
 #Region "TreeView"
-        Private Sub populateFormNotes(ByVal tabNote As SysWebUICtls.TreeNode)
+        Private Sub populateFormNotes(tabNote As SysWebUICtls.TreeNode)
             TabFormList.RowFilter = "TAB_CODE='" & tabNote.Value & "'"
             Dim strTemp As String, i As Integer
             Dim drv As DataRowView
@@ -112,10 +112,10 @@ Namespace Security
             TabFormList.RowFilter = ""
         End Sub
 
-        Private Sub populateControlNotes(ByVal formNode As SysWebUICtls.TreeNode)
+        Private Sub populateControlNotes(formNode As SysWebUICtls.TreeNode)
             Dim strFormCode As String() = formNode.Value.Split("|"c)
             Dim lsCtlName As Collections.Generic.List(Of String) = AssemblyInformation.GetControlsByFormName(strFormCode(0))
-            If Not lsCtlName Is Nothing Then
+            If lsCtlName IsNot Nothing Then
                 For Each ctl As String In lsCtlName
                     Dim newNode As SysWebUICtls.TreeNode = New SysWebUICtls.TreeNode(ctl, strFormCode(0))
                     newNode.PopulateOnDemand = True
@@ -125,7 +125,7 @@ Namespace Security
             End If
         End Sub
 
-        Private Sub populateRolePermissions(ByVal ctlNote As SysWebUICtls.TreeNode)
+        Private Sub populateRolePermissions(ctlNote As SysWebUICtls.TreeNode)
             Dim dv As DataView = RoleAuthCtrlExclusion.GetControlPermissionList(ctlNote.Value, ctlNote.Text)
             Dim strFormPerm As String, strCtlPerm As String, i As Integer
             Dim drv As DataRowView
@@ -163,7 +163,7 @@ Namespace Security
             Next
         End Sub
 
-        Private Sub tvFormList_TreeNodePopulate(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.TreeNodeEventArgs) Handles tvFormList.TreeNodePopulate
+        Private Sub tvFormList_TreeNodePopulate(sender As Object, e As System.Web.UI.WebControls.TreeNodeEventArgs) Handles tvFormList.TreeNodePopulate
             Try
                 Select Case e.Node.Depth
                     Case 0
@@ -191,14 +191,14 @@ Namespace Security
                     newNode.PopulateOnDemand = True
                     newNode.Expanded = False
 
-                    Me.tvFormList.Nodes.Add(newNode)
+                    tvFormList.Nodes.Add(newNode)
                 End If
             Next
         End Sub
 #End Region
 
 #Region "Business Part"
-        Sub ReloadControlPermissions(ByVal changedNotes As SysWebUICtls.TreeNodeCollection)
+        Sub ReloadControlPermissions(changedNotes As SysWebUICtls.TreeNodeCollection)
             For Each objNote As SysWebUICtls.TreeNode In changedNotes
                 For Each tabNote As SysWebUICtls.TreeNode In tvFormList.Nodes
                     For Each formNote As SysWebUICtls.TreeNode In tabNote.ChildNodes
@@ -213,8 +213,8 @@ Namespace Security
             Next
         End Sub
 
-        Private Sub AddChanges(ByVal strAction As String, ByVal strFormID As String,
-                               ByVal strCtlName As String, ByVal strRoleID As String, ByVal strPermType As String)
+        Private Sub AddChanges(strAction As String, strFormID As String,
+                               strCtlName As String, strRoleID As String, strPermType As String)
             If _dtChanges Is Nothing Then
                 _dtChanges = New DataTable
                 _dtChanges.Columns.Add(COL_ACTION, GetType(String))
@@ -239,7 +239,7 @@ Namespace Security
         Private Sub SaveTheChanges()
             Dim strAction As String, strTemp As String
             Dim objCtlEx As RoleAuthCtrlExclusion
-            If Not _dtChanges Is Nothing AndAlso _dtChanges.Rows.Count > 0 Then
+            If _dtChanges IsNot Nothing AndAlso _dtChanges.Rows.Count > 0 Then
                 For Each dr As DataRow In _dtChanges.Rows
                     strAction = dr(COL_ACTION).ToString
                     Select Case strAction
@@ -271,7 +271,7 @@ Namespace Security
             Dim strFormPerm As String, strCtlPerm As String, strExistingRec As String
             Dim changedNotes As New SysWebUICtls.TreeNodeCollection
 
-            If Not chkNotes Is Nothing Then
+            If chkNotes IsNot Nothing Then
                 For Each objNote As SysWebUICtls.TreeNode In chkNotes
                     strPermType = objNote.Value
                     strList = objNote.Parent.Value.Split("|"c)

@@ -86,7 +86,7 @@ Namespace Reports
         Private currentAccountingYear As Integer
 
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -96,34 +96,34 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -131,12 +131,12 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
             Handles moUserCompanyMultipleDrop.SelectedDropChanged
             Try
                 PopulateServiceCenters()
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -148,8 +148,8 @@ Namespace Reports
 
         Private Sub ClearErrLabels()
             ' Me.ClearLabelErrSign(MonthYearLabel)
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(moEndDateLabel)
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(moEndDateLabel)
         End Sub
 
 #End Region
@@ -164,7 +164,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, "* " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
 
             End If
@@ -210,7 +210,7 @@ Namespace Reports
                                                                     })
 
                 If ServiceCenters.Count > 0 Then
-                    If Not ServiceCenterList Is Nothing Then
+                    If ServiceCenterList IsNot Nothing Then
                         ServiceCenterList.AddRange(ServiceCenters)
                     Else
                         ServiceCenterList = ServiceCenters.Clone()
@@ -218,7 +218,7 @@ Namespace Reports
                 End If
             Next
 
-            Me.cbosvcenter.Populate(ServiceCenterList.ToArray(),
+            cbosvcenter.Populate(ServiceCenterList.ToArray(),
                                     New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
@@ -233,7 +233,7 @@ Namespace Reports
                                                                               .DealerId = dealerId
                                                                             })
 
-            Me.cbosvcenter.Populate(ServiceCentes.ToArray(),
+            cbosvcenter.Populate(ServiceCentes.ToArray(),
                                     New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
@@ -248,7 +248,7 @@ Namespace Reports
                             CommonConfigManager.Current.ListManager.GetList(listCode:="SNTYP",
                                                                             languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-            Me.cbosvnotification.Populate(Notifications.ToArray(),
+            cbosvnotification.Populate(Notifications.ToArray(),
                                             New PopulateOptions() With
                                             {
                                                 .AddBlankItem = True
@@ -259,11 +259,11 @@ Namespace Reports
             PopulateServiceCenters()
             PopulateServiceNotifications()
             Dim t As Date = Date.Now.AddMonths(-1).AddDays(1)
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now)
-            Me.rsvcenter.Checked = True
-            Me.rsvnotification.Checked = True
-            Me.RadiobuttonTotalsOnly.Checked = True
+            moBeginDateText.Text = GetDateFormattedString(t)
+            moEndDateText.Text = GetDateFormattedString(Date.Now)
+            rsvcenter.Checked = True
+            rsvnotification.Checked = True
+            RadiobuttonTotalsOnly.Checked = True
             TheRptCeInputControl.populateReportLanguages(RPT_FILENAME)
         End Sub
 
@@ -271,9 +271,9 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal companyCode As String, ByVal companyDesc As String, ByVal dealerCode As String, ByVal begindate As String, ByVal enddate As String,
-                               ByVal SVCenterCode As String, ByVal SVCenterDesc As String, ByVal notificationCode As String,
-                               ByVal notificationDesc As String, ByVal isdetail As String, ByVal langcode As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, companyDesc As String, dealerCode As String, begindate As String, enddate As String,
+                               SVCenterCode As String, SVCenterDesc As String, notificationCode As String,
+                               notificationDesc As String, isdetail As String, langcode As String) As ReportCeBaseForm.Params
 
             Dim Params As New ReportCeBaseForm.Params
             Dim repParams(TOTALPARAMS) As ReportCeBaseForm.RptParam
@@ -301,7 +301,7 @@ Namespace Reports
             isdetail = NO
             SetReportParams(rptParams, repParams, "Total", PARAMS_PER_REPORT * 1)     ' Main Report
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With Params
                 .msRptName = reportName
@@ -315,9 +315,9 @@ Namespace Reports
 
         End Function
 
-        Function SetExpParameters(ByVal companyCode As String, ByVal companyDesc As String, ByVal dealerCode As String, ByVal begindate As String, ByVal enddate As String,
-                               ByVal SVCenterCode As String, ByVal SVCenterDesc As String, ByVal notificationCode As String,
-                               ByVal notificationDesc As String, ByVal isdetail As String, ByVal langcode As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(companyCode As String, companyDesc As String, dealerCode As String, begindate As String, enddate As String,
+                               SVCenterCode As String, SVCenterDesc As String, notificationCode As String,
+                               notificationDesc As String, isdetail As String, langcode As String) As ReportCeBaseForm.Params
 
             'Dim reportName As String = RPT_FILENAME_EXPORT
             Dim params As New ReportCeBaseForm.Params
@@ -343,7 +343,7 @@ Namespace Reports
 
             SetReportParams(rptParams, repParams, String.Empty, PARAMS_PER_REPORT * 0)     ' Main Report
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
             With params
                 .msRptName = reportName
                 .msRptWindowName = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
@@ -355,8 +355,8 @@ Namespace Reports
             Return params
         End Function
 
-        Sub SetReportParams(ByVal rptParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                          ByVal reportName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(rptParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                          reportName As String, startIndex As Integer)
 
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_COMPANY", .companycode, reportName)
@@ -378,8 +378,8 @@ Namespace Reports
             Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
             Dim languageid As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Dim langcode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_LANGUAGES, languageid)
-            Dim SVCenterId As Guid = Me.GetSelectedItem(Me.cbosvcenter)
-            Dim NotificationId As Guid = Me.GetSelectedItem(Me.cbosvnotification)
+            Dim SVCenterId As Guid = GetSelectedItem(cbosvcenter)
+            Dim NotificationId As Guid = GetSelectedItem(cbosvnotification)
             Dim CompanyId As String = GuidControl.GuidToHexString(UserCompanyMultipleDrop.SelectedGuid)
             Dim CompanyCode As String = UserCompanyMultipleDrop.SelectedCode
             Dim CompanyDesc As String = UserCompanyMultipleDrop.SelectedDesc
@@ -408,7 +408,7 @@ Namespace Reports
             beginDate = ReportCeBase.FormatDate(moBeginDateLabel, moBeginDateText.Text)
 
             'Validating the selection
-            If Me.rsvcenter.Checked Then
+            If rsvcenter.Checked Then
                 svcenterCode = ALL
                 svcenterDesc = ALL
             ElseIf Not SVCenterId.Equals(Guid.Empty) Then
@@ -420,7 +420,7 @@ Namespace Reports
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_SERVICE_CENTER_MUST_BE_SELECTED_ERR)
             End If
 
-            If Me.rsvnotification.Checked Then
+            If rsvnotification.Checked Then
                 notificationCode = ALL
                 notificationDesc = ALL
             ElseIf Not NotificationId.Equals(Guid.Empty) Then
@@ -431,7 +431,7 @@ Namespace Reports
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_NOTIFICATION_TYPE_MUST_BE_SELECTED_ERR)
             End If
 
-            If Me.RadiobuttonDetail.Checked Then
+            If RadiobuttonDetail.Checked Then
                 isdetail = YES
             Else
                 isdetail = NO

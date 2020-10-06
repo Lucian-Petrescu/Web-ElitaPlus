@@ -1,10 +1,10 @@
 ﻿Public Partial Class ReportCeStatusForm
     Inherits System.Web.UI.Page
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
         Response.ContentType = "text/xml"
-        If Not Session("ReportRunning") Is Nothing AndAlso Session("ReportRunning").ToString = "OK" Then
+        If Session("ReportRunning") IsNot Nothing AndAlso Session("ReportRunning").ToString = "OK" Then
             If Session("ReportRunning").ToString = "OK" Then Session("ReportRunning") = ""
 
             'Dim rpturl As String = "<![CDATA[http:" + Session("ReportLink").ToString + "]]>"

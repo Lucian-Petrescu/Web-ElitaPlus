@@ -79,8 +79,8 @@ Public Class AcselXToElitaClaimFileLoad
 
 
     Protected Overrides Function CreateFileLoadHeader(ByVal fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
-        Me.ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
-        Return Me.ClaimLoadFileProcessed
+        ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
+        Return ClaimLoadFileProcessed
     End Function
 
     Protected Overrides Function CreateFileLoadDetail(ByVal fileLoadDetailId As System.Guid, ByVal headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
@@ -145,8 +145,8 @@ Public Class AcselXToElitaClaimFileLoad
                     ''''''''''''''''''''''''''''''''''''''
                     'save data to claim response table
                     Dim oClaimIssueResponse As ClaimIssueResponse
-                    If Not Me.GetClaimIssueResponseId(softQuestionId, claimIssue) = Guid.Empty Then
-                        oClaimIssueResponse = claimIssue.GetClaimIssueResponseChild(Me.GetClaimIssueResponseId(softQuestionId, claimIssue))
+                    If Not GetClaimIssueResponseId(softQuestionId, claimIssue) = Guid.Empty Then
+                        oClaimIssueResponse = claimIssue.GetClaimIssueResponseChild(GetClaimIssueResponseId(softQuestionId, claimIssue))
                     Else
                         oClaimIssueResponse = claimIssue.GetNewClaimIssueResponseChild()
                     End If

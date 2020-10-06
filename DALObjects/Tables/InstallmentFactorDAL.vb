@@ -28,27 +28,27 @@ Public Class InstallmentFactorDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("installment_factor_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal dealerId As Guid, ByVal effective As Date, ByVal expiration As Date) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(dealerId As Guid, effective As Date, expiration As Date) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter
 
         parameters = New OracleParameter() _
@@ -57,28 +57,28 @@ Public Class InstallmentFactorDAL
                                      New OracleParameter(COL_NAME_EXPIRATION_DATE, expiration)}
 
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadListByDealer(ByVal dealerId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_DEALER")
+    Public Function LoadListByDealer(dealerId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_DEALER")
         Dim parameters() As OracleParameter
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
 
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetInstallmentFactorByDealer(ByVal dealerId As Guid, ByVal compId As ArrayList) As DataSet
+    Public Function GetInstallmentFactorByDealer(dealerId As Guid, compId As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_INSTALLMENT_FACTOR_BY_DEALER")
+        Dim selectStmt As String = Config("/SQL/LOAD_INSTALLMENT_FACTOR_BY_DEALER")
         Dim whereClauseConditions As String = ""
 
         Try
@@ -92,15 +92,15 @@ Public Class InstallmentFactorDAL
             whereClauseConditions &= Environment.NewLine & " AND " & Environment.NewLine & MiscUtil.BuildListForSql(DealerDAL.COL_NAME_COMPANY_ID, compId)
 
             If Not whereClauseConditions = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             End If
 
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
                                     Environment.NewLine & "ORDER BY " & Environment.NewLine & InstallmentFactorDAL.COL_NAME_EFFECTIVE_DATE & " DESC")
 
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
 
             Return ds
         Catch ex As Exception
@@ -112,12 +112,12 @@ Public Class InstallmentFactorDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

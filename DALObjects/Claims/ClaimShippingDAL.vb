@@ -34,16 +34,16 @@ Public Class ClaimShippingDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
+    Public Sub Load(familyDS As DataSet, id As Guid)
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(PAR_I_NAME_CLAIM_SHIPPING_ID, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -52,9 +52,9 @@ Public Class ClaimShippingDAL
 
     Public Function LoadList() As DataSet
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_LIST"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD_LIST"))
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -62,12 +62,12 @@ Public Class ClaimShippingDAL
     End Function
 
 
-    Public Sub LoadList(ByVal familyDS As DataSet, ByVal claimId As Guid)
+    Public Sub LoadList(familyDS As DataSet, claimId As Guid)
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -76,15 +76,15 @@ Public Class ClaimShippingDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
 		If ds Is Nothing Then
             Return
         End If
         If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
             Throw New NotSupportedException()
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
@@ -125,11 +125,11 @@ Public Class ClaimShippingDAL
     Public Function LoadClaimShippingData(claimId As Guid) As DataSet
         Try
             Dim ds As New DataSet
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/GET_CLAIM_SHIPPING_INFO"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/GET_CLAIM_SHIPPING_INFO"))
                 cmd.CommandType = CommandType.StoredProcedure
                 cmd.AddParameter(PAR_I_NAME_CLAIM_ID, OracleDbType.Raw, claimId.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, ds)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
                 Return ds
             End Using
         Catch ex As Exception
@@ -138,12 +138,12 @@ Public Class ClaimShippingDAL
     End Function
 
     Public Function GetLatestClaimShippingInfo(claimId As Guid, shippingTypeId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_LATEST_CLAIM_SHIPPING_INFO")
+        Dim selectStmt As String = Config("/SQL/GET_LATEST_CLAIM_SHIPPING_INFO")
         Dim ds As New DataSet
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray),
                                                                                            New DBHelper.DBHelperParameter(COL_NAME_SHIPPING_TYPE_ID, shippingTypeId.ToByteArray)}
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -151,13 +151,13 @@ Public Class ClaimShippingDAL
     End Function
 
 
-    Public Sub UpdateClaimShippingInfo(ByVal claimShippingId As Guid, ByVal trackingNumber As String)
+    Public Sub UpdateClaimShippingInfo(claimShippingId As Guid, trackingNumber As String)
         Dim selectStmt As String
         Dim parameters() As DBHelper.DBHelperParameter 
-        selectStmt = Me.Config("/SQL/UPDATE_CLAIM_SHIPPING_INFO")
+        selectStmt = Config("/SQL/UPDATE_CLAIM_SHIPPING_INFO")
         parameters = New DBHelper.DBHelperParameter() { _
-                                                          New DBHelper.DBHelperParameter(Me.COL_NAME_TRACKING_NUMBER, trackingNumber), _
-                                                          New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_SHIPPING_ID, claimShippingId.ToByteArray)}
+                                                          New DBHelper.DBHelperParameter(COL_NAME_TRACKING_NUMBER, trackingNumber), _
+                                                          New DBHelper.DBHelperParameter(COL_NAME_CLAIM_SHIPPING_ID, claimShippingId.ToByteArray)}
         Try
             DBHelper.ExecuteWithParam(selectStmt, parameters)
         Catch ex As Exception

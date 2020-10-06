@@ -15,7 +15,7 @@ Namespace Claims
             Throw New NotSupportedException()
         End Function
 
-        Public Function UpdateClaim(ByVal request As UpdateClaimRequest) As UpdateClaimResponse _
+        Public Function UpdateClaim(request As UpdateClaimRequest) As UpdateClaimResponse _
             Implements IClaimServiceV1.UpdateClaim
 
             ExtensionMethods.Validate(request)
@@ -32,7 +32,7 @@ Namespace Claims
 
         End Function
 
-        Public Function GetClaims(ByVal request As GetClaimsRequest) As GetClaimsResponse _
+        Public Function GetClaims(request As GetClaimsRequest) As GetClaimsResponse _
             Implements IClaimServiceV1.GetClaims
 
             Dim returnValue As New GetClaimsResponse
@@ -43,17 +43,17 @@ Namespace Claims
             Dim TypeOfSearch As Type = request.ClaimsSearch.GetType()
 
             If (TypeOfSearch Is GetType(ClaimSerialNumberLookup)) Then
-                Return Me.GetClaimsFromSerialNumberSearch(request)
+                Return GetClaimsFromSerialNumberSearch(request)
 
             ElseIf (TypeOfSearch Is GetType(ClaimImeiNumberLookup)) Then
-                Return Me.GetClaimsFromImeiNumberSearch(request)
+                Return GetClaimsFromImeiNumberSearch(request)
 
             End If
 
             Throw New NotSupportedException()
         End Function
 
-        Public Function GetClaimDetails(ByVal request As GetClaimDetailsRequest) As GetClaimDetailsResponse Implements IClaimServiceV1.GetClaimDetails
+        Public Function GetClaimDetails(request As GetClaimDetailsRequest) As GetClaimDetailsResponse Implements IClaimServiceV1.GetClaimDetails
 
             Dim response As New GetClaimDetailsResponse
 
@@ -81,32 +81,32 @@ Namespace Claims
 
         End Function
 
-        Private Function GetClaimsFromSerialNumberSearch(ByVal request As GetClaimsRequest) As GetClaimsResponse
+        Private Function GetClaimsFromSerialNumberSearch(request As GetClaimsRequest) As GetClaimsResponse
 
             Dim lookupParameters As ClaimSerialNumberLookup = DirectCast(request.ClaimsSearch, ClaimSerialNumberLookup)
             lookupParameters.Validate()
 
-            Me.ValidateDealerCode(lookupParameters.DealerCode)
+            ValidateDealerCode(lookupParameters.DealerCode)
 
             Dim ClaimsInfo As DataSet = ClaimBase.LoadClaimsBySerialNumber(lookupParameters.CountryCode, lookupParameters.CompanyCode, lookupParameters.DealerCode, lookupParameters.SerialNumber)
-            Return Me.ClaimsResponse(ClaimsInfo)
+            Return ClaimsResponse(ClaimsInfo)
 
         End Function
 
         'Note: This function searchs for imei numbers in both the imei and serial number columns (aka - virtual search_imei_serialnumber column)
-        Private Function GetClaimsFromImeiNumberSearch(ByVal request As GetClaimsRequest) As GetClaimsResponse
+        Private Function GetClaimsFromImeiNumberSearch(request As GetClaimsRequest) As GetClaimsResponse
 
             Dim lookupParameters As ClaimImeiNumberLookup = DirectCast(request.ClaimsSearch, ClaimImeiNumberLookup)
             lookupParameters.Validate()
 
-            Me.ValidateDealerCode(lookupParameters.DealerCode)
+            ValidateDealerCode(lookupParameters.DealerCode)
 
             Dim ClaimsInfo As DataSet = ClaimBase.LoadClaimsByImeiNumber(lookupParameters.CountryCode, lookupParameters.CompanyCode, lookupParameters.DealerCode, lookupParameters.ImeiNumber)
-            Return Me.ClaimsResponse(ClaimsInfo)
+            Return ClaimsResponse(ClaimsInfo)
 
         End Function
 
-        Private Sub ValidateDealerCode(ByVal DealerCode As String)
+        Private Sub ValidateDealerCode(DealerCode As String)
 
             If Not String.IsNullOrEmpty(DealerCode) Then
                 Dim dvDealers As DataView = LookupListNew.GetUserDealerAssignedLookupList(ElitaPlusIdentity.Current.ActiveUser.Id, DealerCode)
@@ -119,7 +119,7 @@ Namespace Claims
 
         End Sub
 
-        Private Function ClaimsResponse(ByVal ClaimsInfo As DataSet) As GetClaimsResponse
+        Private Function ClaimsResponse(ClaimsInfo As DataSet) As GetClaimsResponse
             Dim returnValue As New GetClaimsResponse
 
             Dim claimCount As Integer = 0

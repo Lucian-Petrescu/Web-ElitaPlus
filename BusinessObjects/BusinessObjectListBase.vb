@@ -17,41 +17,41 @@ Public MustInherit Class BusinessObjectListBase
 
 #Region "Constructors"
     Public Sub New(ByVal table As DataTable, ByVal boType As Type, ByVal parent As BusinessObjectBase)
-        Me._table = table
-        Me._parent = parent
-        Me._boType = boType
+        _table = table
+        _parent = parent
+        _boType = boType
     End Sub
 #End Region
 
 #Region "Properties"
     Public ReadOnly Property Table() As DataTable
         Get
-            Return Me._table
+            Return _table
         End Get
     End Property
 
     Public ReadOnly Property BOType() As Type
         Get
-            Return Me._boType
+            Return _boType
         End Get
     End Property
 
     Public ReadOnly Property Parent() As BusinessObjectBase
         Get
-            Return Me._parent
+            Return _parent
         End Get
     End Property
 
     Public Overridable ReadOnly Property IsDirty() As Boolean
         Get
             Dim bo As BusinessObjectBase
-            Dim deletions As DataTable = Me.Table.GetChanges(DataRowState.Added Or DataRowState.Deleted)
+            Dim deletions As DataTable = Table.GetChanges(DataRowState.Added Or DataRowState.Deleted)
             If Not deletions Is Nothing Then
                 Dim row As DataRow
                 For Each row In deletions.Rows
                     If row.RowState = DataRowState.Deleted Then
                         row.RejectChanges()
-                        If Me.Belong(Me.GetChild(row)) Then
+                        If Belong(GetChild(row)) Then
                             Return True
                         End If
                     End If
@@ -73,7 +73,7 @@ Public MustInherit Class BusinessObjectListBase
             bo = _boType.GetConstructor(Reflection.BindingFlags.Instance Or _
                                         Reflection.BindingFlags.NonPublic Or _
                                         Reflection.BindingFlags.Public, Nothing, _
-                                        New Type() {GetType(Guid), GetType(DataSet)}, Nothing).Invoke(New Object() {childId, Me._table.DataSet})
+                                        New Type() {GetType(Guid), GetType(DataSet)}, Nothing).Invoke(New Object() {childId, _table.DataSet})
         Catch ex As Exception
             If Not ex.InnerException Is Nothing AndAlso ex.InnerException.GetType Is GetType(DataNotFoundException) Then
                 Throw ex.InnerException
@@ -87,7 +87,7 @@ Public MustInherit Class BusinessObjectListBase
     Public Function GetChildThird(ByVal childId As Guid, ByVal ds As DataSet, ByVal SecondaryKeyName As String) As BusinessObjectBase
         Dim bo As BusinessObjectBase
         Try
-            bo = _boType.GetConstructor(New Type() {GetType(Guid), GetType(DataSet), GetType(String)}).Invoke(New Object() {childId, Me._table.DataSet, SecondaryKeyName})
+            bo = _boType.GetConstructor(New Type() {GetType(Guid), GetType(DataSet), GetType(String)}).Invoke(New Object() {childId, _table.DataSet, SecondaryKeyName})
         Catch ex As Exception
             If Not ex.InnerException Is Nothing AndAlso ex.InnerException.GetType Is GetType(DataNotFoundException) Then
                 Throw ex.InnerException
@@ -102,7 +102,7 @@ Public MustInherit Class BusinessObjectListBase
         Dim bo As BusinessObjectBase = _boType.GetConstructor(Reflection.BindingFlags.Instance Or _
                                                               Reflection.BindingFlags.NonPublic Or _
                                                               Reflection.BindingFlags.Public, Nothing, _
-                                                              New Type() {GetType(DataSet)}, Nothing).Invoke(New Object() {Me._table.DataSet})
+                                                              New Type() {GetType(DataSet)}, Nothing).Invoke(New Object() {_table.DataSet})
         Return bo
     End Function
 
@@ -110,7 +110,7 @@ Public MustInherit Class BusinessObjectListBase
         Dim bo As BusinessObjectBase = _boType.GetConstructor(Reflection.BindingFlags.Instance Or _
                                                               Reflection.BindingFlags.NonPublic Or _
                                                               Reflection.BindingFlags.Public, Nothing, _
-                                                              New Type() {GetType(DataSet), GetType(Guid)}, Nothing).Invoke(New Object() {Me._table.DataSet, parentId})
+                                                              New Type() {GetType(DataSet), GetType(Guid)}, Nothing).Invoke(New Object() {_table.DataSet, parentId})
         Return bo
     End Function
 
@@ -118,7 +118,7 @@ Public MustInherit Class BusinessObjectListBase
         Dim bo As BusinessObjectBase = _boType.GetConstructor(Reflection.BindingFlags.Instance Or
                                                               Reflection.BindingFlags.NonPublic Or
                                                               Reflection.BindingFlags.Public, Nothing,
-                                                              New Type() {GetType(DataSet), GetType(Guid), GetType(String)}, Nothing).Invoke(New Object() {Me._table.DataSet, parentId, secondaryTableName})
+                                                              New Type() {GetType(DataSet), GetType(Guid), GetType(String)}, Nothing).Invoke(New Object() {_table.DataSet, parentId, secondaryTableName})
         Return bo
     End Function
 
@@ -144,9 +144,9 @@ Public MustInherit Class BusinessObjectListBase
     Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
         Dim list As New ArrayList
         Dim row As DataRow
-        For Each row In Me.Table.Rows
+        For Each row In Table.Rows
             If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
-                Dim bo As BusinessObjectBase = Me.GetChild(row)
+                Dim bo As BusinessObjectBase = GetChild(row)
                 If Belong(bo) Then
                     list.Add(bo)
                 End If

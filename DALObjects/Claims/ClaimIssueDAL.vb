@@ -18,9 +18,9 @@ Public Class ClaimIssueDAL
     Public Const COL_NAME_CREATED_BY = "created_by_name"
 
 #Region "Fraude Methods"
-    Public Function ProcessFraudMonitoringIndicatorRule(ByVal claimId As Guid, ByVal certId As Guid, ByVal issueCode As String) As String
+    Public Function ProcessFraudMonitoringIndicatorRule(claimId As Guid, certId As Guid, issueCode As String) As String
         Dim errorCode As String = String.Empty
-        Dim storedProcName As String = Me.Config("/SQL/FraudMonitoringIndicatorRule")
+        Dim storedProcName As String = Config("/SQL/FraudMonitoringIndicatorRule")
 
         Using connection As OracleConnection = CreateConnection()
             Using command As OracleCommand = CreateCommand(storedProcName, CommandType.StoredProcedure, connection)
@@ -48,14 +48,14 @@ Public Class ClaimIssueDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, ByVal publishEventData As PublishedTaskDAL.PublishTaskData(Of PublishTaskClaimData), Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, publishEventData As PublishedTaskDAL.PublishTaskData(Of PublishTaskClaimData), Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim claimIssueResponseDAL As New ClaimIssueResponseDAL
         Dim claimIsssueStatusDAL As New ClaimIssueStatusDAL
 
-        If Not familyDataset.Tables(Me.TABLE_NAME) Is Nothing Then
-            For Each DataRow As DataRow In familyDataset.Tables(Me.TABLE_NAME).Rows
-                If (Not String.IsNullOrEmpty(DataRow(Me.COL_NAME_CREATED_BY).ToString())) Then
-                    If CType(DataRow(Me.COL_NAME_CREATED_BY), String) = "SYSTEM" Then
+        If Not familyDataset.Tables(TABLE_NAME) Is Nothing Then
+            For Each DataRow As DataRow In familyDataset.Tables(TABLE_NAME).Rows
+                If (Not String.IsNullOrEmpty(DataRow(COL_NAME_CREATED_BY).ToString())) Then
+                    If CType(DataRow(COL_NAME_CREATED_BY), String) = "SYSTEM" Then
                         DataRow(DALBase.COL_NAME_CREATED_BY) = "SYSTEM"
                     End If
                 Else
@@ -72,11 +72,11 @@ Public Class ClaimIssueDAL
             'First Pass updates Deletions
             claimIsssueStatusDAL.Update(familyDataset, tr, DataRowState.Deleted)
             claimIssueResponseDAL.Update(familyDataset, tr, DataRowState.Deleted)
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
 
             'Second Pass updates additions and changes
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             claimIssueResponseDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
             If (familyDataset.Tables.Contains(ClaimIssueStatusDAL.TABLE_NAME)) Then

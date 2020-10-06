@@ -105,8 +105,8 @@ Namespace Documents
 
         Public Sub Save(ByVal pFileType As FileType)
             pFileType.Save()
-            Me._repositories = Nothing
-            Me._fileTypes = Nothing
+            _repositories = Nothing
+            _fileTypes = Nothing
         End Sub
 
 #End Region
@@ -124,8 +124,8 @@ Namespace Documents
 
         Public Sub Save(ByVal pRepository As Repository)
             pRepository.Save()
-            Me._repositories = Nothing
-            Me._fileTypes = Nothing
+            _repositories = Nothing
+            _fileTypes = Nothing
         End Sub
 
 #End Region

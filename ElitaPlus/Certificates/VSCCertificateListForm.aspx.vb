@@ -15,7 +15,7 @@
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -63,28 +63,28 @@
             End Get
         End Property
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
+                MenuEnabled = True
+                IsReturningFromChild = True
                 'Me.State.searchDV = Nothing
                 Dim retObj As CertificateForm.ReturnType = CType(ReturnPar, CertificateForm.ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
-                                Me.State.selectedCertificateId = retObj.EditingBo.Id
+                                State.selectedCertificateId = retObj.EditingBo.Id
                             End If
-                            Me.State.IsGridVisible = True
+                            State.IsGridVisible = True
                         End If
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                        AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -92,43 +92,43 @@
 
 #Region "Page_Events"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
-            Me.ErrorCtrl.Clear_Hide()
+            Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetDefaultButton(Me.moVehicleLicenceTagText, btnSearch)
-                    Me.trPageSize.Visible = False
-                    Me.State.certificatesFoundMSG = TranslationBase.TranslateLabelOrMessage(Message.MSG_CERTIFICATES_FOUND)
-                    Me.GetStateProperties()
-                    If Me.State.IsGridVisible Then
-                        If Not (Me.State.PageSize = 10) Then
-                            cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                            Grid.PageSize = Me.State.PageSize
+                If Not IsPostBack Then
+                    SetDefaultButton(moVehicleLicenceTagText, btnSearch)
+                    trPageSize.Visible = False
+                    State.certificatesFoundMSG = TranslationBase.TranslateLabelOrMessage(Message.MSG_CERTIFICATES_FOUND)
+                    GetStateProperties()
+                    If State.IsGridVisible Then
+                        If Not (State.PageSize = 10) Then
+                            cboPageSize.SelectedValue = CType(State.PageSize, String)
+                            Grid.PageSize = State.PageSize
                         End If
-                        Me.PopulateGrid()
+                        PopulateGrid()
                     End If
-                    Me.SetGridItemStyleColor(Me.Grid)
+                    SetGridItemStyleColor(Grid)
 
                 Else
-                    Me.SetStateProperties()
+                    SetStateProperties()
                 End If
-                Me.DisplayProgressBarOnClick(Me.btnSearch, "Loading_Certificates")
+                DisplayProgressBarOnClick(btnSearch, "Loading_Certificates")
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
         Private Sub SetStateProperties()
             Dim oCompanyId As Guid = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
 
-            Me.State.VehicleLicenceTag = Me.moVehicleLicenceTagText.Text.ToUpper
+            State.VehicleLicenceTag = moVehicleLicenceTagText.Text.ToUpper
         End Sub
 
         Private Sub GetStateProperties()
-            Me.moVehicleLicenceTagText.Text = Me.State.VehicleLicenceTag
+            moVehicleLicenceTagText.Text = State.VehicleLicenceTag
         End Sub
 
 
@@ -139,52 +139,52 @@
         Public Sub PopulateGrid()
             Try
                 '    Me.GetSelectedItem(moDealerDrop)
-                Me.State.searchDV = Certificate.GetVehicleLicenseFlagList(Me.State.VehicleLicenceTag)
-                If Me.State.searchClick Then
-                    Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
-                    Me.State.searchClick = False
+                State.searchDV = Certificate.GetVehicleLicenseFlagList(State.VehicleLicenceTag)
+                If State.searchClick Then
+                    ValidSearchResultCount(State.searchDV.Count, True)
+                    State.searchClick = False
 
                 End If
 
-                Me.State.searchDV.Sort = Grid.DataMember
-                Me.Grid.AutoGenerateColumns = False
+                State.searchDV.Sort = Grid.DataMember
+                Grid.AutoGenerateColumns = False
 
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedCertificateId, Me.Grid, Me.State.PageIndex)
-                Me.State.PageIndex = Me.Grid.CurrentPageIndex
-                Me.Grid.DataSource = Me.State.searchDV
-                Me.Grid.AllowSorting = False
-                Me.Grid.DataBind()
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedCertificateId, Grid, State.PageIndex)
+                State.PageIndex = Grid.CurrentPageIndex
+                Grid.DataSource = State.searchDV
+                Grid.AllowSorting = False
+                Grid.DataBind()
 
-                ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-                Me.trPageSize.Visible = Me.Grid.Visible
+                ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+                trPageSize.Visible = Grid.Visible
 
-                Session("recCount") = Me.State.searchDV.Count
+                Session("recCount") = State.searchDV.Count
 
-                If Me.State.searchDV.Count > 0 Then
+                If State.searchDV.Count > 0 Then
 
-                    If Me.Grid.Visible Then
-                        Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & Me.State.certificatesFoundMSG
+                    If Grid.Visible Then
+                        lblRecordCount.Text = State.searchDV.Count & " " & State.certificatesFoundMSG
                     End If
                 Else
-                    If Me.Grid.Visible Then
-                        Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & Me.State.certificatesFoundMSG
+                    If Grid.Visible Then
+                        lblRecordCount.Text = State.searchDV.Count & " " & State.certificatesFoundMSG
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
 
         End Sub
 
         'This method will change the Page Index and the Selected Index
-        Public Function FindDVSelectedRowIndex(ByVal dv As Certificate.CertificateSearchDV) As Integer
-            If Me.State.selectedCertificateId.Equals(Guid.Empty) Then
+        Public Function FindDVSelectedRowIndex(dv As Certificate.CertificateSearchDV) As Integer
+            If State.selectedCertificateId.Equals(Guid.Empty) Then
                 Return -1
             Else
                 'Jump to the Right Page
                 Dim i As Integer
                 For i = 0 To dv.Count - 1
-                    If New Guid(CType(dv(i)(Certificate.CertificateSearchDV.COL_CERTIFICATE_ID), Byte())).Equals(Me.State.selectedCertificateId) Then
+                    If New Guid(CType(dv(i)(Certificate.CertificateSearchDV.COL_CERTIFICATE_ID), Byte())).Equals(State.selectedCertificateId) Then
                         Return i
                     End If
                 Next
@@ -198,57 +198,57 @@
 #Region "Datagrid Related "
 
         'The Binding LOgic is here
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
             Try
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    e.Item.Cells(Me.GRID_COL_CERTIFICATE_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(Certificate.VehicleLicenseFlagSearchDV.COL_CERTIFICATE_ID), Byte()))
-                    e.Item.Cells(Me.GRID_COL_VEHICLE_LICENSE_TAG_IDX).Text = dvRow(Certificate.VehicleLicenseFlagSearchDV.COL_VEHICLE_LICENSE_TAG).ToString
-                    e.Item.Cells(Me.GRID_COL_CERTIFICATE_IDX).Text = dvRow(Certificate.VehicleLicenseFlagSearchDV.COL_CERTIFICATE_NUMBER).ToString
-                    e.Item.Cells(Me.GRID_COL_STATUS_CODE_IDX).Text = dvRow(Certificate.VehicleLicenseFlagSearchDV.COL_STATUS_CODE).ToString
-                    e.Item.Cells(Me.GRID_COL_CUSTOMER_NAME_IDX).Text = dvRow(Certificate.VehicleLicenseFlagSearchDV.COL_CUSTOMER_NAME).ToString
+                    e.Item.Cells(GRID_COL_CERTIFICATE_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(Certificate.VehicleLicenseFlagSearchDV.COL_CERTIFICATE_ID), Byte()))
+                    e.Item.Cells(GRID_COL_VEHICLE_LICENSE_TAG_IDX).Text = dvRow(Certificate.VehicleLicenseFlagSearchDV.COL_VEHICLE_LICENSE_TAG).ToString
+                    e.Item.Cells(GRID_COL_CERTIFICATE_IDX).Text = dvRow(Certificate.VehicleLicenseFlagSearchDV.COL_CERTIFICATE_NUMBER).ToString
+                    e.Item.Cells(GRID_COL_STATUS_CODE_IDX).Text = dvRow(Certificate.VehicleLicenseFlagSearchDV.COL_STATUS_CODE).ToString
+                    e.Item.Cells(GRID_COL_CUSTOMER_NAME_IDX).Text = dvRow(Certificate.VehicleLicenseFlagSearchDV.COL_CUSTOMER_NAME).ToString
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
             Try
                 If e.CommandName = "SelectAction" Then
-                    Me.State.selectedCertificateId = New Guid(e.Item.Cells(Me.GRID_COL_CERTIFICATE_ID_IDX).Text)
-                    Me.callPage(CertificateForm.URL, Me.State.selectedCertificateId)
+                    State.selectedCertificateId = New Guid(e.Item.Cells(GRID_COL_CERTIFICATE_ID_IDX).Text)
+                    callPage(CertificateForm.URL, State.selectedCertificateId)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
 
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Me.State.selectedCertificateId = Guid.Empty
-                Me.PopulateGrid()
+                State.PageIndex = e.NewPageIndex
+                State.selectedCertificateId = Guid.Empty
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.PageSize = Grid.PageSize
-                Me.PopulateGrid()
+                State.PageSize = Grid.PageSize
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -257,28 +257,28 @@
 
 #Region " Buttons Clicks "
 
-        Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
             Try
-                Me.State.PageIndex = 0
-                Me.State.selectedCertificateId = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.searchClick = True
-                Me.State.searchDV = Nothing
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                State.selectedCertificateId = Guid.Empty
+                State.IsGridVisible = True
+                State.searchClick = True
+                State.searchDV = Nothing
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+        Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
             Try
-                Me.moVehicleLicenceTagText.Text = String.Empty
+                moVehicleLicenceTagText.Text = String.Empty
                 'Update Page State
-                With Me.State
-                    .VehicleLicenceTag = Me.moVehicleLicenceTagText.Text
+                With State
+                    .VehicleLicenceTag = moVehicleLicenceTagText.Text
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 

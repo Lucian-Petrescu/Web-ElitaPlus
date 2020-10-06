@@ -49,7 +49,7 @@ Public NotInheritable Class DBHelper
 #Region " Private Methods "
 
 
-    Private Shared Sub InternalFetch(ByVal ds As DataSet, ByVal sql As String, ByVal tableName As String)
+    Private Shared Sub InternalFetch(ds As DataSet, sql As String, tableName As String)
         Dim da As OracleDataAdapter
 
         Using conn As New OracleConnection(DBHelper.ConnectString)
@@ -68,7 +68,7 @@ Public NotInheritable Class DBHelper
     End Sub
 
 
-    Private Shared Sub InternalFetch(ByVal ds As DataSet, ByVal sql As String, ByVal tableName As String, ByVal parms() As OracleParameter)
+    Private Shared Sub InternalFetch(ds As DataSet, sql As String, tableName As String, parms() As OracleParameter)
         Dim da As OracleDataAdapter
 
         Using conn As New OracleConnection(DBHelper.ConnectString)
@@ -102,8 +102,8 @@ Public NotInheritable Class DBHelper
 
     End Sub
 
-    Private Shared Sub InternalFetch(ByVal ds As DataSet, ByVal sql As String, ByVal tableName As String, _
-    ByVal command As OracleCommand)
+    Private Shared Sub InternalFetch(ds As DataSet, sql As String, tableName As String, _
+    command As OracleCommand)
         Dim conn As IDbConnection
         Dim da As OracleDataAdapter
 
@@ -151,7 +151,7 @@ Public NotInheritable Class DBHelper
     '    End Get
     'End Property
 
-    Public Shared Function Fetch(ByVal sql As String, ByVal tableName As String) As DataSet
+    Public Shared Function Fetch(sql As String, tableName As String) As DataSet
         Dim ds As DataSet = New DataSet
 
         InternalFetch(ds, sql, tableName)
@@ -159,7 +159,7 @@ Public NotInheritable Class DBHelper
         Return ds
     End Function
 
-    Public Shared Function Fetch(ByVal sql As String, ByVal dataSetName As String, ByVal tableName As String) As DataSet
+    Public Shared Function Fetch(sql As String, dataSetName As String, tableName As String) As DataSet
         Dim ds As DataSet = New DataSet(dataSetName)
 
         InternalFetch(ds, sql, tableName)
@@ -167,7 +167,7 @@ Public NotInheritable Class DBHelper
         Return ds
     End Function
 
-    Public Shared Function Fetch(ByVal sql As String, ByVal dataSetName As String, ByVal tableName As String, ByVal parms() As OracleParameter) As DataSet
+    Public Shared Function Fetch(sql As String, dataSetName As String, tableName As String, parms() As OracleParameter) As DataSet
         Dim ds As DataSet = New DataSet(dataSetName)
 
         InternalFetch(ds, sql, tableName, parms)
@@ -175,14 +175,14 @@ Public NotInheritable Class DBHelper
         Return ds
     End Function
 
-    Public Shared Function Fetch(ByVal ds As DataSet, ByVal sql As String, ByVal tableName As String, ByVal parms() As OracleParameter) As DataSet
+    Public Shared Function Fetch(ds As DataSet, sql As String, tableName As String, parms() As OracleParameter) As DataSet
 
         InternalFetch(ds, sql, tableName, parms)
 
         Return ds
     End Function
 
-    Public Shared Function Fetch(ByVal ds As DataSet, ByVal sql As String, ByVal tableName As String, ByVal parms() As DBHelperParameter) As DataSet
+    Public Shared Function Fetch(ds As DataSet, sql As String, tableName As String, parms() As DBHelperParameter) As DataSet
 
         Dim oraParms(parms.Length - 1) As OracleParameter
 
@@ -198,7 +198,7 @@ Public NotInheritable Class DBHelper
     End Function
 
     'NOTE: the passed in SQL should only SELECT one column
-    Public Shared Function ExecuteScalar(ByVal sql As String, ByVal parms() As DBHelperParameter) As Object
+    Public Shared Function ExecuteScalar(sql As String, parms() As DBHelperParameter) As Object
         Dim con As New OracleConnection(DBHelper.ConnectString)
         Dim cmd As New OracleCommand(sql, con)
         Dim oraParms As OracleParameter()
@@ -219,7 +219,7 @@ Public NotInheritable Class DBHelper
 
     End Function
 
-    Public Shared Function ExecuteNonQuery(ByVal sql As String, ByVal inputParameters() As DBHelperParameter) As Object
+    Public Shared Function ExecuteNonQuery(sql As String, inputParameters() As DBHelperParameter) As Object
         Dim command As OracleCommand
         Dim oParameter As DBHelperParameter
         Dim conn As IDbConnection
@@ -267,7 +267,7 @@ Public NotInheritable Class DBHelper
     End Function
 
     'NOTE: the passed in SQL should only SELECT one column
-    Public Shared Function ExecuteScalar(ByVal sql As String) As Object
+    Public Shared Function ExecuteScalar(sql As String) As Object
         Dim con As New OracleConnection(DBHelper.ConnectString)
         Dim cmd As New OracleCommand(sql, con)
 
@@ -280,7 +280,7 @@ Public NotInheritable Class DBHelper
 
     End Function
 
-    Public Shared Function ReadOracleXmlTypeData(ByVal sql As String, ByVal additionalParamters As DBHelperParameter()) As String
+    Public Shared Function ReadOracleXmlTypeData(sql As String, additionalParamters As DBHelperParameter()) As String
         'Create a connection.
         Dim con As New OracleConnection(DBHelper.ConnectString)
         Dim rtnString As String
@@ -329,7 +329,7 @@ Public NotInheritable Class DBHelper
         Return rtnString
     End Function
 
-    Public Shared Function ReadClobWithReader(ByVal sql As String, ByVal additionalParamters As DBHelperParameter()) As Text.StringBuilder
+    Public Shared Function ReadClobWithReader(sql As String, additionalParamters As DBHelperParameter()) As Text.StringBuilder
 
         'Create a connection.
         Dim con As New OracleConnection(DBHelper.ConnectString)
@@ -382,7 +382,7 @@ Public NotInheritable Class DBHelper
 
     End Function
 
-    Public Shared Sub MigrateXML(ByVal readSQL As String, ByVal readParamters As DBHelperParameter(), ByVal updateSQL As String, ByVal Modified_By As String)
+    Public Shared Sub MigrateXML(readSQL As String, readParamters As DBHelperParameter(), updateSQL As String, Modified_By As String)
 
         'Create a connection.
         Dim con As New OracleConnection(DBHelper.ConnectString)
@@ -496,7 +496,7 @@ Public NotInheritable Class DBHelper
     '   DALInvalidParameterValueException: If some the SQLStmt parameter is required but passed as nothing
     '   DALConcurrencyAccessException: If the same data is changed in parallel
     '   DataBaseAccessException: If there is an error while trying to acces the DataBase
-    Public Shared Sub Execute(ByVal table As DataTable, ByVal insSQLStmt As String, ByVal updSQLStmt As String, ByVal delSQLStmt As String, ByVal additionalParamters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Shared Sub Execute(table As DataTable, insSQLStmt As String, updSQLStmt As String, delSQLStmt As String, additionalParamters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If table Is Nothing Then
             Return
         End If
@@ -532,7 +532,7 @@ Public NotInheritable Class DBHelper
         End Try
     End Sub
 
-    Public Shared Sub ExecuteWithParam(ByVal table As DataTable, ByVal insSQLStmt As String, ByVal updSQLStmt As String, ByVal delSQLStmt As String, ByVal additionalParamters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Shared Sub ExecuteWithParam(table As DataTable, insSQLStmt As String, updSQLStmt As String, delSQLStmt As String, additionalParamters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If table Is Nothing Then
             Return
         End If
@@ -572,7 +572,7 @@ Public NotInheritable Class DBHelper
     '   DALInvalidParameterValueException: If some the SQLStmt parameter is required but passed as nothing
     '   DALConcurrencyAccessException: If the same data is changed in parallel
     '   DataBaseAccessException: If there is an error while trying to acces the DataBase
-    Public Shared Sub Execute(ByVal row As DataRow, ByVal insSQLStmt As String, ByVal updSQLStmt As String, ByVal delSQLStmt As String, ByVal additionalParamters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Shared Sub Execute(row As DataRow, insSQLStmt As String, updSQLStmt As String, delSQLStmt As String, additionalParamters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         Dim stmtToExecute As String
         Dim rowState As DataRowState = row.RowState
         If Not changesFilter = Nothing Then
@@ -610,7 +610,7 @@ Public NotInheritable Class DBHelper
         End If
     End Sub
 
-    Public Shared Sub ExecuteWithParam(ByVal row As DataRow, ByVal insSQLStmt As String, ByVal updSQLStmt As String, ByVal delSQLStmt As String, ByVal additionalParamters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Shared Sub ExecuteWithParam(row As DataRow, insSQLStmt As String, updSQLStmt As String, delSQLStmt As String, additionalParamters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         Dim stmtToExecute As String
         Dim rowState As DataRowState = row.RowState
         If Not changesFilter = Nothing Then
@@ -649,7 +649,7 @@ Public NotInheritable Class DBHelper
     End Sub
 
     'ALR - Added additional overload to allow for saving while using parameters.
-    Public Shared Sub ExecuteWithParam(ByVal insSQLStmt As String, ByVal Paramters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing, Optional ByVal ArrayCount As Integer = 0)
+    Public Shared Sub ExecuteWithParam(insSQLStmt As String, Paramters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing, Optional ByVal ArrayCount As Integer = 0)
 
         If insSQLStmt Is Nothing OrElse insSQLStmt.Trim = "" Then
             Throw New DALInvalidParameterValueException("insSQLStmt is required to execute this operation")
@@ -663,7 +663,7 @@ Public NotInheritable Class DBHelper
     '   DALInvalidParameterValueException: If some the SQLStmt parameter is required but passed as nothing
     '   DALConcurrencyAccessException: If the same data is changed in parallel
     '   DataBaseAccessException: If there is an error while trying to acces the DataBase
-    Public Shared Sub Execute(ByVal execSQLStmt As String, ByVal additionalParamters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal IgnoreZeroRowsAffected As Boolean = False)
+    Public Shared Sub Execute(execSQLStmt As String, additionalParamters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal IgnoreZeroRowsAffected As Boolean = False)
         Dim stmtToExecute As String = execSQLStmt
         If stmtToExecute Is Nothing OrElse stmtToExecute.Trim = "" Then
             Throw New DALInvalidParameterValueException("execSQLStmt is required to execute this operation")
@@ -674,7 +674,7 @@ Public NotInheritable Class DBHelper
         End If
     End Sub
 
-    Private Shared Sub GenericExecute(ByVal sqlStmt As String, ByVal command As OracleCommand, _
+    Private Shared Sub GenericExecute(sqlStmt As String, command As OracleCommand, _
             Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal isStoreProc As Boolean = False, Optional ByVal IgnoreZeroRowsAffected As Boolean = False)
         Dim conn As IDbConnection
         Try
@@ -723,7 +723,7 @@ Public NotInheritable Class DBHelper
         End Try
     End Sub
 
-    Private Shared Function CreateCommandSp(ByVal sqlStmt As String, ByVal inputParameters() As DBHelperParameter, _
+    Private Shared Function CreateCommandSp(sqlStmt As String, inputParameters() As DBHelperParameter, _
                     ByRef outputParameters() As DBHelperParameter) As OracleCommand
         Dim command As OracleCommand
         Dim oParameter As DBHelperParameter
@@ -813,7 +813,7 @@ Public NotInheritable Class DBHelper
     '    End Try
     'End Sub
 
-    Public Shared Sub ExecuteSp(ByVal sqlStmt As String, ByVal inputParameters() As DBHelperParameter, ByRef outputParameters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, _
+    Public Shared Sub ExecuteSp(sqlStmt As String, inputParameters() As DBHelperParameter, ByRef outputParameters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, _
                                  Optional ByVal IgnoreZeroRowsAffected As Boolean = False)
         Dim command As OracleCommand
         Dim oParameter, oParameter2 As DBHelperParameter
@@ -837,7 +837,7 @@ Public NotInheritable Class DBHelper
         End Try
     End Sub
 
-    Public Shared Sub ExecuteSpParamBindByName(ByVal sqlStmt As String, ByVal inputParameters() As DBHelperParameter, ByRef outputParameters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, _
+    Public Shared Sub ExecuteSpParamBindByName(sqlStmt As String, inputParameters() As DBHelperParameter, ByRef outputParameters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, _
                                                Optional ByVal IgnoreZeroRowsAffected As Boolean = False)
         Dim command As OracleCommand
         Dim oParameter, oParameter2 As DBHelperParameter
@@ -860,9 +860,9 @@ Public NotInheritable Class DBHelper
         End Try
     End Sub
 
-    Public Shared Sub FetchSp(ByVal sqlStmt As String, ByVal inputParameters() As DBHelperParameter,
+    Public Shared Sub FetchSp(sqlStmt As String, inputParameters() As DBHelperParameter,
                 ByRef outputParameters() As DBHelperParameter,
-                ByVal dsToLoadDataIn As DataSet, ByVal tableNameToLoadIn As String, Optional ByVal paramBindByName As Boolean = False)
+                dsToLoadDataIn As DataSet, tableNameToLoadIn As String, Optional ByVal paramBindByName As Boolean = False)
         Dim command As OracleCommand
         Dim oParameter As DBHelperParameter
         Try
@@ -889,7 +889,7 @@ Public NotInheritable Class DBHelper
         Return conn
     End Function
 
-    Public Shared Function GetNewTransaction(ByVal conn As OracleConnection) As IDbTransaction
+    Public Shared Function GetNewTransaction(conn As OracleConnection) As IDbTransaction
         Return conn.BeginTransaction
     End Function
 
@@ -899,7 +899,7 @@ Public NotInheritable Class DBHelper
         Return conn.BeginTransaction
     End Function
 
-    Public Shared Sub Commit(ByVal transaction As IDbTransaction)
+    Public Shared Sub Commit(transaction As IDbTransaction)
         Try
             transaction.Commit()
         Catch ex As Exception
@@ -913,7 +913,7 @@ Public NotInheritable Class DBHelper
         End Try
     End Sub
 
-    Public Shared Sub RollBack(ByVal transaction As IDbTransaction)
+    Public Shared Sub RollBack(transaction As IDbTransaction)
         Try
             transaction.Rollback()
         Catch ex As Exception
@@ -924,7 +924,7 @@ Public NotInheritable Class DBHelper
         End Try
     End Sub
 
-    Private Shared Function ReplaceParameterValues(ByVal stmt As String, ByVal row As DataRow) As String
+    Private Shared Function ReplaceParameterValues(stmt As String, row As DataRow) As String
         Dim table As DataTable = row.Table
         Dim column As DataColumn
         Dim resultStmt As String = stmt
@@ -943,7 +943,7 @@ Public NotInheritable Class DBHelper
         Return resultStmt
     End Function
 
-    Private Shared Function ReplaceParameterValues(ByVal stmt As String, ByVal parameters() As DBHelperParameter) As String
+    Private Shared Function ReplaceParameterValues(stmt As String, parameters() As DBHelperParameter) As String
         Dim resultStmt As String = stmt
 
         If Not parameters Is Nothing Then
@@ -955,7 +955,7 @@ Public NotInheritable Class DBHelper
         Return resultStmt
     End Function
 
-    Private Shared Function ReplaceOneParameter(ByVal stmt As String, ByVal par As DBHelperParameter) As String
+    Private Shared Function ReplaceOneParameter(stmt As String, par As DBHelperParameter) As String
         Dim upperStmt As String = stmt.ToUpper
         Dim resultStmt As String = stmt
 
@@ -976,7 +976,7 @@ Public NotInheritable Class DBHelper
         Return resultStmt
     End Function
 
-    Private Shared Function GetParameterPosition(ByVal stmt As String, ByVal paramName As String, ByVal startPos As Integer) As Integer
+    Private Shared Function GetParameterPosition(stmt As String, paramName As String, startPos As Integer) As Integer
         Dim retVal As Integer = -1
 
         ' find the position of the parameter
@@ -1003,7 +1003,7 @@ Public NotInheritable Class DBHelper
 
     End Function
 
-    Public Shared Function ValueToSQLString(ByVal value As Object) As String
+    Public Shared Function ValueToSQLString(value As Object) As String
         If value Is DBNull.Value OrElse value Is Nothing Then
             Return "NULL"
         Else
@@ -1039,21 +1039,21 @@ Public NotInheritable Class DBHelper
         End If
     End Function
 
-    Private Shared Function EscapeSQLReservedCharacters(ByVal stringToEscape As String) As String
+    Private Shared Function EscapeSQLReservedCharacters(stringToEscape As String) As String
         Return stringToEscape.Replace("'", "''")
     End Function
 
-    Private Shared Function GetSQLDate(ByVal dateValue As Date) As String
+    Private Shared Function GetSQLDate(dateValue As Date) As String
         Return "to_date('" & dateValue.ToString("MM/dd/yyyy HH:mm:ss") & "','mm/dd/yyyy HH24:MI:SS')"
     End Function
 
-    Private Shared Sub ExecuteCommand(ByVal sqlStmt As String, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal IgnoreZeroRowsAffected As Boolean = False)
+    Private Shared Sub ExecuteCommand(sqlStmt As String, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal IgnoreZeroRowsAffected As Boolean = False)
         Dim command As OracleCommand = New OracleCommand(sqlStmt)
 
         GenericExecute(sqlStmt, command, transaction, False, IgnoreZeroRowsAffected)
     End Sub
 
-    Private Shared Sub ExecuteCommandWithParam(ByVal row As DataRow, ByVal sqlStmt As String, ByVal additionalParamters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing)
+    Private Shared Sub ExecuteCommandWithParam(row As DataRow, sqlStmt As String, additionalParamters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing)
         Dim command As OracleCommand = New OracleCommand(sqlStmt)
 
         Dim conn As IDbConnection
@@ -1107,7 +1107,7 @@ Public NotInheritable Class DBHelper
     End Sub
 
     'ALR - Added to allow for a command to be executed with parameters, without using the datarow.
-    Private Shared Sub ExecuteCommandWithParam(ByVal sqlStmt As String, ByVal Paramters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal ArrayCount As Integer = 0)
+    Private Shared Sub ExecuteCommandWithParam(sqlStmt As String, Paramters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal ArrayCount As Integer = 0)
         Dim command As OracleCommand = New OracleCommand(sqlStmt)
 
         Dim conn As IDbConnection
@@ -1159,7 +1159,7 @@ Public NotInheritable Class DBHelper
         End Try
     End Sub
 
-    Private Shared Sub GetCommandParameters(ByRef commandList As SortedList, ByVal stmt As String, ByVal row As DataRow)
+    Private Shared Sub GetCommandParameters(ByRef commandList As SortedList, stmt As String, row As DataRow)
         Dim table As DataTable = row.Table
         Dim column As DataColumn
         For Each column In table.Columns
@@ -1179,7 +1179,7 @@ Public NotInheritable Class DBHelper
         Next
     End Sub
 
-    Private Shared Sub GetCommandParameters(ByRef commandList As SortedList, ByVal stmt As String, ByVal parameters() As DBHelperParameter)
+    Private Shared Sub GetCommandParameters(ByRef commandList As SortedList, stmt As String, parameters() As DBHelperParameter)
         Dim resultStmt As String = stmt
 
         If Not parameters Is Nothing Then
@@ -1190,7 +1190,7 @@ Public NotInheritable Class DBHelper
         End If
     End Sub
 
-    Private Shared Sub ReplaceCommandParameter(ByRef commandList As SortedList, ByVal stmt As String, ByVal par As DBHelperParameter)
+    Private Shared Sub ReplaceCommandParameter(ByRef commandList As SortedList, stmt As String, par As DBHelperParameter)
         Dim upperStmt As String = stmt.ToUpper
         Dim resultStmt As String = stmt
 
@@ -1223,7 +1223,7 @@ Public NotInheritable Class DBHelper
         End While
     End Sub
 
-    Public Shared Function CheckRowChanged(ByVal row As DataRow) As Boolean
+    Public Shared Function CheckRowChanged(row As DataRow) As Boolean
         Dim column As DataColumn
         For Each column In row.Table.Columns
             If Not column.ColumnName.ToUpper.StartsWith("_SYSTEM") Then
@@ -1233,7 +1233,7 @@ Public NotInheritable Class DBHelper
         Return False
     End Function
 
-    Public Shared Function CheckColumnChanged(ByVal colName As String, ByVal row As DataRow) As Boolean
+    Public Shared Function CheckColumnChanged(colName As String, row As DataRow) As Boolean
         Dim col As DataColumn
 
         col = row.Table.Columns(colName)
@@ -1371,7 +1371,7 @@ Public NotInheritable Class DBHelper
         Public DBType As OracleDbType
 
         ' Input Parameter
-        Public Sub New(ByVal name As String, ByVal value As Object, Optional ByVal vbType As Type = Nothing)
+        Public Sub New(name As String, value As Object, Optional ByVal vbType As Type = Nothing)
             Dim valueLength As Integer
             If (Not value Is Nothing) AndAlso value.GetType Is GetType(Guid) Then
                 value = CType(value, Guid).ToByteArray
@@ -1391,33 +1391,33 @@ Public NotInheritable Class DBHelper
 
                 '10/18/2006 - ALR - Added this to force a type if it has been passed.
                 If vbType Is Nothing Then
-                    Me.DBType = GetOracleTypeFromVB(value, valueLength, Me)
+                    DBType = GetOracleTypeFromVB(value, valueLength, Me)
                 Else
-                    Me.DBType = GetOracleTypeFromVBWithType(vbType, valueLength, Me)
+                    DBType = GetOracleTypeFromVBWithType(vbType, valueLength, Me)
                 End If
 
             Else
                 If vbType Is Nothing Then
-                    Me.DBType = Nothing
+                    DBType = Nothing
                 Else
-                    Me.DBType = GetOracleTypeFromVBType(vbType, 0, Me)
+                    DBType = GetOracleTypeFromVBType(vbType, 0, Me)
                 End If
                 valueLength = 0
             End If
-            Me.Length = valueLength
+            Length = valueLength
 
         End Sub
 
         ' Output Parameter
-        Public Sub New(ByVal name As String, ByVal vbType As Type, Optional ByVal len As Integer = 16)
+        Public Sub New(name As String, vbType As Type, Optional ByVal len As Integer = 16)
             Me.Name = name
-            Me.Value = Nothing
+            Value = Nothing
             ' Me.Length = len
-            Me.Length = 0
+            Length = 0
             If (Not vbType Is Nothing) AndAlso (Not vbType Is GetType(DBNull)) Then
-                Me.DBType = GetOracleTypeFromVBType(vbType, len, Me)
+                DBType = GetOracleTypeFromVBType(vbType, len, Me)
             Else
-                Me.DBType = Nothing
+                DBType = Nothing
             End If
 
         End Sub
@@ -1428,18 +1428,18 @@ Public NotInheritable Class DBHelper
 
 #Region "Type-Mapping"
 
-    Private Shared Function GetOracleTypeFromVB(ByVal value As Object, ByVal len As Integer, _
-                                     ByVal oParam As DBHelperParameter) As OracleDbType
+    Private Shared Function GetOracleTypeFromVB(value As Object, len As Integer, _
+                                     oParam As DBHelperParameter) As OracleDbType
         Return GetOracleTypeFromVBType(value.GetType, len, oParam)
     End Function
 
-    Private Shared Function GetOracleTypeFromVBWithType(ByVal value As Type, ByVal len As Integer, _
-                                    ByVal oParam As DBHelperParameter) As OracleDbType
+    Private Shared Function GetOracleTypeFromVBWithType(value As Type, len As Integer, _
+                                    oParam As DBHelperParameter) As OracleDbType
         Return GetOracleTypeFromVBType(value, len, oParam)
     End Function
 
-    Private Shared Function GetOracleTypeFromVBType(ByVal oType As Type, ByVal len As Integer, _
-    ByVal oParam As DBHelperParameter) As OracleDbType
+    Private Shared Function GetOracleTypeFromVBType(oType As Type, len As Integer, _
+    oParam As DBHelperParameter) As OracleDbType
         Dim oracleType As OracleDbType
 
         If ((oType Is GetType(Byte())) AndAlso (len = 16)) OrElse (oType Is GetType(Guid)) Then
@@ -1478,7 +1478,7 @@ Public NotInheritable Class DBHelper
 
         Return oracleType
     End Function
-    Private Shared Function GetValueLength(ByVal value As Object) As Integer
+    Private Shared Function GetValueLength(value As Object) As Integer
         Dim valueLength As Integer = 0
         Dim oType As Type = value.GetType
 
@@ -1492,7 +1492,7 @@ Public NotInheritable Class DBHelper
         Return valueLength
     End Function
 
-    Public Shared Function GetVBValues(ByVal parameters() As DBHelperParameter) As ArrayList
+    Public Shared Function GetVBValues(parameters() As DBHelperParameter) As ArrayList
         Dim oVBValues As New ArrayList
         Dim oParameter As DBHelperParameter
 
@@ -1502,7 +1502,7 @@ Public NotInheritable Class DBHelper
         Return oVBValues
     End Function
 
-    Private Shared Function GetVBValueFromOracleType(ByVal oParameter As DBHelperParameter) As Object
+    Private Shared Function GetVBValueFromOracleType(oParameter As DBHelperParameter) As Object
         Dim oValue As Object
 
         'TODO Blob Types
@@ -1534,11 +1534,11 @@ Public NotInheritable Class DBHelper
         Return oValue
     End Function
 
-    Public Shared Function GetValueOrDBNull(ByVal obj As DateType) As Object
+    Public Shared Function GetValueOrDBNull(obj As DateType) As Object
         Return If(obj Is Nothing, DBNull.Value, obj.Value)
     End Function
 
-    Public Shared Function GetValueOrDBNull(ByVal obj As DecimalType) As Object
+    Public Shared Function GetValueOrDBNull(obj As DecimalType) As Object
         Return If(obj Is Nothing, DBNull.Value, obj.Value)
     End Function
 #End Region

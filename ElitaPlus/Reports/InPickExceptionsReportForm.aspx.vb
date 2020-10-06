@@ -81,7 +81,7 @@ Namespace Reports
         Private currentAccountingYear As Integer
 
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -91,33 +91,33 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 Else
                     ClearErrLabels()
                     EnableorDisableControls()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -125,12 +125,12 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
             Handles moUserCompanyMultipleDrop.SelectedDropChanged
             Try
                 PopulateDealerDropDown()
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -142,17 +142,17 @@ Namespace Reports
 
         Private Sub ClearErrLabels()
             ' Me.ClearLabelErrSign(MonthYearLabel)
-            Me.ClearLabelErrSign(moDaysActiveLabel)
-            Me.ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
-            Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
-            If Me.rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
+            ClearLabelErrSign(moDaysActiveLabel)
+            ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+            If rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
         End Sub
         Public Sub EnableorDisableControls()
-            If Me.rSvcenter.Checked = True Then
-                Me.txtActiveDays.Enabled = False
-                Me.txtActiveDays.Text = String.Empty
+            If rSvcenter.Checked = True Then
+                txtActiveDays.Enabled = False
+                txtActiveDays.Text = String.Empty
             Else
-                Me.txtActiveDays.Enabled = True
+                txtActiveDays.Enabled = True
             End If
         End Sub
 
@@ -167,7 +167,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, "* " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
 
             End If
@@ -192,11 +192,11 @@ Namespace Reports
         Private Sub InitializeForm()
             PopulateCompaniesDropdown()
             PopulateDealerDropDown()
-            Me.rdealer.Checked = True
-            Me.rSvcenter.Checked = True
-            Me.txtActiveDays.Enabled = False
-            Me.txtActiveDays.Text = String.Empty
-            Me.PopulateControlFromBOProperty(Me.txtActiveDays, Me.DEFAULT_NUMBER_ACTIVE_DAYS)
+            rdealer.Checked = True
+            rSvcenter.Checked = True
+            txtActiveDays.Enabled = False
+            txtActiveDays.Text = String.Empty
+            PopulateControlFromBOProperty(txtActiveDays, DEFAULT_NUMBER_ACTIVE_DAYS)
             TheRptCeInputControl.populateReportLanguages(RPT_FILENAME)
         End Sub
 
@@ -204,8 +204,8 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal CompanyCode As String, ByVal CompanyDesc As String, ByVal dealerCode As String, ByVal dealerDesc As String,
-                                  ByVal numberActiveDays As Integer, ByVal selectionType As String) As ReportCeBaseForm.Params
+        Function SetParameters(CompanyCode As String, CompanyDesc As String, dealerCode As String, dealerDesc As String,
+                                  numberActiveDays As Integer, selectionType As String) As ReportCeBaseForm.Params
 
             Dim Params As New ReportCeBaseForm.Params
             Dim repParams(TOTALPARAMS) As ReportCeBaseForm.RptParam
@@ -225,7 +225,7 @@ Namespace Reports
             End With
             SetReportParams(rptParams, repParams, String.Empty, PARAMS_PER_REPORT * 0)     ' Main Report
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With Params
                 .msRptName = reportName
@@ -238,8 +238,8 @@ Namespace Reports
             Return Params
 
         End Function
-        Function SetExpParameters(ByVal CompanyCode As String, ByVal CompanyDesc As String, ByVal dealerCode As String, ByVal dealerDesc As String,
-                                  ByVal numberActiveDays As Integer, ByVal selectionType As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(CompanyCode As String, CompanyDesc As String, dealerCode As String, dealerDesc As String,
+                                  numberActiveDays As Integer, selectionType As String) As ReportCeBaseForm.Params
 
             'Dim reportName As String = RPT_FILENAME_EXPORT
             Dim Params As New ReportCeBaseForm.Params
@@ -262,7 +262,7 @@ Namespace Reports
             End With
             SetReportParams(rptParams, repParams, String.Empty, PARAMS_PER_REPORT * 0)     ' Main Report
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With Params
                 .msRptName = reportName
@@ -275,8 +275,8 @@ Namespace Reports
             Return Params
         End Function
 
-        Sub SetReportParams(ByVal rptParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                          ByVal reportName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(rptParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                          reportName As String, startIndex As Integer)
 
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_COMPANY", .companycode, reportName)
@@ -310,7 +310,7 @@ Namespace Reports
 
 
             'Dealer
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             Else
                 If selectedDealerId.Equals(Guid.Empty) Then
@@ -330,7 +330,7 @@ Namespace Reports
                 If txtActiveDays.Text.Trim.ToString = String.Empty Or Not IsNumeric(txtActiveDays.Text.Trim.ToString) Then
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER_OF_ACTIVE_DAYS_ERR)
                 Else
-                    numberActiveDays = CType(Me.txtActiveDays.Text, Integer)
+                    numberActiveDays = CType(txtActiveDays.Text, Integer)
                     If ((numberActiveDays < 0) OrElse (numberActiveDays > 999)) Then
                         Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER_OF_ACTIVE_DAYS_ERR)
                     End If

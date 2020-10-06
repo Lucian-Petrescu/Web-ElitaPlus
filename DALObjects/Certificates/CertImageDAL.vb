@@ -31,27 +31,27 @@ Public Class CertImageDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_image_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal familyDS As DataSet, ByVal id As Guid, Optional ByVal loadAllFiles As Boolean = False) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_CERT_ID")
+    Public Function LoadList(familyDS As DataSet, id As Guid, Optional ByVal loadAllFiles As Boolean = False) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_CERT_ID")
         Dim loadAllFilesStr As String
         Dim referenceTypeStr As String
         
@@ -63,27 +63,27 @@ Public Class CertImageDAL
 
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
             New DBHelper.DBHelperParameter("pi_reference_id", id.ToByteArray),
-            New DBHelper.DBHelperParameter("pi_referenceType", Me.TABLE_NAME),
+            New DBHelper.DBHelperParameter("pi_referenceType", TABLE_NAME),
             New DBHelper.DBHelperParameter("pi_LoadAllFiles", loadAllFilesStr)
             }
         Dim outputParameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_files_list", GetType(DataSet))}
-        DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, familyDS, Me.TABLE_NAME)
+        DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, familyDS, TABLE_NAME)
     End Function
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
     Public Sub UpdateDocumentDeleteFlag(imageId As Guid, deleteFlag As String, modifiedById As String)
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_DOCUMENT_DELETE_FLAG")
+        Dim selectStmt As String = Config("/SQL/UPDATE_DOCUMENT_DELETE_FLAG")
         
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_document_id", imageId.ToByteArray),
                                                                                                 New DBHelper.DBHelperParameter("pi_modified_by", modifiedById),

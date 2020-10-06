@@ -54,7 +54,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _company_id
             End Get
-            Set(ByVal Value As Guid)
+            Set(Value As Guid)
                 _company_id = Value
             End Set
         End Property
@@ -63,17 +63,17 @@ Namespace SpecializedServices.Abag
             Get
                 Return _company_group_id
             End Get
-            Set(ByVal Value As Guid)
+            Set(Value As Guid)
                 _company_group_id = Value
             End Set
         End Property
 
         Private Property ClaimBO() As Claim
             Get
-                Return Me._claimBo
+                Return _claimBo
             End Get
-            Set(ByVal value As Claim)
-                Me._claimBo = value
+            Set(value As Claim)
+                _claimBo = value
             End Set
         End Property
 
@@ -93,7 +93,7 @@ Namespace SpecializedServices.Abag
 #End Region
 
 #Region "Member Methods"
-        Public Function GetServiceCenterClaims(ByVal request As GetServiceCenterClaimsRequest) As GetServiceCenterClaimsResponse Implements IEscService.GetServiceCenterClaims
+        Public Function GetServiceCenterClaims(request As GetServiceCenterClaimsRequest) As GetServiceCenterClaimsResponse Implements IEscService.GetServiceCenterClaims
             request.Validate("request").HandleFault()
 
             Dim response As New GetServiceCenterClaimsResponse
@@ -557,7 +557,7 @@ Namespace SpecializedServices.Abag
 
             For i = 0 To _PartsInfoDV.Count - 1
                 Dim objPartInfoId As Guid = New Guid(CType(_PartsInfoDV.Item(i)(PartsInfoDAL.COL_NAME_PARTS_INFO_ID), Byte()))
-                Dim objPartInfo As PartsInfo = Me.ClaimBO.AddPartsInfo(objPartInfoId)
+                Dim objPartInfo As PartsInfo = ClaimBO.AddPartsInfo(objPartInfoId)
                 objPartInfo.Delete()
             Next
         End Sub
@@ -675,7 +675,7 @@ Namespace SpecializedServices.Abag
 
             Try
                 If request.PartsListInfo IsNot Nothing Then
-                    _PartsInfoDV = PartsInfo.getSelectedList(Me.ClaimBO.Id)
+                    _PartsInfoDV = PartsInfo.getSelectedList(ClaimBO.Id)
                     DeleteExistingParts()
                     For i = 0 To request.PartsListInfo.Count - 1
                         With request.PartsListInfo(i)

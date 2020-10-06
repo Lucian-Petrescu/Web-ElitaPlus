@@ -6,10 +6,10 @@ Public Class SearchAvailableSelected
     Inherits System.Web.UI.UserControl
 
 #Region "Event Declaration"
-    Public Delegate Sub SearchFilterEventHandler(ByVal sender As Object, ByVal Args As SearchAvailableSelectedEventArgs)
-    Public Delegate Sub SaveEquipmentListDetail(ByVal sender As Object, ByVal Args As SearchAvailableSelectedEventArgs)
-    Public Delegate Sub CancelButtonClicked(ByVal sender As Object, ByVal args As SearchAvailableSelectedEventArgs)
-    Public Delegate Sub CustomPopulateDropDown(ByVal sender As Object, ByVal args As SearchAvailableSelectedEventArgs)
+    Public Delegate Sub SearchFilterEventHandler(sender As Object, Args As SearchAvailableSelectedEventArgs)
+    Public Delegate Sub SaveEquipmentListDetail(sender As Object, Args As SearchAvailableSelectedEventArgs)
+    Public Delegate Sub CancelButtonClicked(sender As Object, args As SearchAvailableSelectedEventArgs)
+    Public Delegate Sub CustomPopulateDropDown(sender As Object, args As SearchAvailableSelectedEventArgs)
 
     Public Event ExecuteSearchFilter As SearchFilterEventHandler
     Public Event EventSaveEquipmentListDetail As SaveEquipmentListDetail
@@ -34,18 +34,18 @@ Public Class SearchAvailableSelected
 
     Public Property dvAvailableEquipment As DataView
         Get
-            Return Me._dvAvailableEquipment
+            Return _dvAvailableEquipment
         End Get
-        Set(ByVal value As DataView)
-            Me._dvAvailableEquipment = value
+        Set(value As DataView)
+            _dvAvailableEquipment = value
         End Set
     End Property
 
     Public Property dvSelectedEquipment As DataView
         Get
-            Return Me._dvSelectedEquipment
+            Return _dvSelectedEquipment
         End Get
-        Set(ByVal value As DataView)
+        Set(value As DataView)
             _dvSelectedEquipment = value
         End Set
     End Property
@@ -58,31 +58,31 @@ Public Class SearchAvailableSelected
 
     Public ReadOnly Property ManufactorerID As Guid
         Get
-            Return New Guid(Me.cboMake.SelectedValue)
+            Return New Guid(cboMake.SelectedValue)
         End Get
     End Property
 
     Public ReadOnly Property EquipmentClass As Guid
         Get
-            Return New Guid(Me.cboEquipmentClass.SelectedValue)
+            Return New Guid(cboEquipmentClass.SelectedValue)
         End Get
     End Property
 
     Public ReadOnly Property EquipmentType As Guid
         Get
-            Return New Guid(Me.cboEquipmenttype.SelectedValue)
+            Return New Guid(cboEquipmenttype.SelectedValue)
         End Get
     End Property
 
     Public ReadOnly Property Model As String
         Get
-            Return Me.txtModel.Text
+            Return txtModel.Text
         End Get
     End Property
 
     Public ReadOnly Property Description As String
         Get
-            Return Me.txtDescription.Text
+            Return txtDescription.Text
         End Get
     End Property
 
@@ -91,35 +91,35 @@ Public Class SearchAvailableSelected
         Get
             Return _ShowCancelButton
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             _ShowCancelButton = value
         End Set
     End Property
 #End Region
 
 #Region "Event Handlers"
-    Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         GetAvailableEquipment(Me)
         UserControlAvailableSelectedEquipmentCodes.RemoveSelectedFromAvailable()
     End Sub
 
-    Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+    Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         clearControls()
         UserControlAvailableSelectedEquipmentCodes.RemoveSelectedFromAvailable()
     End Sub
 
-    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
+    Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Dim args As New SearchAvailableSelectedEventArgs(Me)
-        RaiseEvent EventSaveEquipmentListDetail(Me.btnSearch, args)
+        RaiseEvent EventSaveEquipmentListDetail(btnSearch, args)
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         UserControlAvailableSelectedEquipmentCodes.BackColor = "#d5d6e4"
         If Not Page.IsPostBack Then
             PopulateuserControl()
             GetAvailableEquipment()
-            Me.btnCancel.Visible = Me.ShowCancelButton
-            BindSelected(Me.dvSelectedEquipment)
+            btnCancel.Visible = ShowCancelButton
+            BindSelected(dvSelectedEquipment)
         End If
 
     End Sub
@@ -137,7 +137,7 @@ Public Class SearchAvailableSelected
                                                               .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                                                             })
 
-        Me.cboMake.Populate(Manufacturer.ToArray(),
+        cboMake.Populate(Manufacturer.ToArray(),
                                     New PopulateOptions() With
                                     {
                                      .AddBlankItem = True
@@ -150,7 +150,7 @@ Public Class SearchAvailableSelected
             CommonConfigManager.Current.ListManager.GetList(listCode:="EQPCLS",
                                                             languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-        Me.cboEquipmentClass.Populate(Equipments.ToArray(),
+        cboEquipmentClass.Populate(Equipments.ToArray(),
                                     New PopulateOptions() With
                                     {
                                      .AddBlankItem = True
@@ -164,7 +164,7 @@ Public Class SearchAvailableSelected
             CommonConfigManager.Current.ListManager.GetList(listCode:="EQPTYPE",
                                                     languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-        Me.cboEquipmenttype.Populate(EquipmentType.ToArray(),
+        cboEquipmenttype.Populate(EquipmentType.ToArray(),
                             New PopulateOptions() With
                             {
                                 .AddBlankItem = True
@@ -173,8 +173,8 @@ Public Class SearchAvailableSelected
 
     Private Sub GetAvailableEquipment(Optional ByVal pControl As SearchAvailableSelected = Nothing)
         Dim args As New SearchAvailableSelectedEventArgs(pControl)
-        RaiseEvent ExecuteSearchFilter(Me.btnSearch, args)
-        If Not args.dvAvailableEquipment Is Nothing Then
+        RaiseEvent ExecuteSearchFilter(btnSearch, args)
+        If args.dvAvailableEquipment IsNot Nothing Then
             UserControlAvailableSelectedEquipmentCodes.SetAvailableData(args.dvAvailableEquipment, "DESCRIPTION", "ID")
         End If
     End Sub
@@ -187,8 +187,8 @@ Public Class SearchAvailableSelected
         GetAvailableEquipment(Me)
 
     End Sub
-    Public Sub BindSelected(ByVal dvSelected As DataView)
-        If Not dvSelected Is Nothing Then
+    Public Sub BindSelected(dvSelected As DataView)
+        If dvSelected IsNot Nothing Then
             With UserControlAvailableSelectedEquipmentCodes
                 .SetSelectedData(dvSelected, COL_NAME_DESCRIPTION, COL_NAME_ID)
                 .RemoveSelectedFromAvailable()
@@ -197,11 +197,11 @@ Public Class SearchAvailableSelected
     End Sub
 #End Region
 
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         clearControls()
         Dim args As New SearchAvailableSelectedEventArgs(Me)
         RaiseEvent EventCancelButtonClicked(btnCancel, args)
-        BindSelected(Me.dvSelectedEquipment)
+        BindSelected(dvSelectedEquipment)
     End Sub
 
 End Class
@@ -222,15 +222,15 @@ Public Class SearchAvailableSelectedEventArgs
 #End Region
 
 #Region "Constructor"
-    Sub New(ByVal pObject As SearchAvailableSelected)
-        If Not pObject Is Nothing Then
+    Sub New(pObject As SearchAvailableSelected)
+        If pObject IsNot Nothing Then
             With pObject
-                Me.ManufactorerID = .ManufactorerID
-                Me.EquipmentClass = .EquipmentClass
-                Me.EquipmentType = .EquipmentType
-                Me.Model = .Model
-                Me.Description = .Description
-                Me.listSelectedEquipment = .listSelectedEquipment
+                ManufactorerID = .ManufactorerID
+                EquipmentClass = .EquipmentClass
+                EquipmentType = .EquipmentType
+                Model = .Model
+                Description = .Description
+                listSelectedEquipment = .listSelectedEquipment
             End With
         End If
     End Sub
@@ -241,7 +241,7 @@ Public Class SearchAvailableSelectedEventArgs
         Get
             Return _manufactorerID
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _manufactorerID = value
         End Set
     End Property
@@ -249,7 +249,7 @@ Public Class SearchAvailableSelectedEventArgs
         Get
             Return _model
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _model = value
         End Set
     End Property
@@ -257,7 +257,7 @@ Public Class SearchAvailableSelectedEventArgs
         Get
             Return _description
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _description = value
         End Set
     End Property
@@ -265,7 +265,7 @@ Public Class SearchAvailableSelectedEventArgs
         Get
             Return _equipmentClass
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _equipmentClass = value
         End Set
     End Property
@@ -273,7 +273,7 @@ Public Class SearchAvailableSelectedEventArgs
         Get
             Return _equipmentType
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _equipmentType = value
         End Set
     End Property
@@ -282,7 +282,7 @@ Public Class SearchAvailableSelectedEventArgs
         Get
             Return _dvResults
         End Get
-        Set(ByVal value As DataView)
+        Set(value As DataView)
             _dvResults = value
         End Set
     End Property
@@ -291,7 +291,7 @@ Public Class SearchAvailableSelectedEventArgs
         Get
             Return _selectedEquipment
         End Get
-        Set(ByVal value As ArrayList)
+        Set(value As ArrayList)
             _selectedEquipment = value
         End Set
     End Property
@@ -300,7 +300,7 @@ Public Class SearchAvailableSelectedEventArgs
         Get
             Return _dvmakeList
         End Get
-        Set(ByVal value As DataView)
+        Set(value As DataView)
             _dvmakelist = value
         End Set
     End Property

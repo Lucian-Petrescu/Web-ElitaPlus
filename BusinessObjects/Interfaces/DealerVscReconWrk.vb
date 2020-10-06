@@ -89,53 +89,53 @@ Public Class DealerVscReconWrk
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
     'Exiting BO
     Public Sub New(ByVal id As Guid, ByVal sModifiedDate As String)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
-        Me.VerifyConcurrency(sModifiedDate)
+        Dataset = New DataSet
+        Load(id)
+        VerifyConcurrency(sModifiedDate)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New DealerVscReconWrkDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -146,20 +146,20 @@ Public Class DealerVscReconWrk
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New DealerVscReconWrkDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -200,7 +200,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID, Value)
         End Set
     End Property
 
@@ -217,7 +217,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_ENROLLMENT_ID, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_ENROLLMENT_ID, Value)
         End Set
     End Property
 
@@ -234,7 +234,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_REJECT_CODE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_REJECT_CODE, Value)
         End Set
     End Property
 
@@ -251,7 +251,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_REJECT_MSG_PARMS, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_REJECT_MSG_PARMS, Value)
         End Set
     End Property
 
@@ -268,7 +268,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_REJECT_REASON, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_REJECT_REASON, Value)
         End Set
     End Property
 
@@ -285,7 +285,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_CERTIFICATE_LOADED, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_CERTIFICATE_LOADED, Value)
         End Set
     End Property
 
@@ -302,7 +302,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -319,7 +319,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_USER_ID, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_USER_ID, Value)
         End Set
     End Property
 
@@ -336,7 +336,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_RECORD_TYPE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_RECORD_TYPE, Value)
         End Set
     End Property
 
@@ -353,7 +353,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_COMPANY_CODE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_COMPANY_CODE, Value)
         End Set
     End Property
 
@@ -370,7 +370,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_CERTIFICATE_NUMBER, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_CERTIFICATE_NUMBER, Value)
         End Set
     End Property
 
@@ -387,7 +387,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_CUSTOMERS, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_CUSTOMERS, Value)
         End Set
     End Property
 
@@ -404,7 +404,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_ADDRESS1, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_ADDRESS1, Value)
         End Set
     End Property
 
@@ -421,7 +421,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_CITY, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_CITY, Value)
         End Set
     End Property
 
@@ -438,7 +438,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_REGION, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_REGION, Value)
         End Set
     End Property
 
@@ -455,7 +455,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_POSTAL_CODE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_POSTAL_CODE, Value)
         End Set
     End Property
 
@@ -472,7 +472,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_COUNTRY_CODE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_COUNTRY_CODE, Value)
         End Set
     End Property
 
@@ -489,7 +489,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_HOME_PHONE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_HOME_PHONE, Value)
         End Set
     End Property
 
@@ -506,7 +506,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_MODEL_YEAR, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_MODEL_YEAR, Value)
         End Set
     End Property
 
@@ -523,7 +523,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_MODEL, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 
@@ -540,7 +540,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_MANUFACTURER, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_MANUFACTURER, Value)
         End Set
     End Property
 
@@ -557,7 +557,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_ENGINE_VERSION, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_ENGINE_VERSION, Value)
         End Set
     End Property
 
@@ -574,7 +574,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_VEHICLE_LICENSE_TAG, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_VEHICLE_LICENSE_TAG, Value)
         End Set
     End Property
 
@@ -591,7 +591,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_ODOMETER, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_ODOMETER, Value)
         End Set
     End Property
 
@@ -608,7 +608,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_VIN, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_VIN, Value)
         End Set
     End Property
 
@@ -625,7 +625,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_PURCHASE_PRICE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_PURCHASE_PRICE, Value)
         End Set
     End Property
 
@@ -642,7 +642,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_PURCHASE_DATE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_PURCHASE_DATE, Value)
         End Set
     End Property
 
@@ -659,7 +659,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_IN_SERVICE_DATE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_IN_SERVICE_DATE, Value)
         End Set
     End Property
 
@@ -676,7 +676,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_DELIVERY_DATE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_DELIVERY_DATE, Value)
         End Set
     End Property
 
@@ -693,7 +693,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_PLAN_CODE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_PLAN_CODE, Value)
         End Set
     End Property
 
@@ -710,7 +710,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_DEDUCTIBLE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_DEDUCTIBLE, Value)
         End Set
     End Property
 
@@ -727,7 +727,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_TERM_MONTHS, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_TERM_MONTHS, Value)
         End Set
     End Property
 
@@ -744,7 +744,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_TERM_KM_MI, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_TERM_KM_MI, Value)
         End Set
     End Property
 
@@ -761,7 +761,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_AGENT_NUMBER, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_AGENT_NUMBER, Value)
         End Set
     End Property
 
@@ -778,7 +778,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_WARRANTY_SALE_DATE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_WARRANTY_SALE_DATE, Value)
         End Set
     End Property
 
@@ -795,7 +795,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_PLAN_AMOUNT, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_PLAN_AMOUNT, Value)
         End Set
     End Property
 
@@ -812,7 +812,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_DOCUMENT_TYPE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_DOCUMENT_TYPE, Value)
         End Set
     End Property
 
@@ -829,7 +829,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_IDENTITY_DOC_NO, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_IDENTITY_DOC_NO, Value)
         End Set
     End Property
 
@@ -846,7 +846,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_RG_NO, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_RG_NO, Value)
         End Set
     End Property
 
@@ -863,7 +863,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_ID_TYPE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_ID_TYPE, Value)
         End Set
     End Property
 
@@ -880,7 +880,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_DOCUMENT_ISSUE_DATE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_DOCUMENT_ISSUE_DATE, Value)
         End Set
     End Property
 
@@ -897,7 +897,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_DOCUMENT_AGENCY, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_DOCUMENT_AGENCY, Value)
         End Set
     End Property
 
@@ -914,7 +914,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_QUOTE_NUMBER, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_QUOTE_NUMBER, Value)
         End Set
     End Property
 
@@ -931,7 +931,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_QUOTE_ITEM_NUMBER, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_QUOTE_ITEM_NUMBER, Value)
         End Set
     End Property
 
@@ -948,7 +948,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_NEW_USED, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_NEW_USED, Value)
         End Set
     End Property
 
@@ -965,7 +965,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_OPTIONAL_COVERAGE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_OPTIONAL_COVERAGE, Value)
         End Set
     End Property
 
@@ -982,7 +982,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_BIRTH_DATE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_BIRTH_DATE, Value)
         End Set
     End Property
 
@@ -999,7 +999,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_WORK_PHONE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_WORK_PHONE, Value)
         End Set
     End Property
 
@@ -1016,7 +1016,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_PAYMENT_TYPE_CODE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_PAYMENT_TYPE_CODE, Value)
         End Set
     End Property
 
@@ -1033,7 +1033,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_PAYMENT_INSTRUMENT_CODE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_PAYMENT_INSTRUMENT_CODE, Value)
         End Set
     End Property
 
@@ -1050,7 +1050,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_INSTALLMENTS_NUMBER, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_INSTALLMENTS_NUMBER, Value)
         End Set
     End Property
 
@@ -1067,7 +1067,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_CREDIT_CARD_TYPE_CODE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_CREDIT_CARD_TYPE_CODE, Value)
         End Set
     End Property
 
@@ -1084,7 +1084,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_NAME_ON_CREDIT_CARD, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_NAME_ON_CREDIT_CARD, Value)
         End Set
     End Property
 
@@ -1101,7 +1101,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_CREDIT_CARD_NUMBER, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_CREDIT_CARD_NUMBER, Value)
         End Set
     End Property
 
@@ -1118,7 +1118,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_EXPIRATION_DATE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
@@ -1135,7 +1135,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_BANK_ID, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_BANK_ID, Value)
         End Set
     End Property
 
@@ -1152,7 +1152,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_ACCOUNT_NUMBER, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
@@ -1169,7 +1169,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_NAME_ON_ACCOUNT, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_NAME_ON_ACCOUNT, Value)
         End Set
     End Property
 
@@ -1186,7 +1186,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_LAYOUT, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_LAYOUT, Value)
         End Set
     End Property
 
@@ -1203,7 +1203,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_BRANCH_CODE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_BRANCH_CODE, Value)
         End Set
     End Property
 
@@ -1219,7 +1219,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_EXTERNAL_CAR_CODE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_EXTERNAL_CAR_CODE, Value)
         End Set
     End Property
 
@@ -1234,7 +1234,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_PLAN_AMOUNT_WITH_MARKUP, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_PLAN_AMOUNT_WITH_MARKUP, Value)
         End Set
     End Property
 
@@ -1250,7 +1250,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_PAYMENT_DATE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_PAYMENT_DATE, Value)
         End Set
     End Property
 
@@ -1266,7 +1266,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_CANCELLATION_DATE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_CANCELLATION_DATE, Value)
         End Set
     End Property
 
@@ -1282,7 +1282,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_CANCELLATION_REASON_CODE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_CANCELLATION_REASON_CODE, Value)
         End Set
     End Property
 
@@ -1298,7 +1298,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_CANCEL_COMMENT_TYPE_CODE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_CANCEL_COMMENT_TYPE_CODE, Value)
         End Set
     End Property
 
@@ -1314,7 +1314,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_CANCELLATION_COMMENT, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_CANCELLATION_COMMENT, Value)
         End Set
     End Property
 
@@ -1330,7 +1330,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_FINANCING_AGENCY, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_FINANCING_AGENCY, Value)
         End Set
     End Property
 
@@ -1347,7 +1347,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_NC_PAYMENT_METHOD_CODE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_NC_PAYMENT_METHOD_CODE, Value)
         End Set
     End Property
 
@@ -1364,7 +1364,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_ACCOUNT_TYPE_CODE, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_ACCOUNT_TYPE_CODE, Value)
         End Set
     End Property
 
@@ -1381,7 +1381,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_TAX_ID, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_TAX_ID, Value)
         End Set
     End Property
 
@@ -1398,7 +1398,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_BRANCH_DIGIT, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_BRANCH_DIGIT, Value)
         End Set
     End Property
 
@@ -1415,7 +1415,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_ACCOUNT_DIGIT, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_ACCOUNT_DIGIT, Value)
         End Set
     End Property
 
@@ -1432,7 +1432,7 @@ Public Class DealerVscReconWrk
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(DealerVscReconWrkDAL.COL_NAME_REFUND_AMOUNT, Value)
+            SetValue(DealerVscReconWrkDAL.COL_NAME_REFUND_AMOUNT, Value)
         End Set
     End Property
 
@@ -1456,15 +1456,15 @@ Public Class DealerVscReconWrk
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New DealerVscReconWrkDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

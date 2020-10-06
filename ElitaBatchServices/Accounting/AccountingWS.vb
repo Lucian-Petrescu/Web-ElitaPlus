@@ -5,12 +5,12 @@ Public Class AccountingWS
     Implements IAccountingWS
 
 
-    Public Function ProcessRequest(ByVal networkID As String,
-                                   ByVal password As String,
-                                   ByVal LDAPGroup As String,
-                                   ByVal functionToProcess As String,
-                                   ByVal xmlStringDataIn As String,
-                                   ByVal hubRegion As String,
+    Public Function ProcessRequest(networkID As String,
+                                   password As String,
+                                   LDAPGroup As String,
+                                   functionToProcess As String,
+                                   xmlStringDataIn As String,
+                                   hubRegion As String,
                                     Optional ByVal isAsync As String = "false") As String _
                                     Implements IAccountingWS.ProcessRequest
         Try
@@ -31,11 +31,11 @@ Public Class AccountingWS
         End Try
     End Function
 
-    Public Function ResendFile(ByVal networkID As String, _
-                                  ByVal password As String, _
-                                  ByVal LDAPGroup As String, _
-                                  ByVal hubRegion As String, _
-                                  ByVal AccountingTransmissionIdString As String) As String _
+    Public Function ResendFile(networkID As String, _
+                                  password As String, _
+                                  LDAPGroup As String, _
+                                  hubRegion As String, _
+                                  AccountingTransmissionIdString As String) As String _
                                    Implements IAccountingWS.ResendFile
 
         Dim bs As New BatchService

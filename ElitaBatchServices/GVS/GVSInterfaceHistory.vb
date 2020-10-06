@@ -3,10 +3,10 @@
 Public Class GVSInterfaceHistoryWS
     Implements IGVSInterfaceHistoryWS
 
-    Public Function CheckTransactionHistory(ByVal networkID As String, _
-                                  ByVal password As String, _
-                                  ByVal LDAPGroup As String, _
-                                  ByVal hubRegion As String, _
+    Public Function CheckTransactionHistory(networkID As String, _
+                                  password As String, _
+                                  LDAPGroup As String, _
+                                  hubRegion As String, _
                                   Optional ByVal HoursToCheck As Integer = 0) As String _
                                    Implements IGVSInterfaceHistoryWS.CheckTransactionHistory
 

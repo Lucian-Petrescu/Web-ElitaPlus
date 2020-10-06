@@ -33,35 +33,35 @@ Public Class AuditSecurityLogsDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("audit_security_log_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function GetAuditLogsList(ByVal AuditBeginDate As String,
-                                     ByVal AuditEndDate As String,
-                                     ByVal AuditSource As String,
-                                     ByVal AuditSecurityTypeCode As String,
-                                     ByVal IPAddress As String,
-                                     ByVal UserName As String,
-                                     ByVal languageId As Guid)
+    Public Function GetAuditLogsList(AuditBeginDate As String,
+                                     AuditEndDate As String,
+                                     AuditSource As String,
+                                     AuditSecurityTypeCode As String,
+                                     IPAddress As String,
+                                     UserName As String,
+                                     languageId As Guid)
 
         Dim selectStmt As String = String.Empty
-        selectStmt = Me.Config("/SQL/LOAD_LIST")
+        selectStmt = Config("/SQL/LOAD_LIST")
         Dim BeginDateParam As Date
         Dim EndDateParam As Date
 
@@ -89,29 +89,29 @@ Public Class AuditSecurityLogsDAL
         COL_NAME_AUDIT_DATE & "<= to_date('" & EndDateParam.ToString("MM-dd-yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss')"
 
         If AuditSource <> String.Empty Then
-            whereClauseConditions &= Environment.NewLine & "AND UPPER(" & Me.COL_NAME_LOG_SOURCE & ") = '" & AuditSource.ToUpper & "'"
+            whereClauseConditions &= Environment.NewLine & "AND UPPER(" & COL_NAME_LOG_SOURCE & ") = '" & AuditSource.ToUpper & "'"
         End If
 
-        If AuditSecurityTypeCode <> String.Empty AndAlso (Me.FormatSearchMask(AuditSecurityTypeCode)) Then
-            whereClauseConditions &= Environment.NewLine & "AND UPPER(Elita.Getdescriptionfromitemextcode(" & Me.COL_NAME_AUDIT_SECURITY_TYPE_CODE & ", :language_id2)) " & AuditSecurityTypeCode.ToUpper
+        If AuditSecurityTypeCode <> String.Empty AndAlso (FormatSearchMask(AuditSecurityTypeCode)) Then
+            whereClauseConditions &= Environment.NewLine & "AND UPPER(Elita.Getdescriptionfromitemextcode(" & COL_NAME_AUDIT_SECURITY_TYPE_CODE & ", :language_id2)) " & AuditSecurityTypeCode.ToUpper
             param = New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID2, languageId.ToByteArray)
             inParameters.Add(param)
 
         End If
 
         If IPAddress <> String.Empty Then
-            whereClauseConditions &= Environment.NewLine & "AND UPPER(" & Me.COL_NAME_CLIENT_IP_ADDRESS & ") = '" & IPAddress.ToUpper & "'"
+            whereClauseConditions &= Environment.NewLine & "AND UPPER(" & COL_NAME_CLIENT_IP_ADDRESS & ") = '" & IPAddress.ToUpper & "'"
         End If
 
         If UserName <> String.Empty Then
-            whereClauseConditions &= Environment.NewLine & " AND UPPER(" & Me.COL_NAME_USER_NAME & ") ='" & UserName.ToUpper & "'"
+            whereClauseConditions &= Environment.NewLine & " AND UPPER(" & COL_NAME_USER_NAME & ") ='" & UserName.ToUpper & "'"
         End If
 
         If Not whereClauseConditions.Equals(String.Empty) Then
             whereClauseConditions = whereClauseConditions
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
 
@@ -119,7 +119,7 @@ Public Class AuditSecurityLogsDAL
 
         Dim ds As New DataSet
         Try
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, inParameters.ToArray)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, inParameters.ToArray)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -127,12 +127,12 @@ Public Class AuditSecurityLogsDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

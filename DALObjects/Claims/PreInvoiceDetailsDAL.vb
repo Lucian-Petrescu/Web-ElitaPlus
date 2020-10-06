@@ -39,49 +39,49 @@ Public Class PreInvoiceDetailsDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pre_invoice_details_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function    
 
-    Public Function FetchPreInvoiceClaims(ByVal preInvoiceId As Guid) As DataSet
+    Public Function FetchPreInvoiceClaims(preInvoiceId As Guid) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/PRE_INVOICE_CLAIMS")
+            Dim selectStmt As String = Config("/SQL/PRE_INVOICE_CLAIMS")
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pre_invoice_id", preInvoiceId.ToByteArray)}
 
             Dim ds As New DataSet
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
-    Public Function LoadPreInvoiceProcessClaims(ByVal preInvoiceID As Guid, ByVal serviceCenterId As Guid, ByVal MasterCenterId As Guid, ByVal languageid As Guid) As DataSet
+    Public Function LoadPreInvoiceProcessClaims(preInvoiceID As Guid, serviceCenterId As Guid, MasterCenterId As Guid, languageid As Guid) As DataSet
 
         Try
-            Dim selectStmt As String = Me.Config("/SQL/LOAD_PRE_INVOICE_LIST")
+            Dim selectStmt As String = Config("/SQL/LOAD_PRE_INVOICE_LIST")
             Dim whereClauseConditions As String = ""
 
             Dim parameters() As DBHelper.DBHelperParameter = _
             New DBHelper.DBHelperParameter() _
             { _
                 New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageid.ToByteArray()), _
-                New DBHelper.DBHelperParameter(Me.COL_NAME_PRE_INVOICE_ID, preInvoiceID.ToByteArray())}
+                New DBHelper.DBHelperParameter(COL_NAME_PRE_INVOICE_ID, preInvoiceID.ToByteArray())}
 
 
             If Not (serviceCenterId = Guid.Empty) Then
@@ -101,27 +101,27 @@ Public Class PreInvoiceDetailsDAL
             'End If
 
             If Not whereClauseConditions = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             End If
 
             Dim ds As New DataSet
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function ApprovePreInvoice(ByVal company_id As Guid, ByVal pre_invoice_id As Guid) As DBHelper.DBHelperParameter()
-        Dim selectStmt As String = Me.Config("/SQL/APPROVE_PRE_INVOICE")
+    Public Function ApprovePreInvoice(company_id As Guid, pre_invoice_id As Guid) As DBHelper.DBHelperParameter()
+        Dim selectStmt As String = Config("/SQL/APPROVE_PRE_INVOICE")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY_ID, company_id.ToByteArray), _
-                            New DBHelper.DBHelperParameter(Me.COL_NAME_PRE_INVOICE_ID, pre_invoice_id.ToByteArray)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMPANY_ID, company_id.ToByteArray), _
+                            New DBHelper.DBHelperParameter(COL_NAME_PRE_INVOICE_ID, pre_invoice_id.ToByteArray)}
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)), _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
 
         Try
 
@@ -134,16 +134,16 @@ Public Class PreInvoiceDetailsDAL
         End Try
     End Function
 
-    Public Function RejectPreInvoiceClaims(ByVal company_id As Guid, ByVal claimIDs As String, ByVal pre_invoice_id As Guid, ByVal Comments As String) As DBHelper.DBHelperParameter()
-        Dim selectStmt As String = Me.Config("/SQL/REJECT_PRE_INVOICE_CLAIMS")
+    Public Function RejectPreInvoiceClaims(company_id As Guid, claimIDs As String, pre_invoice_id As Guid, Comments As String) As DBHelper.DBHelperParameter()
+        Dim selectStmt As String = Config("/SQL/REJECT_PRE_INVOICE_CLAIMS")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter(Me.COL_NAME_PRE_INVOICE_ID, pre_invoice_id.ToByteArray), _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY_ID, company_id.ToByteArray), _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIM_IDs, claimIDs), _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_COMMENTS, Comments)}
+                            New DBHelper.DBHelperParameter(COL_NAME_PRE_INVOICE_ID, pre_invoice_id.ToByteArray), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMPANY_ID, company_id.ToByteArray), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_IDs, claimIDs), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMMENTS, Comments)}
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)), _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
 
         Try
 
@@ -156,12 +156,12 @@ Public Class PreInvoiceDetailsDAL
         End Try
     End Function
 
-    Public Function CheckClaimInPreInvoice(ByVal Claim_Id As Guid) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/CHECK_FOR_CLAIM_IN_PRE_INVOICE")
+    Public Function CheckClaimInPreInvoice(Claim_Id As Guid) As Integer
+        Dim selectStmt As String = Config("/SQL/CHECK_FOR_CLAIM_IN_PRE_INVOICE")
         Dim inParameters(0) As DBHelper.DBHelperParameter
         Dim count As Object
 
-        inParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_CLAIM_ID, Claim_Id.ToByteArray)
+        inParameters(0) = New DBHelper.DBHelperParameter(PAR_CLAIM_ID, Claim_Id.ToByteArray)
 
         count = DBHelper.ExecuteScalar(selectStmt, inParameters)
 
@@ -169,13 +169,13 @@ Public Class PreInvoiceDetailsDAL
 
     End Function
 
-    Public Function UpdatePreInvoiceTotal(ByVal PreInvoiceId As Guid, ByVal totalAmount As Decimal) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_PRE_INVOICE_TOTAL")
+    Public Function UpdatePreInvoiceTotal(PreInvoiceId As Guid, totalAmount As Decimal) As Integer
+        Dim selectStmt As String = Config("/SQL/UPDATE_PRE_INVOICE_TOTAL")
         Dim inParameters(1) As DBHelper.DBHelperParameter
         Dim count As Object
 
-        inParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_NAME_TOTAL_AMOUNT, totalAmount)
-        inParameters(1) = New DBHelper.DBHelperParameter(Me.PAR_NAME_PRE_INVOICE_ID, PreInvoiceId.ToByteArray)
+        inParameters(0) = New DBHelper.DBHelperParameter(PAR_NAME_TOTAL_AMOUNT, totalAmount)
+        inParameters(1) = New DBHelper.DBHelperParameter(PAR_NAME_PRE_INVOICE_ID, PreInvoiceId.ToByteArray)
 
         count = DBHelper.ExecuteScalar(selectStmt, inParameters)
 
@@ -185,12 +185,12 @@ Public Class PreInvoiceDetailsDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
 		If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

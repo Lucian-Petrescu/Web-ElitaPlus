@@ -21,11 +21,11 @@ Namespace SpecializedServices.Timb
 
 
         Public Sub New(<Dependency(ElitaWebServiceConstants.SPECIALIZED_SERVICE_CERTIFICATE_MANAGER)>
-                            ByVal pCertificateManager As ICertificateManager,
+                            pCertificateManager As ICertificateManager,
                        <Dependency(ElitaWebServiceConstants.SPECIALIZED_SERVICE_TIMB_CERTIFICATE_REPOSITORY)>
-                            ByVal pCertificateRepository As ICertificateRepository(Of Certificate),
-                       ByVal pCompanyManager As ICompanyManager,
-                       ByVal pDealerManager As IDealerManager)
+                            pCertificateRepository As ICertificateRepository(Of Certificate),
+                       pCompanyManager As ICompanyManager,
+                       pDealerManager As IDealerManager)
 
             If (pCertificateManager Is Nothing) Then
                 Throw New ArgumentNullException("pCertificateManager")
@@ -44,9 +44,9 @@ Namespace SpecializedServices.Timb
                 Throw New ArgumentNullException("pDealerManager")
             End If
 
-            Me.CertificateManager = pCertificateManager
-            Me.CompanyManager = pCompanyManager
-            Me.DealerManager = pDealerManager
+            CertificateManager = pCertificateManager
+            CompanyManager = pCompanyManager
+            DealerManager = pDealerManager
 
         End Sub
         Public Function GetCertificateCustomer(request As CustomerByCertificateRequest) As CustomerResponse Implements ICertificateCustomerService.GetCertificateCustomer
@@ -82,7 +82,7 @@ Namespace SpecializedServices.Timb
 
 
             ''''Locate Certificate
-            CertList = Me.CertificateManager.GetCertificate(request.CompanyCode,
+            CertList = CertificateManager.GetCertificate(request.CompanyCode,
                                                             request.DealerCode,
                                                             request.CertificateNumber,
                                                             request.IdentificationNumber,

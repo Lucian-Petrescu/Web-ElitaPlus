@@ -26,7 +26,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -54,7 +54,7 @@ Namespace Tables
         Public ReadOnly Property TheDealerControl() As MultipleColumnDDLabelControl_New
             Get
                 If multipleDropControl Is Nothing Then
-                    multipleDropControl = CType(Me.FindControl("multipleDropControl"), MultipleColumnDDLabelControl_New)
+                    multipleDropControl = CType(FindControl("multipleDropControl"), MultipleColumnDDLabelControl_New)
                 End If
                 Return multipleDropControl
             End Get
@@ -117,33 +117,33 @@ Namespace Tables
 
         Private IsReturningFromChild As Boolean = False
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles Me.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles Me.PageReturn
             Try
-                Me.IsReturningFromChild = True
+                IsReturningFromChild = True
                 Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.State.moSPECIALSERVICEId = retObj.moSPECIALSERVICEId
+                            State.moSPECIALSERVICEId = retObj.moSPECIALSERVICEId
                         Case ElitaPlusPage.DetailPageCommand.Delete
-                            Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
-                            Me.State.moSPECIALSERVICEId = Guid.Empty
+                            AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                            State.moSPECIALSERVICEId = Guid.Empty
                         Case Else
-                            Me.State.moSPECIALSERVICEId = Guid.Empty
+                            State.moSPECIALSERVICEId = Guid.Empty
                     End Select
-                    moSplServiceGrid.PageIndex = Me.State.PageIndex
-                    moSplServiceGrid.PageSize = Me.State.PageSize
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                    moSplServiceGrid.PageSize = Me.State.PageSize
+                    moSplServiceGrid.PageIndex = State.PageIndex
+                    moSplServiceGrid.PageSize = State.PageSize
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
+                    moSplServiceGrid.PageSize = State.PageSize
                     ControlMgr.SetVisibleControl(Me, trPageSize, moSplServiceGrid.Visible)
                     'PopulateDealer()
                     'PopulateRiskGroup()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -156,9 +156,9 @@ Namespace Tables
             Public moSPECIALSERVICEId As Guid
             Public BoChanged As Boolean = False
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal oSPECIALSERVICEId As Guid, Optional ByVal boChanged As Boolean = False)
-                Me.LastOperation = LastOp
-                Me.moSPECIALSERVICEId = oSPECIALSERVICEId
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, oSPECIALSERVICEId As Guid, Optional ByVal boChanged As Boolean = False)
+                LastOperation = LastOp
+                moSPECIALSERVICEId = oSPECIALSERVICEId
                 Me.BoChanged = boChanged
             End Sub
 
@@ -167,40 +167,40 @@ Namespace Tables
         '#End Region
 #Region "Page_Events"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             
 
             Try
                 moErrorController.Clear_Hide()
-                Me.MasterPage.MessageController.Clear()
+                MasterPage.MessageController.Clear()
 
                 'Setting the bread crum navigation
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("TABLES")
-                Me.UpdateBreadCrum()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("TABLES")
+                UpdateBreadCrum()
                 'SetSession()
                 'moSplServiceGrid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
                 If Not Page.IsPostBack Then
-                    Me.SetDefaultButton(cboCoverageType, btnSearch)
+                    SetDefaultButton(cboCoverageType, btnSearch)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     '   Me.MenuEnabled = True
-                    Me.SetGridItemStyleColor(moSplServiceGrid)
-                    Me.TranslateGridHeader(moSplServiceGrid)
+                    SetGridItemStyleColor(moSplServiceGrid)
+                    TranslateGridHeader(moSplServiceGrid)
                     PopulateDealer()
                     PopulateCoverageType()
-                    If Not Me.IsReturningFromChild Then
+                    If Not IsReturningFromChild Then
                         ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     Else
                         ' It is returning from detail
-                        Me.PopulateGrid(Me.POPULATE_ACTION_SAVE)
+                        PopulateGrid(POPULATE_ACTION_SAVE)
                     End If
-                    cboPageSize.SelectedValue = Me.State.PageSize.ToString()
+                    cboPageSize.SelectedValue = State.PageSize.ToString()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
-            Me.ShowMissingTranslations(moErrorController)
+            ShowMissingTranslations(moErrorController)
         End Sub
 
 #End Region
@@ -209,9 +209,9 @@ Namespace Tables
         Private Sub UpdateBreadCrum()
             'If (Not Me.State Is Nothing) Then
             'If (Not Me.State.searchDV Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & _
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & _
                 TranslationBase.TranslateLabelOrMessage(SPECIAL_SERVICE)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(SPECIAL_SERVICE)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(SPECIAL_SERVICE)
             'End If
             'End If
         End Sub
@@ -227,7 +227,7 @@ Namespace Tables
                 TheDealerControl.AutoPostBackDD = False
                 TheDealerControl.NothingSelected = True
                 'TheDealerControl.Mode = TheDealerControl.MODES.NEW_MODE
-                TheDealerControl.SelectedGuid = Me.State.DealerId
+                TheDealerControl.SelectedGuid = State.DealerId
 
             Catch ex As Exception
                 moErrorController.AddError(SPECIALSERVICE_LIST_FORM001)
@@ -248,7 +248,7 @@ Namespace Tables
                {
                 .AddBlankItem = True
                })
-                BindSelectItem(Me.State.CoverageTypeId.ToString, cboCoverageType)
+                BindSelectItem(State.CoverageTypeId.ToString, cboCoverageType)
             Catch ex As Exception
                 moErrorController.AddError(SPECIALSERVICE_LIST_FORM001)
                 moErrorController.AddError(ex.Message, False)
@@ -256,7 +256,7 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Sub BindDataGrid(ByVal oDataView As DataView)
+        Private Sub BindDataGrid(oDataView As DataView)
             moSplServiceGrid.DataSource = oDataView
             moSplServiceGrid.DataBind()
         End Sub
@@ -266,77 +266,77 @@ Namespace Tables
             Dim oDataView As DataView
 
             Try
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = SpecialService.getList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, ElitaPlusIdentity.Current.ActiveUser.Companies, TheDealerControl.SelectedGuid, Me.GetSelectedItem(cboCoverageType))
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = SpecialService.getList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, ElitaPlusIdentity.Current.ActiveUser.Companies, TheDealerControl.SelectedGuid, GetSelectedItem(cboCoverageType))
                 End If
 
-                Me.State.searchDV.Sort = Me.State.SortExpression
+                State.searchDV.Sort = State.SortExpression
                 moSplServiceGrid.AutoGenerateColumns = False
 
-                moSplServiceGrid.Columns(Me.GRID_COL_DEALER_NAME).SortExpression = SPECIALSERVICE.SPECIALSERVICESearchDV.COL_DEALER_NAME
-                moSplServiceGrid.Columns(Me.GRID_COL_COVERAGE_TYPE).SortExpression = SPECIALSERVICE.SPECIALSERVICESearchDV.COL_COVERAGE_TYPE
-                moSplServiceGrid.Columns(Me.GRID_COL_CAUSE_OF_LOSS).SortExpression = SpecialService.SpecialServiceSearchDV.COL_CAUSE_OF_LOSS
-                HighLightSortColumn(moSplServiceGrid, Me.State.SortExpression)
-                BasePopulateGrid(moSplServiceGrid, Me.State.searchDV, Me.State.moSPECIALSERVICEId, oAction)
+                moSplServiceGrid.Columns(GRID_COL_DEALER_NAME).SortExpression = SPECIALSERVICE.SPECIALSERVICESearchDV.COL_DEALER_NAME
+                moSplServiceGrid.Columns(GRID_COL_COVERAGE_TYPE).SortExpression = SPECIALSERVICE.SPECIALSERVICESearchDV.COL_COVERAGE_TYPE
+                moSplServiceGrid.Columns(GRID_COL_CAUSE_OF_LOSS).SortExpression = SpecialService.SpecialServiceSearchDV.COL_CAUSE_OF_LOSS
+                HighLightSortColumn(moSplServiceGrid, State.SortExpression)
+                BasePopulateGrid(moSplServiceGrid, State.searchDV, State.moSPECIALSERVICEId, oAction)
 
                 ControlMgr.SetVisibleControl(Me, trPageSize, moSplServiceGrid.Visible)
 
-                Session("recCount") = Me.State.searchDV.Count
+                Session("recCount") = State.searchDV.Count
 
-                If Me.moSplServiceGrid.Visible Then
-                    Me.RecordCountLabel.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If moSplServiceGrid.Visible Then
+                    RecordCountLabel.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
-                Me.State.PageSize = CType(cboPageSize.SelectedValue, Integer)
+                State.PageSize = CType(cboPageSize.SelectedValue, Integer)
                 moSplServiceGrid.PageIndex = NewCurrentPageIndex(moSplServiceGrid, CType(Session("recCount"), Int32), State.PageSize)
                 'Me.State.PageSize = moSplServiceGrid.PageSize
-                Me.State.PageIndex = NewCurrentPageIndex(moSplServiceGrid, State.searchDV.Count, State.PageSize)
+                State.PageIndex = NewCurrentPageIndex(moSplServiceGrid, State.searchDV.Count, State.PageSize)
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
         Private Sub ClearSearch()
             TheDealerControl.SelectedIndex = 0
             cboCoverageType.SelectedIndex = 0
-            Me.State.moSPECIALSERVICEId = Guid.Empty
+            State.moSPECIALSERVICEId = Guid.Empty
         End Sub
 
         Private Function GetDataView() As DataView
 
-            Return SpecialService.getList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, ElitaPlusIdentity.Current.ActiveUser.Companies, TheDealerControl.SelectedGuid, Me.GetSelectedItem(cboCoverageType))
+            Return SpecialService.getList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, ElitaPlusIdentity.Current.ActiveUser.Companies, TheDealerControl.SelectedGuid, GetSelectedItem(cboCoverageType))
 
         End Function
 
 #End Region
 
 #Region "Datagrid Related"
-        Private Sub moSplServiceGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moSplServiceGrid.PageIndexChanging
+        Private Sub moSplServiceGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moSplServiceGrid.PageIndexChanging
             Try
                 moSplServiceGrid.PageIndex = e.NewPageIndex
                 PopulateGrid(POPULATE_ACTION_NO_EDIT)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moSplServiceGrid_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moSplServiceGrid.RowCreated
+        Private Sub moSplServiceGrid_ItemCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moSplServiceGrid.RowCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moSplServiceGrid_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles moSplServiceGrid.RowCommand
+        Private Sub moSplServiceGrid_ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles moSplServiceGrid.RowCommand
             Dim sSPECIALSERVICEId As String
             Try
                 'If e.CommandSource.GetType.Equals(GetType(ImageButton)) Then
@@ -344,78 +344,78 @@ Namespace Tables
                     'this only runs when they click the pencil button for editing.
                     'sSPECIALSERVICEId = CType(e.Item.FindControl("moSplServiceId"), Label).Text
                     sSPECIALSERVICEId = CType(e.CommandArgument, String)
-                    Me.State.moSPECIALSERVICEId = Me.GetGuidFromString(sSPECIALSERVICEId)
+                    State.moSPECIALSERVICEId = GetGuidFromString(sSPECIALSERVICEId)
                     SetSession()
 
                     Dim param As New SpecialServiceForm.MyState
-                    param.moSpecialServiceId = Me.State.moSPECIALSERVICEId
-                    param.CoverageTypeId = Me.State.CoverageTypeId
+                    param.moSpecialServiceId = State.moSPECIALSERVICEId
+                    param.CoverageTypeId = State.CoverageTypeId
 
-                    Me.callPage(SpecialServiceForm.URL, param)
+                    callPage(SpecialServiceForm.URL, param)
                 Else
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moSplServiceGrid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles moSplServiceGrid.Sorting
+        Private Sub moSplServiceGrid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles moSplServiceGrid.Sorting
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.moSplServiceGrid.PageIndex = 0
-                Me.moSplServiceGrid.SelectedIndex = -1
-                Me.PopulateGrid()
+                moSplServiceGrid.PageIndex = 0
+                moSplServiceGrid.SelectedIndex = -1
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
 #End Region
 
 #Region " Button Clicks "
-        Private Sub moBtnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Private Sub moBtnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
             Try
                 ' Dim oState As TheState
                 SetSession()
-                moSplServiceGrid.PageIndex = Me.NO_PAGE_INDEX
+                moSplServiceGrid.PageIndex = NO_PAGE_INDEX
                 moSplServiceGrid.DataMember = Nothing
-                Me.State.searchDV = Nothing
-                Me.PopulateGrid()
+                State.searchDV = Nothing
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moBtnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClear.Click
+        Private Sub moBtnClear_Click(sender As System.Object, e As System.EventArgs) Handles btnClear.Click
             Try
                 ClearSearch()
                 'hide the error controller
                 moErrorController.Clear_Hide()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew.Click
             Try
-                Me.State.moSPECIALSERVICEId = Guid.Empty
+                State.moSPECIALSERVICEId = Guid.Empty
                 SetSession()
 
                 Dim param As New SpecialServiceForm.MyState
-                param.moSpecialServiceId = Me.State.moSPECIALSERVICEId
-                param.CoverageTypeId = Me.State.CoverageTypeId
+                param.moSpecialServiceId = State.moSPECIALSERVICEId
+                param.CoverageTypeId = State.CoverageTypeId
 
-                Me.callPage(SpecialServiceForm.URL, param)
+                callPage(SpecialServiceForm.URL, param)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 #End Region
@@ -423,13 +423,13 @@ Namespace Tables
 #Region "State-Management"
 
         Private Sub SetSession()
-            With Me.State
+            With State
                 .DealerId = TheDealerControl.SelectedGuid
-                .CoverageTypeId = Me.GetSelectedItem(cboCoverageType)
+                .CoverageTypeId = GetSelectedItem(cboCoverageType)
                 .PageIndex = moSplServiceGrid.PageIndex
                 .PageSize = moSplServiceGrid.PageSize
-                .PageSort = Me.State.SortExpression
-                .SearchDataView = Me.State.searchDV
+                .PageSort = State.SortExpression
+                .SearchDataView = State.searchDV
             End With
         End Sub
 

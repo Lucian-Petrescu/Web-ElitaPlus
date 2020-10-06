@@ -272,12 +272,12 @@ Partial Public Class WorkQueue
     End Sub
 
     Private Sub BuildWorkQueue(ByVal id As Guid)
-        Me.Dataset = New DataSet
+        Dataset = New DataSet
         CreateEmptyTable()
         _isNew = False
         Dim userName As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
         Try
-            Me._workQueue = WorkQueueClientProxy.GetWorkQueueById(id, userName)
+            _workQueue = WorkQueueClientProxy.GetWorkQueueById(id, userName)
         Catch ex As FaultException(Of WrkQueue.NotAuthorizedFault)
             Throw New UnauthorizedException("WorkQueue", "GetWorkQueueById", ex)
         Catch ex As FaultException(Of WrkQueue.ValidationFault)
@@ -288,7 +288,7 @@ Partial Public Class WorkQueue
         ' Get Work Queue Status Reasons
         Dim wqisrs As WrkQueue.WorkQueueItemStatusReason()
         Try
-            wqisrs = WorkQueueClientProxy.GetWorkQueueItemStatusReasons(Me._workQueue.Id, WrkQueue.StatusReasonOwnerType.Queue, userName)
+            wqisrs = WorkQueueClientProxy.GetWorkQueueItemStatusReasons(_workQueue.Id, WrkQueue.StatusReasonOwnerType.Queue, userName)
         Catch ex As FaultException(Of WrkQueue.NotAuthorizedFault)
             Throw New UnauthorizedException("WorkQueue", "GetWorkQueueItemStatusReasons", ex)
         Catch ex As FaultException(Of WrkQueue.ValidationFault)
@@ -297,11 +297,11 @@ Partial Public Class WorkQueue
             Throw New ServiceException("WorkQueue", "GetWorkQueueItemStatusReasons", ex)
         End Try
         If (wqisrs Is Nothing) Then
-            ReDim Preserve Me._statusReasons(-1)
+            ReDim Preserve _statusReasons(-1)
         Else
-            ReDim Preserve Me._statusReasons(wqisrs.Length - 1)
+            ReDim Preserve _statusReasons(wqisrs.Length - 1)
             For i As Integer = 0 To (wqisrs.Length - 1)
-                Me._statusReasons(i) = New WorkQueueItemStatusReason(Me, wqisrs(i))
+                _statusReasons(i) = New WorkQueueItemStatusReason(Me, wqisrs(i))
             Next
         End If
     End Sub
@@ -313,16 +313,16 @@ Partial Public Class WorkQueue
         dt.Columns.Add("ID", GetType(Byte()))
         dr = dt.NewRow()
         dr("ID") = Guid.NewGuid().ToByteArray()
-        Me.Dataset.Tables.Add(dt)
-        Me.Row = dr
+        Dataset.Tables.Add(dt)
+        Row = dr
     End Sub
 
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
+        Dataset = New DataSet
         CreateEmptyTable()
         _isNew = True
-        Me._workQueue = New WrkQueue.WorkQueue()
+        _workQueue = New WrkQueue.WorkQueue()
         _workQueue.ActiveOn = DateTime.UtcNow
         _workQueue.InActiveOn = DEFAULT_EXPIRATION_DATE
         _workQueue.StartItemDelayMinutes = 0
@@ -338,107 +338,107 @@ Partial Public Class WorkQueue
 #Region "Instance Properties"
     Public Property Effective As DateTimeType Implements IEffecttiveExpiration.Effective
         Get
-            Return New DateTimeType(Me.WorkQueue.Effective)
+            Return New DateTimeType(WorkQueue.Effective)
         End Get
         Set(ByVal value As DateTimeType)
             If (Not value Is Nothing) Then
-                Me.WorkQueue.ActiveOn = value.Value.AddMilliseconds(-1 * value.Value.Millisecond)
+                WorkQueue.ActiveOn = value.Value.AddMilliseconds(-1 * value.Value.Millisecond)
             End If
         End Set
     End Property
 
     Public Property Expiration As DateTimeType Implements IEffecttiveExpiration.Expiration
         Get
-            If (Me.WorkQueue.Expiration.HasValue) Then
-                Return New DateTimeType(Me.WorkQueue.Expiration.Value)
+            If (WorkQueue.Expiration.HasValue) Then
+                Return New DateTimeType(WorkQueue.Expiration.Value)
             Else
                 Return Nothing
             End If
         End Get
         Set(ByVal value As DateTimeType)
             If (value Is Nothing) Then
-                Me.WorkQueue.InActiveOn = Nothing
+                WorkQueue.InActiveOn = Nothing
             Else
-                Me.WorkQueue.InActiveOn = value.Value.AddMilliseconds(-1 * value.Value.Millisecond)
+                WorkQueue.InActiveOn = value.Value.AddMilliseconds(-1 * value.Value.Millisecond)
             End If
         End Set
     End Property
 
     Public Property StatusReasons As WorkQueueItemStatusReason()
         Get
-            Return Me._statusReasons
+            Return _statusReasons
         End Get
         Private Set(ByVal value As WorkQueueItemStatusReason())
-            Me._statusReasons = value
+            _statusReasons = value
         End Set
     End Property
 
     Public ReadOnly Property ReDirectReasons As WorkQueueItemStatusReason()
         Get
             Dim returnValue(-1) As WorkQueueItemStatusReason
-            If (Me.StatusReasons Is Nothing) Then Return returnValue
-            Return (From wqisr In Me.StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Completed And wqisr.ItemStatusReason.IsActive = True And wqisr.ItemStatusReason.Reason <> ServiceHelper.WQISR_DEFAULT_COMPLETED Select wqisr).ToArray()
+            If (StatusReasons Is Nothing) Then Return returnValue
+            Return (From wqisr In StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Completed And wqisr.ItemStatusReason.IsActive = True And wqisr.ItemStatusReason.Reason <> ServiceHelper.WQISR_DEFAULT_COMPLETED Select wqisr).ToArray()
         End Get
     End Property
 
     Public ReadOnly Property DefaultCompletedReason As WorkQueueItemStatusReason
         Get
-            Return (From wqisr In Me.StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Completed And wqisr.ItemStatusReason.IsActive = True And wqisr.ItemStatusReason.Reason = ServiceHelper.WQISR_DEFAULT_COMPLETED Select wqisr).FirstOrDefault()
+            Return (From wqisr In StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Completed And wqisr.ItemStatusReason.IsActive = True And wqisr.ItemStatusReason.Reason = ServiceHelper.WQISR_DEFAULT_COMPLETED Select wqisr).FirstOrDefault()
         End Get
     End Property
 
     Public ReadOnly Property ReQueueReasons As WorkQueueItemStatusReason()
         Get
             Dim returnValue(-1) As WorkQueueItemStatusReason
-            If (Me.StatusReasons Is Nothing) Then Return returnValue
-            Return (From wqisr In Me.StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Requeue And wqisr.ItemStatusReason.IsActive = True And wqisr.ItemStatusReason.Reason <> ServiceHelper.WQISR_DEFAULT_REQUEUE Select wqisr).ToArray()
+            If (StatusReasons Is Nothing) Then Return returnValue
+            Return (From wqisr In StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Requeue And wqisr.ItemStatusReason.IsActive = True And wqisr.ItemStatusReason.Reason <> ServiceHelper.WQISR_DEFAULT_REQUEUE Select wqisr).ToArray()
         End Get
     End Property
 
     Public ReadOnly Property DefaultReQueueReason As WorkQueueItemStatusReason
         Get
-            Return (From wqisr In Me.StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Requeue And wqisr.ItemStatusReason.IsActive = True And wqisr.ItemStatusReason.Reason = ServiceHelper.WQISR_DEFAULT_REQUEUE Select wqisr).FirstOrDefault()
+            Return (From wqisr In StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Requeue And wqisr.ItemStatusReason.IsActive = True And wqisr.ItemStatusReason.Reason = ServiceHelper.WQISR_DEFAULT_REQUEUE Select wqisr).FirstOrDefault()
         End Get
     End Property
 
     Public ReadOnly Property IsNew As Boolean
         Get
-            Return Me.WorkQueue.IsNew
+            Return WorkQueue.IsNew
         End Get
     End Property
 
     <ValidateReDirectReasonCount(""), ValidateReQueueReasonCount(""), ValidateScheduleCount("")> _
     Public Property Id As Guid
         Get
-            If (Me.WorkQueue.IsNew) Then
-                Return Me._workQueueId
+            If (WorkQueue.IsNew) Then
+                Return _workQueueId
             Else
-                Return Me._workQueue.Id
+                Return _workQueue.Id
             End If
         End Get
         Set(ByVal value As Guid)
-            If (Not Me.WorkQueue.IsNew) Then
-                Me._workQueue.Id = value
+            If (Not WorkQueue.IsNew) Then
+                _workQueue.Id = value
             End If
         End Set
     End Property
 
     Public ReadOnly Property WorkQueue As WrkQueue.WorkQueue
         Get
-            Return Me._workQueue
+            Return _workQueue
         End Get
     End Property
 
     Public ReadOnly Property IsDirty As Boolean
         Get
             Dim originalWorkQueue As WorkQueue
-            If Me.IsNew Then Return True
-            If (Me.WorkQueue.InActiveOn.HasValue AndAlso Me.WorkQueue.InActiveOn.Value < DateTime.UtcNow) Then Return False
+            If IsNew Then Return True
+            If (WorkQueue.InActiveOn.HasValue AndAlso WorkQueue.InActiveOn.Value < DateTime.UtcNow) Then Return False
             If IsWorkQueueDirty(originalWorkQueue) Then Return True
-            If Me.IsChildrenDirty Then Return True
+            If IsChildrenDirty Then Return True
             If (Not originalWorkQueue Is Nothing) Then
-                If (Not Me.StatusReasons Is Nothing) Then
-                    For Each wqisr As WorkQueueItemStatusReason In Me.StatusReasons
+                If (Not StatusReasons Is Nothing) Then
+                    For Each wqisr As WorkQueueItemStatusReason In StatusReasons
                         ' If New Reason is Added and Not Deleted
                         If (wqisr.IsNew AndAlso Not wqisr.IsDeleted) Then Return True
                         ' Check if Original WQ Has that reason
@@ -455,28 +455,28 @@ Partial Public Class WorkQueue
     End Property
 
     Private Function IsWorkQueueDirty(ByRef originalWorkQueue As WorkQueue) As Boolean
-        If Me.IsNew Then Return True
-        originalWorkQueue = New WorkQueue(Me.Id)
-        If (originalWorkQueue.WorkQueue.ActionCode <> Me.WorkQueue.ActionCode) Then Return True
+        If IsNew Then Return True
+        originalWorkQueue = New WorkQueue(Id)
+        If (originalWorkQueue.WorkQueue.ActionCode <> WorkQueue.ActionCode) Then Return True
         If (originalWorkQueue.WorkQueue.ActiveOn.AddMilliseconds(-1 * originalWorkQueue.WorkQueue.ActiveOn.Millisecond) <> _
-            Me.WorkQueue.ActiveOn.AddMilliseconds(-1 * Me.WorkQueue.ActiveOn.Millisecond)) Then Return True
-        If (originalWorkQueue.WorkQueue.AdminRole <> Me.WorkQueue.AdminRole) Then Return True
-        If (originalWorkQueue.WorkQueue.CompanyCode <> Me.WorkQueue.CompanyCode) Then Return True
+            WorkQueue.ActiveOn.AddMilliseconds(-1 * WorkQueue.ActiveOn.Millisecond)) Then Return True
+        If (originalWorkQueue.WorkQueue.AdminRole <> WorkQueue.AdminRole) Then Return True
+        If (originalWorkQueue.WorkQueue.CompanyCode <> WorkQueue.CompanyCode) Then Return True
         Dim inActiveDate As Nullable(Of Date) = originalWorkQueue.WorkQueue.InActiveOn
         If (inActiveDate.HasValue) Then
             inActiveDate = inActiveDate.Value.AddMilliseconds(-1 * inActiveDate.Value.Millisecond)
         End If
-        If (Not inActiveDate.Equals(Me.WorkQueue.InActiveOn)) Then Return True
-        If (Not originalWorkQueue.WorkQueue.LockableDataTypeId.Equals(Me.WorkQueue.LockableDataTypeId)) Then Return True
-        If (originalWorkQueue.WorkQueue.MaxRequeue <> Me.WorkQueue.MaxRequeue) Then Return True
-        If (originalWorkQueue.WorkQueue.Name <> Me.WorkQueue.Name) Then Return True
-        If (originalWorkQueue.WorkQueue.StartItemDelayMinutes <> Me.WorkQueue.StartItemDelayMinutes) Then Return True
-        If (originalWorkQueue.WorkQueue.TimeToCompleteMinutes <> Me.WorkQueue.TimeToCompleteMinutes) Then Return True
-        If (originalWorkQueue.WorkQueue.TimeZoneCode <> Me.WorkQueue.TimeZoneCode) Then Return True
-        If (originalWorkQueue.WorkQueue.TransformationFile <> Me.WorkQueue.TransformationFile) Then Return True
-        If (Not originalWorkQueue.WorkQueue.WorkQueueTypeId.Equals(Me.WorkQueue.WorkQueueTypeId)) Then Return True
+        If (Not inActiveDate.Equals(WorkQueue.InActiveOn)) Then Return True
+        If (Not originalWorkQueue.WorkQueue.LockableDataTypeId.Equals(WorkQueue.LockableDataTypeId)) Then Return True
+        If (originalWorkQueue.WorkQueue.MaxRequeue <> WorkQueue.MaxRequeue) Then Return True
+        If (originalWorkQueue.WorkQueue.Name <> WorkQueue.Name) Then Return True
+        If (originalWorkQueue.WorkQueue.StartItemDelayMinutes <> WorkQueue.StartItemDelayMinutes) Then Return True
+        If (originalWorkQueue.WorkQueue.TimeToCompleteMinutes <> WorkQueue.TimeToCompleteMinutes) Then Return True
+        If (originalWorkQueue.WorkQueue.TimeZoneCode <> WorkQueue.TimeZoneCode) Then Return True
+        If (originalWorkQueue.WorkQueue.TransformationFile <> WorkQueue.TransformationFile) Then Return True
+        If (Not originalWorkQueue.WorkQueue.WorkQueueTypeId.Equals(WorkQueue.WorkQueueTypeId)) Then Return True
         'DEF-3035
-        If (originalWorkQueue.WorkQueue.RequeueItemDelayMinutes <> Me.WorkQueue.RequeueItemDelayMinutes) Then Return True
+        If (originalWorkQueue.WorkQueue.RequeueItemDelayMinutes <> WorkQueue.RequeueItemDelayMinutes) Then Return True
         'DEF-3035 End
         Return False
     End Function
@@ -485,11 +485,11 @@ Partial Public Class WorkQueue
 #Region "Time Zone Conversion"
     Public ReadOnly Property TimeZone As TimeZoneInfo
         Get
-            If (Not _timeZoneInfo Is Nothing AndAlso Me._workQueue Is Nothing AndAlso _timeZoneInfo.StandardName <> Me._workQueue.TimeZoneCode) Then _timeZoneInfo = Nothing
-            If (Me._workQueue Is Nothing OrElse Me._workQueue.TimeZoneCode Is Nothing OrElse String.IsNullOrEmpty(Me._workQueue.TimeZoneCode)) Then _timeZoneInfo = Nothing
-            If (Me._timeZoneInfo Is Nothing AndAlso Not Me._workQueue Is Nothing) Then
-                If ((From tzi In TimeZoneInfo.GetSystemTimeZones() Where tzi.StandardName = Me._workQueue.TimeZoneCode Select tzi).Count() = 1) Then
-                    _timeZoneInfo = (From tzi In TimeZoneInfo.GetSystemTimeZones() Where tzi.StandardName = Me._workQueue.TimeZoneCode Select tzi).First()
+            If (Not _timeZoneInfo Is Nothing AndAlso _workQueue Is Nothing AndAlso _timeZoneInfo.StandardName <> _workQueue.TimeZoneCode) Then _timeZoneInfo = Nothing
+            If (_workQueue Is Nothing OrElse _workQueue.TimeZoneCode Is Nothing OrElse String.IsNullOrEmpty(_workQueue.TimeZoneCode)) Then _timeZoneInfo = Nothing
+            If (_timeZoneInfo Is Nothing AndAlso Not _workQueue Is Nothing) Then
+                If ((From tzi In TimeZoneInfo.GetSystemTimeZones() Where tzi.StandardName = _workQueue.TimeZoneCode Select tzi).Count() = 1) Then
+                    _timeZoneInfo = (From tzi In TimeZoneInfo.GetSystemTimeZones() Where tzi.StandardName = _workQueue.TimeZoneCode Select tzi).First()
                 End If
             End If
             Return _timeZoneInfo
@@ -497,37 +497,37 @@ Partial Public Class WorkQueue
     End Property
 
     Public Function ConvertTimeFromUtc(ByVal value As Nullable(Of DateTime)) As Nullable(Of DateTime)
-        Return WrkQueue.WorkQueue.ConvertTimeFromUtc(value, Me.TimeZone)
+        Return WrkQueue.WorkQueue.ConvertTimeFromUtc(value, TimeZone)
     End Function
 
     Public Function ConvertTimeToUtc(ByVal value As Nullable(Of DateTime)) As Nullable(Of DateTime)
-        Return WrkQueue.WorkQueue.ConvertTimeToUtc(value, Me.TimeZone)
+        Return WrkQueue.WorkQueue.ConvertTimeToUtc(value, TimeZone)
     End Function
 
     Public Function ConvertTimeFromUtc(ByVal value As DateTime) As DateTime
-        Return WrkQueue.WorkQueue.ConvertTimeFromUtc(value, Me.TimeZone)
+        Return WrkQueue.WorkQueue.ConvertTimeFromUtc(value, TimeZone)
     End Function
 
     Public Function ConvertTimeToUtc(ByVal value As DateTime) As DateTime
-        Return WrkQueue.WorkQueue.ConvertTimeToUtc(value, Me.TimeZone)
+        Return WrkQueue.WorkQueue.ConvertTimeToUtc(value, TimeZone)
     End Function
 #End Region
 
 #Region "Data Retrieveing / Updating Methods"
 
     Public Overrides Sub Validate()
-        Me.WorkQueue.Validate()
+        WorkQueue.Validate()
         MyBase.Validate()
     End Sub
 
     Public Sub Save()
         Dim dal As New EntityScheduleDAL
         Dim userId As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
-        Me.Validate()
-        If (Me.IsDirty) Then
+        Validate()
+        If (IsDirty) Then
             ' Add new Time Slots to Work Queue
             If (Dataset.Tables.Contains(EntityScheduleDAL.TABLE_NAME)) Then
-                For Each dr As DataRow In Me.Dataset.Tables(EntityScheduleDAL.TABLE_NAME).Rows
+                For Each dr As DataRow In Dataset.Tables(EntityScheduleDAL.TABLE_NAME).Rows
                     Dim oEntitySchedule As New EntitySchedule(dr, Me)
                     If (oEntitySchedule.IsNew) Then
                         Dim scheduleDetailView As DataView
@@ -535,25 +535,25 @@ Partial Public Class WorkQueue
                         For Each scheduleDetailDr As DataRow In scheduleDetailView.Table.Rows
                             Dim oScheduleDetail As New ScheduleDetail(scheduleDetailDr)
                             Dim timeSlot As New WrkQueue.TimeSlot
-                            timeSlot.ActivateOn = Me.ConvertTimeToUtc(oEntitySchedule.Effective.Value)
-                            timeSlot.DeactivateOn = Me.ConvertTimeToUtc(oEntitySchedule.Expiration.Value)
+                            timeSlot.ActivateOn = ConvertTimeToUtc(oEntitySchedule.Effective.Value)
+                            timeSlot.DeactivateOn = ConvertTimeToUtc(oEntitySchedule.Expiration.Value)
                             timeSlot.Day = CType(Int32.Parse(LookupListNew.GetCodeFromId(LookupListNew.LK_DAYS_OF_WEEK, oScheduleDetail.DayOfWeekId)), DayOfWeek)
                             timeSlot.StartTime = New TimeSpan(oScheduleDetail.FromTime.Value.Hour, oScheduleDetail.FromTime.Value.Minute, oScheduleDetail.FromTime.Value.Second)
                             timeSlot.EndTime = New TimeSpan(oScheduleDetail.ToTime.Value.Hour, oScheduleDetail.ToTime.Value.Minute, oScheduleDetail.ToTime.Value.Second)
                             timeSlot.CreatedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
-                            If (Me.WorkQueue.Schedule Is Nothing) Then ReDim Me.WorkQueue.Schedule(-1)
-                            ReDim Preserve Me.WorkQueue.Schedule(Me.WorkQueue.Schedule.Length)
-                            Me.WorkQueue.Schedule(Me.WorkQueue.Schedule.Length - 1) = timeSlot
+                            If (WorkQueue.Schedule Is Nothing) Then ReDim WorkQueue.Schedule(-1)
+                            ReDim Preserve WorkQueue.Schedule(WorkQueue.Schedule.Length)
+                            WorkQueue.Schedule(WorkQueue.Schedule.Length - 1) = timeSlot
                         Next
                     ElseIf oEntitySchedule.IsDeleted Then
                         'if the schedule is to be deleted, then set the associated time slots Deactivation date as Activation date + 1
-                        For Each timeSlot As WrkQueue.TimeSlot In Me.WorkQueue.Schedule
+                        For Each timeSlot As WrkQueue.TimeSlot In WorkQueue.Schedule
                             timeSlot.DeactivateOn = timeSlot.ActivateOn.AddSeconds(1)
                         Next
                     Else
-                        For Each timeSlot As WrkQueue.TimeSlot In (From ts In Me.WorkQueue.Schedule Where ts.ActivateOn = oEntitySchedule.OriginalEffective AndAlso ts.DeactivateOn = oEntitySchedule.OriginalExpiration Select ts)
-                            timeSlot.ActivateOn = Me.ConvertTimeToUtc(oEntitySchedule.Effective.Value)
-                            timeSlot.DeactivateOn = Me.ConvertTimeToUtc(oEntitySchedule.Expiration.Value)
+                        For Each timeSlot As WrkQueue.TimeSlot In (From ts In WorkQueue.Schedule Where ts.ActivateOn = oEntitySchedule.OriginalEffective AndAlso ts.DeactivateOn = oEntitySchedule.OriginalExpiration Select ts)
+                            timeSlot.ActivateOn = ConvertTimeToUtc(oEntitySchedule.Effective.Value)
+                            timeSlot.DeactivateOn = ConvertTimeToUtc(oEntitySchedule.Expiration.Value)
                         Next
                     End If
                 Next
@@ -561,7 +561,7 @@ Partial Public Class WorkQueue
 
 
             _workQueue.ModifiedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
-            If (Me.IsNew) Then
+            If (IsNew) Then
                 Try
                     WorkQueueClientProxy.CreateWorkQueue(_workQueue, userId)
                 Catch ex As FaultException(Of WrkQueue.DuplicateWorkQueueFault)
@@ -621,9 +621,9 @@ Partial Public Class WorkQueue
                 Throw New ServiceException("Authorization", "AddPermissionsToGroup", ex)
             End Try
             ' Update Status Reasons
-            For Each wqisr In Me.StatusReasons
+            For Each wqisr In StatusReasons
                 If (Not (wqisr.IsNew AndAlso wqisr.IsDeleted)) Then
-                    wqisr.ItemStatusReason.WorkQueueId = Me.Id
+                    wqisr.ItemStatusReason.WorkQueueId = Id
                     If (wqisr.IsNew) Then
                         wqisr.Id = Guid.Empty
                         Try
@@ -652,14 +652,14 @@ Partial Public Class WorkQueue
 
             ' Update Work Queue ID in Schedule Collection
             If (Dataset.Tables.Contains(EntityScheduleDAL.TABLE_NAME)) Then
-                For Each dr As DataRow In Me.Dataset.Tables(EntityScheduleDAL.TABLE_NAME).Rows
+                For Each dr As DataRow In Dataset.Tables(EntityScheduleDAL.TABLE_NAME).Rows
                     Dim oEntirySchedule As New EntitySchedule(dr, Me)
                     'Check if the Schedule is marked as to be deleted, if no, only then associate the Work queue ID with the schedule
                     If Not oEntirySchedule.IsDeleted Then
-                        oEntirySchedule.EntityId = Me.Id
+                        oEntirySchedule.EntityId = Id
                     End If
                 Next
-                dal.Update(Me.Dataset)
+                dal.Update(Dataset)
             End If
             ElitaPlusIdentity.Current.ActiveUser.ResetExtendedUser()
         End If
@@ -672,31 +672,31 @@ Partial Public Class WorkQueue
     End Function
 
     Public Sub Copy(ByVal target As WorkQueue)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Work Queue")
         End If
 
         With target.WorkQueue
-            Me.WorkQueue.ActionCode = .ActionCode
-            Me.WorkQueue.TimeZoneCode = .TimeZoneCode
+            WorkQueue.ActionCode = .ActionCode
+            WorkQueue.TimeZoneCode = .TimeZoneCode
             If (.ActiveOn < DateTime.UtcNow) Then
-                Me.WorkQueue.ActiveOn = DateTime.UtcNow
+                WorkQueue.ActiveOn = DateTime.UtcNow
             Else
-                Me.WorkQueue.ActiveOn = .ActiveOn
+                WorkQueue.ActiveOn = .ActiveOn
             End If
-            Me.WorkQueue.AdminRole = .AdminRole
-            Me.WorkQueue.CompanyCode = .CompanyCode
-            Me.WorkQueue.Expiration = DEFAULT_EXPIRATION_DATE
-            Me.WorkQueue.LockableDataTypeId = .LockableDataTypeId
-            Me.WorkQueue.MaxRequeue = .MaxRequeue
-            Me.WorkQueue.ModifiedBy = String.Empty
-            Me.WorkQueue.Name = String.Empty
-            Me.WorkQueue.StartItemDelayMinutes = .StartItemDelayMinutes
-            Me.WorkQueue.TimeToCompleteMinutes = .TimeToCompleteMinutes
-            Me.WorkQueue.TransformationFile = .TransformationFile
-            Me.WorkQueue.WorkQueueTypeId = .WorkQueueTypeId
+            WorkQueue.AdminRole = .AdminRole
+            WorkQueue.CompanyCode = .CompanyCode
+            WorkQueue.Expiration = DEFAULT_EXPIRATION_DATE
+            WorkQueue.LockableDataTypeId = .LockableDataTypeId
+            WorkQueue.MaxRequeue = .MaxRequeue
+            WorkQueue.ModifiedBy = String.Empty
+            WorkQueue.Name = String.Empty
+            WorkQueue.StartItemDelayMinutes = .StartItemDelayMinutes
+            WorkQueue.TimeToCompleteMinutes = .TimeToCompleteMinutes
+            WorkQueue.TransformationFile = .TransformationFile
+            WorkQueue.WorkQueueTypeId = .WorkQueueTypeId
             'DEF-3035
-            Me.WorkQueue.RequeueItemDelayMinutes = .RequeueItemDelayMinutes
+            WorkQueue.RequeueItemDelayMinutes = .RequeueItemDelayMinutes
             'DEF-3035 End
 
             Dim newWqisr As WorkQueueItemStatusReason
@@ -708,10 +708,10 @@ Partial Public Class WorkQueue
                 If (oWqisr.Id <> defaultCompletedReasonId And oWqisr.Id <> defaultReQueueReasonId) Then
                     Select Case oWqisr.ItemStatusReason.Status
                         Case WrkQueue.StatusType.Completed
-                            newWqisr = Me.AddReDirectReason()
+                            newWqisr = AddReDirectReason()
                             newWqisr.ItemStatusReason.Reason = oWqisr.ItemStatusReason.Reason
                         Case WrkQueue.StatusType.Requeue
-                            newWqisr = Me.AddReQueueReason()
+                            newWqisr = AddReQueueReason()
                             newWqisr.ItemStatusReason.Reason = oWqisr.ItemStatusReason.Reason
                         Case Else
                             Throw New NotSupportedException()
@@ -728,13 +728,13 @@ Partial Public Class WorkQueue
                     Continue For
                 End If
 
-                targetEntitySchedule = Me.GetNewScheduleChild()
+                targetEntitySchedule = GetNewScheduleChild()
                 With targetEntitySchedule
                     .ScheduleId = orgEntitySchedule.ScheduleId
                     .ScheduleCode = orgEntitySchedule.ScheduleCode
                     .ScheduleDescription = orgEntitySchedule.ScheduleDescription
                     If (target.ConvertTimeToUtc(orgEntitySchedule.Effective.Value) < DateTime.UtcNow) Then
-                        .Effective = Me.ConvertTimeFromUtc(DateTime.UtcNow)
+                        .Effective = ConvertTimeFromUtc(DateTime.UtcNow)
                     Else
                         .Effective = orgEntitySchedule.Effective
                     End If
@@ -747,15 +747,15 @@ Partial Public Class WorkQueue
 
     Public Sub Delete()
         ' Get Latest Version from Server
-        BuildWorkQueue(Me.Id)
+        BuildWorkQueue(Id)
         ' Discontinue with DateTime.UtcNow
-        If (Me.WorkQueue.ActiveOn > DateTime.UtcNow) Then
-            Me.WorkQueue.InActiveOn = Me.WorkQueue.ActiveOn.AddSeconds(1)
+        If (WorkQueue.ActiveOn > DateTime.UtcNow) Then
+            WorkQueue.InActiveOn = WorkQueue.ActiveOn.AddSeconds(1)
         Else
-            Me.WorkQueue.InActiveOn = DateTime.UtcNow
+            WorkQueue.InActiveOn = DateTime.UtcNow
         End If
         ' Discontinue all Schedules
-        For Each entirySchedule As EntitySchedule In Me.ScheduleChildren
+        For Each entirySchedule As EntitySchedule In ScheduleChildren
             If (entirySchedule.Effective.Value > DateTime.UtcNow) Then
                 entirySchedule.Expiration = New DateTimeType(entirySchedule.Effective.Value.AddSeconds(1))
             Else
@@ -800,18 +800,18 @@ Partial Public Class WorkQueue
     End Property
 
     Public Function GetScheduleSelectionView() As EntitySchedule.ScheduleSelectionView
-        Return Me.ScheduleChildren.AsSelectionView()
+        Return ScheduleChildren.AsSelectionView()
     End Function
 
     Public Function GetScheduleChild(ByVal childId As Guid) As EntitySchedule
-        Return CType(Me.ScheduleChildren.GetChild(childId), EntitySchedule)
+        Return CType(ScheduleChildren.GetChild(childId), EntitySchedule)
     End Function
 
     Public Function GetNewScheduleChild() As EntitySchedule
-        Dim newScheduleValue As EntitySchedule = CType(Me.ScheduleChildren.GetNewChild, EntitySchedule)
+        Dim newScheduleValue As EntitySchedule = CType(ScheduleChildren.GetNewChild, EntitySchedule)
         newScheduleValue.Entity = "ELP_WORKQUEUE"
-        newScheduleValue.EntityId = Me.Id
-        newScheduleValue.Effective = Me.ConvertTimeFromUtc(DateTime.UtcNow)
+        newScheduleValue.EntityId = Id
+        newScheduleValue.Effective = ConvertTimeFromUtc(DateTime.UtcNow)
         newScheduleValue.Expiration = DEFAULT_EXPIRATION_DATE
         Return newScheduleValue
     End Function
@@ -825,7 +825,7 @@ Namespace WrkQueue
 
         Public ReadOnly Property IsNew As Boolean
             Get
-                Return Me.Id.Equals(Guid.Empty)
+                Return Id.Equals(Guid.Empty)
             End Get
         End Property
 
@@ -840,9 +840,9 @@ Namespace WrkQueue
 
         Default Friend Property Metadata(ByVal metadataName As String) As String
             Get
-                If (Me.MetadataList Is Nothing) Then Return String.Empty
-                If ((From wqmd In Me.MetadataList Where wqmd.Name = metadataName Select wqmd).Count() = 1) Then
-                    Return (From wqmd In Me.MetadataList Where wqmd.Name = metadataName Select wqmd.Value).First()
+                If (MetadataList Is Nothing) Then Return String.Empty
+                If ((From wqmd In MetadataList Where wqmd.Name = metadataName Select wqmd).Count() = 1) Then
+                    Return (From wqmd In MetadataList Where wqmd.Name = metadataName Select wqmd.Value).First()
                 Else
                     Return String.Empty
                 End If
@@ -850,18 +850,18 @@ Namespace WrkQueue
             Set(ByVal value As String)
                 Dim oWorkQueueMetadata As WorkQueueMetadata = Nothing
                 Dim length As Integer
-                If (Me.MetadataList Is Nothing) Then
+                If (MetadataList Is Nothing) Then
                     length = 0
                 Else
-                    oWorkQueueMetadata = (From wqmd In Me.MetadataList Where wqmd.Name = metadataName Select wqmd).FirstOrDefault()
-                    length = Me.MetadataList.Length
+                    oWorkQueueMetadata = (From wqmd In MetadataList Where wqmd.Name = metadataName Select wqmd).FirstOrDefault()
+                    length = MetadataList.Length
                 End If
                 If (oWorkQueueMetadata Is Nothing) Then
                     oWorkQueueMetadata = New WorkQueueMetadata()
                     oWorkQueueMetadata.Name = metadataName
                     oWorkQueueMetadata.CreatedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
-                    ReDim Preserve Me.MetadataList(length)
-                    Me.MetadataList(Me.MetadataList.Length - 1) = oWorkQueueMetadata
+                    ReDim Preserve MetadataList(length)
+                    MetadataList(MetadataList.Length - 1) = oWorkQueueMetadata
                 Else
                     oWorkQueueMetadata.UpdatedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                 End If
@@ -915,7 +915,7 @@ Namespace WrkQueue
 
         Public ReadOnly Property ActionName As String
             Get
-                Return LookupListNew.GetDescriptionFromCode(LookupListCache.LK_WQ_ACTION, Me.ActionCode)
+                Return LookupListNew.GetDescriptionFromCode(LookupListCache.LK_WQ_ACTION, ActionCode)
             End Get
         End Property
 
@@ -924,10 +924,10 @@ Namespace WrkQueue
             DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MinDate)> _
         Public Property Effective As Date
             Get
-                Return Me.ConvertTimeFromUtc(Me.ActiveOn, Me.TimeZoneCode)
+                Return ConvertTimeFromUtc(ActiveOn, TimeZoneCode)
             End Get
             Set(ByVal value As Date)
-                Me.ActiveOn = Me.ConvertTimeToUtc(value, Me.TimeZoneCode)
+                ActiveOn = ConvertTimeToUtc(value, TimeZoneCode)
             End Set
         End Property
 
@@ -936,10 +936,10 @@ Namespace WrkQueue
             DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MaxDate)> _
         Public Property Expiration As Nullable(Of Date)
             Get
-                Return Me.ConvertTimeFromUtc(Me.InActiveOn, Me.TimeZoneCode)
+                Return ConvertTimeFromUtc(InActiveOn, TimeZoneCode)
             End Get
             Set(ByVal value As Nullable(Of Date))
-                Me.InActiveOn = Me.ConvertTimeToUtc(value, Me.TimeZoneCode)
+                InActiveOn = ConvertTimeToUtc(value, TimeZoneCode)
             End Set
         End Property
 

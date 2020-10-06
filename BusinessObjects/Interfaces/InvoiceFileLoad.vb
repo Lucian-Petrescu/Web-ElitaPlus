@@ -82,7 +82,7 @@ Public NotInheritable Class InvoiceFileLoad
                     invoice.InvoiceNumber = afterReconRecord.InvoiceNumber
                     invoice.InvoiceStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_INVOICE_STATUS, Codes.INVOICE_STATUS__NEW)
                     invoice.ServiceCenterId = afterReconRecord.ServiceCenterId
-                    invoice.Source = Me.Header.Filename
+                    invoice.Source = Header.Filename
                     invoice.IsComplete = True
                 End With
             Else
@@ -119,7 +119,7 @@ Public NotInheritable Class InvoiceFileLoad
             oClaimAuthorization = invoice.ClaimAuthorizations.Where(Function(item) item.ClaimAuthorizationId = reconRecord.AuthorizationId).FirstOrDefault()
 
             If (oClaimAuthorization Is Nothing OrElse oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled) Then
-                invoice.Source = Me.Header.Filename
+                invoice.Source = Header.Filename
                 invoiceItem = invoice.GetNewInvoiceItemChild
                 invoice.InvoiceAmount = invoice.InvoiceAmount + reconRecord.Amount.Value
                 invoiceItem.Amount = reconRecord.Amount

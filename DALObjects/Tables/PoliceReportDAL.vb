@@ -26,51 +26,51 @@ Public Class PoliceReportDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("police_report_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Sub LoadbyClaimid(ByVal familyDS As DataSet, ByVal claimid As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOADBYCLAIMID")
+    Public Sub LoadbyClaimid(familyDS As DataSet, claimid As Guid)
+        Dim selectStmt As String = Config("/SQL/LOADBYCLAIMID")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_id", claimid.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "Public methods"
-    Public Function GetClaimsByPoliceRptNumber(ByVal PoliceStationID As Guid, ByVal ReportNumber As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOADCLAIMSBYREPORTNUM")
+    Public Function GetClaimsByPoliceRptNumber(PoliceStationID As Guid, ReportNumber As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOADCLAIMSBYREPORTNUM")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                                         New DBHelper.DBHelperParameter(COL_NAME_POLICE_STATION_ID, PoliceStationID.ToByteArray), _
                                         New DBHelper.DBHelperParameter(COL_NAME_REPORT_NUMBER, ReportNumber.Trim.ToUpper)}

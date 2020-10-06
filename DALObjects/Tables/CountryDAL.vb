@@ -58,27 +58,27 @@ Public Class CountryDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("country_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
-    Public Function LoadList(ByVal description As String, ByVal code As String) As DataSet
+    Public Function LoadList(description As String, code As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter
         description = GetFormattedSearchStringForSQL(description)
         code = GetFormattedSearchStringForSQL(code)
@@ -87,7 +87,7 @@ Public Class CountryDAL
                                      New OracleParameter(COL_NAME_DESCRIPTION, description)}
 
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -95,24 +95,24 @@ Public Class CountryDAL
     End Function
 
 
-    Public Function LoadCountries(ByVal compIds As ArrayList) As DataSet
+    Public Function LoadCountries(compIds As ArrayList) As DataSet
         If compIds.Count = 0 Then Return Nothing
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_COUNTRY_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_COUNTRY_LIST")
 
         Dim whereClauseConditions As String = ""
 
-        whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql(Me.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds, False)
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
 
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -121,22 +121,22 @@ Public Class CountryDAL
     End Function
 
 
-    Public Function LoadListForWS(ByVal ds As DataSet, ByVal oCountriesIds As ArrayList) As DataSet
+    Public Function LoadListForWS(ds As DataSet, oCountriesIds As ArrayList) As DataSet
         If oCountriesIds.Count = 0 Then Return Nothing
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_COUNTRY_LIST_FOR_WS")
+        Dim selectStmt As String = Config("/SQL/LOAD_COUNTRY_LIST_FOR_WS")
 
         Dim whereClauseConditions As String = ""
 
-        whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql(Me.TABLE_KEY_NAME, oCountriesIds, False)
+        whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql(TABLE_KEY_NAME, oCountriesIds, False)
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -147,9 +147,9 @@ Public Class CountryDAL
     '    DBHelper.Execute(ds.Tables(Me.TABLE_NAME), Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, transaction)
     'End Sub
 
-    Public Function GetCountryPostalFormat(ByVal oCountryId As Guid) As DataView
+    Public Function GetCountryPostalFormat(oCountryId As Guid) As DataView
         Try
-            Dim selectStmt As String = Me.Config("/SQL/LOAD_COUNTRY_COMUNAS")
+            Dim selectStmt As String = Config("/SQL/LOAD_COUNTRY_COMUNAS")
             Dim ds As New DataSet
             Dim parameter As DBHelper.DBHelperParameter
             If oCountryId.Equals(Guid.Empty) Then
@@ -157,7 +157,7 @@ Public Class CountryDAL
             Else
                 parameter = New DBHelper.DBHelperParameter(COL_NAME_COUNTRY_ID, oCountryId.ToByteArray)
             End If
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, _
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, _
                             New DBHelper.DBHelperParameter() {parameter})
             Return ds.Tables(0).DefaultView
 
@@ -167,13 +167,13 @@ Public Class CountryDAL
 
     End Function
 
-    Public Function GetCountryByteFlag(ByVal oCountryId As Guid) As DataSet
+    Public Function GetCountryByteFlag(oCountryId As Guid) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/GET_BYTE_FLAG")
+            Dim selectStmt As String = Config("/SQL/GET_BYTE_FLAG")
             Dim ds As New DataSet
             Dim parameter As DBHelper.DBHelperParameter
             parameter = New DBHelper.DBHelperParameter(COL_NAME_COUNTRY_ID, oCountryId.ToByteArray)
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, _
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, _
                             New DBHelper.DBHelperParameter() {parameter})
             Return ds
         Catch ex As Exception
@@ -187,7 +187,7 @@ Public Class CountryDAL
 #Region "Overloaded Methods"
 
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
             tr = DBHelper.GetNewTransaction
@@ -196,9 +196,9 @@ Public Class CountryDAL
             Dim cntryPostalFormatDAL As New CountryPostalCodeFormatDAL
             'First Pass updates Deletions
             cntryPostalFormatDAL.Update(familyDataset, tr, DataRowState.Deleted)
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             cntryPostalFormatDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection
@@ -213,8 +213,8 @@ Public Class CountryDAL
         End Try
     End Sub
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
     End Sub
 #End Region
 

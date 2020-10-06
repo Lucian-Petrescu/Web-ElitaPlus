@@ -41,15 +41,15 @@ Public Class CommentDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("comment_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -57,41 +57,41 @@ Public Class CommentDAL
 
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal certId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(certId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_id", certId.ToByteArray)}
         Try
             Dim ds = New DataSet
-            Return (DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadExtendedList(ByVal claimId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/EXT_LOAD_LIST")
+    Public Function LoadExtendedList(claimId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/EXT_LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_id", claimId.ToByteArray)}
         Try
             Dim ds = New DataSet
-            Return (DBHelper.Fetch(ds, selectStmt, Me.EXT_TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(ds, selectStmt, EXT_TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadListForClaim(ByVal claimId As Guid, Optional ByVal familyDataset As DataSet = Nothing) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_COMMENTS_FOR_CLAIM")
+    Public Function LoadListForClaim(claimId As Guid, Optional ByVal familyDataset As DataSet = Nothing) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_COMMENTS_FOR_CLAIM")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_id", claimId)}
         Try
             Dim ds = familyDataset
             If ds Is Nothing Then
                 ds = New DataSet
             End If
-            Return (DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -100,23 +100,23 @@ Public Class CommentDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
             tr = DBHelper.GetNewTransaction
         End If
         Try
-            Me.Update(familyDataset, tr, DataRowState.Deleted)
-            Me.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset, tr, DataRowState.Deleted)
+            Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
             If Not familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim oTransactionLogHeaderDAL As New TransactionLogHeaderDAL

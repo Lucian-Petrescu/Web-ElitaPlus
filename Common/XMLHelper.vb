@@ -33,7 +33,7 @@ Public Class XMLHelper
     ''' 	[co1mkt]	3/22/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function ReadXML(ByVal path As String) As String
+    Public Shared Function ReadXML(path As String) As String
 
         Return GetXMLDoc(path).OuterXml
 
@@ -51,7 +51,7 @@ Public Class XMLHelper
     ''' 	[co1mkt]	3/29/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function GetXMLDoc(ByVal path As String) As XmlDataDocument
+    Public Shared Function GetXMLDoc(path As String) As XmlDataDocument
 
         Dim xmlDoc As XmlDataDocument = New XmlDataDocument
         xmlDoc.Load(path)
@@ -72,7 +72,7 @@ Public Class XMLHelper
     ''' 	[co1mkt]	3/29/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function GetNode(ByVal xmlParentNode As XmlNode, ByVal nodeName As String) As XmlNode
+    Public Shared Function GetNode(xmlParentNode As XmlNode, nodeName As String) As XmlNode
 
         Return xmlParentNode.SelectSingleNode(nodeName)
 
@@ -91,7 +91,7 @@ Public Class XMLHelper
     ''' 	[co1mkt]	3/29/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function GetNode(ByVal xmlDoc As XmlDataDocument, ByVal nodeName As String) As XmlNode
+    Public Shared Function GetNode(xmlDoc As XmlDataDocument, nodeName As String) As XmlNode
 
         Return xmlDoc.ChildNodes(1).SelectSingleNode(nodeName)
 
@@ -110,12 +110,12 @@ Public Class XMLHelper
     ''' 	[co1mkt]	3/29/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function GetAttribute(ByVal node As XmlNode, ByVal attributeName As String) As String
+    Public Shared Function GetAttribute(node As XmlNode, attributeName As String) As String
 
         Return node.Attributes(attributeName).Value
 
     End Function
-    Public Shared Function GetElement(ByVal node As XmlNode, ByVal elementName As String) As String
+    Public Shared Function GetElement(node As XmlNode, elementName As String) As String
 
         Return node(elementName).Value
 
@@ -136,12 +136,12 @@ Public Class XMLHelper
     ''' 	[co1mkt]	3/29/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function GetNodeByAttribute(ByVal parentNode As XmlNode, _
-                                              ByVal webServiceNodeName As String, _
-                                              ByVal nodeName As String, _
-                                              ByVal attributeName As String, _
-                                              ByVal attributeValue As String, _
-                                              ByVal webServiceName As String) As XmlNode
+    Public Shared Function GetNodeByAttribute(parentNode As XmlNode, _
+                                              webServiceNodeName As String, _
+                                              nodeName As String, _
+                                              attributeName As String, _
+                                              attributeValue As String, _
+                                              webServiceName As String) As XmlNode
         Dim outerList As XmlNodeList = parentNode.ChildNodes(1).SelectNodes(webServiceNodeName)
         Dim node As XmlNode
         For Each node In outerList
@@ -204,7 +204,7 @@ Public Class XMLHelper
     ''' 	[co1mkt]	3/29/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function GetValue(ByVal xmlParentNode As XmlNode, ByVal nodeName As String) As String
+    Public Shared Function GetValue(xmlParentNode As XmlNode, nodeName As String) As String
         Dim aNode As XmlNode
 
         aNode = GetNode(xmlParentNode, nodeName)
@@ -230,7 +230,7 @@ Public Class XMLHelper
     ''' 	[co1mkt]	3/29/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function GetValue(ByVal xmlDoc As XmlDataDocument, ByVal nodeName As String) As String
+    Public Shared Function GetValue(xmlDoc As XmlDataDocument, nodeName As String) As String
 
         Return GetNode(xmlDoc, nodeName).InnerXml
 
@@ -250,7 +250,7 @@ Public Class XMLHelper
     ''' 	[co1mkt]	3/26/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function AddDSRoot(ByVal xml As String) As String
+    Public Shared Function AddDSRoot(xml As String) As String
 
         Try
 
@@ -278,7 +278,7 @@ Public Class XMLHelper
 
     End Function
 
-    Public Shared Function GetWebServiceFunctionsNames(ByVal strWebServiceName As String) As DataSet
+    Public Shared Function GetWebServiceFunctionsNames(strWebServiceName As String) As DataSet
 
         Return Services.WebServicesNames.GetWebServiceFunctionsNames(strWebServiceName)
 
@@ -288,7 +288,7 @@ Public Class XMLHelper
 #Region "Conversions"
 
 
-    Public Shared Function FromStringToXML(ByVal source As String) As String
+    Public Shared Function FromStringToXML(source As String) As String
 
         Try
             Return XML_VERSION_AND_ENCODING & source
@@ -302,13 +302,13 @@ Public Class XMLHelper
     End Function
 
     ' Only create element if the value exists
-    Private Shared Sub AppendToString(ByRef strBuilder As StringBuilder, ByVal tag As String, ByVal value As String)
+    Private Shared Sub AppendToString(ByRef strBuilder As StringBuilder, tag As String, value As String)
 
         If value.Trim.Length > 0 Then strBuilder.Append("<" & tag & ">" & value & "</" & tag & ">")
 
     End Sub
 
-    Public Shared Function FromErrorCodeToXML(ByVal code As String, ByVal Message As String, ByVal userNetworkID As String) As String
+    Public Shared Function FromErrorCodeToXML(code As String, Message As String, userNetworkID As String) As String
 
         Try
             Dim errorInfo As String = "User:" & userNetworkID & "; Date:" & Date.Now.ToString("s") & TimeZoneInfo.Local.ToString.Substring(4, 6)
@@ -329,7 +329,7 @@ Public Class XMLHelper
 
     End Function
 
-    Public Shared Function FromErrorCodeToXML(ByVal code As String, ByVal Message As String, ByVal userNetworkID As String, ByVal RefundAmt As String, ByVal NoOfInstallmentPaid As String) As String
+    Public Shared Function FromErrorCodeToXML(code As String, Message As String, userNetworkID As String, RefundAmt As String, NoOfInstallmentPaid As String) As String
 
         Try
             Dim errorInfo As String = "User:" & userNetworkID & "; Date:" & Date.Now.ToString("s") & TimeZoneInfo.Local.ToString.Substring(4, 6)
@@ -353,7 +353,7 @@ Public Class XMLHelper
     End Function
 
     ' The XML does not have neither Carry Return nor Line Feed
-    Public Shared Function FromDatasetToXML(ByVal ds As DataSet) As String
+    Public Shared Function FromDatasetToXML(ds As DataSet) As String
         Dim xmlDoc As XmlDataDocument
 
         If Not IsNothing(ds) AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
@@ -388,7 +388,7 @@ Public Class XMLHelper
     End Function
 
     ' Set the acknoledge dataset
-    Public Shared Function GetXML_OK_Response(ByVal strTagName As String, ByVal strValue As String, Optional ByVal TableName As String = Nothing) As String
+    Public Shared Function GetXML_OK_Response(strTagName As String, strValue As String, Optional ByVal TableName As String = Nothing) As String
 
         Dim ds As DataSet = New DataSet("NEWDATASET")
         Dim dt As DataTable
@@ -421,8 +421,8 @@ Public Class XMLHelper
     End Function
 
     ' The XML does not have neither Carry Return nor Line Feed
-    Public Shared Function FromDatasetToXML(ByVal ds As DataSet, ByVal excludeTags As ArrayList, _
-                                            ByVal includeEmptyTag As Boolean, Optional ByVal includeXmlVersion As Boolean = True, _
+    Public Shared Function FromDatasetToXML(ds As DataSet, excludeTags As ArrayList, _
+                                            includeEmptyTag As Boolean, Optional ByVal includeXmlVersion As Boolean = True, _
                                             Optional ByVal removeDsRoot As String = Nothing, _
                                             Optional ByVal xmlCoded As Boolean = False, _
                                             Optional ByVal xmlCData As Boolean = False) As String
@@ -593,7 +593,7 @@ Public Class XMLHelper
         Return retXml
     End Function
 
-    Public Shared Function InsertCDATASections(ByVal xmlStr As String) As String
+    Public Shared Function InsertCDATASections(xmlStr As String) As String
         Dim reader As XmlValidatingReader = Nothing
         Dim writer As XmlTextWriter = Nothing
         Dim sw As StringWriter = Nothing
@@ -633,7 +633,7 @@ Public Class XMLHelper
 
 
     ' The XML has Carry Return and Line Feed
-    Public Shared Function FromDatasetToXMLCrLf(ByVal ds As DataSet) As String
+    Public Shared Function FromDatasetToXMLCrLf(ds As DataSet) As String
         Dim xmlDoc As String
 
         If Not IsNothing(ds) AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
@@ -657,7 +657,7 @@ Public Class XMLHelper
     ''' 	[os08rp]	6/28/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function FromDatasetToXML_Coded(ByVal ds As DataSet) As String
+    Public Shared Function FromDatasetToXML_Coded(ds As DataSet) As String
         Dim xmlString As String = String.Empty
         Dim mDate As DateTime
         Dim row As DataRow
@@ -694,7 +694,7 @@ Public Class XMLHelper
 
     End Function
 
-    Public Shared Function FromDatasetToXML_Std(ByVal ds As DataSet) As String
+    Public Shared Function FromDatasetToXML_Std(ds As DataSet) As String
         Dim xmlString As String = String.Empty
         Dim mDate As DateTime
         Dim row As DataRow
@@ -734,7 +734,7 @@ Public Class XMLHelper
 
     End Function
 
-    Public Shared Function FromDatasetToXML_Std(ByVal ds As DataSet, ByVal excludeTags As ArrayList) As String
+    Public Shared Function FromDatasetToXML_Std(ds As DataSet, excludeTags As ArrayList) As String
         Dim xmlString As String = String.Empty
         Dim mDate As DateTime
         Dim row As DataRow
@@ -789,7 +789,7 @@ Public Class XMLHelper
     ''' 	[co1mkt]	3/22/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function GetXMLStream(ByVal XMLSource As String) As XmlTextReader
+    Public Shared Function GetXMLStream(XMLSource As String) As XmlTextReader
 
         ' Check for raw XML, XML file, or XML url
         Dim XMLStream As Stream = New MemoryStream
@@ -806,7 +806,7 @@ Public Class XMLHelper
 
     End Function
 
-    Public Shared Function FromExcelToDataset(ByVal excelFile As String, ByVal tableName As String) As DataSet
+    Public Shared Function FromExcelToDataset(excelFile As String, tableName As String) As DataSet
         '   Try
         ' Create variables that are used in code sample.
         Dim i, j As Integer
@@ -838,7 +838,7 @@ Public Class XMLHelper
         Return ds
     End Function
 
-    Private Shared Sub RemoveColumnNameSuffix(ByVal ds As DataSet)
+    Private Shared Sub RemoveColumnNameSuffix(ds As DataSet)
         Dim oCol As DataColumn
 
         For Each oCol In ds.Tables(0).Columns
@@ -847,7 +847,7 @@ Public Class XMLHelper
 
     End Sub
 
-    Public Shared Function FromExcelToXml(ByVal excelFile As String, ByVal tableName As String) As String
+    Public Shared Function FromExcelToXml(excelFile As String, tableName As String) As String
         Dim ds As DataSet
         Dim xml As String
 
@@ -895,7 +895,7 @@ Public Class XMLHelper
     ''' 	[co1mkt]	3/22/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function ValidateXML(ByRef xml As String, ByVal schema As String) As Boolean
+    Public Shared Function ValidateXML(ByRef xml As String, schema As String) As Boolean
 
         ' Verify the schema
         Dim xsd As System.Xml.Schema.XmlSchema = System.Xml.Schema.XmlSchema.Read(GetXMLStream(schema), Nothing)

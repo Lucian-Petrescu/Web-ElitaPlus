@@ -6,16 +6,16 @@ Public Class InvalidPaymentAmountException
     Public ReadOnly ClaimNumber As String
     Public ReadOnly PaymentAmount As Decimal
 
-    Public Sub New(ByVal pPaymentAmount As Decimal, ByVal pClaimNumber As String)
+    Public Sub New(pPaymentAmount As Decimal, pClaimNumber As String)
         PaymentAmount = pPaymentAmount
         ClaimNumber = pClaimNumber
     End Sub
-    Public Sub New(ByVal pPaymentAmount As Decimal, ByVal pClaimNumber As String, pMessage As String)
+    Public Sub New(pPaymentAmount As Decimal, pClaimNumber As String, pMessage As String)
         MyBase.New(pMessage)
         PaymentAmount = pPaymentAmount
         ClaimNumber = pClaimNumber
     End Sub
-    Public Sub New(ByVal pPaymentAmount As Decimal, ByVal pClaimNumber As String, pMessage As String, pInner As Exception)
+    Public Sub New(pPaymentAmount As Decimal, pClaimNumber As String, pMessage As String, pInner As Exception)
         MyBase.New(pMessage, pInner)
         PaymentAmount = pPaymentAmount
         ClaimNumber = pClaimNumber

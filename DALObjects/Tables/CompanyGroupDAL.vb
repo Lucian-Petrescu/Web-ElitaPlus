@@ -48,30 +48,30 @@ Public Class CompanyGroupDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("company_group_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal description As String, ByVal code As String, ByVal languageId As Guid, Optional ByVal getCovTypeChidrens As Boolean = False) As DataSet
+    Public Function LoadList(description As String, code As String, languageId As Guid, Optional ByVal getCovTypeChidrens As Boolean = False) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         If getCovTypeChidrens Then
-            selectStmt = Me.Config("/SQL/LOAD_LIST_OF_CHIDRES_COVERAGE_TYPE")
+            selectStmt = Config("/SQL/LOAD_LIST_OF_CHIDRES_COVERAGE_TYPE")
         End If
         Dim parameters() As OracleParameter
         description = GetFormattedSearchStringForSQL(description)
@@ -90,7 +90,7 @@ Public Class CompanyGroupDAL
                                          New OracleParameter(COL_NAME_DESCRIPTION, description)}
         End If
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -101,7 +101,7 @@ Public Class CompanyGroupDAL
 
 #Region "Overloaded Methods"
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim CoverageCompGrpCntl As New CoverageByCompanyGroupDAL
 
         Dim tr As IDbTransaction = Transaction
@@ -112,10 +112,10 @@ Public Class CompanyGroupDAL
             'First Pass updates Deletions
             CoverageCompGrpCntl.Update(familyDataset, tr, DataRowState.Deleted)
 
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
 
             CoverageCompGrpCntl.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
@@ -132,12 +132,12 @@ Public Class CompanyGroupDAL
         End Try
     End Sub
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

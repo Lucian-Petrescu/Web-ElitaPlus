@@ -28,7 +28,7 @@ Public Class VSCUtility
         components = New System.ComponentModel.Container
     End Sub
 
-    Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overloads Overrides Sub Dispose(disposing As Boolean)
         'CODEGEN: This procedure is required by the Web Services Designer
         'Do not modify it using the code editor.
         If disposing Then
@@ -51,7 +51,7 @@ Public Class VSCUtility
 
 #Region " Private Methods"
 
-    Private Function CompactData(ByVal dw As DataView) As String
+    Private Function CompactData(dw As DataView) As String
 
         Dim result As String = String.Empty
 
@@ -85,12 +85,12 @@ Public Class VSCUtility
 #End Region
 
     <WebMethod(EnableSession:=True)> _
-    Public Function GetVSCMakes(ByVal token As String, ByVal wsConsumer As String) As String
+    Public Function GetVSCMakes(token As String, wsConsumer As String) As String
         ElitaService.VerifyToken(False, token)
         Dim objCompanyGroup As CompanyGroup = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup
         Dim companyGroupID As Guid = objCompanyGroup.Id
         Dim dv As DataView = LookupListNew.GetVSCMakeLookupList(companyGroupID)
-        If wsConsumer.ToUpper.Equals(Me.WS_CONSUMER_CLIENT) Then
+        If wsConsumer.ToUpper.Equals(WS_CONSUMER_CLIENT) Then
             Return CompactData(dv)
         Else
             Dim ds As New DataSet
@@ -101,10 +101,10 @@ Public Class VSCUtility
     End Function
 
     <WebMethod(EnableSession:=True)> _
-    Public Function GetVSCModels(ByVal token As String, ByVal wsConsumer As String, ByVal make As String) As String
+    Public Function GetVSCModels(token As String, wsConsumer As String, make As String) As String
         ElitaService.VerifyToken(False, token)
         Dim dv As DataView = LookupListNew.GetVSCModelsLookupList(make)
-        If wsConsumer.ToUpper.Equals(Me.WS_CONSUMER_CLIENT) Then
+        If wsConsumer.ToUpper.Equals(WS_CONSUMER_CLIENT) Then
             Return CompactData(dv)
         Else
             Dim ds As New DataSet
@@ -115,11 +115,11 @@ Public Class VSCUtility
     End Function
 
     <WebMethod(EnableSession:=True)> _
-    Public Function GetVSCVersions(ByVal token As String, ByVal wsConsumer As String, ByVal model As String, ByVal make As String) As String
+    Public Function GetVSCVersions(token As String, wsConsumer As String, model As String, make As String) As String
         ElitaService.VerifyToken(False, token)
         model = Server.UrlDecode(model)
         Dim dv As DataView = LookupListNew.GetVSCTrimLookupList(model, make)
-        If wsConsumer.ToUpper.Equals(Me.WS_CONSUMER_CLIENT) Then
+        If wsConsumer.ToUpper.Equals(WS_CONSUMER_CLIENT) Then
             Return CompactData(dv)
         Else
             Dim ds As New DataSet
@@ -130,13 +130,13 @@ Public Class VSCUtility
     End Function
 
     <WebMethod(EnableSession:=True)> _
-    Public Function GetVSCYears(ByVal token As String, ByVal wsConsumer As String, ByVal trim As String, ByVal model As String, ByVal make As String) As String
+    Public Function GetVSCYears(token As String, wsConsumer As String, trim As String, model As String, make As String) As String
         ElitaService.VerifyToken(False, token)
         model = Server.UrlDecode(model)
         trim = Server.UrlDecode(trim)
 
         Dim dv As DataView = LookupListNew.GetVSCYearsLookupList(trim, model, make)
-        If wsConsumer.ToUpper.Equals(Me.WS_CONSUMER_CLIENT) Then
+        If wsConsumer.ToUpper.Equals(WS_CONSUMER_CLIENT) Then
             Return CompactData(dv)
         Else
             Dim ds As New DataSet

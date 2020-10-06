@@ -109,7 +109,7 @@ Namespace Interfaces
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -118,7 +118,7 @@ Namespace Interfaces
 #Region "Properties"
         Public ReadOnly Property IsEditing() As Boolean
             Get
-                IsEditing = (Me.moDataGrid.EditIndex > Me.NO_ITEM_SELECTED_INDEX)
+                IsEditing = (moDataGrid.EditIndex > NO_ITEM_SELECTED_INDEX)
             End Get
         End Property
 
@@ -132,7 +132,7 @@ Namespace Interfaces
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
@@ -170,24 +170,24 @@ Namespace Interfaces
         End Property
 
         Private Sub SetStateProperties()
-            Me.State.oReturnType = CType(Me.CallingParameters, FileProcessedController.ReturnType)
-            Me.State.fileProcessedId = Me.State.oReturnType.FileProcessedId
+            State.oReturnType = CType(CallingParameters, FileProcessedController.ReturnType)
+            State.fileProcessedId = State.oReturnType.FileProcessedId
         End Sub
 
 #End Region
 #Region "Page Events"
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             'Put user code to initialize the page here
-            Me.ErrController.Clear_Hide()
-            Me.SetStateProperties()
-            Me.MenuEnabled = False
+            ErrController.Clear_Hide()
+            SetStateProperties()
+            MenuEnabled = False
             If Not Page.IsPostBack Then
-                Me.SortDirection = EMPTY
-                Me.SetGridItemStyleColor(moDataGrid)
-                Me.ShowMissingTranslations(ErrController)
-                Me.State.PageIndex = 0
-                Me.TranslateGridHeader(moDataGrid)
-                Me.TranslateGridControls(moDataGrid)
+                SortDirection = EMPTY
+                SetGridItemStyleColor(moDataGrid)
+                ShowMissingTranslations(ErrController)
+                State.PageIndex = 0
+                TranslateGridHeader(moDataGrid)
+                TranslateGridControls(moDataGrid)
                 PopulateReadOnly()
                 PopulateGrid()
                 CheckFileTypeColums()
@@ -199,53 +199,53 @@ Namespace Interfaces
 #Region "Contorlling Logic"
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSavePagePromptResponse.Value
+            Dim confResponse As String = HiddenSavePagePromptResponse.Value
             Try
                 If Not confResponse.Equals(EMPTY) Then
-                    If confResponse = Me.MSG_VALUE_YES Then
+                    If confResponse = MSG_VALUE_YES Then
                         SavePage()
-                        Me.HiddenIsBundlesPageDirty.Value = EMPTY
+                        HiddenIsBundlesPageDirty.Value = EMPTY
                         'Me.HiddenIfComingFromBundlesScreen.Value = EMPTY
-                    ElseIf confResponse = Me.MSG_VALUE_NO Then
+                    ElseIf confResponse = MSG_VALUE_NO Then
                     End If
-                    Me.HiddenSavePagePromptResponse.Value = EMPTY
-                    Me.HiddenIsPageDirty.Value = EMPTY
+                    HiddenSavePagePromptResponse.Value = EMPTY
+                    HiddenIsPageDirty.Value = EMPTY
 
-                    Select Case Me.State.ActionInProgress
+                    Select Case State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.State.oReturnType.LastOperation = ElitaPlusPage.DetailPageCommand.Back
-                            Me.ReturnToCallingPage(Me.State.oReturnType)
+                            State.oReturnType.LastOperation = ElitaPlusPage.DetailPageCommand.Back
+                            ReturnToCallingPage(State.oReturnType)
                         Case ElitaPlusPage.DetailPageCommand.GridPageSize
-                            Me.moDataGrid.PageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                            Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                            moDataGrid.PageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+                            State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
                         Case ElitaPlusPage.DetailPageCommand.GridColSort
                             'Me.State.sortBy = CType(e.CommandArgument, String)
                         Case Else
-                            Me.moDataGrid.PageIndex = Me.State.selectedPageIndex
+                            moDataGrid.PageIndex = State.selectedPageIndex
                     End Select
                     PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Function CreateBoFromGrid(ByVal index As Integer) As EquipmentReconWrk
+        Private Function CreateBoFromGrid(index As Integer) As EquipmentReconWrk
             Dim EquipmentReconWrkId As Guid
             Dim EquipmentReconWrkInfo As EquipmentReconWrk
             Dim sModifiedDate As String
             moDataGrid.SelectedIndex = index
             EquipmentReconWrkId = New Guid(CType(moDataGrid.Rows(index).FindControl("moEquipmentReconWrkIdLabel"), Label).Text)
-            sModifiedDate = Me.GetGridText(moDataGrid, index, Me.MODIFIED_DATE_COL)
+            sModifiedDate = GetGridText(moDataGrid, index, MODIFIED_DATE_COL)
             EquipmentReconWrkInfo = New EquipmentReconWrk(EquipmentReconWrkId, sModifiedDate)
             Return EquipmentReconWrkInfo
         End Function
 
         Private Sub SavePage()
-            Dim totc As Integer = Me.moDataGrid.Columns.Count()
+            Dim totc As Integer = moDataGrid.Columns.Count()
             Dim index As Integer = 0
             Dim EquipmentReconWrkInfo As EquipmentReconWrk
-            Dim totItems As Integer = Me.moDataGrid.Rows.Count
+            Dim totItems As Integer = moDataGrid.Rows.Count
 
             If totItems > 0 Then
                 EquipmentReconWrkInfo = CreateBoFromGrid(0)
@@ -263,14 +263,14 @@ Namespace Interfaces
             Next
         End Sub
         Function IsDataGPageDirty() As Boolean
-            Dim Result As String = Me.HiddenIsPageDirty.Value
+            Dim Result As String = HiddenIsPageDirty.Value
             Return Result.Equals("YES")
         End Function
 
-        Private Sub SetColumnState(ByVal column As Byte, ByVal state As Boolean)
-            Me.moDataGrid.Columns(column).Visible = state
+        Private Sub SetColumnState(column As Byte, state As Boolean)
+            moDataGrid.Columns(column).Visible = state
         End Sub
-        Function IsCancellationsFileType(ByVal fileName As String) As Boolean
+        Function IsCancellationsFileType(fileName As String) As Boolean
             Return fileName.Substring(4, 1).Equals(CANCELLATIONS_TYPE)
         End Function
 
@@ -313,23 +313,23 @@ Namespace Interfaces
 #Region "Populate"
         Private Sub PopulateReadOnly()
             Try
-                Dim oFile As FileProcessed = New FileProcessed(Me.State.fileProcessedId)
+                Dim oFile As FileProcessed = New FileProcessed(State.fileProcessedId)
                 With oFile
                     moFileNameText.Text = .FileName
                     moCompanyGroupText.Text = .CompanyGroupLoad
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
-        Sub PopulateRecordTypeDrop(ByVal recordTypeDrop As DropDownList)
+        Sub PopulateRecordTypeDrop(recordTypeDrop As DropDownList)
             Try
                 Dim oLangId As Guid = Authentication.LangId
                 Dim recordTypeList As DataView = LookupListNew.GetRecordTypeLookupList(oLangId)
                 ' Me.BindListControlToDataView(recordTypeDrop, recordTypeList, , , False)
                 recordTypeDrop.Populate(CommonConfigManager.Current.ListManager.GetList("RECTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions())
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrController)
+                ThePage.HandleErrors(ex, ErrController)
             End Try
         End Sub
         Private Function GetGridDataView() As DataView
@@ -356,33 +356,33 @@ Namespace Interfaces
             Try
                 dv = GetDV()
                 'dv.Sort = Me.State.sortBy
-                If Not Me.SortDirection.Equals(EMPTY) Then
-                    dv.Sort = Me.SortDirection
-                    HighLightSortColumn(moDataGrid, Me.SortDirection)
+                If Not SortDirection.Equals(EMPTY) Then
+                    dv.Sort = SortDirection
+                    HighLightSortColumn(moDataGrid, SortDirection)
                 End If
                 recCount = dv.Count
                 Session("recCount") = recCount
-                Me.moDataGrid.PageSize = Me.State.selectedPageSize
-                Me.moDataGrid.DataSource = dv
-                Me.moDataGrid.DataBind()
-                Me.lblRecordCount.Text = recCount & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                moDataGrid.PageSize = State.selectedPageSize
+                moDataGrid.DataSource = dv
+                moDataGrid.DataBind()
+                lblRecordCount.Text = recCount & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 ControlMgr.DisableAllGridControlsIfNotEditAuth(Me, moDataGrid)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub PopulateBOItem(ByVal EquipmentReconWrkInfo As EquipmentReconWrk, ByVal oPropertyName As String, ByVal oCellPosition As Integer)
-            Me.PopulateBOProperty(EquipmentReconWrkInfo, oPropertyName,
-                                            CType(Me.GetSelectedGridControl(moDataGrid, oCellPosition), TextBox))
+        Private Sub PopulateBOItem(EquipmentReconWrkInfo As EquipmentReconWrk, oPropertyName As String, oCellPosition As Integer)
+            PopulateBOProperty(EquipmentReconWrkInfo, oPropertyName,
+                                            CType(GetSelectedGridControl(moDataGrid, oCellPosition), TextBox))
         End Sub
 
-        Private Sub PopulateBODrop(ByVal EquipmentReconWrkInfo As EquipmentReconWrk, ByVal oPropertyName As String, ByVal oCellPosition As Integer)
-            Me.PopulateBOProperty(EquipmentReconWrkInfo, oPropertyName,
-                                CType(Me.GetSelectedGridControl(moDataGrid, oCellPosition), DropDownList), False)
+        Private Sub PopulateBODrop(EquipmentReconWrkInfo As EquipmentReconWrk, oPropertyName As String, oCellPosition As Integer)
+            PopulateBOProperty(EquipmentReconWrkInfo, oPropertyName,
+                                CType(GetSelectedGridControl(moDataGrid, oCellPosition), DropDownList), False)
         End Sub
 
-        Private Sub PopulateBOFromForm(ByVal EquipmentReconWrkInfo As EquipmentReconWrk)
+        Private Sub PopulateBOFromForm(EquipmentReconWrkInfo As EquipmentReconWrk)
 
             PopulateBODrop(EquipmentReconWrkInfo, RECORD_TYPE_Property, RECORD_TYPE_COL)
             PopulateBOItem(EquipmentReconWrkInfo, REJECT_REASON_Property, REJECT_REASON_COL)
@@ -407,62 +407,62 @@ Namespace Interfaces
             PopulateBOItem(EquipmentReconWrkInfo, NOTE8_Property, NOTE8)
             PopulateBOItem(EquipmentReconWrkInfo, NOTE9_Property, NOTE9)
             PopulateBOItem(EquipmentReconWrkInfo, NOTE10_Property, NOTE10)
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
-        Private Sub PopulateFormItem(ByVal oCellPosition As Integer, ByVal oPropertyValue As Object)
-            Me.PopulateControlFromBOProperty(Me.GetSelectedGridControl(moDataGrid, oCellPosition), oPropertyValue)
+        Private Sub PopulateFormItem(oCellPosition As Integer, oPropertyValue As Object)
+            PopulateControlFromBOProperty(GetSelectedGridControl(moDataGrid, oCellPosition), oPropertyValue)
         End Sub
 #End Region
 
 #Region "GridHandlers"
 
-        Private Sub moDataGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moDataGrid.PageIndexChanging
+        Private Sub moDataGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moDataGrid.PageIndexChanging
             Try
-                Me.State.selectedPageIndex = e.NewPageIndex
+                State.selectedPageIndex = e.NewPageIndex
                 If IsDataGPageDirty() Then
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                 Else
-                    Me.moDataGrid.PageIndex = e.NewPageIndex
+                    moDataGrid.PageIndex = e.NewPageIndex
                     PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub moDataGrid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub moDataGrid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 If IsDataGPageDirty() Then
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                 Else
                     'moDataGrid.PageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                    Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-                    Me.PopulateGrid()
+                    State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                    PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Protected Sub ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles moDataGrid.RowDataBound
+        Protected Sub ItemBound(source As Object, e As GridViewRowEventArgs) Handles moDataGrid.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim oTextBox As TextBox
 
             'translate the reject message
             Dim strMsg As String, dr As DataRow, intParamCnt As Integer = 0, strParamList As String = String.Empty
-            If Not dvRow Is Nothing Then
+            If dvRow IsNot Nothing Then
                 dr = dvRow.Row
                 strMsg = dr(EquipmentReconDAL.COL_TRANSLATED_MSG).ToString.Trim
                 If strMsg <> String.Empty Then
-                    If Not dr(EquipmentReconDAL.COL_MSG_PARAMETER_COUNT) Is DBNull.Value Then
+                    If dr(EquipmentReconDAL.COL_MSG_PARAMETER_COUNT) IsNot DBNull.Value Then
                         intParamCnt = CType(dr(EquipmentReconDAL.COL_MSG_PARAMETER_COUNT), Integer)
                     End If
                     If intParamCnt > 0 Then
-                        If Not dr(EquipmentReconDAL.COL_REJECT_MSG_PARMS) Is DBNull.Value Then
+                        If dr(EquipmentReconDAL.COL_REJECT_MSG_PARMS) IsNot DBNull.Value Then
                             strParamList = dr(EquipmentReconDAL.COL_REJECT_MSG_PARMS).ToString.Trim
                         End If
                         strMsg = TranslationBase.TranslateParameterizedMsg(strMsg, intParamCnt, strParamList).Trim
@@ -475,139 +475,139 @@ Namespace Interfaces
             If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
 
-                    Me.PopulateControlFromBOProperty(.FindControl("moEquipmentReconWrkIdLabel"), dvRow(EquipmentReconWrk.COL_NAME_EQUIPMENT_RECON_WRK_ID))
+                    PopulateControlFromBOProperty(.FindControl("moEquipmentReconWrkIdLabel"), dvRow(EquipmentReconWrk.COL_NAME_EQUIPMENT_RECON_WRK_ID))
                     Dim oDrop As DropDownList = CType(e.Row.FindControl("moRecordTypeDrop"), DropDownList)
                     oDrop.Attributes.Add("onchange", "setDirty()")
                     PopulateRecordTypeDrop(oDrop)
                     Dim oValue As String = CType(dvRow(EquipmentReconWrk.COL_NAME_RECORD_TYPE), String)
                     oTextBox = CType(.FindControl("RejectReasonTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_REJECT_REASON))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_REJECT_REASON))
                     oTextBox = CType(.FindControl("moRejectCode"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_REJECT_CODE))
-                    Me.SetSelectedItemByText(oDrop, oValue)
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_REJECT_CODE))
+                    SetSelectedItemByText(oDrop, oValue)
                     oTextBox = CType(.FindControl("moManufacturerTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_MANUFACTURER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_MANUFACTURER))
                     oTextBox = CType(.FindControl("moModelTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_MODEL))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_MODEL))
                     oTextBox = CType(.FindControl("moDescriptionTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_DESCRIPTION))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_DESCRIPTION))
                     oTextBox = CType(.FindControl("moIsMasterTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_IS_MASTER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_IS_MASTER))
                     oTextBox = CType(.FindControl("moMasterEquipmentDescriptionTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_MASTER_EQUIPMENT_DESCRIPTION))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_MASTER_EQUIPMENT_DESCRIPTION))
                     oTextBox = CType(.FindControl("moRepairableTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_REPAIRABLE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_REPAIRABLE))
                     oTextBox = CType(.FindControl("moEquipmentClassTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_EQUIPMENT_CLASS))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_EQUIPMENT_CLASS))
                     oTextBox = CType(.FindControl("moEquipmentTypeTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_EQUIPMENT_TYPE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_EQUIPMENT_TYPE))
                     oTextBox = CType(.FindControl("moManufacturerWarentyTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_MANUFACTURER_WARRANTY))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_MANUFACTURER_WARRANTY))
                     oTextBox = CType(.FindControl("moAttributesTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_ATTRIBUTES))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_ATTRIBUTES))
                     oTextBox = CType(.FindControl("monote1TextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE1))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE1))
                     oTextBox = CType(.FindControl("monote2TextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE2))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE2))
                     oTextBox = CType(.FindControl("monote3TextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE3))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE3))
                     oTextBox = CType(.FindControl("monote4TextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE4))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE4))
                     oTextBox = CType(.FindControl("monote5TextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE5))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE5))
                     oTextBox = CType(.FindControl("monote6TextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE6))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE6))
                     oTextBox = CType(.FindControl("monote7TextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE7))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE7))
                     oTextBox = CType(.FindControl("monote8TextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE8))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE8))
                     oTextBox = CType(.FindControl("monote9TextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE9))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE9))
                     oTextBox = CType(.FindControl("monote10TextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE10))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(EquipmentReconWrk.COL_NAME_NOTE10))
                 End With
             End If
             BaseItemBound(source, e)
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles moDataGrid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles moDataGrid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Protected Overloads Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Protected Overloads Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Protected Overloads Sub ItemCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+        Protected Overloads Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
-        Protected Sub BindBoPropertiesToGridHeaders(ByVal EquipmentRconWrkInfo As EquipmentReconWrk)
+        Protected Sub BindBoPropertiesToGridHeaders(EquipmentRconWrkInfo As EquipmentReconWrk)
 
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "RecordType", Me.moDataGrid.Columns(Me.RECORD_TYPE_COL))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Manufacturer", Me.moDataGrid.Columns(Me.MANUFACTURER_COL))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Model", Me.moDataGrid.Columns(Me.MODEL_COL))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Description", Me.moDataGrid.Columns(Me.DESCRIPTION_COL))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "IsMaster", Me.moDataGrid.Columns(Me.IS_MASTER_COL))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "MasterEquipmentDescription", Me.moDataGrid.Columns(Me.MASTER_EQUIPMENT_DESCRIPTION_COL))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Repairable", Me.moDataGrid.Columns(Me.REPAIRABLE_COL))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "EquipmentClass", Me.moDataGrid.Columns(Me.EQUIPMENT_CLASS_COL))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "EquipmentType", Me.moDataGrid.Columns(Me.EQUIPMENT_TYPE_COL))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "ManufacturerWarranty", Me.moDataGrid.Columns(Me.MANUFACTURER_WARRANTY_COL))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Attributes", Me.moDataGrid.Columns(Me.ATTRIBUTES))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note1", Me.moDataGrid.Columns(Me.NOTE1))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note2", Me.moDataGrid.Columns(Me.NOTE2))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note3", Me.moDataGrid.Columns(Me.NOTE3))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note4", Me.moDataGrid.Columns(Me.NOTE4))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note5", Me.moDataGrid.Columns(Me.NOTE5))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note5", Me.moDataGrid.Columns(Me.NOTE6))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note7", Me.moDataGrid.Columns(Me.NOTE7))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note8", Me.moDataGrid.Columns(Me.NOTE8))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note9", Me.moDataGrid.Columns(Me.NOTE9))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note10", Me.moDataGrid.Columns(Me.NOTE10))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "RejectReason", Me.moDataGrid.Columns(Me.REJECT_REASON_COL))
-            Me.BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "RejectMode", Me.moDataGrid.Columns(Me.REJECT_CODE_COL))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "RecordType", moDataGrid.Columns(RECORD_TYPE_COL))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Manufacturer", moDataGrid.Columns(MANUFACTURER_COL))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Model", moDataGrid.Columns(MODEL_COL))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Description", moDataGrid.Columns(DESCRIPTION_COL))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "IsMaster", moDataGrid.Columns(IS_MASTER_COL))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "MasterEquipmentDescription", moDataGrid.Columns(MASTER_EQUIPMENT_DESCRIPTION_COL))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Repairable", moDataGrid.Columns(REPAIRABLE_COL))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "EquipmentClass", moDataGrid.Columns(EQUIPMENT_CLASS_COL))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "EquipmentType", moDataGrid.Columns(EQUIPMENT_TYPE_COL))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "ManufacturerWarranty", moDataGrid.Columns(MANUFACTURER_WARRANTY_COL))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Attributes", moDataGrid.Columns(ATTRIBUTES))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note1", moDataGrid.Columns(NOTE1))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note2", moDataGrid.Columns(NOTE2))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note3", moDataGrid.Columns(NOTE3))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note4", moDataGrid.Columns(NOTE4))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note5", moDataGrid.Columns(NOTE5))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note5", moDataGrid.Columns(NOTE6))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note7", moDataGrid.Columns(NOTE7))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note8", moDataGrid.Columns(NOTE8))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note9", moDataGrid.Columns(NOTE9))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "Note10", moDataGrid.Columns(NOTE10))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "RejectReason", moDataGrid.Columns(REJECT_REASON_COL))
+            BindBOPropertyToGridHeader(EquipmentRconWrkInfo, "RejectMode", moDataGrid.Columns(REJECT_CODE_COL))
 
-            Me.ClearGridViewHeadersAndLabelsErrSign()
+            ClearGridViewHeadersAndLabelsErrSign()
         End Sub
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As DataGrid, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As DataGrid, cellPosition As Integer, controlName As String, itemIndex As Integer)
             'Set focus on the Description TextBox for the EditItemIndex row
             Dim desc As TextBox = CType(grid.Items(itemIndex).Cells(cellPosition).FindControl(controlName), TextBox)
             SetFocus(desc)
@@ -616,39 +616,39 @@ Namespace Interfaces
 
 #Region "Button Click Events"
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                If IsDataGPageDirty() Or (Not Me.State.BundlesHashTable Is Nothing AndAlso Me.State.BundlesHashTable.Count > 0) Then
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                If IsDataGPageDirty() Or (State.BundlesHashTable IsNot Nothing AndAlso State.BundlesHashTable.Count > 0) Then
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.State.oReturnType.LastOperation = ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(Me.State.oReturnType)
+                    State.oReturnType.LastOperation = ElitaPlusPage.DetailPageCommand.Back
+                    ReturnToCallingPage(State.oReturnType)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+        Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
             Try
                 SavePage()
-                Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                Me.HiddenIsPageDirty.Value = EMPTY
+                DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                HiddenIsPageDirty.Value = EMPTY
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
-                Me.State.BundlesHashTable = Nothing
+                State.BundlesHashTable = Nothing
                 PopulateGrid()
-                Me.HiddenIsPageDirty.Value = EMPTY
+                HiddenIsPageDirty.Value = EMPTY
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 #End Region

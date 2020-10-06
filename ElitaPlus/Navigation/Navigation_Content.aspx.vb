@@ -12,7 +12,7 @@ Partial Class Navigation_Content
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()

@@ -49,8 +49,8 @@ Public Class GetClaimStatusInfo
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -61,10 +61,10 @@ Public Class GetClaimStatusInfo
     Private Sub Load(ByVal ds As GetClaimStatusInfoDS)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -80,14 +80,14 @@ Public Class GetClaimStatusInfo
         Try
             If ds.GetClaimStatusInfo.Count = 0 Then Exit Sub
             With ds.GetClaimStatusInfo.Item(0)
-                If Not .IsCarrierIDNull Then Me.DealerCode = .CarrierID
-                If Not .IsLanguageNull Then Me.LanguageISOCode = .Language
-                If Not .IsCertificateNumberNull Then Me.CertificateNumber = .CertificateNumber
+                If Not .IsCarrierIDNull Then DealerCode = .CarrierID
+                If Not .IsLanguageNull Then LanguageISOCode = .Language
+                If Not .IsCertificateNumberNull Then CertificateNumber = .CertificateNumber
 
-                Me.CustomerIdentifier = .CustomerIdentifier
-                Me.IdentifierType = .IdentifierType
+                CustomerIdentifier = .CustomerIdentifier
+                IdentifierType = .IdentifierType
 
-                If Not .IsBillingZipCodeNull Then Me.BillingZipCode = .BillingZipCode
+                If Not .IsBillingZipCodeNull Then BillingZipCode = .BillingZipCode
 
             End With
         Catch ex As BOValidationException
@@ -103,7 +103,7 @@ Public Class GetClaimStatusInfo
     End Sub
 
     Private Function IsDealerWebEnabled() As Boolean
-        Dim objDealer As New Dealer(Me._dealerId)
+        Dim objDealer As New Dealer(_dealerId)
         If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objDealer.DealerSupportWebClaimsId) = "Y" Then
             Return True
         Else
@@ -113,22 +113,22 @@ Public Class GetClaimStatusInfo
     End Function
 
     Private Function FindDealer() As String
-        If Me._dealerId.Equals(Guid.Empty) AndAlso (Not Me.DealerCode Is Nothing AndAlso Me.DealerCode.Trim <> String.Empty) Then
+        If _dealerId.Equals(Guid.Empty) AndAlso (Not DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty) Then
             Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
             If list Is Nothing Then
-                Dim ResponseStatus As DataTable = Me.BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE), _
+                Dim ResponseStatus As DataTable = BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE), _
                                                                            Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE, _
                                                                            Codes.WEB_EXPERIENCE__FATAL_ERROR)
-                Dim _errorDataSet As New DataSet(Me.DATASET_NAME__CLAIM_CHECK_RESPONSE)
+                Dim _errorDataSet As New DataSet(DATASET_NAME__CLAIM_CHECK_RESPONSE)
                 _errorDataSet.Tables.Add(ResponseStatus)
                 Return (XMLHelper.FromDatasetToXML(_errorDataSet, Nothing, True, True, True, False, True))
             End If
-            Me._dealerId = LookupListNew.GetIdFromCode(list, Me.DealerCode)
+            _dealerId = LookupListNew.GetIdFromCode(list, DealerCode)
             If _dealerId.Equals(Guid.Empty) Then
-                Dim ResponseStatus As DataTable = Me.BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_DEALER_NOT_FOUND), _
+                Dim ResponseStatus As DataTable = BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_DEALER_NOT_FOUND), _
                                                            Common.ErrorCodes.WS_DEALER_NOT_FOUND, _
                                                            Codes.WEB_EXPERIENCE__LOOKUP_ERROR)
-                Dim _errorDataSet As New DataSet(Me.DATASET_NAME__CLAIM_CHECK_RESPONSE)
+                Dim _errorDataSet As New DataSet(DATASET_NAME__CLAIM_CHECK_RESPONSE)
                 _errorDataSet.Tables.Add(ResponseStatus)
                 Return (XMLHelper.FromDatasetToXML(_errorDataSet, Nothing, True, True, True, False, True))
             End If
@@ -143,56 +143,56 @@ Public Class GetClaimStatusInfo
 
     Public Property DealerCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_DEALER), String)
+                Return CType(Row(DATA_COL_NAME_DEALER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER, Value)
+            SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
     Public Property LanguageISOCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_LANGUAGE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_LANGUAGE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_LANGUAGE), String)
+                Return CType(Row(DATA_COL_NAME_LANGUAGE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_LANGUAGE, Value)
+            SetValue(DATA_COL_NAME_LANGUAGE, Value)
         End Set
     End Property
     Public Property CertificateNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_CERTIFICATE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERTIFICATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CERTIFICATE), String)
+                Return CType(Row(DATA_COL_NAME_CERTIFICATE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CERTIFICATE, Value)
+            SetValue(DATA_COL_NAME_CERTIFICATE, Value)
         End Set
     End Property
 
     Public Property BillingZipCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_BILLING_ZIP_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_BILLING_ZIP_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_BILLING_ZIP_CODE), String)
+                Return CType(Row(DATA_COL_NAME_BILLING_ZIP_CODE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_BILLING_ZIP_CODE, Value)
+            SetValue(DATA_COL_NAME_BILLING_ZIP_CODE, Value)
         End Set
     End Property
 
@@ -200,30 +200,30 @@ Public Class GetClaimStatusInfo
     <ValueMandatory("")> _
     Public Property CustomerIdentifier() As String
         Get
-            If Row(Me.DATA_COL_NAME_CUSTOMER_IDENTIFIER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CUSTOMER_IDENTIFIER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CUSTOMER_IDENTIFIER), String)
+                Return CType(Row(DATA_COL_NAME_CUSTOMER_IDENTIFIER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CUSTOMER_IDENTIFIER, Value)
+            SetValue(DATA_COL_NAME_CUSTOMER_IDENTIFIER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property IdentifierType() As String
         Get
-            If Row(Me.DATA_COL_NAME_IDENTIFIER_TYPE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_IDENTIFIER_TYPE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_IDENTIFIER_TYPE), String)
+                Return CType(Row(DATA_COL_NAME_IDENTIFIER_TYPE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_IDENTIFIER_TYPE, Value)
+            SetValue(DATA_COL_NAME_IDENTIFIER_TYPE, Value)
         End Set
     End Property
 
@@ -234,26 +234,26 @@ Public Class GetClaimStatusInfo
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
             'Not IdentifierType Is Nothing AndAlso IdentifierType.Trim <> String.Empty
-            If Not Me.DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty Then
-                Dim strErrorFindingDealer As String = Me.FindDealer
+            If Not DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty Then
+                Dim strErrorFindingDealer As String = FindDealer
                 If strErrorFindingDealer <> String.Empty Then
                     Return strErrorFindingDealer
                 End If
             End If
             Dim ValidateErrorCode As Integer
-            Dim _claimStatusInfoDataSet As DataSet = Claim.WS_GetClaimStatusInfo(Me.CustomerIdentifier, Me.IdentifierType, Me._dealerId, Me.BillingZipCode, Me.LanguageISOCode, Me.CertificateNumber, ValidateErrorCode)
+            Dim _claimStatusInfoDataSet As DataSet = Claim.WS_GetClaimStatusInfo(CustomerIdentifier, IdentifierType, _dealerId, BillingZipCode, LanguageISOCode, CertificateNumber, ValidateErrorCode)
 
             If ValidateErrorCode <> 0 Then ' There is a Validation error
                 Return (XMLHelper.FromDatasetToXML(_claimStatusInfoDataSet, Nothing, True, True, True, False, True))
             Else
                 If Not _claimStatusInfoDataSet.Tables(ClaimDAL.TABLE_NAME__GET_CLAIM_STATUS_INFO_RESPONSE) Is Nothing _
                     AndAlso _claimStatusInfoDataSet.Tables(ClaimDAL.TABLE_NAME__GET_CLAIM_STATUS_INFO_RESPONSE).Rows.Count = 0 Then
-                    Dim ResponseStatus As DataTable = Me.BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_NO_RECORDS_FOUND),
+                    Dim ResponseStatus As DataTable = BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_NO_RECORDS_FOUND),
                                                            Common.ErrorCodes.WS_NO_RECORDS_FOUND,
                                                            Codes.WEB_EXPERIENCE__LOOKUP_ERROR)
-                    Dim _errorDataSet As New DataSet(Me.DATASET_NAME__CLAIM_CHECK_RESPONSE)
+                    Dim _errorDataSet As New DataSet(DATASET_NAME__CLAIM_CHECK_RESPONSE)
                     _errorDataSet.Tables.Add(ResponseStatus)
                     Return (XMLHelper.FromDatasetToXML(_errorDataSet, Nothing, True, True, True, False, True))
                 Else

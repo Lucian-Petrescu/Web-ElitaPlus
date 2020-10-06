@@ -49,8 +49,8 @@ Public Class GalaxyGetCertificateDetail
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -61,10 +61,10 @@ Public Class GalaxyGetCertificateDetail
     Private Sub Load(ByVal ds As GalaxyGetCertificateDetailDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -83,8 +83,8 @@ Public Class GalaxyGetCertificateDetail
                 If (.Cert_Number Is Nothing OrElse .Cert_Number.Equals(String.Empty)) AndAlso (.Dealer_Code Is Nothing OrElse .Dealer_Code.Equals(String.Empty)) Then
                     Throw New BOValidationException("Galaxy Invalid Parameters Error", Common.ErrorCodes.BO_INVALID_DATA)
                 End If
-                Me.CertNumber = .Cert_Number
-                Me.DealerCode = .Dealer_Code
+                CertNumber = .Cert_Number
+                DealerCode = .Dealer_Code
             End With
         Catch ex As Exception
             Throw New ElitaPlusException("Galaxy Invalid Parameters Error", Common.ErrorCodes.BO_INVALID_DATA, ex)
@@ -101,30 +101,30 @@ Public Class GalaxyGetCertificateDetail
     <ValueMandatory("")> _
     Public Property CertNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CERT_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CERT_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property DealerCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_DEALER), String)
+                Return CType(Row(DATA_COL_NAME_DEALER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER, Value)
+            SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
@@ -134,15 +134,15 @@ Public Class GalaxyGetCertificateDetail
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
 
-            Dim _CertificateDetailDataSet As DataSet = Certificate.GalaxyGetCertificateDetail(Me.CertNumber, Me.DealerCode)
+            Dim _CertificateDetailDataSet As DataSet = Certificate.GalaxyGetCertificateDetail(CertNumber, DealerCode)
             If Not _CertificateDetailDataSet Is Nothing AndAlso _CertificateDetailDataSet.Tables.Count > 0 AndAlso _CertificateDetailDataSet.Tables(0).Rows.Count > 0 Then
-                If _CertificateDetailDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
+                If _CertificateDetailDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
                     Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", CERTIFICATE_NOT_FOUND)
                 Else
-                    _CertificateDetailDataSet.DataSetName = Me.TABLE_NAME
-                    Dim cert_id As New Guid(CType(_CertificateDetailDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte()))
+                    _CertificateDetailDataSet.DataSetName = TABLE_NAME
+                    Dim cert_id As New Guid(CType(_CertificateDetailDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID), Byte()))
                     If cert_id.Equals(Guid.Empty) Then
                         Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", CERTIFICATE_NOT_FOUND)
                     End If
@@ -153,7 +153,7 @@ Public Class GalaxyGetCertificateDetail
                         'add the coverages table to the certificate dataset
                         _CertificateDetailDataSet.Tables.Add(_CertCoveragesDataSet.Tables(0).Copy)
                         'remove the cert_id (guid) column from the certificate table
-                        _CertificateDetailDataSet.Tables(0).Columns.Remove(Me.DATA_COL_NAME_CERT_ID)
+                        _CertificateDetailDataSet.Tables(0).Columns.Remove(DATA_COL_NAME_CERT_ID)
                     Else
                         Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", CERTIFICATE_COVERAGES_NOT_FOUND)
                     End If

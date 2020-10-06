@@ -8,46 +8,46 @@ Public Class VscCoverageRate
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New VscCoverageRateDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -58,20 +58,20 @@ Public Class VscCoverageRate
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New VscCoverageRateDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -112,7 +112,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_VSC_RATE_VERSION_ID, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_VSC_RATE_VERSION_ID, Value)
         End Set
     End Property
 
@@ -129,7 +129,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_VSC_COVERAGE_ID, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_VSC_COVERAGE_ID, Value)
         End Set
     End Property
 
@@ -146,7 +146,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_CLASS_CODE_ID, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_CLASS_CODE_ID, Value)
         End Set
     End Property
 
@@ -163,7 +163,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_ODOMETER_LOW_RANGE, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_ODOMETER_LOW_RANGE, Value)
         End Set
     End Property
 
@@ -180,7 +180,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_ODOMETER_HIGH_RANGE, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_ODOMETER_HIGH_RANGE, Value)
         End Set
     End Property
 
@@ -197,7 +197,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_DEDUCTIBLE, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_DEDUCTIBLE, Value)
         End Set
     End Property
 
@@ -214,7 +214,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_AMT, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_AMT, Value)
         End Set
     End Property
 
@@ -231,7 +231,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_PCNT, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_PCNT, Value)
         End Set
     End Property
 
@@ -248,7 +248,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_TERM_MONTHS, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_TERM_MONTHS, Value)
         End Set
     End Property
 
@@ -265,7 +265,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_TERM_KM_MI, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_TERM_KM_MI, Value)
         End Set
     End Property
 
@@ -282,7 +282,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT, Value)
         End Set
     End Property
 
@@ -299,7 +299,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_MARKETING_PERCENT, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_MARKETING_PERCENT, Value)
         End Set
     End Property
 
@@ -316,7 +316,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_ADMIN_EXPENSE, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_ADMIN_EXPENSE, Value)
         End Set
     End Property
 
@@ -333,7 +333,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_PROFIT_EXPENSE, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_PROFIT_EXPENSE, Value)
         End Set
     End Property
 
@@ -350,7 +350,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_LOSS_COST_PERCENT, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_LOSS_COST_PERCENT, Value)
         End Set
     End Property
 
@@ -367,7 +367,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_WP, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_WP, Value)
         End Set
     End Property
 
@@ -384,7 +384,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_TAXES_PERCENT, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_TAXES_PERCENT, Value)
         End Set
     End Property
 
@@ -401,7 +401,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_GWP, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_GWP, Value)
         End Set
     End Property
 
@@ -418,7 +418,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_MONTHS, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_MONTHS, Value)
         End Set
     End Property
 
@@ -435,7 +435,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_KM_MI, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_KM_MI, Value)
         End Set
     End Property
     <ValueMandatory("")>
@@ -450,7 +450,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_FROM, Value)
+            SetValue(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_FROM, Value)
         End Set
     End Property
     <ValueMandatory("")>
@@ -465,7 +465,7 @@ Public Class VscCoverageRate
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_TO, Value)
+            SetValue(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_TO, Value)
         End Set
     End Property
 
@@ -476,15 +476,15 @@ Public Class VscCoverageRate
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New VscCoverageRateDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

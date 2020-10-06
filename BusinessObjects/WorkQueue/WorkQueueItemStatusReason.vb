@@ -23,30 +23,30 @@ Public Class WorkQueueItemStatusReason
         _isNew = False
         _isDeleted = False
         _workQueue = pWorkQueue
-        Me._workQueueItemStatusReason = pWorkQueueItemStatusReason
+        _workQueueItemStatusReason = pWorkQueueItemStatusReason
         UpdateDescription()
-        AddHandler Me._workQueueItemStatusReason.PropertyChanged, New PropertyChangedEventHandler(AddressOf WorkQueueItemStatusReason_PropertyChanged)
+        AddHandler _workQueueItemStatusReason.PropertyChanged, New PropertyChangedEventHandler(AddressOf WorkQueueItemStatusReason_PropertyChanged)
     End Sub
 
     Public Sub New(ByVal pWorkQueue As WorkQueue)
         MyBase.New()
-        Me.Dataset = pWorkQueue.Dataset
+        Dataset = pWorkQueue.Dataset
         _isNew = True
         _isDeleted = False
         _workQueue = pWorkQueue
-        Me._workQueueItemStatusReason = New WrkQueue.WorkQueueItemStatusReason()
-        Me.Id = Guid.NewGuid
-        Me.ItemStatusReason.WorkQueueId = pWorkQueue.Id
-        Me._workQueueItemStatusReason.IsActive = True
-        Me._workQueueItemStatusReason.CreatedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
-        AddHandler Me._workQueueItemStatusReason.PropertyChanged, New PropertyChangedEventHandler(AddressOf WorkQueueItemStatusReason_PropertyChanged)
+        _workQueueItemStatusReason = New WrkQueue.WorkQueueItemStatusReason()
+        Id = Guid.NewGuid
+        ItemStatusReason.WorkQueueId = pWorkQueue.Id
+        _workQueueItemStatusReason.IsActive = True
+        _workQueueItemStatusReason.CreatedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
+        AddHandler _workQueueItemStatusReason.PropertyChanged, New PropertyChangedEventHandler(AddressOf WorkQueueItemStatusReason_PropertyChanged)
     End Sub
 #End Region
 
 #Region "Public Methods"
     Public Overrides Sub Delete()
-        Me._isDeleted = True
-        Me._workQueueItemStatusReason.IsActive = False
+        _isDeleted = True
+        _workQueueItemStatusReason.IsActive = False
     End Sub
 
     Public Overrides Sub Validate()
@@ -56,10 +56,10 @@ Public Class WorkQueueItemStatusReason
 
 #Region "Friend Methods"
     Private Sub UpdateDescription()
-        If (Me._workQueueItemStatusReason.Reason Is Nothing OrElse String.IsNullOrEmpty(Me._workQueueItemStatusReason.Reason)) Then
+        If (_workQueueItemStatusReason.Reason Is Nothing OrElse String.IsNullOrEmpty(_workQueueItemStatusReason.Reason)) Then
             _description = String.Empty
         Else
-            _description = LookupListNew.GetDescriptionFromCode(LookupListNew.LK_REASON_CODE, Me._workQueueItemStatusReason.Reason)
+            _description = LookupListNew.GetDescriptionFromCode(LookupListNew.LK_REASON_CODE, _workQueueItemStatusReason.Reason)
         End If
     End Sub
 #End Region
@@ -81,17 +81,17 @@ Public Class WorkQueueItemStatusReason
 
     Public Property Id As Guid
         Get
-            Return Me.ItemStatusReason.Id
+            Return ItemStatusReason.Id
         End Get
         Set(ByVal value As Guid)
-            Me.ItemStatusReason.Id = value
+            ItemStatusReason.Id = value
         End Set
     End Property
 
     <ValueMandatory(""), ValidateDuplicateReasons("")> _
     Public ReadOnly Property Reason As String
         Get
-            Return Me.ItemStatusReason.Reason
+            Return ItemStatusReason.Reason
         End Get
     End Property
 

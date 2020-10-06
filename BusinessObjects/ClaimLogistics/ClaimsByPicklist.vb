@@ -46,8 +46,8 @@ Public Class ClaimsByPicklist
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -58,10 +58,10 @@ Public Class ClaimsByPicklist
     Private Sub Load(ByVal ds As ClaimsByPicklistDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As BOValidationException
             Throw ex
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -77,14 +77,14 @@ Public Class ClaimsByPicklist
         Try
             If ds.ClaimsByPicklist.Count = 0 Then Exit Sub
             With ds.ClaimsByPicklist.Item(0)
-                Me.PickListNumber = .PICK_LIST_NUMBER
+                PickListNumber = .PICK_LIST_NUMBER
 
                 If Not .IsSTORE_NUMBERNull Then
-                    Me.StoreNumber = .STORE_NUMBER
+                    StoreNumber = .STORE_NUMBER
                 End If
 
                 If Not .IsSERVICE_CENTER_CODENull Then
-                    Me.ServiceCenterCode = .SERVICE_CENTER_CODE
+                    ServiceCenterCode = .SERVICE_CENTER_CODE
                 End If
 
             End With
@@ -104,56 +104,56 @@ Public Class ClaimsByPicklist
 
     Public Property PickListNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_PICK_LIST_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_PICK_LIST_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_PICK_LIST_NUMBER), String))
+                Return (CType(Row(DATA_COL_NAME_PICK_LIST_NUMBER), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_PICK_LIST_NUMBER, Value)
+            SetValue(DATA_COL_NAME_PICK_LIST_NUMBER, Value)
         End Set
     End Property
 
     Public Property StoreNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_STORE_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_STORE_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_STORE_NUMBER), String))
+                Return (CType(Row(DATA_COL_NAME_STORE_NUMBER), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_STORE_NUMBER, Value)
+            SetValue(DATA_COL_NAME_STORE_NUMBER, Value)
         End Set
     End Property
 
     Public Property ServiceCenterCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_SERVICE_CENTER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SERVICE_CENTER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_SERVICE_CENTER_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_SERVICE_CENTER_CODE), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_SERVICE_CENTER_CODE, Value)
+            SetValue(DATA_COL_NAME_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
     Public ReadOnly Property HeaderID() As Guid
         Get
-            If Me._headerId.Equals(Guid.Empty) Then
+            If _headerId.Equals(Guid.Empty) Then
 
                 Dim dvPicklist As DataView = LookupListNew.GetPicklistLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
                 If Not dvPicklist Is Nothing AndAlso dvPicklist.Count > 0 Then
-                    Me._headerId = LookupListNew.GetIdFromCode(dvPicklist, Me.PickListNumber)
+                    _headerId = LookupListNew.GetIdFromCode(dvPicklist, PickListNumber)
 
-                    If Me._headerId.Equals(Guid.Empty) Then
+                    If _headerId.Equals(Guid.Empty) Then
                         Throw New BOValidationException("ClaimsByPicklist Error: ", INVALID_PICKLIST_NUMBER)
                     End If
                 Else
@@ -162,20 +162,20 @@ Public Class ClaimsByPicklist
 
             End If
 
-            Return Me._headerId
+            Return _headerId
         End Get
     End Property
 
     Public ReadOnly Property ServiceCenterID() As Guid
         Get
-            If Me._serviceCenterId.Equals(Guid.Empty) AndAlso Not Me.ServiceCenterCode Is Nothing AndAlso Me.ServiceCenterCode <> "" Then
+            If _serviceCenterId.Equals(Guid.Empty) AndAlso Not ServiceCenterCode Is Nothing AndAlso ServiceCenterCode <> "" Then
 
                 Dim dvServiceCenter As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
 
                 If Not dvServiceCenter Is Nothing AndAlso dvServiceCenter.Count > 0 Then
-                    Me._serviceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, Me.ServiceCenterCode)
+                    _serviceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, ServiceCenterCode)
 
-                    If Me._serviceCenterId.Equals(Guid.Empty) Then
+                    If _serviceCenterId.Equals(Guid.Empty) Then
                         Throw New BOValidationException("ClaimsByPicklist Error: ", INVALID_SERVICE_CENTER_CODE)
                     End If
                 Else
@@ -184,20 +184,20 @@ Public Class ClaimsByPicklist
 
             End If
 
-            Return Me._serviceCenterId
+            Return _serviceCenterId
         End Get
     End Property
 
     Public ReadOnly Property StoreServiceCenterID() As Guid
         Get
-            If Me._storeServiceCenterId.Equals(Guid.Empty) AndAlso Not Me.StoreNumber Is Nothing AndAlso Me.StoreNumber <> "" Then
+            If _storeServiceCenterId.Equals(Guid.Empty) AndAlso Not StoreNumber Is Nothing AndAlso StoreNumber <> "" Then
 
                 Dim dvStore As DataView = LookupListNew.GetStoreLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
 
                 If Not dvStore Is Nothing AndAlso dvStore.Count > 0 Then
-                    Me._storeServiceCenterId = LookupListNew.GetIdFromCode(dvStore, Me.StoreNumber)
+                    _storeServiceCenterId = LookupListNew.GetIdFromCode(dvStore, StoreNumber)
 
-                    If Me._storeServiceCenterId.Equals(Guid.Empty) Then
+                    If _storeServiceCenterId.Equals(Guid.Empty) Then
                         Throw New BOValidationException("ClaimsByPicklist Error: ", INVALID_STORE_NUMBER)
                     End If
                 Else
@@ -206,7 +206,7 @@ Public Class ClaimsByPicklist
 
             End If
 
-            Return Me._storeServiceCenterId
+            Return _storeServiceCenterId
         End Get
     End Property
 
@@ -218,10 +218,10 @@ Public Class ClaimsByPicklist
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
 
-            Dim dsHeader As DataSet = PickupListHeader.GetClaimsByPickList(Me.HeaderID, Me.StoreServiceCenterID, Me.ServiceCenterID)
-            dsHeader.DataSetName = Me.DATASET_NAME
+            Dim dsHeader As DataSet = PickupListHeader.GetClaimsByPickList(HeaderID, StoreServiceCenterID, ServiceCenterID)
+            dsHeader.DataSetName = DATASET_NAME
 
             Dim excludeTags As ArrayList = New ArrayList()
             excludeTags.Add("/ClaimsByPicklist/PICKLIST/ROUTE_ID")

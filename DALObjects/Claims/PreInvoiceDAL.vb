@@ -34,52 +34,52 @@ Public Class PreInvoiceDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pre_invoice_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "Public Methods"
 
-    Public Function GeneratePreInvoice(ByVal companyCode As String) As String
-        Dim selectStmt As String = Me.Config("/SQL/GENERATE_PRE_INVOICE")
+    Public Function GeneratePreInvoice(companyCode As String) As String
+        Dim selectStmt As String = Config("/SQL/GENERATE_PRE_INVOICE")
         Dim inParameters(0) As DBHelper.DBHelperParameter
 
-        inParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_COMPANY_CODE, companyCode.Trim)
+        inParameters(0) = New DBHelper.DBHelperParameter(PAR_COMPANY_CODE, companyCode.Trim)
 
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                               New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String), 32000)}
+                               New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 32000)}
 
         Dim ds As New DataSet
-        Dim tbl As String = Me.TABLE_NAME
+        Dim tbl As String = TABLE_NAME
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inParameters, outParameters)
@@ -88,10 +88,10 @@ Public Class PreInvoiceDAL
 
     End Function
 
-    Public Function LoadPreInvoiceProcess(ByVal companyId As Guid, ByVal statusId As Guid, ByVal batchNumber As String, ByVal createdDateFrom As String, ByVal createdDateTo As String) As DataSet
+    Public Function LoadPreInvoiceProcess(companyId As Guid, statusId As Guid, batchNumber As String, createdDateFrom As String, createdDateTo As String) As DataSet
 
         Try
-            Dim selectStmt As String = Me.Config("/SQL/PRE_INVOICE")
+            Dim selectStmt As String = Config("/SQL/PRE_INVOICE")
             Dim whereClauseConditions As String = ""
 
             If Not (companyId = Guid.Empty) Then
@@ -102,7 +102,7 @@ Public Class PreInvoiceDAL
                 whereClauseConditions &= " AND " & Environment.NewLine & "pi." & "pre_invoice_status_id" & "= " & MiscUtil.GetDbStringFromGuid(statusId)
             End If
 
-            If Me.FormatSearchMask(batchNumber) Then
+            If FormatSearchMask(batchNumber) Then
                 whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(pi." & "batch_number" & ") " & batchNumber.ToUpper
             End If
 
@@ -115,9 +115,9 @@ Public Class PreInvoiceDAL
             End If
 
             If Not whereClauseConditions = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             End If
 
             Dim ds As New DataSet
@@ -129,9 +129,9 @@ Public Class PreInvoiceDAL
         End Try
     End Function
 
-    Public Function GetPreInvoiceDAL(ByVal CompanyCode As String, ByVal ServiceCenterCode As String, ByVal SCPreInvoiceDateFrom As DateTime, ByVal SCPreInvoiceDateTo As DateTime) As DataSet
+    Public Function GetPreInvoiceDAL(CompanyCode As String, ServiceCenterCode As String, SCPreInvoiceDateFrom As DateTime, SCPreInvoiceDateTo As DateTime) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_PRE_INVOICE_LIST")
+        Dim selectStmt As String = Config("/SQL/GET_PRE_INVOICE_LIST")
         Dim fromDate As Date
         Dim toDate As Date
         Dim whereClauseCondition As String
@@ -154,11 +154,11 @@ Public Class PreInvoiceDAL
             whereClauseCondition = ""
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseCondition)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseCondition)
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_PRE_INVOICE_WS, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME_PRE_INVOICE_WS, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -166,8 +166,8 @@ Public Class PreInvoiceDAL
     End Function
 
     'For future use
-    Public Function GetBonusAmount(ByVal BatchNumber As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_TOTAL_BONUS_AMOUNT")
+    Public Function GetBonusAmount(BatchNumber As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_TOTAL_BONUS_AMOUNT")
 
         Dim parameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_BATCH_NUMBER, BatchNumber)}
 
@@ -179,8 +179,8 @@ Public Class PreInvoiceDAL
     End Function
 
     'For future use
-    Public Function GetTotalAmount(ByVal BatchNumber As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_TOTAL_AMOUNT")
+    Public Function GetTotalAmount(BatchNumber As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_TOTAL_AMOUNT")
 
         Dim parameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_BATCH_NUMBER, BatchNumber)}
 
@@ -191,14 +191,14 @@ Public Class PreInvoiceDAL
         End Try
     End Function
 
-    Public Function GetTotalBonusAndAmount(ByVal BatchNumber As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_TOTAL_BONUS_AND_AMOUNT")
+    Public Function GetTotalBonusAndAmount(BatchNumber As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_TOTAL_BONUS_AND_AMOUNT")
 
         Dim parameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_BATCH_NUMBER, BatchNumber)}
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameter)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameter)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

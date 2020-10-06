@@ -12,7 +12,7 @@ Public Class SendAMLEmailTask
 
     Dim oClaim As ClaimBase
 
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 
@@ -25,7 +25,7 @@ Public Class SendAMLEmailTask
         If (Not String.IsNullOrEmpty(MyBase.PublishedTask(PublishedTask.CLAIM_ID))) Then
             claimId = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(MyBase.PublishedTask(PublishedTask.CLAIM_ID)))
             If (Not claimId.Equals(Guid.Empty)) Then
-                Me.oClaim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(claimId)
+                oClaim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(claimId)
 
 
                 '' Step #2 - Get Email Addresses for Compliance Officers based on LAN IDs
@@ -43,9 +43,9 @@ Public Class SendAMLEmailTask
 
     End Sub
 
-    Private Sub SendEmail(ByVal pToEmail As String(),
-                          ByVal pFromEmailAddress As String,
-                          ByVal pSmtpServerAddress As String)
+    Private Sub SendEmail(pToEmail As String(),
+                          pFromEmailAddress As String,
+                          pSmtpServerAddress As String)
         Dim mail As MailMessage = New System.Net.Mail.MailMessage()
         Dim ser As SmtpClient = New System.Net.Mail.SmtpClient(pSmtpServerAddress)
         Dim oAddress As New Address(oClaim.Certificate.AddressId)

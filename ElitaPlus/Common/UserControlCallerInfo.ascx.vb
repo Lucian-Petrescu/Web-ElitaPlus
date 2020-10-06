@@ -32,9 +32,9 @@
 #End Region
 
 #Region "Variables"
-    Public Event SelectedIndexChanged1(ByVal aSrc As UserControlCallerInfo)
+    Public Event SelectedIndexChanged1(aSrc As UserControlCallerInfo)
 
-    Public Delegate Sub SelectedIndexChanged(ByVal aSrc As UserControlCallerInfo)
+    Public Delegate Sub SelectedIndexChanged(aSrc As UserControlCallerInfo)
     Public Event GridSelectionHandler  As SelectedIndexChanged
     
 #End Region
@@ -60,12 +60,12 @@
         End Get
     End Property
 #End Region
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
     End Sub
     
 #Region "Caller View - Other Public Sub"
-    Public Sub PopulateGridViewCaller(ByVal certId As Guid,  Optional ByVal caseId As Guid = nothing, Optional ByVal IsAuthenticated As Boolean = True)
+    Public Sub PopulateGridViewCaller(certId As Guid,  Optional ByVal caseId As Guid = nothing, Optional ByVal IsAuthenticated As Boolean = True)
         Page.TranslateGridHeader(GridViewCaller)
         Dim emptyDataRow As DataRow
 
@@ -98,7 +98,7 @@
 
     End Sub
 
-    Public Sub PopulateGridViewPrevCaller(ByVal certId As Guid, Optional ByVal caseId As Guid = nothing, Optional ByVal IsAuthenticated As Boolean = True)
+    Public Sub PopulateGridViewPrevCaller(certId As Guid, Optional ByVal caseId As Guid = nothing, Optional ByVal IsAuthenticated As Boolean = True)
         Page.TranslateGridHeader(GridViewCaller)
         Dim emptyDataRow As DataRow        
         State.callersDataTable = Certificate.getCallerListForCert(Guid.Empty)
@@ -144,7 +144,7 @@
             GridViewCaller.DataBind()
         End If
     End Sub
-    Private Sub GridViewCaller_RowDataBound(ByVal sender As System.Object, ByVal e As GridViewRowEventArgs) Handles GridViewCaller.RowDataBound
+    Private Sub GridViewCaller_RowDataBound(sender As System.Object, e As GridViewRowEventArgs) Handles GridViewCaller.RowDataBound
         Try
             Dim rowType As DataControlRowType = e.Row.RowType
             If rowType = DataControlRowType.DataRow Then
@@ -161,7 +161,7 @@
             Page.HandleErrors(ex, Page.MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub GridViewCaller_RowCommand(ByVal source As Object, ByVal e As GridViewCommandEventArgs) Handles GridViewCaller.RowCommand
+    Private Sub GridViewCaller_RowCommand(source As Object, e As GridViewCommandEventArgs) Handles GridViewCaller.RowCommand
         Try
             If e.CommandName = ElitaPlusSearchPage.EDIT_COMMAND_NAME Then
                 Dim nIndex As Integer 
@@ -185,10 +185,10 @@
         End Try
     End Sub
 
-    Private Sub FillRelationshipDropDownList(ByVal dtRow As GridViewRow)
+    Private Sub FillRelationshipDropDownList(dtRow As GridViewRow)
         Dim ddlRel As DropDownList = DirectCast(dtRow.FindControl(DropDownlistRelationship), DropDownList)
 
-        If Not ddlRel Is Nothing Then
+        If ddlRel IsNot Nothing Then
             Dim relList As ListItem() = (From llItem As DataRow In LookupListNew.GetRelationshipList(Authentication.CurrentUser.LanguageId).ToTable().AsEnumerable()
                     Select New ListItem(llItem.Field(Of String)(LookupListNew.COL_DESCRIPTION_NAME), llItem.Field(Of String)(LookupListNew.COL_CODE_NAME))).Distinct().ToArray()
 

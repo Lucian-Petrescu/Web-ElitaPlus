@@ -38,32 +38,32 @@ Public Class WarrantyMasterDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("warranty_master_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal compIds As ArrayList, ByVal dealerId As Guid, ByVal skuNumber As String, ByVal manufacturerName As String, ByVal modelNumber As String, ByVal warrantyType As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(compIds As ArrayList, dealerId As Guid, skuNumber As String, manufacturerName As String, modelNumber As String, warrantyType As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter
         Dim inClausecondition As String = ""
         Dim whereClauseConditions As String = ""
 
-        inClausecondition &= "And edealer." & MiscUtil.BuildListForSql(Me.COL_NAME_COMPANY_ID, compIds, False)
+        inClausecondition &= "And edealer." & MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds, False)
 
         If Not dealerId.Equals(Guid.Empty) Then
             whereClauseConditions &= Environment.NewLine & "AND " & "edealer.DEALER_ID = " & MiscUtil.GetDbStringFromGuid(dealerId)
@@ -73,8 +73,8 @@ Public Class WarrantyMasterDAL
             whereClauseConditions &= Environment.NewLine & " AND " & " WARRANTY_TYPE = '" & warrantyType.Trim & "'"
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         If skuNumber.Equals("") Then skuNumber = WILDCARD
         If skuNumber.Contains(ELITA_WILDCARD) Then skuNumber = skuNumber.Replace(ELITA_WILDCARD, WILDCARD)
@@ -90,7 +90,7 @@ Public Class WarrantyMasterDAL
                                     {New OracleParameter(WarrantyMasterDAL.COL_NAME_SKU_NUMBER, skuNumber), _
                                      New OracleParameter(WarrantyMasterDAL.COL_NAME_MANUFACTURER_NAME, manufacturerName), _
                                      New OracleParameter(WarrantyMasterDAL.COL_NAME_MODEL_NUMBER, modelNumber)}
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -98,26 +98,26 @@ Public Class WarrantyMasterDAL
 
     End Function
 
-    Public Function GetMakeAndModelForDealerFromWM(ByVal SkuNumber As String, ByVal DealerID As Guid) As DataSet
+    Public Function GetMakeAndModelForDealerFromWM(SkuNumber As String, DealerID As Guid) As DataSet
 
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/WS_GET_MAKE_MODEL_FROM_WARRANTY_MASTER_FOR_DEALER")
+        Dim selectStmt As String = Config("/SQL/WS_GET_MAKE_MODEL_FROM_WARRANTY_MASTER_FOR_DEALER")
 
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_SKU_NUMBER, SkuNumber), _
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_SKU_NUMBER, SkuNumber), _
                                             New OracleParameter(COL_NAME_DEALER_ID, DealerID.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

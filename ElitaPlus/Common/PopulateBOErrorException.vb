@@ -8,7 +8,7 @@ Imports System.Runtime.Serialization
         MyBase.New("Error Populating the Business Data", ErrorCodes.POPULATE_BO_ERR)
     End Sub
 
-    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+    Protected Sub New(info As SerializationInfo, context As StreamingContext)
         MyBase.New(info, context)
     End Sub
 End Class

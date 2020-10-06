@@ -27,7 +27,7 @@ Public Class ClaimWizardForm
 #Region "Web Method"
 
     <WebMethod(), ScriptMethod()>
-    Public Shared Function LoadSku(ByVal manufacturerId As String, ByVal model As String, ByVal dealerId As String) As String
+    Public Shared Function LoadSku(manufacturerId As String, model As String, dealerId As String) As String
 
         Dim dealer As New Dealer(New Guid(dealerId))
         Dim equipmentId As Guid = Equipment.GetEquipmentIdByEquipmentList(dealer.EquipmentListCode, DateTime.Now,
@@ -41,7 +41,7 @@ Public Class ClaimWizardForm
 
         Dim dv As DataView = CertItem.LoadSku(equipmentId, dealer.Id)
 
-        If Not dv Is Nothing Then
+        If dv IsNot Nothing Then
             lstSkuNumbers = New List(Of String)
 
             For Each row As DataRowView In dv
@@ -189,37 +189,37 @@ Public Class ClaimWizardForm
     Protected Shadows ReadOnly Property State() As MyState
         Get
             Dim retState As MyState = CType(MyBase.State, MyState)
-            Session(Me.SESSION_KEY_CLAIM_WIZARD_BACKUP_STATE) = retState
+            Session(SESSION_KEY_CLAIM_WIZARD_BACKUP_STATE) = retState
             Return retState
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal callFromUrl As String, ByVal callingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(callFromUrl As String, callingPar As Object) Handles MyBase.PageCall
         Try
             If callFromUrl.Contains(ClaimRecordingForm.Url2) Then
                 MyBase.SetPageOutOfNavigation()
             End If
-            If Not Me.CallingParameters Is Nothing Then
-                Me.State.InputParameters = CType(Me.CallingParameters, Parameters)
-                Me.State.StepName = Me.State.InputParameters.StepNumber
-                Me.State.EntryStep = Me.State.StepName
-                Me.State.IsCallerAuthenticated = Me.State.InputParameters.IsCallerAuthenticated
+            If CallingParameters IsNot Nothing Then
+                State.InputParameters = CType(CallingParameters, Parameters)
+                State.StepName = State.InputParameters.StepNumber
+                State.EntryStep = State.StepName
+                State.IsCallerAuthenticated = State.InputParameters.IsCallerAuthenticated
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
-        If (Me.CalledUrl = ClaimIssueDetailForm.URL OrElse Me.CalledUrl = ClaimDeductibleRefundForm.URL) Then
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
+        If (CalledUrl = ClaimIssueDetailForm.URL OrElse CalledUrl = ClaimDeductibleRefundForm.URL) Then
 
-            If (Not Me.State.ClaimBO.Id.Equals(Guid.Empty)) Then
-                Me.State.ClaimBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.State.ClaimBO.Id)
-                If (Not Me.State.ClaimBO Is Nothing) Then
+            If (Not State.ClaimBO.Id.Equals(Guid.Empty)) Then
+                State.ClaimBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.ClaimBO.Id)
+                If (State.ClaimBO IsNot Nothing) Then
 
                     If (Me.State.ClaimBO.Status = BasicClaimStatus.Active OrElse Me.State.ClaimBO.Status = BasicClaimStatus.Denied) Then
                         '//TO-DO: Navigate to Claim Details page (ClaimForm.aspx)                        
-                        Me.callPage(ClaimForm.URL, New ClaimForm.Parameters(Me.State.ClaimBO.Id, Me.State.IsCallerAuthenticated))
+                        callPage(ClaimForm.URL, New ClaimForm.Parameters(State.ClaimBO.Id, State.IsCallerAuthenticated))
                     End If
                 End If
             End If
@@ -234,14 +234,14 @@ Public Class ClaimWizardForm
         Public EditingBo As Certificate
         Public BoChanged As Boolean = False
         Public IsCallerAuthenticated As Boolean = False
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Certificate, Optional ByVal boChanged As Boolean = False, Optional ByVal IsCallerAuthenticated As Boolean = False)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As Certificate, Optional ByVal boChanged As Boolean = False, Optional ByVal IsCallerAuthenticated As Boolean = False)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.BoChanged = boChanged
             Me.IsCallerAuthenticated = IsCallerAuthenticated
         End Sub
-        Public Sub New(ByVal LastOp As DetailPageCommand)
-            Me.LastOperation = LastOp
+        Public Sub New(LastOp As DetailPageCommand)
+            LastOperation = LastOp
         End Sub
     End Class
 #End Region
@@ -257,12 +257,12 @@ Public Class ClaimWizardForm
         Public claimId As Guid = Guid.Empty
         Public IsCallerAuthenticated As Boolean = False
 
-        Public Sub New(ByVal stepNumber As ClaimWizardSteps, ByVal certificateId As Guid, ByVal claimId As Guid, ByVal claim As ClaimBase, Optional ByVal showWizard As Boolean = False, Optional ByVal comingFromDenyClaim As Boolean = False, Optional IsCallerAuthenticated As Boolean = False)
+        Public Sub New(stepNumber As ClaimWizardSteps, certificateId As Guid, claimId As Guid, claim As ClaimBase, Optional ByVal showWizard As Boolean = False, Optional ByVal comingFromDenyClaim As Boolean = False, Optional IsCallerAuthenticated As Boolean = False)
             Me.StepNumber = stepNumber
             Me.CertificateId = certificateId
             Me.ShowWizard = showWizard
             Me.ComingFromDenyClaim = comingFromDenyClaim
-            Me.ClaimBo = claim
+            ClaimBo = claim
             Me.claimId = claimId
             Me.IsCallerAuthenticated = IsCallerAuthenticated
         End Sub
@@ -275,7 +275,7 @@ Public Class ClaimWizardForm
     Public ReadOnly Property UserControlAddress() As UserControlAddress_New
         Get
             If moUserControlAddress Is Nothing Then
-                moUserControlContactInfo = CType(Me.Master.FindControl("BodyPlaceHolder").FindControl("moUserControlContactInfo"), UserControlContactInfo_New)
+                moUserControlContactInfo = CType(Master.FindControl("BodyPlaceHolder").FindControl("moUserControlContactInfo"), UserControlContactInfo_New)
                 moUserControlAddress = CType(moUserControlContactInfo.FindControl("moAddressController"), UserControlAddress_New)
 
             End If
@@ -286,7 +286,7 @@ Public Class ClaimWizardForm
     Public ReadOnly Property UserControlContactInfo() As UserControlContactInfo_New
         Get
             If moUserControlContactInfo Is Nothing Then
-                moUserControlContactInfo = CType(Me.Master.FindControl("BodyPlaceHolder").FindControl("moUserControlContactInfo"), UserControlContactInfo_New)
+                moUserControlContactInfo = CType(Master.FindControl("BodyPlaceHolder").FindControl("moUserControlContactInfo"), UserControlContactInfo_New)
             End If
             Return moUserControlContactInfo
         End Get
@@ -296,7 +296,7 @@ Public Class ClaimWizardForm
     Public ReadOnly Property UserControlMessageController() As MessageController
         Get
             If MessageController Is Nothing Then
-                MessageController = DirectCast(Me.MasterPage.MessageController, MessageController)
+                MessageController = DirectCast(MasterPage.MessageController, MessageController)
             End If
             Return MessageController
         End Get
@@ -304,15 +304,15 @@ Public Class ClaimWizardForm
 #End Region
 
 #Region "PageEvents"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles MyBase.Load
         Try
             ClearMessageControllers()
-            If (Not Me.IsPostBack) Then
+            If (Not IsPostBack) Then
                 btnModalCancelYes.Attributes.Add("onclick", String.Format("ExecuteButtonClick('{0}');", btnCancel.UniqueID))
                 lblCancelMessage.Text = TranslationBase.TranslateLabelOrMessage("MSG_CONFIRM_CANCEL")
                 btnModalCancelClaimYes.Attributes.Add("onclick", String.Format("ExecuteButtonClick('{0}');", btnCancelClaim.UniqueID))
                 lblModalClaimCancel.Text = TranslationBase.TranslateLabelOrMessage("ARE_YOU_SURE_CANCEL_CLAIM")
-                Me.headerDeviceInfo.InnerText = TranslationBase.TranslateLabelOrMessage("DEVICE_INFORMATION")
+                headerDeviceInfo.InnerText = TranslationBase.TranslateLabelOrMessage("DEVICE_INFORMATION")
 
                 step2_ddlClaimedManuf.Attributes.Add("onchange", String.Format("LoadSKU('{0}','{1}','{2}','{3}');", step2_ddlClaimedManuf.ClientID, step2_txtClaimedModel.ClientID, step2_ddlClaimedSku.ClientID, hdnSelectedClaimedSku.ClientID))
                 step2_txtClaimedModel.Attributes.Add("onchange", String.Format("LoadSKU('{0}','{1}','{2}','{3}');", step2_ddlClaimedManuf.ClientID, step2_txtClaimedModel.ClientID, step2_ddlClaimedSku.ClientID, hdnSelectedClaimedSku.ClientID))
@@ -321,38 +321,38 @@ Public Class ClaimWizardForm
                 PopulateStepUIandData()
 
             End If
-            BindBoPropertiesToLabels(Me.State.StepName)
+            BindBoPropertiesToLabels(State.StepName)
             PopulateClaimedEnrolledDetails()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 #End Region
 
 #Region "Event Handlers"
-    Private Sub step1_btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles step1_btnSearch.Click
+    Private Sub step1_btnSearch_Click(sender As Object, e As System.EventArgs) Handles step1_btnSearch.Click
         Try
             If ValidateInputForStep1BtnSearch() Then
-                Me.State.DateOfLoss = DateHelper.GetDateValue(step1_moDateOfLossText.Text)
-                Me.State.DateReported = DateHelper.GetDateValue(step1_txtDateReported.Text)
-                Me.State.IsEditMode = True
-                PopulateDropDowns(Me.State.StepName)
-                HandleButtons(Me.State.StepName)
+                State.DateOfLoss = DateHelper.GetDateValue(step1_moDateOfLossText.Text)
+                State.DateReported = DateHelper.GetDateValue(step1_txtDateReported.Text)
+                State.IsEditMode = True
+                PopulateDropDowns(State.StepName)
+                HandleButtons(State.StepName)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub step1_cboRiskType_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles step1_cboRiskType.SelectedIndexChanged
+    Private Sub step1_cboRiskType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles step1_cboRiskType.SelectedIndexChanged
         Try
             If Not step1_cboRiskType.SelectedValue.Equals(Guid.Empty.ToString) Then
-                Me.State.RiskTypeId = New Guid(step1_cboRiskType.SelectedValue)
+                State.RiskTypeId = New Guid(step1_cboRiskType.SelectedValue)
                 ' Me.BindListControlToDataView(Me.step1_cboCoverageType, LookupListNew.LoadCoverageTypes(Me.State.CertBO.Id, New Guid(step1_cboRiskType.SelectedValue), ElitaPlusIdentity.Current.ActiveUser.LanguageId, State.DateOfLoss))
                 Dim listcontextForcoveragetypes As ListContext = New ListContext()
-                listcontextForcoveragetypes.CertId = Me.State.CertBO.Id
+                listcontextForcoveragetypes.CertId = State.CertBO.Id
                 listcontextForcoveragetypes.CertItemId = New Guid(step1_cboRiskType.SelectedValue)
                 listcontextForcoveragetypes.LanguageId = ElitaPlusIdentity.Current.ActiveUser.LanguageId
                 listcontextForcoveragetypes.DateOfLoss = State.DateOfLoss
@@ -364,31 +364,31 @@ Public Class ClaimWizardForm
                                                   })
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            If (Me.State.StepName = Me.State.EntryStep) Then
-                Me.ReturnBackToCallingPage()
+            If (State.StepName = State.EntryStep) Then
+                ReturnBackToCallingPage()
             Else
-                Me.State.StepName = LastStep()
+                State.StepName = LastStep()
                 PopulateStepUIandData()
-                Me.State.IsEditMode = False
+                State.IsEditMode = False
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         Try
-            Me.ReturnBackToCallingPage()
+            ReturnBackToCallingPage()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -404,44 +404,44 @@ Public Class ClaimWizardForm
         Return client
     End Function
 
-    Protected Sub btn_Continue_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnContinue.Click, btnClaimOverride_Write.Click
+    Protected Sub btn_Continue_Click(sender As Object, e As EventArgs) Handles btnContinue.Click, btnClaimOverride_Write.Click
 
         Try
-            PopulateBOFromForm(Me.State.StepName)
-            Me.ClearMessageControllers()
+            PopulateBOFromForm(State.StepName)
+            ClearMessageControllers()
 
 
-            If (ValidateInputs(Me.State.StepName)) Then
+            If (ValidateInputs(State.StepName)) Then
 
-                Select Case Me.State.StepName
+                Select Case State.StepName
                     Case ClaimWizardSteps.Step1
 
                     Case ClaimWizardSteps.Step2
                         Dim msg As String
-                        If Me.State.CertItemCoverageBO.IsPossibleWarrantyClaim(msg) Then
-                            Me.lblServiceWarrantyMessage.Text = TranslationBase.TranslateLabelOrMessage(msg)
+                        If State.CertItemCoverageBO.IsPossibleWarrantyClaim(msg) Then
+                            lblServiceWarrantyMessage.Text = TranslationBase.TranslateLabelOrMessage(msg)
                             Dim x As String = "<script language='JavaScript'> revealModal('ModalServiceWarranty'); </script>"
-                            Me.RegisterStartupScript("Startup", x)
+                            RegisterStartupScript("Startup", x)
                             Exit Sub
                         End If
-                        If ((Me.State.CertBO.getMasterclaimProcFlag = Codes.MasterClmProc_ANYMC Or Me.State.CertBO.getMasterclaimProcFlag = Codes.MasterClmProc_BYDOL) AndAlso
-                            Me.State.CertItemCoverageBO.GetAllClaims(Me.State.CertItemCoverageBO.Id).Count > 0) Then
-                            Me.PopulateMasterClaimGrid()
+                        If ((State.CertBO.getMasterclaimProcFlag = Codes.MasterClmProc_ANYMC Or State.CertBO.getMasterclaimProcFlag = Codes.MasterClmProc_BYDOL) AndAlso
+                            State.CertItemCoverageBO.GetAllClaims(State.CertItemCoverageBO.Id).Count > 0) Then
+                            PopulateMasterClaimGrid()
                             Dim x As String = "<script language='JavaScript'> revealModal('ModalMasterClaim'); </script>"
-                            Me.RegisterStartupScript("Startup", x)
+                            RegisterStartupScript("Startup", x)
                             Exit Sub
                         End If
                     Case ClaimWizardSteps.Step3
                         CreateClaim()
-                        If (Me.State.DealerBO.DeductibleCollectionId = Me.State.yesId) Then
+                        If (State.DealerBO.DeductibleCollectionId = State.yesId) Then
                             Dim x As String = "<script language='JavaScript'> revealModal('modalCollectDeductible') </script>"
-                            Me.RegisterStartupScript("Startup", x)
+                            RegisterStartupScript("Startup", x)
                             Exit Sub
                         End If
                     Case ClaimWizardSteps.Step4
                         ' REQ- 6156 - Skipping this step of choosing Service Center and copied the required code to step 5
 
-                        For Each claimAuth As ClaimAuthorization In Me.State.ClaimBO.ClaimAuthorizationChildren
+                        For Each claimAuth As ClaimAuthorization In State.ClaimBO.ClaimAuthorizationChildren
                             'below line is to skip voiding or deleting authorizations if they are of claim deductible refund related
                             If Not claimAuth.IsAuthorizationDeductibleRefund Then
                                 If Not claimAuth.IsNew Then
@@ -455,17 +455,17 @@ Public Class ClaimWizardForm
                         ' REQ- 6156 - Call Start Fulfillment process web method in Fulfillment Web Service
                         'Me.State.ClaimBO.AddClaimAuthorization(Me.State.SelectedServiceCenterId)
 
-                        Me.State.DoesActiveTradeInExistForIMEI = DoesAcceptedOfferExistForIMEI()
-                        If Me.State.ClaimBO.IsNew And Me.State.DoesActiveTradeInExistForIMEI Then
-                            Me.State.ClaimBO.StatusCode = Codes.CLAIM_STATUS__DENIED
-                            Me.State.CommentBO.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED)
+                        State.DoesActiveTradeInExistForIMEI = DoesAcceptedOfferExistForIMEI()
+                        If State.ClaimBO.IsNew And State.DoesActiveTradeInExistForIMEI Then
+                            State.ClaimBO.StatusCode = Codes.CLAIM_STATUS__DENIED
+                            State.CommentBO.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED)
                         End If
                     Case ClaimWizardSteps.Step5
                         ' Bug 178224 - REQ- 6156 
                         Dim attvalue As AttributeValue = State.ClaimBO.Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.DLR_ATTR_SKIP_SERVICE_CENTER_SCREEN).FirstOrDefault
-                        If Not attvalue Is Nothing AndAlso attvalue.Value = Codes.YESNO_Y Then
+                        If attvalue IsNot Nothing AndAlso attvalue.Value = Codes.YESNO_Y Then
                             If (Me.State.ClaimBO.Status = BasicClaimStatus.Active) Then
-                                For Each claimAuth As ClaimAuthorization In Me.State.ClaimBO.ClaimAuthorizationChildren
+                                For Each claimAuth As ClaimAuthorization In State.ClaimBO.ClaimAuthorizationChildren
                                     'below line is to skip voiding or deleting authorizations if they are of claim deductible refund related
                                     If Not claimAuth.IsAuthorizationDeductibleRefund Then
                                         If Not claimAuth.IsNew Then
@@ -476,34 +476,34 @@ Public Class ClaimWizardForm
                                         End If
                                     End If
                                 Next
-                                Me.State.DoesActiveTradeInExistForIMEI = DoesAcceptedOfferExistForIMEI()
+                                State.DoesActiveTradeInExistForIMEI = DoesAcceptedOfferExistForIMEI()
                             End If
                         End If
-                        If Me.State.ClaimBO.IsNew And Me.State.DoesActiveTradeInExistForIMEI Then
-                            Me.State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__ACTIVE_TRADEIN_QUOTE_EXISTS)
-                            Me.State.ClaimBO.DenyClaim()
+                        If State.ClaimBO.IsNew And State.DoesActiveTradeInExistForIMEI Then
+                            State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__ACTIVE_TRADEIN_QUOTE_EXISTS)
+                            State.ClaimBO.DenyClaim()
                         End If
 
-                        If Me.State.ClaimBO IsNot Nothing AndAlso Me.State.ClaimBO.Status = BasicClaimStatus.Active Then
+                        If State.ClaimBO IsNot Nothing AndAlso Me.State.ClaimBO.Status = BasicClaimStatus.Active Then
                             'user story 192764 - Task-199011--Start------
                             Dim dsCaseFields As DataSet = CaseBase.GetCaseFieldsList(State.ClaimBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-                            If (Not dsCaseFields Is Nothing AndAlso dsCaseFields.Tables.Count > 0 AndAlso dsCaseFields.Tables(0).Rows.Count > 0) Then
+                            If (dsCaseFields IsNot Nothing AndAlso dsCaseFields.Tables.Count > 0 AndAlso dsCaseFields.Tables(0).Rows.Count > 0) Then
 
                                 Dim hasBenefit As DataRow() = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
                                 Dim benefitCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='BENEFITCHECKERROR'")
                                 Dim preCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='PRECHECKERROR'")
                                 Dim lossType As DataRow() = dsCaseFields.Tables(0).Select("field_code='LOSSTYPE'")
 
-                                If Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Then
-                                    If Not hasBenefit(0)("field_value") Is Nothing AndAlso String.Equals(hasBenefit(0)("field_value").ToString(), Boolean.FalseString, StringComparison.CurrentCultureIgnoreCase) Then
+                                If hasBenefit IsNot Nothing AndAlso hasBenefit.Length > 0 Then
+                                    If hasBenefit(0)("field_value") IsNot Nothing AndAlso String.Equals(hasBenefit(0)("field_value").ToString(), Boolean.FalseString, StringComparison.CurrentCultureIgnoreCase) Then
                                         UpdateCaseFieldValues(hasBenefit, lossType)
 
                                         dsCaseFields = CaseBase.GetCaseFieldsList(State.ClaimBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                                         hasBenefit = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
                                     End If
                                 End If
-                                If Not benefitCheckError Is Nothing AndAlso benefitCheckError.Length > 0 Then
-                                    If Not benefitCheckError(0)("field_value") Is Nothing AndAlso Not String.Equals(benefitCheckError(0)("field_value").ToString(), "NO ERROR", StringComparison.CurrentCultureIgnoreCase) Then
+                                If benefitCheckError IsNot Nothing AndAlso benefitCheckError.Length > 0 Then
+                                    If benefitCheckError(0)("field_value") IsNot Nothing AndAlso Not String.Equals(benefitCheckError(0)("field_value").ToString(), "NO ERROR", StringComparison.CurrentCultureIgnoreCase) Then
                                         UpdateCaseFieldValues(benefitCheckError, lossType)
 
                                         dsCaseFields = CaseBase.GetCaseFieldsList(State.ClaimBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
@@ -511,13 +511,13 @@ Public Class ClaimWizardForm
                                     End If
                                 End If
 
-                                If Not preCheckError Is Nothing And preCheckError.Length = 0 Then
-                                    If Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Then
-                                        If Not hasBenefit(0)("field_value") Is Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper() Then
+                                If preCheckError IsNot Nothing And preCheckError.Length = 0 Then
+                                    If hasBenefit IsNot Nothing AndAlso hasBenefit.Length > 0 Then
+                                        If hasBenefit(0)("field_value") IsNot Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper() Then
                                             RunPreCheck(hasBenefit)
                                         End If
-                                    ElseIf Not benefitCheckError Is Nothing AndAlso benefitCheckError.Length > 0 Then
-                                        If Not benefitCheckError(0)("field_value") Is Nothing AndAlso benefitCheckError(0)("field_value").ToString().ToUpper() <> "NO ERROR" Then
+                                    ElseIf benefitCheckError IsNot Nothing AndAlso benefitCheckError.Length > 0 Then
+                                        If benefitCheckError(0)("field_value") IsNot Nothing AndAlso benefitCheckError(0)("field_value").ToString().ToUpper() <> "NO ERROR" Then
                                             RunPreCheck(benefitCheckError)
                                         End If
                                     End If
@@ -548,13 +548,13 @@ Public Class ClaimWizardForm
                                 wsResponse = WcfClientHelper.Execute(Of ClaimServiceClient, IClaimService, NewClaimEntitledResponse)(
                                     GetClientClaimService(),
                                     New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                    Function(ByVal c As ClaimServiceClient)
+                                    Function(c As ClaimServiceClient)
                                         Return c.NewClaimEntitled(wsRequest)
                                     End Function)
 
                                 If wsResponse.IsNewClaimEntitled = False Then 'deny the claim with the denial reason returned
                                     State.ClaimBO.Status = BasicClaimStatus.Denied
-                                    Me.State.ClaimBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, wsResponse.DenialCodes(0))
+                                    State.ClaimBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, wsResponse.DenialCodes(0))
                                 End If
                             Catch ex As FaultException
                                 Log(ex)
@@ -564,8 +564,8 @@ Public Class ClaimWizardForm
                         End If
                         'User Story 186561 Number of active claims allowed under one certificate -- end
 
-                        Me.State.CommentBO.Save()
-                        Me.State.ClaimBO.Save()
+                        State.CommentBO.Save()
+                        State.ClaimBO.Save()
 
                         ' Create Authorization
                         If (Me.State.ClaimBO.Status = BasicClaimStatus.Active) Then
@@ -573,20 +573,20 @@ Public Class ClaimWizardForm
                             Try
                                 blnWsSuccess = CallStartFulfillmentProcess()
                                 If Not blnWsSuccess Then
-                                    Me.State.ClaimBO.Status = BasicClaimStatus.Pending
-                                    Me.State.ClaimBO.Save()
+                                    State.ClaimBO.Status = BasicClaimStatus.Pending
+                                    State.ClaimBO.Save()
                                     Exit Sub
                                 End If
                             Catch ex As Exception
-                                Me.State.ClaimBO.Status = BasicClaimStatus.Pending
-                                Me.State.ClaimBO.Save()
-                                Me.MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+                                State.ClaimBO.Status = BasicClaimStatus.Pending
+                                State.ClaimBO.Save()
+                                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
                                 Throw
                             End Try
                         End If
 
                         'TO DO : Add logic to Send Emails and other stuff
-                        Me.ReturnBackToCallingPage()
+                        ReturnBackToCallingPage()
                         Exit Sub
                 End Select
 
@@ -594,7 +594,7 @@ Public Class ClaimWizardForm
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -602,11 +602,11 @@ Public Class ClaimWizardForm
         Dim caseFieldXcds() As String
         Dim caseFieldValues() As String
 
-        If Not lossType Is Nothing AndAlso lossType.Length > 0 Then
-            If Not lossType(0)("field_value") Is Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" Or lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
+        If lossType IsNot Nothing AndAlso lossType.Length > 0 Then
+            If lossType(0)("field_value") IsNot Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" Or lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
                 caseFieldXcds = {"CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING"}
                 caseFieldValues = {Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper()}
-            ElseIf Not lossType(0)("field_value") Is Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
+            ElseIf lossType(0)("field_value") IsNot Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
                 caseFieldXcds = {"CASEFLD-HASBENEFIT"}
                 caseFieldValues = {Boolean.TrueString.ToUpper()}
             End If
@@ -615,7 +615,7 @@ Public Class ClaimWizardForm
         CaseBase.UpdateCaseFieldValues(GuidControl.ByteArrayToGuid(caseFieldRow(0)("case_Id")), caseFieldXcds, caseFieldValues)
     End Sub
 
-    Private Sub RunPreCheck(ByVal caseRecord As DataRow())
+    Private Sub RunPreCheck(caseRecord As DataRow())
         Try
             Dim benefitCheckResponse As LegacyBridgeResponse
             Dim client As LegacyBridgeServiceClient = Claim.GetLegacyBridgeServiceClient()
@@ -623,31 +623,31 @@ Public Class ClaimWizardForm
             benefitCheckResponse = WcfClientHelper.Execute(Of LegacyBridgeServiceClient, ILegacyBridgeService, LegacyBridgeResponse)(
                 client,
                 New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                Function(ByVal lc As LegacyBridgeServiceClient)
+                Function(lc As LegacyBridgeServiceClient)
                     Return lc.BenefitClaimPreCheck(GuidControl.ByteArrayToGuid(caseRecord(0)("case_Id")).ToString())
                 End Function)
 
-            If (Not benefitCheckResponse Is Nothing) Then
-                Me.State.ClaimBO.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
+            If (benefitCheckResponse IsNot Nothing) Then
+                State.ClaimBO.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
                 If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
                     Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECKFAIL")
-                    Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                    newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
+                    Dim newClaimIssue As ClaimIssue = CType(State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                    newClaimIssue.SaveNewIssue(State.ClaimBO.Id, issueId, State.ClaimBO.Certificate.Id, True)
                 End If
             Else
-                Me.State.ClaimBO.Status = BasicClaimStatus.Pending
+                State.ClaimBO.Status = BasicClaimStatus.Pending
                 Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
-                Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
+                Dim newClaimIssue As ClaimIssue = CType(State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                newClaimIssue.SaveNewIssue(State.ClaimBO.Id, issueId, State.ClaimBO.Certificate.Id, True)
             End If
         Catch ex As FaultException
             Log(ex)
         Catch ex As Exception
             Log(ex)
-            Me.State.ClaimBO.Status = BasicClaimStatus.Pending
+            State.ClaimBO.Status = BasicClaimStatus.Pending
             Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
-            Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-            newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
+            Dim newClaimIssue As ClaimIssue = CType(State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+            newClaimIssue.SaveNewIssue(State.ClaimBO.Id, issueId, State.ClaimBO.Certificate.Id, True)
         End Try
     End Sub
 
@@ -670,118 +670,118 @@ Public Class ClaimWizardForm
     '    End Try
     'End Sub
 
-    Protected Sub btnaddNewMasterClaimNumber_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnAddNewMasterClaim.Click
+    Protected Sub btnaddNewMasterClaimNumber_Click(sender As Object, e As EventArgs) Handles btnAddNewMasterClaim.Click
         Try
             GoToNextStep()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnDedCollContinue_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDedCollContinue.Click
+    Protected Sub btnDedCollContinue_Click(sender As Object, e As System.EventArgs) Handles btnDedCollContinue.Click
 
         If Not step3_cboDedCollMethod.SelectedIndex > BLANK_ITEM_SELECTED Then
-            Me.moModalCollectDivMsgController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_DED_COLL_METHD_REQD)
+            moModalCollectDivMsgController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_DED_COLL_METHD_REQD)
             Dim x As String = "<script language='JavaScript'> revealModal('modalCollectDeductible') </script>"
-            Me.RegisterStartupScript("Startup", x)
+            RegisterStartupScript("Startup", x)
             Exit Sub
         Else
             If GetSelectedItem(step3_cboDedCollMethod) = LookupListNew.GetIdFromCode(LookupListCache.LK_DED_COLL_METHOD, Codes.DED_COLL_METHOD_CR_CARD) AndAlso
                step3_txtDedCollAuthCode.Text.Length <> CInt(Codes.DED_COLL_CR_AUTH_CODE_LEN) Then 'Allow exact length of Auth Code
-                Me.moModalCollectDivMsgController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AUTH_CODE_FOR_CC)
+                moModalCollectDivMsgController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AUTH_CODE_FOR_CC)
                 Dim x As String = "<script language='JavaScript'> revealModal('modalCollectDeductible') </script>"
-                Me.RegisterStartupScript("Startup", x)
+                RegisterStartupScript("Startup", x)
                 Exit Sub
             End If
         End If
 
         Dim c As Comment
-        Dim oldStatus As String = Me.State.ClaimBO.StatusCode
+        Dim oldStatus As String = State.ClaimBO.StatusCode
         Try
-            PopulateBOFromForm(Me.State.StepName)
-            Me.State.ClaimBO.Validate()
-            Me.State.ClaimBO.CheckForRules()
+            PopulateBOFromForm(State.StepName)
+            State.ClaimBO.Validate()
+            State.ClaimBO.CheckForRules()
             GoToNextStep()
         Catch ex As Exception
-            Me.State.ClaimBO.StatusCode = oldStatus
+            State.ClaimBO.StatusCode = oldStatus
             Throw ex
         End Try
 
     End Sub
 
-    Protected Sub cboDedCollMethod_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles step3_cboDedCollMethod.SelectedIndexChanged
+    Protected Sub cboDedCollMethod_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles step3_cboDedCollMethod.SelectedIndexChanged
 
         If GetSelectedItem(step3_cboDedCollMethod) = LookupListNew.GetIdFromCode(LookupListCache.LK_DED_COLL_METHOD, Codes.DED_COLL_METHOD_CR_CARD) Then
-            Me.step3_txtDedCollAuthCode.Enabled = True
+            step3_txtDedCollAuthCode.Enabled = True
         Else
-            Me.step3_txtDedCollAuthCode.Text = ""
-            Me.step3_txtDedCollAuthCode.Enabled = False
+            step3_txtDedCollAuthCode.Text = ""
+            step3_txtDedCollAuthCode.Enabled = False
         End If
         Dim x As String = "<script language='JavaScript'> revealModal('modalCollectDeductible') </script>"
-        Me.RegisterStartupScript("Startup", x)
+        RegisterStartupScript("Startup", x)
     End Sub
 
-    Private Sub btnSearchServiceCenter_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles step4_btnSearch.Click
+    Private Sub btnSearchServiceCenter_Click(sender As Object, e As System.EventArgs) Handles step4_btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.SelectedServiceCenterId = Guid.Empty
-            Me.PopulateGridOrDropDown()
+            State.PageIndex = 0
+            State.SelectedServiceCenterId = Guid.Empty
+            PopulateGridOrDropDown()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnClearSearchServiceCenter_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles step4_btnClearSearch.Click
+    Private Sub btnClearSearchServiceCenter_Click(sender As Object, e As System.EventArgs) Handles step4_btnClearSearch.Click
         Try
-            Me.step4_TextboxCity.Text = ""
+            step4_TextboxCity.Text = ""
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub RadioButtonByZip_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles step4_RadioButtonByZip.CheckedChanged
+    Private Sub RadioButtonByZip_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles step4_RadioButtonByZip.CheckedChanged
         Try
-            If Me.step4_RadioButtonByZip.Checked Then
-                Me.State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.ByZip
+            If step4_RadioButtonByZip.Checked Then
+                State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.ByZip
             End If
-            Me.EnableDisableWizardControls(ClaimWizardSteps.Step4)
+            EnableDisableWizardControls(ClaimWizardSteps.Step4)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub RadioButtonByCity_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles step4_RadioButtonByCity.CheckedChanged
+    Private Sub RadioButtonByCity_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles step4_RadioButtonByCity.CheckedChanged
         Try
-            If Me.step4_RadioButtonByCity.Checked Then
-                Me.State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.ByCity
+            If step4_RadioButtonByCity.Checked Then
+                State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.ByCity
             End If
-            Me.EnableDisableWizardControls(ClaimWizardSteps.Step4)
+            EnableDisableWizardControls(ClaimWizardSteps.Step4)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub RadioButtonAll_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles step4_RadioButtonAll.CheckedChanged
+    Private Sub RadioButtonAll_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles step4_RadioButtonAll.CheckedChanged
         Try
-            Me.EnableDisableWizardControls(ClaimWizardSteps.Step4)
-            If Me.step4_RadioButtonAll.Checked Then
-                Me.State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.All
-                Dim address As New Address(Me.State.CertBO.AddressId)
+            EnableDisableWizardControls(ClaimWizardSteps.Step4)
+            If step4_RadioButtonAll.Checked Then
+                State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.All
+                Dim address As New Address(State.CertBO.AddressId)
                 Dim SelectedCountry As New ArrayList
-                SelectedCountry.Add(Me.GetSelectedItem(step4_moCountryDrop))
+                SelectedCountry.Add(GetSelectedItem(step4_moCountryDrop))
                 PopulateCountryDropdown(SelectedCountry)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub RadioButtonNO_SVC_OPTION_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles step4_RadioButtonNO_SVC_OPTION.CheckedChanged
+    Private Sub RadioButtonNO_SVC_OPTION_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles step4_RadioButtonNO_SVC_OPTION.CheckedChanged
         Try
-            Me.EnableDisableWizardControls(ClaimWizardSteps.Step4)
-            If Me.step4_RadioButtonNO_SVC_OPTION.Checked Then
-                Me.State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.None
+            EnableDisableWizardControls(ClaimWizardSteps.Step4)
+            If step4_RadioButtonNO_SVC_OPTION.Checked Then
+                State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.None
                 'Dim address As New Address(Me.State.CertBO.AddressId)
                 'Dim SelectedCountry As New ArrayList
                 'SelectedCountry.Add(Me.GetSelectedItem(step4_moCountryDrop))
@@ -789,243 +789,243 @@ Public Class ClaimWizardForm
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub moCountryDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles step4_moCountryDrop.SelectedIndexChanged
+    Private Sub moCountryDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles step4_moCountryDrop.SelectedIndexChanged
         Try
-            If Me.step4_RadioButtonAll.Checked Then
-                Me.EnableDisableWizardControls(ClaimWizardSteps.Step4)
-                Me.State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.All
+            If step4_RadioButtonAll.Checked Then
+                EnableDisableWizardControls(ClaimWizardSteps.Step4)
+                State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.All
 
-                Dim address As New Address(Me.State.CertBO.AddressId)
+                Dim address As New Address(State.CertBO.AddressId)
                 Dim SelectedCountry As New ArrayList
-                SelectedCountry.Add(Me.GetSelectedItem(step4_moCountryDrop))
+                SelectedCountry.Add(GetSelectedItem(step4_moCountryDrop))
 
                 PopulateCountryDropdown(SelectedCountry)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub moMultipleColumnDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl_New) _
+    Private Sub moMultipleColumnDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl_New) _
         Handles step4_moMultipleColumnDrop.SelectedDropChanged
         Try
             PopulateGridOrDropDown()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnEdit(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnEdit_WRITE.Click
+    Private Sub btnEdit(sender As Object, e As System.EventArgs) Handles btnEdit_WRITE.Click
         Try
-            Me.State.IsEditMode = True
-            Me.EnableDisableWizardControls(Me.State.StepName)
-            HandleButtons(Me.State.StepName)
+            State.IsEditMode = True
+            EnableDisableWizardControls(State.StepName)
+            HandleButtons(State.StepName)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            Me.ClearMessageControllers()
-            Me.PopulateBOFromForm(Me.State.StepName)
+            ClearMessageControllers()
+            PopulateBOFromForm(State.StepName)
             ' Me.ClearMessageControllers()
 
-            Select Case Me.State.StepName
+            Select Case State.StepName
                 Case ClaimWizardSteps.Step2
-                    If (Me.ValidateInputs(Me.State.StepName)) Then
-                        If Me.State.CertItemBO.IsFamilyDirty OrElse Me.State.CertItemCoverageBO.IsFamilyDirty _
-                           OrElse (Not Me.State.step2_claimEquipmentBO Is Nothing And Me.State.step2_claimEquipmentBO.IsDirty) Then
-                            If (Me.State.CertItemBO.IsFamilyDirty OrElse Me.State.CertItemCoverageBO.IsFamilyDirty) Then
-                                If (Me.State.CertItemCoverageBO.IsFamilyDirty) Then
-                                    Me.State.CertItemCoverageBO.Save()
+                    If (ValidateInputs(State.StepName)) Then
+                        If State.CertItemBO.IsFamilyDirty OrElse State.CertItemCoverageBO.IsFamilyDirty _
+                           OrElse (State.step2_claimEquipmentBO IsNot Nothing And State.step2_claimEquipmentBO.IsDirty) Then
+                            If (State.CertItemBO.IsFamilyDirty OrElse State.CertItemCoverageBO.IsFamilyDirty) Then
+                                If (State.CertItemCoverageBO.IsFamilyDirty) Then
+                                    State.CertItemCoverageBO.Save()
                                 End If
-                                If (Me.State.CertItemBO.IsFamilyDirty) Then
-                                    Me.State.CertItemBO.Save()
+                                If (State.CertItemBO.IsFamilyDirty) Then
+                                    State.CertItemBO.Save()
                                 End If
-                                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                             End If
-                            Me.PopulateFormFromBO(Me.State.StepName)
-                            Me.State.IsEditMode = False
-                            Me.EnableDisableWizardControls(Me.State.StepName)
+                            PopulateFormFromBO(State.StepName)
+                            State.IsEditMode = False
+                            EnableDisableWizardControls(State.StepName)
                         Else
-                            If Not Me.State.CertItemBO.IsEquipmentRequired Then
-                                Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED, True)
+                            If Not State.CertItemBO.IsEquipmentRequired Then
+                                MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED, True)
                             End If
                         End If
                     End If
             End Select
-            HandleButtons(Me.State.StepName)
+            HandleButtons(State.StepName)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
         Try
-            Select Case Me.State.StepName
+            Select Case State.StepName
                 Case ClaimWizardSteps.Step2
-                    If Not Me.State.CertItemBO.IsNew Then
-                        Me.State.CertItemBO = New CertItem(Me.State.CertItemBO.Id)
+                    If Not State.CertItemBO.IsNew Then
+                        State.CertItemBO = New CertItem(State.CertItemBO.Id)
                     Else
-                        Me.State.CertItemBO = New CertItem
+                        State.CertItemBO = New CertItem
                     End If
-                    Me.State.IsEditMode = False
-                    Me.PopulateFormFromBO(Me.State.StepName)
-                    EnableDisableWizardControls(Me.State.StepName)
-                    Me.ValidateInputs(Me.State.StepName)
+                    State.IsEditMode = False
+                    PopulateFormFromBO(State.StepName)
+                    EnableDisableWizardControls(State.StepName)
+                    ValidateInputs(State.StepName)
             End Select
-            HandleButtons(Me.State.StepName)
+            HandleButtons(State.StepName)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub ButtonSoftQuestions_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSoftQuestions.Click
+    Private Sub ButtonSoftQuestions_Click(sender As Object, e As System.EventArgs) Handles btnSoftQuestions.Click
         Try
-            If Me.tvQuestion.Nodes.Count = 0 Then
-                Me.PopulateSoftQuestionTree()
+            If tvQuestion.Nodes.Count = 0 Then
+                PopulateSoftQuestionTree()
             End If
             ControlMgr.SetVisibleControl(Me, moCertificateInfoController, True)
-            moCertificateInfoController.InitController(Me.State.CertBO.Id, , Me.State.CompanyBO.Code)
+            moCertificateInfoController.InitController(State.CertBO.Id, , State.CompanyBO.Code)
             Dim x As String = "<script language='JavaScript'> revealModal('ModalSoftQuestions') </script>"
-            Me.RegisterStartupScript("Startup", x)
+            RegisterStartupScript("Startup", x)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub SaveClaimIssue(ByVal sender As Object, ByVal Args As EventArgs) Handles step3_modalClaimIssue_btnSave.Click
+    Private Sub SaveClaimIssue(sender As Object, Args As EventArgs) Handles step3_modalClaimIssue_btnSave.Click
 
         Try
-            Dim claimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-            claimIssue.SaveNewIssue(Me.State.ClaimBO.Id, New Guid(hdnSelectedIssueCode.Value), Me.State.ClaimBO.CertificateId, False)
-            Me.State.ClaimIssuesView = Me.State.ClaimBO.GetClaimIssuesView()
+            Dim claimIssue As ClaimIssue = CType(State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+            claimIssue.SaveNewIssue(State.ClaimBO.Id, New Guid(hdnSelectedIssueCode.Value), State.ClaimBO.CertificateId, False)
+            State.ClaimIssuesView = State.ClaimBO.GetClaimIssuesView()
             PopulateClaimIssuesGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnDenyClaim_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDenyClaim.Click
+    Protected Sub btnDenyClaim_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnDenyClaim.Click
         Try
-            Me.PopulateBOFromForm(Me.State.StepName)
-            Me.State.ClaimBO.Validate()
-            If Me.State.ClaimBO.LossDate.Value < Me.State.ClaimBO.Certificate.WarrantySalesDate.Value Then
-                ElitaPlusPage.SetLabelError(Me.step3_LabelLossDate)
+            PopulateBOFromForm(State.StepName)
+            State.ClaimBO.Validate()
+            If State.ClaimBO.LossDate.Value < State.ClaimBO.Certificate.WarrantySalesDate.Value Then
+                ElitaPlusPage.SetLabelError(step3_LabelLossDate)
                 Throw New GUIException(Message.MSG_INVALID_AUTHORIZED_AMOUNT_ERR, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_OF_LOSS_ERR)
             End If
 
             Dim x As String = "<script language='JavaScript'> revealModal('ModalDenyClaim') </script>"
-            Me.RegisterStartupScript("Startup", x)
+            RegisterStartupScript("Startup", x)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Assurant.ElitaPlus.BusinessObjectsNew.BOValidationException
             'Allow bypassing LossDate validation denying an expired item claim
             If ex.ValidationErrorList.Count = 1 And
                ex.ValidationErrorList(0).PropertyName = "LossDate" And
-               (Me.State.ClaimBO.LossDate.Value > Me.State.ClaimBO.CertificateItemCoverage.EndDate.Value Or
-                Me.State.ClaimBO.LossDate.Value < Me.State.ClaimBO.CertificateItemCoverage.BeginDate.Value) Then
+               (State.ClaimBO.LossDate.Value > State.ClaimBO.CertificateItemCoverage.EndDate.Value Or
+                State.ClaimBO.LossDate.Value < State.ClaimBO.CertificateItemCoverage.BeginDate.Value) Then
                 Dim bypassMdl As String = "<script language='JavaScript'> revealModal('ModalBypassDoL') </script>"
-                Me.RegisterStartupScript("BpQtn", bypassMdl)
+                RegisterStartupScript("BpQtn", bypassMdl)
             Else
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnDenyClaimSave_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDenyClaimSave.Click
+    Protected Sub btnDenyClaimSave_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnDenyClaimSave.Click
         Try
-            Me.State.IsClaimDenied = True
-            Me.PopulateBOFromForm(Me.State.StepName)
-            If Me.State.ClaimBO.DeniedReasonId.Equals(Guid.Empty) Then
-                ElitaPlusPage.SetLabelError(Me.step3_lblDeniedReason)
+            State.IsClaimDenied = True
+            PopulateBOFromForm(State.StepName)
+            If State.ClaimBO.DeniedReasonId.Equals(Guid.Empty) Then
+                ElitaPlusPage.SetLabelError(step3_lblDeniedReason)
                 Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_DENIED_REASON_IS_REQUIRED_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DENIED_REASON_IS_REQUIRED_ERR)
             End If
 
-            Me.State.ClaimBO.Deductible = New DecimalType(0D)
-            Me.State.ClaimBO.VoidAuthorizations()
-            Me.State.ClaimBO.DenyClaim()
-            Me.State.ClaimBO.IsUpdatedComment = True
+            State.ClaimBO.Deductible = New DecimalType(0D)
+            State.ClaimBO.VoidAuthorizations()
+            State.ClaimBO.DenyClaim()
+            State.ClaimBO.IsUpdatedComment = True
             GoToNextStep()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub btnModalBbDolYes_Click(sender As Object, e As EventArgs) Handles btnModalBbDolYes.Click
         Dim x As String = "<script language='JavaScript'>hideModal('ModalBypassDoL'); revealModal('ModalDenyClaim'); </script>"
-        Me.RegisterStartupScript("Startup", x)
+        RegisterStartupScript("Startup", x)
         Dim DndId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED__INCORRECT_DEVICE_SELECTED)
-        Me.step3_cboDeniedReason.SelectedIndex = Me.step3_cboDeniedReason.Items.IndexOf(Me.step3_cboDeniedReason.Items.FindByValue(DndId.ToString()))
-        Me.step3_cboDeniedReason.Items.FindByValue(Me.step3_cboDeniedReason.SelectedValue).Selected = True
-        Me.step3_cboDeniedReason.Enabled = False
+        step3_cboDeniedReason.SelectedIndex = step3_cboDeniedReason.Items.IndexOf(step3_cboDeniedReason.Items.FindByValue(DndId.ToString()))
+        step3_cboDeniedReason.Items.FindByValue(step3_cboDeniedReason.SelectedValue).Selected = True
+        step3_cboDeniedReason.Enabled = False
     End Sub
 
-    Private Sub ButtonCancelClaim_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancelClaim.Click
+    Private Sub ButtonCancelClaim_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnCancelClaim.Click
         Try
-            Me.PopulateBOFromForm(Me.State.StepName)
-            Me.State.ClaimBO.Cancel()
-            Me.State.ClaimBO.IsUpdatedComment = True
-            Me.State.ClaimBO.Save()
-            Me.GoToNextStep()
+            PopulateBOFromForm(State.StepName)
+            State.ClaimBO.Cancel()
+            State.ClaimBO.IsUpdatedComment = True
+            State.ClaimBO.Save()
+            GoToNextStep()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub cboMethodOfRepair_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles step2_cboMethodOfRepair.SelectedIndexChanged
+    Private Sub cboMethodOfRepair_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles step2_cboMethodOfRepair.SelectedIndexChanged
         Try
             PopulateFormDeductibleFormBOs(GetSelectedItem(step2_cboMethodOfRepair))
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub cboUseShipAddress_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles step3_cboUseShipAddress.SelectedIndexChanged
+    Private Sub cboUseShipAddress_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles step3_cboUseShipAddress.SelectedIndexChanged
         Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
         If step3_cboUseShipAddress.SelectedValue = YesId.ToString Then
             moUserControlContactInfo.Visible = True
 
-            If Me.State.ClaimBO.ContactInfoId.Equals(Guid.Empty) Then
-                Me.State.ClaimBO.AddContactInfo(Nothing)
-                Me.State.ClaimBO.ContactInfo.Address.CountryId = Me.State.ClaimBO.Company.CountryId
-                Me.State.ClaimBO.ContactInfo.SalutationId = Me.State.ClaimBO.Company.SalutationId
+            If State.ClaimBO.ContactInfoId.Equals(Guid.Empty) Then
+                State.ClaimBO.AddContactInfo(Nothing)
+                State.ClaimBO.ContactInfo.Address.CountryId = State.ClaimBO.Company.CountryId
+                State.ClaimBO.ContactInfo.SalutationId = State.ClaimBO.Company.SalutationId
 
-                Me.UserControlAddress.NewClaimBind(Me.State.ClaimBO.ContactInfo.Address)
-                Me.UserControlContactInfo.NewClaimBind(Me.State.ClaimBO.ContactInfo)
+                UserControlAddress.NewClaimBind(State.ClaimBO.ContactInfo.Address)
+                UserControlContactInfo.NewClaimBind(State.ClaimBO.ContactInfo)
             Else
-                Me.UserControlAddress.ClaimDetailsBind(Me.State.ClaimBO.ContactInfo.Address)
-                Me.UserControlContactInfo.Bind(Me.State.ClaimBO.ContactInfo)
+                UserControlAddress.ClaimDetailsBind(State.ClaimBO.ContactInfo.Address)
+                UserControlContactInfo.Bind(State.ClaimBO.ContactInfo)
 
             End If
         Else
             moUserControlContactInfo.Visible = False
 
-            If Me.State.ClaimBO.ContactInfo.IsNew Then
-                If Not Me.State.ClaimBO.ContactInfo Is Nothing Then
-                    Me.State.ClaimBO.ContactInfo.Delete()
+            If State.ClaimBO.ContactInfo.IsNew Then
+                If State.ClaimBO.ContactInfo IsNot Nothing Then
+                    State.ClaimBO.ContactInfo.Delete()
                 End If
 
-                If Not Me.State.ClaimBO.ContactInfo.Address Is Nothing Then
-                    Me.State.ClaimBO.ContactInfo.Address.Delete()
+                If State.ClaimBO.ContactInfo.Address IsNot Nothing Then
+                    State.ClaimBO.ContactInfo.Address.Delete()
                 End If
 
-                If Not Me.State.ClaimBO.ContactInfoId = System.Guid.Empty Then
-                    Me.State.ClaimBO.ContactInfoId = System.Guid.Empty
+                If Not State.ClaimBO.ContactInfoId = System.Guid.Empty Then
+                    State.ClaimBO.ContactInfoId = System.Guid.Empty
                 End If
             End If
         End If
     End Sub
 
-    Private Sub tvQuestion_TreeNodePopulate(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.TreeNodeEventArgs) Handles tvQuestion.TreeNodePopulate
+    Private Sub tvQuestion_TreeNodePopulate(sender As Object, e As System.Web.UI.WebControls.TreeNodeEventArgs) Handles tvQuestion.TreeNodePopulate
         Dim guidParent As Guid = New Guid(e.Node.Value.Split("|"c)(0))
         Dim softQuestDV As SoftQuestion.SoftQuestionDV = SoftQuestion.getChildren(guidParent)
         Dim intChildCnt As Integer, blnFromCert As Boolean = False
@@ -1051,24 +1051,24 @@ Public Class ClaimWizardForm
             e.Node.ChildNodes.Add(newNode)
         Next
         Dim x As String = "<script language='JavaScript'> revealModal('ModalSoftQuestions') </script>"
-        Me.RegisterStartupScript("Startup", x)
+        RegisterStartupScript("Startup", x)
     End Sub
 
-    Private Sub btnModalServiceWarrantyYes_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnModalServiceWarrantyYes.Click
+    Private Sub btnModalServiceWarrantyYes_Click(sender As Object, e As EventArgs) Handles btnModalServiceWarrantyYes.Click
         GoToNextStep()
     End Sub
 
     Private Sub AddImageButton_Click(sender As Object, e As EventArgs) Handles AddImageButton.Click
         Try
             Dim valid As Boolean = True
-            If (Me.DocumentTypeDropDown.SelectedIndex = -1) Then
-                Me.MasterPage.MessageController.AddError("DOCUMENT_TYPE_IS_REQUIRED")
+            If (DocumentTypeDropDown.SelectedIndex = -1) Then
+                MasterPage.MessageController.AddError("DOCUMENT_TYPE_IS_REQUIRED")
                 valid = False
             End If
 
-            If (Me.ImageFileUpload.Value Is Nothing) OrElse
-               (Me.ImageFileUpload.PostedFile.ContentLength = 0) Then
-                Me.MasterPage.MessageController.AddError("INVALID_FILE_OR_FILE_NOT_ACCESSABLE")
+            If (ImageFileUpload.Value Is Nothing) OrElse
+               (ImageFileUpload.PostedFile.ContentLength = 0) Then
+                MasterPage.MessageController.AddError("INVALID_FILE_OR_FILE_NOT_ACCESSABLE")
                 valid = False
             End If
 
@@ -1077,26 +1077,26 @@ Public Class ClaimWizardForm
             Dim fileName As String
 
             Try
-                Dim file As System.IO.FileInfo = New System.IO.FileInfo(Me.ImageFileUpload.PostedFile.FileName)
+                Dim file As System.IO.FileInfo = New System.IO.FileInfo(ImageFileUpload.PostedFile.FileName)
                 fileName = file.Name
             Catch ex As Exception
                 fileName = String.Empty
             End Try
 
-            Me.State.ClaimBO.AttachImage(
-                New Guid(Me.DocumentTypeDropDown.SelectedValue),
+            State.ClaimBO.AttachImage(
+                New Guid(DocumentTypeDropDown.SelectedValue),
                 Nothing,
                 DateTime.Now,
                 fileName,
-                Me.CommentTextBox.Text,
+                CommentTextBox.Text,
                 ElitaPlusIdentity.Current.ActiveUser.UserName,
                 fileData)
-            If Not Me.State.ClaimBO.IsNew Then
+            If Not State.ClaimBO.IsNew Then
 
             End If
-            Me.State.ClaimImagesView = Nothing
-            Me.ClearForm()
-            Me.PopulateClaimImagesGrid()
+            State.ClaimImagesView = Nothing
+            ClearForm()
+            PopulateClaimImagesGrid()
         Catch ex As Threading.ThreadAbortException
         Catch ex As BOValidationException
             ' Remove Mandatory Fields Validations for Hash, File Type and File Name
@@ -1106,16 +1106,16 @@ Public Class ClaimWizardForm
                         ex.ValidationErrorList().Where(Function(ve) (Not ((ve.Message = Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR) AndAlso (removeProperties.Contains(ve.PropertyName))))).ToArray(),
                         ex.BusinessObjectName,
                         ex.UniqueId)
-            Me.HandleErrors(newException, Me.MasterPage.MessageController)
+            HandleErrors(newException, MasterPage.MessageController)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub ClearForm()
-        Me.PopulateControlFromBOProperty(Me.DocumentTypeDropDown, LookupListNew.GetIdFromCode(LookupListNew.LK_DOCUMENT_TYPES, Codes.DOCUMENT_TYPE__OTHER))
-        Me.PopulateControlFromBOProperty(Me.ScanDateTextBox, GetLongDateFormattedString(DateTime.Now))
-        Me.CommentTextBox.Text = String.Empty
+        PopulateControlFromBOProperty(DocumentTypeDropDown, LookupListNew.GetIdFromCode(LookupListNew.LK_DOCUMENT_TYPES, Codes.DOCUMENT_TYPE__OTHER))
+        PopulateControlFromBOProperty(ScanDateTextBox, GetLongDateFormattedString(DateTime.Now))
+        CommentTextBox.Text = String.Empty
     End Sub
 #End Region
 
@@ -1123,66 +1123,66 @@ Public Class ClaimWizardForm
 
     Private Sub PopulateStepUIandData()
         InitializeCommonData()
-        InitializeStepUI(Me.State.StepName)
-        PopulateFormFromBO(Me.State.StepName)
+        InitializeStepUI(State.StepName)
+        PopulateFormFromBO(State.StepName)
     End Sub
 
-    Private Sub UpdateBreadCrum(ByVal wizardStep As ClaimWizardSteps)
+    Private Sub UpdateBreadCrum(wizardStep As ClaimWizardSteps)
 
         If Me.State.EntryStep = ClaimWizardSteps.Step1 Then
 
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & CERTIFICATES & " " & Me.State.CertBO.CertNumber & ElitaBase.Sperator &
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & CERTIFICATES & " " & State.CertBO.CertNumber & ElitaBase.Sperator &
                                       "File New Claim"
         Else
-            If (Not Me.State.ClaimBO Is Nothing AndAlso Me.State.ClaimBO.IsNew) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & CERTIFICATES & " " & Me.State.CertBO.CertNumber & ElitaBase.Sperator &
+            If (State.ClaimBO IsNot Nothing AndAlso State.ClaimBO.IsNew) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & CERTIFICATES & " " & State.CertBO.CertNumber & ElitaBase.Sperator &
                                           "File New Claim"
             Else
-                Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("CLAIM DETAILS") & ElitaBase.Sperator & String.Format("{0} {1} {2} {3}", TranslationBase.TranslateLabelOrMessage("UPDATE"), TranslationBase.TranslateLabelOrMessage("PENDING"), TranslationBase.TranslateLabelOrMessage("CLAIM"), Me.State.ClaimBO.ClaimNumber)
+                MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("CLAIM DETAILS") & ElitaBase.Sperator & String.Format("{0} {1} {2} {3}", TranslationBase.TranslateLabelOrMessage("UPDATE"), TranslationBase.TranslateLabelOrMessage("PENDING"), TranslationBase.TranslateLabelOrMessage("CLAIM"), State.ClaimBO.ClaimNumber)
             End If
         End If
     End Sub
 
-    Private Sub InitializeStepUI(ByVal wizardStep As ClaimWizardSteps)
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.WizardControl.Visible = False
+    Private Sub InitializeStepUI(wizardStep As ClaimWizardSteps)
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        WizardControl.Visible = False
         If (ShowWizard()) Then SetSelectedStep()
         UpdateBreadCrum(wizardStep)
         EnableDisableStepDivs(wizardStep)
         Select Case wizardStep
             Case ClaimWizardSteps.Step1
-                Me.AddCalendar_New(Me.step1_btnDateOfLoss, Me.step1_moDateOfLossText)
-                Me.AddCalendar_New(Me.step1_btnDateReported, Me.step1_txtDateReported)
-                Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(CERTIFICATES)
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PROTECTION_AND_EVENT_DETAILS)
+                AddCalendar_New(step1_btnDateOfLoss, step1_moDateOfLossText)
+                AddCalendar_New(step1_btnDateReported, step1_txtDateReported)
+                MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(CERTIFICATES)
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PROTECTION_AND_EVENT_DETAILS)
                 EnableDisableWizardControls(wizardStep)
             Case ClaimWizardSteps.Step2
                 TranslateGridHeader(grdMasterClaim)
                 EnableDisableWizardControls(wizardStep)
             Case ClaimWizardSteps.Step3
-                Me.AddCalendar_New(Me.step3_ImageButtonLossDate, Me.step3_TextboxLossDate)
-                Me.AddCalendar_New(Me.step3_ImageButtonReportDate, Me.step3_TextboxReportDate)
-                Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(CERTIFICATES)
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PROTECTION_AND_EVENT_DETAILS)
+                AddCalendar_New(step3_ImageButtonLossDate, step3_TextboxLossDate)
+                AddCalendar_New(step3_ImageButtonReportDate, step3_TextboxReportDate)
+                MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(CERTIFICATES)
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PROTECTION_AND_EVENT_DETAILS)
                 ddlIssueCode.Attributes.Add("onchange", String.Format("RefreshDropDownsAndSelect('{0}','{1}',true,'{2}');", ddlIssueCode.ClientID, ddlIssueDescription.ClientID, "D"))
                 ddlIssueDescription.Attributes.Add("onchange", String.Format("RefreshDropDownsAndSelect('{0}','{1}',true,'{2}');", ddlIssueCode.ClientID, ddlIssueDescription.ClientID, "C"))
                 MessageLiteral.Text = String.Format("{0} : {1}", TranslationBase.TranslateLabelOrMessage("ISSUE_CODE"), TranslationBase.TranslateLabelOrMessage("MSG_SELECT_ISSUE_CODE"))
-                If Not Me.step3_LabelUseShipAddress.Text.EndsWith(":") Then
-                    Me.step3_LabelUseShipAddress.Text = Me.step3_LabelUseShipAddress.Text & ":"
+                If Not step3_LabelUseShipAddress.Text.EndsWith(":") Then
+                    step3_LabelUseShipAddress.Text = step3_LabelUseShipAddress.Text & ":"
                 End If
                 'REQ-5467
-                If Not Me.State.ClaimBO Is Nothing Then
-                    If Me.State.ClaimBO.Dealer.IsLawsuitMandatoryId = Me.State.yesId Then
+                If State.ClaimBO IsNot Nothing Then
+                    If State.ClaimBO.Dealer.IsLawsuitMandatoryId = State.yesId Then
                         step3_LabelIsLawsuitId.Text = "<span class=""mandatory"">*</span> " & step3_LabelIsLawsuitId.Text
                     End If
                 End If
 
                 'Me.lblInvalidDoLMessage.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_INVALID_DOL_BYPASS_CONFIRM)
-                Me.btnModalBbDolYes.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_INVALID_DOL_BYPASS_YES)
-                Me.btnModalBbDolNo.Value = TranslationBase.TranslateLabelOrMessage(Message.MSG_INVALID_DOL_BYPASS_NO)
+                btnModalBbDolYes.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_INVALID_DOL_BYPASS_YES)
+                btnModalBbDolNo.Value = TranslationBase.TranslateLabelOrMessage(Message.MSG_INVALID_DOL_BYPASS_NO)
 
-                Me.SetContactInfoLabelColor()
-                Me.SetAddressLabelColor()
+                SetContactInfoLabelColor()
+                SetAddressLabelColor()
                 TranslateGridHeader(Grid)
                 TranslateGridHeader(GridClaimImages)
                 TranslateGridHeader(GridClaimAuthorization)
@@ -1191,8 +1191,8 @@ Public Class ClaimWizardForm
 
 
             Case ClaimWizardSteps.Step4
-                Dim showCityFields As Boolean = Me.step4_RadioButtonByCity.Checked
-                Dim showAllFields As Boolean = Me.step4_RadioButtonAll.Checked
+                Dim showCityFields As Boolean = step4_RadioButtonByCity.Checked
+                Dim showAllFields As Boolean = step4_RadioButtonAll.Checked
                 ' City
                 ControlMgr.SetVisibleControl(Me, step4_tdCityLabel, showCityFields)
                 ControlMgr.SetVisibleControl(Me, step4_moCityLabel, showCityFields)
@@ -1211,26 +1211,26 @@ Public Class ClaimWizardForm
 
     End Sub
 
-    Private Sub EnableDisableWizardControls(ByVal wizardStep As ClaimWizardSteps)
+    Private Sub EnableDisableWizardControls(wizardStep As ClaimWizardSteps)
 
         'ControlMgr.SetVisibleControl(Me, Me.BtnVerifyEquipment_WRITE, False)
 
         Select Case wizardStep
             Case ClaimWizardSteps.Step1
-                ControlMgr.SetVisibleControl(Me, Me.step1_searchResultPanel, Me.State.IsEditMode)
+                ControlMgr.SetVisibleControl(Me, step1_searchResultPanel, State.IsEditMode)
                 ControlMgr.SetEnableControl(Me, btnContinue, True)
             Case ClaimWizardSteps.Step2
-                MyBase.EnableDisableControls(Me.pnlVehicleInfo, Not Me.State.IsEditMode)
-                MyBase.EnableDisableControls(Me.pnlDeviceInfo, Not Me.State.IsEditMode)
+                MyBase.EnableDisableControls(pnlVehicleInfo, Not State.IsEditMode)
+                MyBase.EnableDisableControls(pnlDeviceInfo, Not State.IsEditMode)
                 Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
 
-                If Me.State.CertItemBO.IsEquipmentRequired Then
+                If State.CertItemBO.IsEquipmentRequired Then
                     'Claimed Equipment
-                    ControlMgr.SetVisibleControl(Me, step2_ddlClaimedManuf, Me.State.IsEditMode)
-                    ControlMgr.SetVisibleControl(Me, step2_txtClaimedmake, Not Me.State.IsEditMode)
+                    ControlMgr.SetVisibleControl(Me, step2_ddlClaimedManuf, State.IsEditMode)
+                    ControlMgr.SetVisibleControl(Me, step2_txtClaimedmake, Not State.IsEditMode)
                     ControlMgr.SetVisibleControl(Me, step2_txtClaimedModel, True)
-                    ControlMgr.SetVisibleControl(Me, step2_ddlClaimedSku, Me.State.IsEditMode)
-                    ControlMgr.SetVisibleControl(Me, step2_txtClaimedSKu, Not Me.State.IsEditMode)
+                    ControlMgr.SetVisibleControl(Me, step2_ddlClaimedSku, State.IsEditMode)
+                    ControlMgr.SetVisibleControl(Me, step2_txtClaimedSKu, Not State.IsEditMode)
                     ControlMgr.SetVisibleControl(Me, step2_txtClaimedSerialNumber, True)
                     ControlMgr.SetVisibleControl(Me, step2_txtClaimedDescription, True)
 
@@ -1249,16 +1249,16 @@ Public Class ClaimWizardForm
                     ControlMgr.SetEnableControl(Me, step2_TextboxSerialNumber, False)
 
                     step2_txtClaimedmake.ReadOnly = True
-                    step2_txtClaimedModel.ReadOnly = Not Me.State.IsEditMode
-                    step2_txtClaimedModel.ReadOnly = Not Me.State.IsEditMode
-                    step2_txtClaimedSKu.ReadOnly = Not Me.State.IsEditMode
-                    step2_txtClaimedSerialNumber.ReadOnly = Not Me.State.IsEditMode
+                    step2_txtClaimedModel.ReadOnly = Not State.IsEditMode
+                    step2_txtClaimedModel.ReadOnly = Not State.IsEditMode
+                    step2_txtClaimedSKu.ReadOnly = Not State.IsEditMode
+                    step2_txtClaimedSerialNumber.ReadOnly = Not State.IsEditMode
                     step2_txtClaimedDescription.ReadOnly = True
 
                     step2_TextboxModel.ReadOnly = True
                     step2_TextboxSerialNumber.ReadOnly = True
                     step2_TextboxDealerItemDesc.ReadOnly = True
-                    ControlMgr.SetVisibleControl(Me, btnContinue, Not Me.State.IsEditMode)
+                    ControlMgr.SetVisibleControl(Me, btnContinue, Not State.IsEditMode)
 
                     '' ''If Me.State.CertItemBO.EquipmentId.Equals(Guid.Empty) Then
                     '' ''    'ControlMgr.SetVisibleControl(Me, Me.BtnVerifyEquipment_WRITE, True)
@@ -1268,14 +1268,14 @@ Public Class ClaimWizardForm
                     '' ''    'ControlMgr.SetVisibleControl(Me, Me.BtnVerifyEquipment_WRITE, False)
                     '' ''End If
                 Else
-                    ControlMgr.SetVisibleControl(Me, step2_cboManufacturerId, Me.State.IsEditMode)
-                    ControlMgr.SetVisibleControl(Me, step2_TextboxManufacturer, Not Me.State.IsEditMode)
+                    ControlMgr.SetVisibleControl(Me, step2_cboManufacturerId, State.IsEditMode)
+                    ControlMgr.SetVisibleControl(Me, step2_TextboxManufacturer, Not State.IsEditMode)
                 End If
 
-                ControlMgr.SetVisibleControl(Me, step2_cboRiskTypeId, Me.State.IsEditMode)
-                ControlMgr.SetVisibleControl(Me, step2_TextboxRiskType, Not Me.State.IsEditMode)
-                ControlMgr.SetVisibleControl(Me, step2_cboMethodOfRepair, Me.State.IsEditMode)
-                ControlMgr.SetVisibleControl(Me, step2_TextboxMethodOfRepair, Not Me.State.IsEditMode)
+                ControlMgr.SetVisibleControl(Me, step2_cboRiskTypeId, State.IsEditMode)
+                ControlMgr.SetVisibleControl(Me, step2_TextboxRiskType, Not State.IsEditMode)
+                ControlMgr.SetVisibleControl(Me, step2_cboMethodOfRepair, State.IsEditMode)
+                ControlMgr.SetVisibleControl(Me, step2_TextboxMethodOfRepair, Not State.IsEditMode)
                 ControlMgr.SetVisibleControl(Me, step2_lblEnrolledDeviceInfo, True)
 
                 step2_TextboxSKU.ReadOnly = True
@@ -1300,52 +1300,52 @@ Public Class ClaimWizardForm
                 step2_TextboxOdometer.ReadOnly = True
                 step2_TextboxYear.ReadOnly = True
 
-                step2_TextboxInvNum.ReadOnly = Not Me.State.IsEditMode
+                step2_TextboxInvNum.ReadOnly = Not State.IsEditMode
 
 
                 Dim dealerTypeVSC As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_DEALER_TYPE, VSCCode)
-                If (Not Me.State.DealerBO.DealerTypeId.Equals(dealerTypeVSC)) Then
+                If (Not State.DealerBO.DealerTypeId.Equals(dealerTypeVSC)) Then
                     pnlVehicleInfo.Visible = False
-                    Me.step2_LabelYear.Visible = False
-                    Me.step2_TextboxYear.Visible = False
-                    Me.step2_LabelSerialNumber.Text = TranslationBase.TranslateLabelOrMessage("Serial_Number") + ":"
+                    step2_LabelYear.Visible = False
+                    step2_TextboxYear.Visible = False
+                    step2_LabelSerialNumber.Text = TranslationBase.TranslateLabelOrMessage("Serial_Number") + ":"
                 Else
-                    Me.step2_LabelSerialNumber.Text = TranslationBase.TranslateLabelOrMessage("VIN") + ":"
+                    step2_LabelSerialNumber.Text = TranslationBase.TranslateLabelOrMessage("VIN") + ":"
                     ControlMgr.SetVisibleControl(Me, step2_cboManufacturerId, False)
-                    Me.step2_cboManufacturerId.Enabled = False
+                    step2_cboManufacturerId.Enabled = False
                     ControlMgr.SetVisibleControl(Me, step2_TextboxManufacturer, True)
-                    Me.step2_TextboxModel.ReadOnly = True
+                    step2_TextboxModel.ReadOnly = True
                 End If
 
                 Dim NoId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-                If (Not Me.State.CertItemCoverageBO.IsClaimAllowed.Equals(NoId)) Then
+                If (Not State.CertItemCoverageBO.IsClaimAllowed.Equals(NoId)) Then
                     Dim todayDate As Date
-                    If todayDate.Today < Me.State.CertItemCoverageBO.BeginDate.Value And Me.State.CertBO.StatusCode <> CLOSED Then
+                    If todayDate.Today < State.CertItemCoverageBO.BeginDate.Value And State.CertBO.StatusCode <> CLOSED Then
                         ControlMgr.SetEnableControl(Me, btnDenyClaim, True)
 
                     End If
                 End If
-                Me.step2_TextboxBeginDate.Font.Bold = True
-                Me.step2_TextboxEndDate.Font.Bold = True
+                step2_TextboxBeginDate.Font.Bold = True
+                step2_TextboxEndDate.Font.Bold = True
 
                 '5623
 
-                If Me.State.CertBO.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED AndAlso Me.State.DealerBO.IsGracePeriodSpecified Then
+                If State.CertBO.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED AndAlso State.DealerBO.IsGracePeriodSpecified Then
 
-                    If Not Me.State.CertItemCoverageBO.IsCoverageEffectiveForGracePeriod(step1_txtDateReported.Text) Then
-                        Me.step2_TextboxBeginDate.ForeColor = Color.Red
-                        Me.step2_TextboxEndDate.ForeColor = Color.Red
+                    If Not State.CertItemCoverageBO.IsCoverageEffectiveForGracePeriod(step1_txtDateReported.Text) Then
+                        step2_TextboxBeginDate.ForeColor = Color.Red
+                        step2_TextboxEndDate.ForeColor = Color.Red
                     Else
-                        Me.step2_TextboxBeginDate.ForeColor = Color.Green
-                        Me.step2_TextboxEndDate.ForeColor = Color.Green
+                        step2_TextboxBeginDate.ForeColor = Color.Green
+                        step2_TextboxEndDate.ForeColor = Color.Green
                     End If
                 Else
-                    If Not Me.State.CertItemCoverageBO.IsCoverageEffective Then
-                        Me.step2_TextboxBeginDate.ForeColor = Color.Red
-                        Me.step2_TextboxEndDate.ForeColor = Color.Red
+                    If Not State.CertItemCoverageBO.IsCoverageEffective Then
+                        step2_TextboxBeginDate.ForeColor = Color.Red
+                        step2_TextboxEndDate.ForeColor = Color.Red
                     Else
-                        Me.step2_TextboxBeginDate.ForeColor = Color.Green
-                        Me.step2_TextboxEndDate.ForeColor = Color.Green
+                        step2_TextboxBeginDate.ForeColor = Color.Green
+                        step2_TextboxEndDate.ForeColor = Color.Green
                     End If
                 End If
 
@@ -1354,9 +1354,9 @@ Public Class ClaimWizardForm
                 EnableDisableControlsForStep3()
 
             Case ClaimWizardSteps.Step4
-                Dim showCityFields As Boolean = Me.step4_RadioButtonByCity.Checked
-                Dim showAllFields As Boolean = Me.step4_RadioButtonAll.Checked
-                Dim NO_SVC_OPTION As Boolean = Me.step4_RadioButtonNO_SVC_OPTION.Checked
+                Dim showCityFields As Boolean = step4_RadioButtonByCity.Checked
+                Dim showAllFields As Boolean = step4_RadioButtonAll.Checked
+                Dim NO_SVC_OPTION As Boolean = step4_RadioButtonNO_SVC_OPTION.Checked
                 ' City
                 ControlMgr.SetVisibleControl(Me, step4_tdCityLabel, showCityFields)
                 ControlMgr.SetVisibleControl(Me, step4_moCityLabel, showCityFields)
@@ -1379,32 +1379,32 @@ Public Class ClaimWizardForm
                 ControlMgr.SetVisibleControl(Me, step4_TextboxCity, Not NO_SVC_OPTION)
                 ControlMgr.SetVisibleControl(Me, step4_tdCountryLabel, Not NO_SVC_OPTION)
 
-                If (Me.State.CompanyBO Is Nothing) Then
-                    Me.State.CompanyBO = New Company(Me.State.CertBO.CompanyId)
+                If (State.CompanyBO Is Nothing) Then
+                    State.CompanyBO = New Company(State.CertBO.CompanyId)
                 End If
                 'REQ-5546
-                Dim objCountry As New Country(Me.State.CompanyBO.CountryId)
-                Me.State.default_service_center_id = objCountry.DefaultSCId
+                Dim objCountry As New Country(State.CompanyBO.CountryId)
+                State.default_service_center_id = objCountry.DefaultSCId
 
-                ControlMgr.SetVisibleControl(Me, step4_RadioButtonNO_SVC_OPTION, Not Me.State.default_service_center_id.Equals(Guid.Empty))
+                ControlMgr.SetVisibleControl(Me, step4_RadioButtonNO_SVC_OPTION, Not State.default_service_center_id.Equals(Guid.Empty))
 
             Case ClaimWizardSteps.Step5
-                Me.ChangeEnabledProperty(Me.step5_TextboxCallerName, True)
-                Me.ChangeEnabledProperty(Me.step5_TextboxCommentText, True)
-                Me.ChangeEnabledProperty(Me.step5_cboCommentType, True)
-                Me.btnBack.Enabled = True
-                If Me.step5_TextboxDateTime.Text Is Nothing OrElse Me.step5_TextboxDateTime.Text.Trim.Length = 0 Then
-                    ControlMgr.SetVisibleControl(Me, Me.step5_LabelDateTime, False)
-                    ControlMgr.SetVisibleControl(Me, Me.step5_TextboxDateTime, False)
+                ChangeEnabledProperty(step5_TextboxCallerName, True)
+                ChangeEnabledProperty(step5_TextboxCommentText, True)
+                ChangeEnabledProperty(step5_cboCommentType, True)
+                btnBack.Enabled = True
+                If step5_TextboxDateTime.Text Is Nothing OrElse step5_TextboxDateTime.Text.Trim.Length = 0 Then
+                    ControlMgr.SetVisibleControl(Me, step5_LabelDateTime, False)
+                    ControlMgr.SetVisibleControl(Me, step5_TextboxDateTime, False)
                 End If
         End Select
     End Sub
 
     Private Function DoesAcceptedOfferExistForIMEI() As Boolean
         Dim blnIsDealerDRPTradeInQuoteFlag As Boolean = False
-        blnIsDealerDRPTradeInQuoteFlag = Me.State.ClaimBO.GetDealerDRPTradeInQuoteFlag(Me.State.ClaimBO.DealerCode)
+        blnIsDealerDRPTradeInQuoteFlag = State.ClaimBO.GetDealerDRPTradeInQuoteFlag(State.ClaimBO.DealerCode)
         If blnIsDealerDRPTradeInQuoteFlag Then
-            If Me.State.ClaimBO.VerifyIMEIWithDRPSystem(Me.State.ClaimBO.SerialNumber) Then
+            If State.ClaimBO.VerifyIMEIWithDRPSystem(State.ClaimBO.SerialNumber) Then
                 Return True
             Else
                 Return False
@@ -1415,53 +1415,53 @@ Public Class ClaimWizardForm
     End Function
 
     Private Function ShowWizard() As Boolean
-        If (Not Me.State.InputParameters Is Nothing) Then
-            Return Me.State.InputParameters.ShowWizard
+        If (State.InputParameters IsNot Nothing) Then
+            Return State.InputParameters.ShowWizard
         Else
             Return False
         End If
     End Function
 
-    Private Sub EnableDisableStepDivs(ByVal stepName As ClaimWizardSteps)
+    Private Sub EnableDisableStepDivs(stepName As ClaimWizardSteps)
         Select Case stepName
             Case ClaimWizardSteps.Step1
-                Me.dvstep1.Visible = True
-                Me.dvStep2.Visible = False
-                Me.dvStep3.Visible = False
-                Me.dvStep4.Visible = False
-                Me.dvStep5.Visible = False
+                dvstep1.Visible = True
+                dvStep2.Visible = False
+                dvStep3.Visible = False
+                dvStep4.Visible = False
+                dvStep5.Visible = False
             Case ClaimWizardSteps.Step2
-                Me.dvstep1.Visible = False
-                Me.dvStep2.Visible = True
-                Me.dvStep3.Visible = False
-                Me.dvStep4.Visible = False
-                Me.dvStep5.Visible = False
+                dvstep1.Visible = False
+                dvStep2.Visible = True
+                dvStep3.Visible = False
+                dvStep4.Visible = False
+                dvStep5.Visible = False
             Case ClaimWizardSteps.Step3
-                Me.dvstep1.Visible = False
-                Me.dvStep2.Visible = False
-                Me.dvStep3.Visible = True
-                Me.dvStep4.Visible = False
-                Me.dvStep5.Visible = False
+                dvstep1.Visible = False
+                dvStep2.Visible = False
+                dvStep3.Visible = True
+                dvStep4.Visible = False
+                dvStep5.Visible = False
             Case ClaimWizardSteps.Step4
-                Me.dvstep1.Visible = False
-                Me.dvStep2.Visible = False
-                Me.dvStep3.Visible = False
-                Me.dvStep4.Visible = True
-                Me.dvStep5.Visible = False
+                dvstep1.Visible = False
+                dvStep2.Visible = False
+                dvStep3.Visible = False
+                dvStep4.Visible = True
+                dvStep5.Visible = False
             Case ClaimWizardSteps.Step5
-                Me.dvstep1.Visible = False
-                Me.dvStep2.Visible = False
-                Me.dvStep3.Visible = False
-                Me.dvStep4.Visible = False
-                Me.dvStep5.Visible = True
+                dvstep1.Visible = False
+                dvStep2.Visible = False
+                dvStep3.Visible = False
+                dvStep4.Visible = False
+                dvStep5.Visible = True
         End Select
     End Sub
 
-    Private Overloads Sub SetDefaultButton(ByVal stepName As ClaimWizardSteps)
+    Private Overloads Sub SetDefaultButton(stepName As ClaimWizardSteps)
 
         Select Case stepName
             Case ClaimWizardSteps.Step1
-                MyBase.SetDefaultButton(Me.step1_moDateOfLossText, Me.step1_btnSearch)
+                MyBase.SetDefaultButton(step1_moDateOfLossText, step1_btnSearch)
             Case ClaimWizardSteps.Step2
             Case ClaimWizardSteps.Step3
             Case ClaimWizardSteps.Step4
@@ -1473,92 +1473,92 @@ Public Class ClaimWizardForm
 
     Private Sub InitializeCommonData()
         'Initialize Certificate BO
-        If (Me.State.CertBO Is Nothing) Then
-            If Not Me.State.InputParameters Is Nothing AndAlso Not Me.State.InputParameters.CertificateId.Equals(Guid.Empty) Then
-                Me.State.CertBO = New Certificate(Me.State.InputParameters.CertificateId)
+        If (State.CertBO Is Nothing) Then
+            If State.InputParameters IsNot Nothing AndAlso Not State.InputParameters.CertificateId.Equals(Guid.Empty) Then
+                State.CertBO = New Certificate(State.InputParameters.CertificateId)
             End If
         End If
-        If (Not Me.State.CertBO Is Nothing) Then
+        If (State.CertBO IsNot Nothing) Then
             'Initialize Dealer BO
-            If (Me.State.DealerBO Is Nothing) Then
-                If (Not Me.State.CertBO Is Nothing) Then
-                    Me.State.DealerBO = New Dealer(Me.State.CertBO.DealerId)
+            If (State.DealerBO Is Nothing) Then
+                If (State.CertBO IsNot Nothing) Then
+                    State.DealerBO = New Dealer(State.CertBO.DealerId)
                 End If
             End If
 
             'Initialize VSC Model
-            If (Me.State.VSCModel Is Nothing) Then
-                If Not Me.State.CertBO.ModelId.Equals(Guid.Empty) Then
-                    Me.State.VSCModel = New VSCModel(Me.State.CertBO.ModelId)
+            If (State.VSCModel Is Nothing) Then
+                If Not State.CertBO.ModelId.Equals(Guid.Empty) Then
+                    State.VSCModel = New VSCModel(State.CertBO.ModelId)
                 End If
             End If
 
             'Initialize VSC Class Code
-            If (Me.State.VSCClassCode Is Nothing) Then
-                If Not Me.State.CertBO.ClassCodeId.Equals(Guid.Empty) Then
-                    Me.State.VSCClassCode = New VSCClassCode(Me.State.CertBO.ClassCodeId)
+            If (State.VSCClassCode Is Nothing) Then
+                If Not State.CertBO.ClassCodeId.Equals(Guid.Empty) Then
+                    State.VSCClassCode = New VSCClassCode(State.CertBO.ClassCodeId)
                 End If
             End If
 
         End If
 
         'Initialize Certificate Item Coverage BO
-        If (Me.State.CertItemCoverageBO Is Nothing) Then
-            If (Not Me.State.CertficateCoverageTypeId.Equals(Guid.Empty)) Then
-                Me.State.CertItemCoverageBO = New CertItemCoverage(Me.State.CertficateCoverageTypeId)
+        If (State.CertItemCoverageBO Is Nothing) Then
+            If (Not State.CertficateCoverageTypeId.Equals(Guid.Empty)) Then
+                State.CertItemCoverageBO = New CertItemCoverage(State.CertficateCoverageTypeId)
             End If
         End If
 
         'Initialize Certificate Item BO
-        If (Me.State.CertItemBO Is Nothing) Then
-            If (Not Me.State.CertItemCoverageBO Is Nothing) Then
-                Me.State.CertItemBO = New CertItem(Me.State.CertItemCoverageBO.CertItemId)
-                Me.State.CertBO = Me.State.CertItemBO.GetCertificate(Me.State.CertBO.Id)
+        If (State.CertItemBO Is Nothing) Then
+            If (State.CertItemCoverageBO IsNot Nothing) Then
+                State.CertItemBO = New CertItem(State.CertItemCoverageBO.CertItemId)
+                State.CertBO = State.CertItemBO.GetCertificate(State.CertBO.Id)
             End If
         End If
 
         'End If
         'Initialize Claim BO
-        If (Me.State.ClaimBO Is Nothing) Then
-            If (Not Me.State.InputParameters.claimId.Equals(Guid.Empty)) Then
-                Me.State.ClaimBO = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(Me.State.InputParameters.claimId)
-            ElseIf (Not Me.State.InputParameters.ClaimBo Is Nothing) Then
-                Me.State.ClaimBO = CType(Me.State.InputParameters.ClaimBo, MultiAuthClaim)
+        If (State.ClaimBO Is Nothing) Then
+            If (Not State.InputParameters.claimId.Equals(Guid.Empty)) Then
+                State.ClaimBO = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(State.InputParameters.claimId)
+            ElseIf (State.InputParameters.ClaimBo IsNot Nothing) Then
+                State.ClaimBO = CType(State.InputParameters.ClaimBo, MultiAuthClaim)
             Else
                 'Load claim Bo if only on step 3 and above
-                If (DirectCast([Enum].Parse(GetType(ClaimWizardSteps), CStr(Me.State.StepName)), Integer) > 2) Then
-                    Me.State.ClaimBO = ClaimFacade.Instance.CreateClaim(Of MultiAuthClaim)(Me.State.DealerBO.Id)
-                    Me.State.ClaimBO.PrePopulate(Me.State.CertItemCoverageBO.Id, Me.State.MasterClaimNumber, Me.State.DateOfLoss, False, False, False, True, Me.State.CallerName, Me.State.ProblemDescription, Me.State.DateReported, Me.State.step2_claimEquipmentBO)
+                If (DirectCast([Enum].Parse(GetType(ClaimWizardSteps), CStr(State.StepName)), Integer) > 2) Then
+                    State.ClaimBO = ClaimFacade.Instance.CreateClaim(Of MultiAuthClaim)(State.DealerBO.Id)
+                    State.ClaimBO.PrePopulate(State.CertItemCoverageBO.Id, State.MasterClaimNumber, State.DateOfLoss, False, False, False, True, State.CallerName, State.ProblemDescription, State.DateReported, State.step2_claimEquipmentBO)
                 End If
             End If
         End If
 
         'Initialize from ClaimBO
-        If (Not Me.State.ClaimBO Is Nothing) Then
-            Me.State.CertItemCoverageBO = Me.State.ClaimBO.CertificateItemCoverage
-            Me.State.CertItemBO = Me.State.ClaimBO.CertificateItem
-            Me.State.CertBO = Me.State.ClaimBO.Certificate
-            Me.State.DealerBO = Me.State.ClaimBO.Dealer
-            If (Not Me.State.ClaimBO.CurrentComment Is Nothing) Then
-                Me.State.CommentBO = Me.State.ClaimBO.CurrentComment
+        If (State.ClaimBO IsNot Nothing) Then
+            State.CertItemCoverageBO = State.ClaimBO.CertificateItemCoverage
+            State.CertItemBO = State.ClaimBO.CertificateItem
+            State.CertBO = State.ClaimBO.Certificate
+            State.DealerBO = State.ClaimBO.Dealer
+            If (State.ClaimBO.CurrentComment IsNot Nothing) Then
+                State.CommentBO = State.ClaimBO.CurrentComment
             Else
-                Me.State.CommentBO = Comment.GetLatestComment(Me.State.ClaimBO)
+                State.CommentBO = Comment.GetLatestComment(State.ClaimBO)
             End If
-            Me.State.step2_claimEquipmentBO = Me.State.ClaimBO.ClaimedEquipment
+            State.step2_claimEquipmentBO = State.ClaimBO.ClaimedEquipment
         End If
 
-        If (Me.State.yesId.Equals(Guid.Empty)) Then
-            Me.State.yesId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")
+        If (State.yesId.Equals(Guid.Empty)) Then
+            State.yesId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")
         End If
 
-        If (Me.State.noId.Equals(Guid.Empty)) Then
-            Me.State.noId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "N")
+        If (State.noId.Equals(Guid.Empty)) Then
+            State.noId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "N")
         End If
 
-        If (Me.State.CompanyBO Is Nothing) Then
-            Me.State.CompanyBO = New Company(Me.State.CertBO.CompanyId)
-            Dim sSalutation As String = LookupListNew.GetCodeFromId(LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.State.CertBO.SalutationId)
-            If sSalutation = "Y" Then Me.State.IsSalutation = True Else Me.State.IsSalutation = False
+        If (State.CompanyBO Is Nothing) Then
+            State.CompanyBO = New Company(State.CertBO.CompanyId)
+            Dim sSalutation As String = LookupListNew.GetCodeFromId(LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), State.CertBO.SalutationId)
+            If sSalutation = "Y" Then State.IsSalutation = True Else State.IsSalutation = False
         End If
 
 
@@ -1566,7 +1566,7 @@ Public Class ClaimWizardForm
 
     End Sub
 
-    Private Sub HandleButtons(ByVal wizardStep As ClaimWizardSteps)
+    Private Sub HandleButtons(wizardStep As ClaimWizardSteps)
 
         ControlMgr.SetVisibleControl(Me, btnBack, True)
         ControlMgr.SetVisibleControl(Me, btnUndo_Write, False)
@@ -1577,44 +1577,44 @@ Public Class ClaimWizardForm
         ControlMgr.SetVisibleControl(Me, btnClaimOverride_Write, False)
         ControlMgr.SetVisibleControl(Me, btnComment, False)
         ControlMgr.SetVisibleControl(Me, btnClaimDeductibleRefund, False)
-        Me.btnContinue.Text = TranslationBase.TranslateLabelOrMessage("CONTINUE")
+        btnContinue.Text = TranslationBase.TranslateLabelOrMessage("CONTINUE")
 
         Select Case wizardStep
             Case ClaimWizardSteps.Step1
-                ControlMgr.SetVisibleControl(Me, Me.btnContinue, Me.State.IsEditMode)
+                ControlMgr.SetVisibleControl(Me, btnContinue, State.IsEditMode)
             Case ClaimWizardSteps.Step2
-                ControlMgr.SetVisibleControl(Me, btnUndo_Write, Me.State.IsEditMode)
-                ControlMgr.SetVisibleControl(Me, btnSave_WRITE, Me.State.IsEditMode)
-                ControlMgr.SetVisibleControl(Me, btnSoftQuestions, Not Me.State.IsEditMode)
-                ControlMgr.SetVisibleControl(Me, btnEdit_WRITE, Not Me.State.IsEditMode)
+                ControlMgr.SetVisibleControl(Me, btnUndo_Write, State.IsEditMode)
+                ControlMgr.SetVisibleControl(Me, btnSave_WRITE, State.IsEditMode)
+                ControlMgr.SetVisibleControl(Me, btnSoftQuestions, Not State.IsEditMode)
+                ControlMgr.SetVisibleControl(Me, btnEdit_WRITE, Not State.IsEditMode)
             Case ClaimWizardSteps.Step3
-                If Not Me.State.ClaimBO.IsNew Then
-                    ControlMgr.SetVisibleControl(Me, Me.btnCancel, False)
-                    ControlMgr.SetVisibleControl(Me, Me.btnCancelClaim, True)
-                    ControlMgr.SetVisibleControl(Me, Me.btnClaimOverride_Write, False)
-                    ControlMgr.SetVisibleControl(Me, Me.btnSave_WRITE, False)
+                If Not State.ClaimBO.IsNew Then
+                    ControlMgr.SetVisibleControl(Me, btnCancel, False)
+                    ControlMgr.SetVisibleControl(Me, btnCancelClaim, True)
+                    ControlMgr.SetVisibleControl(Me, btnClaimOverride_Write, False)
+                    ControlMgr.SetVisibleControl(Me, btnSave_WRITE, False)
                 Else
-                    ControlMgr.SetVisibleControl(Me, Me.btnCancelClaim, False)
+                    ControlMgr.SetVisibleControl(Me, btnCancelClaim, False)
                 End If
-                If Not Me.State.ClaimBO.IsNew Then
+                If Not State.ClaimBO.IsNew Then
                     ' Pending Claim
-                    If Me.State.ClaimBO.IsDaysLimitExceeded Then
+                    If State.ClaimBO.IsDaysLimitExceeded Then
                         If Not (ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CLAIMS_MANAGER) OrElse
                                 ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__IHQ_SUPPORT)) Then
-                            ControlMgr.SetVisibleControl(Me, Me.btnSave_WRITE, False)
+                            ControlMgr.SetVisibleControl(Me, btnSave_WRITE, False)
                         End If
                     End If
                 End If
-                ControlMgr.SetVisibleControl(Me, btnDenyClaim, Not Me.State.IsEditMode)
-                ControlMgr.SetVisibleControl(Me, Me.btnContinue, Not Me.State.InputParameters.ComingFromDenyClaim)
+                ControlMgr.SetVisibleControl(Me, btnDenyClaim, Not State.IsEditMode)
+                ControlMgr.SetVisibleControl(Me, btnContinue, Not State.InputParameters.ComingFromDenyClaim)
 
-                If (Me.State.ClaimBO.IsDeductibleRefundAllowed AndAlso
-                            Not Me.State.ClaimBO.IsDeductibleRefundExist) Then
+                If (State.ClaimBO.IsDeductibleRefundAllowed AndAlso
+                            Not State.ClaimBO.IsDeductibleRefundExist) Then
                     ControlMgr.SetVisibleControl(Me, btnClaimDeductibleRefund, True)
                 End If
             Case ClaimWizardSteps.Step4
             Case ClaimWizardSteps.Step5
-                Me.btnContinue.Text = TranslationBase.TranslateLabelOrMessage("SUBMIT_CLAIM")
+                btnContinue.Text = TranslationBase.TranslateLabelOrMessage("SUBMIT_CLAIM")
         End Select
 
         SetDefaultButton(wizardStep)
@@ -1636,24 +1636,24 @@ Public Class ClaimWizardForm
         moProtectionAndEventDetails.TypeOfLoss = NO_DATA
         moProtectionAndEventDetails.DateOfLoss = NO_DATA
 
-        If (Not Me.State.CertBO Is Nothing) Then
-            moProtectionAndEventDetails.CustomerName = Me.State.CertBO.CustomerName
-            moProtectionAndEventDetails.DealerName = Me.State.CertBO.getDealerDescription
+        If (State.CertBO IsNot Nothing) Then
+            moProtectionAndEventDetails.CustomerName = State.CertBO.CustomerName
+            moProtectionAndEventDetails.DealerName = State.CertBO.getDealerDescription
 
-            If Me.State.CallerName Is Nothing Then
-                If String.IsNullOrEmpty(Me.State.ClaimBO.CallerName) Then
-                    moProtectionAndEventDetails.CallerName = Me.State.CertBO.CustomerName
+            If State.CallerName Is Nothing Then
+                If String.IsNullOrEmpty(State.ClaimBO.CallerName) Then
+                    moProtectionAndEventDetails.CallerName = State.CertBO.CustomerName
                 Else
-                    moProtectionAndEventDetails.CallerName = Me.State.ClaimBO.CallerName
+                    moProtectionAndEventDetails.CallerName = State.ClaimBO.CallerName
                 End If
-            ElseIf Not (Me.State.CallerName.Equals(String.Empty)) Then
-                moProtectionAndEventDetails.CallerName = Me.State.CallerName
+            ElseIf Not (State.CallerName.Equals(String.Empty)) Then
+                moProtectionAndEventDetails.CallerName = State.CallerName
             End If
 
             If State.DateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = GetDateFormattedStringNullable(State.DateOfLoss)
 
-            moProtectionAndEventDetails.ProtectionStatus = LookupListNew.GetDescriptionFromCode("CSTAT", Me.State.CertBO.StatusCode)
-            If (Me.State.CertBO.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE) Then
+            moProtectionAndEventDetails.ProtectionStatus = LookupListNew.GetDescriptionFromCode("CSTAT", State.CertBO.StatusCode)
+            If (State.CertBO.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE) Then
                 cssClassName = "StatActive"
             Else
                 cssClassName = "StatClosed"
@@ -1662,35 +1662,35 @@ Public Class ClaimWizardForm
 
         moProtectionAndEventDetails.ProtectionStatusCss = cssClassName
 
-        If (Me.State.DateOfLoss > Date.MinValue) Then
-            moProtectionAndEventDetails.DateOfLoss = GetDateFormattedStringNullable(Me.State.DateOfLoss)
+        If (State.DateOfLoss > Date.MinValue) Then
+            moProtectionAndEventDetails.DateOfLoss = GetDateFormattedStringNullable(State.DateOfLoss)
         End If
 
-        If (Not Me.State.CertItemBO Is Nothing) Then
-            moProtectionAndEventDetails.EnrolledModel = Me.State.CertItemBO.Model
-            moProtectionAndEventDetails.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListNew.LK_RISKTYPES, Me.State.CertItemBO.RiskTypeId)
-            If (Not (Me.State.CertItemBO.ManufacturerId.Equals(Guid.Empty))) Then
-                moProtectionAndEventDetails.EnrolledMake = New Manufacturer(Me.State.CertItemBO.ManufacturerId).Description
+        If (State.CertItemBO IsNot Nothing) Then
+            moProtectionAndEventDetails.EnrolledModel = State.CertItemBO.Model
+            moProtectionAndEventDetails.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListNew.LK_RISKTYPES, State.CertItemBO.RiskTypeId)
+            If (Not (State.CertItemBO.ManufacturerId.Equals(Guid.Empty))) Then
+                moProtectionAndEventDetails.EnrolledMake = New Manufacturer(State.CertItemBO.ManufacturerId).Description
             End If
         End If
 
-        If Not Me.State.ClaimBO Is Nothing Then
+        If State.ClaimBO IsNot Nothing Then
 
-            moProtectionAndEventDetails.ClaimNumber = Me.State.ClaimBO.ClaimNumber
-            moProtectionAndEventDetails.ClaimStatus = LookupListNew.GetClaimStatusFromCode(ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.State.ClaimBO.StatusCode)
+            moProtectionAndEventDetails.ClaimNumber = State.ClaimBO.ClaimNumber
+            moProtectionAndEventDetails.ClaimStatus = LookupListNew.GetClaimStatusFromCode(ElitaPlusIdentity.Current.ActiveUser.LanguageId, State.ClaimBO.StatusCode)
             moProtectionAndEventDetails.ClaimStatusCss = If(Me.State.ClaimBO.Status = BasicClaimStatus.Active, "StatActive", "StatClosed")
-            moProtectionAndEventDetails.DateOfLoss = GetDateFormattedStringNullable(Me.State.ClaimBO.LossDate.Value)
+            moProtectionAndEventDetails.DateOfLoss = GetDateFormattedStringNullable(State.ClaimBO.LossDate.Value)
 
-            If Not Me.State.ClaimBO.ClaimedEquipment Is Nothing Then
-                moProtectionAndEventDetails.ClaimedMake = Me.State.ClaimBO.ClaimedEquipment.Manufacturer
-                moProtectionAndEventDetails.ClaimedModel = Me.State.ClaimBO.ClaimedEquipment.Model
+            If State.ClaimBO.ClaimedEquipment IsNot Nothing Then
+                moProtectionAndEventDetails.ClaimedMake = State.ClaimBO.ClaimedEquipment.Manufacturer
+                moProtectionAndEventDetails.ClaimedModel = State.ClaimBO.ClaimedEquipment.Model
             End If
 
         End If
 
     End Sub
 
-    Private Sub PopulateDropDowns(ByVal wizardStep As ClaimWizardSteps)
+    Private Sub PopulateDropDowns(wizardStep As ClaimWizardSteps)
         Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
         Dim compGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         'Dim yesNoLkL As DataView = LookupListNew.DropdownLookupList("YESNO", langId, True)
@@ -1699,7 +1699,7 @@ Public Class ClaimWizardForm
 
         Select Case wizardStep
             Case ClaimWizardSteps.Step1
-                Me.EnableDisableWizardControls(wizardStep)
+                EnableDisableWizardControls(wizardStep)
                 'Me.BindListControlToDataView(Me.step1_cboRiskType, LookupListNew.LoadRiskTypes(State.CertBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId, State.DateOfLoss))
                 Dim listcontextForrisktypes As ListContext = New ListContext()
                 listcontextForrisktypes.CertId = State.CertBO.Id
@@ -1708,7 +1708,7 @@ Public Class ClaimWizardForm
 
                 Dim RiskTypeList As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCertificate", Thread.CurrentPrincipal.GetLanguageCode(), listcontextForrisktypes)
                 ' step1_cboCoverageType
-                Me.step1_cboRiskType.Populate(RiskTypeList, New PopulateOptions() With
+                step1_cboRiskType.Populate(RiskTypeList, New PopulateOptions() With
                                                  {
                                                  .AddBlankItem = True
                                                  })
@@ -1723,7 +1723,7 @@ Public Class ClaimWizardForm
                 If Not step1_cboRiskType.SelectedIndex = -1 Then
                     ' Me.BindListControlToDataView(Me.step1_cboCoverageType, LookupListNew.LoadCoverageTypes(State.CertBO.Id, New Guid(step1_cboRiskType.SelectedValue), ElitaPlusIdentity.Current.ActiveUser.LanguageId, State.DateOfLoss))
                     Dim listcontextForcoveragetypes As ListContext = New ListContext()
-                    listcontextForcoveragetypes.CertId = Me.State.CertBO.Id
+                    listcontextForcoveragetypes.CertId = State.CertBO.Id
                     listcontextForcoveragetypes.CertItemId = New Guid(step1_cboRiskType.SelectedValue)
                     listcontextForcoveragetypes.LanguageId = ElitaPlusIdentity.Current.ActiveUser.LanguageId
                     listcontextForcoveragetypes.DateOfLoss = State.DateOfLoss
@@ -1743,10 +1743,10 @@ Public Class ClaimWizardForm
                                                 .AddBlankItem = True
                                                 })
 
-                If Me.State.CertItemBO.IsEquipmentRequired Then
-                    If Not String.IsNullOrEmpty(Me.State.DealerBO.EquipmentListCode) Then
+                If State.CertItemBO.IsEquipmentRequired Then
+                    If Not String.IsNullOrEmpty(State.DealerBO.EquipmentListCode) Then
                         Dim listcontextForManufacturerByEquipmentCode As ListContext = New ListContext()
-                        listcontextForManufacturerByEquipmentCode.EquipmentListCode = Me.State.DealerBO.EquipmentListCode
+                        listcontextForManufacturerByEquipmentCode.EquipmentListCode = State.DealerBO.EquipmentListCode
                         listcontextForManufacturerByEquipmentCode.EffectiveOnDate = Date.Now
 
                         Dim ManufacturerByEquipmentList As ListItem() = CommonConfigManager.Current.ListManager.GetList("ManufacturerByEquipment", Thread.CurrentPrincipal.GetLanguageCode(), listcontextForManufacturerByEquipmentCode)
@@ -1755,7 +1755,7 @@ Public Class ClaimWizardForm
                                                             .AddBlankItem = True
                                                             })
                     Else
-                        Me.MasterPage.MessageController.AddWarning("EQUIPMENT_LIST_DOES_NOT_EXIST_FOR_DEALER")
+                        MasterPage.MessageController.AddWarning("EQUIPMENT_LIST_DOES_NOT_EXIST_FOR_DEALER")
                     End If
                     Dim listContext As New ListContext
                     listContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
@@ -1794,16 +1794,16 @@ Public Class ClaimWizardForm
 
                 Dim listCauseOfLoss As ListContext = New ListContext()
                 listCauseOfLoss.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                listCauseOfLoss.CoverageTypeId = Me.State.ClaimBO.CoverageTypeId
+                listCauseOfLoss.CoverageTypeId = State.ClaimBO.CoverageTypeId
                 listCauseOfLoss.LanguageId = Authentication.LangId
-                listCauseOfLoss.DealerId = Me.State.CertBO.DealerId
-                listCauseOfLoss.ProductCode = Me.State.CertBO.ProductCode
+                listCauseOfLoss.DealerId = State.CertBO.DealerId
+                listCauseOfLoss.ProductCode = State.CertBO.ProductCode
                 Dim coverageList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CauseOfLossByCoverageTypeAndSplSvcLookupList", context:=listCauseOfLoss)
                 step3_cboCauseOfLossId.Populate(coverageList, New PopulateOptions() With
                                                    {
                                                    .AddBlankItem = True
                                                    })
-                If Me.State.IsSalutation Then
+                If State.IsSalutation Then
                     step3_cboContactSalutationId.Populate(CommonConfigManager.Current.ListManager.GetList("SLTN", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                                              {
                                                              .AddBlankItem = True
@@ -1814,17 +1814,17 @@ Public Class ClaimWizardForm
                                                             })
                 End If
 
-                BindListControlToDataView(ddlIssueCode, Me.State.ClaimBO.Load_Filtered_Issues(), "CODE", "ISSUE_ID", False, , True)
-                BindListControlToDataView(ddlIssueDescription, Me.State.ClaimBO.Load_Filtered_Issues(), "DESCRIPTION", "ISSUE_ID", False, , True)
+                BindListControlToDataView(ddlIssueCode, State.ClaimBO.Load_Filtered_Issues(), "CODE", "ISSUE_ID", False, , True)
+                BindListControlToDataView(ddlIssueDescription, State.ClaimBO.Load_Filtered_Issues(), "DESCRIPTION", "ISSUE_ID", False, , True)
 
                 step3_cboDedCollMethod.Populate(CommonConfigManager.Current.ListManager.GetList("DEDCOLLMTHD", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                                    {
                                                    .AddBlankItem = True
                                                    })
-                Dim selDedCollMethod As String = LookupListNew.GetCodeFromId(LookupListCache.LK_DED_COLL_METHOD, Me.State.ClaimBO.DedCollectionMethodID)
+                Dim selDedCollMethod As String = LookupListNew.GetCodeFromId(LookupListCache.LK_DED_COLL_METHOD, State.ClaimBO.DedCollectionMethodID)
 
-                If Not selDedCollMethod Is Nothing Then
-                    SetSelectedItem(Me.step3_cboDedCollMethod, LookupListNew.GetIdFromCode(LookupListCache.LK_DED_COLL_METHOD, selDedCollMethod))
+                If selDedCollMethod IsNot Nothing Then
+                    SetSelectedItem(step3_cboDedCollMethod, LookupListNew.GetIdFromCode(LookupListCache.LK_DED_COLL_METHOD, selDedCollMethod))
                 End If
                 'Me.BindListControlToDataView(Me.step3_cboUseShipAddress, LookupListNew.GetYesNoLookupList(Authentication.LangId, False), , , False)
                 Dim yesNoLk As ListItem() = CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode())
@@ -1833,7 +1833,7 @@ Public Class ClaimWizardForm
                                                     .AddBlankItem = True
                                                     })
                 Dim NoId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-                SetSelectedItem(Me.step3_cboUseShipAddress, NoId)
+                SetSelectedItem(step3_cboUseShipAddress, NoId)
                 ' Me.BindListControlToDataView(Me.step3_cboLawsuitId, yesNoLkL)
                 step3_cboLawsuitId.Populate(yesNoLk, New PopulateOptions() With
                                                {
@@ -1843,10 +1843,10 @@ Public Class ClaimWizardForm
 
                 'KDDI CHANGES
                 Dim listcontextForMgList As ListContext = New ListContext()
-                listcontextForMgList.CompanyGroupId = Me.State.CertBO.Company.CompanyGroupId
-                listcontextForMgList.DealerId = Me.State.CertBO.Dealer.Id
-                listcontextForMgList.CompanyId = Me.State.CertBO.CompanyId
-                listcontextForMgList.DealerGroupId = Me.State.CertBO.Dealer.DealerGroupId
+                listcontextForMgList.CompanyGroupId = State.CertBO.Company.CompanyGroupId
+                listcontextForMgList.DealerId = State.CertBO.Dealer.Id
+                listcontextForMgList.CompanyId = State.CertBO.CompanyId
+                listcontextForMgList.DealerGroupId = State.CertBO.Dealer.DealerGroupId
 
                 Dim deniedReason As ListItem() = CommonConfigManager.Current.ListManager.GetList("DNDREASON", Thread.CurrentPrincipal.GetLanguageCode(), listcontextForMgList)
                 'If Not (deniedReason Is Nothing) Then
@@ -1889,34 +1889,34 @@ Public Class ClaimWizardForm
 
     End Sub
 
-    Private Sub PopulateFormFromBO(ByVal wizardStep As ClaimWizardSteps)
+    Private Sub PopulateFormFromBO(wizardStep As ClaimWizardSteps)
         PopulateProtectionAndEventDetail()
         Dim flag As Boolean = True
         Dim errMsg As List(Of String) = New List(Of String)
         Dim warningMsg As List(Of String) = New List(Of String)
-        Me.hdnDealerId.Value = Me.State.DealerBO.Id.ToString
+        hdnDealerId.Value = State.DealerBO.Id.ToString
         Select Case wizardStep
             Case ClaimWizardSteps.Step1
                 If (Not Page.IsPostBack) Then
-                    Me.State.DateReported = Date.Today
+                    State.DateReported = Date.Today
                 End If
                 If State.DateReported > Date.MinValue Then PopulateControlFromBOProperty(step1_txtDateReported, GetDateFormattedStringNullable(New DateType(State.DateReported)))
                 If State.DateOfLoss > Date.MinValue Then PopulateControlFromBOProperty(step1_moDateOfLossText, GetDateFormattedStringNullable(New DateType(State.DateOfLoss)))
 
-                If (Me.State.CallerName Is Nothing) Then
-                    step1_textCallerName.Text = Me.State.CertBO.CustomerName
+                If (State.CallerName Is Nothing) Then
+                    step1_textCallerName.Text = State.CertBO.CustomerName
                 Else
-                    step1_textCallerName.Text = Me.State.CallerName
+                    step1_textCallerName.Text = State.CallerName
                 End If
-                If (Not Me.State.RiskTypeId.Equals(Guid.Empty)) Then
+                If (Not State.RiskTypeId.Equals(Guid.Empty)) Then
                     PopulateDropDowns(wizardStep)
-                    step1_cboRiskType.SelectedItem.Value = Me.State.RiskTypeId.ToString()
-                    If (Not Me.State.CertficateCoverageTypeId.Equals(Guid.Empty)) Then
-                        step1_cboCoverageType.SelectedItem.Value = Me.State.CertficateCoverageTypeId.ToString()
+                    step1_cboRiskType.SelectedItem.Value = State.RiskTypeId.ToString()
+                    If (Not State.CertficateCoverageTypeId.Equals(Guid.Empty)) Then
+                        step1_cboCoverageType.SelectedItem.Value = State.CertficateCoverageTypeId.ToString()
                     End If
                 End If
-                If (Me.State.CallerName Is Nothing) Then
-                    step1_textProblemDescription.Text = Me.State.CallerName
+                If (State.CallerName Is Nothing) Then
+                    step1_textProblemDescription.Text = State.CallerName
                 End If
             Case ClaimWizardSteps.Step2
                 PopulateDropDowns(wizardStep)
@@ -1928,115 +1928,115 @@ Public Class ClaimWizardForm
                 PopulateFormForClaim()
             Case ClaimWizardSteps.Step4
                 PopulateFormForServiceCenter()
-                For Each claimAuth As ClaimAuthorization In Me.State.ClaimBO.ClaimAuthorizationChildren
+                For Each claimAuth As ClaimAuthorization In State.ClaimBO.ClaimAuthorizationChildren
                     If Not claimAuth.IsNew Then
-                        Me.MasterPage.MessageController.AddWarning("CLAIM_ALREADY_HAS_AUTHORIZATION_WILL_VOID")
+                        MasterPage.MessageController.AddWarning("CLAIM_ALREADY_HAS_AUTHORIZATION_WILL_VOID")
                     End If
                 Next
             Case ClaimWizardSteps.Step5
                 PopulateDropDowns(wizardStep)
-                Me.PopulateControlFromBOProperty(Me.step5_TextboxCallerName, Me.State.ClaimBO.CallerName)
-                Me.PopulateControlFromBOProperty(Me.step5_TextboxCertificate, Me.State.ClaimBO.Certificate.CertNumber)
-                Me.PopulateControlFromBOProperty(Me.step5_TextboxCommentText, Me.State.CommentBO.Comments)
-                Me.PopulateControlFromBOProperty(Me.step5_TextboxDealer, Me.State.ClaimBO.Dealer.Dealer)
-                Me.PopulateControlFromBOProperty(Me.step5_cboCommentType, Me.State.CommentBO.CommentTypeId)
+                PopulateControlFromBOProperty(step5_TextboxCallerName, State.ClaimBO.CallerName)
+                PopulateControlFromBOProperty(step5_TextboxCertificate, State.ClaimBO.Certificate.CertNumber)
+                PopulateControlFromBOProperty(step5_TextboxCommentText, State.CommentBO.Comments)
+                PopulateControlFromBOProperty(step5_TextboxDealer, State.ClaimBO.Dealer.Dealer)
+                PopulateControlFromBOProperty(step5_cboCommentType, State.CommentBO.CommentTypeId)
 
-                If Not Me.State.CommentBO.CreatedDate Is Nothing Then
-                    Me.PopulateControlFromBOProperty(Me.step5_TextboxDateTime, GetLongDateFormattedString(Me.State.CommentBO.CreatedDate.Value))
+                If State.CommentBO.CreatedDate IsNot Nothing Then
+                    PopulateControlFromBOProperty(step5_TextboxDateTime, GetLongDateFormattedString(State.CommentBO.CreatedDate.Value))
                 Else
-                    Me.PopulateControlFromBOProperty(Me.step5_TextboxDateTime, Nothing)
+                    PopulateControlFromBOProperty(step5_TextboxDateTime, Nothing)
                 End If
 
-                Me.ClearMessageControllers()
+                ClearMessageControllers()
 
         End Select
 
-        If errMsg.Count > 0 Then Me.MasterPage.MessageController.AddError(errMsg.ToArray)
-        If warningMsg.Count > 0 Then Me.moMessageController.AddWarning(warningMsg.ToArray)
+        If errMsg.Count > 0 Then MasterPage.MessageController.AddError(errMsg.ToArray)
+        If warningMsg.Count > 0 Then moMessageController.AddWarning(warningMsg.ToArray)
 
     End Sub
 
-    Private Sub PopulateBOFromForm(ByVal wizardStep As ClaimWizardSteps)
+    Private Sub PopulateBOFromForm(wizardStep As ClaimWizardSteps)
         Select Case wizardStep
             Case ClaimWizardSteps.Step1
-                Me.State.RiskTypeId = New Guid(step1_cboRiskType.SelectedItem.Value)
-                Me.State.CertficateCoverageTypeId = New Guid(step1_cboCoverageType.SelectedItem.Value)
-                Me.State.CallerName = step1_textCallerName.Text
-                Me.State.ProblemDescription = step1_textProblemDescription.Text
+                State.RiskTypeId = New Guid(step1_cboRiskType.SelectedItem.Value)
+                State.CertficateCoverageTypeId = New Guid(step1_cboCoverageType.SelectedItem.Value)
+                State.CallerName = step1_textCallerName.Text
+                State.ProblemDescription = step1_textProblemDescription.Text
             Case ClaimWizardSteps.Step2
-                With Me.State.CertItemBO
-                    Me.PopulateBOProperty(Me.State.CertItemBO, "RiskTypeId", Me.step2_cboRiskTypeId)
-                    Me.PopulateBOProperty(Me.State.CertItemBO, "ManufacturerId", Me.step2_cboManufacturerId)
-                    Me.PopulateBOProperty(Me.State.CertItemBO, "SerialNumber", Me.step2_TextboxSerialNumber)
+                With State.CertItemBO
+                    PopulateBOProperty(State.CertItemBO, "RiskTypeId", step2_cboRiskTypeId)
+                    PopulateBOProperty(State.CertItemBO, "ManufacturerId", step2_cboManufacturerId)
+                    PopulateBOProperty(State.CertItemBO, "SerialNumber", step2_TextboxSerialNumber)
                     Dim dealerTypeVSC As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_DEALER_TYPE, VSCCode)
-                    If (Not Me.State.DealerBO.DealerTypeId.Equals(dealerTypeVSC)) Then
-                        Me.PopulateBOProperty(Me.State.CertItemBO, "Model", Me.step2_TextboxModel)
+                    If (Not State.DealerBO.DealerTypeId.Equals(dealerTypeVSC)) Then
+                        PopulateBOProperty(State.CertItemBO, "Model", step2_TextboxModel)
                     End If
-                    Me.PopulateBOProperty(Me.State.CertItemCoverageBO, "MethodOfRepairId", Me.step2_cboMethodOfRepair)
-                    Me.PopulateBOProperty(Me.State.CertItemBO, "ItemDescription", Me.step2_TextboxDealerItemDesc)
-                    Me.PopulateBOProperty(Me.State.CertBO, "InvoiceNumber", Me.step2_TextboxInvNum)
-                    Me.PopulateBOProperty(Me.State.CertItemBO, "SkuNumber", Me.step2_TextboxSKU)
+                    PopulateBOProperty(State.CertItemCoverageBO, "MethodOfRepairId", step2_cboMethodOfRepair)
+                    PopulateBOProperty(State.CertItemBO, "ItemDescription", step2_TextboxDealerItemDesc)
+                    PopulateBOProperty(State.CertBO, "InvoiceNumber", step2_TextboxInvNum)
+                    PopulateBOProperty(State.CertItemBO, "SkuNumber", step2_TextboxSKU)
                 End With
                 'check for equipment flag and then populate rest from claim equipment bo of tyep claimed Equipment
-                If Not Me.State.step2_claimEquipmentBO Is Nothing AndAlso
-                   (Me.State.DealerBO.UseEquipmentId.Equals(Me.State.yesId)) Then
-                    With Me.State.step2_claimEquipmentBO
-                        Me.PopulateBOProperty(Me.State.step2_claimEquipmentBO, "ClaimEquipmentDate", Me.State.CertItemBO.CreatedDate.ToString)
-                        Me.PopulateBOProperty(Me.State.step2_claimEquipmentBO, "ManufacturerId", Me.GetSelectedItem(Me.step2_ddlClaimedManuf))
-                        Me.PopulateBOProperty(Me.State.step2_claimEquipmentBO, "Model", Me.step2_txtClaimedModel.Text)
+                If State.step2_claimEquipmentBO IsNot Nothing AndAlso
+                   (State.DealerBO.UseEquipmentId.Equals(State.yesId)) Then
+                    With State.step2_claimEquipmentBO
+                        PopulateBOProperty(State.step2_claimEquipmentBO, "ClaimEquipmentDate", State.CertItemBO.CreatedDate.ToString)
+                        PopulateBOProperty(State.step2_claimEquipmentBO, "ManufacturerId", GetSelectedItem(step2_ddlClaimedManuf))
+                        PopulateBOProperty(State.step2_claimEquipmentBO, "Model", step2_txtClaimedModel.Text)
                         'Me.PopulateBOProperty(Me.State.step2_claimEquipmentBO, "SKU", Me.step2_txtClaimedSKu)
 
-                        Me.PopulateBOProperty(Me.State.step2_claimEquipmentBO, "SerialNumber", Me.step2_txtClaimedSerialNumber.Text)
+                        PopulateBOProperty(State.step2_claimEquipmentBO, "SerialNumber", step2_txtClaimedSerialNumber.Text)
                         'get equipment id
-                        If (Not Me.State.step2_claimEquipmentBO.ManufacturerId.Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(Me.State.step2_claimEquipmentBO.Model)) Then
-                            Me.State.step2_claimEquipmentBO.EquipmentId = Equipment.GetEquipmentIdByEquipmentList(Me.State.DealerBO.EquipmentListCode, DateTime.Now, Me.State.step2_claimEquipmentBO.ManufacturerId, Me.State.step2_claimEquipmentBO.Model)
+                        If (Not State.step2_claimEquipmentBO.ManufacturerId.Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(State.step2_claimEquipmentBO.Model)) Then
+                            State.step2_claimEquipmentBO.EquipmentId = Equipment.GetEquipmentIdByEquipmentList(State.DealerBO.EquipmentListCode, DateTime.Now, State.step2_claimEquipmentBO.ManufacturerId, State.step2_claimEquipmentBO.Model)
                         End If
-                        If Me.State.step2_claimEquipmentBO.EquipmentId.Equals(Guid.Empty) Then
-                            Me.MasterPage.MessageController.AddWarning("EQUIPMENT_NOT_CONFIGURED")
-                            Me.State.step2_claimEquipmentBO.SKU = String.Empty
+                        If State.step2_claimEquipmentBO.EquipmentId.Equals(Guid.Empty) Then
+                            MasterPage.MessageController.AddWarning("EQUIPMENT_NOT_CONFIGURED")
+                            State.step2_claimEquipmentBO.SKU = String.Empty
                             hdnSelectedClaimedSku.Value = String.Empty
                         Else
-                            Me.State.step2_claimEquipmentBO.SKU = hdnSelectedClaimedSku.Value
+                            State.step2_claimEquipmentBO.SKU = hdnSelectedClaimedSku.Value
                         End If
 
 
-                        Me.PopulateBOProperty(Me.State.step2_claimEquipmentBO, "ClaimEquipmentTypeId", LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_EQUIPMENT_TYPE, Codes.CLAIM_EQUIP_TYPE__CLAIMED))
+                        PopulateBOProperty(State.step2_claimEquipmentBO, "ClaimEquipmentTypeId", LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_EQUIPMENT_TYPE, Codes.CLAIM_EQUIP_TYPE__CLAIMED))
                     End With
                 End If
 
-                If Me.ErrCollection.Count > 0 Then
+                If ErrCollection.Count > 0 Then
                     Throw New PopulateBOErrorException
                 End If
             Case ClaimWizardSteps.Step3
                 PopulateBOFromFormForStep3()
             Case ClaimWizardSteps.Step4
 
-                If Me.step4_RadioButtonNO_SVC_OPTION.Checked Then
+                If step4_RadioButtonNO_SVC_OPTION.Checked Then
                     'REQ-5546
                     'Default SC might not null
-                    If Not Me.State.default_service_center_id.Equals(Guid.Empty) Then
-                        Me.State.SelectedServiceCenterId = Me.State.default_service_center_id
+                    If Not State.default_service_center_id.Equals(Guid.Empty) Then
+                        State.SelectedServiceCenterId = State.default_service_center_id
                     Else
-                        Me.MasterPage.MessageController.AddError("TEMP SERVICE CENTER NOT FOUND")
+                        MasterPage.MessageController.AddError("TEMP SERVICE CENTER NOT FOUND")
                         Exit Sub
                     End If
                 Else
-                    If (Not hdnSelectedServiceCenterId.Value = "XXXX") Then Me.State.SelectedServiceCenterId = ServiceCenter.GetServiceCenterID(hdnSelectedServiceCenterId.Value)
+                    If (Not hdnSelectedServiceCenterId.Value = "XXXX") Then State.SelectedServiceCenterId = ServiceCenter.GetServiceCenterID(hdnSelectedServiceCenterId.Value)
                 End If
                 ' Bug 178224 - REQ- 6156
                 If Not State.SelectedServiceCenterId.Equals(Guid.Empty) Then
                     PopulateBOProperty(State.ClaimBO, "ServiceCenterId", State.SelectedServiceCenterId)
                 End If
             Case ClaimWizardSteps.Step5
-                Me.PopulateBOProperty(Me.State.CommentBO, "CallerName", Me.step5_TextboxCallerName)
-                Me.PopulateBOProperty(Me.State.CommentBO, "Comments", Me.step5_TextboxCommentText)
-                Me.PopulateBOProperty(Me.State.CommentBO, "CommentTypeId", Me.step5_cboCommentType)
+                PopulateBOProperty(State.CommentBO, "CallerName", step5_TextboxCallerName)
+                PopulateBOProperty(State.CommentBO, "Comments", step5_TextboxCommentText)
+                PopulateBOProperty(State.CommentBO, "CommentTypeId", step5_cboCommentType)
         End Select
 
     End Sub
 
     Private Function LastStep() As ClaimWizardSteps
-        Select Case Me.State.StepName
+        Select Case State.StepName
             Case ClaimWizardSteps.Step2
                 Return ClaimWizardSteps.Step1
             Case ClaimWizardSteps.Step3
@@ -2046,7 +2046,7 @@ Public Class ClaimWizardForm
             Case ClaimWizardSteps.Step5
                 ' Bug 178224 - REQ- 6156 - if Dealer attribute is Yes, then Skipping the step 4 (choosing Service Center) and move to Step 3
                 Dim attvalue As AttributeValue = State.ClaimBO.Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.DLR_ATTR_SKIP_SERVICE_CENTER_SCREEN).FirstOrDefault
-                If Not attvalue Is Nothing AndAlso attvalue.Value = Codes.YESNO_Y Then
+                If attvalue IsNot Nothing AndAlso attvalue.Value = Codes.YESNO_Y Then
                     Return ClaimWizardSteps.Step3
                 Else
                     If (Me.State.ClaimBO.Status = BasicClaimStatus.Active) Then
@@ -2059,7 +2059,7 @@ Public Class ClaimWizardForm
     End Function
 
     Private Function NextStep() As ClaimWizardSteps
-        Select Case Me.State.StepName
+        Select Case State.StepName
             Case ClaimWizardSteps.Step1
                 Return ClaimWizardSteps.Step2
             Case ClaimWizardSteps.Step2
@@ -2067,7 +2067,7 @@ Public Class ClaimWizardForm
             Case ClaimWizardSteps.Step3
                 ' Bug 178224 - REQ- 6156 -  REQ- 6156 - if Dealer attribute is Yes, then Skipping the step 4 (choosing Service Center) and move to Step 5
                 Dim attvalue As AttributeValue = State.ClaimBO.Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.DLR_ATTR_SKIP_SERVICE_CENTER_SCREEN).FirstOrDefault
-                If Not attvalue Is Nothing AndAlso attvalue.Value = Codes.YESNO_Y Then
+                If attvalue IsNot Nothing AndAlso attvalue.Value = Codes.YESNO_Y Then
                     Return ClaimWizardSteps.Step5
                 Else
                     If (Me.State.ClaimBO.Status = BasicClaimStatus.Active) Then
@@ -2082,11 +2082,11 @@ Public Class ClaimWizardForm
     End Function
 
     Private Sub SetSelectedStep()
-        Me.WizardControl.Visible = True
-        Dim lstWizardSteps As List(Of StepDefinition) = Me.WizardControl.Steps
+        WizardControl.Visible = True
+        Dim lstWizardSteps As List(Of StepDefinition) = WizardControl.Steps
 
         For Each stepDef As StepDefinition In lstWizardSteps
-            If (stepDef.StepNumber = DirectCast([Enum].Parse(GetType(ClaimWizardSteps), CStr(Me.State.StepName)), Integer)) Then
+            If (stepDef.StepNumber = DirectCast([Enum].Parse(GetType(ClaimWizardSteps), CStr(State.StepName)), Integer)) Then
                 stepDef.IsSelected = True
             Else
                 stepDef.IsSelected = False
@@ -2095,43 +2095,43 @@ Public Class ClaimWizardForm
     End Sub
 
     Private Sub ReturnBackToCallingPage()
-        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.CertBO,, State.IsCallerAuthenticated)
+        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.CertBO,, State.IsCallerAuthenticated)
         MyBase.ReturnToCallingPage(retObj)
     End Sub
 
-    Private Sub PopulateFormDeductibleFormBOs(ByVal methodOfRepairId As Guid)
+    Private Sub PopulateFormDeductibleFormBOs(methodOfRepairId As Guid)
         Dim oDeductible As CertItemCoverage.DeductibleType
-        oDeductible = CertItemCoverage.GetDeductible(Me.State.CertItemCoverageBO.Id, methodOfRepairId)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxDeductibleBasedOn, LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, oDeductible.DeductibleBasedOnId))
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxDeductible, oDeductible.DeductibleAmount)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxDeductiblePercent, oDeductible.DeductiblePercentage)
+        oDeductible = CertItemCoverage.GetDeductible(State.CertItemCoverageBO.Id, methodOfRepairId)
+        PopulateControlFromBOProperty(step2_TextboxDeductibleBasedOn, LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, oDeductible.DeductibleBasedOnId))
+        PopulateControlFromBOProperty(step2_TextboxDeductible, oDeductible.DeductibleAmount)
+        PopulateControlFromBOProperty(step2_TextboxDeductiblePercent, oDeductible.DeductiblePercentage)
     End Sub
 
     Private Sub PopulateFormfromClaimedEquipmentBO()
-        If Me.State.CertItemBO.IsEquipmentRequired AndAlso
-           Not Me.State.step2_claimEquipmentBO Is Nothing Then
+        If State.CertItemBO.IsEquipmentRequired AndAlso
+State.step2_claimEquipmentBO IsNot Nothing Then
             'Use Equipment is Yes
-            Me.PopulateControlFromBOProperty(Me.step2_txtClaimedmake, Me.State.step2_claimEquipmentBO.Manufacturer)
-            Me.PopulateControlFromBOProperty(Me.step2_ddlClaimedManuf, Me.State.step2_claimEquipmentBO.ManufacturerId)
-            Me.PopulateControlFromBOProperty(Me.step2_txtClaimedModel, Me.State.step2_claimEquipmentBO.Model)
-            Me.PopulateControlFromBOProperty(Me.step2_txtClaimedDescription, Me.State.step2_claimEquipmentBO.EquipmentDescription)
+            PopulateControlFromBOProperty(step2_txtClaimedmake, State.step2_claimEquipmentBO.Manufacturer)
+            PopulateControlFromBOProperty(step2_ddlClaimedManuf, State.step2_claimEquipmentBO.ManufacturerId)
+            PopulateControlFromBOProperty(step2_txtClaimedModel, State.step2_claimEquipmentBO.Model)
+            PopulateControlFromBOProperty(step2_txtClaimedDescription, State.step2_claimEquipmentBO.EquipmentDescription)
             'Me.PopulateControlFromBOProperty(Me.step2_txtClaimedSKu, Me.State.step2_claimEquipmentBO.SKU)
-            Me.PopulateControlFromBOProperty(Me.step2_txtClaimedSerialNumber, Me.State.step2_claimEquipmentBO.SerialNumber)
+            PopulateControlFromBOProperty(step2_txtClaimedSerialNumber, State.step2_claimEquipmentBO.SerialNumber)
 
             '***********************Pre populate Claimed SKU based on the Equipment and Model
-            Me.step2_ddlClaimedSku.Items.Clear()
-            If Not Me.State.step2_claimEquipmentBO.EquipmentId.Equals(Guid.Empty) Then
-                Dim dv As DataView = Me.State.CertItemBO.LoadSku(Me.State.step2_claimEquipmentBO.EquipmentId, Me.State.DealerBO.Id)
-                If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
-                    Me.step2_ddlClaimedSku.DataSource = dv
-                    Me.step2_ddlClaimedSku.DataTextField = "SKU_NUMBER"
-                    Me.step2_ddlClaimedSku.DataValueField = "SKU_NUMBER"
-                    Me.step2_ddlClaimedSku.DataBind()
+            step2_ddlClaimedSku.Items.Clear()
+            If Not State.step2_claimEquipmentBO.EquipmentId.Equals(Guid.Empty) Then
+                Dim dv As DataView = State.CertItemBO.LoadSku(State.step2_claimEquipmentBO.EquipmentId, State.DealerBO.Id)
+                If dv IsNot Nothing AndAlso dv.Table.Rows.Count > 0 Then
+                    step2_ddlClaimedSku.DataSource = dv
+                    step2_ddlClaimedSku.DataTextField = "SKU_NUMBER"
+                    step2_ddlClaimedSku.DataValueField = "SKU_NUMBER"
+                    step2_ddlClaimedSku.DataBind()
 
-                    If Not dv Is Nothing AndAlso dv.FindRows(Me.State.step2_claimEquipmentBO.SKU.ToString).Length > 0 Then
-                        Me.PopulateControlFromBOProperty(Me.step2_txtClaimedSKu, Me.State.step2_claimEquipmentBO.SKU)
-                        Me.step2_ddlClaimedSku.SelectedItem.Value = Me.State.step2_claimEquipmentBO.SKU
-                        Me.hdnSelectedClaimedSku.Value = Me.State.step2_claimEquipmentBO.SKU
+                    If dv IsNot Nothing AndAlso dv.FindRows(State.step2_claimEquipmentBO.SKU.ToString).Length > 0 Then
+                        PopulateControlFromBOProperty(step2_txtClaimedSKu, State.step2_claimEquipmentBO.SKU)
+                        step2_ddlClaimedSku.SelectedItem.Value = State.step2_claimEquipmentBO.SKU
+                        hdnSelectedClaimedSku.Value = State.step2_claimEquipmentBO.SKU
                     End If
 
                 End If
@@ -2146,99 +2146,99 @@ Public Class ClaimWizardForm
         Dim dealerTypeVSC As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_DEALER_TYPE, VSCCode)
         Dim MethodOfRepairId As Guid
 
-        Me.SetSelectedItem(Me.step2_cboRiskTypeId, Me.State.CertItemBO.RiskTypeId)
-        riskTypeDesc = Me.GetSelectedDescription(Me.step2_cboRiskTypeId)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxRiskType, riskTypeDesc)
-        Me.step2_TextboxRiskType.ReadOnly = True
+        SetSelectedItem(step2_cboRiskTypeId, State.CertItemBO.RiskTypeId)
+        riskTypeDesc = GetSelectedDescription(step2_cboRiskTypeId)
+        PopulateControlFromBOProperty(step2_TextboxRiskType, riskTypeDesc)
+        step2_TextboxRiskType.ReadOnly = True
 
         Dim dvEnrolled As DataView
-        If Me.State.CertItemBO.IsEquipmentRequired Then
-            dvEnrolled = LookupListNew.GetManufacturerbyEquipmentList(Me.State.DealerBO.EquipmentListCode, Date.Now)
+        If State.CertItemBO.IsEquipmentRequired Then
+            dvEnrolled = LookupListNew.GetManufacturerbyEquipmentList(State.DealerBO.EquipmentListCode, Date.Now)
         Else
             dvEnrolled = LookupListNew.GetManufacturerLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
         End If
 
-        If Not Me.State.CertItemBO.ManufacturerId.Equals(Guid.Empty) Then
-            If Not dvEnrolled Is Nothing AndAlso Not BusinessObjectBase.FindRow(Me.State.CertItemBO.ManufacturerId, LookupListNew.COL_ID_NAME, dvEnrolled.Table) Is Nothing Then
-                Me.PopulateControlFromBOProperty(Me.step2_cboManufacturerId, Me.State.CertItemBO.ManufacturerId)
+        If Not State.CertItemBO.ManufacturerId.Equals(Guid.Empty) Then
+            If dvEnrolled IsNot Nothing AndAlso BusinessObjectBase.FindRow(State.CertItemBO.ManufacturerId, LookupListNew.COL_ID_NAME, dvEnrolled.Table) IsNot Nothing Then
+                PopulateControlFromBOProperty(step2_cboManufacturerId, State.CertItemBO.ManufacturerId)
             Else
-                If Me.State.CertItemBO.IsEquipmentRequired Then
-                    Me.MasterPage.MessageController.AddError("MANUFACTURER_ON_CERT_ITEM_NOT_IN_EQUIPMENT_LIST")
+                If State.CertItemBO.IsEquipmentRequired Then
+                    MasterPage.MessageController.AddError("MANUFACTURER_ON_CERT_ITEM_NOT_IN_EQUIPMENT_LIST")
                 Else
-                    Me.MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.INVALID_MAKE_MODEL_ERR)
+                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.INVALID_MAKE_MODEL_ERR)
                 End If
             End If
         End If
 
         'Me.SetSelectedItem(Me.step2_cboManufacturerId, Me.State.CertItemBO.ManufacturerId)
-        manufacturerDesc = Me.GetSelectedDescription(Me.step2_cboManufacturerId)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxManufacturer, manufacturerDesc)
+        manufacturerDesc = GetSelectedDescription(step2_cboManufacturerId)
+        PopulateControlFromBOProperty(step2_TextboxManufacturer, manufacturerDesc)
         ControlMgr.SetVisibleControl(Me, step2_cboManufacturerId, False)
         ControlMgr.SetVisibleControl(Me, step2_TextboxManufacturer, True)
-        Me.step2_TextboxManufacturer.ReadOnly = True
+        step2_TextboxManufacturer.ReadOnly = True
 
-        If (Me.State.CertItemCoverageBO.MethodOfRepairId = Guid.Empty) Then
-            Me.SetSelectedItem(Me.step2_cboMethodOfRepair, Me.State.CertBO.MethodOfRepairId)
-            MethodOfRepairId = Me.State.CertBO.MethodOfRepairId
+        If (State.CertItemCoverageBO.MethodOfRepairId = Guid.Empty) Then
+            SetSelectedItem(step2_cboMethodOfRepair, State.CertBO.MethodOfRepairId)
+            MethodOfRepairId = State.CertBO.MethodOfRepairId
         Else
-            Me.SetSelectedItem(Me.step2_cboMethodOfRepair, Me.State.CertItemCoverageBO.MethodOfRepairId)
-            MethodOfRepairId = Me.State.CertItemCoverageBO.MethodOfRepairId
+            SetSelectedItem(step2_cboMethodOfRepair, State.CertItemCoverageBO.MethodOfRepairId)
+            MethodOfRepairId = State.CertItemCoverageBO.MethodOfRepairId
         End If
-        methodOfRepairDesc = Me.GetSelectedDescription(Me.step2_cboMethodOfRepair)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxMethodOfRepair, methodOfRepairDesc)
+        methodOfRepairDesc = GetSelectedDescription(step2_cboMethodOfRepair)
+        PopulateControlFromBOProperty(step2_TextboxMethodOfRepair, methodOfRepairDesc)
         ControlMgr.SetVisibleControl(Me, step2_cboMethodOfRepair, False)
         ControlMgr.SetVisibleControl(Me, step2_TextboxMethodOfRepair, True)
-        Me.step2_TextboxMethodOfRepair.ReadOnly = True
+        step2_TextboxMethodOfRepair.ReadOnly = True
 
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxSerialNumber, Me.State.CertItemBO.SerialNumber)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxBeginDate, GetDateFormattedStringNullable(Me.State.CertItemCoverageBO.BeginDate))
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxEndDate, GetDateFormattedStringNullable(Me.State.CertItemCoverageBO.EndDate))
+        PopulateControlFromBOProperty(step2_TextboxSerialNumber, State.CertItemBO.SerialNumber)
+        PopulateControlFromBOProperty(step2_TextboxBeginDate, GetDateFormattedStringNullable(State.CertItemCoverageBO.BeginDate))
+        PopulateControlFromBOProperty(step2_TextboxEndDate, GetDateFormattedStringNullable(State.CertItemCoverageBO.EndDate))
 
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxLiabilityLimit, Me.State.CertItemCoverageBO.LiabilityLimits, Me.DECIMAL_FORMAT)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxCoverageType, Me.State.CertItemBO.GetCoverageTypeDescription(Me.State.CertItemCoverageBO.CoverageTypeId))
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxDateAdded, GetDateFormattedStringNullable(Me.State.CertItemCoverageBO.CreatedDate))
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxDealerItemDesc, Me.State.CertItemBO.ItemDescription)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxInvNum, Me.State.CertBO.InvoiceNumber)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxProductCode, Me.State.CertItemBO.CertProductCode)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxYear, Me.State.CertBO.VehicleYear)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxOdometer, Me.State.CertBO.Odometer)
-        Me.PopulateControlFromBOProperty(Me.step2_cboApplyDiscount, Me.State.CertItemCoverageBO.IsDiscount)
-        Me.SetSelectedItem(Me.step2_cboCalimAllowed, Me.State.CertItemCoverageBO.IsClaimAllowed)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxDiscountAmt, Me.State.CertItemCoverageBO.DealerDiscountAmt)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxDiscountPercent, Me.State.CertItemCoverageBO.DealerDiscountPercent)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxSKU, Me.State.CertItemBO.SkuNumber)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxRepairDiscountPct, Me.State.CertItemCoverageBO.RepairDiscountPct)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxReplacementDiscountPct, Me.State.CertItemCoverageBO.ReplacementDiscountPct)
+        PopulateControlFromBOProperty(step2_TextboxLiabilityLimit, State.CertItemCoverageBO.LiabilityLimits, DECIMAL_FORMAT)
+        PopulateControlFromBOProperty(step2_TextboxCoverageType, State.CertItemBO.GetCoverageTypeDescription(State.CertItemCoverageBO.CoverageTypeId))
+        PopulateControlFromBOProperty(step2_TextboxDateAdded, GetDateFormattedStringNullable(State.CertItemCoverageBO.CreatedDate))
+        PopulateControlFromBOProperty(step2_TextboxDealerItemDesc, State.CertItemBO.ItemDescription)
+        PopulateControlFromBOProperty(step2_TextboxInvNum, State.CertBO.InvoiceNumber)
+        PopulateControlFromBOProperty(step2_TextboxProductCode, State.CertItemBO.CertProductCode)
+        PopulateControlFromBOProperty(step2_TextboxYear, State.CertBO.VehicleYear)
+        PopulateControlFromBOProperty(step2_TextboxOdometer, State.CertBO.Odometer)
+        PopulateControlFromBOProperty(step2_cboApplyDiscount, State.CertItemCoverageBO.IsDiscount)
+        SetSelectedItem(step2_cboCalimAllowed, State.CertItemCoverageBO.IsClaimAllowed)
+        PopulateControlFromBOProperty(step2_TextboxDiscountAmt, State.CertItemCoverageBO.DealerDiscountAmt)
+        PopulateControlFromBOProperty(step2_TextboxDiscountPercent, State.CertItemCoverageBO.DealerDiscountPercent)
+        PopulateControlFromBOProperty(step2_TextboxSKU, State.CertItemBO.SkuNumber)
+        PopulateControlFromBOProperty(step2_TextboxRepairDiscountPct, State.CertItemCoverageBO.RepairDiscountPct)
+        PopulateControlFromBOProperty(step2_TextboxReplacementDiscountPct, State.CertItemCoverageBO.ReplacementDiscountPct)
         PopulateFormDeductibleFormBOs(MethodOfRepairId)
 
-        If (Not Me.State.DealerBO.DealerTypeId.Equals(dealerTypeVSC)) Then
-            Me.PopulateControlFromBOProperty(Me.step2_TextboxModel, Me.State.CertItemBO.Model)
+        If (Not State.DealerBO.DealerTypeId.Equals(dealerTypeVSC)) Then
+            PopulateControlFromBOProperty(step2_TextboxModel, State.CertItemBO.Model)
 
         Else
-            If (Not Me.State.VSCModel Is Nothing) Then
-                Me.PopulateControlFromBOProperty(Me.step2_TextboxModel, Me.State.VSCModel.Model)
+            If (State.VSCModel IsNot Nothing) Then
+                PopulateControlFromBOProperty(step2_TextboxModel, State.VSCModel.Model)
 
             Else
-                Me.PopulateControlFromBOProperty(Me.step2_TextboxModel, String.Empty)
+                PopulateControlFromBOProperty(step2_TextboxModel, String.Empty)
             End If
         End If
 
-        If (Not Me.State.VSCClassCode Is Nothing) Then
-            Me.PopulateControlFromBOProperty(Me.step2_TextboxClassCode, Me.State.VSCClassCode.Code)
+        If (State.VSCClassCode IsNot Nothing) Then
+            PopulateControlFromBOProperty(step2_TextboxClassCode, State.VSCClassCode.Code)
         Else
-            Me.PopulateControlFromBOProperty(Me.step2_TextboxClassCode, String.Empty)
+            PopulateControlFromBOProperty(step2_TextboxClassCode, String.Empty)
         End If
         ''''New Equipment Flow starts here
         Dim msgList As New List(Of String)
 
-        If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, Me.State.DealerBO.UseEquipmentId) = Codes.YESNO_Y Then
-            If (Me.State.step2_claimEquipmentBO Is Nothing) Then
-                If Not Me.State.CertItemBO.CreateClaimedEquipmentFromEnrolledEquipment(Me.State.step2_claimEquipmentBO, msgList) Then
+        If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, State.DealerBO.UseEquipmentId) = Codes.YESNO_Y Then
+            If (State.step2_claimEquipmentBO Is Nothing) Then
+                If Not State.CertItemBO.CreateClaimedEquipmentFromEnrolledEquipment(State.step2_claimEquipmentBO, msgList) Then
                     'if Manual entry for Claimed Equipment is required
-                    Me.MasterPage.MessageController.AddError(msgList.ToArray)
-                    ControlMgr.SetVisibleControl(Me, Me.btnContinue, False)
+                    MasterPage.MessageController.AddError(msgList.ToArray)
+                    ControlMgr.SetVisibleControl(Me, btnContinue, False)
                 Else
-                    If msgList.Count > 0 Then Me.MasterPage.MessageController.AddWarning(msgList.ToArray)
+                    If msgList.Count > 0 Then MasterPage.MessageController.AddWarning(msgList.ToArray)
                 End If
             End If
 
@@ -2251,9 +2251,9 @@ Public Class ClaimWizardForm
 
     Private Sub PopulateFormForClaim()
 
-        Me.State.ClaimBO.RecalculateDeductibleForChanges()
-        Me.State.ClaimIssuesView = Me.State.ClaimBO.GetClaimIssuesView()
-        Me.State.ClaimImagesView = Me.State.ClaimBO.GetClaimImagesView()
+        State.ClaimBO.RecalculateDeductibleForChanges()
+        State.ClaimIssuesView = State.ClaimBO.GetClaimIssuesView()
+        State.ClaimImagesView = State.ClaimBO.GetClaimImagesView()
 
         PopulateClaimIssuesGrid()
         PopulateClaimImagesGrid()
@@ -2265,111 +2265,111 @@ Public Class ClaimWizardForm
 
         Dim oTranslate As Boolean = True
         Dim oCauseOfLoss As String
-        Dim oCoverageType As New CoverageType(Me.State.ClaimBO.CoverageTypeId)
+        Dim oCoverageType As New CoverageType(State.ClaimBO.CoverageTypeId)
 
-        If Not Me.State.ClaimBO.CauseOfLossId.Equals(Guid.Empty) Then
-            Dim oCoverageLoss As CoverageLoss = oCoverageType.AssociatedCoveragesLoss.FindById(Me.State.ClaimBO.CauseOfLossId)
-            If Not oCoverageLoss Is Nothing Then
-                Me.SetSelectedItem(Me.step3_cboCauseOfLossId, Me.State.ClaimBO.CauseOfLossId)
+        If Not State.ClaimBO.CauseOfLossId.Equals(Guid.Empty) Then
+            Dim oCoverageLoss As CoverageLoss = oCoverageType.AssociatedCoveragesLoss.FindById(State.ClaimBO.CauseOfLossId)
+            If oCoverageLoss IsNot Nothing Then
+                SetSelectedItem(step3_cboCauseOfLossId, State.ClaimBO.CauseOfLossId)
             Else
-                Me.SetSelectedItem(Me.step3_cboCauseOfLossId, Guid.Empty)
-                oCauseOfLoss = LookupListNew.GetCodeFromId(LookupListNew.LK_CAUSES_OF_LOSS, Me.State.ClaimBO.CauseOfLossId)
+                SetSelectedItem(step3_cboCauseOfLossId, Guid.Empty)
+                oCauseOfLoss = LookupListNew.GetCodeFromId(LookupListNew.LK_CAUSES_OF_LOSS, State.ClaimBO.CauseOfLossId)
                 oTranslate = False
                 Dim strErrorMess As String = TranslationBase.TranslateLabelOrMessage(Message.MSG_CAUSE_OF_LOSS_NOT_AVAILABLE)
                 Throw New GUIException(Message.MSG_CAUSE_OF_LOSS_NOT_AVAILABLE, oCauseOfLoss & "  " & strErrorMess)
             End If
 
         Else
-            Me.SetSelectedItem(Me.step3_cboCauseOfLossId, Me.State.ClaimBO.GetCauseOfLossID(Me.State.ClaimBO.CoverageTypeId))
+            SetSelectedItem(step3_cboCauseOfLossId, State.ClaimBO.GetCauseOfLossID(State.ClaimBO.CoverageTypeId))
         End If
 
-        If Not Me.State.ClaimBO.PoliceReport Is Nothing Then
-            Me.State.PoliceReportBO = Me.State.ClaimBO.PoliceReport
-            Me.mcUserControlPoliceReport.Bind(Me.State.PoliceReportBO, Me.moMessageController)
-            Me.PanelPoliceReport.Visible = True
-            Me.mcUserControlPoliceReport.ChangeEnabledControlProperty(False)
+        If State.ClaimBO.PoliceReport IsNot Nothing Then
+            State.PoliceReportBO = State.ClaimBO.PoliceReport
+            mcUserControlPoliceReport.Bind(State.PoliceReportBO, moMessageController)
+            PanelPoliceReport.Visible = True
+            mcUserControlPoliceReport.ChangeEnabledControlProperty(False)
         Else
-            Me.State.PoliceReportBO = Nothing
-            Me.PanelPoliceReport.Visible = False
+            State.PoliceReportBO = Nothing
+            PanelPoliceReport.Visible = False
         End If
 
         txtCreatedBy.Text = ElitaPlusIdentity.Current.ActiveUser.UserName
         txtCreatedDate.Text = DateTime.Now.ToString(LocalizationMgr.CurrentCulture)
 
-        Me.PopulateControlFromBOProperty(Me.step3_TextboxLossDate, Me.State.ClaimBO.LossDate)
-        Me.PopulateControlFromBOProperty(Me.step3_TextboxContactName, Me.State.ClaimBO.ContactName)
-        Me.PopulateControlFromBOProperty(Me.step3_TextboxCallerName, Me.State.ClaimBO.CallerName)
-        Me.PopulateControlFromBOProperty(Me.step3_TextboxProblemDescription, Me.State.ClaimBO.ProblemDescription)
-        Me.PopulateControlFromBOProperty(Me.step3_TextboxLiabilityLimit, Me.State.ClaimBO.LiabilityLimit)
-        Me.PopulateControlFromBOProperty(Me.step3_TextboxDeductible_WRITE, Me.State.ClaimBO.Deductible)
-        Me.PopulateControlFromBOProperty(Me.step3_TextboxLossDate, Me.State.ClaimBO.LossDate)
-        Me.PopulateControlFromBOProperty(Me.step3_TextboxReportDate, Me.State.ClaimBO.ReportedDate)
-        Me.PopulateControlFromBOProperty(Me.step3_TextboxCertificateNumber, Me.State.ClaimBO.CertificateNumber)
-        Me.PopulateControlFromBOProperty(Me.step3_TextboxClaimNumber, Me.State.ClaimBO.ClaimNumber)
-        Me.PopulateControlFromBOProperty(Me.step3_TextBoxDiscount, Me.State.ClaimBO.DiscountAmount)
-        Me.PopulateControlFromBOProperty(Me.step3_TextboxPolicyNumber, Me.State.ClaimBO.PolicyNumber)
-        Me.PopulateControlFromBOProperty(Me.step3_TextboxOutstandingPremAmt, Me.State.ClaimBO.OutstandingPremiumAmount)
-        Me.PopulateControlFromBOProperty(Me.step3_TextboxCALLER_TAX_NUMBER, Me.State.ClaimBO.CallerTaxNumber)
-        Me.PopulateControlFromBOProperty(Me.step3_txtNewDeviceSKU, Me.State.ClaimBO.NewDeviceSku)
-        Me.PopulateControlFromBOProperty(Me.step3_txtPickupDate, Me.State.ClaimBO.PickUpDate)
-        Me.PopulateControlFromBOProperty(Me.step3_txtVisitDate, Me.State.ClaimBO.VisitDate)
+        PopulateControlFromBOProperty(step3_TextboxLossDate, State.ClaimBO.LossDate)
+        PopulateControlFromBOProperty(step3_TextboxContactName, State.ClaimBO.ContactName)
+        PopulateControlFromBOProperty(step3_TextboxCallerName, State.ClaimBO.CallerName)
+        PopulateControlFromBOProperty(step3_TextboxProblemDescription, State.ClaimBO.ProblemDescription)
+        PopulateControlFromBOProperty(step3_TextboxLiabilityLimit, State.ClaimBO.LiabilityLimit)
+        PopulateControlFromBOProperty(step3_TextboxDeductible_WRITE, State.ClaimBO.Deductible)
+        PopulateControlFromBOProperty(step3_TextboxLossDate, State.ClaimBO.LossDate)
+        PopulateControlFromBOProperty(step3_TextboxReportDate, State.ClaimBO.ReportedDate)
+        PopulateControlFromBOProperty(step3_TextboxCertificateNumber, State.ClaimBO.CertificateNumber)
+        PopulateControlFromBOProperty(step3_TextboxClaimNumber, State.ClaimBO.ClaimNumber)
+        PopulateControlFromBOProperty(step3_TextBoxDiscount, State.ClaimBO.DiscountAmount)
+        PopulateControlFromBOProperty(step3_TextboxPolicyNumber, State.ClaimBO.PolicyNumber)
+        PopulateControlFromBOProperty(step3_TextboxOutstandingPremAmt, State.ClaimBO.OutstandingPremiumAmount)
+        PopulateControlFromBOProperty(step3_TextboxCALLER_TAX_NUMBER, State.ClaimBO.CallerTaxNumber)
+        PopulateControlFromBOProperty(step3_txtNewDeviceSKU, State.ClaimBO.NewDeviceSku)
+        PopulateControlFromBOProperty(step3_txtPickupDate, State.ClaimBO.PickUpDate)
+        PopulateControlFromBOProperty(step3_txtVisitDate, State.ClaimBO.VisitDate)
 
-        Me.SetSelectedItem(Me.step3_cboLawsuitId, Me.State.ClaimBO.IsLawsuitId)
-        Me.PopulateControlFromBOProperty(Me.step3_TxtSpecialInstruction, Me.State.ClaimBO.SpecialInstruction)
+        SetSelectedItem(step3_cboLawsuitId, State.ClaimBO.IsLawsuitId)
+        PopulateControlFromBOProperty(step3_TxtSpecialInstruction, State.ClaimBO.SpecialInstruction)
 
-        If Me.State.IsSalutation Then
-            If Me.State.ClaimBO.CallerSalutationID.Equals(Guid.Empty) Then
-                Me.SetSelectedItem(Me.step3_cboCallerSalutationId, Me.State.CertBO.SalutationId)
+        If State.IsSalutation Then
+            If State.ClaimBO.CallerSalutationID.Equals(Guid.Empty) Then
+                SetSelectedItem(step3_cboCallerSalutationId, State.CertBO.SalutationId)
             Else
-                Me.SetSelectedItem(Me.step3_cboCallerSalutationId, Me.State.ClaimBO.CallerSalutationID)
+                SetSelectedItem(step3_cboCallerSalutationId, State.ClaimBO.CallerSalutationID)
             End If
 
-            If Me.State.ClaimBO.ContactSalutationID.Equals(Guid.Empty) Then
-                Me.SetSelectedItem(Me.step3_cboContactSalutationId, Me.State.CertBO.SalutationId)
+            If State.ClaimBO.ContactSalutationID.Equals(Guid.Empty) Then
+                SetSelectedItem(step3_cboContactSalutationId, State.CertBO.SalutationId)
             Else
-                Me.SetSelectedItem(Me.step3_cboContactSalutationId, Me.State.ClaimBO.ContactSalutationID)
+                SetSelectedItem(step3_cboContactSalutationId, State.ClaimBO.ContactSalutationID)
             End If
         End If
 
-        Dim isNewFulfillment = (Not String.IsNullOrWhiteSpace(Me.State.CertItemCoverageBO.FulfillmentProfileCode))
+        Dim isNewFulfillment = (Not String.IsNullOrWhiteSpace(State.CertItemCoverageBO.FulfillmentProfileCode))
 
 
-        If Not Me.State.ClaimBO.ContactInfoId.Equals(Guid.Empty) Then
+        If Not State.ClaimBO.ContactInfoId.Equals(Guid.Empty) Then
             Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
-            SetSelectedItem(Me.step3_cboUseShipAddress, YesId)
+            SetSelectedItem(step3_cboUseShipAddress, YesId)
             moUserControlContactInfo.Visible = True
 
-            Me.UserControlAddress.ClaimDetailsBind(Me.State.ClaimBO.ContactInfo.Address)
-            Me.UserControlContactInfo.Bind(Me.State.ClaimBO.ContactInfo)
+            UserControlAddress.ClaimDetailsBind(State.ClaimBO.ContactInfo.Address)
+            UserControlContactInfo.Bind(State.ClaimBO.ContactInfo)
             'This makes all child controls inside UserControlAddress as ReadOnly 
             If isNewFulfillment = True Then
-                Me.UserControlAddress.EnableControl(False)
-                Me.UserControlContactInfo.EnableControl(False)
+                UserControlAddress.EnableControl(False)
+                UserControlContactInfo.EnableControl(False)
             End If
 
         End If
 
-        If Not State.ClaimBO.LossDate Is Nothing AndAlso Not State.ClaimBO.ReportedDate Is Nothing Then
+        If State.ClaimBO.LossDate IsNot Nothing AndAlso State.ClaimBO.ReportedDate IsNot Nothing Then
             'Display warning Message if the period between the Date of loss and the Reported Date is more than the allowed Number of Days
-            If Me.State.CertBO.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED AndAlso Me.State.ClaimBO.Dealer.IsGracePeriodSpecified AndAlso Me.State.ClaimBO.IsNew Then
+            If State.CertBO.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED AndAlso State.ClaimBO.Dealer.IsGracePeriodSpecified AndAlso State.ClaimBO.IsNew Then
 
 
                 If Not State.ClaimBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK AndAlso
                    Not State.ClaimBO.IsClaimReportedWithValidCoverage(State.ClaimBO.CertificateId, State.ClaimBO.CertItemCoverageId, State.ClaimBO.LossDate.Value, State.ClaimBO.ReportedDate.Value) Then
                     Dim denialMessage As String = CreateClaimDenialMessage(True, Message.MSG_COVERAGE_TYPE_FOR_CLAIM_MISSING_FROM_CERTIFICATE, False)
-                    Me.MasterPage.MessageController.AddWarning(denialMessage)
+                    MasterPage.MessageController.AddWarning(denialMessage)
                 End If
                 If Not State.ClaimBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK AndAlso
                    Not State.ClaimBO.IsClaimReportedWithinGracePeriod(State.ClaimBO.CertificateId, State.ClaimBO.CertItemCoverageId, State.ClaimBO.LossDate.Value, State.ClaimBO.ReportedDate.Value) Then
                     Dim denialMessage As String = CreateClaimDenialMessage(True, Message.MSG_CLAIM_NOT_REPORTED_WITHIN_GRACE_PERIOD, False)
-                    Me.MasterPage.MessageController.AddWarning(denialMessage)
+                    MasterPage.MessageController.AddWarning(denialMessage)
                 End If
 
                 If (State.ClaimBO.IsClaimReportedWithinGracePeriod(State.ClaimBO.CertificateId, State.ClaimBO.CertItemCoverageId, State.ClaimBO.LossDate.Value, State.ClaimBO.ReportedDate.Value)) And
                    (State.ClaimBO.IsClaimReportedWithValidCoverage(State.ClaimBO.CertificateId, State.ClaimBO.CertItemCoverageId, State.ClaimBO.LossDate.Value, State.ClaimBO.ReportedDate.Value)) Then
                     If State.ClaimBO.IsMaxReplacementExceeded(State.ClaimBO.CertificateId, State.ClaimBO.LossDate.Value) Then
                         Dim denialMessage As String = CreateClaimDenialMessage(True, Message.MSG_CLAIM_MAX_REPLACEMENT_EXCEEDED, False)
-                        Me.MasterPage.MessageController.AddWarning(denialMessage)
+                        MasterPage.MessageController.AddWarning(denialMessage)
                     End If
                 End If
 
@@ -2377,24 +2377,24 @@ Public Class ClaimWizardForm
                 If Not State.ClaimBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK AndAlso
                    Not State.ClaimBO.IsClaimReportedWithinPeriod(State.ClaimBO.CertificateId, State.ClaimBO.LossDate.Value, State.ClaimBO.ReportedDate.Value) Then
                     Dim denialMessage As String = CreateClaimDenialMessage(True, Message.MSG_CLAIM_NOT_REPORTED_WITHIN_PERIOD, False)
-                    Me.MasterPage.MessageController.AddWarning(denialMessage)
+                    MasterPage.MessageController.AddWarning(denialMessage)
                 End If
                 'Display warning Message if the Maximum number of Replacements have been exceeded
                 If State.ClaimBO.IsMaxReplacementExceeded(State.ClaimBO.CertificateId, State.ClaimBO.LossDate.Value) Then
                     Dim denialMessage As String = CreateClaimDenialMessage(True, Message.MSG_CLAIM_MAX_REPLACEMENT_EXCEEDED, False)
-                    Me.MasterPage.MessageController.AddWarning(denialMessage)
+                    MasterPage.MessageController.AddWarning(denialMessage)
                 End If
             End If
 
         End If
 
-        If Me.State.ClaimBO.CertificateItem.IsEquipmentRequired Then
+        If State.ClaimBO.CertificateItem.IsEquipmentRequired Then
 
             'populate best replacement record
-            With Me.step3_ReplacementOption
+            With step3_ReplacementOption
                 .thisPage = Me
-                .ClaimBO = CType(Me.State.ClaimBO, ClaimBase)
-                If (Me.State.ClaimBO.Dealer.UseEquipmentId.Equals(Me.State.yesId)) Then
+                .ClaimBO = CType(State.ClaimBO, ClaimBase)
+                If (State.ClaimBO.Dealer.UseEquipmentId.Equals(State.yesId)) Then
                     .Visible = True
                 Else
                     .Visible = False
@@ -2402,12 +2402,12 @@ Public Class ClaimWizardForm
             End With
         End If
 
-        If Me.State.ClaimBO.CertificateItem.IsEquipmentRequired Then
+        If State.ClaimBO.CertificateItem.IsEquipmentRequired Then
             'populate best replacement record
-            With Me.step3_ReplacementOption
+            With step3_ReplacementOption
                 .thisPage = Me
-                .ClaimBO = CType(Me.State.ClaimBO, ClaimBase)
-                If (Me.State.ClaimBO.Dealer.UseEquipmentId.Equals(Me.State.yesId)) Then
+                .ClaimBO = CType(State.ClaimBO, ClaimBase)
+                If (State.ClaimBO.Dealer.UseEquipmentId.Equals(State.yesId)) Then
                     .Visible = True
                 Else
                     .Visible = False
@@ -2509,11 +2509,11 @@ Public Class ClaimWizardForm
     Sub PopulateClaimedEnrolledDetails()
         Dim allowEnrolledDeviceUpdate As AttributeValue = State.DealerBO.AttributeValues.FirstOrDefault(Function(attributeValue) attributeValue.Attribute.UiProgCode = Codes.DLR_ATTR_ALLOW_MODIFY_CLAIMED_DEVICE)
         With State.ClaimBO
-            If Not .EnrolledEquipment Is Nothing Or Not .ClaimedEquipment Is Nothing Then
+            If .EnrolledEquipment IsNot Nothing Or .ClaimedEquipment IsNot Nothing Then
                 With ucClaimDeviceInfo
                     .thisPage = Me
                     .ClaimBO = CType(State.ClaimBO, ClaimBase)
-                    If Not allowEnrolledDeviceUpdate Is Nothing AndAlso allowEnrolledDeviceUpdate.Value = Codes.YESNO_Y Then
+                    If allowEnrolledDeviceUpdate IsNot Nothing AndAlso allowEnrolledDeviceUpdate.Value = Codes.YESNO_Y Then
                         For Each i As ClaimIssue In State.ClaimBO.ClaimIssuesList
                             If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS And i.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Then
                                 .ShowDeviceEditImg = True
@@ -2535,80 +2535,80 @@ Public Class ClaimWizardForm
 
         Dim AssurantPays As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
 
-        With Me.State.ClaimBO
+        With State.ClaimBO
 
-            Me.PopulateBOProperty(Me.State.ClaimBO, "CauseOfLossId", Me.step3_cboCauseOfLossId)
-            Me.PopulateBOProperty(Me.State.ClaimBO, "ContactName", Me.step3_TextboxContactName)
-            Me.PopulateBOProperty(Me.State.ClaimBO, "CallerName", Me.step3_TextboxCallerName)
-            Me.PopulateBOProperty(Me.State.ClaimBO, "CallerTaxNumber", Me.step3_TextboxCALLER_TAX_NUMBER)
-            Me.PopulateBOProperty(Me.State.ClaimBO, "ProblemDescription", Me.step3_TextboxProblemDescription)
-            Me.PopulateBOProperty(Me.State.ClaimBO, "Deductible", Me.step3_TextboxDeductible_WRITE)
-            Me.PopulateBOProperty(Me.State.ClaimBO, "DiscountAmount", Me.step3_TextBoxDiscount)
-            Me.PopulateBOProperty(Me.State.ClaimBO, "PolicyNumber", Me.step3_TextboxPolicyNumber)
-            Me.PopulateBOProperty(Me.State.ClaimBO, "LossDate", Me.step3_TextboxLossDate)
-            Me.PopulateBOProperty(Me.State.ClaimBO, "ReportedDate", Me.step3_TextboxReportDate)
-            Me.PopulateBOProperty(Me.State.ClaimBO, "NewDeviceSku", Me.step3_txtNewDeviceSKU)
-            Me.PopulateBOProperty(Me.State.ClaimBO, "IsLawsuitId", Me.step3_cboLawsuitId)
-            Me.PopulateBOProperty(Me.State.ClaimBO, "SpecialInstruction", Me.step3_TxtSpecialInstruction)
+            PopulateBOProperty(State.ClaimBO, "CauseOfLossId", step3_cboCauseOfLossId)
+            PopulateBOProperty(State.ClaimBO, "ContactName", step3_TextboxContactName)
+            PopulateBOProperty(State.ClaimBO, "CallerName", step3_TextboxCallerName)
+            PopulateBOProperty(State.ClaimBO, "CallerTaxNumber", step3_TextboxCALLER_TAX_NUMBER)
+            PopulateBOProperty(State.ClaimBO, "ProblemDescription", step3_TextboxProblemDescription)
+            PopulateBOProperty(State.ClaimBO, "Deductible", step3_TextboxDeductible_WRITE)
+            PopulateBOProperty(State.ClaimBO, "DiscountAmount", step3_TextBoxDiscount)
+            PopulateBOProperty(State.ClaimBO, "PolicyNumber", step3_TextboxPolicyNumber)
+            PopulateBOProperty(State.ClaimBO, "LossDate", step3_TextboxLossDate)
+            PopulateBOProperty(State.ClaimBO, "ReportedDate", step3_TextboxReportDate)
+            PopulateBOProperty(State.ClaimBO, "NewDeviceSku", step3_txtNewDeviceSKU)
+            PopulateBOProperty(State.ClaimBO, "IsLawsuitId", step3_cboLawsuitId)
+            PopulateBOProperty(State.ClaimBO, "SpecialInstruction", step3_TxtSpecialInstruction)
 
-            If Me.State.ClaimBO.MethodOfRepairCode <> Codes.METHOD_OF_REPAIR__RECOVERY Then
-                Me.PopulateBOProperty(Me.State.ClaimBO, "LiabilityLimit", Me.step3_TextboxLiabilityLimit)
+            If State.ClaimBO.MethodOfRepairCode <> Codes.METHOD_OF_REPAIR__RECOVERY Then
+                PopulateBOProperty(State.ClaimBO, "LiabilityLimit", step3_TextboxLiabilityLimit)
             End If
 
-            If Me.State.IsSalutation Then
-                Me.PopulateBOProperty(Me.State.ClaimBO, "ContactSalutationID", Me.step3_cboContactSalutationId)
-                Me.PopulateBOProperty(Me.State.ClaimBO, "CallerSalutationID", Me.step3_cboCallerSalutationId)
+            If State.IsSalutation Then
+                PopulateBOProperty(State.ClaimBO, "ContactSalutationID", step3_cboContactSalutationId)
+                PopulateBOProperty(State.ClaimBO, "CallerSalutationID", step3_cboCallerSalutationId)
             End If
 
-            If Me.PanelPoliceReport.Visible = True Then
-                Me.PopulatePoliceReportBOFromUserCtr(True)
+            If PanelPoliceReport.Visible = True Then
+                PopulatePoliceReportBOFromUserCtr(True)
             Else
-                Me.State.PoliceReportBO = Nothing
+                State.PoliceReportBO = Nothing
             End If
 
-            If Not Me.State.ClaimBO.ContactInfo Is Nothing Then
-                If Me.State.ClaimBO.ContactInfo.IsDeleted = False Then
-                    Me.State.ClaimBO.ContactInfoId = Me.State.ClaimBO.ContactInfo.Id
+            If State.ClaimBO.ContactInfo IsNot Nothing Then
+                If State.ClaimBO.ContactInfo.IsDeleted = False Then
+                    State.ClaimBO.ContactInfoId = State.ClaimBO.ContactInfo.Id
                 End If
             End If
 
-            If Me.State.IsClaimDenied Then
-                Me.PopulateBOProperty(Me.State.ClaimBO, "DeniedReasonId", Me.step3_cboDeniedReason)
-                Me.PopulateBOProperty(Me.State.ClaimBO, "Fraudulent", Me.step3_cboFraudulent)
-                Me.PopulateBOProperty(Me.State.ClaimBO, "Complaint", Me.step3_cboComplaint)
+            If State.IsClaimDenied Then
+                PopulateBOProperty(State.ClaimBO, "DeniedReasonId", step3_cboDeniedReason)
+                PopulateBOProperty(State.ClaimBO, "Fraudulent", step3_cboFraudulent)
+                PopulateBOProperty(State.ClaimBO, "Complaint", step3_cboComplaint)
             End If
 
-            If Me.State.IsClaimDenied Then
-                Me.PopulateBOProperty(Me.State.ClaimBO, "DeniedReasonId", Me.step3_cboDeniedReason)
-                Me.PopulateBOProperty(Me.State.ClaimBO, "Fraudulent", Me.step3_cboFraudulent)
-                Me.PopulateBOProperty(Me.State.ClaimBO, "Complaint", Me.step3_cboComplaint)
+            If State.IsClaimDenied Then
+                PopulateBOProperty(State.ClaimBO, "DeniedReasonId", step3_cboDeniedReason)
+                PopulateBOProperty(State.ClaimBO, "Fraudulent", step3_cboFraudulent)
+                PopulateBOProperty(State.ClaimBO, "Complaint", step3_cboComplaint)
             End If
 
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
 
-        If step3_cboUseShipAddress.SelectedValue = Me.State.yesId.ToString Then
-            Me.State.ClaimBO.ContactInfo.Address.InforceFieldValidation = True
+        If step3_cboUseShipAddress.SelectedValue = State.yesId.ToString Then
+            State.ClaimBO.ContactInfo.Address.InforceFieldValidation = True
             UserControlContactInfo.PopulateBOFromControl(True)
-            Me.State.ClaimBO.ContactInfo.Save()
+            State.ClaimBO.ContactInfo.Save()
         End If
 
     End Sub
 
     Private Sub InitialEnableDisableReplacementForStep3()
-        ControlMgr.SetVisibleControl(Me, Me.step3_lblNewDeviceSKU, False)
-        ControlMgr.SetVisibleControl(Me, Me.step3_txtNewDeviceSKU, False)
-        If Me.State.ClaimBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT Then
+        ControlMgr.SetVisibleControl(Me, step3_lblNewDeviceSKU, False)
+        ControlMgr.SetVisibleControl(Me, step3_txtNewDeviceSKU, False)
+        If State.ClaimBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT Then
             ' Check if Deductible Calculation Method is List and SKU Price is resolved
             Dim oDeductible As CertItemCoverage.DeductibleType
-            oDeductible = CertItemCoverage.GetDeductible(Me.State.ClaimBO.CertItemCoverageId, Me.State.ClaimBO.MethodOfRepairId)
-            Me.State.DEDUCTIBLE_BASED_ON = oDeductible.DeductibleBasedOn
+            oDeductible = CertItemCoverage.GetDeductible(State.ClaimBO.CertItemCoverageId, State.ClaimBO.MethodOfRepairId)
+            State.DEDUCTIBLE_BASED_ON = oDeductible.DeductibleBasedOn
             'req 1157 added additional condition
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, Me.State.DealerBO.NewDeviceSkuRequiredId) = Codes.YESNO_Y Or (Me.State.DEDUCTIBLE_BASED_ON = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE) Then
-                ControlMgr.SetVisibleControl(Me, Me.step3_lblNewDeviceSKU, True)
-                ControlMgr.SetVisibleControl(Me, Me.step3_txtNewDeviceSKU, True)
+            If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, State.DealerBO.NewDeviceSkuRequiredId) = Codes.YESNO_Y Or (State.DEDUCTIBLE_BASED_ON = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE) Then
+                ControlMgr.SetVisibleControl(Me, step3_lblNewDeviceSKU, True)
+                ControlMgr.SetVisibleControl(Me, step3_txtNewDeviceSKU, True)
             End If
         End If
 
@@ -2616,97 +2616,97 @@ Public Class ClaimWizardForm
 
     Private Sub InitialEnableDisableControlsForStep3()
 
-        Me.ChangeEnabledProperty(Me.step3_TextboxCertificateNumber, False)
-        Me.ChangeEnabledProperty(Me.step3_TextboxClaimNumber, False)
-        Me.ChangeEnabledProperty(Me.step3_TextboxLiabilityLimit, False)
-        Me.ChangeEnabledProperty(Me.step3_TextboxDeductible_WRITE, True)
-        Me.ChangeEnabledProperty(Me.step3_TextBoxDiscount, False)
-        Me.ChangeEnabledProperty(Me.step3_txtPickupDate, False)
-        Me.ChangeEnabledProperty(Me.step3_txtVisitDate, False)
+        ChangeEnabledProperty(step3_TextboxCertificateNumber, False)
+        ChangeEnabledProperty(step3_TextboxClaimNumber, False)
+        ChangeEnabledProperty(step3_TextboxLiabilityLimit, False)
+        ChangeEnabledProperty(step3_TextboxDeductible_WRITE, True)
+        ChangeEnabledProperty(step3_TextBoxDiscount, False)
+        ChangeEnabledProperty(step3_txtPickupDate, False)
+        ChangeEnabledProperty(step3_txtVisitDate, False)
 
         'Make Invisible for Service Warranty
-        If Me.State.ClaimBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK Then
+        If State.ClaimBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK Then
             'Service Warranty Claims
-            ControlMgr.SetVisibleControl(Me, Me.step3_LabelLiabilityLimit, False)
-            ControlMgr.SetVisibleControl(Me, Me.step3_TextboxLiabilityLimit, False)
-            ControlMgr.SetVisibleControl(Me, Me.step3_LabelDeductible, False)
-            ControlMgr.SetVisibleControl(Me, Me.step3_TextboxDeductible_WRITE, False)
-            ControlMgr.SetVisibleControl(Me, Me.step3_LabelDiscount, False)
-            ControlMgr.SetVisibleControl(Me, Me.step3_TextBoxDiscount, False)
+            ControlMgr.SetVisibleControl(Me, step3_LabelLiabilityLimit, False)
+            ControlMgr.SetVisibleControl(Me, step3_TextboxLiabilityLimit, False)
+            ControlMgr.SetVisibleControl(Me, step3_LabelDeductible, False)
+            ControlMgr.SetVisibleControl(Me, step3_TextboxDeductible_WRITE, False)
+            ControlMgr.SetVisibleControl(Me, step3_LabelDiscount, False)
+            ControlMgr.SetVisibleControl(Me, step3_TextBoxDiscount, False)
         End If
 
-        If Not Me.State.ClaimBO.LossDate Is Nothing Then
+        If State.ClaimBO.LossDate IsNot Nothing Then
             'When editing a claim record created from an existing one
-            Me.ChangeEnabledProperty(Me.step3_TextboxLossDate, False)
-            ControlMgr.SetVisibleControl(Me, Me.step3_ImageButtonLossDate, False)
+            ChangeEnabledProperty(step3_TextboxLossDate, False)
+            ControlMgr.SetVisibleControl(Me, step3_ImageButtonLossDate, False)
         End If
 
-        If Me.State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Then
-            ControlMgr.SetVisibleControl(Me, Me.step3_TextboxPolicyNumber, True)
-            ControlMgr.SetVisibleControl(Me, Me.step3_LabelPolicyNumber, True)
+        If State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Then
+            ControlMgr.SetVisibleControl(Me, step3_TextboxPolicyNumber, True)
+            ControlMgr.SetVisibleControl(Me, step3_LabelPolicyNumber, True)
         Else
-            ControlMgr.SetVisibleControl(Me, Me.step3_TextboxPolicyNumber, False)
-            ControlMgr.SetVisibleControl(Me, Me.step3_LabelPolicyNumber, False)
+            ControlMgr.SetVisibleControl(Me, step3_TextboxPolicyNumber, False)
+            ControlMgr.SetVisibleControl(Me, step3_LabelPolicyNumber, False)
         End If
 
         InitialEnableDisableReplacementForStep3()
 
-        Dim objCompany As New Company(Me.State.ClaimBO.CompanyId)
+        Dim objCompany As New Company(State.ClaimBO.CompanyId)
         If LookupListNew.GetCodeFromId(LookupListNew.LK_COMPANY_TYPE, objCompany.CompanyTypeId) = objCompany.COMPANY_TYPE_SERVICES Then
-            ControlMgr.SetVisibleControl(Me, Me.step3_TextboxCALLER_TAX_NUMBER, False)
-            ControlMgr.SetVisibleControl(Me, Me.step3_LabelCALLER_TAX_NUMBER, False)
+            ControlMgr.SetVisibleControl(Me, step3_TextboxCALLER_TAX_NUMBER, False)
+            ControlMgr.SetVisibleControl(Me, step3_LabelCALLER_TAX_NUMBER, False)
         Else
-            ControlMgr.SetVisibleControl(Me, Me.step3_TextboxCALLER_TAX_NUMBER, True)
-            ControlMgr.SetVisibleControl(Me, Me.step3_LabelCALLER_TAX_NUMBER, True)
+            ControlMgr.SetVisibleControl(Me, step3_TextboxCALLER_TAX_NUMBER, True)
+            ControlMgr.SetVisibleControl(Me, step3_LabelCALLER_TAX_NUMBER, True)
         End If
 
-        If SpecialService.ChkIfSplSvcConfigured(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, Me.State.ClaimBO.CoverageTypeId, Me.State.ClaimBO.Certificate.DealerId, Authentication.LangId, Me.State.ClaimBO.Certificate.ProductCode, False) Then
-            Me.ChangeEnabledProperty(Me.step3_cboCauseOfLossId, True)
+        If SpecialService.ChkIfSplSvcConfigured(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, State.ClaimBO.CoverageTypeId, State.ClaimBO.Certificate.DealerId, Authentication.LangId, State.ClaimBO.Certificate.ProductCode, False) Then
+            ChangeEnabledProperty(step3_cboCauseOfLossId, True)
         End If
     End Sub
 
     Private Sub EnableDisableControlsForStep3()
-        If Me.State.IsSalutation Then
-            ControlMgr.SetVisibleControl(Me, Me.step3_cboContactSalutationId, True)
-            ControlMgr.SetVisibleControl(Me, Me.step3_cboCallerSalutationId, True)
+        If State.IsSalutation Then
+            ControlMgr.SetVisibleControl(Me, step3_cboContactSalutationId, True)
+            ControlMgr.SetVisibleControl(Me, step3_cboCallerSalutationId, True)
         Else
-            ControlMgr.SetVisibleControl(Me, Me.step3_cboContactSalutationId, False)
-            ControlMgr.SetVisibleControl(Me, Me.step3_cboCallerSalutationId, False)
+            ControlMgr.SetVisibleControl(Me, step3_cboContactSalutationId, False)
+            ControlMgr.SetVisibleControl(Me, step3_cboCallerSalutationId, False)
         End If
 
-        If Me.State.ClaimBO.ClaimNumber Is Nothing Then
-            ControlMgr.SetVisibleControl(Me, Me.step3_LabelClaimNumber, False)
-            ControlMgr.SetVisibleControl(Me, Me.step3_TextboxClaimNumber, False)
+        If State.ClaimBO.ClaimNumber Is Nothing Then
+            ControlMgr.SetVisibleControl(Me, step3_LabelClaimNumber, False)
+            ControlMgr.SetVisibleControl(Me, step3_TextboxClaimNumber, False)
         End If
 
-        If Me.State.ClaimBO.IsDaysLimitExceeded Then
-            Me.MasterPage.MessageController.Clear()
-            Me.MasterPage.MessageController.AddWarning("DAYS_LIMIT_EXCEEDED")
+        If State.ClaimBO.IsDaysLimitExceeded Then
+            MasterPage.MessageController.Clear()
+            MasterPage.MessageController.AddWarning("DAYS_LIMIT_EXCEEDED")
         End If
-        If Me.State.ClaimBO.IsAuthorizationLimitExceeded Then
-            Me.moMessageController.Clear()
-            Me.moMessageController.AddWarning(String.Format("{0}: {1}",
+        If State.ClaimBO.IsAuthorizationLimitExceeded Then
+            moMessageController.Clear()
+            moMessageController.AddWarning(String.Format("{0}: {1}",
                                                             TranslationBase.TranslateLabelOrMessage("Authorized_Amount"),
                                                             TranslationBase.TranslateLabelOrMessage("Authorization_Limit_Exceeded"), False))
         End If
 
-        If Me.State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__PICK_UP Or Me.State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
-            ControlMgr.SetVisibleControl(Me, Me.step3_LabelUseShipAddress, True)
-            ControlMgr.SetVisibleControl(Me, Me.step3_cboUseShipAddress, True)
+        If State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__PICK_UP Or State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
+            ControlMgr.SetVisibleControl(Me, step3_LabelUseShipAddress, True)
+            ControlMgr.SetVisibleControl(Me, step3_cboUseShipAddress, True)
         End If
 
-        If Me.State.ClaimBO.Contract.PayOutstandingPremiumId.Equals(Me.State.yesId) Then
-            Me.State.PayOutstandingPremium = True
-            ControlMgr.SetVisibleControl(Me, Me.step3_LabelOutstandingPremAmt, True)
-            ControlMgr.SetVisibleControl(Me, Me.step3_TextboxOutstandingPremAmt, True)
+        If State.ClaimBO.Contract.PayOutstandingPremiumId.Equals(State.yesId) Then
+            State.PayOutstandingPremium = True
+            ControlMgr.SetVisibleControl(Me, step3_LabelOutstandingPremAmt, True)
+            ControlMgr.SetVisibleControl(Me, step3_TextboxOutstandingPremAmt, True)
         Else
-            Me.State.PayOutstandingPremium = False
-            ControlMgr.SetVisibleControl(Me, Me.step3_LabelOutstandingPremAmt, False)
-            ControlMgr.SetVisibleControl(Me, Me.step3_TextboxOutstandingPremAmt, False)
+            State.PayOutstandingPremium = False
+            ControlMgr.SetVisibleControl(Me, step3_LabelOutstandingPremAmt, False)
+            ControlMgr.SetVisibleControl(Me, step3_TextboxOutstandingPremAmt, False)
         End If
 
         'If No issues to Add to claim hide the Save and Cancel Button
-        If (Me.State.ClaimBO.Load_Filtered_Issues().Count = 0) Then
+        If (State.ClaimBO.Load_Filtered_Issues().Count = 0) Then
             MessageLiteral.Text = TranslationBase.TranslateLabelOrMessage("MSG_NO_ISSUES_FOUND")
             modalMessageBox.Attributes.Add("class", "infoMsg")
             modalMessageBox.Attributes.Add("style", "display: block")
@@ -2722,74 +2722,74 @@ Public Class ClaimWizardForm
         End If
 
         'if the use equipment is not Yes then hide the device inforamtion and best replacement options
-        If Me.State.ClaimBO.CertificateItem.IsEquipmentRequired Then
-            Me.step3_ReplacementOption.Visible = True
+        If State.ClaimBO.CertificateItem.IsEquipmentRequired Then
+            step3_ReplacementOption.Visible = True
             'Me.dvClaimEquipment.Visible = True
         Else
-            Me.step3_ReplacementOption.Visible = False
+            step3_ReplacementOption.Visible = False
             'Me.dvClaimEquipment.Visible = False
         End If
 
     End Sub
 
-    Private Sub BindBoPropertiesToLabels(ByVal wizardStep As ClaimWizardSteps)
+    Private Sub BindBoPropertiesToLabels(wizardStep As ClaimWizardSteps)
 
         Select Case wizardStep
             Case ClaimWizardSteps.Step2
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "RiskTypeId", Me.step2_LabelRiskTypeId)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "ManufacturerId", Me.step2_LabelMakeId)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "SerialNumber", Me.step2_LabelSerialNumber)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "Model", Me.step2_LabelModel)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "DealerItemDesc", Me.step2_LabelDealerItemDesc)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "SkuNumber", Me.step2_labelSKU)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "BeginDate", Me.step2_LabelBeginDate)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "EndDate", Me.step2_LabelEndDate)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "CreatedDate", Me.step2_LabelDateAdded)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "GetCoverageTypeDescription", Me.step2_LabelCoverageType)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "MethodOfRepairId", Me.step2_LabelMethodOfRepair)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "DealerDiscountAmt", Me.step2_LabelDeductible)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "DealerDiscountPercent", Me.step2_LabelDeductiblePercent)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "LiabilityLimits", Me.step2_LabelLiabilityLimit)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "ProductCode", Me.step2_LabelProductCode)
-                Me.BindBOPropertyToLabel(Me.State.CertItemBO, "InvoiceNumber", Me.step2_LabelInvNum)
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, Me.State.DealerBO.UseEquipmentId) = Codes.YESNO_Y Then
-                    Me.BindBOPropertyToLabel(Me.State.step2_claimEquipmentBO, "ManufacturerId", Me.step2_lblClaimedMake)
-                    Me.BindBOPropertyToLabel(Me.State.step2_claimEquipmentBO, "Model", Me.step2_lblClaimedModel)
-                    Me.BindBOPropertyToLabel(Me.State.step2_claimEquipmentBO, "SKU", Me.step2_lblClaimedSKU)
-                    Me.BindBOPropertyToLabel(Me.State.step2_claimEquipmentBO, "EquipmentDescription", Me.step2_LabelClaimDesc)
-                    Me.BindBOPropertyToLabel(Me.State.step2_claimEquipmentBO, "SerialNumber", Me.step2_LabelClaimSerialNumber)
+                BindBOPropertyToLabel(State.CertItemBO, "RiskTypeId", step2_LabelRiskTypeId)
+                BindBOPropertyToLabel(State.CertItemBO, "ManufacturerId", step2_LabelMakeId)
+                BindBOPropertyToLabel(State.CertItemBO, "SerialNumber", step2_LabelSerialNumber)
+                BindBOPropertyToLabel(State.CertItemBO, "Model", step2_LabelModel)
+                BindBOPropertyToLabel(State.CertItemBO, "DealerItemDesc", step2_LabelDealerItemDesc)
+                BindBOPropertyToLabel(State.CertItemBO, "SkuNumber", step2_labelSKU)
+                BindBOPropertyToLabel(State.CertItemBO, "BeginDate", step2_LabelBeginDate)
+                BindBOPropertyToLabel(State.CertItemBO, "EndDate", step2_LabelEndDate)
+                BindBOPropertyToLabel(State.CertItemBO, "CreatedDate", step2_LabelDateAdded)
+                BindBOPropertyToLabel(State.CertItemBO, "GetCoverageTypeDescription", step2_LabelCoverageType)
+                BindBOPropertyToLabel(State.CertItemBO, "MethodOfRepairId", step2_LabelMethodOfRepair)
+                BindBOPropertyToLabel(State.CertItemBO, "DealerDiscountAmt", step2_LabelDeductible)
+                BindBOPropertyToLabel(State.CertItemBO, "DealerDiscountPercent", step2_LabelDeductiblePercent)
+                BindBOPropertyToLabel(State.CertItemBO, "LiabilityLimits", step2_LabelLiabilityLimit)
+                BindBOPropertyToLabel(State.CertItemBO, "ProductCode", step2_LabelProductCode)
+                BindBOPropertyToLabel(State.CertItemBO, "InvoiceNumber", step2_LabelInvNum)
+                If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, State.DealerBO.UseEquipmentId) = Codes.YESNO_Y Then
+                    BindBOPropertyToLabel(State.step2_claimEquipmentBO, "ManufacturerId", step2_lblClaimedMake)
+                    BindBOPropertyToLabel(State.step2_claimEquipmentBO, "Model", step2_lblClaimedModel)
+                    BindBOPropertyToLabel(State.step2_claimEquipmentBO, "SKU", step2_lblClaimedSKU)
+                    BindBOPropertyToLabel(State.step2_claimEquipmentBO, "EquipmentDescription", step2_LabelClaimDesc)
+                    BindBOPropertyToLabel(State.step2_claimEquipmentBO, "SerialNumber", step2_LabelClaimSerialNumber)
                 End If
             Case ClaimWizardSteps.Step3
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "CauseOfLossId", Me.step3_LabelCauseOfLossId)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "ContactName", Me.step3_LabelContactName)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "CallerName", Me.step3_LabelCallerName)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "ProblemDescription", Me.step3_LabelProblemDescription)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "LiabilityLimit", Me.step3_LabelLiabilityLimit)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "Deductible", Me.step3_LabelDeductible)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "DiscountAmount", Me.step3_LabelDiscount)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "LossDate", Me.step3_LabelLossDate)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "ReportedDate", Me.step3_LabelReportDate)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "CertificateNumber", Me.step3_LabelCertificateNumber)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "PolicyNumber", Me.step3_LabelPolicyNumber)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "CallerTaxNumber", Me.step3_LabelCALLER_TAX_NUMBER)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "NewDeviceSKU", Me.step3_lblNewDeviceSKU)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "IsLawsuitId", Me.step3_LabelIsLawsuitId)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "DeniedReasonId", Me.step3_lblDeniedReason)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "Fraudulent", Me.step3_lblPotFraudulent)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "Complaint", Me.step3_lblComplaint)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "PickUpDate", Me.step3_lblPickupDate)
-                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "VisitDate", Me.step3_lblVisitDate)
+                BindBOPropertyToLabel(State.ClaimBO, "CauseOfLossId", step3_LabelCauseOfLossId)
+                BindBOPropertyToLabel(State.ClaimBO, "ContactName", step3_LabelContactName)
+                BindBOPropertyToLabel(State.ClaimBO, "CallerName", step3_LabelCallerName)
+                BindBOPropertyToLabel(State.ClaimBO, "ProblemDescription", step3_LabelProblemDescription)
+                BindBOPropertyToLabel(State.ClaimBO, "LiabilityLimit", step3_LabelLiabilityLimit)
+                BindBOPropertyToLabel(State.ClaimBO, "Deductible", step3_LabelDeductible)
+                BindBOPropertyToLabel(State.ClaimBO, "DiscountAmount", step3_LabelDiscount)
+                BindBOPropertyToLabel(State.ClaimBO, "LossDate", step3_LabelLossDate)
+                BindBOPropertyToLabel(State.ClaimBO, "ReportedDate", step3_LabelReportDate)
+                BindBOPropertyToLabel(State.ClaimBO, "CertificateNumber", step3_LabelCertificateNumber)
+                BindBOPropertyToLabel(State.ClaimBO, "PolicyNumber", step3_LabelPolicyNumber)
+                BindBOPropertyToLabel(State.ClaimBO, "CallerTaxNumber", step3_LabelCALLER_TAX_NUMBER)
+                BindBOPropertyToLabel(State.ClaimBO, "NewDeviceSKU", step3_lblNewDeviceSKU)
+                BindBOPropertyToLabel(State.ClaimBO, "IsLawsuitId", step3_LabelIsLawsuitId)
+                BindBOPropertyToLabel(State.ClaimBO, "DeniedReasonId", step3_lblDeniedReason)
+                BindBOPropertyToLabel(State.ClaimBO, "Fraudulent", step3_lblPotFraudulent)
+                BindBOPropertyToLabel(State.ClaimBO, "Complaint", step3_lblComplaint)
+                BindBOPropertyToLabel(State.ClaimBO, "PickUpDate", step3_lblPickupDate)
+                BindBOPropertyToLabel(State.ClaimBO, "VisitDate", step3_lblVisitDate)
 
 
             Case ClaimWizardSteps.Step5
-                Me.BindBOPropertyToLabel(Me.State.CommentBO, "CreatedDate", Me.step5_LabelDateTime)
-                Me.BindBOPropertyToLabel(Me.State.CommentBO, "CallerName", Me.step5_LabelCallerName)
-                Me.BindBOPropertyToLabel(Me.State.CommentBO, "CommentTypeId", Me.step5_LabelCommentType)
+                BindBOPropertyToLabel(State.CommentBO, "CreatedDate", step5_LabelDateTime)
+                BindBOPropertyToLabel(State.CommentBO, "CallerName", step5_LabelCallerName)
+                BindBOPropertyToLabel(State.CommentBO, "CommentTypeId", step5_LabelCommentType)
         End Select
-        Me.ClearGridHeadersAndLabelsErrSign()
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
-    Private Function CreateClaimDenialMessage(ByVal showWarning As Boolean, ByVal denialMessage As String, ByVal showContinue As Boolean) As String
+    Private Function CreateClaimDenialMessage(showWarning As Boolean, denialMessage As String, showContinue As Boolean) As String
         Dim sbMsg As New System.Text.StringBuilder
         If showWarning = True Then
             sbMsg.Append(TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_DENIAL_WARNING))
@@ -2820,23 +2820,23 @@ Public Class ClaimWizardForm
     '    Return returnValue
     'End Function
 
-    Private Sub PopulatePoliceReportBOFromUserCtr(ByVal blnExcludePoliceReportSave As Boolean)
-        With Me.State.PoliceReportBO
-            .ClaimId = Me.State.ClaimBO.Id
+    Private Sub PopulatePoliceReportBOFromUserCtr(blnExcludePoliceReportSave As Boolean)
+        With State.PoliceReportBO
+            .ClaimId = State.ClaimBO.Id
             ' determine validate or dont validate
-            Me.mcUserControlPoliceReport.PopulateBOFromControl(blnExcludePoliceReportSave)
+            mcUserControlPoliceReport.PopulateBOFromControl(blnExcludePoliceReportSave)
         End With
     End Sub
 
     Private Sub GoToNextStep()
-        Me.State.StepName = NextStep()
-        Me.State.IsEditMode = False
+        State.StepName = NextStep()
+        State.IsEditMode = False
         PopulateStepUIandData()
-        BindBoPropertiesToLabels(Me.State.StepName)
-        AddStepLabelDecorations(Me.State.StepName)
+        BindBoPropertiesToLabels(State.StepName)
+        AddStepLabelDecorations(State.StepName)
     End Sub
 
-    Private Function IsUserAuthorisedToProceed(ByVal wizardStep As ClaimWizardSteps) As Boolean
+    Private Function IsUserAuthorisedToProceed(wizardStep As ClaimWizardSteps) As Boolean
         Select Case wizardStep
             Case ClaimWizardSteps.Step2
 
@@ -2845,14 +2845,14 @@ Public Class ClaimWizardForm
 
     Private Sub CreateClaim()
 
-        Dim oldStatus As BasicClaimStatus = Me.State.ClaimBO.Status
+        Dim oldStatus As BasicClaimStatus = State.ClaimBO.Status
         Try
-            Me.State.ClaimBO.CreateClaim()
+            State.ClaimBO.CreateClaim()
             If Not State.DealerBO.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) Then
-                Me.State.ClaimBO.PrepopulateDeductible()
+                State.ClaimBO.PrepopulateDeductible()
             End If
         Catch ex As Exception
-            Me.State.ClaimBO.Status = oldStatus
+            State.ClaimBO.Status = oldStatus
             Throw ex
         End Try
 
@@ -2866,37 +2866,37 @@ Public Class ClaimWizardForm
 
     Sub PopulateCurrentSearchType()
         Try
-            Select Case Me.State.LocateServiceCenterSearchType
+            Select Case State.LocateServiceCenterSearchType
                 Case LocateServiceCenterSearchType.ByZip
-                    Me.step4_RadioButtonByZip.Checked = True
+                    step4_RadioButtonByZip.Checked = True
                 Case LocateServiceCenterSearchType.ByCity
-                    Me.step4_RadioButtonByCity.Checked = True
+                    step4_RadioButtonByCity.Checked = True
                 Case LocateServiceCenterSearchType.All
-                    Me.step4_RadioButtonAll.Checked = True
+                    step4_RadioButtonAll.Checked = True
                 Case LocateServiceCenterSearchType.None
-                    Me.step4_RadioButtonNO_SVC_OPTION.Checked = True
+                    step4_RadioButtonNO_SVC_OPTION.Checked = True
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Sub PopulateCountryDropdown()
-        Dim address As New Address(Me.State.CertBO.AddressId)
+        Dim address As New Address(State.CertBO.AddressId)
         Dim dv As ServiceCenter.ServiceCenterSearchDV
         Dim CountryId As Guid
         CountryId = address.CountryId
         dv = ServiceCenter.getUserCustCountries(CountryId)
-        Me.BindListControlToDataView(step4_moCountryDrop, dv, , , False)
-        Me.SetSelectedItem(Me.step4_moCountryDrop, CountryId)
+        BindListControlToDataView(step4_moCountryDrop, dv, , , False)
+        SetSelectedItem(step4_moCountryDrop, CountryId)
     End Sub
 
     Public Sub PopulateGridOrDropDown()
         'get the customer countryId
         Try
             Dim ServNetworkSvc As New ServiceNetworkSvc
-            Dim address As New Address(Me.State.CertBO.AddressId)
-            Dim objCompany As New Company(Me.State.CertBO.CompanyId)
+            Dim address As New Address(State.CertBO.AddressId)
+            Dim objCompany As New Company(State.CertBO.CompanyId)
             Dim UseZipDistrict As Boolean = True
             Dim DealerType As String
             Dim MethodOfRepairType As String, FlagMethodOfRepairRecovery As Boolean = False
@@ -2907,59 +2907,59 @@ Public Class ClaimWizardForm
 
             Dim SelectedCountry As New ArrayList
             Dim isNetwork As Boolean
-            SelectedCountry.Add(Me.GetSelectedItem(step4_moCountryDrop))
+            SelectedCountry.Add(GetSelectedItem(step4_moCountryDrop))
             'Dim srvCenterdIDs As ArrayList = Nothing
-            If Not Me.State.DealerBO.ServiceNetworkId.Equals(Guid.Empty) Then
-                ServNetworkSvc.ServiceNetworkId = Me.State.DealerBO.ServiceNetworkId
+            If Not State.DealerBO.ServiceNetworkId.Equals(Guid.Empty) Then
+                ServNetworkSvc.ServiceNetworkId = State.DealerBO.ServiceNetworkId
                 isNetwork = True
             Else
                 isNetwork = False
             End If
 
             'srvCenterdIDs = ServNetworkSvc.ServiceCentersIDs(isNetwork, cert.MethodOfRepairId)
-            DealerType = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, Me.State.DealerBO.DealerTypeId)  '= Codes.DEALER_TYPES__VSC
+            DealerType = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, State.DealerBO.DealerTypeId)  '= Codes.DEALER_TYPES__VSC
 
 
-            If Me.State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Or
-               Me.State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__GENERAL Or
-               Me.State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__LEGAL Then
+            If State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Or
+               State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__GENERAL Or
+               State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__LEGAL Then
                 FlagMethodOfRepairRecovery = True
             End If
 
             Dim dv As ServiceCenter.LocateServiceCenterResultsDv
-            Select Case Me.State.LocateServiceCenterSearchType
+            Select Case State.LocateServiceCenterSearchType
                 Case LocateServiceCenterSearchType.ByZip
-                    dv = ServiceCenter.LocateServiceCenterByZip(Me.State.CertBO.DealerId, Me.State.CertBO.AddressChild.ZipLocator, Me.State.ClaimBO.RiskTypeId, Me.State.CertItemBO.ManufacturerId, Me.State.CertItemCoverageBO.CoverageTypeCode, SelectedCountry, Me.State.DealerBO.ServiceNetworkId, isNetwork, Me.State.ClaimBO.MethodOfRepairId, UseZipDistrict, DealerType, FlagMethodOfRepairRecovery, MethodOfRepairType, IsUserCompaniesWithAcctSettings())
+                    dv = ServiceCenter.LocateServiceCenterByZip(State.CertBO.DealerId, State.CertBO.AddressChild.ZipLocator, State.ClaimBO.RiskTypeId, State.CertItemBO.ManufacturerId, State.CertItemCoverageBO.CoverageTypeCode, SelectedCountry, State.DealerBO.ServiceNetworkId, isNetwork, State.ClaimBO.MethodOfRepairId, UseZipDistrict, DealerType, FlagMethodOfRepairRecovery, MethodOfRepairType, IsUserCompaniesWithAcctSettings())
                     PopulateServiceCenterGrid(CType(dv, DataView))
                 Case LocateServiceCenterSearchType.ByCity
-                    dv = ServiceCenter.LocateServiceCenterByCity(Me.State.CertBO.DealerId, Me.State.CertBO.AddressChild.ZipLocator, Me.step4_TextboxCity.Text, Me.State.ClaimBO.RiskTypeId, Me.State.CertItemBO.ManufacturerId, Me.State.CertItemCoverageBO.CoverageTypeCode, SelectedCountry, Me.State.DealerBO.ServiceNetworkId, isNetwork, Me.State.ClaimBO.MethodOfRepairId, DealerType, FlagMethodOfRepairRecovery, MethodOfRepairType, IsUserCompaniesWithAcctSettings())
+                    dv = ServiceCenter.LocateServiceCenterByCity(State.CertBO.DealerId, State.CertBO.AddressChild.ZipLocator, step4_TextboxCity.Text, State.ClaimBO.RiskTypeId, State.CertItemBO.ManufacturerId, State.CertItemCoverageBO.CoverageTypeCode, SelectedCountry, State.DealerBO.ServiceNetworkId, isNetwork, State.ClaimBO.MethodOfRepairId, DealerType, FlagMethodOfRepairRecovery, MethodOfRepairType, IsUserCompaniesWithAcctSettings())
                     PopulateServiceCenterGrid(CType(dv, DataView))
                 Case LocateServiceCenterSearchType.All
                     Dim selectedSCIds As New ArrayList
                     selectedSCIds.Add(step4_moMultipleColumnDrop.SelectedGuid)
-                    Me.State.SelectedServiceCenterId = step4_moMultipleColumnDrop.SelectedGuid
+                    State.SelectedServiceCenterId = step4_moMultipleColumnDrop.SelectedGuid
                     PopulateCountryDropdown(SelectedCountry)
-                    PopulateServiceCenterGrid(ServiceCenter.GetLocateServiceCenterDetails(selectedSCIds, Me.State.CertBO.DealerId, Me.State.CertItemBO.ManufacturerId).Tables(0).DefaultView)
+                    PopulateServiceCenterGrid(ServiceCenter.GetLocateServiceCenterDetails(selectedSCIds, State.CertBO.DealerId, State.CertItemBO.ManufacturerId).Tables(0).DefaultView)
 
                     'REQ-5546
                 Case LocateServiceCenterSearchType.None
                     Dim selectedSCIds As New ArrayList
 
                     'Default SC might not null
-                    If Not Me.State.default_service_center_id.Equals(Guid.Empty) Then
-                        Me.State.SelectedServiceCenterId = Me.State.default_service_center_id
+                    If Not State.default_service_center_id.Equals(Guid.Empty) Then
+                        State.SelectedServiceCenterId = State.default_service_center_id
                     Else
-                        Me.MasterPage.MessageController.AddError("TEMP SERVICE CENTER NOT FOUND")
+                        MasterPage.MessageController.AddError("TEMP SERVICE CENTER NOT FOUND")
                         Exit Sub
                     End If
 
-                    selectedSCIds.Add(Me.State.SelectedServiceCenterId)
+                    selectedSCIds.Add(State.SelectedServiceCenterId)
                     PopulateCountryDropdown(SelectedCountry)
-                    PopulateServiceCenterGrid(ServiceCenter.GetLocateServiceCenterDetails(selectedSCIds, Me.State.CertBO.DealerId, Me.State.CertItemBO.ManufacturerId).Tables(0).DefaultView)
+                    PopulateServiceCenterGrid(ServiceCenter.GetLocateServiceCenterDetails(selectedSCIds, State.CertBO.DealerId, State.CertItemBO.ManufacturerId).Tables(0).DefaultView)
             End Select
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -2968,24 +2968,24 @@ Public Class ClaimWizardForm
         Dim dvCount As Integer = 0
 
         'cache the search results for multiple grid pages
-        Me.State.ServiceCenterView = dv
+        State.ServiceCenterView = dv
 
-        If Not Me.State.ServiceCenterView Is Nothing Then
-            dvCount = Me.State.ServiceCenterView.Count
+        If State.ServiceCenterView IsNot Nothing Then
+            dvCount = State.ServiceCenterView.Count
         End If
 
-        ShowServiceCenterGridData(Me.State.ServiceCenterView)
-        Me.HandleGridMessages(dvCount, True)
+        ShowServiceCenterGridData(State.ServiceCenterView)
+        HandleGridMessages(dvCount, True)
     End Sub
 
-    Private Sub PopulateCountryDropdown(ByVal customerCountry As ArrayList)
+    Private Sub PopulateCountryDropdown(customerCountry As ArrayList)
         Try
             'clear results from intelligent search to reduce the cache storage
             State.ServiceCenterView = Nothing
 
             Dim dv As DataView, strFilter As String
 
-            dv = ServiceCenter.GetAllServiceCenter(customerCountry, Me.State.ClaimBO.MethodOfRepairId, IsUserCompaniesWithAcctSettings())
+            dv = ServiceCenter.GetAllServiceCenter(customerCountry, State.ClaimBO.MethodOfRepairId, IsUserCompaniesWithAcctSettings())
 
             Dim overRideSingularity As Boolean
             If dv.Count > 0 Then
@@ -2995,12 +2995,12 @@ Public Class ClaimWizardForm
             End If
 
             step4_moMultipleColumnDrop.SetControl(True, step4_moMultipleColumnDrop.MODES.NEW_MODE, True, dv, TranslationBase.TranslateLabelOrMessage(LABEL_SERVICE_CENTER), overRideSingularity)
-            If Not Me.State.SelectedServiceCenterId.Equals(Guid.Empty) Then
-                step4_moMultipleColumnDrop.SelectedGuid = Me.State.SelectedServiceCenterId
+            If Not State.SelectedServiceCenterId.Equals(Guid.Empty) Then
+                step4_moMultipleColumnDrop.SelectedGuid = State.SelectedServiceCenterId
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -3010,7 +3010,7 @@ Public Class ClaimWizardForm
             Return False
         Else
             For Each objAC In ElitaPlusIdentity.Current.ActiveUser.AccountingCompanies()
-                Dim certCompany As New Company(Me.State.CertBO.CompanyId)
+                Dim certCompany As New Company(State.CertBO.CompanyId)
                 If certCompany.AcctCompanyId.Equals(objAC.Id) Then
                     If objAC.UseAccounting = "Y" AndAlso objAC.AcctSystemId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId), FelitaEngine.FELITA_PREFIX) Then Return True
                 End If
@@ -3020,7 +3020,7 @@ Public Class ClaimWizardForm
 
     End Function
 
-    Private Sub ShowServiceCenterGridData(ByVal dv As DataView)
+    Private Sub ShowServiceCenterGridData(dv As DataView)
         Try
             Dim dataSet As New DataSet
             hdnSelectedServiceCenterId.Value = "XXXX"
@@ -3032,32 +3032,32 @@ Public Class ClaimWizardForm
             xmlSource.TransformArgumentList.AddParam("recordCount", String.Empty, 30)
             xmlSource.Document = xdoc
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub ClearMessageControllers()
-        Me.MasterPage.MessageController.Clear()
-        Me.moMessageController.Clear()
-        Me.moModalCollectDivMsgController.Clear()
-        Me.mcIssueStatus.Clear()
+        MasterPage.MessageController.Clear()
+        moMessageController.Clear()
+        moModalCollectDivMsgController.Clear()
+        mcIssueStatus.Clear()
     End Sub
 
-    Private Sub AddStepLabelDecorations(ByVal wizardStep As ClaimWizardSteps)
+    Private Sub AddStepLabelDecorations(wizardStep As ClaimWizardSteps)
         Select Case wizardStep
             Case ClaimWizardSteps.Step2
-                MyBase.AddLabelDecorations(Me.State.CertItemBO)
-                If Not Me.State.step2_claimEquipmentBO Is Nothing Then MyBase.AddLabelDecorations(Me.State.step2_claimEquipmentBO)
+                MyBase.AddLabelDecorations(State.CertItemBO)
+                If State.step2_claimEquipmentBO IsNot Nothing Then MyBase.AddLabelDecorations(State.step2_claimEquipmentBO)
             Case ClaimWizardSteps.Step3
-                MyBase.AddLabelDecorations(Me.State.ClaimBO)
-                If Not Me.State.ClaimBO.EnrolledEquipment Is Nothing Then
-                    MyBase.AddLabelDecorations(Me.State.ClaimBO.EnrolledEquipment)
+                MyBase.AddLabelDecorations(State.ClaimBO)
+                If State.ClaimBO.EnrolledEquipment IsNot Nothing Then
+                    MyBase.AddLabelDecorations(State.ClaimBO.EnrolledEquipment)
                 End If
-                If Not Me.State.ClaimBO.ClaimedEquipment Is Nothing Then
-                    MyBase.AddLabelDecorations(Me.State.ClaimBO.ClaimedEquipment)
+                If State.ClaimBO.ClaimedEquipment IsNot Nothing Then
+                    MyBase.AddLabelDecorations(State.ClaimBO.ClaimedEquipment)
                 End If
             Case ClaimWizardSteps.Step5
-                MyBase.AddLabelDecorations(Me.State.CommentBO)
+                MyBase.AddLabelDecorations(State.CommentBO)
         End Select
     End Sub
 
@@ -3069,7 +3069,7 @@ Public Class ClaimWizardForm
         Dim lbl As Label
         lbl = CType(UserControlContactInfo.FindControl("moSalutationLabel"), Label)
         If lbl.ForeColor = Color.Red Then
-            If Not Me.UserControlMessageController.Controls.Contains(lbl) Then
+            If Not UserControlMessageController.Controls.Contains(lbl) Then
                 lbl.ForeColor = Color.Black
             End If
         End If
@@ -3167,10 +3167,10 @@ Public Class ClaimWizardForm
         Dim rootNode As SysWebUICtls.TreeNode = New SysWebUICtls.TreeNode(TranslationBase.TranslateLabelOrMessage("Soft Questions"), Guid.Empty.ToString)
 
         Dim softQuestDV As SoftQuestion.SoftQuestionDV, blnFromCert As Boolean = False
-        If Me.State.RiskTypeId.Equals(Guid.Empty) Then
+        If State.RiskTypeId.Equals(Guid.Empty) Then
             softQuestDV = SoftQuestion.getSoftQuestionGroups(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
         Else
-            softQuestDV = SoftQuestion.getSoftQuestionGroupForRiskType(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, Me.State.RiskTypeId)
+            softQuestDV = SoftQuestion.getSoftQuestionGroupForRiskType(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, State.RiskTypeId)
             blnFromCert = True
         End If
 
@@ -3201,12 +3201,12 @@ Public Class ClaimWizardForm
             rootNode.SelectAction = TreeNodeSelectAction.Select
             rootNode.Selected = True
         End If
-        Me.tvQuestion.Nodes.Add(rootNode)
+        tvQuestion.Nodes.Add(rootNode)
     End Sub
 #End Region
 
 #Region "Validation Functions"
-    Private Function IsValidDate(ByVal ctrl As TextBox, ByVal ctrlLabel As Label, ByRef errMsg As List(Of String)) As Boolean
+    Private Function IsValidDate(ctrl As TextBox, ctrlLabel As Label, ByRef errMsg As List(Of String)) As Boolean
         If (Not String.IsNullOrEmpty(ctrl.Text)) Then
             If (DateHelper.IsDate(ctrl.Text) = False) Then
                 AddError(ctrlLabel, TranslationBase.TranslateLabelOrMessage(Message.MSG_INVALID_DATE), errMsg)
@@ -3220,14 +3220,14 @@ Public Class ClaimWizardForm
 
     End Function
 
-    Private Function IsDateGreaterThan(ByVal firstDate As Date, ByVal secondDate As Date) As Boolean
+    Private Function IsDateGreaterThan(firstDate As Date, secondDate As Date) As Boolean
         If (firstDate > secondDate) Then
             Return True
         End If
         Return False
     End Function
 
-    Private Function IsTextBoxFilled(ByVal ctrl As TextBox, ByVal ctrlLabel As Label, ByRef errMsg As List(Of String)) As Boolean
+    Private Function IsTextBoxFilled(ctrl As TextBox, ctrlLabel As Label, ByRef errMsg As List(Of String)) As Boolean
         If (ctrl.Text = String.Empty) Then
             AddError(ctrlLabel, TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR), errMsg)
             Return False
@@ -3235,7 +3235,7 @@ Public Class ClaimWizardForm
         Return True
     End Function
 
-    Private Function IsDropDownSelected(ByVal ctrl As DropDownList, ByVal ctrlLabel As Label, ByRef errMsg As List(Of String)) As Boolean
+    Private Function IsDropDownSelected(ctrl As DropDownList, ctrlLabel As Label, ByRef errMsg As List(Of String)) As Boolean
         If (ctrl.SelectedIndex < 1) Then
             AddError(ctrlLabel, TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR), errMsg)
             Return False
@@ -3243,21 +3243,21 @@ Public Class ClaimWizardForm
         Return True
     End Function
 
-    Private Sub AddError(ByVal labelControl As Label, ByVal message As String, ByRef errMsg As List(Of String))
+    Private Sub AddError(labelControl As Label, message As String, ByRef errMsg As List(Of String))
         errMsg.Add(labelControl.Text & " : " & message)
     End Sub
 
     Public Function ValidateCertItem(ByRef errMsg As List(Of String), ByRef warningMsg As List(Of String)) As Boolean
         Dim flag As Boolean = True
-        flag = Me.State.CertItemCoverageBO.IsCoverageValidToOpenClaim(errMsg, warningMsg, step1_txtDateReported.Text)
-        If (Me.GetSelectedItem(step2_cboCalimAllowed).Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N))) Then
+        flag = State.CertItemCoverageBO.IsCoverageValidToOpenClaim(errMsg, warningMsg, step1_txtDateReported.Text)
+        If (GetSelectedItem(step2_cboCalimAllowed).Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N))) Then
             flag = flag And False
         End If
         Return flag
     End Function
 
-    Private Sub SetCtlsForEquipmentMgmt(ByVal toggleVisible As Boolean)
-        If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, Me.State.DealerBO.UseEquipmentId) = Codes.YESNO_Y Then
+    Private Sub SetCtlsForEquipmentMgmt(toggleVisible As Boolean)
+        If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, State.DealerBO.UseEquipmentId) = Codes.YESNO_Y Then
             'text box and drop down list
             ControlMgr.SetVisibleControl(Me, step2_ddlClaimedManuf, Not toggleVisible)
             ControlMgr.SetVisibleControl(Me, step2_TextboxManufacturer, toggleVisible)
@@ -3277,7 +3277,7 @@ Public Class ClaimWizardForm
             'for enrolled equipment
             ControlMgr.SetVisibleControl(Me, step2_LabelYear, False)
             ControlMgr.SetVisibleControl(Me, step2_TextboxYear, False)
-            Me.step2_TextboxYear.ReadOnly = True  'force to be read only
+            step2_TextboxYear.ReadOnly = True  'force to be read only
 
             ''verify equipment
             'If Me.State.CertItemBO.EquipmentId.Equals(Guid.Empty) Then
@@ -3303,35 +3303,35 @@ Public Class ClaimWizardForm
         End If
 
         If flag = False Then
-            Me.MasterPage.MessageController.AddError(errMsg.ToArray, False)
+            MasterPage.MessageController.AddError(errMsg.ToArray, False)
         End If
 
         Return flag
     End Function
 
-    Private Function ValidateInputs(ByVal wizardStep As ClaimWizardSteps) As Boolean
+    Private Function ValidateInputs(wizardStep As ClaimWizardSteps) As Boolean
         Dim errMsg As List(Of String) = New List(Of String)
         Dim warningMsg As List(Of String) = New List(Of String)
         Dim flag As Boolean = True
         Select Case wizardStep
             Case ClaimWizardSteps.Step1
                 flag = ValidateInputForStep1BtnSearch()
-                If (flag And IsDropDownSelected(step1_cboRiskType, Me.step1_riskTypeLabel, errMsg) And
-                    IsDropDownSelected(step1_cboCoverageType, Me.step1_coverageTypeLabel, errMsg) And
-                    IsTextBoxFilled(step1_textCallerName, Me.step1_callerNameLabel, errMsg) And
-                    IsTextBoxFilled(step1_textProblemDescription, Me.step1_problemDescriptionLabel, errMsg)) Then
+                If (flag And IsDropDownSelected(step1_cboRiskType, step1_riskTypeLabel, errMsg) And
+                    IsDropDownSelected(step1_cboCoverageType, step1_coverageTypeLabel, errMsg) And
+                    IsTextBoxFilled(step1_textCallerName, step1_callerNameLabel, errMsg) And
+                    IsTextBoxFilled(step1_textProblemDescription, step1_problemDescriptionLabel, errMsg)) Then
                     flag = True
                 Else
                     flag = False
                 End If
             Case ClaimWizardSteps.Step2
                 flag = ValidateCertItem(errMsg, warningMsg)
-                If Me.State.CertItemBO.IsEquipmentRequired Then
+                If State.CertItemBO.IsEquipmentRequired Then
                     'Validate Claimed and Enrolled Equipment - New Equipment Flow
-                    If Not Me.State.step2_claimEquipmentBO Is Nothing Then
+                    If State.step2_claimEquipmentBO IsNot Nothing Then
                         Dim msgList As New List(Of String)
-                        If Not Me.State.step2_claimEquipmentBO.ValidateForClaimProcess(msgList) Then
-                            Me.MasterPage.MessageController.AddError(msgList.ToArray, True)
+                        If Not State.step2_claimEquipmentBO.ValidateForClaimProcess(msgList) Then
+                            MasterPage.MessageController.AddError(msgList.ToArray, True)
                             flag = flag And False
                         End If
                     End If
@@ -3339,19 +3339,19 @@ Public Class ClaimWizardForm
             Case ClaimWizardSteps.Step3
                 Dim reportDate As Date
                 reportDate = step3_TextboxReportDate.Text
-                flag = Me.State.CertItemCoverageBO.IsCoverageValidToOpenClaim(errMsg, warningMsg, reportDate)
+                flag = State.CertItemCoverageBO.IsCoverageValidToOpenClaim(errMsg, warningMsg, reportDate)
 
-                If Me.State.CertItemBO.IsEquipmentRequired Then
+                If State.CertItemBO.IsEquipmentRequired Then
                     Dim msgList As New List(Of String)
-                    If Not Me.State.ClaimBO.ClaimedEquipment.ValidateForClaimProcess(msgList) Then
-                        Me.MasterPage.MessageController.AddError(msgList.ToArray, True)
+                    If Not State.ClaimBO.ClaimedEquipment.ValidateForClaimProcess(msgList) Then
+                        MasterPage.MessageController.AddError(msgList.ToArray, True)
                         flag = flag And False
                     End If
 
                     'check for Enrolled equipment
-                    If Not Me.State.ClaimBO.EnrolledEquipment Is Nothing Then
-                        If Not Me.State.ClaimBO.EnrolledEquipment.ValidateForClaimProcess(msgList) Then
-                            Me.MasterPage.MessageController.AddError(msgList.ToArray, True)
+                    If State.ClaimBO.EnrolledEquipment IsNot Nothing Then
+                        If Not State.ClaimBO.EnrolledEquipment.ValidateForClaimProcess(msgList) Then
+                            MasterPage.MessageController.AddError(msgList.ToArray, True)
                             flag = flag And False
                         End If
                     End If
@@ -3365,14 +3365,14 @@ Public Class ClaimWizardForm
             Case ClaimWizardSteps.Step5
         End Select
 
-        If errMsg.Count > 0 Then Me.MasterPage.MessageController.AddError(errMsg.ToArray, True)
-        If warningMsg.Count > 0 Then Me.MasterPage.MessageController.AddWarning(warningMsg.ToArray, True)
+        If errMsg.Count > 0 Then MasterPage.MessageController.AddError(errMsg.ToArray, True)
+        If warningMsg.Count > 0 Then MasterPage.MessageController.AddWarning(warningMsg.ToArray, True)
 
         Return flag
     End Function
 
     Private Sub CheckForPossibleWarrantyClaim(ByRef warningMsg As List(Of String))
-        Dim claimsDV As DataView = Me.State.CertItemCoverageBO.GetAllClaims(Me.State.CertItemCoverageBO.CoverageTypeId)
+        Dim claimsDV As DataView = State.CertItemCoverageBO.GetAllClaims(State.CertItemCoverageBO.CoverageTypeId)
         Dim oClaim As Claim
         Dim isDaysLimitExceeded As Boolean = True
         Dim elpasedDaysSinceRepaired As Long
@@ -3383,9 +3383,9 @@ Public Class ClaimWizardForm
             elpasedDaysSinceRepaired = oClaim.ServiceCenterObject.ServiceWarrantyDays.Value
 
             If Not oClaim.MethodOfRepairId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)) Then
-                If Not oClaim.PickUpDate Is Nothing Then
+                If oClaim.PickUpDate IsNot Nothing Then
                     elpasedDaysSinceRepaired = Date.Now.Subtract(oClaim.PickUpDate.Value).Days
-                ElseIf Not oClaim.RepairDate Is Nothing Then
+                ElseIf oClaim.RepairDate IsNot Nothing Then
                     elpasedDaysSinceRepaired = Date.Now.Subtract(oClaim.RepairDate.Value).Days
                 End If
                 If elpasedDaysSinceRepaired < oClaim.ServiceCenterObject.ServiceWarrantyDays.Value Then
@@ -3398,19 +3398,19 @@ Public Class ClaimWizardForm
         Dim oContract As Contract
         Dim CoverageType As String
 
-        oContract = Contract.GetContract(Me.State.DealerBO.Id, Me.State.CertBO.WarrantySalesDate.Value)
-        CoverageType = LookupListNew.GetCodeFromId(LookupListNew.GetCoverageTypeLookupList(Authentication.LangId), Me.State.CertItemCoverageBO.CoverageTypeId)
+        oContract = Contract.GetContract(State.DealerBO.Id, State.CertBO.WarrantySalesDate.Value)
+        CoverageType = LookupListNew.GetCodeFromId(LookupListNew.GetCoverageTypeLookupList(Authentication.LangId), State.CertItemCoverageBO.CoverageTypeId)
 
         Dim ClaimControl As Boolean = False
 
-        If Not oContract Is Nothing Then
+        If oContract IsNot Nothing Then
             If LookupListNew.GetCodeFromId(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, oContract.ClaimControlID) = "Y" Then
                 ClaimControl = True
             End If
         End If
 
         If CoverageType <> Codes.COVERAGE_TYPE__MANUFACTURER Then
-            If Not Me.State.CertBO.MethodOfRepairId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)) _
+            If Not State.CertBO.MethodOfRepairId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)) _
                And ClaimControl Then
                 warningMsg.Add(Message.MSG_DEALER_USER_CLAIM_INTERFACES)
             End If
@@ -3424,18 +3424,18 @@ Public Class ClaimWizardForm
 
     Private Function ValidateClaim(ByRef errMsg As List(Of String)) As Boolean
         Dim flag As Boolean = True
-        If Me.State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Then
-            If Me.State.ClaimBO.PolicyNumber Is Nothing Then
+        If State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__RECOVERY Then
+            If State.ClaimBO.PolicyNumber Is Nothing Then
                 flag = flag And False
                 errMsg.Add(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_POLICYNUMBER_REQD)
             End If
         End If
 
-        If Me.State.ClaimBO.Certificate.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED AndAlso Me.State.DealerBO.IsGracePeriodSpecified Then
+        If State.ClaimBO.Certificate.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED AndAlso State.DealerBO.IsGracePeriodSpecified Then
             Return True
         Else
-            Me.State.ClaimBO.IsRequiredCheckLossDateForCancelledCert = True
-            Me.State.ClaimBO.Validate()
+            State.ClaimBO.IsRequiredCheckLossDateForCancelledCert = True
+            State.ClaimBO.Validate()
             Return flag
         End If
     End Function
@@ -3447,30 +3447,30 @@ Public Class ClaimWizardForm
 #Region "MasterClaimGrid"
     Private Sub PopulateMasterClaimGrid()
         Dim allowDifferentCoverage As Boolean = False
-        Dim oContract As Contract = Contract.GetContract(Me.State.CertBO.DealerId, Me.State.CertBO.WarrantySalesDate.Value)
-        If Not oContract Is Nothing _
+        Dim oContract As Contract = Contract.GetContract(State.CertBO.DealerId, State.CertBO.WarrantySalesDate.Value)
+        If oContract IsNot Nothing _
            AndAlso LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.AllowDifferentCoverage) = Codes.YESNO_Y Then allowDifferentCoverage = True
 
-        Dim dv As Claim.MaterClaimDV = Claim.getList(Me.State.CertItemCoverageBO.Id, allowDifferentCoverage, Me.State.CertBO.getMasterclaimProcFlag, Me.State.DateOfLoss)
-        Me.grdMasterClaim.DataSource = dv
-        Me.grdMasterClaim.DataBind()
+        Dim dv As Claim.MaterClaimDV = Claim.getList(State.CertItemCoverageBO.Id, allowDifferentCoverage, State.CertBO.getMasterclaimProcFlag, State.DateOfLoss)
+        grdMasterClaim.DataSource = dv
+        grdMasterClaim.DataBind()
     End Sub
 
-    Private Sub GrdMasterClaimGrid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdMasterClaim.RowCreated
+    Private Sub GrdMasterClaimGrid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdMasterClaim.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GrdMasterClaimGrid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdMasterClaim.RowDataBound
+    Private Sub GrdMasterClaimGrid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdMasterClaim.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim btnSelectClaim As LinkButton
             If (e.Row.RowType = DataControlRowType.DataRow) _
                OrElse (e.Row.RowType = DataControlRowType.Separator) Then
-                If (Not e.Row.Cells(0).FindControl("btnSelectClaim") Is Nothing) Then
+                If (e.Row.Cells(0).FindControl("btnSelectClaim") IsNot Nothing) Then
                     btnSelectClaim = CType(e.Row.Cells(0).FindControl("btnSelectClaim"), LinkButton)
                     btnSelectClaim.CommandArgument = CType(dvRow(Claim.MaterClaimDV.COL_NAME_MASTER_CLAIM_NUMBER), String)
                     btnSelectClaim.CommandName = SELECT_ACTION_COMMAND
@@ -3478,24 +3478,24 @@ Public Class ClaimWizardForm
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Public Sub GrdMasterClaimGrid_RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles grdMasterClaim.RowCommand
+    Public Sub GrdMasterClaimGrid_RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles grdMasterClaim.RowCommand
 
         Try
             If e.CommandName = SELECT_ACTION_COMMAND Then
                 If Not e.CommandArgument.ToString().Equals(String.Empty) Then
                     Dim row As GridViewRow = CType(CType(e.CommandSource, Control).NamingContainer, GridViewRow)
-                    Me.State.MasterClaimNumber = e.CommandArgument.ToString
-                    Me.State.DateOfLoss = DateHelper.GetDateValue(CType(row.Cells(2), DataControlFieldCell).Text)
+                    State.MasterClaimNumber = e.CommandArgument.ToString
+                    State.DateOfLoss = DateHelper.GetDateValue(CType(row.Cells(2), DataControlFieldCell).Text)
                     GoToNextStep()
                 End If
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -3505,27 +3505,27 @@ Public Class ClaimWizardForm
 
     Public Sub PopulateClaimIssuesGrid()
 
-        Me.Grid.AutoGenerateColumns = False
-        Me.Grid.PageSize = Me.State.PageSize
+        Grid.AutoGenerateColumns = False
+        Grid.PageSize = State.PageSize
         'Me.ValidSearchResultCountNew(Me.State.ClaimIssuesView.Count, True)
-        Me.HighLightSortColumn(Me.Grid, Me.State.SortExpression, Me.IsNewUI)
-        Me.SetPageAndSelectedIndexFromGuid(Me.State.ClaimIssuesView, Me.State.SelectedClaimIssueId, Me.Grid, Me.State.PageIndex)
-        Me.Grid.DataSource = Me.State.ClaimIssuesView
-        Me.Grid.DataBind()
-        If (Me.State.ClaimIssuesView.Count > 0) Then
-            Me.State.IsGridVisible = True
+        HighLightSortColumn(Grid, State.SortExpression, IsNewUI)
+        SetPageAndSelectedIndexFromGuid(State.ClaimIssuesView, State.SelectedClaimIssueId, Grid, State.PageIndex)
+        Grid.DataSource = State.ClaimIssuesView
+        Grid.DataBind()
+        If (State.ClaimIssuesView.Count > 0) Then
+            State.IsGridVisible = True
             dvGridPager.Visible = True
         Else
-            Me.State.IsGridVisible = False
+            State.IsGridVisible = False
             dvGridPager.Visible = False
         End If
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-        If Me.Grid.Visible Then
-            Me.lblRecordCount.Text = Me.State.ClaimIssuesView.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+        If Grid.Visible Then
+            lblRecordCount.Text = State.ClaimIssuesView.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         End If
 
-        If (Me.State.ClaimBO.HasIssues) Then
-            Select Case Me.State.ClaimBO.IssuesStatus()
+        If (State.ClaimBO.HasIssues) Then
+            Select Case State.ClaimBO.IssuesStatus()
                 Case Codes.CLAIMISSUE_STATUS__OPEN
                     mcIssueStatus.Clear()
                     mcIssueStatus.AddError(Message.MSG_CLAIM_ISSUES_PENDING)
@@ -3541,128 +3541,128 @@ Public Class ClaimWizardForm
 
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.State.ClaimIssuesView.Sort = Me.State.SortExpression
-            Me.PopulateClaimIssuesGrid()
-        Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-        End Try
-
-    End Sub
-
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
-        Try
-            Me.State.PageIndex = Grid.PageIndex
-            Me.State.SelectedClaimIssueId = Guid.Empty
+            State.PageIndex = 0
+            State.ClaimIssuesView.Sort = State.SortExpression
             PopulateClaimIssuesGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+
+    End Sub
+
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
+        Try
+            State.PageIndex = Grid.PageIndex
+            State.SelectedClaimIssueId = Guid.Empty
+            PopulateClaimIssuesGrid()
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim btnEditItem As LinkButton
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             If (e.Row.RowType = DataControlRowType.DataRow) _
                OrElse (e.Row.RowType = DataControlRowType.Separator) Then
-                If (Not e.Row.Cells(1).FindControl("EditButton_WRITE") Is Nothing) Then
+                If (e.Row.Cells(1).FindControl("EditButton_WRITE") IsNot Nothing) Then
                     btnEditItem = CType(e.Row.Cells(0).FindControl("EditButton_WRITE"), LinkButton)
                     btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimIssuesView.COL_CLAIM_ISSUE_ID), Byte()))
                     btnEditItem.CommandName = SELECT_ACTION_COMMAND
                     btnEditItem.Text = dvRow(Claim.ClaimIssuesView.COL_ISSUE_DESC).ToString
                 End If
                 If String.IsNullOrWhiteSpace(dvRow(Claim.ClaimIssuesView.COL_CREATED_DATE).ToString) = False Then
-                    e.Row.Cells(Me.GRID_COL_CREATED_DATE_IDX).Text = GetLongDate12FormattedStringNullable(dvRow(Claim.ClaimIssuesView.COL_CREATED_DATE).ToString)
+                    e.Row.Cells(GRID_COL_CREATED_DATE_IDX).Text = GetLongDate12FormattedStringNullable(dvRow(Claim.ClaimIssuesView.COL_CREATED_DATE).ToString)
                 End If
                 If String.IsNullOrWhiteSpace(dvRow(Claim.ClaimIssuesView.COL_PROCESSED_DATE).ToString) = False Then
-                    e.Row.Cells(Me.GRID_COL_PROCESSED_DATE_IDX).Text = GetLongDate12FormattedStringNullable(dvRow(Claim.ClaimIssuesView.COL_PROCESSED_DATE).ToString)
+                    e.Row.Cells(GRID_COL_PROCESSED_DATE_IDX).Text = GetLongDate12FormattedStringNullable(dvRow(Claim.ClaimIssuesView.COL_PROCESSED_DATE).ToString)
                 End If
                 ' Convert short status codes to full description with css
-                e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(CLAIM_ISSUE_LIST, dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString)
+                e.Row.Cells(GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(CLAIM_ISSUE_LIST, dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString)
                 If (dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED Or
                 dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
-                    e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).CssClass = "StatActive"
+                    e.Row.Cells(GRID_COL_STATUS_CODE_IDX).CssClass = "StatActive"
                 Else
-                    e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).CssClass = "StatInactive"
+                    e.Row.Cells(GRID_COL_STATUS_CODE_IDX).CssClass = "StatInactive"
                 End If
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             If e.CommandName = SELECT_ACTION_COMMAND Then
                 If Not e.CommandArgument.ToString().Equals(String.Empty) Then
-                    Me.State.SelectedClaimIssueId = New Guid(e.CommandArgument.ToString())
-                    Me.callPage(ClaimIssueDetailForm.URL, New ClaimIssueDetailForm.Parameters(CType(Me.State.ClaimBO, ClaimBase), Me.State.SelectedClaimIssueId))
+                    State.SelectedClaimIssueId = New Guid(e.CommandArgument.ToString())
+                    callPage(ClaimIssueDetailForm.URL, New ClaimIssueDetailForm.Parameters(CType(State.ClaimBO, ClaimBase), State.SelectedClaimIssueId))
                 End If
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             If (TypeOf ex Is System.Reflection.TargetInvocationException) AndAlso
                (TypeOf ex.InnerException Is Threading.ThreadAbortException) Then Return
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
-            Me.State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.ClaimIssuesView.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
+            State.PageSize = CType(cboPageSize.SelectedValue, Integer)
+            State.PageIndex = NewCurrentPageIndex(Grid, State.ClaimIssuesView.Count, State.PageSize)
+            Grid.PageIndex = State.PageIndex
             PopulateClaimIssuesGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Claim Image Related Grid"
 
-    Private Sub GridClaimImages_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaimImages.RowDataBound
+    Private Sub GridClaimImages_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaimImages.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim btnLinkImage As LinkButton
             If (e.Row.RowType = DataControlRowType.DataRow) OrElse (e.Row.RowType = DataControlRowType.Separator) Then
                 'Link to the image 
-                If (Not e.Row.Cells(0).FindControl("btnImageLink") Is Nothing) Then
+                If (e.Row.Cells(0).FindControl("btnImageLink") IsNot Nothing) Then
                     btnLinkImage = CType(e.Row.Cells(0).FindControl("btnImageLink"), LinkButton)
                     btnLinkImage.Text = CType(dvRow(Claim.ClaimImagesView.COL_FILE_NAME), String)
                     'btnLinkImage.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimImagesView.COL_IMAGE_ID), Byte()))
-                    btnLinkImage.CommandArgument = String.Format("{0};{1};{2}", GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimImagesView.COL_IMAGE_ID), Byte())), Me.State.ClaimBO.Id, CType(dvRow(Claim.ClaimImagesView.COL_IS_LOCAL_REPOSITORY), String))
+                    btnLinkImage.CommandArgument = String.Format("{0};{1};{2}", GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimImagesView.COL_IMAGE_ID), Byte())), State.ClaimBO.Id, CType(dvRow(Claim.ClaimImagesView.COL_IS_LOCAL_REPOSITORY), String))
                 End If
 
                 If (dvRow(Claim.ClaimImagesView.COL_STATUS_CODE).ToString = Codes.CLAIM_IMAGE_PROCESSED) Then
@@ -3673,11 +3673,11 @@ Public Class ClaimWizardForm
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridClaimImages_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridClaimImages.RowCommand
+    Private Sub GridClaimImages_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridClaimImages.RowCommand
         If (e.CommandName = SELECT_ACTION_IMAGE) Then
             If Not e.CommandArgument.ToString().Equals(String.Empty) Then
 
@@ -3695,64 +3695,64 @@ Public Class ClaimWizardForm
                 'lblClaimImage.Text = String.Format("{0}: {1}", TranslationBase.TranslateLabelOrMessage("CLAIM_IMAGE"), e.CommandArgument.ToString())
                 'pdfIframe.Attributes(ATTRIB_SRC) = PDF_URL + e.CommandArgument.ToString()
                 Dim x As String = "<script language='JavaScript'> revealModal('modalClaimImages') </script>"
-                Me.RegisterStartupScript("Startup", x)
+                RegisterStartupScript("Startup", x)
             End If
         End If
     End Sub
 
     Public Sub PopulateClaimImagesGrid()
-        If Me.State.ClaimImagesView Is Nothing Then
-            Me.State.ClaimImagesView = Me.State.ClaimBO.GetClaimImagesView
+        If State.ClaimImagesView Is Nothing Then
+            State.ClaimImagesView = State.ClaimBO.GetClaimImagesView
         End If
         'work queue image
-        Me.GridClaimImages.DataSource = Me.State.ClaimImagesView
-        Me.GridClaimImages.DataBind()
+        GridClaimImages.DataSource = State.ClaimImagesView
+        GridClaimImages.DataBind()
     End Sub
 
-    Private Sub GridClaimImages_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaimImages.RowCreated
+    Private Sub GridClaimImages_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaimImages.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridClaimImages_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridClaimImages.Sorting
+    Private Sub GridClaimImages_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridClaimImages.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.State.ClaimImagesView.Sort = Me.State.SortExpression
-            Me.PopulateClaimImagesGrid()
-        Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-        End Try
-
-    End Sub
-
-    Private Sub GridClaimImages_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridClaimImages.PageIndexChanged
-        Try
-            Me.State.PageIndex = Grid.PageIndex
-            Me.State.SelectedClaimIssueId = Guid.Empty
+            State.PageIndex = 0
+            State.ClaimImagesView.Sort = State.SortExpression
             PopulateClaimImagesGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+
+    End Sub
+
+    Private Sub GridClaimImages_PageIndexChanged(sender As Object, e As System.EventArgs) Handles GridClaimImages.PageIndexChanged
+        Try
+            State.PageIndex = Grid.PageIndex
+            State.SelectedClaimIssueId = Guid.Empty
+            PopulateClaimImagesGrid()
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridClaimImages_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridClaimImages.PageIndexChanging
+    Private Sub GridClaimImages_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridClaimImages.PageIndexChanging
         Try
             GridClaimImages.PageIndex = e.NewPageIndex
             State.PageIndex = GridClaimImages.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -3761,26 +3761,26 @@ Public Class ClaimWizardForm
 #Region "Claim Authorization Grid related"
 
     Public Sub PopulateClaimAuthorizationGrid()
-        Me.GridClaimAuthorization.AutoGenerateColumns = False
-        Me.GridClaimAuthorization.DataSource = Me.State.ClaimBO.ClaimAuthorizationChildren.OrderBy(Function(x) (x.AuthorizationNumber)).ToList()
-        Me.GridClaimAuthorization.DataBind()
-        If (Me.State.ClaimBO.ClaimAuthorizationChildren.Count > 0) Then
-            Me.State.IsGridVisible = True
+        GridClaimAuthorization.AutoGenerateColumns = False
+        GridClaimAuthorization.DataSource = State.ClaimBO.ClaimAuthorizationChildren.OrderBy(Function(x) (x.AuthorizationNumber)).ToList()
+        GridClaimAuthorization.DataBind()
+        If (State.ClaimBO.ClaimAuthorizationChildren.Count > 0) Then
+            State.IsGridVisible = True
         Else
-            Me.State.IsGridVisible = False
+            State.IsGridVisible = False
         End If
-        ControlMgr.SetVisibleControl(Me, GridClaimAuthorization, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, GridClaimAuthorization, State.IsGridVisible)
     End Sub
 
-    Private Sub GridClaimAuthorization_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaimAuthorization.RowCreated
+    Private Sub GridClaimAuthorization_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaimAuthorization.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridClaimAuthorization_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaimAuthorization.RowDataBound
+    Private Sub GridClaimAuthorization_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaimAuthorization.RowDataBound
 
         Try
             Dim claimAuth As ClaimAuthorization = CType(e.Row.DataItem, ClaimAuthorization)
@@ -3788,11 +3788,11 @@ Public Class ClaimWizardForm
             If (e.Row.RowType = DataControlRowType.DataRow) _
                OrElse (e.Row.RowType = DataControlRowType.Separator) Then
                 ' Convert short status codes to full description with css
-                e.Row.Cells(Me.GRIDCLA_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, claimAuth.ClaimAuthorizationStatusCode)
-                e.Row.Cells(Me.GRIDCLA_COL_AMOUNT_IDX).Text = Me.GetAmountFormattedString(claimAuth.AuthorizedAmount.Value)
+                e.Row.Cells(GRIDCLA_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, claimAuth.ClaimAuthorizationStatusCode)
+                e.Row.Cells(GRIDCLA_COL_AMOUNT_IDX).Text = GetAmountFormattedString(claimAuth.AuthorizedAmount.Value)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -3803,43 +3803,43 @@ Public Class ClaimWizardForm
     Public Sub PopulateClaimActionGrid()
 
         Try
-            If (Me.State.ClaimActionListDV Is Nothing) Then
-                Me.State.ClaimActionListDV = CaseAction.GetClaimActionList(Me.State.ClaimBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            If (State.ClaimActionListDV Is Nothing) Then
+                State.ClaimActionListDV = CaseAction.GetClaimActionList(State.ClaimBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             End If
 
             If State.ClaimActionListDV.Count = 0 Then
-                Me.lblClaimActionRecordFound.Text = Me.State.ClaimActionListDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblClaimActionRecordFound.Text = State.ClaimActionListDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             Else
-                Me.ClaimActionGrid.DataSource = Me.State.ClaimActionListDV
-                Me.State.ClaimActionListDV.Sort = Me.State.SortExpression
-                HighLightSortColumn(Me.ClaimActionGrid, Me.State.SortExpression, Me.IsNewUI)
-                Me.ClaimActionGrid.DataBind()
-                Me.lblClaimActionRecordFound.Text = Me.State.ClaimActionListDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                ClaimActionGrid.DataSource = State.ClaimActionListDV
+                State.ClaimActionListDV.Sort = State.SortExpression
+                HighLightSortColumn(ClaimActionGrid, State.SortExpression, IsNewUI)
+                ClaimActionGrid.DataBind()
+                lblClaimActionRecordFound.Text = State.ClaimActionListDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
             ControlMgr.SetVisibleControl(Me, ClaimActionGrid, True)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub PopulateQuestionAnswerGrid()
         Try
 
-            If (Me.State.CaseQuestionAnswerListDV Is Nothing) Then
-                Me.State.CaseQuestionAnswerListDV = CaseQuestionAnswer.getClaimCaseQuestionAnswerList(Me.State.ClaimBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            If (State.CaseQuestionAnswerListDV Is Nothing) Then
+                State.CaseQuestionAnswerListDV = CaseQuestionAnswer.getClaimCaseQuestionAnswerList(State.ClaimBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             End If
 
             lblQuestionRecordFound.Visible = True
 
             If State.CaseQuestionAnswerListDV.Count = 0 Then
-                Me.lblQuestionRecordFound.Text = Me.State.CaseQuestionAnswerListDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblQuestionRecordFound.Text = State.CaseQuestionAnswerListDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             Else
-                Me.CaseQuestionAnswerGrid.DataSource = Me.State.CaseQuestionAnswerListDV
-                Me.State.CaseQuestionAnswerListDV.Sort = Me.State.SortExpression
-                HighLightSortColumn(Me.CaseQuestionAnswerGrid, Me.State.SortExpression, Me.IsNewUI)
-                Me.CaseQuestionAnswerGrid.DataBind()
-                Me.lblQuestionRecordFound.Text = Me.State.CaseQuestionAnswerListDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                CaseQuestionAnswerGrid.DataSource = State.CaseQuestionAnswerListDV
+                State.CaseQuestionAnswerListDV.Sort = State.SortExpression
+                HighLightSortColumn(CaseQuestionAnswerGrid, State.SortExpression, IsNewUI)
+                CaseQuestionAnswerGrid.DataBind()
+                lblQuestionRecordFound.Text = State.CaseQuestionAnswerListDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
             ControlMgr.SetVisibleControl(Me, CaseQuestionAnswerGrid, True)
 
@@ -3849,10 +3849,10 @@ Public Class ClaimWizardForm
                 ControlMgr.SetVisibleControl(Me, CaseQuestionAnswerGrid, False)
                 lblQuestionRecordFound.Visible = False
             End If
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub CaseQuestionAnswerGrid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CaseQuestionAnswerGrid.RowDataBound
+    Private Sub CaseQuestionAnswerGrid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CaseQuestionAnswerGrid.RowDataBound
         Try
             If (e.Row.RowType = DataControlRowType.DataRow) _
                 OrElse (e.Row.RowType = DataControlRowType.Separator) Then
@@ -3895,9 +3895,9 @@ Public Class ClaimWizardForm
 #Region "Claim Consequential Damage Related Functions"
     Public Sub PopulateConsequentialDamageGrid()
         If CalledUrl = ClaimIssueDetailForm.URL Then
-            ucClaimConsequentialDamage.UpdateConsequentialDamagestatus(CType(Me.State.ClaimBO, ClaimBase))
+            ucClaimConsequentialDamage.UpdateConsequentialDamagestatus(CType(State.ClaimBO, ClaimBase))
         End If
-        ucClaimConsequentialDamage.PopulateConsequentialDamage(CType(Me.State.ClaimBO, ClaimBase))
+        ucClaimConsequentialDamage.PopulateConsequentialDamage(CType(State.ClaimBO, ClaimBase))
     End Sub
 #End Region
 #End Region
@@ -3934,12 +3934,12 @@ Public Class ClaimWizardForm
 
                 return True
             
-            else If (Not String.IsNullOrWhiteSpace(Me.State.CertItemCoverageBO.FulfillmentProfileCode)) Then
+            else If (Not String.IsNullOrWhiteSpace(State.CertItemCoverageBO.FulfillmentProfileCode)) Then
 
                 wsResponseObject = WcfClientHelper.Execute(Of Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGatewayClient, Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGateway, Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse)(
                                     GetClaimFulfillmentWebAppGatewayClient(),
                                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                Function(ByVal c As Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGatewayClient)
+                                Function(c As Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGatewayClient)
                                     Return c.BeginFulfillment(wsCBFRequest)
                                 End Function)
 
@@ -3948,7 +3948,7 @@ Public Class ClaimWizardForm
                 wsResponseObject = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, BaseFulfillmentResponse)(
                                 GetClient(),
                             New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                            Function(ByVal c As FulfillmentServiceClient)
+                            Function(c As FulfillmentServiceClient)
                                 Return c.StartFulfillmentProcess(wsRequest)
                             End Function)
 
@@ -3963,14 +3963,14 @@ Public Class ClaimWizardForm
             If wsResponseObject.GetType() Is GetType(BaseFulfillmentResponse) Then
                 Dim wsResponseList As BaseFulfillmentResponse = DirectCast(wsResponseObject, BaseFulfillmentResponse)
                 If wsResponseList.ResponseStatus.Equals("Failure") Then
-                    Me.MasterPage.MessageController.AddError(wsResponseList.Error.ErrorCode & " - " & wsResponseList.Error.ErrorMessage, False)
+                    MasterPage.MessageController.AddError(wsResponseList.Error.ErrorCode & " - " & wsResponseList.Error.ErrorMessage, False)
                     blnSuccess = False
                 End If
             End If
             If wsResponseObject.GetType() Is GetType(Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse) Then
                 Dim wsResponseList As Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse = DirectCast(wsResponseObject, Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse)
                 If IsNothing(wsResponseList.FulfillmentNumber) Or IsNothing(wsResponseList.CompanyCode) Then
-                    Me.MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, False)
+                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, False)
                     blnSuccess = False
                 End If
             End If
@@ -3980,9 +3980,9 @@ Public Class ClaimWizardForm
 
     Private Sub btnClaimDeductibleRefund_Click(sender As Object, e As EventArgs) Handles btnClaimDeductibleRefund.Click
         Try
-            Me.callPage(ClaimDeductibleRefundForm.URL, New ClaimDeductibleRefundForm.Parameters(CType(Me.State.ClaimBO, ClaimBase)))
+            callPage(ClaimDeductibleRefundForm.URL, New ClaimDeductibleRefundForm.Parameters(CType(State.ClaimBO, ClaimBase)))
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 

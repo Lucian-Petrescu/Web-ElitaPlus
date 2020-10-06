@@ -9,21 +9,21 @@ Public Class BusinessObjectIteratorBase
 
 #Region "Constructors"
     Public Sub New(ByVal table As DataTable, ByVal boType As Type)
-        Me._table = table
-        Me._boType = boType
+        _table = table
+        _boType = boType
     End Sub
 #End Region
 
 #Region "Properties"
     Public ReadOnly Property Table() As DataTable
         Get
-            Return Me._table
+            Return _table
         End Get
     End Property
 
     Public ReadOnly Property BOType() As Type
         Get
-            Return Me._boType
+            Return _boType
         End Get
     End Property
 
@@ -44,9 +44,9 @@ Public Class BusinessObjectIteratorBase
     Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
         Dim list As New ArrayList
         Dim row As DataRow
-        For Each row In Me.Table.Rows
+        For Each row In Table.Rows
             If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
-                Dim bo As BusinessObjectBase = Me.GetChild(row)
+                Dim bo As BusinessObjectBase = GetChild(row)
                 list.Add(bo)
             End If
         Next

@@ -133,54 +133,54 @@ Namespace Certificates
             End Get
         End Property
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
+                MenuEnabled = True
+                IsReturningFromChild = True
                 'Me.State.searchDV = Nothing
                 Dim retObj As CertificateForm.ReturnType = CType(ReturnPar, CertificateForm.ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
-                                Me.State.selectedCertificateId = retObj.EditingBo.Id
+                                State.selectedCertificateId = retObj.EditingBo.Id
                             End If
-                            Me.State.IsGridVisible = True
+                            State.IsGridVisible = True
                         End If
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                        AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.ScriptManager1.Services(0).Path = "http://" + Environment.MachineName + "/ElitaInternalWS/Utilities/UtilityWS.asmx"
+        Private Sub Page_Load(sender As Object, e As System.EventArgs) Handles MyBase.Load
+            ScriptManager1.Services(0).Path = "http://" + Environment.MachineName + "/ElitaInternalWS/Utilities/UtilityWS.asmx"
             lblTK.Value = Authentication.CreateWSToken(Authentication.CurrentUser.NetworkId)
-            Me.ErrorCtrl.Attributes.Add("style", "display: none")
+            ErrorCtrl.Attributes.Add("style", "display: none")
             cboPageSize.Attributes.Add("onChange", "GetList('GetCertificateList');")
             'Me.trPageSize.Visible = False
 
             Try
-                If Not Me.IsPostBack Then
-                    Me.PopulateDealerDropdown(Me.moDealerDrop)
-                    Me.PopulateSortByDropDown()
-                    Me.GetStateProperties()
-                    SetFocus(Me.moCertificateText)
+                If Not IsPostBack Then
+                    PopulateDealerDropdown(moDealerDrop)
+                    PopulateSortByDropDown()
+                    GetStateProperties()
+                    SetFocus(moCertificateText)
                 Else
-                    Me.SetStateProperties()
+                    SetStateProperties()
                 End If
 
                 InstallDisplayProgressBar()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
 
         End Sub
@@ -189,36 +189,36 @@ Namespace Certificates
             Dim oCompanyId As Guid = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
 
             Try
-                Me.State.certificateNumber = Me.moCertificateText.Text.ToUpper
-                Me.State.customerName = Me.moCustomerNameText.Text.ToUpper
-                Me.State.address = Me.moAddressText.Text.ToUpper
-                Me.State.zip = Me.moZipText.Text.ToUpper
-                Me.State.taxId = Me.moTaxIdText.Text.ToUpper
-                Me.State.dealerId = Me.GetSelectedItem(moDealerDrop)
+                State.certificateNumber = moCertificateText.Text.ToUpper
+                State.customerName = moCustomerNameText.Text.ToUpper
+                State.address = moAddressText.Text.ToUpper
+                State.zip = moZipText.Text.ToUpper
+                State.taxId = moTaxIdText.Text.ToUpper
+                State.dealerId = GetSelectedItem(moDealerDrop)
                 'Me.State.dealerName = LookupListNew.GetDescriptionFromId("DEALERS", Me.State.dealerId)
-                Me.State.dealerName = LookupListNew.GetCodeFromId("DEALERS", Me.State.dealerId)
+                State.dealerName = LookupListNew.GetCodeFromId("DEALERS", State.dealerId)
                 '  Me.State.dealerName = Me.GetSelectedDescription(Me.moDealerDrop)
-                Me.State.selectedSortById = Me.GetSelectedItem(Me.cboSortBy)
+                State.selectedSortById = GetSelectedItem(cboSortBy)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
         Private Sub GetStateProperties()
             Try
-                Me.moCertificateText.Text = Me.State.certificateNumber
-                Me.moCustomerNameText.Text = Me.State.customerName
-                Me.moAddressText.Text = Me.State.address
-                Me.moZipText.Text = Me.State.zip
-                Me.moTaxIdText.Text = Me.State.taxId
-                Me.SetSelectedItem(Me.moDealerDrop, Me.State.dealerId)
-                Me.SetSelectedItem(Me.cboSortBy, Me.State.selectedSortById)
+                moCertificateText.Text = State.certificateNumber
+                moCustomerNameText.Text = State.customerName
+                moAddressText.Text = State.address
+                moZipText.Text = State.zip
+                moTaxIdText.Text = State.taxId
+                SetSelectedItem(moDealerDrop, State.dealerId)
+                SetSelectedItem(cboSortBy, State.selectedSortById)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub PopulateDealerDropdown(ByVal dealerDropDownList As DropDownList)
+        Private Sub PopulateDealerDropdown(dealerDropDownList As DropDownList)
             Try
                 'Me.BindListControlToDataView(dealerDropDownList,
                 '              LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "Code"), , , True)
@@ -234,7 +234,7 @@ Namespace Certificates
                                                           .CompanyId = CompanyId
                                                         })
                     If Dealers.Count > 0 Then
-                        If Not DealerList Is Nothing Then
+                        If DealerList IsNot Nothing Then
                             DealerList.AddRange(Dealers)
                         Else
                             DealerList = Dealers.Clone()
@@ -248,10 +248,10 @@ Namespace Certificates
                             .AddBlankItem = True
                         })
 
-                Me.SetSelectedItem(dealerDropDownList, Me.State.dealerId)
+                SetSelectedItem(dealerDropDownList, State.dealerId)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -263,19 +263,19 @@ Namespace Certificates
                     CommonConfigManager.Current.ListManager.GetList(listCode:="CSDRP",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-                Me.cboSortBy.Populate(sortBy.ToArray(), New PopulateOptions())
+                cboSortBy.Populate(sortBy.ToArray(), New PopulateOptions())
                 Dim defaultSelectedCodeId As Guid = (From sb In sortBy
                                                      Where sb.Code = "CUSTOMER_NAME"
                                                      Select sb.ListItemId).FirstOrDefault()
 
-                If (Me.State.selectedSortById.Equals(Guid.Empty)) Then
-                    Me.SetSelectedItem(Me.cboSortBy, defaultSelectedCodeId)
-                    Me.State.selectedSortById = defaultSelectedCodeId
+                If (State.selectedSortById.Equals(Guid.Empty)) Then
+                    SetSelectedItem(cboSortBy, defaultSelectedCodeId)
+                    State.selectedSortById = defaultSelectedCodeId
                 Else
-                    Me.SetSelectedItem(Me.cboSortBy, Me.State.selectedSortById)
+                    SetSelectedItem(cboSortBy, State.selectedSortById)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 

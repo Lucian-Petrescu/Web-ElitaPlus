@@ -87,11 +87,11 @@ Public Class CompanyDAL
 
 #Region "CRUD Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
-    Public Sub LoadAccountClosingInfoByCompanyID(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_ACCOUNTING_CLOSE_INFO_BY_COMPANY_ID")
+    Public Sub LoadAccountClosingInfoByCompanyID(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_ACCOUNTING_CLOSE_INFO_BY_COMPANY_ID")
         Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter("company_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, "ELP_ACCOUNTING_CLOSE_INFO", parameters) 'Me.TABLE_NAME, parameters)
@@ -101,11 +101,11 @@ Public Class CompanyDAL
 
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter("company_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -113,12 +113,12 @@ Public Class CompanyDAL
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
-    Public Function LoadList(ByVal description As String, ByVal code As String) As DataSet
+    Public Function LoadList(description As String, code As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter
         description = GetFormattedSearchStringForSQL(description)
         code = GetFormattedSearchStringForSQL(code)
@@ -127,20 +127,20 @@ Public Class CompanyDAL
                                      New OracleParameter(COL_NAME_DESCRIPTION, description)}
 
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadCompanies(ByVal companyGroupId As Guid) As DataSet
+    Public Function LoadCompanies(companyGroupId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_GROUP_COMPANIES")
+        Dim selectStmt As String = Config("/SQL/GET_GROUP_COMPANIES")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_COMPANY_GROUP_ID, companyGroupId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_GROUP_COMPANIES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME_GROUP_COMPANIES, parameters)
 
     End Function
 #End Region
@@ -148,7 +148,7 @@ Public Class CompanyDAL
 #Region "Overloaded Methods"
 
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         'Dim addressDAL As New addressDAL
         Dim cmpCountryDAL As New CompanyCountryDAL
@@ -163,11 +163,11 @@ Public Class CompanyDAL
             'First Pass updates Deletions
             cmpCountryDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
             cpmAccCloseInfDal.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
             oAttributeValueDAL.Update(familyDataset.GetChanges(), tr)
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             cmpCountryDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             cpmAccCloseInfDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 
@@ -186,44 +186,44 @@ Public Class CompanyDAL
         End Try
     End Sub
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
     End Sub
 #End Region
 
 #Region "Public Methods"
 
-    Public Sub LoadSelectedCountries(ByVal ds As DataSet, ByVal companyID As Guid)
+    Public Sub LoadSelectedCountries(ds As DataSet, companyID As Guid)
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_SELECTED_COUNTRY_LIST")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_COMPANY_ID, companyID)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_COMPANY_COUNTRY, parameters)
+        Dim selectStmt As String = Config("/SQL/LOAD_SELECTED_COUNTRY_LIST")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, companyID)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME_COMPANY_COUNTRY, parameters)
 
     End Sub
 
-    Public Sub LoadAvailableCountries(ByVal ds As DataSet, ByVal companyID As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_AVAILABLE_COUNTRY_LIST")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_COMPANY_ID, companyID)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_COMPANY_COUNTRY, parameters)
+    Public Sub LoadAvailableCountries(ds As DataSet, companyID As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_AVAILABLE_COUNTRY_LIST")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, companyID)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME_COMPANY_COUNTRY, parameters)
     End Sub
 
-    Public Sub GetCompanyDealerWithoutAgent(ByVal ds As DataSet, ByVal companyID As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALER_WO_AGENTCODES")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_COMPANY_ID, companyID)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_DEALER_NOAGENT, parameters)
+    Public Sub GetCompanyDealerWithoutAgent(ds As DataSet, companyID As Guid)
+        Dim selectStmt As String = Config("/SQL/GET_DEALER_WO_AGENTCODES")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, companyID)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME_DEALER_NOAGENT, parameters)
     End Sub
 
-    Public Sub GetCompanyAgentFlagForDealer(ByVal ds As DataSet, ByVal dealerID As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/CHECK_DEALER_WO_AGENTCODES")
+    Public Sub GetCompanyAgentFlagForDealer(ds As DataSet, dealerID As Guid)
+        Dim selectStmt As String = Config("/SQL/CHECK_DEALER_WO_AGENTCODES")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_id", dealerID)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_FLAG_REQAGENT, parameters)
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME_FLAG_REQAGENT, parameters)
     End Sub
 
-    Public Function GetDealerFromCompany(ByVal CompanyId As Guid, ByVal DealerCode As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALER_FROM_COMPANY_DEALER")
+    Public Function GetDealerFromCompany(CompanyId As Guid, DealerCode As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_DEALER_FROM_COMPANY_DEALER")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                    New DBHelper.DBHelperParameter("CompanyId", CompanyId.ToByteArray()),
@@ -237,8 +237,8 @@ Public Class CompanyDAL
         End Try
     End Function
 
-    Public Function CheckIfCompanyCodeAlreadyExists(ByVal Code As String) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/CHECK_IF_COMPANY_CODE_ALREADY_EXISTS")
+    Public Function CheckIfCompanyCodeAlreadyExists(Code As String) As Boolean
+        Dim selectStmt As String = Config("/SQL/CHECK_IF_COMPANY_CODE_ALREADY_EXISTS")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                    New DBHelper.DBHelperParameter("Code", Code)}

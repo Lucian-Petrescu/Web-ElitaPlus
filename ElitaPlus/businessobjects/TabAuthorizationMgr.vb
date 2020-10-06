@@ -40,7 +40,7 @@ Public Class TabAuthorizationMgr
 
 #Region "FUNCTIONS FOR BUILDING TABS"
 
-    Public Function TabIconPath(ByVal code As String, ByVal iconPath As String) As String
+    Public Function TabIconPath(code As String, iconPath As String) As String
 
         Dim oTabView As New DataView()
         oTabView.Table = moDS.Tables(0)
@@ -69,7 +69,7 @@ Public Class TabAuthorizationMgr
     End Function
 
 
-    Public Function TabTitle(ByVal code As String, ByVal languageID As Guid) As String
+    Public Function TabTitle(code As String, languageID As Guid) As String
         Dim oTabView As New DataView()
         Dim sText As String
 
@@ -86,7 +86,7 @@ Public Class TabAuthorizationMgr
 #End Region
 
 
-    Public Function TabImage(ByVal code As String, ByVal alignment As Long) As String
+    Public Function TabImage(code As String, alignment As Long) As String
         '-------------------------------------
         'Name:GetTabImage
         'Purpose:build the left center and right outlines for the rounded tabs.

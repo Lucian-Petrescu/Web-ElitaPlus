@@ -56,12 +56,12 @@ Public Class ProductCodeConversionDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("product_conversion_id", id.ToByteArray)}
         Dim outputParameter(0) As DBHelper.DBHelperParameter
         outputParameter(0) = New DBHelper.DBHelperParameter(PARAM_PRODUCT_CONV, GetType(DataSet))
@@ -73,12 +73,12 @@ Public Class ProductCodeConversionDAL
         End Try
     End Sub
 
-    Public Function LoadList(ByVal oProductConversionData As ProductConversionData) As DataSet
+    Public Function LoadList(oProductConversionData As ProductConversionData) As DataSet
         Dim selectStmt As String
         If oProductConversionData.companyIds.Count > 1 Then
-            selectStmt = Me.Config("/SQL/LOAD_LIST_MULTIPLE_COMPANIES")
+            selectStmt = Config("/SQL/LOAD_LIST_MULTIPLE_COMPANIES")
         Else
-            selectStmt = Me.Config("/SQL/LOAD_LIST")
+            selectStmt = Config("/SQL/LOAD_LIST")
         End If
 
         Dim parameters(TOTAL_PARAM) As OracleParameter
@@ -103,21 +103,21 @@ Public Class ProductCodeConversionDAL
             .externalProductCode = GetFormattedSearchStringForSQL(extProdCode)
             parameters(EXTERNAL_PROD_CODE_ID) = New OracleParameter(COL_NAME_EXTERNAL_PROD_CODE, .externalProductCode)
 
-            Dim inClauseCondition As String = MiscUtil.BuildListForSql("AND d." & Me.COL_NAME_COMPANY_ID, .companyIds, True)
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
+            Dim inClauseCondition As String = MiscUtil.BuildListForSql("AND d." & COL_NAME_COMPANY_ID, .companyIds, True)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
 
         End With
 
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function  
 
-    Public Function LoadListWithDescByDealer(ByVal DealerID As Guid) As DataSet
+    Public Function LoadListWithDescByDealer(DealerID As Guid) As DataSet
         Dim selectStmt As String
-        selectStmt = Me.Config("/SQL/LOAD_LIST_WITH_DESC")
+        selectStmt = Config("/SQL/LOAD_LIST_WITH_DESC")
         Dim ds As DataSet = New DataSet
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_id", DealerID.ToByteArray)}
         Try
@@ -128,12 +128,12 @@ Public Class ProductCodeConversionDAL
         End Try
     End Function
 
-    Public Function CheckForDealerProdCodeMfgCombination(ByVal DealerID As Guid, ByVal ExtProdCode As String, ByVal Manufacturer As String, _
-                                                         ByVal ProductConversionId As Guid, ByVal EffectiveDate as date) As DataSet
+    Public Function CheckForDealerProdCodeMfgCombination(DealerID As Guid, ExtProdCode As String, Manufacturer As String, _
+                                                         ProductConversionId As Guid, EffectiveDate as date) As DataSet
         Dim selectStmt As String
         Dim whereClauseConditions As String = ""
        
-        selectStmt = Me.Config("/SQL/CHK_DEALER_PRODCODE_MFG_COMBINATION")
+        selectStmt = Config("/SQL/CHK_DEALER_PRODCODE_MFG_COMBINATION")
         Dim ds As DataSet = New DataSet
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_dealer_id", DealerID.ToByteArray), 
                                                                                            New DBHelper.DBHelperParameter("pi_product_conversion_id", ProductConversionId.ToByteArray),
@@ -153,11 +153,11 @@ Public Class ProductCodeConversionDAL
         End Try
     End Function
 
-    Public Function CheckOverlappingProductCodeConversion(ByVal DealerID As Guid, ByVal ExtProdCode As String, ByVal Manufacturer As String, _
-                                                         ByVal ProductConversionId As Guid, ByVal EffectiveDate as date) As DataSet
+    Public Function CheckOverlappingProductCodeConversion(DealerID As Guid, ExtProdCode As String, Manufacturer As String, _
+                                                         ProductConversionId As Guid, EffectiveDate as date) As DataSet
         Dim selectStmt As String
        
-        selectStmt = Me.Config("/SQL/CHK_OVERLAPPING_PROD_CODE_CONVERSION")
+        selectStmt = Config("/SQL/CHK_OVERLAPPING_PROD_CODE_CONVERSION")
         Dim ds As DataSet = New DataSet
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { New DBHelper.DBHelperParameter("pi_external_prod_code", ExtProdCode),
                                                                                             New DBHelper.DBHelperParameter("pi_dealer_id", DealerID.ToByteArray), 
@@ -178,11 +178,11 @@ Public Class ProductCodeConversionDAL
 #End Region
 
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing)
-        DBHelper.Execute(ds.Tables(Me.TABLE_NAME), Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, transaction)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing)
+        DBHelper.Execute(ds.Tables(TABLE_NAME), Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, transaction)
     End Sub
 
-    public Function SaveProductCodeConversion(ByVal row As DataRow) As String
+    public Function SaveProductCodeConversion(row As DataRow) As String
         
         Try
             Dim stmtToExecute As String
@@ -192,44 +192,44 @@ Public Class ProductCodeConversionDAL
             Select Case rowState
                     Case DataRowState.Added
                         'Insert
-                        stmtToExecute = Me.Config("/SQL/INSERT")
+                        stmtToExecute = Config("/SQL/INSERT")
                         updateby= COL_NAME_CREATED_BY
                     Case DataRowState.Deleted
                         'delete
-                        stmtToExecute = Me.Config("/SQL/DELETE")
+                        stmtToExecute = Config("/SQL/DELETE")
                     Case DataRowState.Modified
                         'update
-                        stmtToExecute = Me.Config("/SQL/UPDATE")
+                        stmtToExecute = Config("/SQL/UPDATE")
                         updateby= COL_NAME_MODIFIED_BY
             End Select
 
             Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {
-                        New DBHelper.DBHelperParameter(Me.PARAM_CRUD_STATUS, GetType(Integer))
+                        New DBHelper.DBHelperParameter(PARAM_CRUD_STATUS, GetType(Integer))
                     }
             
            If rowState = DataRowState.Deleted Then
                Dim inParametersdel() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                        {
-                           New DBHelper.DBHelperParameter("pi_"& Me.COL_NAME_PRODUCT_CONVERSION_ID.ToLower(),   row(Me.COL_NAME_PRODUCT_CONVERSION_ID,DataRowVersion.Original))
+                           New DBHelper.DBHelperParameter("pi_"& COL_NAME_PRODUCT_CONVERSION_ID.ToLower(),   row(COL_NAME_PRODUCT_CONVERSION_ID,DataRowVersion.Original))
                        }
                DBHelper.ExecuteSp(stmtToExecute, inParametersdel, outputParameters)
                row.AcceptChanges()
            Else 
                Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                       {New DBHelper.DBHelperParameter("pi_"& Me.COL_NAME_DEALER_ID.ToLower(), row(Me.COL_NAME_DEALER_ID)),
-                        New DBHelper.DBHelperParameter("pi_"& Me.COL_NAME_EXTERNAL_PROD_CODE.ToLower(), row(Me.COL_NAME_EXTERNAL_PROD_CODE)),
-                        New DBHelper.DBHelperParameter("pi_"& Me.COL_NAME_PRODUCT_CODE_ID.ToLower(), row(Me.COL_NAME_PRODUCT_CODE_ID)),
-                        New DBHelper.DBHelperParameter("pi_"& Me.COL_NAME_PRODUCT_CONVERSION_ID.ToLower(), row(Me.COL_NAME_PRODUCT_CONVERSION_ID)),
-                        New DBHelper.DBHelperParameter("pi_"& Me.COL_NAME_CERTIFICATE_DURATION.ToLower(), row(Me.COL_NAME_CERTIFICATE_DURATION)),
-                        New DBHelper.DBHelperParameter("pi_"& Me.COL_NAME_MANUFACTURER_WARRANTY.ToLower(), row(Me.COL_NAME_MANUFACTURER_WARRANTY)),
-                        New DBHelper.DBHelperParameter("pi_"& Me.COL_NAME_GROSS_AMOUNT.ToLower(), row(Me.COL_NAME_GROSS_AMOUNT)),
-                        New DBHelper.DBHelperParameter("pi_"& Me.COL_NAME_MANUFACTURER.ToLower(), row(Me.COL_NAME_MANUFACTURER)),
-                        New DBHelper.DBHelperParameter("pi_"& Me.COL_NAME_MODEL.ToLower(), row(Me.COL_NAME_MODEL)),
-                        New DBHelper.DBHelperParameter("pi_"& Me.COL_NAME_SALES_PRICE.ToLower(), row(Me.COL_NAME_SALES_PRICE)),
+                       {New DBHelper.DBHelperParameter("pi_"& COL_NAME_DEALER_ID.ToLower(), row(COL_NAME_DEALER_ID)),
+                        New DBHelper.DBHelperParameter("pi_"& COL_NAME_EXTERNAL_PROD_CODE.ToLower(), row(COL_NAME_EXTERNAL_PROD_CODE)),
+                        New DBHelper.DBHelperParameter("pi_"& COL_NAME_PRODUCT_CODE_ID.ToLower(), row(COL_NAME_PRODUCT_CODE_ID)),
+                        New DBHelper.DBHelperParameter("pi_"& COL_NAME_PRODUCT_CONVERSION_ID.ToLower(), row(COL_NAME_PRODUCT_CONVERSION_ID)),
+                        New DBHelper.DBHelperParameter("pi_"& COL_NAME_CERTIFICATE_DURATION.ToLower(), row(COL_NAME_CERTIFICATE_DURATION)),
+                        New DBHelper.DBHelperParameter("pi_"& COL_NAME_MANUFACTURER_WARRANTY.ToLower(), row(COL_NAME_MANUFACTURER_WARRANTY)),
+                        New DBHelper.DBHelperParameter("pi_"& COL_NAME_GROSS_AMOUNT.ToLower(), row(COL_NAME_GROSS_AMOUNT)),
+                        New DBHelper.DBHelperParameter("pi_"& COL_NAME_MANUFACTURER.ToLower(), row(COL_NAME_MANUFACTURER)),
+                        New DBHelper.DBHelperParameter("pi_"& COL_NAME_MODEL.ToLower(), row(COL_NAME_MODEL)),
+                        New DBHelper.DBHelperParameter("pi_"& COL_NAME_SALES_PRICE.ToLower(), row(COL_NAME_SALES_PRICE)),
                         New DBHelper.DBHelperParameter("pi_"& updateby.ToLower(), row(updateby)),
-                        New DBHelper.DBHelperParameter("pi_" & Me.COL_NAME_EFFECTIVE_DATE.ToLower(), row(Me.COL_NAME_EFFECTIVE_DATE)),
-                        New DBHelper.DBHelperParameter("pi_" & Me.COL_NAME_EXPIRATION_DATE.ToLower(), row(Me.COL_NAME_EXPIRATION_DATE))
+                        New DBHelper.DBHelperParameter("pi_" & COL_NAME_EFFECTIVE_DATE.ToLower(), row(COL_NAME_EFFECTIVE_DATE)),
+                        New DBHelper.DBHelperParameter("pi_" & COL_NAME_EXPIRATION_DATE.ToLower(), row(COL_NAME_EXPIRATION_DATE))
                        }
                DBHelper.ExecuteSp(stmtToExecute, inParameters, outputParameters)
                row.AcceptChanges()

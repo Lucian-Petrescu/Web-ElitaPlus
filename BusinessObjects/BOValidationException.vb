@@ -28,7 +28,7 @@ Imports Assurant.ElitaPlus.Common
                 sProperties &= " Value =" & err.OffendingValue.ToString & "="
             End If
         Next
-        Me.Header &= sProperties
+        Header &= sProperties
         errorList = validationErrors
         boName = businessObjectName
 
@@ -60,7 +60,7 @@ Imports Assurant.ElitaPlus.Common
 
     Public ReadOnly Property BusinessObjectName() As String
         Get
-            Return Me.boName
+            Return boName
         End Get
     End Property
 

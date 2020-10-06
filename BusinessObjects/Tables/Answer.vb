@@ -8,46 +8,46 @@ Public Class Answer
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New AnswerDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -58,20 +58,20 @@ Public Class Answer
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New AnswerDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -96,8 +96,8 @@ Public Class Answer
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        Me.Effective = Date.Now
-        Me.Expiration = New Date(2499, 12, 31, 23, 59, 59)
+        Effective = Date.Now
+        Expiration = New Date(2499, 12, 31, 23, 59, 59)
     End Sub
 #End Region
 
@@ -125,7 +125,7 @@ Public Class Answer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AnswerDAL.COL_NAME_SOFT_QUESTION_ID, Value)
+            SetValue(AnswerDAL.COL_NAME_SOFT_QUESTION_ID, Value)
         End Set
     End Property
 
@@ -141,7 +141,7 @@ Public Class Answer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AnswerDAL.COL_NAME_CODE, Value)
+            SetValue(AnswerDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
@@ -158,7 +158,7 @@ Public Class Answer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AnswerDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(AnswerDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -174,7 +174,7 @@ Public Class Answer
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(AnswerDAL.COL_NAME_ANSWER_ORDER, Value)
+            SetValue(AnswerDAL.COL_NAME_ANSWER_ORDER, Value)
         End Set
     End Property
 
@@ -190,7 +190,7 @@ Public Class Answer
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AnswerDAL.COL_NAME_ANSWER_VALUE, Value)
+            SetValue(AnswerDAL.COL_NAME_ANSWER_VALUE, Value)
         End Set
     End Property
 
@@ -205,7 +205,7 @@ Public Class Answer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AnswerDAL.COL_NAME_SUPPORTS_CLAIM_ID, Value)
+            SetValue(AnswerDAL.COL_NAME_SUPPORTS_CLAIM_ID, Value)
         End Set
     End Property
 
@@ -220,7 +220,7 @@ Public Class Answer
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(AnswerDAL.COL_NAME_SCORE, Value)
+            SetValue(AnswerDAL.COL_NAME_SCORE, Value)
         End Set
     End Property
 
@@ -236,7 +236,7 @@ Public Class Answer
         End Get
         Set(ByVal Value As DateTimeType)
             CheckDeleted()
-            Me.SetValue(AnswerDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(AnswerDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
@@ -252,7 +252,7 @@ Public Class Answer
         End Get
         Set(ByVal Value As DateTimeType)
             CheckDeleted()
-            Me.SetValue(AnswerDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(AnswerDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
@@ -267,7 +267,7 @@ Public Class Answer
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AnswerDAL.COL_NAME_LIST_ITEM_ID, Value)
+            SetValue(AnswerDAL.COL_NAME_LIST_ITEM_ID, Value)
         End Set
     End Property
 
@@ -285,19 +285,19 @@ Public Class Answer
             Dim dal As New AnswerDAL
             'if the answer code is blank then get new answer code
             If Not Me.Row.RowState = DataRowState.Detached AndAlso Not Me.Row.RowState = DataRowState.Deleted Then
-                If String.IsNullOrEmpty(Me.Code) Then
-                    Me.Code = dal.GetNewAnswerCode()
+                If String.IsNullOrEmpty(Code) Then
+                    Code = dal.GetNewAnswerCode()
                 End If
             End If
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
-                dal.Update(Me.Row)
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -306,7 +306,7 @@ Public Class Answer
     End Sub
 
     Public Sub Copy(ByVal original As Answer)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
         MyBase.CopyFrom(original)

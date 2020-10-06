@@ -12,7 +12,7 @@ Partial Class MessagePage
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -22,7 +22,7 @@ Partial Class MessagePage
 
     Private ERROR_CONTENT As String = "ERROR_CONTENT"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         If Not Page.IsPostBack Then
 
@@ -34,7 +34,7 @@ Partial Class MessagePage
             sMessage = Request.QueryString("message")
 
             If sMessage <> String.Empty Then
-                ELPWebConstants.ShowPopup(sMessage.ToString, Me.Page)
+                ELPWebConstants.ShowPopup(sMessage.ToString, Page)
                 lblMessage.Text = sMessage
             End If
 

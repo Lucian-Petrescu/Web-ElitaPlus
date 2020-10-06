@@ -19,7 +19,7 @@ Public Interface ICertAfterUpgradeService
             FaultContract(GetType(ValidationFault)),
             FaultContract(GetType(InvalidIdentificationNumber)),
             FaultContract(GetType(InvalidUpgradeDateFault))>
-    Function GetCertAfterUpgrade(ByVal request As GetCertificateRequest) As GetCertificateResponse
+    Function GetCertAfterUpgrade(request As GetCertificateRequest) As GetCertificateResponse
 
 End Interface
 

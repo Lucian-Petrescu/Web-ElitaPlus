@@ -17,7 +17,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -45,7 +45,7 @@ Namespace Tables
             Public ListItemId As Guid = Nothing
             Public RoleId As Guid = Nothing
 
-            Public Sub New(ByVal ExcludeListItemByRoleId As Guid, ByVal CompanyId As Guid, ByVal ListId As Guid, ByVal ListItemId As Guid, ByVal RoleId As Guid)
+            Public Sub New(ExcludeListItemByRoleId As Guid, CompanyId As Guid, ListId As Guid, ListItemId As Guid, RoleId As Guid)
                 Me.ExcludeListItemByRoleId = ExcludeListItemByRoleId
                 Me.CompanyId = CompanyId
                 Me.ListId = ListId
@@ -92,20 +92,20 @@ Namespace Tables
 
         Private Sub SetStateProperties()
 
-            If Me.State.moExcludeListItemByRoleId.Equals(Guid.Empty) Then
-                Me.State.IsExcludeListItemByRoleNew = True
+            If State.moExcludeListItemByRoleId.Equals(Guid.Empty) Then
+                State.IsExcludeListItemByRoleNew = True
                 ClearAll()
                 SetButtonsState(True)
-                Me.State.IsEditMode = True
+                State.IsEditMode = True
             Else
-                Me.State.IsExcludeListItemByRoleNew = False
+                State.IsExcludeListItemByRoleNew = False
                 SetButtonsState(False)
-                Me.State.IsEditMode = False
+                State.IsEditMode = False
 
-                Me.State.moExcludeListitemByRole = New ExcludeListitemByRole(Me.State.moExcludeListItemByRoleId)
-                Me.State.moCompanyId = Me.State.moExcludeListitemByRole.CompanyId
-                Me.State.moListItemId = Me.State.moExcludeListitemByRole.ListItemId
-                Me.State.moListId = Me.State.moExcludeListitemByRole.ListId
+                State.moExcludeListitemByRole = New ExcludeListitemByRole(State.moExcludeListItemByRoleId)
+                State.moCompanyId = State.moExcludeListitemByRole.CompanyId
+                State.moListItemId = State.moExcludeListitemByRole.ListItemId
+                State.moListId = State.moExcludeListitemByRole.ListId
             End If
             PopulateAll()
         End Sub
@@ -117,19 +117,19 @@ Namespace Tables
         Private ReadOnly Property TheExcludeListitemByRole(Optional ByVal obj As ExcludeListitemByRole = Nothing) As ExcludeListitemByRole
             Get
                 '  If obj Is Nothing Then
-                If Me.State.moExcludeListitemByRole Is Nothing Then
-                    If Me.State.IsExcludeListItemByRoleNew = True Then
+                If State.moExcludeListitemByRole Is Nothing Then
+                    If State.IsExcludeListItemByRoleNew = True Then
                         ' For creating, inserting
-                        Me.State.moExcludeListitemByRole = New ExcludeListitemByRole
-                        Me.State.moExcludeListItemByRoleId = Me.State.moExcludeListitemByRole.Id
+                        State.moExcludeListitemByRole = New ExcludeListitemByRole
+                        State.moExcludeListItemByRoleId = State.moExcludeListitemByRole.Id
                     Else
                         ' For updating, deleting
-                        Me.State.moExcludeListitemByRole = New ExcludeListitemByRole(Me.State.moExcludeListItemByRoleId)
+                        State.moExcludeListitemByRole = New ExcludeListitemByRole(State.moExcludeListItemByRoleId)
 
                     End If
                 End If
 
-                Return Me.State.moExcludeListitemByRole
+                Return State.moExcludeListitemByRole
             End Get
         End Property
         Public ReadOnly Property TheListItemControl() As MultipleColumnDDLabelControl_New
@@ -168,25 +168,25 @@ Namespace Tables
         Protected WithEvents moListMultipleDrop As MultipleColumnDDLabelControl
 
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Me.State.InputParameters = CType(Me.CallingParameters, Parameters)
-                    Me.State.moExcludeListItemByRoleId = Me.State.InputParameters.ExcludeListItemByRoleId
+                    State.InputParameters = CType(CallingParameters, Parameters)
+                    State.moExcludeListItemByRoleId = State.InputParameters.ExcludeListItemByRoleId
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles Me.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles Me.PageReturn
             Dim retObj As ExcludeListItemByRoleSearchForm.ReturnType = CType(ReturnPar, ExcludeListItemByRoleSearchForm.ReturnType)
-            Me.State.moExcludeListItemByRoleId = retObj.ExcludeListItemByRoleId
-            Me.SetStateProperties()
-            Me.State.LastOperation = DetailPageCommand.Redirect_
+            State.moExcludeListItemByRoleId = retObj.ExcludeListItemByRoleId
+            SetStateProperties()
+            State.LastOperation = DetailPageCommand.Redirect_
 
             EnableDisableFields()
 
@@ -194,19 +194,19 @@ Namespace Tables
 
 
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 ' ClearLabelsErrSign()
                 If Not Page.IsPostBack Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                     UpdateBreadCrum()
-                    Me.SetStateProperties()
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO,
-                                                                        Me.MSG_TYPE_CONFIRM, True)
+                    SetStateProperties()
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO,
+                                                                        MSG_TYPE_CONFIRM, True)
                     EnableDisableFields()
                 Else
                     CheckIfComingFromDeleteConfirm()
@@ -215,18 +215,18 @@ Namespace Tables
                 BindBoPropertiesToLabels()
 
                 CheckIfComingFromConfirm()
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(TheExcludeListitemByRole)
+                If Not IsPostBack Then
+                    AddLabelDecorations(TheExcludeListitemByRole)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
             If Me.State.LastOperation = DetailPageCommand.Redirect_ Then
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 ClearLabelsErrSign()
-                Me.State.LastOperation = DetailPageCommand.Nothing_
+                State.LastOperation = DetailPageCommand.Nothing_
             Else
-                Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+                ShowMissingTranslations(MasterPage.MessageController)
             End If
         End Sub
 
@@ -234,63 +234,63 @@ Namespace Tables
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnApply_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+        Private Sub btnApply_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
             ApplyChanges()
         End Sub
 
         Private Sub GoBack()
             Dim retType As New ExcludeListItemByRoleSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                              Me.State.moExcludeListItemByRoleId, Me.State.InputParameters, Me.State.boChanged)
-            Me.ReturnToCallingPage(retType)
+                                                              State.moExcludeListItemByRoleId, State.InputParameters, State.boChanged)
+            ReturnToCallingPage(retType)
             'Me.callPage(ExcludeListItemByRoleForm.PRODUCTCODE_LIST, param)
 
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                                Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                                HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
-                If Not Me.State.IsExcludeListItemByRoleNew Then
+                If Not State.IsExcludeListItemByRoleNew Then
                     'Reload from the DB
-                    Me.State.moExcludeListitemByRole = New ExcludeListitemByRole(Me.State.moExcludeListItemByRoleId)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                    State.moExcludeListitemByRole = New ExcludeListitemByRole(State.moExcludeListItemByRoleId)
+                ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                     'It was a new with copy
-                    Me.State.moExcludeListitemByRole.Clone(Me.State.ScreenSnapShotBO)
-                    Me.State.moCompanyId = Me.State.moExcludeListitemByRole.CompanyId
-                    Me.State.moListId = Me.State.moExcludeListitemByRole.ListId
-                    Me.State.moListItemId = Me.State.moExcludeListitemByRole.ListItemId
+                    State.moExcludeListitemByRole.Clone(State.ScreenSnapShotBO)
+                    State.moCompanyId = State.moExcludeListitemByRole.CompanyId
+                    State.moListId = State.moExcludeListitemByRole.ListId
+                    State.moListItemId = State.moExcludeListitemByRole.ListItemId
                 Else
-                    Me.State.moExcludeListitemByRole = New ExcludeListitemByRole
+                    State.moExcludeListitemByRole = New ExcludeListitemByRole
                 End If
                 PopulateAll()
                 SetButtonsState(False)
-                Me.State.IsEditMode = True
+                State.IsEditMode = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CreateNew()
-            Me.State.ScreenSnapShotBO = Nothing
-            Me.State.moExcludeListItemByRoleId = Guid.Empty
-            Me.State.IsExcludeListItemByRoleNew = True
-            Me.State.moExcludeListitemByRole = New ExcludeListitemByRole
+            State.ScreenSnapShotBO = Nothing
+            State.moExcludeListItemByRoleId = Guid.Empty
+            State.IsExcludeListItemByRoleNew = True
+            State.moExcludeListitemByRole = New ExcludeListitemByRole
             'ClearAll()
-            Me.SetButtonsState(True)
-            Me.PopulateAll()
-            Me.State.IsEditMode = True
+            SetButtonsState(True)
+            PopulateAll()
+            State.IsEditMode = True
 
             TheCompanyControl.SelectedIndex = -1
             TheListControl.SelectedIndex = -1
@@ -302,17 +302,17 @@ Namespace Tables
 
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     ClearAll()
                     CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -322,19 +322,19 @@ Namespace Tables
             Dim newObj As New ExcludeListitemByRole
             newObj.Copy(TheExcludeListitemByRole)
 
-            Me.State.moExcludeListitemByRole = newObj
+            State.moExcludeListitemByRole = newObj
             'newObjDummy = TheExcludeListitemByRole(newObj)
 
-            Me.State.moExcludeListItemByRoleId = Guid.Empty
-            Me.State.IsExcludeListItemByRoleNew = True
+            State.moExcludeListItemByRoleId = Guid.Empty
+            State.IsExcludeListItemByRoleNew = True
 
-            Me.SetButtonsState(True)
+            SetButtonsState(True)
             TheCompanyControl.ChangeEnabledControlProperty(True)
             TheCompanyControl.SelectedIndex = -1
 
             'create the backup copy
-            Me.State.ScreenSnapShotBO = New ExcludeListitemByRole
-            Me.State.ScreenSnapShotBO.Copy(TheExcludeListitemByRole)
+            State.ScreenSnapShotBO = New ExcludeListitemByRole
+            State.ScreenSnapShotBO.Copy(TheExcludeListitemByRole)
 
             With TheExcludeListitemByRole '(newObj)
                 .CompanyId = Guid.Empty
@@ -343,36 +343,36 @@ Namespace Tables
         End Sub
 
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     CreateNewCopy()
-                    Me.State.IsEditMode = True
+                    State.IsEditMode = True
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
                 If DeleteExcludeListitemByRole() = True Then
-                    Me.State.boChanged = True
+                    State.boChanged = True
                     'Dim param As New ProductCodeSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete, _
                     '                Me.State.moExcludeListitemByRoleId)
                     'param.BoChanged = True
                     'Me.callPage(ExcludeListItemByRoleForm.PRODUCTCODE_LIST, param)
                     Dim retType As New ExcludeListItemByRoleSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                              Me.State.moExcludeListItemByRoleId, Me.State.InputParameters, Me.State.boChanged)
+                                                              State.moExcludeListItemByRoleId, State.InputParameters, State.boChanged)
                     retType.BoChanged = True
-                    Me.ReturnToCallingPage(retType)
+                    ReturnToCallingPage(retType)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -380,34 +380,34 @@ Namespace Tables
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl_New) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl_New) _
                         Handles CompanyDropControl.SelectedDropChanged
             Try
-                Me.State.moCompanyId = TheCompanyControl.SelectedGuid
+                State.moCompanyId = TheCompanyControl.SelectedGuid
                 PopulateUserControlAvailableSelectedExcludeRoles()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub OnFromListDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl_New) _
+        Private Sub OnFromListDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl_New) _
                 Handles ListDropControl.SelectedDropChanged
             Try
-                Me.State.moListId = TheListControl.SelectedGuid
+                State.moListId = TheListControl.SelectedGuid
                 PopulateListItemDropDowns(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 PopulateUserControlAvailableSelectedExcludeRoles()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub OnFromListItemDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl_New) _
+        Private Sub OnFromListItemDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl_New) _
         Handles ListItemDropControl.SelectedDropChanged
             Try
-                Me.State.moListItemId = TheListItemControl.SelectedGuid
+                State.moListItemId = TheListItemControl.SelectedGuid
                 PopulateUserControlAvailableSelectedExcludeRoles()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -430,10 +430,10 @@ Namespace Tables
 #Region "Populate"
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("EXCLUDE_LIST_ITEM_BY_ROLE")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("EXCLUDE_LIST_ITEM_BY_ROLE")
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("EXCLUDE_LIST_ITEM_BY_ROLE")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("EXCLUDE_LIST_ITEM_BY_ROLE")
                 End If
             End If
         End Sub
@@ -448,7 +448,7 @@ Namespace Tables
                 TheCompanyControl.BindData(oCompanyDataView)
                 TheCompanyControl.AutoPostBackDD = True
                 TheCompanyControl.NothingSelected = True
-                TheCompanyControl.SelectedGuid = Me.State.moCompanyId
+                TheCompanyControl.SelectedGuid = State.moCompanyId
 
                 Dim oListDataView As DataView = LookupListNew.GetList(oLanguageId)
                 TheListControl.Caption = "    " & TranslationBase.TranslateLabelOrMessage(LABEL_LIST)
@@ -456,39 +456,39 @@ Namespace Tables
                 TheListControl.BindData(oListDataView)
                 TheListControl.AutoPostBackDD = True
                 TheListControl.NothingSelected = True
-                TheListControl.SelectedGuid = Me.State.moListId
+                TheListControl.SelectedGuid = State.moListId
 
                 PopulateListItemDropDowns(oLanguageId)
 
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(EXCLUDE_LIST_ITEM_BY_ROLE_FORM)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(EXCLUDE_LIST_ITEM_BY_ROLE_FORM)
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
         End Sub
 
-        Private Sub PopulateListItemDropDowns(ByVal oLanguageId As Guid)
+        Private Sub PopulateListItemDropDowns(oLanguageId As Guid)
 
 
-            If Not Me.State.moListId.Equals(Guid.Empty) Then
+            If Not State.moListId.Equals(Guid.Empty) Then
 
-                Me.State.SelectedListCode = LookupListNew.GetCodeFromId(LookupListCache.LK_LIST, Me.State.moListId)
+                State.SelectedListCode = LookupListNew.GetCodeFromId(LookupListCache.LK_LIST, State.moListId)
 
-                Dim oListItemDataView As DataView = LookupListNew.DropdownLookupList(Me.State.SelectedListCode, oLanguageId)
+                Dim oListItemDataView As DataView = LookupListNew.DropdownLookupList(State.SelectedListCode, oLanguageId)
 
 
                 TheListItemControl.NothingSelected = True
                 TheListItemControl.BindData(oListItemDataView)
                 TheListItemControl.AutoPostBackDD = True
                 TheListItemControl.NothingSelected = True
-                TheListItemControl.SelectedGuid = Me.State.moListItemId
+                TheListItemControl.SelectedGuid = State.moListItemId
             End If
 
             TheListItemControl.Caption = TranslationBase.TranslateLabelOrMessage(LABEL_LIST_ITEM)
 
         End Sub
         Private Sub PopulateAll()
-            If Me.State.IsExcludeListItemByRoleNew = True Then
+            If State.IsExcludeListItemByRoleNew = True Then
                 PopulateDropDowns()
                 PopulateUserControlAvailableSelectedExcludeRoles()
 
@@ -501,7 +501,7 @@ Namespace Tables
         End Sub
 
         Sub PopulateUserControlAvailableSelectedExcludeRoles()
-            Me.UserControlAvailableSelectedExcludeRoles.BackColor = "#d5d6e4"
+            UserControlAvailableSelectedExcludeRoles.BackColor = "#d5d6e4"
             ControlMgr.SetVisibleControl(Me, UserControlAvailableSelectedExcludeRoles, False)
 
             With TheExcludeListitemByRole
@@ -509,8 +509,8 @@ Namespace Tables
 
                     Dim availableDv As DataView = .GetAvailableRoles()
                     Dim selectedDv As DataView = .GetSelectedRoles()
-                    Me.UserControlAvailableSelectedExcludeRoles.SetAvailableData(availableDv, LookupListNew.COL_CODE_AND_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
-                    Me.UserControlAvailableSelectedExcludeRoles.SetSelectedData(selectedDv, LookupListNew.COL_CODE_AND_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
+                    UserControlAvailableSelectedExcludeRoles.SetAvailableData(availableDv, LookupListNew.COL_CODE_AND_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
+                    UserControlAvailableSelectedExcludeRoles.SetSelectedData(selectedDv, LookupListNew.COL_CODE_AND_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
                     ControlMgr.SetVisibleControl(Me, UserControlAvailableSelectedExcludeRoles, True)
 
                 End If
@@ -521,7 +521,7 @@ Namespace Tables
 
 #Region "Gui-Validation"
 
-        Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetButtonsState(bIsNew As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
@@ -542,9 +542,9 @@ Namespace Tables
                     bIsDirty = .IsDirty
                 End With
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(EXCLUDE_LIST_ITEM_BY_ROLE_FORM)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(EXCLUDE_LIST_ITEM_BY_ROLE_FORM)
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
             Return bIsDirty
         End Function
@@ -552,31 +552,31 @@ Namespace Tables
         Private Function ApplyChanges() As Boolean
 
             Try
-                If Me.State.IsEditMode Then
-                    Me.State.moExcludeListitemByRole.CompanyId = TheCompanyControl.SelectedGuid
-                    Me.State.moExcludeListitemByRole.ListId = TheListControl.SelectedGuid
-                    Me.State.moExcludeListitemByRole.ListItemId = TheListItemControl.SelectedGuid
-                    Me.State.moExcludeListitemByRole.ExcludedRolesCount = Me.UserControlAvailableSelectedExcludeRoles.SelectedList.Count
+                If State.IsEditMode Then
+                    State.moExcludeListitemByRole.CompanyId = TheCompanyControl.SelectedGuid
+                    State.moExcludeListitemByRole.ListId = TheListControl.SelectedGuid
+                    State.moExcludeListitemByRole.ListItemId = TheListItemControl.SelectedGuid
+                    State.moExcludeListitemByRole.ExcludedRolesCount = UserControlAvailableSelectedExcludeRoles.SelectedList.Count
                     'If Me.UserControlAvailableSelectedExcludeRoles.SelectedList.Count = 0 Then
                     '    Throw New GUIException(Message.MSG_COMPANY_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.BO_EXCLUDED_ROLES_MUST_BE_SELECTED_ERR)
                     'End If
                 End If
 
                 If TheExcludeListitemByRole.IsDirty() Then
-                    Me.TheExcludeListitemByRole.Save()
-                    Me.State.boChanged = True
-                    If Me.State.IsExcludeListItemByRoleNew = True Then
-                        Me.State.IsExcludeListItemByRoleNew = False
+                    TheExcludeListitemByRole.Save()
+                    State.boChanged = True
+                    If State.IsExcludeListItemByRoleNew = True Then
+                        State.IsExcludeListItemByRoleNew = False
                     End If
                     PopulateAll()
                     EnableDisableFields()
-                    Me.SetButtonsState(Me.State.IsExcludeListItemByRoleNew)
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    SetButtonsState(State.IsExcludeListItemByRoleNew)
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Function
@@ -591,29 +591,29 @@ Namespace Tables
                     .Save()
                 End With
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(EXCLUDE_LIST_ITEM_BY_ROLE_FORM)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(EXCLUDE_LIST_ITEM_BY_ROLE_FORM)
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
                 bIsOk = False
             End Try
             Return bIsOk
         End Function
 
         Protected Sub CheckIfComingFromDeleteConfirm()
-            Dim confResponse As String = Me.HiddenDeletePromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+            Dim confResponse As String = HiddenDeletePromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
                 If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
                     DoDelete()
                     'Clean after consuming the action
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                    Me.HiddenDeletePromptResponse.Value = ""
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                    HiddenDeletePromptResponse.Value = ""
                 End If
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
                 'Me.State.searchDV = Nothing
                 'ReturnProductPolicyFromEditing()
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenDeletePromptResponse.Value = ""
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenDeletePromptResponse.Value = ""
             End If
         End Sub
 #End Region
@@ -622,17 +622,17 @@ Namespace Tables
 
         Private Sub BindBoPropertiesToLabels()
 
-            Me.BindBOPropertyToLabel(TheExcludeListitemByRole, LIST_ITEM_ID_PROPERTY, Me.TheListItemControl.CaptionLabel)
-            Me.BindBOPropertyToLabel(TheExcludeListitemByRole, COMPANY_ID_PROPERTY, Me.TheCompanyControl.CaptionLabel)
-            Me.BindBOPropertyToLabel(TheExcludeListitemByRole, LIST_ID_PROPERTY, Me.TheListControl.CaptionLabel)
+            BindBOPropertyToLabel(TheExcludeListitemByRole, LIST_ITEM_ID_PROPERTY, TheListItemControl.CaptionLabel)
+            BindBOPropertyToLabel(TheExcludeListitemByRole, COMPANY_ID_PROPERTY, TheCompanyControl.CaptionLabel)
+            BindBOPropertyToLabel(TheExcludeListitemByRole, LIST_ID_PROPERTY, TheListControl.CaptionLabel)
             ClearGridHeadersAndLabelsErrSign()
 
         End Sub
 
         Private Sub ClearLabelsErrSign()
 
-            Me.ClearLabelErrSign(TheCompanyControl.CaptionLabel)
-            Me.ClearLabelErrSign(TheListItemControl.CaptionLabel)
+            ClearLabelErrSign(TheCompanyControl.CaptionLabel)
+            ClearLabelErrSign(TheListItemControl.CaptionLabel)
 
         End Sub
 #End Region
@@ -640,19 +640,19 @@ Namespace Tables
 #Region "State-Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and go back to Search Page
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             GoBack()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         GoBack()
                 End Select
             End If
@@ -660,19 +660,19 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromNewCopy()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Copy Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and create a new Copy BO
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             CreateNewCopy()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' create a new BO
                         CreateNewCopy()
                 End Select
@@ -680,19 +680,19 @@ Namespace Tables
 
         End Sub
         Protected Sub ComingFromNew()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Copy Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and create a new Copy BO
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             CreateNew()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' create a new BO
                         CreateNew()
                 End Select
@@ -703,7 +703,7 @@ Namespace Tables
 
         Protected Sub CheckIfComingFromConfirm()
             Try
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     ' Period
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
@@ -714,10 +714,10 @@ Namespace Tables
                 End Select
 
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -740,7 +740,7 @@ Namespace Tables
             'ReturnProductPolicyFromEditing()
 
             'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-            Me.State.IsEditMode = False
+            State.IsEditMode = False
         End Sub
 
 #End Region
@@ -749,9 +749,9 @@ Namespace Tables
 
         Protected Sub EnableDisableFields()
 
-            TheCompanyControl.ChangeEnabledControlProperty(Me.State.IsEditMode)
-            TheListControl.ChangeEnabledControlProperty(Me.State.IsEditMode)
-            TheListItemControl.ChangeEnabledControlProperty(Me.State.IsEditMode)
+            TheCompanyControl.ChangeEnabledControlProperty(State.IsEditMode)
+            TheListControl.ChangeEnabledControlProperty(State.IsEditMode)
+            TheListItemControl.ChangeEnabledControlProperty(State.IsEditMode)
 
             'If (Me.State.DealerTypeID.Equals(Me.State.dealerTypeVSC)) Then
             '    ControlMgr.SetVisibleControl(Me, TRPrdCode, False)
@@ -776,27 +776,27 @@ Namespace Tables
 
 #Region "Regions: Attach - Detach Event Handlers"
 
-        Private Sub UserControlAvailableSelectedExcludeRoles_Attach(ByVal aSrc As Generic.UserControlAvailableSelected_New, ByVal attachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedExcludeRoles.Attach
+        Private Sub UserControlAvailableSelectedExcludeRoles_Attach(aSrc As Generic.UserControlAvailableSelected_New, attachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedExcludeRoles.Attach
             Try
                 If attachedList.Count > 0 Then
-                    Me.State.IsEditMode = True
+                    State.IsEditMode = True
                     TheExcludeListitemByRole.AttachRoles(attachedList)
                 Else
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub UserControlAvailableSelectedExcludeRoles_Detach(ByVal aSrc As Generic.UserControlAvailableSelected_New, ByVal detachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedExcludeRoles.Detach
+        Private Sub UserControlAvailableSelectedExcludeRoles_Detach(aSrc As Generic.UserControlAvailableSelected_New, detachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedExcludeRoles.Detach
             Try
                 If detachedList.Count > 0 Then
-                    Me.State.IsEditMode = True
+                    State.IsEditMode = True
                     TheExcludeListitemByRole.DetachRoles(detachedList)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 

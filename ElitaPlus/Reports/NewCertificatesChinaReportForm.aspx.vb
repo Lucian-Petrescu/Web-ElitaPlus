@@ -29,7 +29,7 @@ Namespace Reports
             Get
                 If DealerAvailableSelected Is Nothing Then
 
-                    DealerAvailableSelected = DirectCast(Me.AvailableSelectedDealers, Generic.UserControlAvailableSelected_New)
+                    DealerAvailableSelected = DirectCast(AvailableSelectedDealers, Generic.UserControlAvailableSelected_New)
                 End If
                 Return DealerAvailableSelected
             End Get
@@ -60,7 +60,7 @@ Namespace Reports
         Private designerPlaceholderDeclaration As System.Object
 
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -97,20 +97,20 @@ Namespace Reports
 
 
 
-        Protected Sub rdealer_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rdealer.CheckedChanged
+        Protected Sub rdealer_CheckedChanged(sender As Object, e As EventArgs) Handles rdealer.CheckedChanged
             Try
                 PopulateDealerDropDown()
                 ControlMgr.SetVisibleControl(Me, rbDealerTypeESC, True)
                 ControlMgr.SetVisibleControl(Me, rbDealerTypeHW, True)
                 ControlMgr.SetVisibleControl(Me, esclabel, True)
                 ControlMgr.SetVisibleControl(Me, hwlabel, True)
-                Me.DealerAvailableSelected.SelectedListListBox.Items.Clear()
+                DealerAvailableSelected.SelectedListListBox.Items.Clear()
                 AvailableSelectedDealers.Visible = False
-                If Me.IsPostBack Then
+                If IsPostBack Then
                     btnGenRpt.Enabled = True
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -118,14 +118,14 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
+            MasterPage.MessageController.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     'Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
+                    SetFormTab(PAGETAB)
+                    MasterPage.UsePageTabTitleInBreadCrum = False
                     TheReportExtractInputControl.ViewVisible = False
                     TheReportExtractInputControl.PdfVisible = False
                     TheReportExtractInputControl.ExportDataVisible = False
@@ -134,18 +134,18 @@ Namespace Reports
                     InitializeForm()
 
                     'Date Calendars
-                    Me.AddCalendar(Me.btnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.btnEndDate, Me.moEndDateText)
+                    AddCalendar(btnBeginDate, moBeginDateText)
+                    AddCalendar(btnEndDate, moEndDateText)
                 Else
                     ClearErrLabels()
                 End If
 
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
 #End Region
@@ -153,9 +153,9 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(mobegindatelabel)
-            Me.ClearLabelErrSign(moenddatelabel)
-            Me.ClearLabelErrSign(lblCoverage)
+            ClearLabelErrSign(mobegindatelabel)
+            ClearLabelErrSign(moenddatelabel)
+            ClearLabelErrSign(lblCoverage)
 
         End Sub
 
@@ -166,9 +166,9 @@ Namespace Reports
         Public Sub PopulateDealerDropDown()
             Dim dealerType As String = If(rbDealerTypeESC.Checked, "ESC", "Home Warranty")
 
-            Me.DealerAvailableSelected.ClearLists()
+            DealerAvailableSelected.ClearLists()
 
-            Me.DealerAvailableSelected.SetAvailableData(LookupListNew.GetDealerLookupListByDealerType(ElitaPlusIdentity.Current.ActiveUser.Companies, dealerType), LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
+            DealerAvailableSelected.SetAvailableData(LookupListNew.GetDealerLookupListByDealerType(ElitaPlusIdentity.Current.ActiveUser.Companies, dealerType), LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
 
         End Sub
         Sub PopulateDropDowns()
@@ -180,7 +180,7 @@ Namespace Reports
                 CommonConfigManager.Current.ListManager.GetList(listCode:="ACCIDENTAL_PROTECTION_REPORT_TYPE",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-            Me.ddlReportType.Populate(ReportTypes.ToArray(),
+            ddlReportType.Populate(ReportTypes.ToArray(),
                                     New PopulateOptions() With
                                     {
                                         .ValueFunc = AddressOf .GetCode
@@ -196,7 +196,7 @@ Namespace Reports
                                                                   .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                                                                 })
 
-            Me.ddlCoverage.Populate(CoverageTypes.ToArray(),
+            ddlCoverage.Populate(CoverageTypes.ToArray(),
                                     New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
@@ -210,15 +210,15 @@ Namespace Reports
 
             Dim t As Date = Date.Now.AddMonths(-1).AddDays(1)
 
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
+            moBeginDateText.Text = GetDateFormattedString(t)
 
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now)
-            Me.rdealer.Checked = True
+            moEndDateText.Text = GetDateFormattedString(Date.Now)
+            rdealer.Checked = True
 
             AvailableSelectedDealers.Visible = False
-            Me.rbCoverage.Checked = True
-            Me.rdealer.Checked = True
-            Me.RadiobuttonTotalsOnly.Checked = True
+            rbCoverage.Checked = True
+            rdealer.Checked = True
+            RadiobuttonTotalsOnly.Checked = True
 
         End Sub
 
@@ -226,15 +226,15 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -246,7 +246,7 @@ Namespace Reports
             Dim companygrpId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
             Dim selectedDetailType As String
 
-            Dim selectedCoverageId As String = GuidControl.GuidToHexString(Me.GetSelectedItem(Me.ddlCoverage))
+            Dim selectedCoverageId As String = GuidControl.GuidToHexString(GetSelectedItem(ddlCoverage))
 
             Dim selectedDealerType As String
             Dim dealerIds As String
@@ -273,7 +273,7 @@ Namespace Reports
             End If
 
 
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
 
                 reportParams.AppendFormat("pi_dealer_id => '{0}',", "00000000000000000000000000000000")
             Else
@@ -286,7 +286,7 @@ Namespace Reports
                 reportParams.AppendFormat("pi_dealer_id => '{0}',", dealerIds)
             End If
 
-            If Me.rbCoverage.Checked Then
+            If rbCoverage.Checked Then
                 reportParams.AppendFormat("pi_coverage_id => '{0}',", "00000000000000000000000000000000")
             Else
                 If selectedCoverageId.Equals(Guid.Empty) Then
@@ -322,35 +322,35 @@ Namespace Reports
                 End If
             End If
 
-            Me.State.MyBO = New ReportRequests
-            Me.State.ForEdit = True
+            State.MyBO = New ReportRequests
+            State.ForEdit = True
             If String.Compare(strRrpt_Type, "NEW").Equals(0) Then
-                Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "New Certificates Report")
+                PopulateBOProperty(State.MyBO, "ReportType", "New Certificates Report")
             ElseIf String.Compare(strRrpt_Type, "CLAIM").Equals(0) Then
-                Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "New Claims report")
+                PopulateBOProperty(State.MyBO, "ReportType", "New Claims report")
             Else
-                Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "New Cancellations Report")
+                PopulateBOProperty(State.MyBO, "ReportType", "New Cancellations Report")
             End If
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "R_Accidental_Protection_China.Report")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
-            Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+            PopulateBOProperty(State.MyBO, "ReportProc", "R_Accidental_Protection_China.Report")
+            PopulateBOProperty(State.MyBO, "ReportParameters", reportParams.ToString())
+            PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
 
             ScheduleReport()
         End Sub
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = TheReportExtractInputControl.GetSchedDate()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
 
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                    State.IsNew = False
+                    State.HasDataChanged = True
+                    State.MyBO.CreateJob(scheduleDate)
 
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
 
                     btnGenRpt.Enabled = False
@@ -359,7 +359,7 @@ Namespace Reports
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -371,7 +371,7 @@ Namespace Reports
             AvailableSelectedDealers.Visible = True
             PopulateDealerDropDown()
 
-            If Me.IsPostBack Then
+            If IsPostBack Then
                 btnGenRpt.Enabled = True
             End If
         End Sub
@@ -380,7 +380,7 @@ Namespace Reports
             If rdealer2.Checked = True Then
                 PopulateDealerDropDown()
             End If
-            If Me.IsPostBack Then
+            If IsPostBack Then
                 btnGenRpt.Enabled = True
             End If
         End Sub
@@ -389,7 +389,7 @@ Namespace Reports
             If rdealer2.Checked = True Then
                 PopulateDealerDropDown()
             End If
-            If Me.IsPostBack Then
+            If IsPostBack Then
                 btnGenRpt.Enabled = True
             End If
         End Sub

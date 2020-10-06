@@ -50,31 +50,31 @@ Public Class SpecialServiceDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("special_service_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
 
-    Public Function LoadList(ByVal LanguageId As Guid, ByVal compIds As ArrayList, _
-                             ByVal dealerId As Guid, ByVal CoverageTypeId As Guid) As DataSet
+    Public Function LoadList(LanguageId As Guid, compIds As ArrayList, _
+                             dealerId As Guid, CoverageTypeId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim inClausecondition As String = ""
         Dim whereClauseConditions As String = ""
         Dim bIsLikeClause As Boolean = False
 
-        inClausecondition &= "And d." & MiscUtil.BuildListForSql(Me.COL_NAME_COMPANY_ID, compIds, False)
+        inClausecondition &= "And d." & MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds, False)
 
         If Not dealerId.Equals(Guid.Empty) Then
             whereClauseConditions &= Environment.NewLine & "AND " & "d.DEALER_ID = " & MiscUtil.GetDbStringFromGuid(dealerId)
@@ -89,20 +89,20 @@ Public Class SpecialServiceDAL
 
 
         If Not inClausecondition = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -123,32 +123,32 @@ Public Class SpecialServiceDAL
     '    End Try
     'End Function
 
-    Public Function ValidateCoverageLoss(ByVal Dealer_id As Guid, ByVal coverage_loss_id As Guid) As DataSet
+    Public Function ValidateCoverageLoss(Dealer_id As Guid, coverage_loss_id As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/VALIDATE_COVERAGE_LOSS")
+        Dim selectStmt As String = Config("/SQL/VALIDATE_COVERAGE_LOSS")
         Try
             parameters = New OracleParameter() {New OracleParameter(COL_NAME_DEALER_ID, Dealer_id.ToByteArray), _
                                 New OracleParameter(CoverageLossDAL.COL_NAME_COVERAGE_LOSS_ID, coverage_loss_id.ToByteArray)}
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function GetPriceGroupsList(ByVal language_id As Guid) As DataSet
+    Public Function GetPriceGroupsList(language_id As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/PRICE_GROUPS_LIST")
+        Dim selectStmt As String = Config("/SQL/PRICE_GROUPS_LIST")
         Try
             parameters = New OracleParameter() {New OracleParameter("language_id", language_id.ToByteArray)}
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetAvailSplSvcList(ByVal Company_Group_Id As Guid, ByVal Coverage_Type_Id As Guid, ByVal Dealer_Id As Guid, ByVal product_code As String, Optional ByVal LoadNoneActive As Boolean = False) As DataSet
+    Public Function GetAvailSplSvcList(Company_Group_Id As Guid, Coverage_Type_Id As Guid, Dealer_Id As Guid, product_code As String, Optional ByVal LoadNoneActive As Boolean = False) As DataSet
         Dim ds As New DataSet
         Dim sFilterCondition As String '= MiscUtil.BuildListForSql(COL_LANGUAGE_ID_NAME, languageIdList)
 
@@ -157,7 +157,7 @@ Public Class SpecialServiceDAL
         End If
 
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_AVAIABLE_SPL_SVC_LIST_FOR_COVERAGE_DEALER_PRODCODE")
+        Dim selectStmt As String = Config("/SQL/GET_AVAIABLE_SPL_SVC_LIST_FOR_COVERAGE_DEALER_PRODCODE")
 
         Try
             parameters = New OracleParameter() {New OracleParameter(CoverageLossDAL.COL_NAME_COMPANY_GROUP_ID, Company_Group_Id.ToByteArray), _
@@ -165,7 +165,7 @@ Public Class SpecialServiceDAL
                                 New OracleParameter(COL_NAME_DEALER_ID, Dealer_Id.ToByteArray), _
                                 New OracleParameter(ProductCodeDAL.COL_NAME_PRODUCT_CODE, product_code)}
 
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -175,7 +175,7 @@ Public Class SpecialServiceDAL
 
 #Region "Overloaded Methods"
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim PSplSvcDal As New ProductSpecialServiceDAL
         
         Dim tr As IDbTransaction = Transaction
@@ -185,10 +185,10 @@ Public Class SpecialServiceDAL
         Try
             'First Pass updates Deletions           
             PSplSvcDal.Update(familyDataset, tr, DataRowState.Deleted)                        
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes            
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 
             PSplSvcDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 
@@ -212,12 +212,12 @@ Public Class SpecialServiceDAL
         End Try
     End Sub
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
@@ -225,10 +225,10 @@ Public Class SpecialServiceDAL
 
 #Region "Method for Web Service call"
 
-    Public Function getSpecialServiceByCertificate(ByVal CertificateNumber As String, ByVal CoverageTypeId As Guid, ByVal languageid As Guid, ByVal AvailableForServiceCenter As Guid, ByVal CompanyGroupId As Guid) As DataSet
+    Public Function getSpecialServiceByCertificate(CertificateNumber As String, CoverageTypeId As Guid, languageid As Guid, AvailableForServiceCenter As Guid, CompanyGroupId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As DBHelper.DBHelperParameter
-        Dim selectStmt As String = Me.Config("/SQL/WS_GETSPLSVCBYCERT")
+        Dim selectStmt As String = Config("/SQL/WS_GETSPLSVCBYCERT")
         Try
             parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID.ToLower, languageid.ToByteArray), _
                                                 New DBHelper.DBHelperParameter(DB_COL_NAME_CERTIFICATE_NUMBER, CertificateNumber.ToString), _
@@ -236,42 +236,42 @@ Public Class SpecialServiceDAL
                                                 New DBHelper.DBHelperParameter(COL_NAME_COMPANY_GROUP_ID, CompanyGroupId.ToByteArray)}
 
             If Not CoverageTypeId.Equals(Guid.Empty) Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, " AND ECL.COVERAGE_TYPE_ID =" & MiscUtil.GetDbStringFromGuid(CoverageTypeId))
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, " AND ECL.COVERAGE_TYPE_ID =" & MiscUtil.GetDbStringFromGuid(CoverageTypeId))
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             End If
 
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function getspecialServicebyClaimNumber(ByVal ClaimNumber As String, ByVal CoverageTypeId As Guid, ByVal languageid As Guid, ByVal AvailableForServiceCenter As Guid, ByVal CompanyGroupId As Guid) As DataSet
+    Public Function getspecialServicebyClaimNumber(ClaimNumber As String, CoverageTypeId As Guid, languageid As Guid, AvailableForServiceCenter As Guid, CompanyGroupId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As DBHelper.DBHelperParameter
-        Dim selectStmt As String = Me.Config("/SQL/WS_GETSPLSVCBYCLAIM")
+        Dim selectStmt As String = Config("/SQL/WS_GETSPLSVCBYCLAIM")
         Try
             parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID.ToLower, languageid.ToByteArray), _
                                                 New DBHelper.DBHelperParameter(DB_COL_NAME_CLAIME_NUMBER, ClaimNumber.ToString), _
                                                 New DBHelper.DBHelperParameter(COL_NAME_AVAILABLE_FOR_SERV_CENTER_ID, AvailableForServiceCenter.ToByteArray), _
                                                 New DBHelper.DBHelperParameter(COL_NAME_COMPANY_GROUP_ID, CompanyGroupId.ToByteArray)}
             If Not CoverageTypeId.Equals(Guid.Empty) Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, " AND ECL.COVERAGE_TYPE_ID =" & MiscUtil.GetDbStringFromGuid(CoverageTypeId))
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, " AND ECL.COVERAGE_TYPE_ID =" & MiscUtil.GetDbStringFromGuid(CoverageTypeId))
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             End If
 
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function getServiceTypebyServiceClass(ByVal ServiceClassId As Guid, ByVal language_id As Guid) As DataSet
+    Public Function getServiceTypebyServiceClass(ServiceClassId As Guid, language_id As Guid) As DataSet
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_SERVICE_TYPE_FROM_SERVICE_CLASS")
+        Dim selectStmt As String = Config("/SQL/GET_SERVICE_TYPE_FROM_SERVICE_CLASS")
         Try
             'parameters = New OracleParameter() {New OracleParameter(DB_COL_NAME_SERVICE_CLASS_ID, OracleDbType.Raw, 16)}
             'parameters(0).Value = ServiceClassId.ToByteArray
@@ -280,7 +280,7 @@ Public Class SpecialServiceDAL
                                                    New OracleParameter("language_id", language_id.ToByteArray)}
 
 
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

@@ -69,7 +69,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -79,37 +79,37 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     'TheReportCeInputControl.populateReportLanguages(RPT_FILENAME)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(PriceListMultipleDrop.CaptionLabel)
-            If Me.rPriceLists.Checked Then PriceListMultipleDrop.SelectedIndex = -1
+            ClearLabelErrSign(PriceListMultipleDrop.CaptionLabel)
+            If rPriceLists.Checked Then PriceListMultipleDrop.SelectedIndex = -1
         End Sub
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -137,14 +137,14 @@ Namespace Reports
 
         Private Sub InitializeForm()
             PopulatePriceListsDropDown()
-            Me.rPriceLists.Checked = True
+            rPriceLists.Checked = True
         End Sub
 
 #End Region
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal companyCode As String, ByVal priceList As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, priceList As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             'reportName = TheReportCeInputControl.getReportName(RPT_FILENAME, False)
@@ -202,7 +202,7 @@ Namespace Reports
 
 
 
-            If Me.rPriceLists.Checked Then
+            If rPriceLists.Checked Then
                 priceList = ALL
             Else
                 selectedPriceListId = PriceListMultipleDrop.SelectedGuid 'Me.GetSelectedItem(Me.cboPriceGroupsCode)

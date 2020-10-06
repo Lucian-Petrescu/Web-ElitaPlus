@@ -23,9 +23,9 @@ Namespace SpecializedServices.GW
 
         End Sub
 
-        Public Sub New(ByVal pCertficateEndorsement As CertificateEndorsement,
-                       ByVal pCommonManager As CommonManager,
-                       ByVal pLangauge As String)
+        Public Sub New(pCertficateEndorsement As CertificateEndorsement,
+                       pCommonManager As CommonManager,
+                       pLangauge As String)
             With Me
                 .EndorsementNumber = pCertficateEndorsement.EndorseNumber
                 .CreatedBy = pCertficateEndorsement.CreatedBy

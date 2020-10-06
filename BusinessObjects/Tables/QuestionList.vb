@@ -8,46 +8,46 @@ Public Class QuestionList
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New QuestionListDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             SetValue(dal.COL_NAME_EFFECTIVE, QuestionList.GetCurrentDateTime())
             SetValue(dal.COL_NAME_EXPIRATION, QUESTION_EXPIRATION_DEFAULT)
@@ -60,20 +60,20 @@ Public Class QuestionList
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New QuestionListDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -113,7 +113,7 @@ Public Class QuestionList
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(QuestionListDAL.COL_NAME_CODE, Value)
+            SetValue(QuestionListDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
@@ -130,7 +130,7 @@ Public Class QuestionList
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(QuestionListDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(QuestionListDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -147,7 +147,7 @@ Public Class QuestionList
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(QuestionListDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(QuestionListDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
@@ -164,7 +164,7 @@ Public Class QuestionList
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(QuestionListDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(QuestionListDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
@@ -183,16 +183,16 @@ Public Class QuestionList
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New QuestionListDAL
                 'dal.Update(Me.Row)
-                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+                dal.UpdateFamily(Dataset) 'New Code Added Manually
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -203,21 +203,21 @@ Public Class QuestionList
     'Added manually to the code
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 
     Public Sub Copy(ByVal original As QuestionList)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Detail List")
         End If
         MyBase.CopyFrom(original)
         'copy the childrens        
         Dim detail As IssueQuestionList
         For Each detail In original.BestQuestionListChildren
-            Dim newDetail As IssueQuestionList = Me.BestQuestionListChildren.GetNewChild
+            Dim newDetail As IssueQuestionList = BestQuestionListChildren.GetNewChild
             newDetail.Copy(detail)
-            newDetail.QuestionListId = Me.Id
+            newDetail.QuestionListId = Id
             newDetail.Effective = QuestionList.GetCurrentDateTime()
             newDetail.Save()
         Next
@@ -322,19 +322,19 @@ Public Class QuestionList
     ''------------------
 
     Public Function GetChild(ByVal childId As Guid) As IssueQuestionList
-        Return CType(Me.BestQuestionListChildren.GetChild(childId), IssueQuestionList)
+        Return CType(BestQuestionListChildren.GetChild(childId), IssueQuestionList)
     End Function
 
     Public Function GetNewChild() As IssueQuestionList
-        Dim newQuestionListDetail As IssueQuestionList = CType(Me.BestQuestionListChildren.GetNewChild, IssueQuestionList)
-        newQuestionListDetail.QuestionListId = Me.Id
-        newQuestionListDetail.Effective = Me.Effective
-        newQuestionListDetail.Expiration = Me.Expiration
+        Dim newQuestionListDetail As IssueQuestionList = CType(BestQuestionListChildren.GetNewChild, IssueQuestionList)
+        newQuestionListDetail.QuestionListId = Id
+        newQuestionListDetail.Effective = Effective
+        newQuestionListDetail.Expiration = Expiration
         Return newQuestionListDetail
     End Function
 
     Public Function GetDealerChild(ByVal childId As Guid) As Dealer
-        Return CType(Me.BestDealerListChildren.GetChild(childId), Dealer)
+        Return CType(BestDealerListChildren.GetChild(childId), Dealer)
     End Function
 
     ''------------------
@@ -506,11 +506,11 @@ Public Class QuestionList
             Dim dv As QuestionList.QuestionSearchDV = New QuestionList.QuestionSearchDV(EquipDal.LoadList(Code, String.Empty, Effective, _
                     oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
-            If Not Me.Code Is Nothing And Not Me.Effective Is Nothing Then
+            If Not Code Is Nothing And Not Effective Is Nothing Then
                 For Each dr As DataRow In dv.Table.Rows
-                    If ((dr(QuestionListDAL.COL_NAME_CODE).ToString.ToUpper = Me.Code.ToUpper) And _
-                        (dr(QuestionListDAL.COL_NAME_EFFECTIVE) = Date.Parse(Me.Effective).ToString("dd-MMM-yyyy")) And _
-                        Not DirectCast(dr(QuestionListDAL.COL_NAME_QUESTION_LIST_ID), Byte()).SequenceEqual(Me.Id.ToByteArray)) Then
+                    If ((dr(QuestionListDAL.COL_NAME_CODE).ToString.ToUpper = Code.ToUpper) And _
+                        (dr(QuestionListDAL.COL_NAME_EFFECTIVE) = Date.Parse(Effective).ToString("dd-MMM-yyyy")) And _
+                        Not DirectCast(dr(QuestionListDAL.COL_NAME_QUESTION_LIST_ID), Byte()).SequenceEqual(Id.ToByteArray)) Then
                         Return True
                     End If
                 Next
@@ -531,9 +531,9 @@ Public Class QuestionList
                     oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
             For Each dr As DataRow In dv.Table.Rows
-                If ((Not dr(QuestionListDAL.COL_NAME_CODE) = Me.Code) And _
-                    (Not dr(QuestionListDAL.COL_NAME_EFFECTIVE) >= Equals(Me.Effective)) And _
-                    (Not dr(QuestionListDAL.COL_NAME_EXPIRATION) <= Equals(Me.Expiration))) Then
+                If ((Not dr(QuestionListDAL.COL_NAME_CODE) = Code) And _
+                    (Not dr(QuestionListDAL.COL_NAME_EFFECTIVE) >= Equals(Effective)) And _
+                    (Not dr(QuestionListDAL.COL_NAME_EXPIRATION) <= Equals(Expiration))) Then
                     Return True
                 End If
             Next
@@ -548,7 +548,7 @@ Public Class QuestionList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
         If Not Code Is String.Empty Then
-            If EquipDal.IsListToDealer(Code, Me.Id).Tables(0).Rows.Count > 0 Then
+            If EquipDal.IsListToDealer(Code, Id).Tables(0).Rows.Count > 0 Then
                 Return True
             End If
         End If

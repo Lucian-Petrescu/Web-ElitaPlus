@@ -7,37 +7,37 @@ Namespace Utilities
     Public Interface IUtilityWcf
 
         <OperationContract()> _
-        Function Hello(ByVal name As String) As String
+        Function Hello(name As String) As String
 
         <OperationContract()> _
         Function Login() As String
 
         <OperationContract()> _
-        Function LoginBody(ByVal networkID As String, ByVal password As String, ByVal group As String) As String
+        Function LoginBody(networkID As String, password As String, group As String) As String
 
         <OperationContract()> _
-        Function ProcessRequest(ByVal token As String, _
-                                               ByVal functionToProcess As String, _
-                                               ByVal xmlStringDataIn As String) As String
-
-        <OperationContract()> _
-        <WebMethod(EnableSession:=True)> _
-        Function GetVSCMakes(ByVal token As String, ByVal wsConsumer As String) As String
+        Function ProcessRequest(token As String, _
+                                               functionToProcess As String, _
+                                               xmlStringDataIn As String) As String
 
         <OperationContract()> _
         <WebMethod(EnableSession:=True)> _
-        Function GetVSCModels(ByVal token As String, ByVal wsConsumer As String, _
-                              ByVal make As String) As String
+        Function GetVSCMakes(token As String, wsConsumer As String) As String
 
         <OperationContract()> _
         <WebMethod(EnableSession:=True)> _
-        Function GetVSCVersions(ByVal token As String, ByVal wsConsumer As String, _
-                                ByVal model As String, ByVal make As String) As String
+        Function GetVSCModels(token As String, wsConsumer As String, _
+                              make As String) As String
 
         <OperationContract()> _
         <WebMethod(EnableSession:=True)> _
-        Function GetVSCYears(ByVal token As String, ByVal wsConsumer As String, _
-                             ByVal trim As String, ByVal model As String, ByVal make As String) As String
+        Function GetVSCVersions(token As String, wsConsumer As String, _
+                                model As String, make As String) As String
+
+        <OperationContract()> _
+        <WebMethod(EnableSession:=True)> _
+        Function GetVSCYears(token As String, wsConsumer As String, _
+                             trim As String, model As String, make As String) As String
 
     End Interface
 

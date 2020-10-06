@@ -8,40 +8,40 @@ Public Class AcctSetting
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Public Sub New(ByVal AccountingCompanyId As Guid, ByVal Code As String, ByVal VendType As AcctSettingDAL.VendorType, Optional ByVal AcctType As String = "")
         MyBase.New()
-        Me.Dataset = New DataSet
+        Dataset = New DataSet
 
         Dim _asID As Guid
         Dim dal As New AcctSettingDAL
@@ -56,9 +56,9 @@ Public Class AcctSetting
 
         _asID = dal.LoadByVendor(Code, AccountingCompanyId, VendType, AcctType)
         If _asID.Equals(Guid.Empty) Then
-            Me.Load()
+            Load()
         Else
-            Me.Load(_asID)
+            Load(_asID)
         End If
 
     End Sub
@@ -66,28 +66,28 @@ Public Class AcctSetting
     'For Branches
     Public Sub New(ByVal AccountingCompanyId As Guid, ByVal DealerCode As String, ByVal BranchCode As String, Optional ByVal AcctType As String = ACCT_TYPE_DEBITOR)
         MyBase.New()
-        Me.Dataset = New DataSet
+        Dataset = New DataSet
 
         Dim _asID As Guid
         Dim dal As New AcctSettingDAL
 
         _asID = dal.LoadByVendor(DealerCode, AccountingCompanyId, AcctSettingDAL.VendorType.Branch, AcctType, BranchCode)
         If _asID.Equals(Guid.Empty) Then
-            Me.Load()
+            Load()
         Else
-            Me.Load(_asID)
+            Load(_asID)
         End If
 
     End Sub
     Protected Sub Load()
         Try
             Dim dal As New AcctSettingDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -98,20 +98,20 @@ Public Class AcctSetting
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New AcctSettingDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -162,7 +162,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCT_COMPANY_ID, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCT_COMPANY_ID, Value)
         End Set
     End Property
 
@@ -177,7 +177,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_SERVICE_CENTER_ID, Value)
+            SetValue(AcctSettingDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
     End Property
 
@@ -192,7 +192,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_DEALER_GROUP_ID, Value)
+            SetValue(AcctSettingDAL.COL_NAME_DEALER_GROUP_ID, Value)
         End Set
     End Property
 
@@ -207,7 +207,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(AcctSettingDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -222,7 +222,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_BRANCH_ID, Value)
+            SetValue(AcctSettingDAL.COL_NAME_BRANCH_ID, Value)
         End Set
     End Property
 
@@ -237,7 +237,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_COMMISSION_ENTITY_ID, Value)
+            SetValue(AcctSettingDAL.COL_NAME_COMMISSION_ENTITY_ID, Value)
         End Set
     End Property
 
@@ -254,7 +254,7 @@ Public Class AcctSetting
         Set(ByVal Value As String)
             CheckDeleted()
             If Not Value Is Nothing Then Value = Value.Trim
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_CODE, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_CODE, Value)
         End Set
     End Property
 
@@ -271,7 +271,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ADDRESS_LOOKUP_CODE, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ADDRESS_LOOKUP_CODE, Value)
         End Set
     End Property
 
@@ -288,7 +288,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ADDRESS_SEQUENCE_NUMBER, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ADDRESS_SEQUENCE_NUMBER, Value)
         End Set
     End Property
 
@@ -305,7 +305,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ADDRESS_STATUS, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ADDRESS_STATUS, Value)
         End Set
     End Property
 
@@ -322,7 +322,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_TYPE, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_TYPE, Value)
         End Set
     End Property
 
@@ -339,7 +339,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_BALANCE_TYPE, Value)
+            SetValue(AcctSettingDAL.COL_NAME_BALANCE_TYPE, Value)
         End Set
     End Property
 
@@ -356,7 +356,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_CONVERSION_CODE_CONTROL, Value)
+            SetValue(AcctSettingDAL.COL_NAME_CONVERSION_CODE_CONTROL, Value)
         End Set
     End Property
 
@@ -372,7 +372,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_1, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_1, Value)
         End Set
     End Property
 
@@ -389,7 +389,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_2, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_2, Value)
         End Set
     End Property
 
@@ -406,7 +406,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_3, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_3, Value)
         End Set
     End Property
 
@@ -423,7 +423,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_4, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_4, Value)
         End Set
     End Property
 
@@ -440,7 +440,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_5, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_5, Value)
         End Set
     End Property
 
@@ -457,7 +457,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_6, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_6, Value)
         End Set
     End Property
 
@@ -474,7 +474,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_7, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_7, Value)
         End Set
     End Property
 
@@ -491,7 +491,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_8, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_8, Value)
         End Set
     End Property
 
@@ -508,7 +508,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_9, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_9, Value)
         End Set
     End Property
 
@@ -525,7 +525,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_10, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_10, Value)
         End Set
     End Property
 
@@ -542,7 +542,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_1, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_1, Value)
         End Set
     End Property
 
@@ -559,7 +559,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_2, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_2, Value)
         End Set
     End Property
 
@@ -576,7 +576,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_3, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_3, Value)
         End Set
     End Property
 
@@ -593,7 +593,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_4, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_4, Value)
         End Set
     End Property
 
@@ -610,7 +610,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_5, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_5, Value)
         End Set
     End Property
 
@@ -627,7 +627,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_6, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_6, Value)
         End Set
     End Property
 
@@ -644,7 +644,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_7, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_7, Value)
         End Set
     End Property
 
@@ -661,7 +661,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_8, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_8, Value)
         End Set
     End Property
 
@@ -678,7 +678,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_9, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_9, Value)
         End Set
     End Property
 
@@ -695,7 +695,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_10, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_CODE_10, Value)
         End Set
     End Property
 
@@ -711,7 +711,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_1, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_1, Value)
         End Set
     End Property
 
@@ -728,7 +728,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_2, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_2, Value)
         End Set
     End Property
 
@@ -745,7 +745,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_3, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_3, Value)
         End Set
     End Property
 
@@ -762,7 +762,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_4, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_4, Value)
         End Set
     End Property
 
@@ -779,7 +779,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_5, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_5, Value)
         End Set
     End Property
 
@@ -796,7 +796,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_6, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_6, Value)
         End Set
     End Property
 
@@ -813,7 +813,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_7, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_7, Value)
         End Set
     End Property
 
@@ -830,7 +830,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_8, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_8, Value)
         End Set
     End Property
 
@@ -847,7 +847,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_9, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_9, Value)
         End Set
     End Property
 
@@ -864,7 +864,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_10, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_ANALYSIS_A_10, Value)
         End Set
     End Property
 
@@ -880,7 +880,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_REPORT_CONVERSION_CONTROL, Value)
+            SetValue(AcctSettingDAL.COL_NAME_REPORT_CONVERSION_CONTROL, Value)
         End Set
     End Property
 
@@ -897,7 +897,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_DATA_ACCESS_GROUP_CODE, Value)
+            SetValue(AcctSettingDAL.COL_NAME_DATA_ACCESS_GROUP_CODE, Value)
         End Set
     End Property
 
@@ -913,7 +913,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_USER_AREA, Value)
+            SetValue(AcctSettingDAL.COL_NAME_USER_AREA, Value)
         End Set
     End Property
 
@@ -930,7 +930,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_DEFAULT_CURRENCY_CODE, Value)
+            SetValue(AcctSettingDAL.COL_NAME_DEFAULT_CURRENCY_CODE, Value)
         End Set
     End Property
 
@@ -947,7 +947,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_STATUS, Value)
+            SetValue(AcctSettingDAL.COL_NAME_ACCOUNT_STATUS, Value)
         End Set
     End Property
 
@@ -964,7 +964,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_SUPPRESS_REVALUATION, Value)
+            SetValue(AcctSettingDAL.COL_NAME_SUPPRESS_REVALUATION, Value)
         End Set
     End Property
 
@@ -981,7 +981,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_PAY_AS_PAID_ACCOUNT_TYPE, Value)
+            SetValue(AcctSettingDAL.COL_NAME_PAY_AS_PAID_ACCOUNT_TYPE, Value)
         End Set
     End Property
 
@@ -998,7 +998,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_LOOKUP_CODE, Value)
+            SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_LOOKUP_CODE, Value)
         End Set
     End Property
 
@@ -1015,7 +1015,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_PAYMENT_METHOD, Value)
+            SetValue(AcctSettingDAL.COL_NAME_PAYMENT_METHOD, Value)
         End Set
     End Property
 
@@ -1032,7 +1032,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_STATUS, Value)
+            SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_STATUS, Value)
         End Set
     End Property
 
@@ -1048,7 +1048,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_1, Value)
+            SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_1, Value)
         End Set
     End Property
 
@@ -1065,7 +1065,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_2, Value)
+            SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_2, Value)
         End Set
     End Property
 
@@ -1082,7 +1082,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_3, Value)
+            SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_3, Value)
         End Set
     End Property
 
@@ -1099,7 +1099,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_4, Value)
+            SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_4, Value)
         End Set
     End Property
 
@@ -1116,7 +1116,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_5, Value)
+            SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_5, Value)
         End Set
     End Property
 
@@ -1133,7 +1133,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_6, Value)
+            SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_6, Value)
         End Set
     End Property
 
@@ -1150,7 +1150,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_7, Value)
+            SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_7, Value)
         End Set
     End Property
 
@@ -1167,7 +1167,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_8, Value)
+            SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_8, Value)
         End Set
     End Property
 
@@ -1184,7 +1184,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_9, Value)
+            SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_9, Value)
         End Set
     End Property
 
@@ -1201,7 +1201,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_10, Value)
+            SetValue(AcctSettingDAL.COL_NAME_SUPPLIER_ANALYSIS_CODE_10, Value)
         End Set
     End Property
 
@@ -1217,7 +1217,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_PAYMENT_TERMS_ID, Value)
+            SetValue(AcctSettingDAL.COL_NAME_PAYMENT_TERMS_ID, Value)
         End Set
     End Property
 
@@ -1233,7 +1233,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(AcctSettingDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -1249,7 +1249,7 @@ Public Class AcctSetting
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctSettingDAL.COL_NAME_DEFAULT_BANK_SUB_CODE, Value)
+            SetValue(AcctSettingDAL.COL_NAME_DEFAULT_BANK_SUB_CODE, Value)
         End Set
     End Property
 
@@ -1272,15 +1272,15 @@ Public Class AcctSetting
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New AcctSettingDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -1289,23 +1289,23 @@ Public Class AcctSetting
     End Sub
 
     Public Sub DeleteAndSave()
-        Me.CheckDeleted()
-        Me.BeginEdit()
+        CheckDeleted()
+        BeginEdit()
         Try
-            Me.Delete()
-            Me.Save()
+            Delete()
+            Save()
         Catch ex As Exception
-            Me.cancelEdit()
+            cancelEdit()
             Throw ex
         End Try
     End Sub
 
     Public Sub Copy(ByVal original As AcctSetting)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing accounting setting.")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
     Public Shared Function IsIDXAcctSettingAndCode(ByVal accountCompanyId As Guid, ByVal accountCode As String) As Boolean
@@ -1319,7 +1319,7 @@ Public Class AcctSetting
 #Region "DataView Retrieveing Methods"
     Public Function GetCounterPartObjectID() As Guid
         Dim dal As New AcctSettingDAL
-        Return dal.LoadCounterPartById(Me.Id)
+        Return dal.LoadCounterPartById(Id)
     End Function
 #Region "Dealer Group"
     Public Shared Function GetDealerGroups(ByVal strDealerGroupName As String, ByVal strDealerGroupCode As String) As DealerGroupAcctSettingsDV
@@ -1372,7 +1372,7 @@ Public Class AcctSetting
         End Sub
 
         Public Function AddNewRowToEmptyDV() As DealerGroupAcctSettingsDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
             Dim guidO As Guid = New Guid
             row(ACCT_SETTINGS_ID) = guidO.ToByteArray
@@ -1437,7 +1437,7 @@ Public Class AcctSetting
         End Sub
 
         Public Function AddNewRowToEmptyDV() As CommissionEntityAcctSettingsDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
             Dim guidO As Guid = New Guid
             row(ACCT_SETTINGS_ID) = guidO.ToByteArray
@@ -1516,7 +1516,7 @@ Public Class AcctSetting
         End Sub
 
         Public Function AddNewRowToEmptyDV() As DealerAcctSettingsDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
             Dim guidO As Guid = New Guid
             row(ACCT_SETTINGS_ID) = guidO.ToByteArray
@@ -1599,7 +1599,7 @@ Public Class AcctSetting
         End Sub
 
         Public Function AddNewRowToEmptyDV() As ServiceCenterAcctSettingsDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
             Dim guidO As Guid = New Guid
             row(ACCT_SETTINGS_ID) = guidO.ToByteArray
@@ -1695,7 +1695,7 @@ Public Class AcctSetting
         End Sub
 
         Public Function AddNewRowToEmptyDV() As BranchAcctSettingsDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
             Dim guidO As Guid = New Guid
             row(ACCT_SETTINGS_ID) = guidO.ToByteArray

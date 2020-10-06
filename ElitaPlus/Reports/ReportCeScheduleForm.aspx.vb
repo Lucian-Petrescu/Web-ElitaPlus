@@ -25,14 +25,14 @@
 
 
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Try
                 ErrControllerMaster.Clear_Hide()
                 '   ClearLabelsErrSign()
                 '   RecoverEncryptedValue()
                 If Not Page.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     'Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, _
                     '                                                    Me.MSG_TYPE_CONFIRM, True)
                     'If Me.State.MyBo Is Nothing Then
@@ -45,10 +45,10 @@
                 'BindBoPropertiesToLabels()
                 'CheckIfComingFromConfirm()
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
-            Me.ShowMissingTranslations(ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region

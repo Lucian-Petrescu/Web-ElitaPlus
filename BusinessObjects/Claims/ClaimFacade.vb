@@ -55,7 +55,7 @@ Public NotInheritable Class ClaimFacade
 
 #Region "Methods"
 
-    Public Function GetClaim(Of TClaim As ClaimBase)(ByVal claimNumber As String, ByVal companyId As Guid, Optional ByVal pDataSet As DataSet = Nothing) As TClaim
+    Public Function GetClaim(Of TClaim As ClaimBase)(claimNumber As String, companyId As Guid, Optional ByVal pDataSet As DataSet = Nothing) As TClaim
         Return GetClaim(Of TClaim)( _
             claimId:=Guid.Empty, _
             claimNumber:=claimNumber, _
@@ -68,7 +68,7 @@ Public NotInheritable Class ClaimFacade
             mustReload:=False).AsClaim(Of TClaim)()
     End Function
 
-    Public Function GetClaim(Of TClaim As ClaimBase)(ByVal claimId As Guid, Optional ByVal pDataSet As DataSet = Nothing, Optional ByVal blnMustReload As Boolean = False) As TClaim
+    Public Function GetClaim(Of TClaim As ClaimBase)(claimId As Guid, Optional ByVal pDataSet As DataSet = Nothing, Optional ByVal blnMustReload As Boolean = False) As TClaim
         Return GetClaim(Of TClaim)( _
             claimId:=claimId, _
             claimNumber:=Nothing, _
@@ -81,7 +81,7 @@ Public NotInheritable Class ClaimFacade
             mustReload:=blnMustReload).AsClaim(Of TClaim)()
     End Function
 
-    Public Function GetClaimByClaimNumber(Of TClaim As ClaimBase)(ByVal companyCode As String, ByVal claimNumber As String) As TClaim
+    Public Function GetClaimByClaimNumber(Of TClaim As ClaimBase)(companyCode As String, claimNumber As String) As TClaim
         Return GetClaim(Of TClaim)( _
             claimId:=Guid.Empty, _
             claimNumber:=claimNumber, _
@@ -94,7 +94,7 @@ Public NotInheritable Class ClaimFacade
             mustReload:=False).AsClaim(Of TClaim)()
     End Function
 
-    Public Function GetClaimBySerialNumber(Of TClaim As ClaimBase)(ByVal dealerCode As String, ByVal serialNumber As String) As TClaim
+    Public Function GetClaimBySerialNumber(Of TClaim As ClaimBase)(dealerCode As String, serialNumber As String) As TClaim
         Return GetClaim(Of TClaim)( _
             claimId:=Guid.Empty, _
             claimNumber:=Nothing, _
@@ -107,7 +107,7 @@ Public NotInheritable Class ClaimFacade
             mustReload:=False).AsClaim(Of TClaim)()
     End Function
 
-    Public Function GetClaimByDealerCodeandClaimNumber(Of TClaim As ClaimBase)(ByVal dealerCode As String, ByVal claimNumber As String) As TClaim
+    Public Function GetClaimByDealerCodeandClaimNumber(Of TClaim As ClaimBase)(dealerCode As String, claimNumber As String) As TClaim
         Return GetClaim(Of TClaim)( _
             claimId:=Guid.Empty, _
             claimNumber:=claimNumber, _
@@ -145,15 +145,15 @@ Public NotInheritable Class ClaimFacade
     ''' 8. Any other combinations
     ''' </remarks>
     Private Function GetClaim(Of TClaim As ClaimBase)( _
-                                  ByVal claimId As Guid, _
-                                  ByVal claimNumber As String, _
-                                  ByVal companyId As Guid, _
-                                  ByVal companyCode As String, _
-                                  ByVal dealerCode As String, _
-                                  ByVal dealerId As Guid, _
-                                  ByVal serialNumber As String, _
-                                  ByVal ds As DataSet,
-                                  ByVal mustReload As Boolean) As TClaim
+                                  claimId As Guid, _
+                                  claimNumber As String, _
+                                  companyId As Guid, _
+                                  companyCode As String, _
+                                  dealerCode As String, _
+                                  dealerId As Guid, _
+                                  serialNumber As String, _
+                                  ds As DataSet,
+                                  mustReload As Boolean) As TClaim
         Dim dal As New ClaimDAL
         Try
             Dim claim As ClaimBase
@@ -205,7 +205,7 @@ Public NotInheritable Class ClaimFacade
         Return claim.AsClaim(Of TClaim)()
     End Function
 
-    Public Function CreateClaim(Of TClaim As ClaimBase)(ByVal dealerId As Guid, Optional ByVal pDataSet As DataSet = Nothing) As TClaim
+    Public Function CreateClaim(Of TClaim As ClaimBase)(dealerId As Guid, Optional ByVal pDataSet As DataSet = Nothing) As TClaim
         Dim claim As ClaimBase = Nothing
         Dim dealer As Dealer = New Dealer(dealerId)
         If (dealer.UseClaimAuthorizationId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)) Then
@@ -228,7 +228,7 @@ Public NotInheritable Class ClaimFacade
 
     End Function
 
-    Public Function CreateClaim(Of TClaim As ClaimBase)(ByVal originalClaim As Claim, Optional ByVal pDataSet As DataSet = Nothing) As TClaim
+    Public Function CreateClaim(Of TClaim As ClaimBase)(originalClaim As Claim, Optional ByVal pDataSet As DataSet = Nothing) As TClaim
         Dim claim As ClaimBase = Nothing
         Select Case originalClaim.ClaimAuthorizationType
             Case ClaimAuthorizationType.Single
@@ -254,7 +254,7 @@ Public NotInheritable Class ClaimFacade
 
     End Function
 
-    Private Function IsClaimLoaded(ByVal claimId As Guid, ByVal dataSet As DataSet) As Boolean
+    Private Function IsClaimLoaded(claimId As Guid, dataSet As DataSet) As Boolean
         Dim flag As Boolean = False
         If (Not dataSet Is Nothing) Then
             Dim row As DataRow = FindRow(claimId, dataSet)
@@ -263,7 +263,7 @@ Public NotInheritable Class ClaimFacade
         Return flag
     End Function
 
-    Private Function GetClaimType(ByVal claimId As Guid, ByVal dataSet As DataSet) As String
+    Private Function GetClaimType(claimId As Guid, dataSet As DataSet) As String
         Dim claimAuthTypeCode As String = String.Empty
         Dim row As DataRow = FindRow(claimId, dataSet)
         If (Not row Is Nothing) Then
@@ -273,7 +273,7 @@ Public NotInheritable Class ClaimFacade
         Return claimAuthTypeCode
     End Function
 
-    Private Function FindRow(ByVal claimId As Guid, ByVal dataSet As DataSet) As DataRow
+    Private Function FindRow(claimId As Guid, dataSet As DataSet) As DataRow
         Dim dal As New ClaimDAL
         Dim row As DataRow = Nothing
         If dataSet.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
@@ -288,7 +288,7 @@ End Class
 
 Public Module CLaimExtentions
     <Extension()> _
-    Public Function AsClaim(Of TClaim As ClaimBase)(ByVal oClaim As ClaimBase) As TClaim
+    Public Function AsClaim(Of TClaim As ClaimBase)(oClaim As ClaimBase) As TClaim
         If (GetType(TClaim).IsAssignableFrom(oClaim.GetType())) Then
             Return CType(oClaim, TClaim)
         Else

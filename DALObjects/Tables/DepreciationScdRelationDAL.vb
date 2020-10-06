@@ -30,11 +30,11 @@ Public Class DepreciationScdRelationDal
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDs As DataSet, ByVal id As Guid)
+    Public Sub Load(familyDs As DataSet, id As Guid)
         Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("depreciation_scd_relation_id", id.ToByteArray)}
         Try
@@ -44,7 +44,7 @@ Public Class DepreciationScdRelationDal
         End Try
     End Sub
 
-    Public Function LoadList(ByVal referenceId As Guid) As DataSet
+    Public Function LoadList(referenceId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As New DataSet
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(ColNameTableReferenceId, referenceId.ToByteArray)}
@@ -56,7 +56,7 @@ Public Class DepreciationScdRelationDal
         End Try
 
     End Function
-    Public Sub LoadList(ByVal referenceId As Guid, ByVal familyDs As DataSet)
+    Public Sub LoadList(referenceId As Guid, familyDs As DataSet)
         Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(ColNameTableReferenceId, referenceId.ToByteArray)}
         Try
@@ -70,7 +70,7 @@ Public Class DepreciationScdRelationDal
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If

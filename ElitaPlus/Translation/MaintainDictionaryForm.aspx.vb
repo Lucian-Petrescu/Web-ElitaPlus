@@ -72,39 +72,39 @@ Namespace Translation
 
 #End Region
 #Region "Handlers-Init"
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             'Enable the Menu Navigation Back after returning from the child
             Try
-                Me.MenuEnabled = True
+                MenuEnabled = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Try
-                Me.ErrControllerMaster.Clear_Hide()
+                ErrControllerMaster.Clear_Hide()
 
                 If Not Page.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SetDefaultButton(Me.txtSearchTrans, Me.btnSearch)
-                    Me.SetGridItemStyleColor(Me.moDictionaryGrid)
-                    Me.MenuEnabled = False
+                    SetDefaultButton(txtSearchTrans, btnSearch)
+                    SetGridItemStyleColor(moDictionaryGrid)
+                    MenuEnabled = False
                     PopulateDropdowns()
-                    Me.State.PageIndex = 0
+                    State.PageIndex = 0
                 Else
-                    If Not Me.State.searchDV Is Nothing Then
-                        moDictionaryGrid.DataSource = Me.State.searchDV
+                    If State.searchDV IsNot Nothing Then
+                        moDictionaryGrid.DataSource = State.searchDV
                     End If
                     CheckIfComingFromSaveConfirm()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
         Protected Sub PopulateDropdowns()
 
@@ -113,7 +113,7 @@ Namespace Translation
                 ' moCompanyMultipleDrop.NothingSelected = True
                 moCompanyMultipleDrop.SetControl(True, moCompanyMultipleDrop.MODES.NEW_MODE, True, LookupListNew.GetUserCompaniesLookupList(), TranslationBase.TranslateLabelOrMessage(LABEL_COMPANY), True)
             Catch ex As Exception
-                Me.ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
+                ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
             End Try
 
             'Me.BindListControlToDataView(Me.cboCompayDropDown, LookupListNew.GetUserCompaniesLookupList(), , , False)
@@ -131,68 +131,68 @@ Namespace Translation
 
                 moDictionaryGrid.EditItemIndex = NO_ROW_SELECTED_INDEX
 
-                If (Me.moDictionaryGrid.PageCount = 0) Then
+                If (moDictionaryGrid.PageCount = 0) Then
                     'if returning to the "1st time in" screen
                     ControlMgr.SetVisibleControl(Me, moDictionaryGrid, False)
                 Else
                     ControlMgr.SetVisibleControl(Me, moDictionaryGrid, True)
                 End If
 
-                Me.State.IsEditMode = False
-                Me.PopulateTranslationGrid()
-                Me.State.PageIndex = moDictionaryGrid.CurrentPageIndex
+                State.IsEditMode = False
+                PopulateTranslationGrid()
+                State.PageIndex = moDictionaryGrid.CurrentPageIndex
                 'SetButtonsState()
             End If
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As DataGrid, ByVal cellPosition As Integer, ByVal itemIndex As Integer, ByVal IsNewRowAndSingleCountry As Boolean)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As DataGrid, cellPosition As Integer, itemIndex As Integer, IsNewRowAndSingleCountry As Boolean)
             'Set focus on the Description TextBox for the EditItemIndex row
-            Dim ctrlDealer As TextBox = CType(grid.Items(itemIndex).Cells(Me.GRID_COL_TRANSLATION_ALIAS).FindControl(Me.TRANSLATION_IN_GRID_CONTROL_NAME), TextBox)
+            Dim ctrlDealer As TextBox = CType(grid.Items(itemIndex).Cells(GRID_COL_TRANSLATION_ALIAS).FindControl(TRANSLATION_IN_GRID_CONTROL_NAME), TextBox)
             SetFocus(ctrlDealer)
-            If cellPosition = Me.GRID_COL_TRANSLATION_ALIAS Then
+            If cellPosition = GRID_COL_TRANSLATION_ALIAS Then
                 SetFocus(ctrlDealer)
                 ctrlDealer.Enabled = True
             Else
-                Dim ctrlDescription As TextBox = CType(grid.Items(itemIndex).Cells(Me.GRID_COL_ENGLIS_ALIAS).FindControl(ENLISH_IN_GRID_CONTROL_NAME), TextBox)
+                Dim ctrlDescription As TextBox = CType(grid.Items(itemIndex).Cells(GRID_COL_ENGLIS_ALIAS).FindControl(ENLISH_IN_GRID_CONTROL_NAME), TextBox)
                 SetFocus(ctrlDescription)
                 ctrlDealer.Enabled = False
             End If
         End Sub
 
-        Protected Sub BindBoPropertiesToGridHeaders(ByVal bo As DictItemTranslation)
+        Protected Sub BindBoPropertiesToGridHeaders(bo As DictItemTranslation)
 
-            Me.BindBOPropertyToGridHeader(bo, "Translation", Me.moDictionaryGrid.Columns(Me.GRID_COL_TRANSLATION_ALIAS))
-            Me.ClearGridHeadersAndLabelsErrSign()
+            BindBOPropertyToGridHeader(bo, "Translation", moDictionaryGrid.Columns(GRID_COL_TRANSLATION_ALIAS))
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
-        Private Sub PopulateBOFromForm(ByVal bo As DictItemTranslation)
+        Private Sub PopulateBOFromForm(bo As DictItemTranslation)
             Try
-                bo.Translation = CType(Me.moDictionaryGrid.Items(Me.moDictionaryGrid.SelectedIndex).Cells(Me.GRID_COL_TRANSLATION_ALIAS).FindControl(Me.TRANSLATION_IN_GRID_CONTROL_NAME), TextBox).Text
+                bo.Translation = CType(moDictionaryGrid.Items(moDictionaryGrid.SelectedIndex).Cells(GRID_COL_TRANSLATION_ALIAS).FindControl(TRANSLATION_IN_GRID_CONTROL_NAME), TextBox).Text
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
         Private Sub SetButtonsState()
 
-            If (Me.State.IsEditMode) Then
-                ControlMgr.SetVisibleControl(Me, Me.moBtnSave_WRITE, True)
+            If (State.IsEditMode) Then
+                ControlMgr.SetVisibleControl(Me, moBtnSave_WRITE, True)
                 ControlMgr.SetVisibleControl(Me, moBtnCancel, True)
                 ControlMgr.SetEnableControl(Me, btnSearch, False)
                 ControlMgr.SetEnableControl(Me, btnClear, False)
-                Me.MenuEnabled = False
-                If (Me.cboPageSize.Visible) Then
+                MenuEnabled = False
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, False)
                 End If
-                Me.SetGridControls(Me.moDictionaryGrid, False)
+                SetGridControls(moDictionaryGrid, False)
             Else
                 ControlMgr.SetVisibleControl(Me, moBtnSave_WRITE, False)
                 ControlMgr.SetVisibleControl(Me, moBtnCancel, False)
                 ControlMgr.SetEnableControl(Me, btnSearch, True)
                 ControlMgr.SetEnableControl(Me, btnClear, True)
-                Me.MenuEnabled = True
-                If (Me.cboPageSize.Visible) Then
+                MenuEnabled = True
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, True)
                 End If
             End If
@@ -204,27 +204,27 @@ Namespace Translation
             Dim mIndex As Integer = rdbViewType.SelectedIndex
 
             If mIndex = 1 Then
-                Me.State.SortExpression = DictItemTranslation.TranslationSearchDV.GRID_COL_ENGLISH
-                Me.State.OrderByTrans = False
+                State.SortExpression = DictItemTranslation.TranslationSearchDV.GRID_COL_ENGLISH
+                State.OrderByTrans = False
             Else
-                Me.State.SortExpression = DictItemTranslation.TranslationSearchDV.GRID_COL_TRANSLATION
-                Me.State.OrderByTrans = True
+                State.SortExpression = DictItemTranslation.TranslationSearchDV.GRID_COL_TRANSLATION
+                State.OrderByTrans = True
             End If
-            Me.PopulateTranslationGrid()
+            PopulateTranslationGrid()
         End Sub
 
-        Private Sub CreateBoFromGrid(ByVal index As Integer)
+        Private Sub CreateBoFromGrid(index As Integer)
             Dim DictionaryId As Guid
 
             moDictionaryGrid.SelectedIndex = index
-            DictionaryId = New Guid(moDictionaryGrid.Items(index).Cells(Me.GRID_COL_TRANSLATION_ID).Text)
-            If Me.State.MyBO Is Nothing Then
-                Me.State.MyBO = New DictItemTranslation(DictionaryId)
-                BindBoPropertiesToGridHeaders(Me.State.MyBO)
-                PopulateBOFromForm(Me.State.MyBO)
+            DictionaryId = New Guid(moDictionaryGrid.Items(index).Cells(GRID_COL_TRANSLATION_ID).Text)
+            If State.MyBO Is Nothing Then
+                State.MyBO = New DictItemTranslation(DictionaryId)
+                BindBoPropertiesToGridHeaders(State.MyBO)
+                PopulateBOFromForm(State.MyBO)
             Else
-                Me.State.MyBOGroup = New DictItemTranslation(DictionaryId, Me.State.MyBO.GetDataset)
-                PopulateBOFromForm(Me.State.MyBOGroup)
+                State.MyBOGroup = New DictItemTranslation(DictionaryId, State.MyBO.GetDataset)
+                PopulateBOFromForm(State.MyBOGroup)
             End If
 
         End Sub
@@ -233,7 +233,7 @@ Namespace Translation
             Dim index As Integer = 0
             Dim DictionaryId As Guid
             Dim selectedDS As DataSet
-            Dim totItems As Integer = Me.moDictionaryGrid.Items.Count
+            Dim totItems As Integer = moDictionaryGrid.Items.Count
 
             For index = 0 To totItems - 1
                 CreateBoFromGrid(index)
@@ -241,35 +241,35 @@ Namespace Translation
         End Sub
 
         Function IsDataGPageDirty() As Boolean
-            Dim Result As String = Me.HiddenIsPageDirty.Value
+            Dim Result As String = HiddenIsPageDirty.Value
 
             Return Result.Equals("YES")
         End Function
 
         Protected Sub CheckIfComingFromSaveConfirm()
 
-            Dim confResponse As String = Me.HiddenSavePagePromptResponse.Value
+            Dim confResponse As String = HiddenSavePagePromptResponse.Value
 
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-                If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                    Me.SavePage()
-                    If (Me.State.MyBO.IsFamilyDirty) Then
-                        Me.State.MyBO.Save()
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+                If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                    SavePage()
+                    If (State.MyBO.IsFamilyDirty) Then
+                        State.MyBO.Save()
                     End If
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToTabHomePage()
+                        ReturnToTabHomePage()
                     Case ElitaPlusPage.DetailPageCommand.New_
                         'Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                         'Me.State.isNew = True
                         'Me.PopulateGrid()
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                Me.HiddenIsPageDirty.Value = "NO"
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                HiddenIsPageDirty.Value = "NO"
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToTabHomePage()
+                        ReturnToTabHomePage()
                     Case ElitaPlusPage.DetailPageCommand.New_
                         'Me.State.isNew = True
                         'Me.PopulateGrid()
@@ -290,8 +290,8 @@ Namespace Translation
             End If
 
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSavePagePromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSavePagePromptResponse.Value = ""
 
         End Sub
 
@@ -302,90 +302,90 @@ Namespace Translation
 
 #End Region
 #Region "Button Management"
-        Private Sub BtnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Private Sub BtnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
             Try
-                Me.State.IsGridVisible = True
-                Me.State.searchDV = Nothing
+                State.IsGridVisible = True
+                State.searchDV = Nothing
                 PopulateTranslationGrid()
-                Me.State.PageIndex = moDictionaryGrid.CurrentPageIndex
+                State.PageIndex = moDictionaryGrid.CurrentPageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub btnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClear.Click
+        Private Sub btnClear_Click(sender As System.Object, e As System.EventArgs) Handles btnClear.Click
             Try
-                Me.txtSearchTrans.Text = String.Empty
+                txtSearchTrans.Text = String.Empty
 
                 'Update Page State
-                With Me.State
+                With State
                     .DescriptionMask = Nothing
                 End With
-                Me.PopulateTranslationGrid()
+                PopulateTranslationGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
 
-        Private Sub moBtnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnSave_WRITE.Click
+        Private Sub moBtnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles moBtnSave_WRITE.Click
             Try
                 SavePage()
-                If (Me.State.MyBO.IsFamilyDirty) Then
-                    Me.State.MyBO.Save()
-                    Me.State.IsAfterSave = True
-                    ShowInfoMsgBox(Me.MSG_RECORD_SAVED_OK)
-                    Me.State.searchDV = Nothing
-                    Me.State.MyBO = Nothing
-                    Me.HiddenIsPageDirty.Value = EMPTY
-                    Me.ReturnFromEditing()
+                If (State.MyBO.IsFamilyDirty) Then
+                    State.MyBO.Save()
+                    State.IsAfterSave = True
+                    ShowInfoMsgBox(MSG_RECORD_SAVED_OK)
+                    State.searchDV = Nothing
+                    State.MyBO = Nothing
+                    HiddenIsPageDirty.Value = EMPTY
+                    ReturnFromEditing()
                 Else
-                    ShowInfoMsgBox(Me.MSG_RECORD_NOT_SAVED)
-                    Me.ReturnFromEditing()
+                    ShowInfoMsgBox(MSG_RECORD_NOT_SAVED)
+                    ReturnFromEditing()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
-                Me.ReturnFromEditing(True)
+                HandleErrors(ex, ErrControllerMaster)
+                ReturnFromEditing(True)
             End Try
 
         End Sub
 
-        Private Sub moBtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnCancel.Click
+        Private Sub moBtnCancel_Click(sender As System.Object, e As System.EventArgs) Handles moBtnCancel.Click
             Try
-                Me.moDictionaryGrid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
-                Me.State.Canceling = True
-                Me.HiddenIsPageDirty.Value = EMPTY
+                moDictionaryGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                State.Canceling = True
+                HiddenIsPageDirty.Value = EMPTY
                 ReturnFromEditing()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Public Sub Index_Changed(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rdbViewType.SelectedIndexChanged
+        Public Sub Index_Changed(sender As System.Object, e As System.EventArgs) Handles rdbViewType.SelectedIndexChanged
             Try
                 SetSortOption()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                If Me.IsDataGPageDirty() Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, _
-                                                Me.HiddenSavePagePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                If IsDataGPageDirty() Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, _
+                                                HiddenSavePagePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ReturnToTabHomePage()
+                    ReturnToTabHomePage()
                 End If
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
                 'Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
-                Me.State.LastErrMsg = Me.ErrControllerMaster.Text
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                State.LastErrMsg = ErrControllerMaster.Text
             End Try
         End Sub
 
@@ -396,65 +396,65 @@ Namespace Translation
         Private Sub PopulateTranslationGrid()
             Dim dv As DataView
             Try
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.SetStateProperties()
-                    Me.State.searchDV = GetTranslationGridDataView()
+                If (State.searchDV Is Nothing) Then
+                    SetStateProperties()
+                    State.searchDV = GetTranslationGridDataView()
                 End If
 
-                If (Me.State.IsAfterSave) Then
-                    Me.State.IsAfterSave = False
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.DictItemTransId, Me.moDictionaryGrid, Me.State.PageIndex)
-                ElseIf (Me.State.IsEditMode) Then
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.DictItemTransId, Me.moDictionaryGrid, Me.State.PageIndex, Me.State.IsEditMode)
+                If (State.IsAfterSave) Then
+                    State.IsAfterSave = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.DictItemTransId, moDictionaryGrid, State.PageIndex)
+                ElseIf (State.IsEditMode) Then
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.DictItemTransId, moDictionaryGrid, State.PageIndex, State.IsEditMode)
                 End If
 
-                Me.State.searchDV.Sort = Me.State.SortExpression
+                State.searchDV.Sort = State.SortExpression
 
-                Me.moDictionaryGrid.AutoGenerateColumns = False
+                moDictionaryGrid.AutoGenerateColumns = False
 
 
                 If Not moCompanyMultipleDrop.SelectedCode = "" Then
 
-                    Me.moDictionaryGrid.Columns(1).HeaderText = LookupListNew.GetDescriptionFromId(LookupListNew.LK_LANGUAGES, Me.State.MyCompanyLang.LanguageId)
+                    moDictionaryGrid.Columns(1).HeaderText = LookupListNew.GetDescriptionFromId(LookupListNew.LK_LANGUAGES, State.MyCompanyLang.LanguageId)
                 Else
-                    Me.moDictionaryGrid.Columns(1).HeaderText = "Translation"
+                    moDictionaryGrid.Columns(1).HeaderText = "Translation"
                 End If
 
 
 
-                Me.moDictionaryGrid.Columns(Me.GRID_COL_TRANSLATION_ALIAS).SortExpression = Me.State.MyBO.TranslationSearchDV.GRID_COL_TRANSLATION
-                Me.moDictionaryGrid.Columns(Me.GRID_COL_ENGLIS_ALIAS).SortExpression = Me.State.MyBO.TranslationSearchDV.GRID_COL_ENGLISH
+                moDictionaryGrid.Columns(GRID_COL_TRANSLATION_ALIAS).SortExpression = State.MyBO.TranslationSearchDV.GRID_COL_TRANSLATION
+                moDictionaryGrid.Columns(GRID_COL_ENGLIS_ALIAS).SortExpression = State.MyBO.TranslationSearchDV.GRID_COL_ENGLISH
 
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.DictItemTransId, Me.moDictionaryGrid, Me.State.PageIndex)
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.DictItemTransId, moDictionaryGrid, State.PageIndex)
                 SortAndBindGrid()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub SortAndBindGrid()
-            Me.State.PageIndex = Me.moDictionaryGrid.CurrentPageIndex
-            Me.TranslateGridControls(moDictionaryGrid)
-            moDictionaryGrid.DataSource = Me.State.searchDV
-            HighLightSortColumn(moDictionaryGrid, Me.State.SortExpression)
-            Me.moDictionaryGrid.DataBind()
+            State.PageIndex = moDictionaryGrid.CurrentPageIndex
+            TranslateGridControls(moDictionaryGrid)
+            moDictionaryGrid.DataSource = State.searchDV
+            HighLightSortColumn(moDictionaryGrid, State.SortExpression)
+            moDictionaryGrid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, moDictionaryGrid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.moDictionaryGrid.Visible)
+            ControlMgr.SetVisibleControl(Me, moDictionaryGrid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, moDictionaryGrid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, moDictionaryGrid)
 
-            If Me.State.searchDV.Count > 0 Then
+            If State.searchDV.Count > 0 Then
 
-                If Me.moDictionaryGrid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If moDictionaryGrid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             Else
-                If Me.moDictionaryGrid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If moDictionaryGrid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
 
@@ -464,52 +464,52 @@ Namespace Translation
             Dim moCompanyLangId As Guid
 
             If Not moCompanyMultipleDrop.SelectedCode = "" Then
-                Me.State.MyCompanyLang = New Company(moCompanyMultipleDrop.SelectedGuid)
-                moCompanyLangId = Me.State.MyCompanyLang.LanguageId
+                State.MyCompanyLang = New Company(moCompanyMultipleDrop.SelectedGuid)
+                moCompanyLangId = State.MyCompanyLang.LanguageId
             End If
 
             With State
-                Me.State.searchDV = Me.State.MyBO.GetTranslationList(moCompanyLangId, Me.State.DescriptionMask.ToUpper, _
-                                                                             Me.State.OrderByTrans)
+                State.searchDV = State.MyBO.GetTranslationList(moCompanyLangId, State.DescriptionMask.ToUpper, _
+                                                                             State.OrderByTrans)
             End With
 
-            Me.State.searchDV.Sort = moDictionaryGrid.DataMember()
-            moDictionaryGrid.DataSource = Me.State.searchDV
+            State.searchDV.Sort = moDictionaryGrid.DataMember()
+            moDictionaryGrid.DataSource = State.searchDV
 
-            Return (Me.State.searchDV)
+            Return (State.searchDV)
         End Function
 
         Private Sub SetStateProperties()
 
-            Me.State.LangId = ElitaPlusIdentity.Current.ActiveUser.Company.LanguageId
-            Me.State.DescriptionMask = txtSearchTrans.Text
+            State.LangId = ElitaPlusIdentity.Current.ActiveUser.Company.LanguageId
+            State.DescriptionMask = txtSearchTrans.Text
 
         End Sub
 
 
-        Private Sub moDictionaryGrid_PageIndexChanged(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDictionaryGrid.PageIndexChanged
+        Private Sub moDictionaryGrid_PageIndexChanged(source As System.Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDictionaryGrid.PageIndexChanged
             Try
-                If (Not (Me.State.IsEditMode)) Then
-                    Me.State.PageIndex = e.NewPageIndex
-                    Me.moDictionaryGrid.CurrentPageIndex = Me.State.PageIndex
-                    Me.PopulateTranslationGrid()
-                    Me.moDictionaryGrid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                If (Not (State.IsEditMode)) Then
+                    State.PageIndex = e.NewPageIndex
+                    moDictionaryGrid.CurrentPageIndex = State.PageIndex
+                    PopulateTranslationGrid()
+                    moDictionaryGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 moDictionaryGrid.CurrentPageIndex = NewCurrentPageIndex(moDictionaryGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.PopulateTranslationGrid()
+                PopulateTranslationGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDictionaryGrid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDictionaryGrid.ItemDataBound
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
             Dim str As String
@@ -518,15 +518,15 @@ Namespace Translation
 
             If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
                 With e.Item
-                    Me.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_TRANSLATION_ID), dvRow(DictItemTranslation.TranslationSearchDV.GRID_COL_ID))
-                    oTextBox = CType(e.Item.Cells(Me.GRID_COL_TRANSLATION_ALIAS).FindControl(TRANSLATION_IN_GRID_CONTROL_NAME), TextBox)
+                    PopulateControlFromBOProperty(.Cells(GRID_COL_TRANSLATION_ID), dvRow(DictItemTranslation.TranslationSearchDV.GRID_COL_ID))
+                    oTextBox = CType(e.Item.Cells(GRID_COL_TRANSLATION_ALIAS).FindControl(TRANSLATION_IN_GRID_CONTROL_NAME), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
                     If e.Item.ItemIndex() = 0 Then
                         SetFocus(oTextBox)
                     End If
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DictItemTranslation.TranslationSearchDV.GRID_COL_TRANSLATION))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DictItemTranslation.TranslationSearchDV.GRID_COL_TRANSLATION))
 
-                    oLabel = CType(e.Item.Cells(Me.GRID_COL_ENGLIS_ALIAS).FindControl(ENLISH_IN_GRID_CONTROL_NAME), Label)
+                    oLabel = CType(e.Item.Cells(GRID_COL_ENGLIS_ALIAS).FindControl(ENLISH_IN_GRID_CONTROL_NAME), Label)
 
                     'Replace Leading spaces with HTML Escapes
                     str = dvRow(DictItemTranslation.TranslationSearchDV.GRID_COL_ENGLISH).ToString.ToUpper
@@ -537,55 +537,55 @@ Namespace Translation
                             Exit For
                         End If
                     Next
-                    Me.PopulateControlFromBOProperty(oLabel, str)
+                    PopulateControlFromBOProperty(oLabel, str)
                 End With
             End If
             BaseItemBound(sender, e)
 
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moDictionaryGrid.SortCommand
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moDictionaryGrid.SortCommand
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
                 'To handle the requirement of always going to the FIRST page on the Grid whenever the user switches the sorting criterion
                 'Set the Me.State.selectedClaimId = Guid.Empty and set Me.State.PageIndex = 0
-                Me.State.DictItemTransId = Guid.Empty
-                Me.State.PageIndex = 0
+                State.DictItemTransId = Guid.Empty
+                State.PageIndex = 0
 
-                Me.PopulateTranslationGrid()
+                PopulateTranslationGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
         'The pencil or the trash icon was clicked
-        Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
 
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
 #End Region
 
-        Private Sub ShowInfoMsgBox(ByVal strMsg As String, Optional ByVal Translate As Boolean = True)
+        Private Sub ShowInfoMsgBox(strMsg As String, Optional ByVal Translate As Boolean = True)
             Dim translatedMsg As String = strMsg
             If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
             Dim sJavaScript As String
             sJavaScript = "<SCRIPT>" & Environment.NewLine
-            sJavaScript &= "setTimeout(""showMessage('" & translatedMsg & "', '" & "AlertWindow" & "', '" & Me.MSG_BTN_OK & "', '" & Me.MSG_TYPE_INFO & "', '" & "null" & "')"", 0);" & Environment.NewLine
+            sJavaScript &= "setTimeout(""showMessage('" & translatedMsg & "', '" & "AlertWindow" & "', '" & MSG_BTN_OK & "', '" & MSG_TYPE_INFO & "', '" & "null" & "')"", 0);" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
-            Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+            RegisterStartupScript("ShowConfirmation", sJavaScript)
         End Sub
 
       

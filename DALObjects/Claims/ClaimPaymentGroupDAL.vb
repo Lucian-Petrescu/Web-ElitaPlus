@@ -33,57 +33,57 @@ Public Class ClaimPaymentGroupDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("payment_group_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function GetPaymentGroup(ByVal svcCenterId As Guid, _
-                                    ByVal PymntGrpNumber As String, _
-                                    ByVal PymntGrpStatusId As Guid, _
-                                    ByVal PaymentGroupDateRange As SearchCriteriaStructType(Of Date), _
-                                    ByVal InvoiceNumber As String, _
-                                    ByVal InvoiceGrpNumber As String) As DataSet
+    Public Function GetPaymentGroup(svcCenterId As Guid, _
+                                    PymntGrpNumber As String, _
+                                    PymntGrpStatusId As Guid, _
+                                    PaymentGroupDateRange As SearchCriteriaStructType(Of Date), _
+                                    InvoiceNumber As String, _
+                                    InvoiceGrpNumber As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PAYMENT_GROUP")
+        Dim selectStmt As String = Config("/SQL/LOAD_PAYMENT_GROUP")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                                New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)}
+                                New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)}
 
         Dim innerWhereClauseSubSelect As String = "AND payment_group_id in (select payment_group_id from elp_payment_group_detail pgd" & _
                                                 " inner join elp_invoice_extended_mv  mv on  pgd.CLAIM_AUTHORIZATION_ID = mv.CLAIM_AUTHORIZATION_ID"
         Dim InnerWhereClauseConditions As String = String.Empty
         Dim OuterWhereClauseConditions As String = String.Empty
 
-        If Me.FormatSearchMask(PymntGrpNumber) Then
-            OuterWhereClauseConditions &= " AND " & " pymntGrp." & Me.COL_NAME_PAYMENT_GROUP_NUMBER & " " & PymntGrpNumber
+        If FormatSearchMask(PymntGrpNumber) Then
+            OuterWhereClauseConditions &= " AND " & " pymntGrp." & COL_NAME_PAYMENT_GROUP_NUMBER & " " & PymntGrpNumber
         End If
 
         If Not ((PymntGrpStatusId = Guid.Empty) OrElse (PymntGrpStatusId = Nothing)) Then
             OuterWhereClauseConditions &= Environment.NewLine & " AND pymntGrp.PAYMENT_GROUP_STATUS_ID = hextoraw(" & MiscUtil.GetDbStringFromGuid(PymntGrpStatusId) & ")"
         End If
 
-        OuterWhereClauseConditions &= PaymentGroupDateRange.ToSqlString("pymntGrp", Me.COL_NAME_PAYMENT_GROUP_DATE, parameters)
+        OuterWhereClauseConditions &= PaymentGroupDateRange.ToSqlString("pymntGrp", COL_NAME_PAYMENT_GROUP_DATE, parameters)
 
-        If Me.FormatSearchMask(InvoiceNumber) Then
+        If FormatSearchMask(InvoiceNumber) Then
             InnerWhereClauseConditions &= " AND " & Environment.NewLine & " mv.invoice_number" & InvoiceNumber
         End If
 
-        If Me.FormatSearchMask(InvoiceGrpNumber) Then
+        If FormatSearchMask(InvoiceGrpNumber) Then
             InnerWhereClauseConditions &= " AND " & Environment.NewLine & _
                                     " mv.INVOICE_RECONCILIATION_ID IN" & "(" & _
                                     "select invgd.INVOICE_RECONCILIATION_ID from elp_invoice_group_detail invgd inner join elp_invoice_group ingrp" & _
@@ -104,7 +104,7 @@ Public Class ClaimPaymentGroupDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -116,16 +116,16 @@ Public Class ClaimPaymentGroupDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, ByVal companyId As Guid, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, companyId As Guid, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim pymntGrpDetail As New ClaimPaymentGroupDetailDAL
         Dim invRecons As New InvoiceReconciliationDAL
         Dim claimAuth As New ClaimAuthorizationDAL
@@ -139,13 +139,13 @@ Public Class ClaimPaymentGroupDAL
         Try
             'First Pass updates Deletions
             pymntGrpDetail.Update(familyDataset, tr, DataRowState.Deleted) 'Delete Payment Group Detail from the Payment Group
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
             'For a new Payment Group, generate a new Payment Group Number
             ObtainAndAssignPymntGrpNumber(familyDataset, companyId)
 
             'Second Pass updates additions and changes
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             pymntGrpDetail.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
             'Note : We do not Update Claim Invoice in the Update Family but we control the Claim Invoice Save in the same Transaction
@@ -171,13 +171,13 @@ Public Class ClaimPaymentGroupDAL
 
 #Region "Properties"
 
-    Public ReadOnly Property IsNew(ByVal Row As DataRow) As Boolean
+    Public ReadOnly Property IsNew(Row As DataRow) As Boolean
         Get
             Return (Row.RowState = DataRowState.Added)
         End Get
     End Property
 
-    Public Property PaymentGroupNumber(ByVal Row As DataRow) As String
+    Public Property PaymentGroupNumber(Row As DataRow) As String
         Get
             If Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -185,8 +185,8 @@ Public Class ClaimPaymentGroupDAL
                 Return CType(Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
-            Me.SetValue(Row, ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBER, Value)
+        Set(Value As String)
+            SetValue(Row, ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBER, Value)
         End Set
     End Property
 
@@ -194,25 +194,25 @@ Public Class ClaimPaymentGroupDAL
 
 #Region "Private Methods"
 
-    Private Sub ObtainAndAssignPymntGrpNumber(ByVal familyDataset As DataSet, ByVal companyId As Guid)
+    Private Sub ObtainAndAssignPymntGrpNumber(familyDataset As DataSet, companyId As Guid)
         Dim oRow As DataRow
 
-        For Each oRow In familyDataset.Tables(Me.TABLE_NAME).Rows
-            If Me.IsNew(oRow) Then
-                Me.PaymentGroupNumber(oRow) = GetPaymentGroupNumber(companyId)
+        For Each oRow In familyDataset.Tables(TABLE_NAME).Rows
+            If IsNew(oRow) Then
+                PaymentGroupNumber(oRow) = GetPaymentGroupNumber(companyId)
             End If
         Next
     End Sub
 
-    Private Function GetPaymentGroupNumber(ByVal companyId As Guid) As String
-        Dim selectStmt As String = Me.Config("/SQL/GET_NEXT_PYMNT_GRP_NUMBER_SP")
+    Private Function GetPaymentGroupNumber(companyId As Guid) As String
+        Dim selectStmt As String = Config("/SQL/GET_NEXT_PYMNT_GRP_NUMBER_SP")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY, companyId.ToByteArray)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMPANY, companyId.ToByteArray)}
 
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_PYMNT_GRP_NUMBER, GetType(String)), _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)), _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String), 50)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_PYMNT_GRP_NUMBER, GetType(String)), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 50)}
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
@@ -228,7 +228,7 @@ Public Class ClaimPaymentGroupDAL
         End If
     End Function
 
-    Protected Sub SetValue(ByVal Row As DataRow, ByVal columnName As String, ByVal newValue As Object)
+    Protected Sub SetValue(Row As DataRow, columnName As String, newValue As Object)
         If Not newValue Is Nothing And Row(columnName) Is DBNull.Value Then
             'new value is something and old value is DBNULL
             If newValue.GetType Is GetType(BooleanType) Then

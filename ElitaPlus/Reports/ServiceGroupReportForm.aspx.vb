@@ -77,7 +77,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -87,35 +87,35 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(ServiceGroupMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(ServiceGroupMultipleDrop.CaptionLabel)
 
         End Sub
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -152,14 +152,14 @@ Namespace Reports
         Private Sub InitializeForm()
             PopulateServiceGroupDropDown()
             PopulateMfgDropDown()
-            Me.rServiceGroups.Checked = True
+            rServiceGroups.Checked = True
         End Sub
 
 #End Region
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal companyCode As String, ByVal serviceGroup As String, ByVal mfg As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, serviceGroup As String, mfg As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params
@@ -176,7 +176,7 @@ Namespace Reports
 
             Dim exportData As String = NO
 
-            reportName = Me.RPT_FILENAME
+            reportName = RPT_FILENAME
             If (reportFormat = ReportCeBase.RptFormat.TEXT_TAB) OrElse (reportFormat = ReportCeBase.RptFormat.TEXT_CSV) Then
                 exportData = YES
                 reportName = RPT_FILENAME_EXPORT
@@ -210,7 +210,7 @@ Namespace Reports
             Dim mfg As String
             mfg = moMfgDrop.SelectedItem.Text
 
-            If Me.rServiceGroups.Checked Then
+            If rServiceGroups.Checked Then
                 serviceGroup = ALL
             Else
                 selectedServiceGroupId = ServiceGroupMultipleDrop.SelectedGuid 'Me.GetSelectedItem(Me.cboServiceGroupsCode)

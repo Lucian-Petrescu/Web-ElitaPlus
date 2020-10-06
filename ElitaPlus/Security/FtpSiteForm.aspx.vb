@@ -43,14 +43,14 @@ Namespace Security
             End Get
         End Property
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Me.State.MyBo = New FtpSite(CType(Me.CallingParameters, Guid))
+                    State.MyBo = New FtpSite(CType(CallingParameters, Guid))
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -61,18 +61,18 @@ Namespace Security
 
 #Region "Handler-Init"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Try
                 ErrControllerMaster.Clear_Hide()
                 ClearLabelsErrSign()
                 RecoverEncryptedValue()
                 If Not Page.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, _
-                                                                        Me.MSG_TYPE_CONFIRM, True)
-                    If Me.State.MyBo Is Nothing Then
-                        Me.State.MyBo = New FtpSite
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, _
+                                                                        MSG_TYPE_CONFIRM, True)
+                    If State.MyBo Is Nothing Then
+                        State.MyBo = New FtpSite
                     End If
                     PopulateAll()
                     EnableDisableFields()
@@ -81,10 +81,10 @@ Namespace Security
                 BindBoPropertiesToLabels()
                 CheckIfComingFromConfirm()
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
-            Me.ShowMissingTranslations(ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
@@ -93,89 +93,89 @@ Namespace Security
 
         Private Sub GoBack()
             Dim retType As New FtpSiteListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, _
-                                                            Me.State.MyBo.Id, Me.State.HasDataChanged)
-            Me.ReturnToCallingPage(retType)
+                                                            State.MyBo.Id, State.HasDataChanged)
+            ReturnToCallingPage(retType)
         End Sub
 
-        Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+        Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBo.IsDirty = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, _
-                                                Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                PopulateBOsFromForm()
+                If State.MyBo.IsDirty = True Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, _
+                                                HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnApply_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnApply_WRITE.Click
+        Protected Sub btnApply_WRITE_Click(sender As Object, e As EventArgs) Handles btnApply_WRITE.Click
             ApplyChanges()
         End Sub
 
-        Protected Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUndo_WRITE.Click
+        Protected Sub btnUndo_WRITE_Click(sender As Object, e As EventArgs) Handles btnUndo_WRITE.Click
             Try
                 PopulateAll()
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub CreateNew()
-            Me.State.MyBo = New FtpSite
+            State.MyBo = New FtpSite
             ClearAll()
-            Me.PopulateAll()
+            PopulateAll()
             EnableDisableFields()
         End Sub
 
-        Protected Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew_WRITE.Click
+        Protected Sub btnNew_WRITE_Click(sender As Object, e As EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBo.IsDirty = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                PopulateBOsFromForm()
+                If State.MyBo.IsDirty = True Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub CreateNewCopy()
-            Me.State.MyBo = New FtpSite
+            State.MyBo = New FtpSite
             EnableDisableFields()
         End Sub
 
-        Protected Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCopy_WRITE.Click
+        Protected Sub btnCopy_WRITE_Click(sender As Object, e As EventArgs) Handles btnCopy_WRITE.Click
             Try
-                If Me.State.MyBo.IsDirty = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                If State.MyBo.IsDirty = True Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     CreateNewCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDelete_WRITE.Click
+        Protected Sub btnDelete_WRITE_Click(sender As Object, e As EventArgs) Handles btnDelete_WRITE.Click
             Try
                 If DeleteFtpSite() = True Then
-                    Me.State.HasDataChanged = True
+                    State.HasDataChanged = True
                     Dim retType As New FtpSiteListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete, _
                                     Guid.Empty)
                     retType.BoChanged = True
-                    Me.ReturnToCallingPage(retType)
+                    ReturnToCallingPage(retType)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
@@ -183,25 +183,25 @@ Namespace Security
 #Region "Handlers-Labels"
 
         Private Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(Me.State.MyBo, CODE_PROPERTY, Me.moCodeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBo, DESCRIPTION_PROPERTY, Me.moDescriptionLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBo, HOST_PROPERTY, Me.moHostLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBo, PORT_PROPERTY, Me.moPortLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBo, USERNAME_PROPERTY, Me.moUsernameLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBo, PASSWORD_PROPERTY, Me.moPasswordLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBo, ACCOUNT_PROPERTY, Me.moAccountLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBo, DIRECTORY_PROPERTY, Me.moDirectoryLabel)
+            BindBOPropertyToLabel(State.MyBo, CODE_PROPERTY, moCodeLabel)
+            BindBOPropertyToLabel(State.MyBo, DESCRIPTION_PROPERTY, moDescriptionLabel)
+            BindBOPropertyToLabel(State.MyBo, HOST_PROPERTY, moHostLabel)
+            BindBOPropertyToLabel(State.MyBo, PORT_PROPERTY, moPortLabel)
+            BindBOPropertyToLabel(State.MyBo, USERNAME_PROPERTY, moUsernameLabel)
+            BindBOPropertyToLabel(State.MyBo, PASSWORD_PROPERTY, moPasswordLabel)
+            BindBOPropertyToLabel(State.MyBo, ACCOUNT_PROPERTY, moAccountLabel)
+            BindBOPropertyToLabel(State.MyBo, DIRECTORY_PROPERTY, moDirectoryLabel)
         End Sub
 
         Private Sub ClearLabelsErrSign()
-            Me.ClearLabelErrSign(Me.moCodeLabel)
-            Me.ClearLabelErrSign(Me.moDescriptionLabel)
-            Me.ClearLabelErrSign(Me.moHostLabel)
-            Me.ClearLabelErrSign(Me.moPortLabel)
-            Me.ClearLabelErrSign(Me.moUsernameLabel)
-            Me.ClearLabelErrSign(Me.moPasswordLabel)
-            Me.ClearLabelErrSign(Me.moAccountLabel)
-            Me.ClearLabelErrSign(Me.moDirectoryLabel)
+            ClearLabelErrSign(moCodeLabel)
+            ClearLabelErrSign(moDescriptionLabel)
+            ClearLabelErrSign(moHostLabel)
+            ClearLabelErrSign(moPortLabel)
+            ClearLabelErrSign(moUsernameLabel)
+            ClearLabelErrSign(moPasswordLabel)
+            ClearLabelErrSign(moAccountLabel)
+            ClearLabelErrSign(moDirectoryLabel)
         End Sub
 #End Region
 
@@ -209,7 +209,7 @@ Namespace Security
 
 #Region "Enable-Disable"
 
-        Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetButtonsState(bIsNew As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
@@ -218,28 +218,28 @@ Namespace Security
         End Sub
 
         Protected Sub EnableDisableFields()
-            SetButtonsState(Me.State.MyBo.IsNew)
+            SetButtonsState(State.MyBo.IsNew)
         End Sub
 
         Public Sub RecoverEncryptedValue()
-            Me.moUsernameText.Attributes.Add("value", Me.State.userName)
-            Me.moPasswordText.Attributes.Add("value", Me.State.password)
+            moUsernameText.Attributes.Add("value", State.userName)
+            moPasswordText.Attributes.Add("value", State.password)
         End Sub
 #End Region
 
 #Region "Clear"
 
         Private Sub ClearAll()
-            Me.moCodeText.Text = String.Empty
-            Me.moDescriptionText.Text = String.Empty
-            Me.moHostText.Text = String.Empty
-            Me.moPortText.Text = String.Empty
-            Me.moUsernameText.Text = String.Empty
+            moCodeText.Text = String.Empty
+            moDescriptionText.Text = String.Empty
+            moHostText.Text = String.Empty
+            moPortText.Text = String.Empty
+            moUsernameText.Text = String.Empty
             '  Me.State.userName = moUsernameText.Text
-            Me.moPasswordText.Text = String.Empty
+            moPasswordText.Text = String.Empty
             ' Me.State.password = moPasswordText.Text
-            Me.moAccountText.Text = String.Empty
-            Me.moDirectoryText.Text = String.Empty
+            moAccountText.Text = String.Empty
+            moDirectoryText.Text = String.Empty
         End Sub
 
 #End Region
@@ -248,37 +248,37 @@ Namespace Security
 
 
         Protected Sub PopulateFormFromBOs()
-            With Me.State.MyBo
-                Me.moCodeText.Text = .Code
-                Me.moDescriptionText.Text = .Description
-                Me.moHostText.Text = .Host
+            With State.MyBo
+                moCodeText.Text = .Code
+                moDescriptionText.Text = .Description
+                moHostText.Text = .Host
                 If (.Port Is Nothing) Then
-                    Me.moPortText.Text = String.Empty
+                    moPortText.Text = String.Empty
                 Else
-                    Me.moPortText.Text = .Port.ToString
+                    moPortText.Text = .Port.ToString
                 End If
                 'Me.moUsernameText.Text = .UserName
-                Me.moUsernameText.Attributes.Add("value", .UserName)
-                Me.State.userName = .UserName
+                moUsernameText.Attributes.Add("value", .UserName)
+                State.userName = .UserName
                 'Me.moPasswordText.Text = .Password
-                Me.moPasswordText.Attributes.Add("value", .Password)
-                Me.State.password = .Password
-                Me.moAccountText.Text = .Account
-                Me.moDirectoryText.Text = .Directory
+                moPasswordText.Attributes.Add("value", .Password)
+                State.password = .Password
+                moAccountText.Text = .Account
+                moDirectoryText.Text = .Directory
             End With
         End Sub
 
         Protected Sub PopulateBOsFromForm()
-            Me.PopulateBOProperty(Me.State.MyBo, CODE_PROPERTY, Me.moCodeText)
-            Me.PopulateBOProperty(Me.State.MyBo, DESCRIPTION_PROPERTY, Me.moDescriptionText)
-            Me.PopulateBOProperty(Me.State.MyBo, HOST_PROPERTY, Me.moHostText)
-            Me.PopulateBOProperty(Me.State.MyBo, PORT_PROPERTY, Me.moPortText)
-            Me.PopulateBOProperty(Me.State.MyBo, USERNAME_PROPERTY, Me.moUsernameText)
-            Me.PopulateBOProperty(Me.State.MyBo, PASSWORD_PROPERTY, Me.moPasswordText)
-            Me.PopulateBOProperty(Me.State.MyBo, ACCOUNT_PROPERTY, Me.moAccountText)
-            Me.PopulateBOProperty(Me.State.MyBo, DIRECTORY_PROPERTY, Me.moDirectoryText)
+            PopulateBOProperty(State.MyBo, CODE_PROPERTY, moCodeText)
+            PopulateBOProperty(State.MyBo, DESCRIPTION_PROPERTY, moDescriptionText)
+            PopulateBOProperty(State.MyBo, HOST_PROPERTY, moHostText)
+            PopulateBOProperty(State.MyBo, PORT_PROPERTY, moPortText)
+            PopulateBOProperty(State.MyBo, USERNAME_PROPERTY, moUsernameText)
+            PopulateBOProperty(State.MyBo, PASSWORD_PROPERTY, moPasswordText)
+            PopulateBOProperty(State.MyBo, ACCOUNT_PROPERTY, moAccountText)
+            PopulateBOProperty(State.MyBo, DIRECTORY_PROPERTY, moDirectoryText)
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
@@ -295,18 +295,18 @@ Namespace Security
         Private Function ApplyChanges() As Boolean
             Dim isOK As Boolean = True
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBo.IsDirty Then
-                    Me.State.MyBo.Save()
-                    Me.State.HasDataChanged = True
-                    Me.PopulateFormFromBOs()
+                PopulateBOsFromForm()
+                If State.MyBo.IsDirty Then
+                    State.MyBo.Save()
+                    State.HasDataChanged = True
+                    PopulateFormFromBOs()
                     EnableDisableFields()
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
                 isOK = False
             End Try
             Return isOK
@@ -316,7 +316,7 @@ Namespace Security
             Dim bIsOk As Boolean = True
 
             Try
-                With Me.State.MyBo
+                With State.MyBo
                     .BeginEdit()
                     PopulateBOsFromForm()
                     .Delete()
@@ -324,9 +324,9 @@ Namespace Security
                     .EndEdit()
                 End With
             Catch ex As Exception
-                Me.State.MyBo.RejectChanges()
+                State.MyBo.RejectChanges()
                 ' Me.State.MyBo.EndEdit()
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
                 bIsOk = False
             End Try
             Return bIsOk
@@ -337,18 +337,18 @@ Namespace Security
 #Region "State Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         If ApplyChanges() = True Then
-                            Me.State.HasDataChanged = True
+                            State.HasDataChanged = True
                             GoBack()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         GoBack()
                 End Select
             End If
@@ -356,16 +356,16 @@ Namespace Security
         End Sub
 
         Protected Sub ComingFromNew()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         If ApplyChanges() = True Then
-                            Me.State.HasDataChanged = True
+                            State.HasDataChanged = True
                             CreateNew()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         CreateNew()
                 End Select
             End If
@@ -373,16 +373,16 @@ Namespace Security
         End Sub
 
         Protected Sub ComingFromNewCopy()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         If ApplyChanges() = True Then
-                            Me.State.HasDataChanged = True
+                            State.HasDataChanged = True
                             CreateNewCopy()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         CreateNewCopy()
                 End Select
             End If
@@ -391,7 +391,7 @@ Namespace Security
 
         Protected Sub CheckIfComingFromConfirm()
             Try
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
                     Case ElitaPlusPage.DetailPageCommand.New_
@@ -400,11 +400,11 @@ Namespace Security
                         ComingFromNewCopy()
                 End Select
 
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 

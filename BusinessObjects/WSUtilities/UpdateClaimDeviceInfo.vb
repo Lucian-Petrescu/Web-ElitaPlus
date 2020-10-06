@@ -53,134 +53,134 @@
     <ValueMandatory("")> _
     Public Property DealerCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_DEALER_CODE), String)
+                Return CType(Row(DATA_COL_NAME_DEALER_CODE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER_CODE, Value)
+            SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property CertificateNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CERT_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CERT_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property ClaimNumber As String
         Get
-            If Row(Me.DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CLAIM_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CLAIM_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property ClaimType As String
         Get
-            If Row(Me.DATA_COL_NAME_CLAIM_TYPE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CLAIM_TYPE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CLAIM_TYPE), String)
+                Return CType(Row(DATA_COL_NAME_CLAIM_TYPE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CLAIM_TYPE, Value)
+            SetValue(DATA_COL_NAME_CLAIM_TYPE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property NewIMEIDate() As DateType
         Get
-            If Row(Me.DATA_COL_NAME_NEW_IMEI_DATE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_NEW_IMEI_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_NEW_IMEI_DATE), DateTime)
+                Return CType(Row(DATA_COL_NAME_NEW_IMEI_DATE), DateTime)
             End If
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_NEW_IMEI_DATE, Value)
+            SetValue(DATA_COL_NAME_NEW_IMEI_DATE, Value)
         End Set
     End Property
 
     Public Property Make As String
         Get
-            If Row(Me.DATA_COL_NAME_MAKE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MAKE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_MAKE), String)
+                Return CType(Row(DATA_COL_NAME_MAKE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MAKE, Value)
+            SetValue(DATA_COL_NAME_MAKE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property Model As String
         Get
-            If Row(Me.DATA_COL_NAME_MODEL) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MODEL) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_MODEL), String)
+                Return CType(Row(DATA_COL_NAME_MODEL), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MODEL, Value)
+            SetValue(DATA_COL_NAME_MODEL, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property SerialNumber As String
         Get
-            If Row(Me.DATA_COL_NAME_SERIAL_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SERIAL_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_SERIAL_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_SERIAL_NUMBER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_SERIAL_NUMBER, Value)
+            SetValue(DATA_COL_NAME_SERIAL_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property SKU As String
         Get
-            If Row(Me.DATA_COL_NAME_SKU) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SKU) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_SKU), String)
+                Return CType(Row(DATA_COL_NAME_SKU), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_SKU, Value)
+            SetValue(DATA_COL_NAME_SKU, Value)
         End Set
     End Property
 
@@ -201,8 +201,8 @@
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -213,10 +213,10 @@
     Private Sub Load(ByVal ds As UpdateClaimDeviceInfoDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -232,15 +232,15 @@
         Try
             If ds.UpdateClaimDeviceInfo.Count = 0 Then Exit Sub
             With ds.UpdateClaimDeviceInfo.Item(0)
-                Me.DealerCode = .DEALER_CODE
-                Me.CertificateNumber = .CERT_NUMBER
-                Me.ClaimNumber = .CLAIM_NUMBER
-                Me.ClaimType = .CLAIM_TYPE
-                Me.NewIMEIDate = .NEW_IMEI_DATE
-                Me.Make = .MAKE
-                Me.Model = .MODEL
-                Me.SerialNumber = .SERIAL_NUMBER
-                Me.SKU = .SKU
+                DealerCode = .DEALER_CODE
+                CertificateNumber = .CERT_NUMBER
+                ClaimNumber = .CLAIM_NUMBER
+                ClaimType = .CLAIM_TYPE
+                NewIMEIDate = .NEW_IMEI_DATE
+                Make = .MAKE
+                Model = .MODEL
+                SerialNumber = .SERIAL_NUMBER
+                SKU = .SKU
 
             End With
         Catch ex As BOValidationException
@@ -259,7 +259,7 @@
 
         Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
 
-        Me._dealerId = LookupListNew.GetIdFromCode(list, Me.DealerCode)
+        _dealerId = LookupListNew.GetIdFromCode(list, DealerCode)
 
         If _dealerId = Guid.Empty Then
             Throw New BOValidationException("UpdateClaimDeviceInfo Error: ", Common.ErrorCodes.WS_DEALER_NOT_FOUND)
@@ -270,7 +270,7 @@
     Private Function FindCertificate()
 
         Dim dal As New CertificateDAL
-        Dim dsCert As DataSet = dal.GetCertIDWithCertNumAndDealer(Me.CertificateNumber, Me._dealerId)
+        Dim dsCert As DataSet = dal.GetCertIDWithCertNumAndDealer(CertificateNumber, _dealerId)
         Dim strResult As String = String.Empty
 
         If Not dsCert Is Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
@@ -298,7 +298,7 @@
 
         Dim dal As New ClaimDAL
         'what will happen if the certificate has > 1 claim with the same claim number, which one to pick
-        Dim dsClaim As DataSet = dal.GetClaimIDWithCertAndDealer(Me._certId, Me._dealerId, Me.ClaimNumber)
+        Dim dsClaim As DataSet = dal.GetClaimIDWithCertAndDealer(_certId, _dealerId, ClaimNumber)
         Dim strResult As String = String.Empty
         Dim ResponseStatus As DataTable
 
@@ -321,22 +321,22 @@
 
     Private Function validateSKU()
 
-        Dim dealerBO As Dealer = New Dealer(Me._dealerId)
+        Dim dealerBO As Dealer = New Dealer(_dealerId)
         Dim WMDAL As New WarrantyMasterDAL
-        Me._validateSku = LookupListNew.GetCodeFromId("SKUVAL", dealerBO.ValidateSKUId)
-        If (Me._validateSku <> SKU_VALIDATE_NO) Then
+        _validateSku = LookupListNew.GetCodeFromId("SKUVAL", dealerBO.ValidateSKUId)
+        If (_validateSku <> SKU_VALIDATE_NO) Then
 
-            Dim dsMakeModel As DataSet = WMDAL.GetMakeAndModelForDealerFromWM(Me.SKU, Me._dealerId)
+            Dim dsMakeModel As DataSet = WMDAL.GetMakeAndModelForDealerFromWM(SKU, _dealerId)
             Dim dsMfgModel As DataSet
             If Not dsMakeModel Is Nothing AndAlso dsMakeModel.Tables.Count > 0 AndAlso dsMakeModel.Tables(0).Rows.Count = 1 Then
 
-                Me._manufacturerId = New Guid(CType(dsMakeModel.Tables(0).Rows(0)("Internal_manufacturer_id"), Byte()))
-                Me._model = dsMakeModel.Tables(0).Rows(0)("Model_Number")
+                _manufacturerId = New Guid(CType(dsMakeModel.Tables(0).Rows(0)("Internal_manufacturer_id"), Byte()))
+                _model = dsMakeModel.Tables(0).Rows(0)("Model_Number")
 
                 'check whether this make and model are present in elp_mfg_model table
 
                 Dim MfgModelDAL As New MfgModelDAL
-                dsMfgModel = MfgModelDAL.GetMakeAndModelForDealer(Me._manufacturerId, Me._model, Me._dealerId)
+                dsMfgModel = MfgModelDAL.GetMakeAndModelForDealer(_manufacturerId, _model, _dealerId)
 
                 'reject if the make and model are available in the table
                 If Not dsMfgModel Is Nothing AndAlso dsMfgModel.Tables.Count > 0 AndAlso dsMfgModel.Tables(0).Rows.Count = 1 Then
@@ -362,46 +362,46 @@
     Public Overrides Function ProcessWSRequest() As String
         Try
 
-            Me.Validate()
+            Validate()
 
             'validate the dealer code
-            If Not Me.DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty Then
-                Me.FindDealer()
+            If Not DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty Then
+                FindDealer()
             End If
 
             'validate the certificate number
-            If Not Me.CertificateNumber Is Nothing AndAlso CertificateNumber.Trim <> String.Empty Then
-                Me.FindCertificate()
+            If Not CertificateNumber Is Nothing AndAlso CertificateNumber.Trim <> String.Empty Then
+                FindCertificate()
             End If
 
             'validate the claim number
-            If Not Me.ClaimNumber Is Nothing AndAlso ClaimNumber.Trim <> String.Empty Then
-                Me.FindClaim()
+            If Not ClaimNumber Is Nothing AndAlso ClaimNumber.Trim <> String.Empty Then
+                FindClaim()
             End If
 
             'Get the Claim information
-            Dim myBO As Claim = New Claim(Me._claimId)
+            Dim myBO As Claim = New Claim(_claimId)
 
             'validate the incoming IMEI Date
-            If (Me.NewIMEIDate < myBO.GetShortDate(myBO.LossDate)) Then
+            If (NewIMEIDate < myBO.GetShortDate(myBO.LossDate)) Then
                 Throw New BOValidationException("UpdateClaimDeviceInfo Error: ", Common.ErrorCodes.MSG_INVALID_NEW_IMEI_DATE)
             End If
 
             'validate SKU
-            Me.validateSKU()
+            validateSKU()
 
             'Get the Claim Equipment BO
             Dim ClaimEquipBO As ClaimEquipment = myBO.ClaimedEquipment
-            ClaimEquipBO.ClaimEquipmentDate = Me.NewIMEIDate
-            ClaimEquipBO.ManufacturerId = Me._manufacturerId
-            ClaimEquipBO.Model = Me._model
-            ClaimEquipBO.SerialNumber = Me.SerialNumber
-            ClaimEquipBO.SKU = Me.SKU
+            ClaimEquipBO.ClaimEquipmentDate = NewIMEIDate
+            ClaimEquipBO.ManufacturerId = _manufacturerId
+            ClaimEquipBO.Model = _model
+            ClaimEquipBO.SerialNumber = SerialNumber
+            ClaimEquipBO.SKU = SKU
 
             'set the claim type 
-            If (Me.ClaimType = Me.CLAIM_TYPE_REPAIR) Then
+            If (ClaimType = CLAIM_TYPE_REPAIR) Then
                 myBO.MethodOfRepairId = LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__CARRY_IN)
-            ElseIf (Me.ClaimType = Me.CLAIM_TYPE_REPLACEMENT) Then
+            ElseIf (ClaimType = CLAIM_TYPE_REPLACEMENT) Then
                 myBO.MethodOfRepairId = LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)
             Else
                 Throw New BOValidationException("UpdateClaimDeviceInfo Error: ", Common.ErrorCodes.INVALID_CLAIM_TYPE_CODE)

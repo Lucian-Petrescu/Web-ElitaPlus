@@ -18,7 +18,7 @@ Public Class InvoiceDetailForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -80,30 +80,30 @@ Public Class InvoiceDetailForm
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingParameters As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingParameters As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Me.State.InvoiceReturnObject = CType(CallingParameters, InvoiceSearchForm.InvoiceReturnType)
-                If (Not Me.State.InvoiceReturnObject.InvoiceId.Equals(Guid.Empty)) Then
-                    Me.State.MyBO = New Invoice(Me.State.InvoiceReturnObject.InvoiceId)
+            If Me.CallingParameters IsNot Nothing Then
+                State.InvoiceReturnObject = CType(CallingParameters, InvoiceSearchForm.InvoiceReturnType)
+                If (Not State.InvoiceReturnObject.InvoiceId.Equals(Guid.Empty)) Then
+                    State.MyBO = New Invoice(State.InvoiceReturnObject.InvoiceId)
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
-            Me.MasterPage.MessageController.Clear()
+            MasterPage.MessageController.Clear()
             moInfoMessageController.Clear()
-            If (Not Me.IsPostBack) Then
+            If (Not IsPostBack) Then
                 ' Date Calendars
-                Me.AddCalendar_New(btnInvoiceDate, moInvoiceDate)
-                Me.AddCalendar_New(btnDueDate, moDueDate)
+                AddCalendar_New(btnInvoiceDate, moInvoiceDate)
+                AddCalendar_New(btnDueDate, moDueDate)
 
-                If (Me.State.MyBO Is Nothing) Then
-                    Me.State.MyBO = New Invoice()
+                If (State.MyBO Is Nothing) Then
+                    State.MyBO = New Invoice()
                 End If
 
                 ' Populate Bread Crum
@@ -111,30 +111,30 @@ Public Class InvoiceDetailForm
 
                 ' Populate Drop Downs
                 PopulateDropdowns()
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                Me.AddCalendar_New(btnRepairDate, moRepairDate)
+                PopulateFormFromBOs()
+                EnableDisableFields()
+                AddCalendar_New(btnRepairDate, moRepairDate)
             Else
-                If (Me.Request("__EVENTARGUMENT").Equals(SERVICE_CENTER_CHANGE_EVENT_NAME)) Then
+                If (Request("__EVENTARGUMENT").Equals(SERVICE_CENTER_CHANGE_EVENT_NAME)) Then
                     UpdateServiceCenter()
-                    For Each item As InvoiceItem In Me.State.MyBO.InvoiceItemChildren
+                    For Each item As InvoiceItem In State.MyBO.InvoiceItemChildren
                         item.Delete()
                     Next
-                ElseIf (Me.Request("__EVENTARGUMENT").Equals(SELECT_ALL_EVENT_NAME)) Then
+                ElseIf (Request("__EVENTARGUMENT").Equals(SELECT_ALL_EVENT_NAME)) Then
                     Dim oDv As Invoice.InvoiceAuthorizationSelectionView
-                    oDv = Me.State.MyBO.GetInvoiceAuthorizationSelectionView()
-                    Me.State.AvailableAuthorizationsCount = oDv.Count
-                    If (Me.State.MyBO.ClaimAuthorizations.Count < Me.State.AvailableAuthorizationsCount) Then
+                    oDv = State.MyBO.GetInvoiceAuthorizationSelectionView()
+                    State.AvailableAuthorizationsCount = oDv.Count
+                    If (State.MyBO.ClaimAuthorizations.Count < State.AvailableAuthorizationsCount) Then
                         For Each oDrv As DataRowView In oDv
                             Dim dr As DataRow
                             dr = oDrv.Row
                             If (DirectCast(dr(Invoice.InvoiceAuthorizationSelectionView.COL_NAME_IS_SELECTED), Boolean) = False) Then
-                                Me.State.MyBO.AddAuthorization(New Guid(DirectCast(dr(Invoice.InvoiceAuthorizationSelectionView.COL_NAME_CLAIM_AUTHORIZATION_ID), Byte())))
+                                State.MyBO.AddAuthorization(New Guid(DirectCast(dr(Invoice.InvoiceAuthorizationSelectionView.COL_NAME_CLAIM_AUTHORIZATION_ID), Byte())))
                             End If
                         Next
                     Else
                         For Each oClaimAuthorization As ClaimAuthorization In
-                            Me.State.MyBO.ClaimAuthorizations.Where(Function(item) item.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized OrElse item.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled)
+                            State.MyBO.ClaimAuthorizations.Where(Function(item) item.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized OrElse item.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled)
                             AjaxState.MyBO.RemoveAuthorization(oClaimAuthorization.Id)
                         Next
                     End If
@@ -142,21 +142,21 @@ Public Class InvoiceDetailForm
 
                 'PopulateInvoiceItemGrid()
             End If
-            If (Me.State.MyBO.ServiceCenterId = Guid.Empty) Then
+            If (State.MyBO.ServiceCenterId = Guid.Empty) Then
                 moInfoMessageController.AddInformation(SELECT_SERVICE_CENTER_TO_POPULATE_CLAIM_AUTHORIZATIONS)
             End If
             BindBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
             'Me.DisplayNewProgressBarOnClick(Me.btnSearch, "Loading_Certificates")
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 #End Region
 
@@ -204,85 +204,85 @@ Public Class InvoiceDetailForm
     End Sub
 
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGESUBTAB) & ElitaBase.Sperator
-        Me.MasterPage.BreadCrum = Me.MasterPage.BreadCrum & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGESUBTAB) & ElitaBase.Sperator
+        MasterPage.BreadCrum = MasterPage.BreadCrum & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.UsePageTabTitleInBreadCrum = False
     End Sub
 
     Private Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "InvoiceNumber", Me.moInvoiceNumberLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "InvoiceDate", Me.moInvoiceDateLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ServiceCenterId", Me.moServiceCenterLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "DueDate", Me.moDueDateLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "InvoiceStatusId", Me.moInvoiceStatusLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "InvoiceAmount", Me.moInvoiceAmountLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Source", Me.moSourceLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "DifferenceAmount", Me.moDifferenceAmountLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "IsComplete", Me.moIsCompleteLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "PerceptionIIBB", Me.moPerceptionIibbLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "PerceptionIIBBRegion", Me.moPerceptionIibbProvinceLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "PerceptionIVA", Me.moPerceptionIvaLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "BatchNumber", Me.moBatchNumberLabel)
-        Me.ClearGridViewHeadersAndLabelsErrSign()
+        BindBOPropertyToLabel(State.MyBO, "InvoiceNumber", moInvoiceNumberLabel)
+        BindBOPropertyToLabel(State.MyBO, "InvoiceDate", moInvoiceDateLabel)
+        BindBOPropertyToLabel(State.MyBO, "ServiceCenterId", moServiceCenterLabel)
+        BindBOPropertyToLabel(State.MyBO, "DueDate", moDueDateLabel)
+        BindBOPropertyToLabel(State.MyBO, "InvoiceStatusId", moInvoiceStatusLabel)
+        BindBOPropertyToLabel(State.MyBO, "InvoiceAmount", moInvoiceAmountLabel)
+        BindBOPropertyToLabel(State.MyBO, "Source", moSourceLabel)
+        BindBOPropertyToLabel(State.MyBO, "DifferenceAmount", moDifferenceAmountLabel)
+        BindBOPropertyToLabel(State.MyBO, "IsComplete", moIsCompleteLabel)
+        BindBOPropertyToLabel(State.MyBO, "PerceptionIIBB", moPerceptionIibbLabel)
+        BindBOPropertyToLabel(State.MyBO, "PerceptionIIBBRegion", moPerceptionIibbProvinceLabel)
+        BindBOPropertyToLabel(State.MyBO, "PerceptionIVA", moPerceptionIvaLabel)
+        BindBOPropertyToLabel(State.MyBO, "BatchNumber", moBatchNumberLabel)
+        ClearGridViewHeadersAndLabelsErrSign()
     End Sub
 
     Private Sub PopulateFormFromBOs()
-        With Me.State.MyBO
+        With State.MyBO
             PopulateInvoiceItemGrid()
-            Me.PopulateControlFromBOProperty(Me.moInvoiceNumber, .InvoiceNumber)
-            Me.PopulateControlFromBOProperty(Me.moInvoiceDate, .InvoiceDate)
-            Me.inputServiceCenterId.Value = .ServiceCenterId.ToString()
+            PopulateControlFromBOProperty(moInvoiceNumber, .InvoiceNumber)
+            PopulateControlFromBOProperty(moInvoiceDate, .InvoiceDate)
+            inputServiceCenterId.Value = .ServiceCenterId.ToString()
             If (.ServiceCenter Is Nothing) Then
-                Me.PopulateControlFromBOProperty(Me.moServiceCenter, String.Empty)
+                PopulateControlFromBOProperty(moServiceCenter, String.Empty)
             Else
-                Me.PopulateControlFromBOProperty(Me.moServiceCenter, .ServiceCenter.Description)
+                PopulateControlFromBOProperty(moServiceCenter, .ServiceCenter.Description)
             End If
-            Me.PopulateControlFromBOProperty(Me.moDueDate, .DueDate)
-            Me.PopulateControlFromBOProperty(Me.moInvoiceStatus, LookupListNew.GetDescriptionFromId(LookupListNew.LK_INVOICE_STATUS, .InvoiceStatusId))
+            PopulateControlFromBOProperty(moDueDate, .DueDate)
+            PopulateControlFromBOProperty(moInvoiceStatus, LookupListNew.GetDescriptionFromId(LookupListNew.LK_INVOICE_STATUS, .InvoiceStatusId))
             Select Case .InvoiceStatusCode
                 Case Codes.INVOICE_STATUS__BALANCED
-                    Me.moInvoiceStatus.ForeColor = Color.FromArgb(51, 151, 0)
+                    moInvoiceStatus.ForeColor = Color.FromArgb(51, 151, 0)
                 Case Codes.INVOICE_STATUS__OVER, Codes.INVOICE_STATUS__UNDER
-                    Me.moInvoiceStatus.ForeColor = Color.FromArgb(255, 0, 0)
+                    moInvoiceStatus.ForeColor = Color.FromArgb(255, 0, 0)
                 Case Else
-                    Me.moInvoiceStatus.ForeColor = Color.FromArgb(51, 51, 51)
+                    moInvoiceStatus.ForeColor = Color.FromArgb(51, 51, 51)
             End Select
-            Me.PopulateControlFromBOProperty(Me.moInvoiceAmount, .InvoiceAmount)
-            Me.PopulateControlFromBOProperty(Me.moDifferenceAmount, .DifferenceAmount)
-            Me.PopulateControlFromBOProperty(Me.moSource, .Source)
-            Me.PopulateControlFromBOProperty(Me.moIsComplete, LookupListNew.GetDescriptionFromId(LookupListNew.LK_YESNO, .IsCompleteId))
-            Me.PopulateControlFromBOProperty(Me.moBatchNumber, .BatchNumber)
-            Me.PopulateControlFromBOProperty(Me.moPerceptionIva, .PerceptionIVA)
-            Me.PopulateControlFromBOProperty(Me.moPerceptionIibb, .PerceptionIIBB)
+            PopulateControlFromBOProperty(moInvoiceAmount, .InvoiceAmount)
+            PopulateControlFromBOProperty(moDifferenceAmount, .DifferenceAmount)
+            PopulateControlFromBOProperty(moSource, .Source)
+            PopulateControlFromBOProperty(moIsComplete, LookupListNew.GetDescriptionFromId(LookupListNew.LK_YESNO, .IsCompleteId))
+            PopulateControlFromBOProperty(moBatchNumber, .BatchNumber)
+            PopulateControlFromBOProperty(moPerceptionIva, .PerceptionIVA)
+            PopulateControlFromBOProperty(moPerceptionIibb, .PerceptionIIBB)
             PopulateRegionDropDown()
-            Me.PopulateControlFromBOProperty(Me.moPerceptionIibbProvince, .PerceptionIIBBRegion)
+            PopulateControlFromBOProperty(moPerceptionIibbProvince, .PerceptionIIBBRegion)
         End With
     End Sub
 
     Private Sub PopulateBOsFormFrom()
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "InvoiceNumber", Me.moInvoiceNumber)
-            Me.PopulateBOProperty(Me.State.MyBO, "InvoiceDate", Me.moInvoiceDate)
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "InvoiceNumber", moInvoiceNumber)
+            PopulateBOProperty(State.MyBO, "InvoiceDate", moInvoiceDate)
             UpdateServiceCenter()
-            Me.PopulateBOProperty(Me.State.MyBO, "DueDate", Me.moDueDate)
-            Me.PopulateBOProperty(Me.State.MyBO, "InvoiceAmount", Me.moInvoiceAmount)
-            Me.PopulateBOProperty(Me.State.MyBO, "PerceptionIIBB", Me.moPerceptionIibb)
-            Me.PopulateBOProperty(Me.State.MyBO, "PerceptionIVA", Me.moPerceptionIva)
-            Me.PopulateBOProperty(Me.State.MyBO, "PerceptionIIBBRegion", Me.moPerceptionIibbProvince)
-            Me.PopulateBOProperty(Me.State.MyBO, "BatchNumber", Me.moBatchNumber)
+            PopulateBOProperty(State.MyBO, "DueDate", moDueDate)
+            PopulateBOProperty(State.MyBO, "InvoiceAmount", moInvoiceAmount)
+            PopulateBOProperty(State.MyBO, "PerceptionIIBB", moPerceptionIibb)
+            PopulateBOProperty(State.MyBO, "PerceptionIVA", moPerceptionIva)
+            PopulateBOProperty(State.MyBO, "PerceptionIIBBRegion", moPerceptionIibbProvince)
+            PopulateBOProperty(State.MyBO, "BatchNumber", moBatchNumber)
         End With
     End Sub
 
     Private Sub UpdateServiceCenter()
         Dim serviceCenterId As Guid
-        If (Me.inputServiceCenterId.Value.Trim() = String.Empty) Then
+        If (inputServiceCenterId.Value.Trim() = String.Empty) Then
             serviceCenterId = Guid.Empty
         Else
-            serviceCenterId = New Guid(Me.inputServiceCenterId.Value)
+            serviceCenterId = New Guid(inputServiceCenterId.Value)
         End If
-        If (Not serviceCenterId.Equals(Me.State.MyBO.ServiceCenterId)) Then
-            Me.PopulateBOProperty(Me.State.MyBO, "ServiceCenterId", serviceCenterId)
+        If (Not serviceCenterId.Equals(State.MyBO.ServiceCenterId)) Then
+            PopulateBOProperty(State.MyBO, "ServiceCenterId", serviceCenterId)
             ' Re-Populate Region Drop Down
             PopulateRegionDropDown()
             EnableDisableFields()
@@ -291,51 +291,51 @@ Public Class InvoiceDetailForm
 
     Private Sub PopulateRegionDropDown()
         Dim oRegionList As DataView
-        If (Me.State.MyBO.ServiceCenter Is Nothing) Then
+        If (State.MyBO.ServiceCenter Is Nothing) Then
             oRegionList = LookupListNew.GetRegionLookupList(Guid.Empty)
         Else
-            oRegionList = LookupListNew.GetRegionLookupList(Me.State.MyBO.ServiceCenter.CountryId)
+            oRegionList = LookupListNew.GetRegionLookupList(State.MyBO.ServiceCenter.CountryId)
         End If
         ElitaPlusPage.BindListControlToDataView(moPerceptionIibbProvince, oRegionList, , , True)
         moPerceptionIibbProvince.ClearSelection()
     End Sub
 
     Sub PopulateInvoiceItemGrid()
-        Dim dv As Invoice.InvoiceAuthorizationSelectionView = Me.State.MyBO.GetInvoiceAuthorizationSelectionView()
-        Me.State.AvailableAuthorizationsCount = dv.Count
-        If (dv.Count = 0 AndAlso Me.State.MyBO.ServiceCenterId <> Guid.Empty) Then
+        Dim dv As Invoice.InvoiceAuthorizationSelectionView = State.MyBO.GetInvoiceAuthorizationSelectionView()
+        State.AvailableAuthorizationsCount = dv.Count
+        If (dv.Count = 0 AndAlso State.MyBO.ServiceCenterId <> Guid.Empty) Then
             moInfoMessageController.AddInformation(SELECTED_SERVICE_CENTER_DO_NOT_HAVE_ANY_AUTHORIZATIONS)
         End If
-        dv.Sort = Me.State.SortExpressionItem
-        Me.moInvoiceRepeater.DataSource = dv
-        Me.moInvoiceRepeater.DataBind()
+        dv.Sort = State.SortExpressionItem
+        moInvoiceRepeater.DataSource = dv
+        moInvoiceRepeater.DataBind()
     End Sub
 
     Private Sub EnableDisableFields()
-        If Me.State.IsItemEditing OrElse Me.State.IsAttributeEditing Then
+        If State.IsItemEditing OrElse State.IsAttributeEditing Then
             EnableDisableParentControls(False)
         Else
             EnableDisableParentControls(True)
         End If
     End Sub
 
-    Private Sub EnableDisableParentControls(ByVal enableToggle As Boolean)
+    Private Sub EnableDisableParentControls(enableToggle As Boolean)
         ControlMgr.SetEnableControl(Me, btnBack, enableToggle)
-        ControlMgr.SetEnableControl(Me, btnUndoBalance_WRITE, Me.State.MyBO.UndoBalance.CanExecute)
-        ControlMgr.SetEnableControl(Me, btnBalance_WRITE, Me.State.MyBO.Balance.CanExecute)
-        ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Me.State.MyBO.Delete.CanExecute)
+        ControlMgr.SetEnableControl(Me, btnUndoBalance_WRITE, State.MyBO.UndoBalance.CanExecute)
+        ControlMgr.SetEnableControl(Me, btnBalance_WRITE, State.MyBO.Balance.CanExecute)
+        ControlMgr.SetEnableControl(Me, btnDelete_WRITE, State.MyBO.Delete.CanExecute)
         ControlMgr.SetEnableControl(Me, btnSave_WRITE, enableToggle)
         ControlMgr.SetEnableControl(Me, btnUndo_Write, enableToggle)
 
-        Me.moInvoiceNumber.ReadOnly = Not (Me.State.MyBO.IsNew)
-        Me.moInvoiceDate.ReadOnly = Not (Me.State.MyBO.IsNew)
-        ControlMgr.SetVisibleControl(Me, btnInvoiceDate, Me.State.MyBO.IsNew)
-        Me.moServiceCenter.ReadOnly = Not (Me.State.MyBO.IsNew)
-        Me.moDueDate.ReadOnly = Not (Me.State.MyBO.IsNew)
-        ControlMgr.SetVisibleControl(Me, btnDueDate, Me.State.MyBO.IsNew)
-        Me.moInvoiceAmount.ReadOnly = Not (Me.State.MyBO.IsNew)
+        moInvoiceNumber.ReadOnly = Not (State.MyBO.IsNew)
+        moInvoiceDate.ReadOnly = Not (State.MyBO.IsNew)
+        ControlMgr.SetVisibleControl(Me, btnInvoiceDate, State.MyBO.IsNew)
+        moServiceCenter.ReadOnly = Not (State.MyBO.IsNew)
+        moDueDate.ReadOnly = Not (State.MyBO.IsNew)
+        ControlMgr.SetVisibleControl(Me, btnDueDate, State.MyBO.IsNew)
+        moInvoiceAmount.ReadOnly = Not (State.MyBO.IsNew)
 
-        If (Me.State.MyBO.IsPerceptionTaxDefined) Then
+        If (State.MyBO.IsPerceptionTaxDefined) Then
             trInvoiceTaxes1.Visible = True
             trInvoiceTaxes2.Visible = True
             ControlMgr.SetVisibleControl(Me, moPerceptionIvaLabel, True)
@@ -347,7 +347,7 @@ Public Class InvoiceDetailForm
             ControlMgr.SetVisibleControl(Me, moBatchNumber, True)
             ControlMgr.SetVisibleControl(Me, moBatchNumberLabel, True)
 
-            If (Me.State.MyBO.IsAnyClaimAuthorizationPaid) Then
+            If (State.MyBO.IsAnyClaimAuthorizationPaid) Then
                 moPerceptionIva.ReadOnly = True
                 moPerceptionIibb.ReadOnly = True
                 moBatchNumber.ReadOnly = True
@@ -356,7 +356,7 @@ Public Class InvoiceDetailForm
                 moPerceptionIva.ReadOnly = False
                 moPerceptionIibb.ReadOnly = False
                 moBatchNumber.ReadOnly = False
-                If (Me.State.MyBO.InvoiceItemChildren.Count > 0) Then
+                If (State.MyBO.InvoiceItemChildren.Count > 0) Then
                     moBatchNumber.Attributes.Add("readOnly", "readOnly")
                 End If
                 ControlMgr.SetEnableControl(Me, moPerceptionIibbProvince, True)
@@ -379,13 +379,13 @@ Public Class InvoiceDetailForm
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
 
             'Now disable depebding on the object state
-            If Me.State.MyBO.IsNew Then
+            If State.MyBO.IsNew Then
                 ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnBalance_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnUndoBalance_WRITE, False)
             End If
-            If (Me.State.MyBO.ReadOnly) Then
+            If (State.MyBO.ReadOnly) Then
                 ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnSave_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnUndo_Write, False)
@@ -394,79 +394,79 @@ Public Class InvoiceDetailForm
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Delete _
-                AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Expire Then
-                Me.State.MyBO.Save()
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Delete _
+                AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Expire Then
+                State.MyBO.Save()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, Me.State.InvoiceReturnObject, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.State.MyBO = New Invoice()
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    State.MyBO = New Invoice()
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, Me.State.InvoiceReturnObject, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.State.MyBO.Delete.Execute()
-                    Me.ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, Me.State.InvoiceReturnObject, Me.State.HasDataChanged))
+                    State.MyBO.Delete.Execute()
+                    ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, Me.State.InvoiceReturnObject, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.State.MyBO = New Invoice()
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
+                    State.MyBO = New Invoice()
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                    MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
             End Select
         End If
 
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 #End Region
 
 #Region "Events"
-    Private Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+            DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnAddRepairDate_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAddRepairDate.Click
+    Private Sub btnAddRepairDate_Click(sender As Object, e As System.EventArgs) Handles btnAddRepairDate.Click
         Dim strRepairDt As String = moRepairDate.Text.Trim()
         Dim dtRepair As Date
         Dim blnValid As Boolean = True
         Try
             If (strRepairDt = String.Empty) Then
-                Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_MISSING, True)
+                MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_MISSING, True)
             End If
             If DateHelper.IsDate(strRepairDt) Then
                 dtRepair = DateHelper.GetDateValue(strRepairDt)
                 If dtRepair > Today Then
-                    Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_ERR2, True)
+                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_ERR2, True)
                 Else
-                    For Each oClaimAuthorization As ClaimAuthorization In Me.State.MyBO.ClaimAuthorizations
+                    For Each oClaimAuthorization As ClaimAuthorization In State.MyBO.ClaimAuthorizations
                         If (oClaimAuthorization.RepairDate Is Nothing) Then
                             If (dtRepair < oClaimAuthorization.Claim.LossDate.Value) Then
-                                Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_ERR2, True)
+                                MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_ERR2, True)
                                 blnValid = False
                                 Exit For
                             End If
-                            If (Not oClaimAuthorization.PickUpDate Is Nothing) Then
+                            If (oClaimAuthorization.PickUpDate IsNot Nothing) Then
                                 If (dtRepair > oClaimAuthorization.PickUpDate.Value) Then
-                                    Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR2, True)
+                                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR2, True)
                                     blnValid = False
                                     Exit For
                                 End If
@@ -474,7 +474,7 @@ Public Class InvoiceDetailForm
                         End If
                     Next
                     If (blnValid) Then
-                        For Each oClaimAuthorization As ClaimAuthorization In Me.State.MyBO.ClaimAuthorizations
+                        For Each oClaimAuthorization As ClaimAuthorization In State.MyBO.ClaimAuthorizations
                             If (oClaimAuthorization.RepairDate Is Nothing) Then
                                 oClaimAuthorization.RepairDate = dtRepair
                             End If
@@ -484,27 +484,27 @@ Public Class InvoiceDetailForm
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub moInvoiceRepeater_ItemCommand(ByVal sender As Object, ByVal e As RepeaterCommandEventArgs) Handles moInvoiceRepeater.ItemCommand
+    Protected Sub moInvoiceRepeater_ItemCommand(sender As Object, e As RepeaterCommandEventArgs) Handles moInvoiceRepeater.ItemCommand
         Select Case e.CommandName
             Case SORT_COMMAND_NAME
-                If Me.State.SortExpressionItem.StartsWith(e.CommandArgument.ToString()) Then
-                    If Me.State.SortExpressionItem.StartsWith(e.CommandArgument.ToString() & " DESC") Then
-                        Me.State.SortExpressionItem = e.CommandArgument.ToString()
+                If State.SortExpressionItem.StartsWith(e.CommandArgument.ToString()) Then
+                    If State.SortExpressionItem.StartsWith(e.CommandArgument.ToString() & " DESC") Then
+                        State.SortExpressionItem = e.CommandArgument.ToString()
                     Else
-                        Me.State.SortExpressionItem = e.CommandArgument.ToString() & " DESC"
+                        State.SortExpressionItem = e.CommandArgument.ToString() & " DESC"
                     End If
                 Else
-                    Me.State.SortExpressionItem = e.CommandArgument.ToString()
+                    State.SortExpressionItem = e.CommandArgument.ToString()
                 End If
                 PopulateInvoiceItemGrid()
         End Select
     End Sub
 
-    Protected Sub moInvoiceRepeater_ItemDataBound(ByVal sender As Object, ByVal e As RepeaterItemEventArgs) Handles moInvoiceRepeater.ItemDataBound
+    Protected Sub moInvoiceRepeater_ItemDataBound(sender As Object, e As RepeaterItemEventArgs) Handles moInvoiceRepeater.ItemDataBound
         Select Case e.Item.ItemType
             Case ListItemType.Item, ListItemType.AlternatingItem
                 Dim authorizationDr As DataRow = DirectCast(e.Item.DataItem, System.Data.DataRowView).Row
@@ -540,7 +540,7 @@ Public Class InvoiceDetailForm
                         btnPickupDate.ClientID, moAddInvoiceLineItems.ClientID))
                     .Checked = DirectCast(authorizationDr(Invoice.InvoiceAuthorizationSelectionView.COL_NAME_IS_SELECTED), Boolean)
                     If (.Checked) Then
-                        oClaimAuthorization = Me.State.MyBO.ClaimAuthorizations.Where(Function(item) item.Id = authorizationId).FirstOrDefault()
+                        oClaimAuthorization = State.MyBO.ClaimAuthorizations.Where(Function(item) item.Id = authorizationId).FirstOrDefault()
                         If (oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled OrElse oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Paid OrElse
                             oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid) Then
                             .Enabled = False
@@ -570,139 +570,139 @@ Public Class InvoiceDetailForm
                 DirectCast(e.Item.FindControl("moReserveAmount"), Label).Text = GetAmountFormattedString(CType(authorizationDr(Invoice.InvoiceAuthorizationSelectionView.COL_NAME_RESERVE_AMOUNT), Decimal), Nothing)
                 DirectCast(e.Item.FindControl("moDeductible"), Label).Text = GetAmountFormattedString(CType(authorizationDr(Invoice.InvoiceAuthorizationSelectionView.COL_NAME_DEDUCTIBLE), Decimal), Nothing)
                 oInvoiceAuthorizationAmount.Text = GetAmountFormattedString(CType(authorizationDr(Invoice.InvoiceAuthorizationSelectionView.COL_NAME_INVOICE_AUTH_AMOUNT), Decimal), Nothing)
-                If (Not authorizationDr(Invoice.InvoiceAuthorizationSelectionView.COL_NAME_REPAIR_DATE) Is DBNull.Value) Then
+                If (authorizationDr(Invoice.InvoiceAuthorizationSelectionView.COL_NAME_REPAIR_DATE) IsNot DBNull.Value) Then
                     moRepairDate.Text = GetDateFormattedString(CType(authorizationDr(Invoice.InvoiceAuthorizationSelectionView.COL_NAME_REPAIR_DATE), Date))
                 End If
-                If (Not authorizationDr(Invoice.InvoiceAuthorizationSelectionView.COL_NAME_PICK_UP_DATE) Is DBNull.Value) Then
+                If (authorizationDr(Invoice.InvoiceAuthorizationSelectionView.COL_NAME_PICK_UP_DATE) IsNot DBNull.Value) Then
                     moPickupDate.Text = GetDateFormattedString(CType(authorizationDr(Invoice.InvoiceAuthorizationSelectionView.COL_NAME_PICK_UP_DATE), Date))
                 End If
-                Me.AddCalendar_New(btnRepairDate, moRepairDate)
-                Me.AddCalendar_New(btnPickupDate, moPickupDate)
+                AddCalendar_New(btnRepairDate, moRepairDate)
+                AddCalendar_New(btnPickupDate, moPickupDate)
                 Dim authOnChange As String = String.Format("UpdateAuthorization('{0}', '{1}', '{2}')", authorizationId.ToString(), moRepairDate.ClientID, moPickupDate.ClientID)
                 moRepairDate.Attributes.Add("onchange", authOnChange)
                 moPickupDate.Attributes.Add("onchange", authOnChange)
             Case ListItemType.Header
                 Dim chkSelectAll As CheckBox
                 chkSelectAll = DirectCast(e.Item.FindControl("moSelectAll"), CheckBox)
-                If (Not chkSelectAll Is Nothing) Then
+                If (chkSelectAll IsNot Nothing) Then
                     SelectAllCheckBoxId = chkSelectAll.ClientID
-                    chkSelectAll.Checked = (Me.State.MyBO.ClaimAuthorizations.Count >= Me.State.AvailableAuthorizationsCount)
+                    chkSelectAll.Checked = (State.MyBO.ClaimAuthorizations.Count >= State.AvailableAuthorizationsCount)
                 End If
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moClaimNumberSort"), LinkButton), Me.State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_CLAIM_NUMBER)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moAuthorizationNumberSort"), LinkButton), Me.State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_AUTHORIZATION_NUMBER)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moBatchNumberSort"), LinkButton), Me.State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_BATCH_NUMBER)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moVerificationNumberSort"), LinkButton), Me.State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_SVC_REFERENCE_NUMBER)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moCustomerNameSort"), LinkButton), Me.State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_CUSTOMER_NAME)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moReserveAmountSort"), LinkButton), Me.State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_RESERVE_AMOUNT)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moDeductibleSort"), LinkButton), Me.State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_DEDUCTIBLE)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moInvoiceAuthorizationAmountSort"), LinkButton), Me.State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_INVOICE_AUTH_AMOUNT)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moRepairDateSort"), LinkButton), Me.State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_REPAIR_DATE)
-                HighLightSortColumn(DirectCast(e.Item.FindControl("moPickupDateSort"), LinkButton), Me.State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_PICK_UP_DATE)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moClaimNumberSort"), LinkButton), State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_CLAIM_NUMBER)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moAuthorizationNumberSort"), LinkButton), State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_AUTHORIZATION_NUMBER)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moBatchNumberSort"), LinkButton), State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_BATCH_NUMBER)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moVerificationNumberSort"), LinkButton), State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_SVC_REFERENCE_NUMBER)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moCustomerNameSort"), LinkButton), State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_CUSTOMER_NAME)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moReserveAmountSort"), LinkButton), State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_RESERVE_AMOUNT)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moDeductibleSort"), LinkButton), State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_DEDUCTIBLE)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moInvoiceAuthorizationAmountSort"), LinkButton), State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_INVOICE_AUTH_AMOUNT)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moRepairDateSort"), LinkButton), State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_REPAIR_DATE)
+                HighLightSortColumn(DirectCast(e.Item.FindControl("moPickupDateSort"), LinkButton), State.SortExpressionItem, Invoice.InvoiceAuthorizationSelectionView.COL_NAME_PICK_UP_DATE)
         End Select
     End Sub
 
-    Protected Sub btnSave_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave_WRITE.Click
+    Protected Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsFamilyDirty Then
-                Me.State.MyBO.Save()
-                Me.State.HasDataChanged = True
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+            PopulateBOsFormFrom()
+            If State.MyBO.IsFamilyDirty Then
+                State.MyBO.Save()
+                State.HasDataChanged = True
+                PopulateFormFromBOs()
+                EnableDisableFields()
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
             Else
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnBalance_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBalance_WRITE.Click
+    Private Sub btnBalance_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnBalance_WRITE.Click
         Try
-            If (Me.State.MyBO.Balance.CanExecute) Then
-                Me.State.MyBO.Balance.Execute()
+            If (State.MyBO.Balance.CanExecute) Then
+                State.MyBO.Balance.Execute()
                 EnableDisableFields()
                 PopulateFormFromBOs()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnUndoBalance_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndoBalance_WRITE.Click
+    Private Sub btnUndoBalance_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndoBalance_WRITE.Click
         Try
-            If (Me.State.MyBO.UndoBalance.CanExecute) Then
-                Me.State.MyBO.UndoBalance.Execute()
+            If (State.MyBO.UndoBalance.CanExecute) Then
+                State.MyBO.UndoBalance.Execute()
                 EnableDisableFields()
                 PopulateFormFromBOs()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Public Sub moSelectAllChecked(ByVal sender As Object, ByVal e As System.EventArgs)
+    Public Sub moSelectAllChecked(sender As Object, e As System.EventArgs)
         Try
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnUndo_Write_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As Object, e As System.EventArgs) Handles btnUndo_Write.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New Invoice(Me.State.MyBO.Id)
+                State.MyBO = New Invoice(State.MyBO.Id)
             Else
-                Me.State.MyBO = New Invoice()
+                State.MyBO = New Invoice()
             End If
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+    Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFormFrom()
-            Me.State.InvoiceReturnObject.InvoiceId = Me.State.MyBO.Id
-            If Me.State.MyBO.IsFamilyDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            PopulateBOsFormFrom()
+            State.InvoiceReturnObject.InvoiceId = State.MyBO.Id
+            If State.MyBO.IsFamilyDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, Me.State.InvoiceReturnObject, Me.State.HasDataChanged))
+                ReturnToCallingPage(New PageReturnType(Of InvoiceSearchForm.InvoiceReturnType)(ElitaPlusPage.DetailPageCommand.Back, State.InvoiceReturnObject, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+            HandleErrors(ex, MasterPage.MessageController)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = MasterPage.MessageController.Text
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.State.MyBO = New Invoice()
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                State.MyBO = New Invoice()
+                PopulateFormFromBOs()
+                EnableDisableFields()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub moBatchNumber_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBatchNumber.TextChanged
-        If (Me.State.MyBO.InvoiceItemChildren.Count = 0) Then
-            PopulateBOProperty(Me.State.MyBO, "BatchNumber", moBatchNumber)
+    Private Sub moBatchNumber_TextChanged(sender As Object, e As System.EventArgs) Handles moBatchNumber.TextChanged
+        If (State.MyBO.InvoiceItemChildren.Count = 0) Then
+            PopulateBOProperty(State.MyBO, "BatchNumber", moBatchNumber)
         End If
         PopulateInvoiceItemGrid()
     End Sub
@@ -711,13 +711,13 @@ Public Class InvoiceDetailForm
 
 #Region "Web Service Methods"
     <WebMethod(), ScriptMethod()>
-    Public Shared Function PopulateServiceCenterDrop(ByVal prefixText As String, ByVal count As Integer) As String()
+    Public Shared Function PopulateServiceCenterDrop(prefixText As String, count As Integer) As String()
         Dim dv As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries())
         Return AjaxController.BindAutoComplete(prefixText, dv)
     End Function
 
     <WebMethod(), ScriptMethod()>
-    Public Shared Function GetInvoiceAuthorizationDetails(ByVal claimAuthorizationId As String, ByVal senderId As String, ByVal index As String, ByVal invoiceAuthorizationAmountId As String) As String
+    Public Shared Function GetInvoiceAuthorizationDetails(claimAuthorizationId As String, senderId As String, index As String, invoiceAuthorizationAmountId As String) As String
         Try
             Dim invoiceAuthorizationItems As Invoice.InvoiceAuthorizationItemSelectionView
             Dim ds As New DataSet
@@ -755,7 +755,7 @@ Public Class InvoiceDetailForm
     End Function
 
     <WebMethod(), ScriptMethod()>
-    Public Shared Function IncludeAuthorization(ByVal claimAuthorizationId As String) As InvoiceAjaxResponse
+    Public Shared Function IncludeAuthorization(claimAuthorizationId As String) As InvoiceAjaxResponse
         Dim returnValue As InvoiceAjaxResponse
         With AjaxState.MyBO
             .AddAuthorization(New Guid(claimAuthorizationId))
@@ -767,7 +767,7 @@ Public Class InvoiceDetailForm
     End Function
 
     <WebMethod(), ScriptMethod()>
-    Public Shared Function ExcludeAuthorization(ByVal claimAuthorizationId As String) As InvoiceAjaxResponse
+    Public Shared Function ExcludeAuthorization(claimAuthorizationId As String) As InvoiceAjaxResponse
         Dim returnValue As InvoiceAjaxResponse
         With AjaxState.MyBO.ClaimAuthorizations.Where(Function(item) item.Id = New Guid(claimAuthorizationId)).First()
             AjaxState.MyBO.RemoveAuthorization(New Guid(claimAuthorizationId))
@@ -793,8 +793,8 @@ Public Class InvoiceDetailForm
     End Function
 
     <WebMethod(), ScriptMethod()>
-    Public Shared Function GetAddInvoiceItemSearchResults(ByVal claimAuthorizationId As String, ByVal serviceClassId As String, ByVal serviceTypeId As String, ByVal riskTypeId As String,
-        ByVal equipmentClassId As String, ByVal equipmentId As String, ByVal conditionId As String, ByVal sku As String, ByVal skuDescription As String) As PriceListSearchResponse
+    Public Shared Function GetAddInvoiceItemSearchResults(claimAuthorizationId As String, serviceClassId As String, serviceTypeId As String, riskTypeId As String,
+        equipmentClassId As String, equipmentId As String, conditionId As String, sku As String, skuDescription As String) As PriceListSearchResponse
         Dim claimAuthorization As ClaimAuthorization
         Dim oPriceListSearchResponse As PriceListSearchResponse
         Dim ds As DataSet
@@ -832,7 +832,7 @@ Public Class InvoiceDetailForm
     End Function
 
     <WebMethod(), ScriptMethod()>
-    Public Shared Function AddInvoiceLineItem(ByVal claimAuthorizationId As String, ByVal serviceClassId As String, ByVal serviceTypeId As String, ByVal sku As String, ByVal skuDescription As String, ByVal price As String) As InvoiceAjaxResponse
+    Public Shared Function AddInvoiceLineItem(claimAuthorizationId As String, serviceClassId As String, serviceTypeId As String, sku As String, skuDescription As String, price As String) As InvoiceAjaxResponse
         Dim returnValue As InvoiceAjaxResponse
         With AjaxState.MyBO.GetNewInvoiceItemChild()
             .ClaimAuthorizationId = New Guid(claimAuthorizationId)
@@ -851,7 +851,7 @@ Public Class InvoiceDetailForm
     End Function
 
     <WebMethod(), ScriptMethod()>
-    Public Shared Function RemoveInvoiceLineItem(ByVal invoiceItemId As String) As InvoiceAjaxResponse
+    Public Shared Function RemoveInvoiceLineItem(invoiceItemId As String) As InvoiceAjaxResponse
         Dim returnValue As InvoiceAjaxResponse
         Dim oInvoiceItem As InvoiceItem
         Dim oClaimAuthorizationId As Guid
@@ -865,7 +865,7 @@ Public Class InvoiceDetailForm
     End Function
 
     <WebMethod(), ScriptMethod()>
-    Public Shared Function UpdateInvoice(ByVal invoiceAmount As String, ByVal perceptionIvaAmount As String, ByVal perceptionIibbAmount As String) As InvoiceAjaxResponse
+    Public Shared Function UpdateInvoice(invoiceAmount As String, perceptionIvaAmount As String, perceptionIibbAmount As String) As InvoiceAjaxResponse
         Dim returnValue As InvoiceAjaxResponse
         With AjaxState.MyBO
             .InvoiceAmount = Decimal.Parse(invoiceAmount)
@@ -880,7 +880,7 @@ Public Class InvoiceDetailForm
     End Function
 
     <WebMethod(), ScriptMethod()>
-    Public Shared Sub UpdateAuthorization(ByVal claimAuthorizationId As String, ByVal repairDate As String, ByVal pickupDate As String)
+    Public Shared Sub UpdateAuthorization(claimAuthorizationId As String, repairDate As String, pickupDate As String)
         With AjaxState.MyBO.ClaimAuthorizations.Where(Function(item) item.Id = New Guid(claimAuthorizationId)).First()
             If (repairDate <> String.Empty) Then .RepairDate = DateTime.Parse(repairDate) Else .RepairDate = Nothing
             If (pickupDate <> String.Empty) Then .PickUpDate = DateTime.Parse(pickupDate) Else .PickUpDate = Nothing
@@ -889,7 +889,7 @@ Public Class InvoiceDetailForm
     End Sub
 
     <WebMethod(), ScriptMethod()>
-    Public Shared Function UpdateInvoiceItem(ByVal invoiceItemId As String, ByVal lineItemAmount As String) As InvoiceAjaxResponse
+    Public Shared Function UpdateInvoiceItem(invoiceItemId As String, lineItemAmount As String) As InvoiceAjaxResponse
         Dim returnValue As InvoiceAjaxResponse
         With AjaxState.MyBO.InvoiceItemChildren.Where(Function(item) item.Id = New Guid(GuidControl.HexToByteArray(invoiceItemId))).First()
             .Amount = Decimal.Parse(lineItemAmount)
@@ -917,13 +917,13 @@ Public Class InvoiceDetailForm
 
     Private Sub mosearch_Click(sender As Object, e As EventArgs) Handles mosearch.Click
         Dim serviceCenterId As Guid
-        If (Me.inputServiceCenterId.Value.Trim() = String.Empty) Then
+        If (inputServiceCenterId.Value.Trim() = String.Empty) Then
             serviceCenterId = Guid.Empty
         Else
-            serviceCenterId = New Guid(Me.inputServiceCenterId.Value)
+            serviceCenterId = New Guid(inputServiceCenterId.Value)
         End If
-        If (Not serviceCenterId.Equals(Me.State.MyBO.ServiceCenterId)) Then
-            Me.PopulateBOProperty(Me.State.MyBO, "ServiceCenterId", serviceCenterId)
+        If (Not serviceCenterId.Equals(State.MyBO.ServiceCenterId)) Then
+            PopulateBOProperty(State.MyBO, "ServiceCenterId", serviceCenterId)
         End If
 
         PopulateInvoiceItemGrid()

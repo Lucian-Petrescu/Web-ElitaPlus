@@ -13,24 +13,24 @@ Public Class ConfigureWorkQueueWebService
     Private Shared outputStringBuilder As StringBuilder = New StringBuilder()
 
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-        Me.MasterPage.UsePageTabTitleInBreadCrum = True
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+        MasterPage.UsePageTabTitleInBreadCrum = True
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         Try
-            Me.MasterPage.MessageController.Clear()
+            MasterPage.MessageController.Clear()
             UpdateBreadCrum()
-            If (Not Me.IsPostBack) Then
+            If (Not IsPostBack) Then
                 RunDiagnosticAsync(False)
             End If
 
             UpdateUI()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
     Private Sub UpdateUI()
@@ -43,11 +43,11 @@ Public Class ConfigureWorkQueueWebService
         btnRefresh.Enabled = IsRunning
 
         If IsRunning Then
-            Me.RegisterStartupScript("autoPostBack", "<script type=text/javascript>setInterval(function(){" + Page.GetPostBackEventReference(btnRefresh) + "},10000);</script>")
+            RegisterStartupScript("autoPostBack", "<script type=text/javascript>setInterval(function(){" + Page.GetPostBackEventReference(btnRefresh) + "},10000);</script>")
         End If
     End Sub
 
-    Private Sub RunDiagnosticAsync(ByVal fix As Boolean)
+    Private Sub RunDiagnosticAsync(fix As Boolean)
         Dim createUsersThread As Thread
         createUsersThread = New Thread(New ParameterizedThreadStart(AddressOf RunDiagnostic))
         createUsersThread.Start(fix)
@@ -57,11 +57,11 @@ Public Class ConfigureWorkQueueWebService
         UpdateUI()
     End Sub
 
-    Protected Sub btnRefresh_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnRefresh_Click(sender As Object, e As EventArgs)
         ' Do nothing
     End Sub
 
-    Protected Sub btnCreateUsers_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnCreateUsers_Click(sender As Object, e As EventArgs)
         Dim createUsersThread As Thread
         createUsersThread = New Thread(New ThreadStart(AddressOf CreateUsers))
         createUsersThread.Start()
@@ -71,7 +71,7 @@ Public Class ConfigureWorkQueueWebService
         UpdateUI()
     End Sub
 
-    Protected Sub btnGrantCWQI_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnGrantCWQI_Click(sender As Object, e As EventArgs)
         Dim createUsersThread As Thread
         createUsersThread = New Thread(New ThreadStart(AddressOf GrantCWQI))
         createUsersThread.Start()
@@ -81,11 +81,11 @@ Public Class ConfigureWorkQueueWebService
         UpdateUI()
     End Sub
 
-    Protected Sub btnFix_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnFix_Click(sender As Object, e As EventArgs)
         RunDiagnosticAsync(True)
     End Sub
 
-    Protected Sub btnDiagnostic_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnDiagnostic_Click(sender As Object, e As EventArgs)
         ShowAssemblyInformation()
     End Sub
 
@@ -116,7 +116,7 @@ Public Class ConfigureWorkQueueWebService
         End Try
     End Sub
 
-    Private Sub RunDiagnostic(ByVal objfix As Object)
+    Private Sub RunDiagnostic(objfix As Object)
         Try
             Dim fix As Boolean = DirectCast(objfix, Boolean)
             Dim sw As New System.Diagnostics.Stopwatch
@@ -363,7 +363,7 @@ Public Class ConfigureWorkQueueWebService
         End Try
     End Sub
 
-    Private Function CreateRole(ByVal roleName As String, ByVal roleDescription As String, ByVal fix As Boolean, ByVal sb As StringBuilder) As Auth.Group
+    Private Function CreateRole(roleName As String, roleDescription As String, fix As Boolean, sb As StringBuilder) As Auth.Group
         Dim returnVal As Auth.Group
         returnVal = (From grp As Auth.Group In ServiceHelper.CreateAuthorizationClient().GetGroups(ServiceHelper.WORKQUEUE_SERVICE_NAME) Where grp.Name = roleName Select grp).FirstOrDefault()
         If (returnVal Is Nothing) Then
@@ -385,7 +385,7 @@ Public Class ConfigureWorkQueueWebService
         Return returnVal
     End Function
 
-    Private Sub CreateWorkQueueDataTypes(ByVal dataTypeName As String, ByVal fix As Boolean, ByVal sb As StringBuilder)
+    Private Sub CreateWorkQueueDataTypes(dataTypeName As String, fix As Boolean, sb As StringBuilder)
         ' Create Work Queue Data Types
         Dim wqidt As WrkQueue.WorkQueueItemDataType
         wqidt = (From dt As WrkQueue.WorkQueueItemDataType In ServiceHelper.CreateWorkQueueServiceClient().GetWorkQueueItemDataTypes(ElitaPlusIdentity.Current.ActiveUser.NetworkId) Where dt.Name = dataTypeName Select dt).FirstOrDefault()
@@ -410,7 +410,7 @@ End Class
 
 Public Module BOValidationExceptionExtention
     <Extension()> _
-    Public Function GetMessage(ByVal ex As BOValidationException) As String
+    Public Function GetMessage(ex As BOValidationException) As String
         Dim sb As StringBuilder = New StringBuilder()
         For Each valErr As ValidationError In ex.ValidationErrorList()
             sb.Append(valErr.Message).Append("<br />")
@@ -421,27 +421,27 @@ End Module
 
 Public Module StringBuilderExtention
     <Extension()> _
-    Public Sub AddSuccess(ByVal sb As StringBuilder, ByVal message As String)
+    Public Sub AddSuccess(sb As StringBuilder, message As String)
         sb.Append(String.Format("<li class=""success"">{0}</li>", message))
     End Sub
 
     <Extension()> _
-    Public Sub AddError(ByVal sb As StringBuilder, ByVal message As String)
+    Public Sub AddError(sb As StringBuilder, message As String)
         sb.Append(String.Format("<li class=""error"">{0}</li>", message))
     End Sub
 
     <Extension()> _
-    Public Sub AddError(ByVal sb As StringBuilder, ByVal message As String, ByVal ex As Exception)
+    Public Sub AddError(sb As StringBuilder, message As String, ex As Exception)
         sb.Append(String.Format("<li class=""error"">{0}<br><p class=""exception"">{1}</p></li>", message, ex.FormattedString()))
     End Sub
 
     <Extension()> _
-    Public Sub AddInformation(ByVal sb As StringBuilder, ByVal message As String)
+    Public Sub AddInformation(sb As StringBuilder, message As String)
         sb.Append(String.Format("<li class=""info"">{0}</li>", message))
     End Sub
 
     <Extension()> _
-    Public Function FormattedString(ByVal ex As Exception) As String
+    Public Function FormattedString(ex As Exception) As String
         Return String.Format("{0}<br />{1}<br />{2}", ex.Message, ex.Source, ex.StackTrace)
     End Function
 End Module

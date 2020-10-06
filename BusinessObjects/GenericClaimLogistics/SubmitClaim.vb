@@ -108,30 +108,30 @@ Public Class SubmitClaim
     <ValueMandatory("")> _
     Public Property CustomerIdentifier() As String
         Get
-            If Row(Me.DATA_COL_NAME_CUSTOMER_IDENTIFIER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CUSTOMER_IDENTIFIER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CUSTOMER_IDENTIFIER), String)
+                Return CType(Row(DATA_COL_NAME_CUSTOMER_IDENTIFIER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CUSTOMER_IDENTIFIER, Value)
+            SetValue(DATA_COL_NAME_CUSTOMER_IDENTIFIER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property IdentifierType() As String
         Get
-            If Row(Me.DATA_COL_NAME_IDENTIFIER_TYPE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_IDENTIFIER_TYPE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_IDENTIFIER_TYPE), String)
+                Return CType(Row(DATA_COL_NAME_IDENTIFIER_TYPE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_IDENTIFIER_TYPE, Value)
+            SetValue(DATA_COL_NAME_IDENTIFIER_TYPE, Value)
         End Set
     End Property
 
@@ -147,7 +147,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_DEALER_CODE, Value)
+            SetValue(SOURCE_COL_DEALER_CODE, Value)
         End Set
     End Property
 
@@ -163,7 +163,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CONTACT_NAME, Value)
+            SetValue(SOURCE_COL_CONTACT_NAME, Value)
         End Set
     End Property
 
@@ -179,7 +179,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CUSTOMER_AUTHENTICATION, Value)
+            SetValue(SOURCE_COL_CUSTOMER_AUTHENTICATION, Value)
         End Set
     End Property
 
@@ -195,7 +195,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CUSTOMER_AUTHENTICATION_TYPE, Value)
+            SetValue(SOURCE_COL_CUSTOMER_AUTHENTICATION_TYPE, Value)
         End Set
     End Property
 
@@ -211,7 +211,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CALLER_NAME, Value)
+            SetValue(SOURCE_COL_CALLER_NAME, Value)
         End Set
     End Property
 
@@ -226,7 +226,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_SERIAL_NUMBER, Value)
+            SetValue(SOURCE_COL_SERIAL_NUMBER, Value)
         End Set
     End Property
 
@@ -242,7 +242,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_MAKE, Value)
+            SetValue(SOURCE_COL_MAKE, Value)
         End Set
     End Property
 
@@ -258,7 +258,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_MODEL, Value)
+            SetValue(SOURCE_COL_MODEL, Value)
         End Set
     End Property
 
@@ -273,7 +273,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CAUSE_OF_LOSS_CODE, Value)
+            SetValue(SOURCE_COL_CAUSE_OF_LOSS_CODE, Value)
         End Set
     End Property
 
@@ -289,7 +289,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_LOSS_DATE, Value)
+            SetValue(SOURCE_COL_LOSS_DATE, Value)
         End Set
     End Property
 
@@ -305,7 +305,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_COVERAGE_CODE, Value)
+            SetValue(SOURCE_COL_COVERAGE_CODE, Value)
         End Set
     End Property
 
@@ -320,7 +320,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_SERVICE_CENTER_CODE, Value)
+            SetValue(SOURCE_COL_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
@@ -335,7 +335,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_PROBLEM_DESCRIPTION, Value)
+            SetValue(SOURCE_COL_PROBLEM_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -350,7 +350,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As Decimal)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_REPAIR_ESTIMATE, Value)
+            SetValue(SOURCE_COL_REPAIR_ESTIMATE, Value)
         End Set
     End Property
 
@@ -365,7 +365,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_VISIT_DATE, Value)
+            SetValue(SOURCE_COL_VISIT_DATE, Value)
         End Set
     End Property
 
@@ -380,7 +380,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CALLER_TAX_NUMBER, Value)
+            SetValue(SOURCE_COL_CALLER_TAX_NUMBER, Value)
         End Set
     End Property
 
@@ -395,7 +395,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_SPECIAL_INSTRUCTION, Value)
+            SetValue(SOURCE_COL_SPECIAL_INSTRUCTION, Value)
         End Set
     End Property
 
@@ -410,7 +410,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_INVOICE_DATE, Value)
+            SetValue(SOURCE_COL_INVOICE_DATE, Value)
         End Set
     End Property
 
@@ -425,7 +425,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_PAYMENT_METHOD, Value)
+            SetValue(SOURCE_COL_PAYMENT_METHOD, Value)
         End Set
     End Property
 
@@ -440,7 +440,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_ADDRESS1, Value)
+            SetValue(SOURCE_COL_ADDRESS1, Value)
         End Set
     End Property
 
@@ -455,7 +455,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_ADDRESS2, Value)
+            SetValue(SOURCE_COL_ADDRESS2, Value)
         End Set
     End Property
 
@@ -470,7 +470,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CITY, Value)
+            SetValue(SOURCE_COL_CITY, Value)
         End Set
     End Property
 
@@ -485,7 +485,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_REGION, Value)
+            SetValue(SOURCE_COL_REGION, Value)
         End Set
     End Property
 
@@ -500,7 +500,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_POSTAL_CODE, Value)
+            SetValue(SOURCE_COL_POSTAL_CODE, Value)
         End Set
     End Property
 
@@ -515,7 +515,7 @@ Public Class SubmitClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_COUNTRY_CODE, Value)
+            SetValue(SOURCE_COL_COUNTRY_CODE, Value)
         End Set
     End Property
 
@@ -527,52 +527,52 @@ Public Class SubmitClaim
         Try
             If ds.SubmitClaim.Count = 0 Then Exit Sub
             With ds.SubmitClaim.Item(0)
-                Me.CustomerIdentifier = .CustomerIdentifier
-                Me.CustomerAuthentication = .CustomerAuthentication
-                Me.IdentifierType = .IdentifierType
-                Me.DealerCode = .DealerCode
-                Me.ContactName = .ContactName
-                Me.CustomerAuthentication = .CustomerAuthentication
-                Me.CustomerAuthenticationType = .CustomerAuthenticationType                
-                Me.CallerName = .CallerName
-                If Not .IsSerialNumberNull Then Me.SerialNumber = .SerialNumber
-                Me.Model = .Model
-                Me.Make = .Make
-                If Not .IsCauseOfLossCodeNull Then Me.CauseOfLossCode = .CauseOfLossCode
+                CustomerIdentifier = .CustomerIdentifier
+                CustomerAuthentication = .CustomerAuthentication
+                IdentifierType = .IdentifierType
+                DealerCode = .DealerCode
+                ContactName = .ContactName
+                CustomerAuthentication = .CustomerAuthentication
+                CustomerAuthenticationType = .CustomerAuthenticationType                
+                CallerName = .CallerName
+                If Not .IsSerialNumberNull Then SerialNumber = .SerialNumber
+                Model = .Model
+                Make = .Make
+                If Not .IsCauseOfLossCodeNull Then CauseOfLossCode = .CauseOfLossCode
 
-                Me.LossDate = .DateOfLoss
-                Me.CoverageCode = .CoverageCode
-                If Not .IsServiceCenterCodeNull Then Me.ServiceCenterCode = .ServiceCenterCode
-                Me.ProblemDescription = .ProblemDescription
+                LossDate = .DateOfLoss
+                CoverageCode = .CoverageCode
+                If Not .IsServiceCenterCodeNull Then ServiceCenterCode = .ServiceCenterCode
+                ProblemDescription = .ProblemDescription
 
-                If Not .IsRepairEstimateNull Then Me.RepairEstimate = .RepairEstimate
+                If Not .IsRepairEstimateNull Then RepairEstimate = .RepairEstimate
                 If Not .IsVisitDateNull Then
-                    Me.VisitDate = .VisitDate
+                    VisitDate = .VisitDate
                     isVisitDateNull = False
                 End If
 
-                If Not .IsCallerTaxNumberNull Then Me.CallerTaxNumber = .CallerTaxNumber
-                If Not .IsSpecialInstructionNull Then Me.SpecialInstruction = .SpecialInstruction
+                If Not .IsCallerTaxNumberNull Then CallerTaxNumber = .CallerTaxNumber
+                If Not .IsSpecialInstructionNull Then SpecialInstruction = .SpecialInstruction
                 If Not .IsInvoiceDateNull Then
-                    Me.InvoiceDate = .InvoiceDate
+                    InvoiceDate = .InvoiceDate
                     isInvoiceDateNull = False
                 End If
 
-                If Not .IsPaymentMethodNull Then Me.PaymentMethod = .PaymentMethod
+                If Not .IsPaymentMethodNull Then PaymentMethod = .PaymentMethod
 
                 Dim i As Integer
                 For i = 0 To ds.ShippingInfo.Count - 1
                     _shippingAddress = New Address
-                    Me._isShippingInfoProvided = True
+                    _isShippingInfoProvided = True
                     If Not ds.ShippingInfo(i).IsContactNumberNull Then _contactNumber = ds.ShippingInfo(i).ContactNumber
                     If Not ds.ShippingInfo(i).IsEmailAddressNull Then _emailAddress = ds.ShippingInfo(i).EmailAddress
                     If Not ds.ShippingInfo(i).IsAttentionToNull Then _attentionTo = ds.ShippingInfo(i).AttentionTo
                     If Not ds.ShippingInfo(i).Isaddress1Null Then _shippingAddress.Address1 = ds.ShippingInfo(i).address1
                     If Not ds.ShippingInfo(i).Isaddress2Null Then _shippingAddress.Address2 = ds.ShippingInfo(i).address2
                     If Not ds.ShippingInfo(i).IsCityNull Then _shippingAddress.City = ds.ShippingInfo(i).City
-                    If Not ds.ShippingInfo(i).IsRegionCodeNull Then Me._regionCode = ds.ShippingInfo(i).RegionCode
+                    If Not ds.ShippingInfo(i).IsRegionCodeNull Then _regionCode = ds.ShippingInfo(i).RegionCode
                     If Not ds.ShippingInfo(i).IsPostalCodeNull Then _shippingAddress.PostalCode = ds.ShippingInfo(i).PostalCode
-                    Me._countryCode = ds.ShippingInfo(i).CountryCode
+                    _countryCode = ds.ShippingInfo(i).CountryCode
                 Next
             End With
 
@@ -584,27 +584,27 @@ Public Class SubmitClaim
     Public Overrides Function ProcessWSRequest() As String
         Dim row As DataRow
         Try
-            Me.Validate()
+            Validate()
 
             'Call Web Submit Claim PreValidation
             Dim oWebSubmitClaimPreValidateInputData As New ClaimDAL.WebSubmitClaimPreValidateInputData
             Dim oWebSubmitClaimPreValidateOutputData As New ClaimDAL.WebSubmitClaimPreValidateOutputData
 
-            oWebSubmitClaimPreValidateInputData.CoverageCode = Me.CoverageCode
-            oWebSubmitClaimPreValidateInputData.CustomerIdentifier = Me.CustomerIdentifier
-            oWebSubmitClaimPreValidateInputData.DealerCode = Me.DealerCode
-            oWebSubmitClaimPreValidateInputData.IdentifierType = Me.IdentifierType
-            oWebSubmitClaimPreValidateInputData.ServiceCenterCode = Me.ServiceCenterCode
+            oWebSubmitClaimPreValidateInputData.CoverageCode = CoverageCode
+            oWebSubmitClaimPreValidateInputData.CustomerIdentifier = CustomerIdentifier
+            oWebSubmitClaimPreValidateInputData.DealerCode = DealerCode
+            oWebSubmitClaimPreValidateInputData.IdentifierType = IdentifierType
+            oWebSubmitClaimPreValidateInputData.ServiceCenterCode = ServiceCenterCode
             oWebSubmitClaimPreValidateInputData.SystemUserId = ElitaPlusIdentity.Current.ActiveUser.Id
-            oWebSubmitClaimPreValidateInputData.CauseOfLossCode = Me.CauseOfLossCode
-            oWebSubmitClaimPreValidateInputData.CountryCode = Me._countryCode
-            oWebSubmitClaimPreValidateInputData.RegionCode = Me._regionCode
-            oWebSubmitClaimPreValidateInputData.PaymentMethod = Me.PaymentMethod
-            oWebSubmitClaimPreValidateInputData.Make = Me.Make
-            oWebSubmitClaimPreValidateInputData.Model = Me.Model
-            oWebSubmitClaimPreValidateInputData.SerialNumber = Me.SerialNumber
-            oWebSubmitClaimPreValidateInputData.DateOfLoss = Me.LossDate     '#26061
-            If Me._isShippingInfoProvided Then oWebSubmitClaimPreValidateInputData.AddressTypeCode = Codes.ADDRESS_TYPE__SHIPPING
+            oWebSubmitClaimPreValidateInputData.CauseOfLossCode = CauseOfLossCode
+            oWebSubmitClaimPreValidateInputData.CountryCode = _countryCode
+            oWebSubmitClaimPreValidateInputData.RegionCode = _regionCode
+            oWebSubmitClaimPreValidateInputData.PaymentMethod = PaymentMethod
+            oWebSubmitClaimPreValidateInputData.Make = Make
+            oWebSubmitClaimPreValidateInputData.Model = Model
+            oWebSubmitClaimPreValidateInputData.SerialNumber = SerialNumber
+            oWebSubmitClaimPreValidateInputData.DateOfLoss = LossDate     '#26061
+            If _isShippingInfoProvided Then oWebSubmitClaimPreValidateInputData.AddressTypeCode = Codes.ADDRESS_TYPE__SHIPPING
 
             Dim WebSubmitClaimPreValidatePreValidateDS As DataSet = Claim.WebSubmitClaimPreValidate(oWebSubmitClaimPreValidateInputData, oWebSubmitClaimPreValidateOutputData)
 
@@ -628,20 +628,20 @@ Public Class SubmitClaim
                 claimBO.CauseOfLossId = claimBO.GetCauseOfLossID(oWebSubmitClaimPreValidateOutputData.CoverageTypeId)
             End If
 
-            If Me._isShippingInfoProvided Then
+            If _isShippingInfoProvided Then
                 claimBO.AddContactInfo(Guid.Empty)
-                claimBO.ContactInfo.Address.Address1 = Me._shippingAddress.Address1
-                claimBO.ContactInfo.Address.Address2 = Me._shippingAddress.Address2
-                claimBO.ContactInfo.Address.City = Me._shippingAddress.City
-                claimBO.ContactInfo.Address.PostalCode = Me._shippingAddress.PostalCode
+                claimBO.ContactInfo.Address.Address1 = _shippingAddress.Address1
+                claimBO.ContactInfo.Address.Address2 = _shippingAddress.Address2
+                claimBO.ContactInfo.Address.City = _shippingAddress.City
+                claimBO.ContactInfo.Address.PostalCode = _shippingAddress.PostalCode
                 claimBO.ContactInfo.Address.CountryId = oWebSubmitClaimPreValidateOutputData.CountryId
                 claimBO.ContactInfo.Address.RegionId = oWebSubmitClaimPreValidateOutputData.RegionId
 
                 claimBO.ContactInfo.AddressId = claimBO.ContactInfo.Address.Id
                 claimBO.ContactInfo.SalutationId = Guid.Empty
-                claimBO.ContactInfo.Name = Me._attentionTo
-                claimBO.ContactInfo.Email = Me._emailAddress
-                claimBO.ContactInfo.CellPhone = Me._contactNumber
+                claimBO.ContactInfo.Name = _attentionTo
+                claimBO.ContactInfo.Email = _emailAddress
+                claimBO.ContactInfo.CellPhone = _contactNumber
                 claimBO.ContactInfo.AddressTypeId = oWebSubmitClaimPreValidateOutputData.AddressTypeId
 
                 claimBO.ContactInfo.Validate()
@@ -650,8 +650,8 @@ Public Class SubmitClaim
             End If
 
             claimBO.ClaimNumber = Nothing
-            claimBO.PrePopulate(claimBO.ServiceCenterId, claimBO.CertItemCoverageId, Nothing, Me.LossDate, False, True, False, False, _
-                                Me.CallerName, Me.ProblemDescription)
+            claimBO.PrePopulate(claimBO.ServiceCenterId, claimBO.CertItemCoverageId, Nothing, LossDate, False, True, False, False, _
+                                CallerName, ProblemDescription)
             claimBO.Deductible = New DecimalType(oWebSubmitClaimPreValidateOutputData.Deductible)
             '--------------------------------------------------------------------------------------
             'Code change for DEF-3463
@@ -659,23 +659,23 @@ Public Class SubmitClaim
             'so no need to assign it explicitly to 0 (zero)
             '--------------------------------------------------------------------------------------
             'claimBO.AuthorizedAmount = New DecimalType(0D)
-            claimBO.ContactName = Me.ContactName
-            claimBO.CallerName = Me.CallerName
-            claimBO.ProblemDescription = Me.ProblemDescription
-            claimBO.SpecialInstruction = Me.SpecialInstruction
-            claimBO.RepairEstimate = Me.RepairEstimate
+            claimBO.ContactName = ContactName
+            claimBO.CallerName = CallerName
+            claimBO.ProblemDescription = ProblemDescription
+            claimBO.SpecialInstruction = SpecialInstruction
+            claimBO.RepairEstimate = RepairEstimate
             If isVisitDateNull = True Then
                 claimBO.VisitDate = Nothing
             Else
-                claimBO.VisitDate = Me.VisitDate
+                claimBO.VisitDate = VisitDate
             End If
-            claimBO.CallerTaxNumber = Me.CallerTaxNumber
+            claimBO.CallerTaxNumber = CallerTaxNumber
             claimBO.StatusCode = oWebSubmitClaimPreValidateOutputData.DefaultClaimStatusCode 'Codes.CLAIM_STATUS__PENDING
 
             If isInvoiceDateNull = True Then
                 claimBO.InvoiceDate = Nothing
             Else
-                claimBO.InvoiceDate = Me.InvoiceDate
+                claimBO.InvoiceDate = InvoiceDate
             End If
 
             If Not oWebSubmitClaimPreValidateOutputData.PaymentMethodId.Equals(Guid.Empty) Then
@@ -696,13 +696,13 @@ Public Class SubmitClaim
             claimBO.Save()
 
             'Build the OK response with the claim number
-            Dim ResponseDataSet As New DataSet(Me.DATASET_NAME__SUBMIT_CLAIM_RESPONSE)
+            Dim ResponseDataSet As New DataSet(DATASET_NAME__SUBMIT_CLAIM_RESPONSE)
 
-            Dim ResponseStatus As DataTable = Me.BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_NO_ERROR), _
+            Dim ResponseStatus As DataTable = BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_NO_ERROR), _
                                                                            Common.ErrorCodes.WS_NO_ERROR, _
                                                                            Codes.WEB_EXPERIENCE__NO_ERROR)
 
-            Dim dtClaimInfo As DataTable = New DataTable(Me.TABLE_NAME__CLAIM_INFO)
+            Dim dtClaimInfo As DataTable = New DataTable(TABLE_NAME__CLAIM_INFO)
             dtClaimInfo.Columns.Add(CLAIM_NUMBER, GetType(String))
             Dim rw As DataRow = dtClaimInfo.NewRow
             rw(0) = claimBO.ClaimNumber
@@ -729,18 +729,18 @@ Public Class SubmitClaim
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
     Private Sub Load(ByVal ds As SubmitClaimDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException

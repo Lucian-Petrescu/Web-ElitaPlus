@@ -181,37 +181,37 @@ Public Class FelitaEngine
 
             'Set the company based on the company code sent in.
             Try
-                SetCompany(Me.CompanyId)
+                SetCompany(CompanyId)
             Catch ex As Exception
-                AppConfig.DebugMessage.Trace("ACCOUNTING_ENGINE", "PROCESS REQUEST", "Error setting the company Id: " + Me.CompanyId)
-                Throw New Exception("Error setting the company Id: " + Me.CompanyId)
+                AppConfig.DebugMessage.Trace("ACCOUNTING_ENGINE", "PROCESS REQUEST", "Error setting the company Id: " + CompanyId)
+                Throw New Exception("Error setting the company Id: " + CompanyId)
             End Try
 
             With oFelitaEngineData
                 .UserId = ElitaPlusIdentity.Current.ActiveUser.Id
-                .AccountingCompanyId = Me._Company.AcctCompanyId
-                .CompanyId = Me._Company.Id
-                .isVendorFile = Me.VendorFiles
+                .AccountingCompanyId = _Company.AcctCompanyId
+                .CompanyId = _Company.Id
+                .isVendorFile = VendorFiles
 
-                If Me.AccountingEventId = NO_EVENTS Then
+                If AccountingEventId = NO_EVENTS Then
                     .NoEvents = True
                 End If
 
-                If Me.AccountingEventId Is Nothing OrElse Me.AccountingEventId = String.Empty Then
+                If AccountingEventId Is Nothing OrElse AccountingEventId = String.Empty Then
                     .AllEvents = True
                 Else
                     .AllEvents = False
                     If Not .NoEvents Then
-                        If Me.AccountingEventId.Length = 32 Then
-                            .EventId = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(Me.AccountingEventId))
+                        If AccountingEventId.Length = 32 Then
+                            .EventId = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(AccountingEventId))
                         Else
-                            .EventId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_EVENT_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), Me.AccountingEventId)
+                            .EventId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_EVENT_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), AccountingEventId)
                         End If
                     End If
                 End If
             End With
 
-            Me.Validate()
+            Validate()
             Dim _AcctBO As New AcctTransLog
             Dim dsSet() As DataSet
             Dim RECORDS_EXIST As Boolean = True
@@ -219,8 +219,8 @@ Public Class FelitaEngine
             Try
                 _AcctCompany = New AcctCompany(oFelitaEngineData.AccountingCompanyId)
             Catch ex As Exception
-                AppConfig.Debug("FelitaEngine AcctCompany exceptionAcct Comp ID: " + MiscUtil.GuidToSQLString(oFelitaEngineData.AccountingCompanyId) + " Company id:" + MiscUtil.GuidToSQLString(Me._Company.Id))
-                Throw New Exception("Error loading the accounting company, Acct Comp ID: " + MiscUtil.GuidToSQLString(oFelitaEngineData.AccountingCompanyId) + " Company id:" + MiscUtil.GuidToSQLString(Me._Company.Id) + " DB Server:" + AppConfig.DataBase.Server, ex)
+                AppConfig.Debug("FelitaEngine AcctCompany exceptionAcct Comp ID: " + MiscUtil.GuidToSQLString(oFelitaEngineData.AccountingCompanyId) + " Company id:" + MiscUtil.GuidToSQLString(_Company.Id))
+                Throw New Exception("Error loading the accounting company, Acct Comp ID: " + MiscUtil.GuidToSQLString(oFelitaEngineData.AccountingCompanyId) + " Company id:" + MiscUtil.GuidToSQLString(_Company.Id) + " DB Server:" + AppConfig.DataBase.Server, ex)
             End Try
 
             If _AcctCompany Is Nothing OrElse _AcctCompany.UseAccounting = NO_STRING Then
@@ -540,8 +540,8 @@ Public Class FelitaEngine
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -556,10 +556,10 @@ Public Class FelitaEngine
     Private Sub Load(ByVal ds As FelitaEngineDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(0).Rows.Add(newRow)
+            Dataset.Tables(0).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As ElitaPlusException
@@ -573,13 +573,13 @@ Public Class FelitaEngine
         Try
             If ds.FelitaEngine.Count = 0 Then Exit Sub
             With ds.FelitaEngine.Item(0)
-                Me.CompanyId = .CompanyId
-                If Not IsNothing(.AccountingEventId) Then Me.AccountingEventId = .AccountingEventId
+                CompanyId = .CompanyId
+                If Not IsNothing(.AccountingEventId) Then AccountingEventId = .AccountingEventId
                 If Not IsNothing(.VendorFiles) Then
                     If .VendorFiles = "0" Then
-                        Me.VendorFiles = Boolean.Parse(False)
+                        VendorFiles = Boolean.Parse(False)
                     Else
-                        Me.VendorFiles = Boolean.Parse(True)
+                        VendorFiles = Boolean.Parse(True)
                     End If
                 End If
             End With
@@ -595,8 +595,8 @@ Public Class FelitaEngine
 
         dv = Company.getList("", CompanyCode)
         If dv.Count = 1 Then
-            Me._Company = New Company(GuidControl.ByteArrayToGuid(CType(dv(0)(dv.COL_COMPANY_ID), Byte())))
-            If Not Me._Company Is Nothing Then Exit Sub
+            _Company = New Company(GuidControl.ByteArrayToGuid(CType(dv(0)(dv.COL_COMPANY_ID), Byte())))
+            If Not _Company Is Nothing Then Exit Sub
         End If
 
         'If it gets here, we have not gotten a company from the code and need to throw an error
@@ -1056,7 +1056,7 @@ Public Class FelitaEngine
                     _acctTransmit = New AcctTransmission
                     _acctTransmit.FileName = CurrentFile.FileName
                     _acctTransmit.FileText = CurrentFile.XMLData
-                    _acctTransmit.CompanyId = Me._Company.Id
+                    _acctTransmit.CompanyId = _Company.Id
                     _acctTransmit.TransmissionCount = 0
                     _acctTransmit.FileTypeFlag = CurrentFile.FileType
                     _acctTransmit.FileSubTypeFlag = CurrentFile.FileSubType
@@ -1094,7 +1094,7 @@ Public Class FelitaEngine
 
     Private Function SendFiles()
 
-        Dim HoldType As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_PROCESS_METHOD, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), Me._AcctCompany.ProcessMethodId)
+        Dim HoldType As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_PROCESS_METHOD, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), _AcctCompany.ProcessMethodId)
         Dim _newList As New ArrayList
         Dim _acctTransmission As AcctTransmission
         Dim _boolChanges As Boolean = False
@@ -1921,44 +1921,44 @@ Public Class FelitaEngine
 
     Public Property AccountingEventId() As String
         Get
-            If Row(Me.DATA_COL_NAME_ACCOUNTING_EVENT_ID) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_ACCOUNTING_EVENT_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_ACCOUNTING_EVENT_ID), String))
+                Return (CType(Row(DATA_COL_NAME_ACCOUNTING_EVENT_ID), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_ACCOUNTING_EVENT_ID, Value)
+            SetValue(DATA_COL_NAME_ACCOUNTING_EVENT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
     Public Property CompanyId() As String
         Get
-            If Row(Me.DATA_COL_NAME_COMPANY_ID) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COMPANY_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_COMPANY_ID), String))
+                Return (CType(Row(DATA_COL_NAME_COMPANY_ID), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_COMPANY_ID, Value)
+            SetValue(DATA_COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
     Public Property VendorFiles() As Boolean
         Get
-            If Row(Me.DATA_COL_NAME_VENDOR_FILES) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_VENDOR_FILES) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_VENDOR_FILES), Boolean))
+                Return (CType(Row(DATA_COL_NAME_VENDOR_FILES), Boolean))
             End If
         End Get
         Set(ByVal Value As Boolean)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_VENDOR_FILES, Value)
+            SetValue(DATA_COL_NAME_VENDOR_FILES, Value)
         End Set
     End Property
 

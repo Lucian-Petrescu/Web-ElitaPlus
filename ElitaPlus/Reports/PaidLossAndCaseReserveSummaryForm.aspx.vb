@@ -82,7 +82,7 @@ Namespace Reports
         End Sub
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -92,13 +92,13 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrControllerMaster.Clear_Hide()
+            ErrControllerMaster.Clear_Hide()
             ClearErrLabels()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
 
                     currentAccountingMonth = AccountingCloseInfo.GetAccountingCloseDate(ElitaPlusIdentity.Current.ActiveUser.CompanyId, Date.Today).Month
                     currentAccountingYear = AccountingCloseInfo.GetAccountingCloseDate(ElitaPlusIdentity.Current.ActiveUser.CompanyId, Date.Today).Year
@@ -107,17 +107,17 @@ Namespace Reports
                     InitializeForm()
                     TheReportCeInputControl.ExcludeExport()
                     JavascriptCalls()
-                    Me.SetFormTab(PAGETAB)
+                    SetFormTab(PAGETAB)
                 Else
                     currentAccountingMonth = CType(ViewState("CURRENTACCOUNTINGMONTH"), Integer)
                     currentAccountingYear = CType(ViewState("CURRENTACCOUNTINGYEAR"), Integer)
                 End If
                 CheckQuerystringForCurrencyReports()
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
 
         End Sub
 
@@ -131,12 +131,12 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -147,21 +147,21 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(MonthYearLabel)
-            Me.ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
-            Me.ClearLabelErrSign(lblCurrency)
+            ClearLabelErrSign(MonthYearLabel)
+            ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(lblCurrency)
         End Sub
 #End Region
 
 #Region "Handlers-DropDown"
 
-        Protected Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Protected Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
              Handles moUserCompanyMultipleDrop.SelectedDropChanged
             Try
                 PopulateDealerDropDown()
                 PopulateCurrencyDropdown()
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -174,7 +174,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 'HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 'UserCompanyMultipleDrop.Visible = False
                 OnFromDrop_Changed(UserCompanyMultipleDrop)
             End If
@@ -189,7 +189,7 @@ Namespace Reports
                 CommonConfigManager.Current.ListManager.GetList(listCode:="MONTH",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-            Me.MonthDropDownList.Populate(MonthList.ToArray(),
+            MonthDropDownList.Populate(MonthList.ToArray(),
                                          New PopulateOptions() With
                                          {
                                            .AddBlankItem = True,
@@ -212,7 +212,7 @@ Namespace Reports
                                                                Where x.Description = currentAccountingYear.ToString() Or x.Description = (currentAccountingYear - 1).ToString()
                                                                Select x).ToArray()
 
-            Me.YearDropDownList.Populate(filteredYearList,
+            YearDropDownList.Populate(filteredYearList,
                                          New PopulateOptions() With
                                          {
                                            .AddBlankItem = True,
@@ -235,23 +235,23 @@ Namespace Reports
         Private Sub PopulateCurrencyDropdown()
             If Not UserCompanyMultipleDrop.SelectedGuid = Guid.Empty Then
                 Dim dv As DataView = LookupListNew.GetCurrenciesForCompanyandDealersInCompanyLookupList(UserCompanyMultipleDrop.SelectedGuid)
-                Me.BindListControlToDataView(Me.ddlCurrency, dv, , , True)
-                Me.BindListControlToDataView(Me.ddlDealerCurrency, dv, , , True)
+                BindListControlToDataView(ddlCurrency, dv, , , True)
+                BindListControlToDataView(ddlDealerCurrency, dv, , , True)
             Else
                 Dim dv As DataView = LookupListNew.GetCurrenciesForCompanyandDealersInCompanyLookupList(UserCompanyMultipleDrop.SelectedGuid)
-                Me.BindListControlToDataView(Me.ddlCurrency, dv, , , True)
-                Me.BindListControlToDataView(Me.ddlDealerCurrency, dv, , , True)
+                BindListControlToDataView(ddlCurrency, dv, , , True)
+                BindListControlToDataView(ddlDealerCurrency, dv, , , True)
             End If
         End Sub
 
         Private Sub CheckQuerystringForCurrencyReports()
             ShowHideControls(False)
-            Me.SetFormTitle(PAGETITLE)
+            SetFormTitle(PAGETITLE)
 
-            If (Not Request.QueryString("CALLER") Is Nothing) Then
+            If (Request.QueryString("CALLER") IsNot Nothing) Then
                 If (Request.QueryString("CALLER") = "CR") Then
                     queryStringCaller = Request.QueryString("CALLER")
-                    Me.SetFormTitle(PAGETITLEWITHCURRENCY)
+                    SetFormTitle(PAGETITLEWITHCURRENCY)
                     ShowHideControls(True)
                 End If
             End If
@@ -260,8 +260,8 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal companyCode As String, ByVal BeginMonthAndYear As String, ByVal EndMonthAndYear As String, _
-                                 ByVal selectedReportingPeriod As String, ByVal dealerCode As String, dealerForCur As Guid, rptCurrency As Guid) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, BeginMonthAndYear As String, EndMonthAndYear As String, _
+                                 selectedReportingPeriod As String, dealerCode As String, dealerForCur As Guid, rptCurrency As Guid) As ReportCeBaseForm.Params
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String = RPT_FILENAME
             Dim moReportFormat As ReportCeBaseForm.RptFormat
@@ -303,8 +303,8 @@ Namespace Reports
             Dim rptCurrency As Guid = Guid.Empty
             Dim dealerCode As String = DealerMultipleDrop.SelectedCode
 
-            Dim selectedYear As String = Me.GetSelectedDescription(Me.YearDropDownList)
-            Dim selectedMonthID As Guid = Me.GetSelectedItem(Me.MonthDropDownList)
+            Dim selectedYear As String = GetSelectedDescription(YearDropDownList)
+            Dim selectedMonthID As Guid = GetSelectedItem(MonthDropDownList)
             Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
 
             If selectedMonthID.Equals(Guid.Empty) OrElse selectedYear.Equals(String.Empty) Then
@@ -321,23 +321,23 @@ Namespace Reports
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
             End If
 
-            If Me.rdoMTD.Checked Then
+            If rdoMTD.Checked Then
                 EndMonthAndYear = selectedMonth & selectedYear
                 BeginMonthAndYear = EndMonthAndYear
-                selectedReportingPeriod = Me.MTD
-            ElseIf Me.rdoQTD.Checked Then
+                selectedReportingPeriod = MTD
+            ElseIf rdoQTD.Checked Then
                 If CType(selectedMonth, Integer) Mod 3 <> 0 Then
                     ElitaPlusPage.SetLabelError(MonthYearLabel)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_MONTH_FOR_QUARTER_END_ERR)
                 Else
                     EndMonthAndYear = selectedMonth & selectedYear
                     BeginMonthAndYear = (CType(selectedMonth, Integer) - 2).ToString & selectedYear
-                    selectedReportingPeriod = Me.QTD
+                    selectedReportingPeriod = QTD
                 End If
             Else
                 EndMonthAndYear = selectedMonth & selectedYear
                 BeginMonthAndYear = "01" & selectedYear
-                selectedReportingPeriod = Me.YTD
+                selectedReportingPeriod = YTD
             End If
 
             If (queryStringCaller = "CR") Then
@@ -351,11 +351,11 @@ Namespace Reports
                     ElitaPlusPage.SetLabelError(lblCurrency)
                     Throw New GUIException(Message.MSG_GUI_INVALID_SELECTION, Assurant.ElitaPlus.Common.ErrorCodes.GUI_CURRENCY_MUST_BE_SELECTED_ERR)
                 Else
-                    rptCurrency = New Guid(Me.ddlCurrency.SelectedValue)
+                    rptCurrency = New Guid(ddlCurrency.SelectedValue)
                 End If
 
                 If ddlDealerCurrency.SelectedIndex > 0 Then
-                    dealerForCur = New Guid(Me.ddlDealerCurrency.SelectedValue)
+                    dealerForCur = New Guid(ddlDealerCurrency.SelectedValue)
                 End If
 
             End If

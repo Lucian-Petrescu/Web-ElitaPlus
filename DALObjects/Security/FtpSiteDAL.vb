@@ -30,32 +30,32 @@ Public Class FtpSiteDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("ftp_site_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal code As String, ByVal description As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(code As String, description As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         '  Dim inClausecondition As String = ""
         Dim whereClauseConditions As String = ""
 
         code = code.Trim()
-        If (Not code.Equals(String.Empty) Or Not code = "") AndAlso (Me.FormatSearchMask(code)) Then
+        If (Not code.Equals(String.Empty) Or Not code = "") AndAlso (FormatSearchMask(code)) Then
             whereClauseConditions &= Environment.NewLine & "Upper(ftp.code)" & code.ToUpper
         End If
 
         description = description.Trim()
-        If (Not description.Equals(String.Empty) Or Not description = "") AndAlso (Me.FormatSearchMask(description)) Then
+        If (Not description.Equals(String.Empty) Or Not description = "") AndAlso (FormatSearchMask(description)) Then
             If Not whereClauseConditions = "" Then
                 whereClauseConditions &= " AND "
             End If
@@ -70,15 +70,15 @@ Public Class FtpSiteDAL
 
         If Not whereClauseConditions = "" Then
             whereClauseConditions = "WHERE " & whereClauseConditions
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim ds As New DataSet
         Try
 
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -90,12 +90,12 @@ Public Class FtpSiteDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

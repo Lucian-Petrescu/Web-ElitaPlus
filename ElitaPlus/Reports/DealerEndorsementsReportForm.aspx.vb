@@ -90,7 +90,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -100,36 +100,36 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 Else
                     ClearErrLabels()
-                    If Not ViewState("dtLatestAccountingCloseDate") Is System.DBNull.Value Then
+                    If ViewState("dtLatestAccountingCloseDate") IsNot System.DBNull.Value Then
                         dtLatestAccountingCloseDate = CType(ViewState("dtLatestAccountingCloseDate"), Date)
                     End If
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -140,10 +140,10 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(MonthYearLabel)
-            Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
-            Me.ClearLabelErrSign(moEndorsmentNumberLabel)
-            If Me.rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
+            ClearLabelErrSign(MonthYearLabel)
+            ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(moEndorsmentNumberLabel)
+            If rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
         End Sub
 
 #End Region
@@ -169,7 +169,7 @@ Namespace Reports
             listcontext.CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
 
             Dim YearListLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ClosingYearsByCompany", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.YearDropDownList.Populate(YearListLkl, New PopulateOptions() With
+            YearDropDownList.Populate(YearListLkl, New PopulateOptions() With
              {
             .AddBlankItem = True,
             .ValueFunc = AddressOf PopulateOptions.GetCode
@@ -181,7 +181,7 @@ Namespace Reports
             ' Dim dv As DataView = LookupListNew.GetMonthsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             ' dv.Sort = "CODE"
             'Me.BindListControlToDataView(Me.MonthDropDownList, dv, , , True)
-            Me.MonthDropDownList.Populate(CommonConfigManager.Current.ListManager.GetList("MONTH", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+            MonthDropDownList.Populate(CommonConfigManager.Current.ListManager.GetList("MONTH", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
            {
               .AddBlankItem = True
            })
@@ -191,8 +191,8 @@ Namespace Reports
             PopulateYearsDropdown()
             PopulateMonthsDropdown()
             PopulateDealerDropDown()
-            Me.rdealer.Checked = True
-            Me.rEndorsementNumber.Checked = True
+            rdealer.Checked = True
+            rEndorsementNumber.Checked = True
             'load Accounting Close Date
             dtLatestAccountingCloseDate = AccountingCloseInfo.GetAccountingCloseDate(ElitaPlusIdentity.Current.ActiveUser.CompanyId, Date.Today)
             ViewState("dtLatestAccountingCloseDate") = dtLatestAccountingCloseDate
@@ -202,7 +202,7 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal userId As String, ByVal dealerCode As String, ByVal selectedYearAndMonth As String, ByVal EndorsementNumber As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, dealerCode As String, selectedYearAndMonth As String, EndorsementNumber As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String = RPT_FILENAME
@@ -237,8 +237,8 @@ Namespace Reports
 
         Private Sub GenerateReport()
             Dim userId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.Id)
-            Dim selectedYear As String = Me.GetSelectedDescription(Me.YearDropDownList)
-            Dim selectedMonthID As Guid = Me.GetSelectedItem(Me.MonthDropDownList)
+            Dim selectedYear As String = GetSelectedDescription(YearDropDownList)
+            Dim selectedMonthID As Guid = GetSelectedItem(MonthDropDownList)
             Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
 
             Dim selectedDealerId As Guid = DealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(Me.cboDealerDec)
@@ -259,18 +259,18 @@ Namespace Reports
             Dim selectedDateString As String = selectedYear & selectedMonth & "01"
 
             'Endorsment validation
-            If Me.rEndorsementNumber.Checked Then
+            If rEndorsementNumber.Checked Then
                 EndorsementNumber = ALL
             Else
-                If Me.txtEndorsmentNumber.Text = "" Then
+                If txtEndorsmentNumber.Text = "" Then
                     ElitaPlusPage.SetLabelError(moEndorsmentNumberLabel)
                     Throw New GUIException(Message.MSG_GUI_ENDORSEMENT_NUMBER_NOT_ENTERED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ENDORSEMENT_NUMBER_NOT_ENTERED)
                 Else
-                    EndorsementNumber = Me.txtEndorsmentNumber.Text
+                    EndorsementNumber = txtEndorsmentNumber.Text
                 End If
             End If
             'dealer validation
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             Else
                 If selectedDealerId.Equals(Guid.Empty) Then
@@ -286,13 +286,13 @@ Namespace Reports
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
 
         End Sub
-        Private Sub ValidateAccountingCloseDate(ByVal dtDateToCompare As Date, ByVal lbl As Label)
+        Private Sub ValidateAccountingCloseDate(dtDateToCompare As Date, lbl As Label)
             If dtDateToCompare > dtLatestAccountingCloseDate Then
                 ElitaPlusPage.SetLabelError(lbl)
                 Throw New GUIException(Message.MSG_ACCOUNTING_MONTH_NOT_YET_COMPLETED_IS_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ACCOUNTING_MONTH_NOT_YET_COMPLETED_IS_NOT_ALLOWED)
             End If
         End Sub
-        Private Function GetPreciseDate(ByVal strInquiringDate As String) As String
+        Private Function GetPreciseDate(strInquiringDate As String) As String
             Dim dtInquiringDate As Date = Date.Parse((strInquiringDate), System.Globalization.CultureInfo.InvariantCulture)
             Dim dtInqAccountingCloseDate As Date = AccountingCloseInfo.GetAccountingCloseDate(ElitaPlusIdentity.Current.ActiveUser.CompanyId, dtInquiringDate)
             dtInqAccountingCloseDate = dtInqAccountingCloseDate.AddDays(1)

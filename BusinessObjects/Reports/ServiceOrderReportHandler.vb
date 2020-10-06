@@ -6,9 +6,9 @@ Public Class ServiceOrderReportHandler
     'New BO attaching to a BO family
     Public Sub New(ByVal oClaim As ClaimBase, Optional claimAuthId As Guid = Nothing)
         soDS = New ServiceOrderReport
-        Me.ClaimBO = oClaim
-        Me.ClaimAuthorizationId = claimAuthId
-        Me.Load()
+        ClaimBO = oClaim
+        ClaimAuthorizationId = claimAuthId
+        Load()
     End Sub
 
     Protected Sub Load()

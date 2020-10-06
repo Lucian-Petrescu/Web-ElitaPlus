@@ -86,57 +86,57 @@ Public Class ClaimAuthorizationDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_authorization_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal familyDS As DataSet, ByVal claimId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(familyDS As DataSet, claimId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim dynamicWhereCondition As String
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_id", claimId.ToByteArray)}
         Try
-            dynamicWhereCondition = familyDS.ToLoadExclusionClause("ca", Me.TABLE_KEY_NAME, Me.TABLE_NAME, Me.COL_NAME_CLAIM_ID, claimId, parameters)
+            dynamicWhereCondition = familyDS.ToLoadExclusionClause("ca", TABLE_KEY_NAME, TABLE_NAME, COL_NAME_CLAIM_ID, claimId, parameters)
             selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, dynamicWhereCondition)
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadListByInvoiceId(ByVal familyDS As DataSet, ByVal invoiceId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_INVOICE_ID")
+    Public Function LoadListByInvoiceId(familyDS As DataSet, invoiceId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_INVOICE_ID")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("invoice_id", invoiceId.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadPriceListDetails(ByVal serviceCenterId As Guid, _
-                                         ByVal lookupDate As Date, _
-                                         ByVal languageId As Guid, _
-                                         ByVal serviceClassId As Guid, _
-                                         ByVal serviceTypeId As Guid, _
-                                         ByVal riskTypeId As Guid, _
-                                         ByVal equipmentClassId As Guid, _
-                                         ByVal equipmentId As Guid, _
-                                         ByVal conditionId As Guid, _
-                                         ByVal sku As String, _
-                                         ByVal skuDescription As String, _
+    Public Function LoadPriceListDetails(serviceCenterId As Guid, _
+                                         lookupDate As Date, _
+                                         languageId As Guid, _
+                                         serviceClassId As Guid, _
+                                         serviceTypeId As Guid, _
+                                         riskTypeId As Guid, _
+                                         equipmentClassId As Guid, _
+                                         equipmentId As Guid, _
+                                         conditionId As Guid, _
+                                         sku As String, _
+                                         skuDescription As String, _
                                          Optional ByVal LimitResultset As Integer = 100) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PRICE_LIST_DETAILS")
+        Dim selectStmt As String = Config("/SQL/LOAD_PRICE_LIST_DETAILS")
         'Dim whereClauseConditions As String = ""
         'Dim ds As New DataSet
         'Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
@@ -246,13 +246,13 @@ Public Class ClaimAuthorizationDAL
 
 #Region "Properties"
 
-    Public ReadOnly Property IsNew(ByVal Row As DataRow) As Boolean
+    Public ReadOnly Property IsNew(Row As DataRow) As Boolean
         Get
             Return (Row.RowState = DataRowState.Added)
         End Get
     End Property
 
-    Public Property ClaimAuthNumber(ByVal Row As DataRow) As String
+    Public Property ClaimAuthNumber(Row As DataRow) As String
         Get
             If Row(ClaimAuthorizationDAL.COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -260,24 +260,24 @@ Public Class ClaimAuthorizationDAL
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
-            Me.SetValue(Row, ClaimAuthorizationDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
+        Set(Value As String)
+            SetValue(Row, ClaimAuthorizationDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing AndAlso ds.Tables(Me.TABLE_NAME).Rows.Count > 0 Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing AndAlso ds.Tables(TABLE_NAME).Rows.Count > 0 Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, ByVal companyId As Guid, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, companyId As Guid, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim claimAuthItemDAL As New ClaimAuthItemDAL
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
@@ -286,7 +286,7 @@ Public Class ClaimAuthorizationDAL
 
         Try
             ObtainAndAssignClaimAuthNumber(familyDataset, companyId)
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             claimAuthItemDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified Or DataRowState.Deleted)
 
             If Transaction Is Nothing Then
@@ -304,18 +304,18 @@ Public Class ClaimAuthorizationDAL
 #End Region
 
 #Region "Private Methods"
-    Private Sub ObtainAndAssignClaimAuthNumber(ByVal familyDataset As DataSet, ByVal companyId As Guid)
+    Private Sub ObtainAndAssignClaimAuthNumber(familyDataset As DataSet, companyId As Guid)
         Dim dal As New ClaimAuthorizationDAL
         Dim oRow As DataRow
 
-        For Each oRow In familyDataset.Tables(Me.TABLE_NAME).Rows
-            If Me.IsNew(oRow) Then
-                Me.ClaimAuthNumber(oRow) = dal.GetClaimAuthNumber(companyId)
+        For Each oRow In familyDataset.Tables(TABLE_NAME).Rows
+            If IsNew(oRow) Then
+                ClaimAuthNumber(oRow) = dal.GetClaimAuthNumber(companyId)
             End If
         Next
     End Sub
 
-    Protected Sub SetValue(ByVal Row As DataRow, ByVal columnName As String, ByVal newValue As Object)
+    Protected Sub SetValue(Row As DataRow, columnName As String, newValue As Object)
         If Not newValue Is Nothing And Row(columnName) Is DBNull.Value Then
             'new value is something and old value is DBNULL
             If newValue.GetType Is GetType(BooleanType) Then
@@ -407,15 +407,15 @@ Public Class ClaimAuthorizationDAL
         End If
     End Sub
 
-    Private Function GetClaimAuthNumber(ByVal companyId As Guid) As String
-        Dim selectStmt As String = Me.Config("/SQL/GET_NEXT_CLAIM_AUTH_NUMBER_SP")
+    Private Function GetClaimAuthNumber(companyId As Guid) As String
+        Dim selectStmt As String = Config("/SQL/GET_NEXT_CLAIM_AUTH_NUMBER_SP")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY, companyId.ToByteArray)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMPANY, companyId.ToByteArray)}
 
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIM_AUTH_NUMBER, GetType(String)),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String), 50)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_AUTH_NUMBER, GetType(String)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 50)}
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
@@ -435,7 +435,7 @@ Public Class ClaimAuthorizationDAL
     Private Function FetchStoredProcedure(methodName As String, storedProc As String, parameters() As OracleParameter, Optional familyDS As DataSet = Nothing) As DataSet
 
         Dim ds As DataSet = If(familyDS Is Nothing, New DataSet(), familyDS)
-        Dim tbl As String = Me.TABLE_NAME
+        Dim tbl As String = TABLE_NAME
 
         ds.Tables.Add(tbl)
         ' Call DBHelper Store Procedure
@@ -447,7 +447,7 @@ Public Class ClaimAuthorizationDAL
                     OracleDbHelper.Fetch(cmd, tbl, ds)
                 End Using
             End Using
-            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(Me.PAR_OUT_NAME_RETURN_CODE))
+            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
             If (Not par Is Nothing AndAlso par.Value = 200) Then
                 Throw New ElitaPlusException("ClaimAuthorization - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If
@@ -461,8 +461,8 @@ Public Class ClaimAuthorizationDAL
 #End Region
 
 #Region "Public Methods"
-    Public Function IsAddedToInvoiceGroup(ByVal claimAuthorizationId As Guid) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/ADDED_TO_INVOICE_GROUP")
+    Public Function IsAddedToInvoiceGroup(claimAuthorizationId As Guid) As Boolean
+        Dim selectStmt As String = Config("/SQL/ADDED_TO_INVOICE_GROUP")
         Dim returnValue As Integer
         Dim returnObject As Object
 
@@ -484,8 +484,8 @@ Public Class ClaimAuthorizationDAL
         End Try
     End Function
 
-    Public Function CancelShipmentRequest(ByVal claimAuthorizationId As Guid) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/CANCEL_SHIPMENT_REQUEST")
+    Public Function CancelShipmentRequest(claimAuthorizationId As Guid) As Boolean
+        Dim selectStmt As String = Config("/SQL/CANCEL_SHIPMENT_REQUEST")
         Dim requestSuccess As Boolean = False
         Try
             Dim inputParameters(0) As DBHelper.DBHelperParameter
@@ -505,8 +505,8 @@ Public Class ClaimAuthorizationDAL
         Return requestSuccess
     End Function
 
-    Public Function ReShipmentProcessRequest(ByVal claimAuthorizationId As Guid, ByVal cancelStatusReason As String) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/RESHIPMENT")
+    Public Function ReShipmentProcessRequest(claimAuthorizationId As Guid, cancelStatusReason As String) As Boolean
+        Dim selectStmt As String = Config("/SQL/RESHIPMENT")
         Dim requestSuccess As Boolean = False
         Try
             Dim inputParameters(1) As DBHelper.DBHelperParameter
@@ -526,8 +526,8 @@ Public Class ClaimAuthorizationDAL
         End Try
         Return requestSuccess
     End Function
-     Public Function ManualCashpayRequest(ByVal claimAuthorizationId As Guid, ByVal bankInfoId As Guid, byref errCode as integer, byref errMsg as string) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/MANUALCASHPAY")
+     Public Function ManualCashpayRequest(claimAuthorizationId As Guid, bankInfoId As Guid, byref errCode as integer, byref errMsg as string) As Boolean
+        Dim selectStmt As String = Config("/SQL/MANUALCASHPAY")
         Dim requestSuccess As Boolean = False
         Try
             Dim inputParameters(1) As DBHelper.DBHelperParameter
@@ -552,8 +552,8 @@ Public Class ClaimAuthorizationDAL
         Return requestSuccess
     End Function
 
-    Public Function CheckLinkedAuthItem(ByVal claimAuthorizationId As Guid) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/CHECK_LINKED_AUTH_ITEM")
+    Public Function CheckLinkedAuthItem(claimAuthorizationId As Guid) As Boolean
+        Dim selectStmt As String = Config("/SQL/CHECK_LINKED_AUTH_ITEM")
         Dim requestSuccess As Boolean = False
         Try
             Dim inputParameters(0) As DBHelper.DBHelperParameter
@@ -573,9 +573,9 @@ Public Class ClaimAuthorizationDAL
         Return requestSuccess
     End Function
 
-    Public Function RefundFee(ByVal claimAuthorizationId As Guid, byval refundReasonId As Guid,  byval claimAuthItemId As Guid, byref errCode as integer, byref errMsg as string) As Boolean
+    Public Function RefundFee(claimAuthorizationId As Guid, refundReasonId As Guid,  claimAuthItemId As Guid, byref errCode as integer, byref errMsg as string) As Boolean
 
-        Dim selectStmt As String = Me.Config("/SQL/REFUND_FEE")
+        Dim selectStmt As String = Config("/SQL/REFUND_FEE")
         Dim requestSuccess As Boolean = False
         Try
             Dim inputParameters(2) As DBHelper.DBHelperParameter
@@ -608,7 +608,7 @@ Public Class ClaimAuthorizationDAL
     Public Sub SaveClaimReplaceOptions(claimId As Guid, eqipId As Guid,
                                   priority As String, vendorSKU As String, reserveInventory As String,
                                   inventoryId As Guid, createdBy As String, claimAuthorizationId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/SAVE_CLAIM_REPLACE_OPTIONS")
+        Dim selectStmt As String = Config("/SQL/SAVE_CLAIM_REPLACE_OPTIONS")
         Dim strTemp As String
 
         Using connection As New OracleConnection(DBHelper.ConnectString)

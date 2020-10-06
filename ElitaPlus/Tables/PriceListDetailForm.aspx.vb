@@ -19,7 +19,7 @@ Public Class PriceListDetailForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -101,9 +101,9 @@ Public Class PriceListDetailForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As PriceList
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As PriceList, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As PriceList, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -192,41 +192,41 @@ Public Class PriceListDetailForm
 
     Private ReadOnly Property IsNewPriceList() As Boolean
         Get
-            Return Me.State.MyBO.IsNew
+            Return State.MyBO.IsNew
         End Get
 
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Me.State.MyBO = New PriceList(CType(Me.CallingParameters, Guid))
+            If CallingParameters IsNot Nothing Then
+                State.MyBO = New PriceList(CType(CallingParameters, Guid))
 
-                Me.State.IsEditMode = True
+                State.IsEditMode = True
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
             Dim retObj As PriceListDetailForm.ReturnType = CType(ReturnPar, PriceListDetailForm.ReturnType)
-            Me.State.HasDataChanged = retObj.HasDataChanged
+            State.HasDataChanged = retObj.HasDataChanged
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
+                    If retObj IsNot Nothing Then
                         If Not retObj.EditingBo.IsNew Then
-                            Me.State.PriceListId = retObj.EditingBo.Id
+                            State.PriceListId = retObj.EditingBo.Id
                         End If
                     End If
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -234,54 +234,54 @@ Public Class PriceListDetailForm
 
 #Region "Page Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         Try
 
-            Me.UpdateBreadcrum()
-            Me.MasterPage.MessageController.Clear()
+            UpdateBreadcrum()
+            MasterPage.MessageController.Clear()
 
-            If Not Me.IsPostBack Then
-                Me.MenuEnabled = False
-                Me.AddControlMsg(Me.btnDelete, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
+            If Not IsPostBack Then
+                MenuEnabled = False
+                AddControlMsg(btnDelete, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, True)
 
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New PriceList
-                    Me.State.IsNew = True
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New PriceList
+                    State.IsNew = True
                 End If
 
-                Me.TranslateGridHeader(Grid)
-                Me.TranslateGridHeader(gvPendingApprovals)
-                Me.TranslateGridHeader(gvHistory)
-                Me.PopulateDropdowns()
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields(True)
+                TranslateGridHeader(Grid)
+                TranslateGridHeader(gvPendingApprovals)
+                TranslateGridHeader(gvHistory)
+                PopulateDropdowns()
+                PopulateFormFromBOs()
+                EnableDisableFields(True)
 
                 moSelectedTitle.Text = TranslationBase.TranslateLabelOrMessage("SELECTED VENDORS")
-                cboPageSize.SelectedValue = Me.State.PageSize.ToString()
-                cboPageSizePendingApproval.SelectedValue = Me.State.PageSize.ToString()
+                cboPageSize.SelectedValue = State.PageSize.ToString()
+                cboPageSizePendingApproval.SelectedValue = State.PageSize.ToString()
             End If
 
-            Me.CheckIfComingFromSaveConfirm()
-            Me.BindBoPropertiesToLabels()
+            CheckIfComingFromSaveConfirm()
+            BindBoPropertiesToLabels()
 
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
 #End Region
 
     Private Sub UpdateBreadcrum()
         'Breadcrumb and titles
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("SERVICE_NETWORK")
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("PRICE_LIST_DETAIL")
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("TABLES") & ElitaBase.Sperator & Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("EDIT_PRICE_LIST")
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("SERVICE_NETWORK")
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("PRICE_LIST_DETAIL")
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("TABLES") & ElitaBase.Sperator & MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("EDIT_PRICE_LIST")
     End Sub
 
 #Region "Button Clicks"
@@ -292,21 +292,21 @@ Public Class PriceListDetailForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+            HandleErrors(ex, MasterPage.MessageController)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = MasterPage.MessageController.Text
         End Try
     End Sub
 
@@ -317,52 +317,52 @@ Public Class PriceListDetailForm
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     ''' 
-    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+    Private Sub btnSave_Click(sender As System.Object, e As System.EventArgs) Handles btnSave.Click
         Try
             ' if the bo is not already in the past
-            If Not Me.State.IsNew Then
-                If DateHelper.GetDateValue(Me.State.MyBO.Effective.Value.ToString) > DateHelper.GetDateValue(CStr(DateTime.Now.Date)) Then
+            If Not State.IsNew Then
+                If DateHelper.GetDateValue(State.MyBO.Effective.Value.ToString) > DateHelper.GetDateValue(CStr(DateTime.Now.Date)) Then
                     ' if new effective date is in the past throw exception
-                    If DateHelper.GetDateValue(Me.txtEffective.Text.ToString()) < DateHelper.GetDateValue(CStr(DateTime.Now.Date)) Then
+                    If DateHelper.GetDateValue(txtEffective.Text.ToString()) < DateHelper.GetDateValue(CStr(DateTime.Now.Date)) Then
                         Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE)
                     End If
                 End If
             End If
 
-            Me.PopulateBOsFormFrom()
-            Me.State.MyBO.Validate()
+            PopulateBOsFormFrom()
+            State.MyBO.Validate()
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
 
-            If Me.txtEffective.Text = String.Empty Then
+            If txtEffective.Text = String.Empty Then
                 Throw New GUIException(Message.PRICELIST_INVALID_EFFECIVE_DATE, Assurant.ElitaPlus.Common.ErrorCodes.PRICELIST_INVALID_EFFECIVE_DATE)
             End If
 
-            If Me.CheckOverlap() Then
-                If Me.CheckExistingFutureListOverlap() Then
+            If CheckOverlap() Then
+                If CheckExistingFutureListOverlap() Then
                     Throw New GUIException(Message.MSG_GUI_OVERLAPPING_PRICE_LIST, Assurant.ElitaPlus.Common.ErrorCodes.PRICELIST_INVALID_EFFECIVE_DATE)
                 End If
-                Me.DisplayMessage(Message.MSG_GUI_OVERLAPPING_PRICE_LIST, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = DetailPageCommand.Accept
-                Me.State.OverlapExists = True
+                DisplayMessage(Message.MSG_GUI_OVERLAPPING_PRICE_LIST, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = DetailPageCommand.Accept
+                State.OverlapExists = True
                 Exit Sub
             End If
 
-            If (Me.State.MyBO.IsDirty OrElse Me.State.MyBO.IsFamilyDirty) Then
-                Me.State.HasDataChanged = True
-                Me.State.MyBO.Save()
-                Me.State.HasDataChanged = False
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields(True)
-                Me.ClearGridViewHeadersAndLabelsErrSign()
-                Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
+            If (State.MyBO.IsDirty OrElse State.MyBO.IsFamilyDirty) Then
+                State.HasDataChanged = True
+                State.MyBO.Save()
+                State.HasDataChanged = False
+                PopulateFormFromBOs()
+                EnableDisableFields(True)
+                ClearGridViewHeadersAndLabelsErrSign()
+                MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
             Else
-                Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
+                MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -372,21 +372,21 @@ Public Class PriceListDetailForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub btnUndo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo.Click
+    Private Sub btnUndo_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New PriceList(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New PriceList(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
-                Me.State.MyBO = New PriceList
+                State.MyBO = New PriceList
             End If
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields(True)
+            PopulateFormFromBOs()
+            EnableDisableFields(True)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -396,29 +396,29 @@ Public Class PriceListDetailForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete.Click
+    Private Sub btnDelete_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete.Click
         Try
-            If Me.State.MyBO.IsPriceListAssignedtoServiceCenter Then
+            If State.MyBO.IsPriceListAssignedtoServiceCenter Then
                 Throw New GUIException(Message.MSG_GUI_PRICE_LIST_ASSIGNED_TO_SERVICE_CENTER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_LIST_CODE_ERR)
             Else
-                If Me.State.MyBO.Effective.Value > DateTime.Now Then
-                    Me.State.MyBO.BeginEdit()
-                    Me.State.MyBO.Delete()
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = True
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+                If State.MyBO.Effective.Value > DateTime.Now Then
+                    State.MyBO.BeginEdit()
+                    State.MyBO.Delete()
+                    State.MyBO.Save()
+                    State.HasDataChanged = True
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
                 Else
-                    Me.State.MyBO.Accept(New ExpirationVisitor)
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = True
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Expire, Me.State.MyBO, Me.State.HasDataChanged))
+                    State.MyBO.Accept(New ExpirationVisitor)
+                    State.MyBO.Save()
+                    State.HasDataChanged = True
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Expire, State.MyBO, State.HasDataChanged))
                 End If
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             'undo the delete
-            Me.State.MyBO.RejectChanges()
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            State.MyBO.RejectChanges()
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -428,19 +428,19 @@ Public Class PriceListDetailForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub btnNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
+    Private Sub btnNew_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If (Me.State.MyBO.IsDirty) And Not (Me.State.MyBO.Code = String.Empty Or Me.State.MyBO.Code = Nothing) Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+            PopulateBOsFormFrom()
+            If (State.MyBO.IsDirty) And Not (State.MyBO.Code = String.Empty Or State.MyBO.Code = Nothing) Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
-                Me.ClearGridHeadersAndLabelsErrSign()
+                CreateNew()
+                ClearGridHeadersAndLabelsErrSign()
                 'Me.callPage(PriceListDetailForm.URL)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -450,17 +450,17 @@ Public Class PriceListDetailForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub btnCopy_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClone.Click
+    Private Sub btnCopy_Click(sender As System.Object, e As System.EventArgs) Handles btnClone.Click
         Try
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
-                Me.CreateNewWithCopy()
+                CreateNewWithCopy()
             End If
-            Me.PopulateBOsFormFrom()
+            PopulateBOsFormFrom()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -474,13 +474,13 @@ Public Class PriceListDetailForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub btnAddEquipment_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddEquipment.Click
+    Private Sub btnAddEquipment_Click(sender As System.Object, e As System.EventArgs) Handles btnAddEquipment.Click
         Try
             If (ddlEquipmentlist.SelectedIndex <> BLANK_ITEM_SELECTED) Then
                 If BulkAddEquipment() Then
-                    Me.State.HasDataChanged = False
-                    Me.PopulateGrid()
-                    Me.ClearGridViewHeadersAndLabelsErrSign()
+                    State.HasDataChanged = False
+                    PopulateGrid()
+                    ClearGridViewHeadersAndLabelsErrSign()
 
                     ddlEquipmentlist.SelectedIndex = BLANK_ITEM_SELECTED
                     ddlServiceClass.SelectedIndex = BLANK_ITEM_SELECTED
@@ -488,17 +488,17 @@ Public Class PriceListDetailForm
                     txtNewEquipVendorSKU.Text = String.Empty
                     txtNewEquipSKUDescription.Text = String.Empty
 
-                    Me.MasterPage.MessageController.AddSuccess(Message.RECORD_ADDED_OK)
+                    MasterPage.MessageController.AddSuccess(Message.RECORD_ADDED_OK)
                 Else
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                    MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                 End If
             Else
-                Me.MasterPage.MessageController.AddError(Message.INVALID_SELECT_EQUIPMENT_LIST)
+                MasterPage.MessageController.AddError(Message.INVALID_SELECT_EQUIPMENT_LIST)
             End If
         Catch BO_ex As BOValidationException
-            Me.HandleErrors(BO_ex, Me.MasterPage.MessageController)
+            HandleErrors(BO_ex, MasterPage.MessageController)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -513,83 +513,83 @@ Public Class PriceListDetailForm
 
             If ddlEquipmentlist.SelectedIndex <> BLANK_ITEM_SELECTED Then
                 'BeginPriceListDetailChildEdit()
-                Me.State.MyChildBO = Me.State.MyBO.GetNewPriceListDetailChild
+                State.MyChildBO = State.MyBO.GetNewPriceListDetailChild
                 'Me.State.MyChildBO.BeginEdit()
 
                 ' Equipment Id
-                Me.State.MyChildBO.EquipmentId = New Guid(ddlEquipmentlist.SelectedValue)
+                State.MyChildBO.EquipmentId = New Guid(ddlEquipmentlist.SelectedValue)
 
                 ' Service Type
-                If Not ddlServiceType Is Nothing Then
-                    Me.PopulateBOProperty(Me.State.MyChildBO, "ServiceTypeId", New Guid(ddlServiceType.SelectedValue))
-                    Me.State.MyChildBO.ServiceTypeCode = ddlServiceType.SelectedItem.Text.ToString()
+                If ddlServiceType IsNot Nothing Then
+                    PopulateBOProperty(State.MyChildBO, "ServiceTypeId", New Guid(ddlServiceType.SelectedValue))
+                    State.MyChildBO.ServiceTypeCode = ddlServiceType.SelectedItem.Text.ToString()
                 End If
 
                 ' Service Class
-                If Not ddlServiceClass Is Nothing Then
-                    Me.PopulateBOProperty(Me.State.MyChildBO, "ServiceClassId", New Guid(ddlServiceClass.SelectedValue))
-                    Me.State.MyChildBO.ServiceClassCode = ddlServiceClass.SelectedItem.Text.ToString()
+                If ddlServiceClass IsNot Nothing Then
+                    PopulateBOProperty(State.MyChildBO, "ServiceClassId", New Guid(ddlServiceClass.SelectedValue))
+                    State.MyChildBO.ServiceClassCode = ddlServiceClass.SelectedItem.Text.ToString()
                 End If
 
                 'Get make model from the equipment
-                If Not Me.State.MyChildBO.EquipmentId.Equals(Guid.Empty) Then
+                If Not State.MyChildBO.EquipmentId.Equals(Guid.Empty) Then
                     Dim ds As New DataSet
-                    ds = (New PriceListDetail).GetMakeModelByEquipmentId(Me.State.MyChildBO.EquipmentId, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
+                    ds = (New PriceListDetail).GetMakeModelByEquipmentId(State.MyChildBO.EquipmentId, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
                     If ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
-                        Me.PopulateBOProperty(Me.State.MyChildBO, "Make", ds.Tables(0).Rows(0)("Make").ToString())
-                        Me.PopulateBOProperty(Me.State.MyChildBO, "Model", ds.Tables(0).Rows(0)("Model").ToString())
-                        Me.PopulateBOProperty(Me.State.MyChildBO, "MakeId", GuidControl.ByteArrayToGuid(ds.Tables(0).Rows(0)("manufacturer_id")))
+                        PopulateBOProperty(State.MyChildBO, "Make", ds.Tables(0).Rows(0)("Make").ToString())
+                        PopulateBOProperty(State.MyChildBO, "Model", ds.Tables(0).Rows(0)("Model").ToString())
+                        PopulateBOProperty(State.MyChildBO, "MakeId", GuidControl.ByteArrayToGuid(ds.Tables(0).Rows(0)("manufacturer_id")))
                     End If
                 End If
 
                 ' Currency
                 Dim company As New ElitaPlus.BusinessObjectsNew.Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
                 Dim currencyobj As New ElitaPlus.BusinessObjectsNew.Country(company.CountryId)
-                Me.State.MyChildBO.CurrencyId = currencyobj.PrimaryCurrencyId
+                State.MyChildBO.CurrencyId = currencyobj.PrimaryCurrencyId
 
                 ' PriceList Detail Type
-                Me.State.MyChildBO.PriceListDetailTypeId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_PRICE_LIST_DETAIL_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), LookupListCache.LK_USER_DEFINED_CODE)
+                State.MyChildBO.PriceListDetailTypeId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_PRICE_LIST_DETAIL_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), LookupListCache.LK_USER_DEFINED_CODE)
 
-                Me.State.MyChildBO.PriceListId = Me.State.MyBO.Id
+                State.MyChildBO.PriceListId = State.MyBO.Id
 
                 'Vendor SKU
-                Me.State.MyChildBO.VendorSku = Me.txtNewEquipVendorSKU.Text
+                State.MyChildBO.VendorSku = txtNewEquipVendorSKU.Text
 
                 'Vendor Description
-                Me.State.MyChildBO.VendorSkuDescription = Me.txtNewEquipSKUDescription.Text
+                State.MyChildBO.VendorSkuDescription = txtNewEquipSKUDescription.Text
 
                 Me.State.MyChildBO.Price = CType(NO_PRICE, Decimal)
                 Me.State.MyChildBO.PriceBandRangeFrom = PRICE_BAND_RANGE_FROM
                 Me.State.MyChildBO.PriceBandRangeTo = PRICE_BAND_RANGE_TO
 
                 'if parent effective date is in the past, then use current date or else use parent effective date                
-                If (DateHelper.GetDateValue(Me.txtEffective.Text.ToString()) > PriceListDetail.GetCurrentDateTime()) Then
-                    Me.State.MyChildBO.Effective = DateHelper.GetDateValue(Me.txtEffective.Text.ToString())
+                If (DateHelper.GetDateValue(txtEffective.Text.ToString()) > PriceListDetail.GetCurrentDateTime()) Then
+                    State.MyChildBO.Effective = DateHelper.GetDateValue(txtEffective.Text.ToString())
                 Else
-                    Me.State.MyChildBO.Effective = PriceListDetail.GetCurrentDateTime()
+                    State.MyChildBO.Effective = PriceListDetail.GetCurrentDateTime()
                 End If
 
-                Me.State.MyChildBO.Expiration = DateHelper.GetDateValue(Me.txtExpirationDate.Text.ToString())
-                Me.State.MyChildBO.Validate()
+                State.MyChildBO.Expiration = DateHelper.GetDateValue(txtExpirationDate.Text.ToString())
+                State.MyChildBO.Validate()
 
-                If Me.State.MyChildBO.IsDirty Then
+                If State.MyChildBO.IsDirty Then
                     ' check if already exists
                     ' same equipment id, condition id, service_class id, service type id and sku
-                    If Me.State.MyChildBO.OverlapExists(False) Then
-                        If Me.State.MyChildBO.ExpireOverLappingList() Then
+                    If State.MyChildBO.OverlapExists(False) Then
+                        If State.MyChildBO.ExpireOverLappingList() Then
                             'Me.State.MyChildBO.BeginEdit()
-                            Me.State.MyChildBO.Effective = PriceListDetail.GetCurrentDateTime()
+                            State.MyChildBO.Effective = PriceListDetail.GetCurrentDateTime()
                             'Me.State.MyChildBO.EndEdit()
-                            Me.State.ChildOverlapExists = False
+                            State.ChildOverlapExists = False
                         Else
-                            Me.State.ChildOverlapExists = True
+                            State.ChildOverlapExists = True
                         End If
                     End If
 
                     Try
-                        If Not (Me.State.ChildOverlapExists) Then
+                        If Not (State.ChildOverlapExists) Then
                             'Me.State.MyChildBO.BeginEdit()
-                            Me.State.MyChildBO.Save()
+                            State.MyChildBO.Save()
                         End If
                     Catch ex As Exception
                         'Me.State.MyChildBO.RejectChanges()
@@ -616,11 +616,11 @@ Public Class PriceListDetailForm
             If oEquipmentList.Count > 0 Then
                 Return oEquipmentList
             Else
-                Me.DisplayMessage(Message.MSG_NO_RECORDS_FOUND, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.MSG_NO_RECORDS_FOUND, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Exit Function
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Function
 
@@ -631,22 +631,22 @@ Public Class PriceListDetailForm
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     ''' 
-    Private Sub addBtn_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles addBtnNewListItem.Click
+    Private Sub addBtn_Click(sender As Object, e As System.EventArgs) Handles addBtnNewListItem.Click
         Try
-            Me.State.ChildActionInProgress = DetailPageCommand.New_
-            Me.PopulateModalControls()
-            Me.ShowHideQuantity()
+            State.ChildActionInProgress = DetailPageCommand.New_
+            PopulateModalControls()
+            ShowHideQuantity()
             'Me.State.MyChildBO = Nothing
-            Me.State.PriceListDetailSelectedChildId = Guid.Empty
+            State.PriceListDetailSelectedChildId = Guid.Empty
             BeginPriceListDetailChildEdit()
             'Me.SetSelectedItemByText(ddldetailtype, USER_DEFINED)
-            Me.SetSelectedItem(ddldetailtype, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_PRICE_LIST_DETAIL_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), LookupListCache.LK_USER_DEFINED_CODE))
-            If Me.State.MyChildBO.CurrencyId.Equals(Guid.Empty) Then
+            SetSelectedItem(ddldetailtype, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_PRICE_LIST_DETAIL_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), LookupListCache.LK_USER_DEFINED_CODE))
+            If State.MyChildBO.CurrencyId.Equals(Guid.Empty) Then
                 Dim company As New ElitaPlus.BusinessObjectsNew.Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
                 Dim currencyobj As New ElitaPlus.BusinessObjectsNew.Country(company.CountryId)
-                Me.SetSelectedItem(ddlcurrency, currencyobj.PrimaryCurrencyId)
+                SetSelectedItem(ddlcurrency, currencyobj.PrimaryCurrencyId)
             Else
-                Me.PopulateControlFromBOProperty(ddlcurrency, Me.State.MyChildBO.CurrencyId)
+                PopulateControlFromBOProperty(ddlcurrency, State.MyChildBO.CurrencyId)
             End If
             ControlMgr.SetEnableControl(Me, ddldetailtype, True)
             ControlMgr.SetEnableControl(Me, ddlcurrency, True)
@@ -656,12 +656,12 @@ Public Class PriceListDetailForm
             'ddlRiskType.Items.Insert(0, New ListItem(TranslationBase.TranslateLabelOrMessage(ANY), Guid.Empty.ToString()))
             mdlPopup.Show()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Sub BeginPriceListDetailChildEdit()
-        With Me.State
+        With State
             If Not .PriceListDetailSelectedChildId.Equals(Guid.Empty) Then
                 .MyChildBO = .MyBO.GetPriceListDetailChild(.PriceListDetailSelectedChildId)
             Else
@@ -671,8 +671,8 @@ Public Class PriceListDetailForm
         End With
 
         BindBoPropertiesToModalPopupLabels()
-        Me.AddLabelDecorations(Me.State.MyChildBO)
-        Me.lblcurrency.Text = lblcurrency.Text.Substring(0, lblcurrency.Text.Length - 1)
+        AddLabelDecorations(State.MyChildBO)
+        lblcurrency.Text = lblcurrency.Text.Substring(0, lblcurrency.Text.Length - 1)
     End Sub
 
     Private Sub ShowHideQuantity()
@@ -697,17 +697,17 @@ Public Class PriceListDetailForm
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     ''' 
-    Private Sub btnNewItemCancel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNewItemCancel.Click
+    Private Sub btnNewItemCancel_Click(sender As Object, e As System.EventArgs) Handles btnNewItemCancel.Click
         Try
 
-            Me.State.MyChildBO.cancelEdit()
-            If Me.State.MyChildBO.IsSaveNew Then
-                Me.State.MyChildBO.Delete()
-                Me.State.MyChildBO.Save()
+            State.MyChildBO.cancelEdit()
+            If State.MyChildBO.IsSaveNew Then
+                State.MyChildBO.Delete()
+                State.MyChildBO.Save()
             End If
             mdlPopup.Hide()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -717,230 +717,230 @@ Public Class PriceListDetailForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Public Sub btnNewItemSave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNewItemSave.Click
+    Public Sub btnNewItemSave_Click(sender As Object, e As System.EventArgs) Handles btnNewItemSave.Click
         Try
 
             'get the service type list id
             If (ddlNewItemServiceType.SelectedIndex <> NO_ITEM_SELECTED_INDEX) Then
-                Me.PopulateBOProperty(Me.State.MyChildBO, "ServiceTypeId", New Guid(ddlNewItemServiceType.SelectedValue))
-                Me.PopulateBOProperty(Me.State.MyChildBO, "ServiceTypeCode", ddlNewItemServiceType.SelectedItem.Text.ToString())
+                PopulateBOProperty(State.MyChildBO, "ServiceTypeId", New Guid(ddlNewItemServiceType.SelectedValue))
+                PopulateBOProperty(State.MyChildBO, "ServiceTypeCode", ddlNewItemServiceType.SelectedItem.Text.ToString())
             End If
 
             'get the service class list id
             If (ddlNewItemServiceClass.SelectedIndex <> NO_ITEM_SELECTED_INDEX) Then
-                Me.PopulateBOProperty(Me.State.MyChildBO, "ServiceClassId", New Guid(ddlNewItemServiceClass.SelectedValue))
-                Me.PopulateBOProperty(Me.State.MyChildBO, "ServiceClassCode", ddlNewItemServiceClass.SelectedItem.Text.ToString())
+                PopulateBOProperty(State.MyChildBO, "ServiceClassId", New Guid(ddlNewItemServiceClass.SelectedValue))
+                PopulateBOProperty(State.MyChildBO, "ServiceClassCode", ddlNewItemServiceClass.SelectedItem.Text.ToString())
             End If
 
             'get the service level list id
             If (ddlNewItemServiceLevel.SelectedIndex <> NO_ITEM_SELECTED_INDEX) Then
-                Me.PopulateBOProperty(Me.State.MyChildBO, "ServiceLevelId", New Guid(ddlNewItemServiceLevel.SelectedValue))
-                Me.PopulateBOProperty(Me.State.MyChildBO, "ServiceLevelCode", ddlNewItemServiceLevel.SelectedItem.Text.ToString())
+                PopulateBOProperty(State.MyChildBO, "ServiceLevelId", New Guid(ddlNewItemServiceLevel.SelectedValue))
+                PopulateBOProperty(State.MyChildBO, "ServiceLevelCode", ddlNewItemServiceLevel.SelectedItem.Text.ToString())
             End If
 
             'get the service class list id
             If (ddlNewItemCondition.SelectedIndex <> NO_ITEM_SELECTED_INDEX AndAlso ddlNewItemMake.SelectedIndex <> BLANK_ITEM_SELECTED) Then
-                Me.PopulateBOProperty(Me.State.MyChildBO, "ConditionId", New Guid(ddlNewItemCondition.SelectedValue))
-                Me.PopulateBOProperty(Me.State.MyChildBO, "ConditionTypeCode", ddlNewItemCondition.SelectedItem.Text.ToString())
+                PopulateBOProperty(State.MyChildBO, "ConditionId", New Guid(ddlNewItemCondition.SelectedValue))
+                PopulateBOProperty(State.MyChildBO, "ConditionTypeCode", ddlNewItemCondition.SelectedItem.Text.ToString())
             Else
-                Me.PopulateBOProperty(Me.State.MyChildBO, "ConditionId", Guid.Empty)
-                Me.PopulateBOProperty(Me.State.MyChildBO, "ConditionTypeCode", String.Empty)
+                PopulateBOProperty(State.MyChildBO, "ConditionId", Guid.Empty)
+                PopulateBOProperty(State.MyChildBO, "ConditionTypeCode", String.Empty)
             End If
 
             'get the service class list id
             If (ddlNewItemReplacementTaxType.SelectedIndex <> NO_ITEM_SELECTED_INDEX) Then
-                Me.PopulateBOProperty(Me.State.MyChildBO, "ReplacementTaxType", New Guid(ddlNewItemReplacementTaxType.SelectedValue))
+                PopulateBOProperty(State.MyChildBO, "ReplacementTaxType", New Guid(ddlNewItemReplacementTaxType.SelectedValue))
             End If
 
             If (ddlNewItemPart.SelectedIndex <> NO_ITEM_SELECTED_INDEX) Then
-                Me.PopulateBOProperty(Me.State.MyChildBO, "PartId", New Guid(ddlNewItemPart.SelectedValue))
-                Me.PopulateBOProperty(Me.State.MyChildBO, "PartDescription", ddlNewItemPart.SelectedItem.Text.ToString())
+                PopulateBOProperty(State.MyChildBO, "PartId", New Guid(ddlNewItemPart.SelectedValue))
+                PopulateBOProperty(State.MyChildBO, "PartDescription", ddlNewItemPart.SelectedItem.Text.ToString())
             Else
-                Me.PopulateBOProperty(Me.State.MyChildBO, "PartId", Guid.Empty)
-                Me.PopulateBOProperty(Me.State.MyChildBO, "PartDescription", String.Empty)
+                PopulateBOProperty(State.MyChildBO, "PartId", Guid.Empty)
+                PopulateBOProperty(State.MyChildBO, "PartDescription", String.Empty)
             End If
 
             If (ddlNewManOri.SelectedIndex <> NO_ITEM_SELECTED_INDEX AndAlso ddlNewItemPart.SelectedIndex <> BLANK_ITEM_SELECTED) Then
-                Me.PopulateBOProperty(Me.State.MyChildBO, "ManufacturerOriginCode", ddlNewManOri.SelectedValue)
-                Me.PopulateBOProperty(Me.State.MyChildBO, "ManufacturerOriginDescription", ddlNewManOri.SelectedItem.Text.ToString())
+                PopulateBOProperty(State.MyChildBO, "ManufacturerOriginCode", ddlNewManOri.SelectedValue)
+                PopulateBOProperty(State.MyChildBO, "ManufacturerOriginDescription", ddlNewManOri.SelectedItem.Text.ToString())
             End If
 
 
-            Me.State.MyChildBO.VendorSku = txtNewItemVendorSKU.Text
-            Me.State.MyChildBO.VendorSkuDescription = txtNewItemSKUDescription.Text
+            State.MyChildBO.VendorSku = txtNewItemVendorSKU.Text
+            State.MyChildBO.VendorSkuDescription = txtNewItemSKUDescription.Text
 
-            Me.PopulateBOProperty(Me.State.MyChildBO, "PriceBandRangeFrom", Me.txtNewItemLowPrice)
-            Me.PopulateBOProperty(Me.State.MyChildBO, "PriceBandRangeTo", Me.txtNewItemHighPrice)
+            PopulateBOProperty(State.MyChildBO, "PriceBandRangeFrom", txtNewItemLowPrice)
+            PopulateBOProperty(State.MyChildBO, "PriceBandRangeTo", txtNewItemHighPrice)
 
             Dim Currencyobj As String = GetCurrencyId(0)
-            Me.State.MyChildBO.PriceLowWithSymbol = Currencyobj & "" & txtNewItemLowPrice.Text
-            Me.State.MyChildBO.PriceHighWithSymbol = Currencyobj & "" & txtNewItemHighPrice.Text
+            State.MyChildBO.PriceLowWithSymbol = Currencyobj & "" & txtNewItemLowPrice.Text
+            State.MyChildBO.PriceHighWithSymbol = Currencyobj & "" & txtNewItemHighPrice.Text
 
             If txtNewItemEffectiveDate.Text <> "" Then
-                If DateHelper.GetDateValue(Me.State.MyChildBO.Effective.ToString) <> DateHelper.GetDateValue(txtNewItemEffectiveDate.Text.ToString) Then
-                    If (DateHelper.GetDateValue(Me.txtNewItemEffectiveDate.Text.ToString()) < DateTime.Today()) Then
+                If DateHelper.GetDateValue(State.MyChildBO.Effective.ToString) <> DateHelper.GetDateValue(txtNewItemEffectiveDate.Text.ToString) Then
+                    If (DateHelper.GetDateValue(txtNewItemEffectiveDate.Text.ToString()) < DateTime.Today()) Then
                         Throw New GUIException(Message.MSG_GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE)
                     End If
                 End If
-                Me.State.MyChildBO.Effective = DateHelper.GetDateValue(txtNewItemEffectiveDate.Text.Trim())
+                State.MyChildBO.Effective = DateHelper.GetDateValue(txtNewItemEffectiveDate.Text.Trim())
             Else
                 ' The effecitve and exp dates will be set to parents dates
                 'if parent effective date is in the past, then use current date or else use parent effective date
                 'or else it will fail but bo
-                If (DateHelper.GetDateValue(Me.txtEffective.Text.ToString()) > PriceListDetail.GetCurrentDateTime()) Then
-                    Me.State.MyChildBO.Effective = DateHelper.GetDateValue(Me.txtEffective.Text.ToString())
+                If (DateHelper.GetDateValue(txtEffective.Text.ToString()) > PriceListDetail.GetCurrentDateTime()) Then
+                    State.MyChildBO.Effective = DateHelper.GetDateValue(txtEffective.Text.ToString())
                 Else
-                    Me.State.MyChildBO.Effective = PriceListDetail.GetCurrentDateTime()
+                    State.MyChildBO.Effective = PriceListDetail.GetCurrentDateTime()
                 End If
             End If
 
             If txtNewItemExpirationDate.Text <> "" Then
-                Me.State.MyChildBO.Expiration = DateHelper.GetDateValue(txtNewItemExpirationDate.Text.Trim())
+                State.MyChildBO.Expiration = DateHelper.GetDateValue(txtNewItemExpirationDate.Text.Trim())
             Else
-                Me.State.MyChildBO.Expiration = DateHelper.GetDateValue(Me.txtExpirationDate.Text.ToString())
+                State.MyChildBO.Expiration = DateHelper.GetDateValue(txtExpirationDate.Text.ToString())
             End If
 
             If IsNumeric(txtNewItemPrice.Text) Then
-                Me.State.MyChildBO.Price = CType(txtNewItemPrice.Text.Trim(), Decimal)
+                State.MyChildBO.Price = CType(txtNewItemPrice.Text.Trim(), Decimal)
             End If
 
-            Me.State.MyChildBO.PriceWithSymbol = Currencyobj & "" & txtNewItemPrice.Text
+            State.MyChildBO.PriceWithSymbol = Currencyobj & "" & txtNewItemPrice.Text
 
-            Me.State.MyChildBO.PriceListId = Me.State.MyBO.Id
+            State.MyChildBO.PriceListId = State.MyBO.Id
 
             'Equipment
             'get the equipment id
-            Me.State.MyChildEquipmentBO = New Equipment
+            State.MyChildEquipmentBO = New Equipment
             If (ddlNewItemMake.SelectedIndex <> NO_ITEM_SELECTED_INDEX) Then
-                Me.PopulateBOProperty(Me.State.MyChildEquipmentBO, "ManufacturerId", New Guid(ddlNewItemMake.SelectedValue))
-                Me.PopulateBOProperty(Me.State.MyChildBO, "MakeId", New Guid(ddlNewItemMake.SelectedValue))
-                Me.PopulateBOProperty(Me.State.MyChildBO, "Make", ddlNewItemMake.SelectedItem.Text.ToString())
+                PopulateBOProperty(State.MyChildEquipmentBO, "ManufacturerId", New Guid(ddlNewItemMake.SelectedValue))
+                PopulateBOProperty(State.MyChildBO, "MakeId", New Guid(ddlNewItemMake.SelectedValue))
+                PopulateBOProperty(State.MyChildBO, "Make", ddlNewItemMake.SelectedItem.Text.ToString())
             Else
-                Me.PopulateBOProperty(Me.State.MyChildEquipmentBO, "ManufacturerId", Guid.Empty)
-                Me.PopulateBOProperty(Me.State.MyChildBO, "MakeId", Guid.Empty)
-                Me.PopulateBOProperty(Me.State.MyChildBO, "Make", String.Empty)
+                PopulateBOProperty(State.MyChildEquipmentBO, "ManufacturerId", Guid.Empty)
+                PopulateBOProperty(State.MyChildBO, "MakeId", Guid.Empty)
+                PopulateBOProperty(State.MyChildBO, "Make", String.Empty)
             End If
             If (ddlNewItemModel.SelectedIndex <> NO_ITEM_SELECTED_INDEX) Then
-                Me.PopulateBOProperty(Me.State.MyChildBO, "EquipmentId", New Guid(ddlNewItemModel.SelectedValue))
-                Me.PopulateBOProperty(Me.State.MyChildEquipmentBO, "Model", ddlNewItemModel.SelectedItem.Text.ToString())
-                Me.PopulateBOProperty(Me.State.MyChildBO, "Model", ddlNewItemModel.SelectedItem.Text.ToString())
+                PopulateBOProperty(State.MyChildBO, "EquipmentId", New Guid(ddlNewItemModel.SelectedValue))
+                PopulateBOProperty(State.MyChildEquipmentBO, "Model", ddlNewItemModel.SelectedItem.Text.ToString())
+                PopulateBOProperty(State.MyChildBO, "Model", ddlNewItemModel.SelectedItem.Text.ToString())
             Else
-                Me.PopulateBOProperty(Me.State.MyChildBO, "EquipmentId", Guid.Empty)
-                Me.PopulateBOProperty(Me.State.MyChildEquipmentBO, "Model", String.Empty)
-                Me.PopulateBOProperty(Me.State.MyChildBO, "Model", String.Empty)
+                PopulateBOProperty(State.MyChildBO, "EquipmentId", Guid.Empty)
+                PopulateBOProperty(State.MyChildEquipmentBO, "Model", String.Empty)
+                PopulateBOProperty(State.MyChildBO, "Model", String.Empty)
             End If
 
 
             If (ddlNewItemPart.SelectedIndex <> NO_ITEM_SELECTED_INDEX AndAlso ddlNewItemMake.SelectedIndex <> NO_ITEM_SELECTED_INDEX) Then
-                Me.PopulateBOProperty(Me.State.MyChildBO, "Parent_MakeId", New Guid(ddlNewItemMake.SelectedValue))
-                Me.PopulateBOProperty(Me.State.MyChildBO, "Parent_Make", ddlNewItemMake.SelectedItem.Text.ToString())
+                PopulateBOProperty(State.MyChildBO, "Parent_MakeId", New Guid(ddlNewItemMake.SelectedValue))
+                PopulateBOProperty(State.MyChildBO, "Parent_Make", ddlNewItemMake.SelectedItem.Text.ToString())
 
                 Dim eqId As Guid = If(String.IsNullOrEmpty(ddlNewItemModel.SelectedValue), Guid.Empty, New Guid(ddlNewItemModel.SelectedValue))
-                Me.PopulateBOProperty(Me.State.MyChildBO, "Parent_EquipmentId", eqId)
+                PopulateBOProperty(State.MyChildBO, "Parent_EquipmentId", eqId)
 
                 Dim mdl = If(ddlNewItemModel.SelectedItem Is Nothing, String.Empty, ddlNewItemModel.SelectedItem.Text.ToString())
-                Me.State.MyChildBO.Parent_Model = mdl
+                State.MyChildBO.Parent_Model = mdl
 
                 Dim condId = If(String.IsNullOrEmpty(ddlNewItemCondition.SelectedValue), Guid.Empty, New Guid(ddlNewItemCondition.SelectedValue))
-                Me.PopulateBOProperty(Me.State.MyChildBO, "Parent_ConditionId", condId)
+                Me.PopulateBOProperty(State.MyChildBO, "Parent_ConditionId", condId)
 
                 Dim condText = If(ddlNewItemCondition.SelectedItem Is Nothing, String.Empty, ddlNewItemCondition.SelectedItem.Text.ToString())
-                Me.State.MyChildBO.Parent_ConditionTypeCode = condText
+                State.MyChildBO.Parent_ConditionTypeCode = condText
             End If
             'populate Risk Type id and Code
-            Me.PopulateBOProperty(Me.State.MyChildBO, "RiskTypeId", New Guid(ddlRiskType.SelectedValue))
-            Me.PopulateBOProperty(Me.State.MyChildBO, "RiskTypeCode", ddlRiskType.SelectedItem.Text.ToString())
+            PopulateBOProperty(State.MyChildBO, "RiskTypeId", New Guid(ddlRiskType.SelectedValue))
+            PopulateBOProperty(State.MyChildBO, "RiskTypeCode", ddlRiskType.SelectedItem.Text.ToString())
 
             'Populate Equipment ClassID and Code
-            Me.PopulateBOProperty(Me.State.MyChildBO, "EquipmentClassId", New Guid(ddlEquipmentClass.SelectedValue))
-            Me.PopulateBOProperty(Me.State.MyChildBO, "EquipmentCode", ddlEquipmentClass.SelectedItem.Text.ToString())
+            PopulateBOProperty(State.MyChildBO, "EquipmentClassId", New Guid(ddlEquipmentClass.SelectedValue))
+            PopulateBOProperty(State.MyChildBO, "EquipmentCode", ddlEquipmentClass.SelectedItem.Text.ToString())
 
             ' Populate Item Quantity
-            Me.PopulateBOProperty(Me.State.MyChildBO, "VendorQuantity", txtNewItemQuantity.Text.ToString())
+            PopulateBOProperty(State.MyChildBO, "VendorQuantity", txtNewItemQuantity.Text.ToString())
 
             'populate Currency
-            Me.PopulateBOProperty(Me.State.MyChildBO, "CurrencyId", New Guid(ddlcurrency.SelectedValue))
+            PopulateBOProperty(State.MyChildBO, "CurrencyId", New Guid(ddlcurrency.SelectedValue))
 
             'PriceListDetailType
-            Me.PopulateBOProperty(Me.State.MyChildBO, "PriceListDetailTypeId", New Guid(ddldetailtype.SelectedValue))
+            PopulateBOProperty(State.MyChildBO, "PriceListDetailTypeId", New Guid(ddldetailtype.SelectedValue))
 
             'Populate the vendor quantity
             If (txtNewItemQuantity.Text <> "") Then
-                Me.State.MyChildBO.VendorQuantity = CType(Me.txtNewItemQuantity.Text.Trim(), LongType)
+                State.MyChildBO.VendorQuantity = CType(txtNewItemQuantity.Text.Trim(), LongType)
             End If
 
-            Me.BindChildBoPropertiesToLabels()
+            BindChildBoPropertiesToLabels()
 
-            If Me.State.MyChildBO.IsDirty Then
+            If State.MyChildBO.IsDirty Then
                 ' check if already exists
                 ' same equipment id, condition id, service_class id, service type id and sku
-                If Me.State.MyChildBO.OverlapExists(True) Then
-                    If Me.State.MyChildBO.ExpireOverLappingList() Then
-                        Me.State.ChildOverlapExists = False
+                If State.MyChildBO.OverlapExists(True) Then
+                    If State.MyChildBO.ExpireOverLappingList() Then
+                        State.ChildOverlapExists = False
                     Else
-                        Me.State.ChildOverlapExists = True
+                        State.ChildOverlapExists = True
                     End If
                 End If
 
                 If IsNumeric(txtNewItemPrice.Text) Then
-                    Me.State.MyChildBO.Price = CType(txtNewItemPrice.Text.Trim(), Decimal)
+                    State.MyChildBO.Price = CType(txtNewItemPrice.Text.Trim(), Decimal)
                 Else
                     Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ONLY_DIGITS_ALLOWED_FOR_PRICE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ONLY_DIGITS_ALLOWED_FOR_PRICE)
                 End If
 
-                Me.State.MyChildBO.Validate()
+                State.MyChildBO.Validate()
 
                 Try
-                    If Not (Me.State.ChildOverlapExists) Then
-                        If Me.State.MyChildBO.IsDirty Then
-                            Me.State.MyChildBO.Save()
-                            Me.State.MyChildBO.EndEdit()
+                    If Not (State.ChildOverlapExists) Then
+                        If State.MyChildBO.IsDirty Then
+                            State.MyChildBO.Save()
+                            State.MyChildBO.EndEdit()
                         End If
 
-                        Me.State.HasDataChanged = False
+                        State.HasDataChanged = False
                     End If
 
                 Catch ex As Exception
-                    Me.State.MyChildBO.RejectChanges()
-                    Me.State.MyChildEquipmentBO.RejectChanges()
+                    State.MyChildBO.RejectChanges()
+                    State.MyChildEquipmentBO.RejectChanges()
                     Throw ex
                 End Try
 
-                Me.PopulateGrid()
-                Me.EnableDisableFields(True)
-                Me.ClearGridViewHeadersAndLabelsErrSign()
+                PopulateGrid()
+                EnableDisableFields(True)
+                ClearGridViewHeadersAndLabelsErrSign()
 
                 'Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
                 'Else
                 'Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
             End If
             'to reset the boolen value
-            Me.State.IsGridInEditMode = False
+            State.IsGridInEditMode = False
             'Me.State.MyChildBO.EndEdit()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.mdlPopup.Show()
+            HandleErrors(ex, MasterPage.MessageController)
+            mdlPopup.Show()
         End Try
     End Sub
 
 
     Protected Sub BindChildBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "ServiceClassId", Me.lblNewItemServiceClass)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "ConditionId", Me.lblNewItemCondition)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "MakeId", Me.lblNewItemMake)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "EquipmentId", Me.lblNewItemModel)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "VendorSku", Me.lblNewItemVendorSKU)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "VendorSkuDescription", Me.lblNewItemSKUDesciption)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "Price", Me.lblNewItemPrice)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "Effective", Me.lblNewItemEffectiveDate)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "Expiration", Me.lblNewItemExpirationDate)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "VendorQuantity", Me.lblNewItemQuantity)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "PriceBandRangeFrom", Me.lblNewItemLowPrice)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "PriceBandRangeTo", Me.lblNewItemHighPrice)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "ReplacementTaxType", Me.lblNewItemSelectTaxType)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "CurrencyId", Me.lblcurrency)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "PartId", Me.lblNewItemPart)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "ManufacturerOriginCode", Me.lblNewManOri)
+        BindBOPropertyToLabel(State.MyChildBO, "ServiceClassId", lblNewItemServiceClass)
+        BindBOPropertyToLabel(State.MyChildBO, "ConditionId", lblNewItemCondition)
+        BindBOPropertyToLabel(State.MyChildBO, "MakeId", lblNewItemMake)
+        BindBOPropertyToLabel(State.MyChildBO, "EquipmentId", lblNewItemModel)
+        BindBOPropertyToLabel(State.MyChildBO, "VendorSku", lblNewItemVendorSKU)
+        BindBOPropertyToLabel(State.MyChildBO, "VendorSkuDescription", lblNewItemSKUDesciption)
+        BindBOPropertyToLabel(State.MyChildBO, "Price", lblNewItemPrice)
+        BindBOPropertyToLabel(State.MyChildBO, "Effective", lblNewItemEffectiveDate)
+        BindBOPropertyToLabel(State.MyChildBO, "Expiration", lblNewItemExpirationDate)
+        BindBOPropertyToLabel(State.MyChildBO, "VendorQuantity", lblNewItemQuantity)
+        BindBOPropertyToLabel(State.MyChildBO, "PriceBandRangeFrom", lblNewItemLowPrice)
+        BindBOPropertyToLabel(State.MyChildBO, "PriceBandRangeTo", lblNewItemHighPrice)
+        BindBOPropertyToLabel(State.MyChildBO, "ReplacementTaxType", lblNewItemSelectTaxType)
+        BindBOPropertyToLabel(State.MyChildBO, "CurrencyId", lblcurrency)
+        BindBOPropertyToLabel(State.MyChildBO, "PartId", lblNewItemPart)
+        BindBOPropertyToLabel(State.MyChildBO, "ManufacturerOriginCode", lblNewManOri)
 
     End Sub
 
@@ -949,11 +949,11 @@ Public Class PriceListDetailForm
 #Region "Controlling Logic"
 
     Private Function CheckOverlap() As Boolean
-        Return Me.State.MyBO.Accept(New OverlapValidationVisitor)
+        Return State.MyBO.Accept(New OverlapValidationVisitor)
     End Function
 
     Private Function CheckExistingFutureListOverlap() As Boolean
-        Return Me.State.MyBO.Accept(New FutureOverlapValidationVisitor)
+        Return State.MyBO.Accept(New FutureOverlapValidationVisitor)
     End Function
 
     ''' <summary>
@@ -961,49 +961,49 @@ Public Class PriceListDetailForm
     ''' </summary>
     ''' <remarks></remarks>
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Code", Me.lblCode)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Description", Me.lblDescription)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CountryId", Me.lblCountry)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "DefaultCurrencyId", Me.lblDefaultCurrency)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ManageInventoryId", Me.lblManageInventory)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Effective", Me.lblEffectiveDate)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Expiration", Me.lblExpirationDate)
+        BindBOPropertyToLabel(State.MyBO, "Code", lblCode)
+        BindBOPropertyToLabel(State.MyBO, "Description", lblDescription)
+        BindBOPropertyToLabel(State.MyBO, "CountryId", lblCountry)
+        BindBOPropertyToLabel(State.MyBO, "DefaultCurrencyId", lblDefaultCurrency)
+        BindBOPropertyToLabel(State.MyBO, "ManageInventoryId", lblManageInventory)
+        BindBOPropertyToLabel(State.MyBO, "Effective", lblEffectiveDate)
+        BindBOPropertyToLabel(State.MyBO, "Expiration", lblExpirationDate)
         '''''appending : as the above 3 are part of the childbo but childbo is not loaded on the page load.
         If Not lblEquipmentList.Text.EndsWith(":") Then
-            Me.lblEquipmentList.Text = Me.lblEquipmentList.Text & ":"
+            lblEquipmentList.Text = lblEquipmentList.Text & ":"
         End If
         If Not lblServiceClass.Text.EndsWith(":") Then
-            Me.lblServiceClass.Text = Me.lblServiceClass.Text & ":"
+            lblServiceClass.Text = lblServiceClass.Text & ":"
         End If
         If Not lblServiceType.Text.EndsWith(":") Then
-            Me.lblServiceType.Text = Me.lblServiceType.Text & ":"
+            lblServiceType.Text = lblServiceType.Text & ":"
         End If
     End Sub
 
     Protected Sub BindBoPropertiesToModalPopupLabels()
         'Modal popup labels
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "ServiceClassId", Me.lblNewItemServiceClass)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "Price", Me.lblNewItemPrice)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "ServiceTypeId", Me.lblNewItemServiceType)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "VendorQuantity", Me.lblNewItemQuantity)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "MakeId", Me.lblNewItemMake)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "Effective", Me.lblNewItemEffectiveDate)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "EquipmentId", Me.lblNewItemModel)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "Expiration", Me.lblNewItemExpirationDate)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "RiskTypeId", Me.lblRiskType)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "EquipmentClassId", Me.lblEquipmentClass)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "ConditionId", Me.lblNewItemCondition)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "ServiceLevelId", Me.lblNewItemServiceLevel)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "VendorSku", Me.lblNewItemVendorSKU)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "VendorSkuDescription", Me.lblNewItemSKUDesciption)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "PriceBandRangeFrom", Me.lblNewItemLowPrice)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "PriceBandRangeTo", Me.lblNewItemHighPrice)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "ReplacementTaxType", Me.lblNewItemSelectTaxType)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "CurrencyId", Me.lblcurrency)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "PriceListDetailTypeId", Me.lbldetailtype)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "CalculationPercent", Me.lblcalculation)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "ManufacturerOriginCode", Me.lblNewManOri)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "PartId", Me.lblNewItemPart)
+        BindBOPropertyToLabel(State.MyChildBO, "ServiceClassId", lblNewItemServiceClass)
+        BindBOPropertyToLabel(State.MyChildBO, "Price", lblNewItemPrice)
+        BindBOPropertyToLabel(State.MyChildBO, "ServiceTypeId", lblNewItemServiceType)
+        BindBOPropertyToLabel(State.MyChildBO, "VendorQuantity", lblNewItemQuantity)
+        BindBOPropertyToLabel(State.MyChildBO, "MakeId", lblNewItemMake)
+        BindBOPropertyToLabel(State.MyChildBO, "Effective", lblNewItemEffectiveDate)
+        BindBOPropertyToLabel(State.MyChildBO, "EquipmentId", lblNewItemModel)
+        BindBOPropertyToLabel(State.MyChildBO, "Expiration", lblNewItemExpirationDate)
+        BindBOPropertyToLabel(State.MyChildBO, "RiskTypeId", lblRiskType)
+        BindBOPropertyToLabel(State.MyChildBO, "EquipmentClassId", lblEquipmentClass)
+        BindBOPropertyToLabel(State.MyChildBO, "ConditionId", lblNewItemCondition)
+        BindBOPropertyToLabel(State.MyChildBO, "ServiceLevelId", lblNewItemServiceLevel)
+        BindBOPropertyToLabel(State.MyChildBO, "VendorSku", lblNewItemVendorSKU)
+        BindBOPropertyToLabel(State.MyChildBO, "VendorSkuDescription", lblNewItemSKUDesciption)
+        BindBOPropertyToLabel(State.MyChildBO, "PriceBandRangeFrom", lblNewItemLowPrice)
+        BindBOPropertyToLabel(State.MyChildBO, "PriceBandRangeTo", lblNewItemHighPrice)
+        BindBOPropertyToLabel(State.MyChildBO, "ReplacementTaxType", lblNewItemSelectTaxType)
+        BindBOPropertyToLabel(State.MyChildBO, "CurrencyId", lblcurrency)
+        BindBOPropertyToLabel(State.MyChildBO, "PriceListDetailTypeId", lbldetailtype)
+        BindBOPropertyToLabel(State.MyChildBO, "CalculationPercent", lblcalculation)
+        BindBOPropertyToLabel(State.MyChildBO, "ManufacturerOriginCode", lblNewManOri)
+        BindBOPropertyToLabel(State.MyChildBO, "PartId", lblNewItemPart)
     End Sub
 
     ''' <summary>
@@ -1011,53 +1011,53 @@ Public Class PriceListDetailForm
     ''' </summary>
     ''' <remarks></remarks>
     Protected Sub PopulateBOsFormFrom()
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "Code", Me.txtCode.Text)
-            Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.txtDescription.Text)
-            Me.PopulateBOProperty(Me.State.MyBO, "Effective", Me.txtEffective.Text)
-            Me.PopulateBOProperty(Me.State.MyBO, "Expiration", Me.txtExpirationDate.Text)
-            Me.PopulateBOProperty(Me.State.MyBO, "CountryId", Me.ddlCountry)
-            Me.PopulateBOProperty(Me.State.MyBO, "DefaultCurrencyId", Me.ddlDefaultCurrency)
-            Me.PopulateBOProperty(Me.State.MyBO, "ManageInventoryId", Me.ddlManageInventory, True)
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "Code", txtCode.Text)
+            PopulateBOProperty(State.MyBO, "Description", txtDescription.Text)
+            PopulateBOProperty(State.MyBO, "Effective", txtEffective.Text)
+            PopulateBOProperty(State.MyBO, "Expiration", txtExpirationDate.Text)
+            PopulateBOProperty(State.MyBO, "CountryId", ddlCountry)
+            PopulateBOProperty(State.MyBO, "DefaultCurrencyId", ddlDefaultCurrency)
+            PopulateBOProperty(State.MyBO, "ManageInventoryId", ddlManageInventory, True)
         End With
 
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
     Protected Sub PopulateFormFromBOs()
-        With Me.State.MyBO
-            Me.PopulateControlFromBOProperty(txtCode, .Code)
+        With State.MyBO
+            PopulateControlFromBOProperty(txtCode, .Code)
             If txtCode.Text = "" Then
                 ControlMgr.SetEnableControl(Me, txtCode, False)
             Else
                 ControlMgr.SetEnableControl(Me, txtCode, True)
             End If
 
-            Me.PopulateControlFromBOProperty(txtDescription, .Description)
-            Me.PopulateControlFromBOProperty(txtEffective, .Effective)
-            Me.PopulateControlFromBOProperty(txtExpirationDate, .Expiration)
+            PopulateControlFromBOProperty(txtDescription, .Description)
+            PopulateControlFromBOProperty(txtEffective, .Effective)
+            PopulateControlFromBOProperty(txtExpirationDate, .Expiration)
 
             'Populate dropdowns
-            If Me.State.IsNew Then
+            If State.IsNew Then
                 'Set the country to the User's country
                 If ddlCountry.Items.Count = 2 Then
                     'set the country as default selected
                     ddlCountry.SelectedIndex = 1
-                    Me.State.MyBO.CountryId = New Guid(ddlCountry.SelectedValue.ToString())
+                    State.MyBO.CountryId = New Guid(ddlCountry.SelectedValue.ToString())
                 End If
             Else
-                Me.PopulateControlFromBOProperty(ddlCountry, .CountryId)
+                PopulateControlFromBOProperty(ddlCountry, .CountryId)
             End If
 
-            Me.PopulateControlFromBOProperty(ddlManageInventory, .ManageInventoryId)
+            PopulateControlFromBOProperty(ddlManageInventory, .ManageInventoryId)
             If (.DefaultCurrencyId.Equals(Guid.Empty)) Then
                 Dim company As New ElitaPlus.BusinessObjectsNew.Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
                 Dim currencyobj As New ElitaPlus.BusinessObjectsNew.Country(company.CountryId)
-                Me.PopulateControlFromBOProperty(ddlDefaultCurrency, currencyobj.PrimaryCurrencyId)
+                PopulateControlFromBOProperty(ddlDefaultCurrency, currencyobj.PrimaryCurrencyId)
             Else
-                Me.PopulateControlFromBOProperty(ddlDefaultCurrency, .DefaultCurrencyId)
+                PopulateControlFromBOProperty(ddlDefaultCurrency, .DefaultCurrencyId)
             End If
 
             ' user should allowed to edit effective date of future lists 
@@ -1074,16 +1074,16 @@ Public Class PriceListDetailForm
 
             'Populate Selected Vendors list
             PopulateSelectedVendors()
-            Me.PopulateGrid()
-            Me.PopulategvPendingApprovals()
+            PopulateGrid()
+            PopulategvPendingApprovals()
 
             'if the rule list is expired then lock the form preventing change
-            If Me.State.MyBO.Expiration.Value < DateTime.Now Then
+            If State.MyBO.Expiration.Value < DateTime.Now Then
                 'disable everything
                 EnableDisableFields(False)
             End If
 
-            If Me.State.MyBO.ManageInventoryId <> Guid.Empty Then
+            If State.MyBO.ManageInventoryId <> Guid.Empty Then
                 ddlManageInventory.Enabled = False
             Else
                 ddlManageInventory.Enabled = True
@@ -1093,24 +1093,24 @@ Public Class PriceListDetailForm
     End Sub
 
     Private Sub PopulateSelectedVendors()
-        If Not (Me.State.MyBO.Code = Nothing Or Me.State.MyBO.Code = String.Empty) Then
+        If Not (State.MyBO.Code = Nothing Or State.MyBO.Code = String.Empty) Then
             'ElitaPlusPage.BindListControlToDataView(moSelectedList, Me.State.MyBO.GetServiceCenterSelectionView(), "description", "service_center_id", False)
             Dim ServiceCenterList As New Collections.Generic.List(Of DataElements.ListItem)
-            For Each detail As ServiceCenter In Me.State.MyBO.ServiceCenterChildren
+            For Each detail As ServiceCenter In State.MyBO.ServiceCenterChildren
                 Dim item As DataElements.ListItem = New DataElements.ListItem()
                 item.Translation = detail.Description
                 item.ListItemId = detail.Id
                 item.Code = detail.PriceListCode
                 ServiceCenterList.Add(item)
             Next
-            Me.moSelectedList.Populate(ServiceCenterList.ToArray(), New PopulateOptions() With
+            moSelectedList.Populate(ServiceCenterList.ToArray(), New PopulateOptions() With
                 {
                     .AddBlankItem = False
                 })
         End If
     End Sub
 
-    Sub EnableDisableButtons(ByVal enableToggle As Boolean)
+    Sub EnableDisableButtons(enableToggle As Boolean)
         ControlMgr.SetEnableControl(Me, btnClone, enableToggle)
         ControlMgr.SetEnableControl(Me, btnDelete, enableToggle)
         ControlMgr.SetEnableControl(Me, btnSave, enableToggle)
@@ -1119,15 +1119,15 @@ Public Class PriceListDetailForm
         ControlMgr.SetEnableControl(Me, btnAdd, enableToggle)
     End Sub
 
-    Protected Sub EnableDisableFields(ByVal toggle As Boolean)
+    Protected Sub EnableDisableFields(toggle As Boolean)
 
-        Me.EnableDisableButtons(toggle)
+        EnableDisableButtons(toggle)
 
         ControlMgr.SetEnableControl(Me, btnDelete, True)
         ControlMgr.SetEnableControl(Me, btnAdd, True)
         ControlMgr.SetEnableControl(Me, btnClone, True)
 
-        If Me.State.MyBO.IsNew Then
+        If State.MyBO.IsNew Then
             ControlMgr.SetEnableControl(Me, btnDelete, False)
             ControlMgr.SetEnableControl(Me, btnAdd, False)
             ControlMgr.SetEnableControl(Me, btnClone, False)
@@ -1142,19 +1142,19 @@ Public Class PriceListDetailForm
             ControlMgr.SetEnableControl(Me, txtDescription, True)
         End If
 
-        If Me.State.IsEditMode Then
+        If State.IsEditMode Then
             ControlMgr.SetEnableControl(Me, btnUndo, True)
         Else
             ControlMgr.SetEnableControl(Me, btnUndo, False)
         End If
 
         'Effective date should be Editable for Price List where Effective Date >= Sysdate Defect 2735
-        If Me.State.MyBO.Effective.Value >= DateTime.Now Then
+        If State.MyBO.Effective.Value >= DateTime.Now Then
             ControlMgr.SetEnableControl(Me, txtEffective, True)
             ControlMgr.SetEnableControl(Me, btneffective, True)
         End If
 
-        If Me.State.MyBO.Expiration.Value < DateTime.Now Then
+        If State.MyBO.Expiration.Value < DateTime.Now Then
             ControlMgr.SetEnableControl(Me, btnDelete, False)
             ControlMgr.SetEnableControl(Me, btnAdd, False)
             ControlMgr.SetEnableControl(Me, btnSave, False)
@@ -1171,31 +1171,31 @@ Public Class PriceListDetailForm
     End Sub
 
     Protected Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-        Me.State.MyBO = New PriceList
-        Me.State.MyChildBO = New PriceListDetail
-        Me.PopulateFormFromBOs()
-        Me.State.IsEditMode = False
-        Me.EnableDisableFields(True)
+        State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+        State.MyBO = New PriceList
+        State.MyChildBO = New PriceListDetail
+        PopulateFormFromBOs()
+        State.IsEditMode = False
+        EnableDisableFields(True)
     End Sub
 
     Protected Sub CreateNewWithCopy()
-        Me.State.IsACopy = True
+        State.IsACopy = True
         Dim newObj As New PriceList
-        newObj.Copy(Me.State.MyBO)
+        newObj.Copy(State.MyBO)
 
-        Me.State.MyBO = newObj
-        Me.State.MyBO.Code = Me.State.MyBO.Code & "clone"
-        Me.PopulateFormFromBOs()
-        Me.PopulateControlFromBOProperty(txtCode, Me.State.MyBO.Code)
+        State.MyBO = newObj
+        State.MyBO.Code = State.MyBO.Code & "clone"
+        PopulateFormFromBOs()
+        PopulateControlFromBOProperty(txtCode, State.MyBO.Code)
 
-        Me.EnableDisableFields(True)
+        EnableDisableFields(True)
         'create the backup copy
-        Me.State.ScreenSnapShotBO = New PriceList
-        Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
-        Me.State.IsACopy = False
-        Me.State.IsEditMode = False
-        Me.EnableDisableFields(True)
+        State.ScreenSnapShotBO = New PriceList
+        State.ScreenSnapShotBO.Clone(State.MyBO)
+        State.IsACopy = False
+        State.IsEditMode = False
+        EnableDisableFields(True)
 
         'Ovrride the usual edit feidls
         ControlMgr.SetVisibleControl(Me, moSelectedList, True)
@@ -1209,87 +1209,87 @@ Public Class PriceListDetailForm
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
 
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
-                Me.BindBoPropertiesToLabels()
-                Me.State.MyBO.Save()
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
+                BindBoPropertiesToLabels()
+                State.MyBO.Save()
             End If
 
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNew()
+                    MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNewWithCopy()
+                    MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.Accept
-                    If Me.State.MyBO.IsDirty Then
-                        If Me.State.OverlapExists Then
-                            If Me.State.MyBO.ExpireOverLappingList() Then
-                                Me.State.OverlapExists = False
+                    If State.MyBO.IsDirty Then
+                        If State.OverlapExists Then
+                            If State.MyBO.ExpireOverLappingList() Then
+                                State.OverlapExists = False
                             End If
                         End If
-                        Me.State.MyBO.Save()
-                        Me.State.HasDataChanged = True
-                        Me.PopulateFormFromBOs()
-                        Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
+                        State.MyBO.Save()
+                        State.HasDataChanged = True
+                        PopulateFormFromBOs()
+                        MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
                     Else
-                        Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
+                        MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
                     End If
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    If Not Me.State.PriceListDetailSelectedChildId.Equals(Guid.Empty) Then
+                    If Not State.PriceListDetailSelectedChildId.Equals(Guid.Empty) Then
                         BeginPriceListDetailChildEdit()
                     End If
 
                     Try
-                        If (Me.State.MyChildBO.Effective.Value <= PriceListDetail.GetCurrentDateTime()) Then
-                            Me.State.MyChildBO.BeginEdit()
-                            Me.State.MyChildBO.Accept(New ExpirationVisitor())
-                            Me.State.MyChildBO.EndEdit()
-                            Me.State.MyChildBO.Save()
-                        ElseIf (Me.State.MyChildBO.Effective.Value > PriceListDetail.GetCurrentDateTime()) Then
-                            Me.State.MyChildBO.Delete()
-                            Me.State.MyChildBO.Save()
-                            Me.State.MyChildBO.EndEdit()
-                            Me.State.PriceListDetailSelectedChildId = Guid.Empty
+                        If (State.MyChildBO.Effective.Value <= PriceListDetail.GetCurrentDateTime()) Then
+                            State.MyChildBO.BeginEdit()
+                            State.MyChildBO.Accept(New ExpirationVisitor())
+                            State.MyChildBO.EndEdit()
+                            State.MyChildBO.Save()
+                        ElseIf (State.MyChildBO.Effective.Value > PriceListDetail.GetCurrentDateTime()) Then
+                            State.MyChildBO.Delete()
+                            State.MyChildBO.Save()
+                            State.MyChildBO.EndEdit()
+                            State.PriceListDetailSelectedChildId = Guid.Empty
                         End If
                     Catch ex As Exception
-                        Me.State.MyChildBO.RejectChanges()
-                        Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.ERR_DELETING_DATA)
+                        State.MyChildBO.RejectChanges()
+                        MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.ERR_DELETING_DATA)
                         Throw ex
                     End Try
                     PopulateGrid()
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                    MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
                 Case ElitaPlusPage.DetailPageCommand.Accept
-                    Me.EnableDisableFields(True)
+                    EnableDisableFields(True)
             End Select
         End If
 
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
     Protected Sub PopulateDropdowns()
         'Dim languageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
         'Dim companyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         'Me.BindListControlToDataView(ddlServiceClass, LookupListNew.GetServiceClassLookupList(languageId))
-        Me.ddlServiceClass.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="SVCCLASS", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
+        ddlServiceClass.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="SVCCLASS", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
                         New PopulateOptions() With
                         {
                             .AddBlankItem = True
@@ -1299,7 +1299,7 @@ Public Class PriceListDetailForm
         oListContext1.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         Dim EquipmentList As DataElements.ListItem() =
                                 CommonConfigManager.Current.ListManager.GetList(listCode:="EquipmentByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext1)
-        Me.ddlEquipmentlist.Populate(EquipmentList.ToArray(), New PopulateOptions() With
+        ddlEquipmentlist.Populate(EquipmentList.ToArray(), New PopulateOptions() With
             {
                 .AddBlankItem = False,
                 .TextFunc = Function(x)
@@ -1310,7 +1310,7 @@ Public Class PriceListDetailForm
                             End Function
             })
 
-        Me.ddlEquipmentlist.Items.Insert(0, New ListItem(TranslationBase.TranslateLabelOrMessage(ANY), Guid.Empty.ToString()))
+        ddlEquipmentlist.Items.Insert(0, New ListItem(TranslationBase.TranslateLabelOrMessage(ANY), Guid.Empty.ToString()))
         'Country          
         'Me.BindListControlToDataView(Me.ddlCountry, LookupListNew.GetUserCountriesLookupList())
         Dim CountryList As DataElements.ListItem() =
@@ -1319,7 +1319,7 @@ Public Class PriceListDetailForm
         Dim UserCountries As DataElements.ListItem() = (From Country In CountryList
                                                         Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(Country.ListItemId)
                                                         Select Country).ToArray()
-        Me.ddlCountry.Populate(UserCountries.ToArray(),
+        ddlCountry.Populate(UserCountries.ToArray(),
                         New PopulateOptions() With
                         {
                             .AddBlankItem = True
@@ -1328,7 +1328,7 @@ Public Class PriceListDetailForm
         'Me.BindListControlToDataView(Me.ddlDefaultCurrency, LookupListNew.GetCurrencyTypeLookupList(), , , False)
         Dim CurrencyTypeList As DataElements.ListItem() =
                             CommonConfigManager.Current.ListManager.GetList(listCode:="CurrencyTypeList", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-        Me.ddlDefaultCurrency.Populate(CurrencyTypeList.ToArray(),
+        ddlDefaultCurrency.Populate(CurrencyTypeList.ToArray(),
                         New PopulateOptions() With
                         {
                             .AddBlankItem = False
@@ -1336,13 +1336,13 @@ Public Class PriceListDetailForm
 
         ' Manage inventory
         'Me.BindListControlToDataView(Me.ddlManageInventory, LookupListNew.GetManageInventoryLookupList(languageId))
-        Me.ddlManageInventory.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="MNGINVENT", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
+        ddlManageInventory.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="MNGINVENT", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
                         New PopulateOptions() With
                         {
                             .AddBlankItem = True
                         })
-        Me.AddCalendarwithTime_New(btneffective, txtEffective, , txtEffective.Text)
-        Me.AddCalendarwithTime_New(btnExpiration, txtExpirationDate, , txtExpirationDate.Text)
+        AddCalendarwithTime_New(btneffective, txtEffective, , txtEffective.Text)
+        AddCalendarwithTime_New(btnExpiration, txtExpirationDate, , txtExpirationDate.Text)
     End Sub
 
 #End Region
@@ -1356,7 +1356,7 @@ Public Class PriceListDetailForm
         'The following dropdowns are for the modal, 
         'Populate these without any values
         'Me.BindListControlToDataView(ddlNewItemServiceClass, LookupListNew.GetServiceClassLookupList(languageId))
-        Me.ddlNewItemServiceClass.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="SVCCLASS", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
+        ddlNewItemServiceClass.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="SVCCLASS", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
                         New PopulateOptions() With
                         {
                             .AddBlankItem = True
@@ -1366,7 +1366,7 @@ Public Class PriceListDetailForm
         End If
 
         'Me.BindListControlToDataView(ddlNewItemServiceLevel, LookupListNew.GetServiceLevelLookupList(languageId))
-        Me.ddlNewItemServiceLevel.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="SVC_LVL", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
+        ddlNewItemServiceLevel.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="SVC_LVL", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
                         New PopulateOptions() With
                         {
                             .AddBlankItem = True
@@ -1377,7 +1377,7 @@ Public Class PriceListDetailForm
         oListContext2.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         Dim MakeList As DataElements.ListItem() =
                                 CommonConfigManager.Current.ListManager.GetList(listCode:="ManufacturerByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext2)
-        Me.ddlNewItemMake.Populate(MakeList.ToArray(), New PopulateOptions() With
+        ddlNewItemMake.Populate(MakeList.ToArray(), New PopulateOptions() With
             {
                 .AddBlankItem = True
             })
@@ -1394,7 +1394,7 @@ Public Class PriceListDetailForm
                                                               Where lst.Code = "7" Or lst.Code = "8"
                                                               Select lst).ToArray()
 
-        Me.ddlNewItemReplacementTaxType.Populate(FilteredTaxTypeList.ToArray(), New PopulateOptions() With
+        ddlNewItemReplacementTaxType.Populate(FilteredTaxTypeList.ToArray(), New PopulateOptions() With
             {
                 .AddBlankItem = True
             })
@@ -1408,18 +1408,18 @@ Public Class PriceListDetailForm
             oListContext1.ManufacturerId = ElitaPlusPage.GetSelectedItem(ddlNewItemMake)
             Dim ModelList As DataElements.ListItem() =
                                 CommonConfigManager.Current.ListManager.GetList(listCode:="EquipmentByCompanyGroupEquipmentType", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext1)
-            Me.ddlNewItemModel.Populate(ModelList, New PopulateOptions() With
+            ddlNewItemModel.Populate(ModelList, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
         End If
         'Me.BindListControlToDataView(ddlNewItemCondition, LookupListNew.GetConditionLookupList(languageId))
-        Me.ddlNewItemCondition.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="TEQP", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
+        ddlNewItemCondition.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="TEQP", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
                         New PopulateOptions() With
                         {
                             .AddBlankItem = True
                         })
-        Me.ddlNewItemCondition.Enabled = False
+        ddlNewItemCondition.Enabled = False
 
         'Risk Type and Equipment Class
         'Me.BindListControlToDataView(ddlRiskType, LookupListNew.GetRiskTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id), , , False)
@@ -1427,13 +1427,13 @@ Public Class PriceListDetailForm
         oListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         Dim RiskTypeList As DataElements.ListItem() =
                                     CommonConfigManager.Current.ListManager.GetList(listCode:="RiskTypeByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext)
-        Me.ddlRiskType.Populate(RiskTypeList, New PopulateOptions() With
+        ddlRiskType.Populate(RiskTypeList, New PopulateOptions() With
             {
                 .AddBlankItem = True
             })
         'ddlRiskType.Items.Insert(0, New ListItem(TranslationBase.TranslateLabelOrMessage(ANY), Guid.Empty.ToString()))
         'Me.BindListControlToDataView(ddlEquipmentClass, LookupListNew.GetEquipmentClassLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
-        Me.ddlEquipmentClass.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="EQPCLS", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
+        ddlEquipmentClass.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="EQPCLS", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
                         New PopulateOptions() With
                         {
                             .AddBlankItem = True
@@ -1445,7 +1445,7 @@ Public Class PriceListDetailForm
                             .AddBlankItem = False
                         })
         'Me.BindListControlToDataView(ddldetailtype, LookupListNew.DropdownLookupList(LookupListCache.LK_PRICE_LIST_DETAIL_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
-        Me.ddldetailtype.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="PLDTYP", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
+        ddldetailtype.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="PLDTYP", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
                         New PopulateOptions() With
                         {
                             .AddBlankItem = True
@@ -1456,7 +1456,7 @@ Public Class PriceListDetailForm
             ddlNewItemPart.Enabled = False
         End If
 
-        Me.ddlNewManOri.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="MAN_ORI", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
+        ddlNewManOri.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="MAN_ORI", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
                 New PopulateOptions() With
                 {
                     .AddBlankItem = True,
@@ -1466,26 +1466,26 @@ Public Class PriceListDetailForm
                 })
         ddlNewManOri.Enabled = False
 
-        Me.AddCalendarwithTime_New(imgNewItemEffectiveDate, txtNewItemEffectiveDate, , txtNewItemEffectiveDate.Text)
-        Me.AddCalendarwithTime_New(imgNewItemExpirationDate, txtNewItemExpirationDate, , txtNewItemExpirationDate.Text)
-        Me.txtNewItemEffectiveDate.Text = String.Empty
-        Me.txtNewItemExpirationDate.Text = String.Empty
-        Me.txtNewItemPrice.Text = String.Empty
-        Me.txtNewItemQuantity.Text = String.Empty
-        Me.txtNewItemVendorSKU.Text = String.Empty
-        Me.txtNewItemSKUDescription.Text = String.Empty
-        Me.txtNewItemLowPrice.Text = String.Empty
-        Me.txtNewItemHighPrice.Text = String.Empty
+        AddCalendarwithTime_New(imgNewItemEffectiveDate, txtNewItemEffectiveDate, , txtNewItemEffectiveDate.Text)
+        AddCalendarwithTime_New(imgNewItemExpirationDate, txtNewItemExpirationDate, , txtNewItemExpirationDate.Text)
+        txtNewItemEffectiveDate.Text = String.Empty
+        txtNewItemExpirationDate.Text = String.Empty
+        txtNewItemPrice.Text = String.Empty
+        txtNewItemQuantity.Text = String.Empty
+        txtNewItemVendorSKU.Text = String.Empty
+        txtNewItemSKUDescription.Text = String.Empty
+        txtNewItemLowPrice.Text = String.Empty
+        txtNewItemHighPrice.Text = String.Empty
     End Sub
 
-    Protected Sub ddlManageInventory_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlManageInventory.SelectedIndexChanged
+    Protected Sub ddlManageInventory_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlManageInventory.SelectedIndexChanged
         Try
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Protected Sub ddlNewItemMake_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlNewItemMake.SelectedIndexChanged
+    Protected Sub ddlNewItemMake_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlNewItemMake.SelectedIndexChanged
         Try
             ddlNewItemModel.Items.Clear()
             ddlNewItemModel.Enabled = False
@@ -1503,7 +1503,7 @@ Public Class PriceListDetailForm
                 oListContext.ManufacturerId = ElitaPlusPage.GetSelectedItem(ddlNewItemMake)
                 Dim ModelList As DataElements.ListItem() =
                                     CommonConfigManager.Current.ListManager.GetList(listCode:="EquipmentByCompanyGroupEquipmentType", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext)
-                Me.ddlNewItemModel.Populate(ModelList, New PopulateOptions() With
+                ddlNewItemModel.Populate(ModelList, New PopulateOptions() With
                     {
                         .AddBlankItem = True
                     })
@@ -1513,11 +1513,11 @@ Public Class PriceListDetailForm
 
             mdlPopup.Show()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub ddlRiskType_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlRiskType.SelectedIndexChanged
+    Protected Sub ddlRiskType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlRiskType.SelectedIndexChanged
         Try
             ddlNewItemPart.Items.Clear()
             ddlNewItemPart.Enabled = False
@@ -1535,7 +1535,7 @@ Public Class PriceListDetailForm
 
                 Dim PartList As DataElements.ListItem() =
                                         CommonConfigManager.Current.ListManager.GetList(listCode:="PartsByCompanyGroupRiskGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext)
-                Me.ddlNewItemPart.Populate(PartList.ToArray(), New PopulateOptions() With
+                ddlNewItemPart.Populate(PartList.ToArray(), New PopulateOptions() With
                     {
                         .AddBlankItem = True
                     })
@@ -1545,11 +1545,11 @@ Public Class PriceListDetailForm
 
             mdlPopup.Show()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub ddlServiceClass_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlServiceClass.SelectedIndexChanged
+    Protected Sub ddlServiceClass_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlServiceClass.SelectedIndexChanged
         Try
             ddlServiceType.Items.Clear()
             If (ddlServiceClass.SelectedIndex <> NO_ITEM_SELECTED_INDEX) Then
@@ -1560,16 +1560,16 @@ Public Class PriceListDetailForm
                 oListContext.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
                 Dim ServiceTypeList As DataElements.ListItem() =
                                     CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceTypeByServiceClass", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext)
-                Me.ddlServiceType.Populate(ServiceTypeList, New PopulateOptions() With
+                ddlServiceType.Populate(ServiceTypeList, New PopulateOptions() With
                     {
                         .AddBlankItem = True
                     })
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Protected Sub ddlNewItemServiceClass_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlNewItemServiceClass.SelectedIndexChanged
+    Protected Sub ddlNewItemServiceClass_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlNewItemServiceClass.SelectedIndexChanged
         Try
             ddlNewItemServiceType.Items.Clear()
             ddlNewItemServiceType.Enabled = False
@@ -1583,7 +1583,7 @@ Public Class PriceListDetailForm
                 oListContext.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
                 Dim ServiceTypeList As DataElements.ListItem() =
                                     CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceTypeByServiceClass", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext)
-                Me.ddlNewItemServiceType.Populate(ServiceTypeList, New PopulateOptions() With
+                ddlNewItemServiceType.Populate(ServiceTypeList, New PopulateOptions() With
                     {
                         .AddBlankItem = True
                     })
@@ -1591,7 +1591,7 @@ Public Class PriceListDetailForm
             End If
             mdlPopup.Show()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
@@ -1606,10 +1606,10 @@ Public Class PriceListDetailForm
     ''' 
     Sub PopulateGrid()
         Try
-            Dim dv As PriceList.PriceListDetailSelectionView = Me.State.MyBO.GetPriceListSelectionView
-            dv.Sort = Me.State.SortExpression
-            Me.State.DetailSearchDV = dv
-            Me.Grid.AutoGenerateColumns = False
+            Dim dv As PriceList.PriceListDetailSelectionView = State.MyBO.GetPriceListSelectionView
+            dv.Sort = State.SortExpression
+            State.DetailSearchDV = dv
+            Grid.AutoGenerateColumns = False
 
             If Not Page.IsPostBack Then
                 Dim requestedByList As New List(Of String)
@@ -1622,8 +1622,8 @@ Public Class PriceListDetailForm
                 End If
                 ddlsearch.Items.Insert(0, "select")
             End If
-            Me.Grid.PageSize = Me.State.PageSize
-            SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.Grid, Me.State.PageIndex)
+            Grid.PageSize = State.PageSize
+            SetPageAndSelectedIndexFromGuid(dv, State.PriceListDetailSelectedChildId, Grid, State.PageIndex)
 
             If dv.Table.Rows.Count > 0 Then
                 If Not Page.IsPostBack Then
@@ -1640,26 +1640,26 @@ Public Class PriceListDetailForm
                 ddlsearch.Items.Insert(0, "select")
             End If
 
-            Me.Grid.PageSize = Me.State.PageSize
-            SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.Grid, Me.State.PageIndex)
+            Grid.PageSize = State.PageSize
+            SetPageAndSelectedIndexFromGuid(dv, State.PriceListDetailSelectedChildId, Grid, State.PageIndex)
 
             If Not ddlsearch.SelectedValue = "select" Then 'requested_by
                 dv.RowFilter = "requested_by = '" & ddlsearch.SelectedValue & "'"
-                Me.Grid.DataSource = dv
+                Grid.DataSource = dv
             Else
-                Me.Grid.DataSource = dv 'Me.State.DetailSearchDV
+                Grid.DataSource = dv 'Me.State.DetailSearchDV
             End If
-            Me.Grid.DataBind()
-            Me.State.PageIndex = Me.Grid.PageIndex
-            Me.ShowHideQuantity()
+            Grid.DataBind()
+            State.PageIndex = Grid.PageIndex
+            ShowHideQuantity()
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
-            ControlMgr.SetVisibleControl(Me, cboPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, cboPageSize, Grid.Visible)
             ControlMgr.SetVisibleControl(Me, lblRecordCounts, True)
             ControlMgr.SetVisibleControl(Me, lblPageSize, True)
 
             Session("recCount") = dv.Count 'Me.State.DetailSearchDV.Count
-            Me.lblRecordCounts.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            lblRecordCounts.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
             If dv.Count = 0 Then
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
@@ -1677,96 +1677,96 @@ Public Class PriceListDetailForm
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
-            Me.HighLightSortColumn(Grid, Me.State.SortExpression, True)
+            State.PageIndex = 0
+            PopulateGrid()
+            HighLightSortColumn(Grid, State.SortExpression, True)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
-            Me.State.PriceListId = Guid.Empty
+            State.PageIndex = Grid.PageIndex
+            State.PriceListId = Guid.Empty
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
             State.PriceListDetailSelectedChildId = Guid.Empty
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Protected Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             Dim priceListDetailId As Guid
             Dim oDataView As PriceListDetail.PriceListDetailSearchDV
 
             'Populate the grid with detail info
             If e.CommandName = ElitaPlusSearchPage.EDIT_COMMAND_NAME Then
-                Me.State.IsGridInEditMode = True
-                Me.State.SelectedGridValueToEdit = New Guid(e.CommandArgument.ToString())
-                Me.State.ChildActionInProgress = DetailPageCommand.NewAndCopy
+                State.IsGridInEditMode = True
+                State.SelectedGridValueToEdit = New Guid(e.CommandArgument.ToString())
+                State.ChildActionInProgress = DetailPageCommand.NewAndCopy
 
                 'priceListDetailId = New Guid(e.CommandArgument.ToString())
-                Me.State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
+                State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
                 ' Me.State.MyChildBO = New PriceListDetail(Me.State.PriceListDetailSelectedChildId)
-                Me.PopulateModalControls()
+                PopulateModalControls()
                 BeginPriceListDetailChildEdit()
-                Me.PopulateDetailFromPriceListDetailChildBO()
+                PopulateDetailFromPriceListDetailChildBO()
 
 
                 '' condition
                 'Me.PopulateControlFromBOProperty(ddlNewItemCondition, Me.State.MyChildBO.ConditionId)
                 ' vendor sku
-                txtNewItemVendorSKU.Text = Me.State.MyChildBO.VendorSku
+                txtNewItemVendorSKU.Text = State.MyChildBO.VendorSku
                 ' description
-                txtNewItemSKUDescription.Text = Me.State.MyChildBO.VendorSkuDescription
+                txtNewItemSKUDescription.Text = State.MyChildBO.VendorSkuDescription
                 ' price
-                txtNewItemPrice.Text = Me.State.MyChildBO.Price.ToString()
+                txtNewItemPrice.Text = State.MyChildBO.Price.ToString()
                 'Calculation Percentage
-                If Not Me.State.MyChildBO.CalculationPercent Is Nothing Then
-                    txtcalculationpercent.Text = Me.State.MyChildBO.CalculationPercent.ToString()
+                If State.MyChildBO.CalculationPercent IsNot Nothing Then
+                    txtcalculationpercent.Text = State.MyChildBO.CalculationPercent.ToString()
                 Else
                     txtcalculationpercent.Text = 0.0
                 End If
                 ' effective date
-                txtNewItemEffectiveDate.Text = Me.State.MyChildBO.Effective.ToString()
+                txtNewItemEffectiveDate.Text = State.MyChildBO.Effective.ToString()
                 ' expiration date
-                txtNewItemExpirationDate.Text = Me.State.MyChildBO.Expiration.ToString()
+                txtNewItemExpirationDate.Text = State.MyChildBO.Expiration.ToString()
                 'Low Price
-                txtNewItemLowPrice.Text = Me.State.MyChildBO.PriceBandRangeFrom.ToString()
+                txtNewItemLowPrice.Text = State.MyChildBO.PriceBandRangeFrom.ToString()
                 'High Price
-                txtNewItemHighPrice.Text = Me.State.MyChildBO.PriceBandRangeTo.ToString()
+                txtNewItemHighPrice.Text = State.MyChildBO.PriceBandRangeTo.ToString()
                 'vendor quantity
 
-                If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(Me.State.MyChildBO.VendorQuantity.ToString()) Then
-                    txtNewItemQuantity.Text = Me.State.MyChildBO.VendorQuantity.ToString()
+                If Not State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(State.MyChildBO.VendorQuantity.ToString()) Then
+                    txtNewItemQuantity.Text = State.MyChildBO.VendorQuantity.ToString()
                 Else
                     txtNewItemQuantity.Text = String.Empty
                 End If
@@ -1776,23 +1776,23 @@ Public Class PriceListDetailForm
                 ModalPopupenabledisable()
                 mdlPopup.Show()
             ElseIf e.CommandName = ElitaPlusSearchPage.DELETE_COMMAND_NAME Then
-                Me.State.IsGridInEditMode = False
+                State.IsGridInEditMode = False
                 priceListDetailId = New Guid(e.CommandArgument.ToString())
-                Me.State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
-                Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
+                DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
 
                 ' Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.DELETE_RECORD_CONFIRMATION)
             ElseIf e.CommandName = ElitaPlusSearchPage.HISTORY_COMMAND_NAME Then
-                Me.State.IsGridInEditMode = False
+                State.IsGridInEditMode = False
                 priceListDetailId = New Guid(e.CommandArgument.ToString())
-                Me.State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.ViewHistory
-                Me.PopulateGridHistory()
+                State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.ViewHistory
+                PopulateGridHistory()
                 mpeHistory.Show()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -1806,15 +1806,15 @@ Public Class PriceListDetailForm
         End If
     End Sub
 
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         If e.Row.RowType = DataControlRowType.DataRow Then
 
             ' Assign the detail id to the command agrument
@@ -1839,16 +1839,16 @@ Public Class PriceListDetailForm
             '    End If
             'End If
             Dim lblStatusXCD As Label
-            lblStatusXCD = CType(e.Row.Cells(Me.GRID_COL_STATUS_XCD_IDX).FindControl("lblStatusXCD"), Label)
+            lblStatusXCD = CType(e.Row.Cells(GRID_COL_STATUS_XCD_IDX).FindControl("lblStatusXCD"), Label)
 
-            If (Not e.Row.Cells(Me.GRID_COL_EDITID_IDX).FindControl(BTN_CONTROL_EDIT_DETAIL_LIST) Is Nothing) Then
+            If (e.Row.Cells(GRID_COL_EDITID_IDX).FindControl(BTN_CONTROL_EDIT_DETAIL_LIST) IsNot Nothing) Then
                 'Edit Button argument changed to id
-                btnEditItem = CType(e.Row.Cells(Me.GRID_COL_EDITID_IDX).FindControl(BTN_CONTROL_EDIT_DETAIL_LIST), ImageButton)
+                btnEditItem = CType(e.Row.Cells(GRID_COL_EDITID_IDX).FindControl(BTN_CONTROL_EDIT_DETAIL_LIST), ImageButton)
                 btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(PriceListDetail.PriceListDetailSearchDV.COL_PRICE_LIST_DETAIL_ID), Byte()))
                 btnEditItem.CommandName = ElitaPlusSearchPage.EDIT_COMMAND_NAME
 
-                If Not (e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString().Equals(String.Empty)) Then
-                    If (DateHelper.GetDateValue(e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString()) < DateTime.Now And lblStatusXCD.Text = "PL_RECON_PROCESS-APPROVED") Then
+                If Not (e.Row.Cells(GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString().Equals(String.Empty)) Then
+                    If (DateHelper.GetDateValue(e.Row.Cells(GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString()) < DateTime.Now And lblStatusXCD.Text = "PL_RECON_PROCESS-APPROVED") Then
                         'e.Row.Cells(Me.GRID_COL_EDITID_IDX).Visible = False
                         btnEditItem.Visible = False
                     End If
@@ -1858,15 +1858,15 @@ Public Class PriceListDetailForm
                 End If
             End If
 
-            If (Not e.Row.Cells(Me.GRID_COL_DELETEID_IDX).FindControl(BTN_CONTROL_DELETE_DETAIL_LIST) Is Nothing) Then
+            If (e.Row.Cells(GRID_COL_DELETEID_IDX).FindControl(BTN_CONTROL_DELETE_DETAIL_LIST) IsNot Nothing) Then
                 'Delete Button argument changed to id
-                btnDeleteItem = CType(e.Row.Cells(Me.GRID_COL_DELETEID_IDX).FindControl(BTN_CONTROL_DELETE_DETAIL_LIST), ImageButton)
+                btnDeleteItem = CType(e.Row.Cells(GRID_COL_DELETEID_IDX).FindControl(BTN_CONTROL_DELETE_DETAIL_LIST), ImageButton)
                 btnDeleteItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(PriceListDetail.PriceListDetailSearchDV.COL_PRICE_LIST_DETAIL_ID), Byte()))
                 btnDeleteItem.CommandName = ElitaPlusSearchPage.DELETE_COMMAND_NAME
                 'Me.AddControlMsg(btnDeleteItem, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
 
-                If Not (e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString().Equals(String.Empty)) Then
-                    If (DateHelper.GetDateValue(e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString()) < DateTime.Now And lblStatusXCD.Text = "PL_RECON_PROCESS-APPROVED") Then
+                If Not (e.Row.Cells(GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString().Equals(String.Empty)) Then
+                    If (DateHelper.GetDateValue(e.Row.Cells(GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString()) < DateTime.Now And lblStatusXCD.Text = "PL_RECON_PROCESS-APPROVED") Then
                         btnDeleteItem.Visible = False
                     End If
                 End If
@@ -1910,15 +1910,15 @@ Public Class PriceListDetailForm
             row.Cells(cellIndex).Text = dvRow(parentValueField).ToString()
         End If
     End Sub
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
-            Me.State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.SelectedPageSize = Me.State.PageSize
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.DetailSearchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageSize = CType(cboPageSize.SelectedValue, Integer)
+            State.SelectedPageSize = State.PageSize
+            State.PageIndex = NewCurrentPageIndex(Grid, State.DetailSearchDV.Count, State.PageSize)
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -1934,10 +1934,10 @@ Public Class PriceListDetailForm
     ' 
     Sub PopulategvPendingApprovals()
         Try
-            Dim dv As PriceList.PriceListDetailSelectionView = Me.State.MyBO.GetPriceListSelectionView
-            dv.Sort = Me.State.SortExpression
-            Me.State.DetailSearchDV = dv
-            Me.gvPendingApprovals.AutoGenerateColumns = False
+            Dim dv As PriceList.PriceListDetailSelectionView = State.MyBO.GetPriceListSelectionView
+            dv.Sort = State.SortExpression
+            State.DetailSearchDV = dv
+            gvPendingApprovals.AutoGenerateColumns = False
             dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'"
             If isfromdropdown = False Then 'Not Page.IsPostBack Then
                 Dim requestedByList As New List(Of String)
@@ -1952,30 +1952,30 @@ Public Class PriceListDetailForm
                 End If
                 ddlpasearch.Items.Insert(0, "select")
             End If
-            Me.gvPendingApprovals.PageSize = Me.State.PageSize
-            SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.gvPendingApprovals, Me.State.PageIndex)
+            gvPendingApprovals.PageSize = State.PageSize
+            SetPageAndSelectedIndexFromGuid(dv, State.PriceListDetailSelectedChildId, gvPendingApprovals, State.PageIndex)
 
 
             If Not ddlpasearch.SelectedValue = "select" Then
                 dv.RowFilter = "requested_by = '" & ddlpasearch.SelectedValue & "' and status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'"
-                Me.gvPendingApprovals.DataSource = dv
+                gvPendingApprovals.DataSource = dv
             Else
                 dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'"
-                Me.gvPendingApprovals.DataSource = dv
+                gvPendingApprovals.DataSource = dv
             End If
-            Me.gvPendingApprovals.DataBind()
-            Me.State.PageIndex = Me.gvPendingApprovals.PageIndex
-            Me.ShowHideQuantity()
+            gvPendingApprovals.DataBind()
+            State.PageIndex = gvPendingApprovals.PageIndex
+            ShowHideQuantity()
 
-            ControlMgr.SetVisibleControl(Me, trPageSizePendingApprovals, Me.gvPendingApprovals.Visible)
-            ControlMgr.SetVisibleControl(Me, cboPageSizePendingApproval, Me.gvPendingApprovals.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSizePendingApprovals, gvPendingApprovals.Visible)
+            ControlMgr.SetVisibleControl(Me, cboPageSizePendingApproval, gvPendingApprovals.Visible)
             ControlMgr.SetVisibleControl(Me, lblPendingApprovalRecordCounts, True)
             'ControlMgr.SetVisibleControl(Me, btnApprove, True)
             'ControlMgr.SetVisibleControl(Me, btnReject, True)
             ControlMgr.SetEnableControl(Me, btnApprove, True)
             ControlMgr.SetEnableControl(Me, btnReject, True)
             Session("recCount") = dv.Count
-            Me.lblPendingApprovalRecordCounts.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            lblPendingApprovalRecordCounts.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
             If dv.Count = 0 Then
                 ControlMgr.SetVisibleControl(Me, trPageSizePendingApprovals, False)
@@ -1986,42 +1986,42 @@ Public Class PriceListDetailForm
                 ControlMgr.SetEnableControl(Me, btnReject, False)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub gvPendingApprovals_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles gvPendingApprovals.Sorting
+    Private Sub gvPendingApprovals_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles gvPendingApprovals.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulategvPendingApprovals()
-            Me.HighLightSortColumn(gvPendingApprovals, Me.State.SortExpression, True)
+            State.PageIndex = 0
+            PopulategvPendingApprovals()
+            HighLightSortColumn(gvPendingApprovals, State.SortExpression, True)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
     Dim CheckBoxArray As ArrayList
 
-    Private Sub gvPendingApprovals_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles gvPendingApprovals.PageIndexChanged
+    Private Sub gvPendingApprovals_PageIndexChanged(sender As Object, e As System.EventArgs) Handles gvPendingApprovals.PageIndexChanged
         Try
-            Me.State.PageIndex = gvPendingApprovals.PageIndex
-            Me.State.PriceListId = Guid.Empty
+            State.PageIndex = gvPendingApprovals.PageIndex
+            State.PriceListId = Guid.Empty
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub gvPendingApprovals_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles gvPendingApprovals.PageIndexChanging
+    Private Sub gvPendingApprovals_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles gvPendingApprovals.PageIndexChanging
         Try
             Dim i As Integer = e.NewPageIndex
             If i = 0 Then
@@ -2036,27 +2036,27 @@ Public Class PriceListDetailForm
             PopulategvPendingApprovals()
             populateCheckBoxValues(i)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub gvPendingApprovals_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvPendingApprovals.RowCreated
+    Private Sub gvPendingApprovals_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvPendingApprovals.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub cboPageSizePendingApproval_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSizePendingApproval.SelectedIndexChanged
+    Private Sub cboPageSizePendingApproval_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSizePendingApproval.SelectedIndexChanged
         Try
-            Me.State.PageSize = CType(cboPageSizePendingApproval.SelectedValue, Integer)
-            Me.State.SelectedPageSize = Me.State.PageSize
-            Me.State.PageIndex = NewCurrentPageIndex(gvPendingApprovals, State.DetailSearchDV.Count, State.PageSize)
-            Me.gvPendingApprovals.PageIndex = Me.State.PageIndex
-            Me.PopulategvPendingApprovals()
+            State.PageSize = CType(cboPageSizePendingApproval.SelectedValue, Integer)
+            State.SelectedPageSize = State.PageSize
+            State.PageIndex = NewCurrentPageIndex(gvPendingApprovals, State.DetailSearchDV.Count, State.PageSize)
+            gvPendingApprovals.PageIndex = State.PageIndex
+            PopulategvPendingApprovals()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -2072,72 +2072,72 @@ Public Class PriceListDetailForm
     ''' 
     Sub PopulateGridHistory()
         Try
-            Dim ds As DataSet = Me.State.MyBO.ViewPriceListDetailHistory(Me.State.PriceListDetailSelectedChildId, Authentication.CurrentUser.LanguageId)
-            Me.gvHistory.AutoGenerateColumns = False
-            Me.gvHistory.PageSize = Me.State.PageSize
-            Me.gvHistory.DataSource = ds 'Me.State.DetailSearchDV
-            Me.gvHistory.DataBind()
-            Me.State.PageIndex = Me.gvHistory.PageIndex
-            Me.ShowHideQuantity()
+            Dim ds As DataSet = State.MyBO.ViewPriceListDetailHistory(State.PriceListDetailSelectedChildId, Authentication.CurrentUser.LanguageId)
+            gvHistory.AutoGenerateColumns = False
+            gvHistory.PageSize = State.PageSize
+            gvHistory.DataSource = ds 'Me.State.DetailSearchDV
+            gvHistory.DataBind()
+            State.PageIndex = gvHistory.PageIndex
+            ShowHideQuantity()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub gvHistory_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles gvHistory.Sorting
+    Private Sub gvHistory_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles gvHistory.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGridHistory()
-            Me.HighLightSortColumn(Grid, Me.State.SortExpression, True)
+            State.PageIndex = 0
+            PopulateGridHistory()
+            HighLightSortColumn(Grid, State.SortExpression, True)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub gvHistory_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles gvHistory.PageIndexChanged
+    Private Sub gvHistory_PageIndexChanged(sender As Object, e As System.EventArgs) Handles gvHistory.PageIndexChanged
         Try
-            Me.State.PageIndex = gvHistory.PageIndex
-            Me.State.PriceListId = Guid.Empty
+            State.PageIndex = gvHistory.PageIndex
+            State.PriceListId = Guid.Empty
             PopulateGridHistory()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
 
-    Private Sub gvHistory_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles gvHistory.PageIndexChanging
+    Private Sub gvHistory_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles gvHistory.PageIndexChanging
         Try
             gvHistory.PageIndex = e.NewPageIndex
             State.PageIndex = gvHistory.PageIndex
             State.PriceListDetailSelectedChildId = Guid.Empty
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub gvHistory_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvHistory.RowCreated
+    Private Sub gvHistory_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvHistory.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
     Sub PopulateDetailFromPriceListDetailChildBO()
         ' service class
-        Me.PopulateControlFromBOProperty(ddlNewItemServiceClass, Me.State.MyChildBO.ServiceClassId)
+        PopulateControlFromBOProperty(ddlNewItemServiceClass, State.MyChildBO.ServiceClassId)
 
         If (ddlNewItemServiceClass.SelectedIndex <> NO_ITEM_SELECTED_INDEX) Then
             'Dim dsServiceTypes As DataSet
@@ -2148,7 +2148,7 @@ Public Class PriceListDetailForm
             oListContext.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
             Dim ServiceTypeList As DataElements.ListItem() =
                                     CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceTypeByServiceClass", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext)
-            Me.ddlNewItemServiceType.Populate(ServiceTypeList, New PopulateOptions() With
+            ddlNewItemServiceType.Populate(ServiceTypeList, New PopulateOptions() With
                     {
                         .AddBlankItem = True
                     })
@@ -2156,18 +2156,18 @@ Public Class PriceListDetailForm
         End If
 
         ' service type
-        If Not (Me.State.MyChildBO.ServiceTypeId = Guid.Empty) Then
-            Me.PopulateControlFromBOProperty(ddlNewItemServiceType, Me.State.MyChildBO.ServiceTypeId)
+        If Not (State.MyChildBO.ServiceTypeId = Guid.Empty) Then
+            PopulateControlFromBOProperty(ddlNewItemServiceType, State.MyChildBO.ServiceTypeId)
         End If
 
         'select Make
-        If Not (ddlNewItemMake.Items.FindByValue(Me.State.MyChildBO.MakeId.ToString())) Is Nothing Then
-            Me.PopulateControlFromBOProperty(ddlNewItemMake, Me.State.MyChildBO.MakeId)
+        If (ddlNewItemMake.Items.FindByValue(State.MyChildBO.MakeId.ToString())) IsNot Nothing Then
+            PopulateControlFromBOProperty(ddlNewItemMake, State.MyChildBO.MakeId)
         End If
 
         'make
         'US 255424 - Using Parent Equipment ID if it is coming on dataset
-        If (Me.State.MyChildBO.EquipmentId <> Guid.Empty OrElse Me.State.MyChildBO.Parent_EquipmentId <> Guid.Empty) Then
+        If (State.MyChildBO.EquipmentId <> Guid.Empty OrElse State.MyChildBO.Parent_EquipmentId <> Guid.Empty) Then
             ddlNewItemModel.Enabled = True
 
             'Dim companyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
@@ -2179,28 +2179,28 @@ Public Class PriceListDetailForm
                 oListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                 Dim EquipmentList As DataElements.ListItem() =
                                     CommonConfigManager.Current.ListManager.GetList(listCode:="EquipmentByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext)
-                Me.ddlNewItemModel.Populate(EquipmentList, New PopulateOptions() With
+                ddlNewItemModel.Populate(EquipmentList, New PopulateOptions() With
                     {
                         .AddBlankItem = True
                     })
 
                 'US 255424 - Using Parent Equipment ID if it is coming on dataset
-                Dim eqmnt_Id As Guid = If(Me.State.MyChildBO.Parent_EquipmentId = Guid.Empty, Me.State.MyChildBO.EquipmentId, Me.State.MyChildBO.Parent_EquipmentId)
-                If Not (ddlNewItemModel.Items.FindByValue(eqmnt_Id.ToString())) Is Nothing Then
-                    Me.PopulateControlFromBOProperty(ddlNewItemModel, eqmnt_Id)
+                Dim eqmnt_Id As Guid = If(State.MyChildBO.Parent_EquipmentId = Guid.Empty, State.MyChildBO.EquipmentId, State.MyChildBO.Parent_EquipmentId)
+                If (ddlNewItemModel.Items.FindByValue(eqmnt_Id.ToString())) IsNot Nothing Then
+                    PopulateControlFromBOProperty(ddlNewItemModel, eqmnt_Id)
                 End If
             End If
         End If
 
-        If Me.State.MyChildBO.CurrencyId.Equals(Guid.Empty) Then
+        If State.MyChildBO.CurrencyId.Equals(Guid.Empty) Then
             Dim company As New Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
             Dim currencyobj As New Country(company.CountryId)
-            Me.SetSelectedItem(ddlcurrency, currencyobj.PrimaryCurrencyId)
+            SetSelectedItem(ddlcurrency, currencyobj.PrimaryCurrencyId)
         Else
-            Me.PopulateControlFromBOProperty(ddlcurrency, Me.State.MyChildBO.CurrencyId)
+            PopulateControlFromBOProperty(ddlcurrency, State.MyChildBO.CurrencyId)
         End If
 
-        Me.PopulateControlFromBOProperty(ddldetailtype, Me.State.MyChildBO.PriceListDetailTypeId)
+        PopulateControlFromBOProperty(ddldetailtype, State.MyChildBO.PriceListDetailTypeId)
         'Dim dv1 As DataView = LookupListNew.DropdownLookupList(LookupListCache.LK_PRICE_LIST_DETAIL_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         Dim PriceListDetailTypeList As DataElements.ListItem() =
                                     CommonConfigManager.Current.ListManager.GetList(listCode:="PLDTYP", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
@@ -2209,34 +2209,34 @@ Public Class PriceListDetailForm
                                   Select lst.ListItemId).FirstOrDefault()
 
         If ddldetailtype.SelectedValue.ToString() = templateId.ToString() Then
-            Me.txtcalculationpercent.Visible = True
-            Me.lblcalculation.Visible = True
-            Me.ddlcurrency.Visible = False
-            Me.lblNewItemPrice.Visible = False
-            Me.txtNewItemPrice.Visible = False
-            Me.lblcurrency.Visible = False
-            Me.ddldetailtype.Enabled = False
+            txtcalculationpercent.Visible = True
+            lblcalculation.Visible = True
+            ddlcurrency.Visible = False
+            lblNewItemPrice.Visible = False
+            txtNewItemPrice.Visible = False
+            lblcurrency.Visible = False
+            ddldetailtype.Enabled = False
         Else
-            Me.txtcalculationpercent.Visible = False
-            Me.lblcalculation.Visible = False
-            Me.ddlcurrency.Visible = True
-            Me.lblNewItemPrice.Visible = True
-            Me.txtNewItemPrice.Visible = True
-            Me.lblcurrency.Visible = True
-            Me.ddldetailtype.Enabled = False
+            txtcalculationpercent.Visible = False
+            lblcalculation.Visible = False
+            ddlcurrency.Visible = True
+            lblNewItemPrice.Visible = True
+            txtNewItemPrice.Visible = True
+            lblcurrency.Visible = True
+            ddldetailtype.Enabled = False
         End If
 
-        Me.PopulateControlFromBOProperty(ddlNewItemServiceLevel, Me.State.MyChildBO.ServiceLevelId)
+        PopulateControlFromBOProperty(ddlNewItemServiceLevel, State.MyChildBO.ServiceLevelId)
 
         'US 255424 - Using Parent Condition ID if it's coming on dataset
-        Dim condition_id As Guid = If(Me.State.MyChildBO.Parent_ConditionId = Guid.Empty, Me.State.MyChildBO.ConditionId, Me.State.MyChildBO.Parent_ConditionId)
-        Me.PopulateControlFromBOProperty(ddlNewItemCondition, condition_id)
+        Dim condition_id As Guid = If(State.MyChildBO.Parent_ConditionId = Guid.Empty, State.MyChildBO.ConditionId, State.MyChildBO.Parent_ConditionId)
+        PopulateControlFromBOProperty(ddlNewItemCondition, condition_id)
 
-        EnableDisableControls(ddlNewItemCondition, (Me.State.MyChildBO.EquipmentId = Guid.Empty))
+        EnableDisableControls(ddlNewItemCondition, (State.MyChildBO.EquipmentId = Guid.Empty))
 
-        Me.PopulateControlFromBOProperty(ddlRiskType, Me.State.MyChildBO.RiskTypeId)
-        Me.PopulateControlFromBOProperty(ddlEquipmentClass, Me.State.MyChildBO.EquipmentClassId)
-        Me.PopulateControlFromBOProperty(ddlNewItemReplacementTaxType, Me.State.MyChildBO.ReplacementTaxType)
+        PopulateControlFromBOProperty(ddlRiskType, State.MyChildBO.RiskTypeId)
+        PopulateControlFromBOProperty(ddlEquipmentClass, State.MyChildBO.EquipmentClassId)
+        PopulateControlFromBOProperty(ddlNewItemReplacementTaxType, State.MyChildBO.ReplacementTaxType)
 
         If (ddlRiskType.SelectedIndex <> NO_ITEM_SELECTED_INDEX AndAlso ddlRiskType.SelectedIndex <> BLANK_ITEM_SELECTED) Then
 
@@ -2251,7 +2251,7 @@ Public Class PriceListDetailForm
 
             Dim PartList As DataElements.ListItem() =
                                 CommonConfigManager.Current.ListManager.GetList(listCode:="PartsByCompanyGroupRiskGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext)
-            Me.ddlNewItemPart.Populate(PartList.ToArray(), New PopulateOptions() With
+            ddlNewItemPart.Populate(PartList.ToArray(), New PopulateOptions() With
             {
                 .AddBlankItem = True
             })
@@ -2259,9 +2259,9 @@ Public Class PriceListDetailForm
         End If
 
         ' part 
-        If Not (Me.State.MyChildBO.PartId.Equals(Guid.Empty)) Then
+        If Not (State.MyChildBO.PartId.Equals(Guid.Empty)) Then
 
-            Me.ddlNewManOri.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="MAN_ORI", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
+            ddlNewManOri.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="MAN_ORI", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
                 New PopulateOptions() With
                 {
                     .AddBlankItem = True,
@@ -2270,8 +2270,8 @@ Public Class PriceListDetailForm
                     .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                 })
 
-            If (ddlNewItemPart.Items.FindByValue(Me.State.MyChildBO.PartId.ToString()) IsNot Nothing) Then
-                Me.PopulateControlFromBOProperty(ddlNewItemPart, Me.State.MyChildBO.PartId)
+            If (ddlNewItemPart.Items.FindByValue(State.MyChildBO.PartId.ToString()) IsNot Nothing) Then
+                PopulateControlFromBOProperty(ddlNewItemPart, State.MyChildBO.PartId)
 
                 ddlNewManOri.Enabled = True
             End If
@@ -2279,7 +2279,7 @@ Public Class PriceListDetailForm
 
         If Not (State.MyChildBO.ManufacturerOriginCode?.ToString() Is Nothing AndAlso ddlNewManOri.Items IsNot Nothing AndAlso ddlNewManOri.Items.Count > 0) Then
             'Fix for Bug 257627 - Cannot use Me.PopulateControlFromBOProperty because it's expecting Me.State.MyChildBO.ManufacturerOriginCode as GUID but it's a string
-            Dim selctedItem As ListItem = ddlNewManOri.Items.FindByValue(Me.State.MyChildBO.ManufacturerOriginCode)
+            Dim selctedItem As ListItem = ddlNewManOri.Items.FindByValue(State.MyChildBO.ManufacturerOriginCode)
             If (selctedItem IsNot Nothing) Then
                 selctedItem.Selected = True
             Else
@@ -2289,7 +2289,7 @@ Public Class PriceListDetailForm
 
     End Sub
 
-    Private Sub ddlNewItemModel_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlNewItemModel.SelectedIndexChanged
+    Private Sub ddlNewItemModel_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddlNewItemModel.SelectedIndexChanged
         Try
             If (ddlNewItemModel.SelectedIndex <> NO_ITEM_SELECTED_INDEX AndAlso ddlNewItemModel.SelectedIndex <> BLANK_ITEM_SELECTED) Then
                 'US 255424 - Part selection keeps its Enable Status when Model is selected
@@ -2301,11 +2301,11 @@ Public Class PriceListDetailForm
                 EnableDisableControls(ddlNewItemCondition, True)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub ddlNewItemPart_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlNewItemPart.SelectedIndexChanged
+    Private Sub ddlNewItemPart_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddlNewItemPart.SelectedIndexChanged
         Try
             If (ddlNewItemPart.SelectedIndex <> NO_ITEM_SELECTED_INDEX AndAlso ddlNewItemPart.SelectedIndex <> BLANK_ITEM_SELECTED) Then
                 'US 255424 - Model selection keeps its Enable Status when part is selected
@@ -2317,16 +2317,16 @@ Public Class PriceListDetailForm
                 EnableDisableControls(ddlNewManOri, True)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub ddlCountry_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlCountry.SelectedIndexChanged
         Dim currencyid As Guid = Guid.Parse(GetCurrencyId(1))
-        Me.SetSelectedItem(ddlDefaultCurrency, currencyid)
+        SetSelectedItem(ddlDefaultCurrency, currencyid)
     End Sub
 
-    Private Function GetCurrencyId(ByVal input As Boolean) As String
+    Private Function GetCurrencyId(input As Boolean) As String
         Dim selectedcountry As String = ddlCountry.SelectedItem.ToString()
         Dim country As New ElitaPlus.BusinessObjectsNew.Country(LookupListNew.GetIdFromDescription("COUNTRIES", selectedcountry))
         Dim currency As New Currency(country.PrimaryCurrencyId)
@@ -2341,13 +2341,13 @@ Public Class PriceListDetailForm
 
         Try
             isPendingApprovalRefresh = True
-            Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, String.Empty, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-PENDINGAPPROVAL")
-            Me.PopulateGrid()
-            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_SUBMISSION_PROCESS_SUCCESS)
-            Me.PopulategvPendingApprovals()
+            State.MyBO.ProcessPriceListByStatus(State.MyBO.Id, String.Empty, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-PENDINGAPPROVAL")
+            PopulateGrid()
+            MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_SUBMISSION_PROCESS_SUCCESS)
+            PopulategvPendingApprovals()
         Catch ex As Exception
-            Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_SUBMISSION_PROCESS_FAILED)
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_SUBMISSION_PROCESS_FAILED)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -2382,17 +2382,17 @@ Public Class PriceListDetailForm
                 End If
             End If
             If isChecked Then
-                Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-APPROVED")
-                Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVAL_PROCESS_SUCCESS)
+                State.MyBO.ProcessPriceListByStatus(State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-APPROVED")
+                MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVAL_PROCESS_SUCCESS)
             Else
-                Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVE_OR_REJECT_CHECKBOX_NOT_SELECTED)
+                MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVE_OR_REJECT_CHECKBOX_NOT_SELECTED)
             End If
             isPendingApprovalRefresh = True
-            Me.PopulateGrid()
-            Me.PopulategvPendingApprovals()
+            PopulateGrid()
+            PopulategvPendingApprovals()
         Catch ex As Exception
-            Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVAL_PROCESS_FAILED)
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVAL_PROCESS_FAILED)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -2425,29 +2425,29 @@ Public Class PriceListDetailForm
                 End If
             End If
             If isChecked Then
-                Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-REJECTED")
-                Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_REJECTION_PROCESS_SUCCESS)
+                State.MyBO.ProcessPriceListByStatus(State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-REJECTED")
+                MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_REJECTION_PROCESS_SUCCESS)
             Else
-                Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVE_OR_REJECT_CHECKBOX_NOT_SELECTED)
+                MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVE_OR_REJECT_CHECKBOX_NOT_SELECTED)
             End If
             isPendingApprovalRefresh = True
-            Me.PopulateGrid()
-            Me.PopulategvPendingApprovals()
+            PopulateGrid()
+            PopulategvPendingApprovals()
         Catch ex As Exception
-            Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_REJECTION_PROCESS_FAILED)
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_REJECTION_PROCESS_FAILED)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub btntxtsearch_Click(sender As Object, e As EventArgs) Handles btntxtsearch.Click
-        Me.PopulateGrid()
+        PopulateGrid()
     End Sub
 
     Protected Sub btnpaSearch_Click(sender As Object, e As EventArgs) Handles btnpaSearch.Click
         isfromdropdown = True
-        Me.PopulategvPendingApprovals()
+        PopulategvPendingApprovals()
     End Sub
-    Private Function savecheckedcheckboxes(ByVal rIndex As Integer)
+    Private Function savecheckedcheckboxes(rIndex As Integer)
         Dim boxlist As ArrayList = New ArrayList()
         Dim index As Integer = -1
         Dim chkHeader As CheckBox = CType(gvPendingApprovals.HeaderRow.FindControl("chkHeaderApproveOrReject"), CheckBox)
@@ -2496,7 +2496,7 @@ Public Class PriceListDetailForm
         Return 0
     End Function
 
-    Private Function populateCheckBoxValues(ByVal rIndex As Integer)
+    Private Function populateCheckBoxValues(rIndex As Integer)
         Dim boxlist As ArrayList = New ArrayList()
         rIndex = gvPendingApprovals.PageIndex
         Dim ChAll As String = "ChkAll -" + rIndex.ToString()

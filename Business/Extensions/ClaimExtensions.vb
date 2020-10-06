@@ -1,4 +1,4 @@
-﻿Imports Assurant.ElitaPlus.DataEntities
+﻿
 
 Public Module ClaimExtensions
 

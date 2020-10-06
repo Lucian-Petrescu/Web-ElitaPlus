@@ -19,8 +19,8 @@ Namespace Generic
 
 #Region "Events"
         '   Public Event SelectedListChanged(ByVal aSrc As UserControlAvailableSelected, ByVal aReason As EventArg)
-        Public Event Attach(ByVal aSrc As UserControlAvailableSelected_New, ByVal attachedList As ArrayList)
-        Public Event Detach(ByVal aSrc As UserControlAvailableSelected_New, ByVal detachedList As ArrayList)
+        Public Event Attach(aSrc As UserControlAvailableSelected_New, attachedList As ArrayList)
+        Public Event Detach(aSrc As UserControlAvailableSelected_New, detachedList As ArrayList)
 
 #End Region
 
@@ -46,16 +46,16 @@ Namespace Generic
             Get
 
             End Get
-            Set(ByVal Value As String)
-                Me.moAvailableTitle.Text = Value
+            Set(Value As String)
+                moAvailableTitle.Text = Value
             End Set
         End Property
         Public Property SelectedDesc() As String
             Get
 
             End Get
-            Set(ByVal Value As String)
-                Me.moSelectedTitle.Text = Value
+            Set(Value As String)
+                moSelectedTitle.Text = Value
             End Set
         End Property
 
@@ -121,9 +121,9 @@ Namespace Generic
             Get
                 Dim oDetachArray As ArrayList
 
-                If (Not moAvailableValues.Value Is String.Empty) Then
+                If (moAvailableValues.Value IsNot String.Empty) Then
                     ' oDetachArray = moAvailableValues.Value.Split(AppConfig.FIELD_SEPARATOR)
-                    oDetachArray = New ArrayList(moAvailableValues.Value.Split(Me.FIELD_SEPARATOR))
+                    oDetachArray = New ArrayList(moAvailableValues.Value.Split(FIELD_SEPARATOR))
                 End If
 
                 Return oDetachArray
@@ -135,9 +135,9 @@ Namespace Generic
             Get
                 Dim oAttachArray As ArrayList
 
-                If (Not moSelectedValues.Value Is String.Empty) Then
+                If (moSelectedValues.Value IsNot String.Empty) Then
                     ' oDetachArray = moAvailableValues.Value.Split(AppConfig.FIELD_SEPARATOR)
-                    oAttachArray = New ArrayList(moSelectedValues.Value.Split(Me.FIELD_SEPARATOR))
+                    oAttachArray = New ArrayList(moSelectedValues.Value.Split(FIELD_SEPARATOR))
                 End If
 
                 Return oAttachArray
@@ -147,10 +147,10 @@ Namespace Generic
 
         Public Property BackColor() As String
             Get
-                Return (Me.moOutTable.BgColor)
+                Return (moOutTable.BgColor)
             End Get
-            Set(ByVal Value As String)
-                Me.moOutTable.BgColor = Value
+            Set(Value As String)
+                moOutTable.BgColor = Value
             End Set
         End Property
 
@@ -168,7 +168,7 @@ Namespace Generic
 
         Public ReadOnly Property SelectedListListBox() As ListBox
             Get
-                Return Me.moSelectedList
+                Return moSelectedList
             End Get
         End Property
 
@@ -176,7 +176,7 @@ Namespace Generic
             Get
                 Return _ShowUpButton
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _ShowUpButton = value
             End Set
         End Property
@@ -185,7 +185,7 @@ Namespace Generic
             Get
                 Return _ShowDownButton
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 _ShowDownButton = value
             End Set
         End Property
@@ -201,7 +201,7 @@ Namespace Generic
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -209,13 +209,13 @@ Namespace Generic
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            If Me.IsPostBack Then
+            If IsPostBack Then
                 ReadValuesFromClient()
             End If
-            btnMoveUp.Visible = Me.ShowUpButton
-            btnMoveDown.Visible = Me.ShowDownButton
+            btnMoveUp.Visible = ShowUpButton
+            btnMoveDown.Visible = ShowDownButton
             RegisterClientScript()
         End Sub
 
@@ -243,7 +243,7 @@ Namespace Generic
         '    RemoveSelection(moAvailableList)
         'End Sub
 
-        Private Sub btnMoveUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMoveUp.Click
+        Private Sub btnMoveUp_Click(sender As System.Object, e As System.EventArgs) Handles btnMoveUp.Click
             If AreMultipleRowsSelected(moSelectedList) Then
                 Dim iSelectedIndex As Integer = moSelectedList.SelectedIndex
                 If iSelectedIndex > 0 Then 'not the first one
@@ -254,7 +254,7 @@ Namespace Generic
             End If
         End Sub
 
-        Private Sub btnMoveDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMoveDown.Click
+        Private Sub btnMoveDown_Click(sender As System.Object, e As System.EventArgs) Handles btnMoveDown.Click
             If AreMultipleRowsSelected(moSelectedList) Then
                 Dim iSelectedIndex As Integer = moSelectedList.SelectedIndex
                 If iSelectedIndex <> moSelectedList.Items.Count - 1 Then 'Not the last one
@@ -265,7 +265,7 @@ Namespace Generic
             End If
         End Sub
 
-        Private Function AreMultipleRowsSelected(ByVal sender As ListBox) As Boolean
+        Private Function AreMultipleRowsSelected(sender As ListBox) As Boolean
             Dim iCounter As Integer()
             iCounter = sender.GetSelectedIndices()
             If iCounter.Count = 1 Then
@@ -407,13 +407,13 @@ Namespace Generic
 #Region "Set List Data"
 
 
-        Public Sub SetAvailableData(ByVal dv As DataView, ByVal textColumnName As String, ByVal guidValueColumnName As String)
+        Public Sub SetAvailableData(dv As DataView, textColumnName As String, guidValueColumnName As String)
             ElitaPlusPage.BindListControlToDataView(moAvailableList, dv, textColumnName, guidValueColumnName, False)
             '  SetClientInput(moAvailableList, moAvailableTexts, moAvailableValues)
             '  Me.EnableDisableButtons()
         End Sub
 
-        Public Sub SetSelectedData(ByVal dv As DataView, ByVal textColumnName As String, ByVal guidValueColumnName As String, _
+        Public Sub SetSelectedData(dv As DataView, textColumnName As String, guidValueColumnName As String, _
                                    Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal SortByTextColumn As Boolean = True)
             ElitaPlusPage.BindListControlToDataView(moSelectedList, dv, textColumnName, guidValueColumnName, False, SortByTextColumn)
             '  SetClientInput(moSelectedList, moSelectedTexts, moSelectedValues)
@@ -423,7 +423,7 @@ Namespace Generic
         Public Sub RemoveSelectedFromAvailable()
             For Each lst As ListItem In moSelectedList.Items
                 Dim lst1 As ListItem = moAvailableList.Items.FindByText(lst.Text)
-                If Not lst1 Is Nothing Then
+                If lst1 IsNot Nothing Then
                     moAvailableList.Items.Remove(lst1)
                 End If
             Next
@@ -435,7 +435,7 @@ Namespace Generic
         Private Class TheComparer
             Implements System.Collections.IComparer
 
-            Function Compare(ByVal x As Object, ByVal y As Object) As Integer _
+            Function Compare(x As Object, y As Object) As Integer _
                   Implements System.Collections.IComparer.Compare
                 Dim oXItem As ListItem = CType(x, ListItem)
                 Dim oYItem As ListItem = CType(y, ListItem)
@@ -445,7 +445,7 @@ Namespace Generic
             End Function
         End Class
 
-        Private Sub Sort(ByVal aList As ListBox)
+        Private Sub Sort(aList As ListBox)
             Dim oArray As ArrayList = New ArrayList
             Dim oItem As ListItem
             Dim oComparer As IComparer = New TheComparer
@@ -466,25 +466,25 @@ Namespace Generic
 #Region "Client & JavaScript"
 
         ' Insert elements into source and delete from target
-        Private Sub SetServerList(ByVal oEvent As EventTypes, ByVal sourceList As ListBox, _
-                       ByVal clientTexts As HtmlInputHidden, _
-                       ByVal clientValues As HtmlInputHidden, ByVal targetList As ListBox)
+        Private Sub SetServerList(oEvent As EventTypes, sourceList As ListBox, _
+                       clientTexts As HtmlInputHidden, _
+                       clientValues As HtmlInputHidden, targetList As ListBox)
             Dim textArray(), valueArray() As String
             Dim oListItem As ListItem
             Dim index As Integer
 
-            If (Not clientTexts.Value Is String.Empty) Then
-                textArray = clientTexts.Value.Split(Me.FIELD_SEPARATOR)
-                valueArray = clientValues.Value.Split(Me.FIELD_SEPARATOR)
+            If (clientTexts.Value IsNot String.Empty) Then
+                textArray = clientTexts.Value.Split(FIELD_SEPARATOR)
+                valueArray = clientValues.Value.Split(FIELD_SEPARATOR)
                 For index = 0 To (textArray.Length - 1)
                     oListItem = New ListItem(textArray(index), valueArray(index))
                     sourceList.Items.Add(oListItem)     ' Insert elements into source
                     targetList.Items.Remove(oListItem)  ' Delete elements from target
                 Next
                 If (oEvent = EventTypes.DETACH) Then
-                    RaiseEvent Detach(Me, Me.DetachList)
+                    RaiseEvent Detach(Me, DetachList)
                 ElseIf (oEvent = EventTypes.ATTACH) Then
-                    RaiseEvent Attach(Me, Me.AttachList)
+                    RaiseEvent Attach(Me, AttachList)
                 End If
                 clientTexts.Value = String.Empty
                 clientValues.Value = String.Empty

@@ -11,41 +11,41 @@ Namespace CustomerReg
     Public Interface ICustomerRegistration
 
         <OperationContract(Name:="Hello")> _
-        Function Hello(ByVal name As String) As String
+        Function Hello(name As String) As String
 
         <OperationContract(Name:="Login")> _
         Function Login() As String
 
         <OperationContract(Name:="LoginBody")> _
-        Function LoginBody(ByVal networkID As String, ByVal password As String, ByVal group As String) As String
+        Function LoginBody(networkID As String, password As String, group As String) As String
 
         <OperationContract(Name:="FindRegistration")> _
         <FaultContract(GetType(CustServiceFaultDC))> _
-        Function FindRegistration(ByVal customerRegItemSearch As CustRegItemSearchDC) As CustRegistrationDC
+        Function FindRegistration(customerRegItemSearch As CustRegItemSearchDC) As CustRegistrationDC
 
         <OperationContract(Name:="CreateRegistration")> _
         <FaultContract(GetType(CustServiceFaultDC))> _
-        Function CreateRegistration(ByVal customerRegistration As CustRegistrationDC) As String
+        Function CreateRegistration(customerRegistration As CustRegistrationDC) As String
 
         <OperationContract(Name:="UpdateRegistration")> _
         <FaultContract(GetType(CustServiceFaultDC))> _
-        Function UpdateRegistration(ByVal customerRegistration As CustRegistrationDC) As String
+        Function UpdateRegistration(customerRegistration As CustRegistrationDC) As String
 
         <OperationContract(Name:="FindItem")> _
         <FaultContract(GetType(CustServiceFaultDC))> _
-        Function FindItem(ByVal customerRegItemSearch As CustRegItemSearchDC) As List(Of CustItemDC)
+        Function FindItem(customerRegItemSearch As CustRegItemSearchDC) As List(Of CustItemDC)
 
         <OperationContract(Name:="CreateItem")> _
         <FaultContract(GetType(CustServiceFaultDC))> _
-        Function CreateItem(ByVal customerItem As CustItemDC) As String
+        Function CreateItem(customerItem As CustItemDC) As String
 
         <OperationContract(Name:="DeleteItem")> _
         <FaultContract(GetType(CustServiceFaultDC))> _
-        Function DeleteItem(ByVal customerItemDelete As CustItemDeleteActivateDC) As List(Of CustItemDC)
+        Function DeleteItem(customerItemDelete As CustItemDeleteActivateDC) As List(Of CustItemDC)
 
         <OperationContract(Name:="ActivateItem")> _
         <FaultContract(GetType(CustServiceFaultDC))> _
-        Function ActivateItem(ByVal customerItemActivate As CustItemDeleteActivateDC) As String
+        Function ActivateItem(customerItemActivate As CustItemDeleteActivateDC) As String
 
     End Interface
 

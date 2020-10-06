@@ -11,7 +11,7 @@ Namespace Interfaces
             Public SearchedComanyGroupID As Guid
 
         End Class
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
 
             TheFileController.SetErrorController(ErrorCtrl)
             TheFileController.Page_PageReturn(ReturnFromUrl, ReturnPar)
@@ -30,27 +30,27 @@ Namespace Interfaces
 #End Region
 
 #Region "File Controller Handlers"
-        Private Sub moFileController_BeforeGetDataView(ByVal sender As Object, ByVal e As FileProcessedController.FileProcessedDataEventArgs) _
+        Private Sub moFileController_BeforeGetDataView(sender As Object, e As FileProcessedController.FileProcessedDataEventArgs) _
             Handles moFileController.BeforeGetDataView
             e.FileProcessedData.ReferenceId = e.FileProcessedData.CompanyGroupId
         End Sub
 
-        Private Sub moFileController_SetExpectedFileName(ByVal sender As Object, ByVal e As FileProcessedController.SetExpectedFileNameEventArgs) _
+        Private Sub moFileController_SetExpectedFileName(sender As Object, e As FileProcessedController.SetExpectedFileNameEventArgs) _
             Handles moFileController.SetExpectedFileName
             e.FileName = e.CompanyGroupCode & "-"
         End Sub
 
-        Private Sub moFileController_OnValidate(ByVal sender As Object, ByVal e As FileProcessedController.ExecuteActionEventArgs) _
+        Private Sub moFileController_OnValidate(sender As Object, e As FileProcessedController.ExecuteActionEventArgs) _
             Handles moFileController.OnValidate
             e.InterfaceStatusId = EquipmentReconWrk.ValidateFile(e.FileProcessedId)
         End Sub
 
-        Private Sub moFileController_OnProcess(ByVal sender As Object, ByVal e As FileProcessedController.ExecuteActionEventArgs) _
+        Private Sub moFileController_OnProcess(sender As Object, e As FileProcessedController.ExecuteActionEventArgs) _
             Handles moFileController.OnProcess
             e.InterfaceStatusId = EquipmentReconWrk.ProcessFile(e.FileProcessedId)
         End Sub
 
-        Private Sub moFileController_OnDelete(ByVal sender As Object, ByVal e As FileProcessedController.ExecuteActionEventArgs) _
+        Private Sub moFileController_OnDelete(sender As Object, e As FileProcessedController.ExecuteActionEventArgs) _
             Handles moFileController.OnDelete
             e.InterfaceStatusId = EquipmentReconWrk.DeleteFile(e.FileProcessedId)
         End Sub
@@ -90,7 +90,7 @@ Namespace Interfaces
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -99,10 +99,10 @@ Namespace Interfaces
 #End Region
 
 #Region "Handlers-Init"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.ErrorCtrl.Clear_Hide()
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            ErrorCtrl.Clear_Hide()
             moFileController.SetErrorController(ErrorCtrl)
-            Me.MenuEnabled = True
+            MenuEnabled = True
             If moDealerMultipleDrop Is Nothing Then
                 moDealerMultipleDrop = CType(TheFileController.FindControl("multipleDropControl"), MultipleColumnDDLabelControl)
             End If
@@ -116,49 +116,49 @@ Namespace Interfaces
             '    moDealerMultiDrop = CType(TheFileController.FindControl("multipleDropControl"), MultipleColumnDDLabelControl)
             'End If
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     If mbIsPageReturn = False Then
                         TheFileController.InitController(EquipmentReconWrkForm.URL)
                     End If
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            If mbIsPageReturn = False Then Me.ShowMissingTranslations(Me.ErrorCtrl)
+            If mbIsPageReturn = False Then ShowMissingTranslations(ErrorCtrl)
             TheFileController.InstallInterfaceProgressBar()
         End Sub
 #End Region
 
 #Region "Events-Handlers"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl) _
                 Handles moDealerMultipleDrop.SelectedDropChanged
             Try
                 'TheFileController.PopulateRefernce()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
-        Private Sub OnFromDrops_Changed(ByVal fromsMultipleDrop As MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrops_Changed(fromsMultipleDrop As MultipleColumnDDLabelControl) _
                Handles moCompanyGroupMultiDrop.SelectedDropChanged
             Try
-                Me.State.SearchedComanyGroupID = moCompanyGroupMultiDrop.SelectedGuid
+                State.SearchedComanyGroupID = moCompanyGroupMultiDrop.SelectedGuid
                 Dim alCompanies As New Guid
-                alCompanies = Me.State.SearchedComanyGroupID
+                alCompanies = State.SearchedComanyGroupID
                 'TheFileController.PopulateUserControlAvailableCompanies(alCompanies)
-                Dim objCompany As CompanyGroup = New CompanyGroup(Me.State.SearchedComanyGroupID)
+                Dim objCompany As CompanyGroup = New CompanyGroup(State.SearchedComanyGroupID)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub OnFromDropss_Changed(ByVal fromsMultipleDrop As MultipleColumnDDLabelControl) _
+        Private Sub OnFromDropss_Changed(fromsMultipleDrop As MultipleColumnDDLabelControl) _
               Handles moCompanyMultiDrop.SelectedDropChanged
             Try
                 'TheFileController.PopulateDealer()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 #End Region

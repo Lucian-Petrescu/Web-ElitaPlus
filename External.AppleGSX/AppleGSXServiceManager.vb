@@ -38,7 +38,7 @@ Public Class AppleGSXServiceManager
                         oauthenticateRequestType.userTimeZone = "est"
                         oauthenticateRequestType.serviceAccountNo = "460117"
 
-                        oAuthenticateResponse = Me.Client.Authenticate(oauthenticateRequestType)
+                        oAuthenticateResponse = Client.Authenticate(oauthenticateRequestType)
 
                         ' Create Session
                         m_GsxUserSession = New gsxUserSessionType() With
@@ -65,10 +65,10 @@ Public Class AppleGSXServiceManager
 
             ' Find Serial Number based on IMEI Number
             Dim oImeiToSerialLookupResponse As fetchIOSActivationDetailsResponseType
-            oImeiToSerialLookupResponse = Me.Client.FetchIOSActivationDetails(New fetchIOSActivationDetailsRequestType() With
+            oImeiToSerialLookupResponse = Client.FetchIOSActivationDetails(New fetchIOSActivationDetailsRequestType() With
             {
                 .alternateDeviceId = pRequest.ImeiNumber,
-                .userSession = Me.Session
+                .userSession = Session
             })
 
             oSerialNumber = oImeiToSerialLookupResponse.activationDetailsInfo.serialNumber
@@ -79,13 +79,13 @@ Public Class AppleGSXServiceManager
         ' Look for Repairs
         Dim oRepairLookupResponse As repairLookupResponseType
         Try
-            oRepairLookupResponse = Me.Client.RepairLookup(New repairLookupRequestType() With
+            oRepairLookupResponse = Client.RepairLookup(New repairLookupRequestType() With
                                                  {
                                                     .lookupRequestData = New repairLookupInfoType() With
                                                     {
                                                         .serialNumber = oSerialNumber
                                                                                                             },
-                                                    .userSession = Me.Session
+                                                    .userSession = Session
                                                  })
 
 
@@ -100,18 +100,18 @@ Public Class AppleGSXServiceManager
 
         ' Look for Repairs Details
         Dim oRepairDetailsLookup As repairDetailsLookupResponseType
-        oRepairDetailsLookup = Me.Client.RepairDetailsLookup(New repairDetailsLookupRequestType() With
+        oRepairDetailsLookup = Client.RepairDetailsLookup(New repairDetailsLookupRequestType() With
                                                            {
                                                             .repairConfirmationNumber = oRepairLookupResponse.lookupResponseData.FirstOrDefault().repairConfirmationNumber,
-                                                            .userSession = Me.Session
+                                                            .userSession = Session
                                                            })
 
         ' Find IMEI Number based on Serial Number
         Dim oSerialToImeiLookupResponse As fetchIOSActivationDetailsResponseType
-        oSerialToImeiLookupResponse = Me.Client.FetchIOSActivationDetails(New fetchIOSActivationDetailsRequestType() With
+        oSerialToImeiLookupResponse = Client.FetchIOSActivationDetails(New fetchIOSActivationDetailsRequestType() With
                                                                                {
                                                                                     .serialNumber = oRepairDetailsLookup.repairDetails.newSerialNumber,
-                                                                                    .userSession = Me.Session
+                                                                                    .userSession = Session
                                                                                })
 
         Dim response As New FindOriginalDeviceInfoResponse

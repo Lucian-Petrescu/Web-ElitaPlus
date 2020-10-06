@@ -13,6 +13,6 @@ Public Interface IClarMaxValueService
             FaultContract(GetType(InvalidSerialnumber)),
             FaultContract(GetType(DealerNotFoundFault)),
             FaultContract(GetType(InvalidIdentificationNumber))>
-    Function GetCertificate(ByVal request As GetCertificateRequest) As GetCertificateResponse
+    Function GetCertificate(request As GetCertificateRequest) As GetCertificateResponse
 
 End Interface

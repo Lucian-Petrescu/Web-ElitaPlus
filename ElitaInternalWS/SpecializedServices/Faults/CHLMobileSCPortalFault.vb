@@ -12,7 +12,7 @@ Namespace SpecializedServices
             Get
                 Return _EnglishReason
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _EnglishReason = value
             End Set
         End Property

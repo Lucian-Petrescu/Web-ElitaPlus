@@ -47,8 +47,8 @@ Public Class UpdateSCReceivedItems
         Try
             If ds.UpdateSCReceivedItems.Count = 0 Then Exit Sub
             With ds.UpdateSCReceivedItems.Item(0)
-                Me.PickListNumber = .PICK_LIST_NUMBER
-                Me.ServiceCenterCode = .SERVICE_CENTER_CODE
+                PickListNumber = .PICK_LIST_NUMBER
+                ServiceCenterCode = .SERVICE_CENTER_CODE
 
                 Dim i As Integer
                 For i = 0 To ds.CLAIMS.Count - 1
@@ -70,9 +70,9 @@ Public Class UpdateSCReceivedItems
         Dim row As DataRow
 
         Try
-            Me.Validate()
+            Validate()
 
-            PickupListHeader.UpdatePickListStatus_Received(Me.PickListNumber, Me.ServiceCenterID, claimStr)
+            PickupListHeader.UpdatePickListStatus_Received(PickListNumber, ServiceCenterID, claimStr)
 
             ' Set the acknoledge OK response
             Return XMLHelper.GetXML_OK_Response
@@ -101,18 +101,18 @@ Public Class UpdateSCReceivedItems
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
     Private Sub Load(ByVal ds As UpdateSCReceivedItemsDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -151,35 +151,35 @@ Public Class UpdateSCReceivedItems
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_PICKLIST_NUMBER, Value)
+            SetValue(SOURCE_COL_PICKLIST_NUMBER, Value)
         End Set
     End Property
 
 
     Public Property ServiceCenterCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_SERVICE_CENTER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SERVICE_CENTER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_SERVICE_CENTER_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_SERVICE_CENTER_CODE), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_SERVICE_CENTER_CODE, Value)
+            SetValue(DATA_COL_NAME_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
     Public ReadOnly Property ServiceCenterID() As Guid
         Get
-            If Me._serviceCenterId.Equals(Guid.Empty) AndAlso Not Me.ServiceCenterCode Is Nothing AndAlso Me.ServiceCenterCode <> "" Then
+            If _serviceCenterId.Equals(Guid.Empty) AndAlso Not ServiceCenterCode Is Nothing AndAlso ServiceCenterCode <> "" Then
 
                 Dim dvServiceCenter As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
 
                 If Not dvServiceCenter Is Nothing AndAlso dvServiceCenter.Count > 0 Then
-                    Me._serviceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, Me.ServiceCenterCode)
+                    _serviceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, ServiceCenterCode)
 
-                    If Me._serviceCenterId.Equals(Guid.Empty) Then
+                    If _serviceCenterId.Equals(Guid.Empty) Then
                         Throw New BOValidationException("UpdateSCReceivedItems Error: ", INVALID_SERVICE_CENTER_CODE)
                     End If
                 Else
@@ -188,7 +188,7 @@ Public Class UpdateSCReceivedItems
 
             End If
 
-            Return Me._serviceCenterId
+            Return _serviceCenterId
         End Get
     End Property
 

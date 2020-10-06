@@ -40,7 +40,7 @@ Public Class AppleGSXServiceManager_Production
                         oauthenticateRequestType.userTimeZone = "est"
                         oauthenticateRequestType.serviceAccountNo = "460117"
 
-                        oAuthenticateResponse = Me.Client.Authenticate(oauthenticateRequestType)
+                        oAuthenticateResponse = Client.Authenticate(oauthenticateRequestType)
 
 
                         ' Create Session
@@ -68,10 +68,10 @@ Public Class AppleGSXServiceManager_Production
 
             ' Find Serial Number based on IMEI Number
             Dim oImeiToSerialLookupResponse As fetchIOSActivationDetailsResponseType
-            oImeiToSerialLookupResponse = Me.Client.FetchIOSActivationDetails(New fetchIOSActivationDetailsRequestType() With
+            oImeiToSerialLookupResponse = Client.FetchIOSActivationDetails(New fetchIOSActivationDetailsRequestType() With
             {
                 .alternateDeviceId = pRequest.ImeiNumber,
-                .userSession = Me.Session
+                .userSession = Session
             })
 
             oSerialNumber = oImeiToSerialLookupResponse.activationDetailsInfo.serialNumber
@@ -82,13 +82,13 @@ Public Class AppleGSXServiceManager_Production
         ' Look for Repairs
         Dim oRepairLookupResponse As iphoneRepairLookupResponseType
         Try
-            oRepairLookupResponse = Me.Client.IPhoneRepairLookup(New iphoneRepairLookupRequestType() With
+            oRepairLookupResponse = Client.IPhoneRepairLookup(New iphoneRepairLookupRequestType() With
                                                  {
                                                     .lookupRequestData = New iphoneRepairLookupInfoType() With
                                                     {
                                                         .serialNumber = oSerialNumber
                                                                                                             },
-                                                    .userSession = Me.Session
+                                                    .userSession = Session
                                                  })
 
 
@@ -104,10 +104,10 @@ Public Class AppleGSXServiceManager_Production
         ' Look for Repairs Details
         Dim oRepairDetailsLookup As iphoneRepairDetailsLookupResponseType
         Try
-            oRepairDetailsLookup = Me.Client.IPhoneRepairDetailsLookup(New iphoneRepairDetailsLookupRequestType() With
+            oRepairDetailsLookup = Client.IPhoneRepairDetailsLookup(New iphoneRepairDetailsLookupRequestType() With
                                                            {
                                                             .repairConfirmationNumber = oRepairLookupResponse.lookupResponseData.FirstOrDefault().repairConfirmationNumber,
-                                                            .userSession = Me.Session
+                                                            .userSession = Session
                                                            })
 
         Catch faultex As FaultException  ''''As per R12.3, out of apple repairs are not supported and below error is thrown. Elita will send a generic message certificate not found to MaxValue.
@@ -119,10 +119,10 @@ Public Class AppleGSXServiceManager_Production
 
         ' Find IMEI Number based on Serial Number
         Dim oSerialToImeiLookupResponse As fetchIOSActivationDetailsResponseType
-        oSerialToImeiLookupResponse = Me.Client.FetchIOSActivationDetails(New fetchIOSActivationDetailsRequestType() With
+        oSerialToImeiLookupResponse = Client.FetchIOSActivationDetails(New fetchIOSActivationDetailsRequestType() With
                                                                                {
                                                                                     .serialNumber = oRepairDetailsLookup.lookupResponseData.FirstOrDefault().newSerialNumber,
-                                                                                    .userSession = Me.Session
+                                                                                    .userSession = Session
                                                                                })
 
         Dim response As New FindOriginalDeviceInfoResponse

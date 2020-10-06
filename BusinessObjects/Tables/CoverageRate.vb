@@ -8,46 +8,46 @@ Public Class CoverageRate
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CoverageRateDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -58,20 +58,20 @@ Public Class CoverageRate
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New CoverageRateDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -161,7 +161,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_COVERAGE_ID, Value)
+            SetValue(CoverageRateDAL.COL_NAME_COVERAGE_ID, Value)
         End Set
     End Property
 
@@ -178,7 +178,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_LOW_PRICE, Value)
+            SetValue(CoverageRateDAL.COL_NAME_LOW_PRICE, Value)
         End Set
     End Property
 
@@ -195,7 +195,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_HIGH_PRICE, Value)
+            SetValue(CoverageRateDAL.COL_NAME_HIGH_PRICE, Value)
         End Set
     End Property
 
@@ -212,7 +212,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_GROSS_AMT, Value)
+            SetValue(CoverageRateDAL.COL_NAME_GROSS_AMT, Value)
         End Set
     End Property
 
@@ -229,7 +229,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT, Value)
+            SetValue(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT, Value)
         End Set
     End Property
 
@@ -246,7 +246,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_MARKETING_PERCENT, Value)
+            SetValue(CoverageRateDAL.COL_NAME_MARKETING_PERCENT, Value)
         End Set
     End Property
 
@@ -263,7 +263,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE, Value)
+            SetValue(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE, Value)
         End Set
     End Property
 
@@ -280,7 +280,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_PROFIT_EXPENSE, Value)
+            SetValue(CoverageRateDAL.COL_NAME_PROFIT_EXPENSE, Value)
         End Set
     End Property
 
@@ -297,7 +297,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT, Value)
+            SetValue(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT, Value)
         End Set
     End Property
 
@@ -313,7 +313,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_GROSS_AMOUNT_PERCENT, Value)
+            SetValue(CoverageRateDAL.COL_NAME_GROSS_AMOUNT_PERCENT, Value)
         End Set
     End Property
 
@@ -329,7 +329,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_RENEWAL_NUMBER, Value)
+            SetValue(CoverageRateDAL.COL_NAME_RENEWAL_NUMBER, Value)
         End Set
     End Property
     Public Property RegionId() As Guid
@@ -343,7 +343,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_REGION_ID, Value)
+            SetValue(CoverageRateDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
     Public Property TaxRegion() As String
@@ -357,7 +357,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_TAX_REGION, Value)
+            SetValue(CoverageRateDAL.COL_NAME_TAX_REGION, Value)
         End Set
     End Property
 
@@ -374,7 +374,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD, Value)
+            SetValue(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
 
@@ -390,7 +390,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD, Value)
+            SetValue(CoverageRateDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
 
@@ -406,7 +406,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD, Value)
+            SetValue(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD, Value)
         End Set
     End Property
 
@@ -422,7 +422,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD, Value)
+            SetValue(CoverageRateDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
 
@@ -438,7 +438,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD, Value)
+            SetValue(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
     
@@ -455,7 +455,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT, Value)
+            SetValue(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT, Value)
         End Set
     End Property
     
@@ -472,7 +472,7 @@ Public Class CoverageRate
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT_PERCENT, Value)
+            SetValue(CoverageRateDAL.COL_NAME_COV_LIABILITY_LIMIT_PERCENT, Value)
         End Set
     End Property
 #End Region
@@ -488,15 +488,15 @@ Public Class CoverageRate
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CoverageRateDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -711,10 +711,10 @@ Public Class CoverageRate
 
             If Not obj.LowPrice Is Nothing And Not obj.HighPrice Is Nothing Then
                 If Convert.ToSingle(obj.LowPrice.Value) > Convert.ToSingle(obj.HighPrice.Value) Then
-                    Me.Message = COVERAGE_RATE_FORM009
+                    Message = COVERAGE_RATE_FORM009
                     bValid = False
                 ElseIf ValidateRange(obj.LowPrice, obj.HighPrice, obj) = False Then
-                    Me.Message = COVERAGE_RATE_FORM011
+                    Message = COVERAGE_RATE_FORM011
                     bValid = False
                 End If
             End If
@@ -851,7 +851,7 @@ Public Class CoverageRate
             If obj IsNot Nothing AndAlso obj.LowPrice IsNot Nothing AndAlso obj.HighPrice IsNot Nothing AndAlso obj.RenewalNumber IsNot Nothing Then
                 If Not obj.IsProductSetForSequenceRenewalNo Then
                     If CheckRenewalNumber(obj.LowPrice, obj.HighPrice, obj.RenewalNumber, obj) = False Then
-                        Me.Message = COVERAGE_RATE_FORM015
+                        Message = COVERAGE_RATE_FORM015
                         Return False
                     End If                
                 End If

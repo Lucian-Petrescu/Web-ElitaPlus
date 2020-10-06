@@ -60,7 +60,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -68,28 +68,28 @@ Namespace Reports
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
 
         End Sub
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 Dim companyId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
                 Dim compCode As String = LookupListNew.GetCodeFromId("COMPANIES", companyId)
-                Dim selectedSvcCtrId As Guid = Me.GetSelectedItem(Me.cboSvcCtr)
+                Dim selectedSvcCtrId As Guid = GetSelectedItem(cboSvcCtr)
                 Dim dvSvcCtr As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID).Id)
                 Dim svcCtrCode As String = LookupListNew.GetCodeFromId(dvSvcCtr, selectedSvcCtrId)
                 Dim endDate As String
@@ -100,7 +100,7 @@ Namespace Reports
                 endDate = ReportCeBase.FormatDate(moEndDateLabel, moEndDateText.Text)
                 beginDate = ReportCeBase.FormatDate(moBeginDateLabel, moBeginDateText.Text)
 
-                If Me.rSvcCtr.Checked Then
+                If rSvcCtr.Checked Then
                     svcCtrCode = ALL
                 Else
                     If selectedSvcCtrId.Equals(Guid.Empty) Then
@@ -115,12 +115,12 @@ Namespace Reports
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Function SetParameters(ByVal companyCode As String, ByVal svcCtrCode As String, ByVal beginDate As String,
-                                  ByVal endDate As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, svcCtrCode As String, beginDate As String,
+                                  endDate As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params
@@ -151,9 +151,9 @@ Namespace Reports
         Private Sub InitializeForm()
             PopulateDropDowns()
             Dim t As Date = Date.Now.AddDays(-1)
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now)
-            Me.rSvcCtr.Checked = True
+            moBeginDateText.Text = GetDateFormattedString(t)
+            moEndDateText.Text = GetDateFormattedString(Date.Now)
+            rSvcCtr.Checked = True
         End Sub
 
         Private Sub PopulateDropDowns()
@@ -173,7 +173,7 @@ Namespace Reports
                                                                     })
 
                 If ServiceCenters.Count > 0 Then
-                    If Not ServiceCenterList Is Nothing Then
+                    If ServiceCenterList IsNot Nothing Then
                         ServiceCenterList.AddRange(ServiceCenters)
                     Else
                         ServiceCenterList = ServiceCenters.Clone()
@@ -181,7 +181,7 @@ Namespace Reports
                 End If
             Next
 
-            Me.cboSvcCtr.Populate(ServiceCenterList.ToArray(),
+            cboSvcCtr.Populate(ServiceCenterList.ToArray(),
                                     New PopulateOptions() With
                                     {
                                         .AddBlankItem = True

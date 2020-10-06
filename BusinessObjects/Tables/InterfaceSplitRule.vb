@@ -6,40 +6,40 @@
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New InterfaceSplitRuleDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -50,20 +50,20 @@
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New InterfaceSplitRuleDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -74,7 +74,7 @@
 
     Public Property HeaderSourceCode As String
         Get
-            For Each dr As DataRow In Me.Row.Table.Rows
+            For Each dr As DataRow In Row.Table.Rows
                 If (Not dr(InterfaceSplitRuleDAL.COL_NAME_SOURCE_CODE).ToString() Is Nothing) Then
                     Return dr(InterfaceSplitRuleDAL.COL_NAME_SOURCE_CODE).ToString()
                 End If
@@ -83,7 +83,7 @@
             Return String.Empty
         End Get
         Set(ByVal value As String)
-            For Each dr As DataRow In Me.Row.Table.Rows
+            For Each dr As DataRow In Row.Table.Rows
                 dr(InterfaceSplitRuleDAL.COL_NAME_SOURCE_CODE) = value
             Next
         End Set
@@ -91,7 +91,7 @@
 
     Public Property HeaderSource As String
         Get
-            For Each dr As DataRow In Me.Row.Table.Rows
+            For Each dr As DataRow In Row.Table.Rows
                 If (Not dr(InterfaceSplitRuleDAL.COL_NAME_SOURCE).ToString() Is Nothing) Then
                     Return dr(InterfaceSplitRuleDAL.COL_NAME_SOURCE).ToString()
                 End If
@@ -100,7 +100,7 @@
             Return String.Empty
         End Get
         Set(ByVal value As String)
-            For Each dr As DataRow In Me.Row.Table.Rows
+            For Each dr As DataRow In Row.Table.Rows
                 dr(InterfaceSplitRuleDAL.COL_NAME_SOURCE) = value
             Next
         End Set
@@ -173,7 +173,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(InterfaceSplitRuleDAL.COL_NAME_SOURCE, Value)
+            SetValue(InterfaceSplitRuleDAL.COL_NAME_SOURCE, Value)
         End Set
     End Property
 
@@ -189,7 +189,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(InterfaceSplitRuleDAL.COL_NAME_SOURCE_CODE, Value)
+            SetValue(InterfaceSplitRuleDAL.COL_NAME_SOURCE_CODE, Value)
         End Set
     End Property
 
@@ -205,7 +205,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(InterfaceSplitRuleDAL.COL_NAME_NEW_SOURCE_CODE, Value)
+            SetValue(InterfaceSplitRuleDAL.COL_NAME_NEW_SOURCE_CODE, Value)
         End Set
     End Property
 
@@ -221,7 +221,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(InterfaceSplitRuleDAL.COL_NAME_ACTIVE, Value)
+            SetValue(InterfaceSplitRuleDAL.COL_NAME_ACTIVE, Value)
         End Set
     End Property
 
@@ -237,7 +237,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(InterfaceSplitRuleDAL.COL_NAME_FIELD_NAME, Value)
+            SetValue(InterfaceSplitRuleDAL.COL_NAME_FIELD_NAME, Value)
         End Set
     End Property
 
@@ -253,7 +253,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(InterfaceSplitRuleDAL.COL_NAME_FIELD_OPERATOR, Value)
+            SetValue(InterfaceSplitRuleDAL.COL_NAME_FIELD_OPERATOR, Value)
         End Set
     End Property
 
@@ -269,7 +269,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(InterfaceSplitRuleDAL.COL_NAME_FIELD_VALUE, Value)
+            SetValue(InterfaceSplitRuleDAL.COL_NAME_FIELD_VALUE, Value)
         End Set
     End Property
 #End Region
@@ -350,7 +350,7 @@
     Public Function GetChildSelectionView() As InterfaceSplitRuleSelectionView
         Dim dt As DataTable = InterfaceSplitRuleSelectionView.CreateTable()
         Dim vdr As DataRow
-        For Each dr As DataRow In Me.Row.Table.Rows()
+        For Each dr As DataRow In Row.Table.Rows()
             If ((Not dr(InterfaceSplitRuleDAL.COL_NAME_ACTIVE) Is Nothing) AndAlso (dr(InterfaceSplitRuleDAL.COL_NAME_ACTIVE).ToString() = "Y")) Then
                 vdr = dt.NewRow()
                 vdr(InterfaceSplitRuleSelectionView.COL_NAME_INTERFACE_SPLIT_RULE_ID) = dr(InterfaceSplitRuleDAL.COL_NAME_INTERFACE_SPLIT_RULE_ID)
@@ -368,10 +368,10 @@
     End Function
 
     Public Function GetRuleChild(ByVal SelectedChildId As Guid) As InterfaceSplitRule
-        For Each dr As DataRow In Me.Row.Table.Rows
+        For Each dr As DataRow In Row.Table.Rows
             Dim interfaceSplitRuleId As Guid = New Guid(DirectCast(dr(InterfaceSplitRuleDAL.COL_NAME_INTERFACE_SPLIT_RULE_ID), Byte()))
             If (interfaceSplitRuleId = SelectedChildId) Then
-                Return New InterfaceSplitRule(interfaceSplitRuleId, Me.Dataset)
+                Return New InterfaceSplitRule(interfaceSplitRuleId, Dataset)
             End If
         Next
 
@@ -379,7 +379,7 @@
     End Function
 
     Public Function GetNewRuleChild(ByVal Source As String, ByVal SourceCode As String) As InterfaceSplitRule
-        Dim returnValue = New InterfaceSplitRule(Me.Row.Table.DataSet)
+        Dim returnValue = New InterfaceSplitRule(Row.Table.DataSet)
         returnValue.Source = UCase(Source)  'If(String.IsNullOrEmpty(Me.HeaderSource), "XXX", Me.HeaderSource)
         returnValue.SourceCode = UCase(SourceCode) 'If(String.IsNullOrEmpty(Me.HeaderSourceCode), "XXX", Me.HeaderSourceCode)
         returnValue.Active = "Y"
@@ -387,24 +387,24 @@
     End Function
 
     Public Overrides Sub Delete()
-        Me.Row.BeginEdit()
-        Me.Active = "N"
-        Save(Me.Row)
-        Me.Row.EndEdit()
+        Row.BeginEdit()
+        Active = "N"
+        Save(Row)
+        Row.EndEdit()
     End Sub
 
     Public Overrides Sub Save()
         Dim splitRule As InterfaceSplitRule
         Dim dal As New InterfaceSplitRuleDAL
 
-        For index = Me.Row.Table.Rows.Count - 1 To 0 Step -1
-            If (Me.Row.Table(index).RowState = DataRowState.Added) AndAlso (Me.Row.Table(index)(InterfaceSplitRuleDAL.COL_NAME_ACTIVE).ToString() = "") Then
-                Me.Row.Table(index).Delete()
+        For index = Row.Table.Rows.Count - 1 To 0 Step -1
+            If (Me.Row.Table(index).RowState = DataRowState.Added) AndAlso (Row.Table(index)(InterfaceSplitRuleDAL.COL_NAME_ACTIVE).ToString() = "") Then
+                Row.Table(index).Delete()
             Else
-                Save(Me.Row.Table(index))
+                Save(Row.Table(index))
             End If
         Next
 
-        dal.Update(Me.Row.Table)
+        dal.Update(Row.Table)
     End Sub
 End Class

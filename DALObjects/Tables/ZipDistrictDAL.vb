@@ -42,40 +42,40 @@ Public Class ZipDistrictDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("zip_district_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal oCountryIds As ArrayList, ByVal searchCode As String, ByVal searchDesc As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(oCountryIds As ArrayList, searchCode As String, searchDesc As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
 
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & Me.COL_NAME_COUNTRY_ID, oCountryIds, False)
-        If Me.FormatSearchMask(searchCode) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_SHORT_DESC & ") " & searchCode.ToUpper
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & COL_NAME_COUNTRY_ID, oCountryIds, False)
+        If FormatSearchMask(searchCode) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_SHORT_DESC & ") " & searchCode.ToUpper
         End If
-        If Me.FormatSearchMask(searchDesc) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(z." & Me.COL_NAME_DESCRIPTION & ") " & searchDesc.ToUpper
+        If FormatSearchMask(searchDesc) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(z." & COL_NAME_DESCRIPTION & ") " & searchDesc.ToUpper
         End If
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
                               
         Try
             Dim ds As New DataSet
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -87,7 +87,7 @@ Public Class ZipDistrictDAL
 
 #Region "Overloaded Methods"
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim detailDAL As New ZipDistrictDetailDAL
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
@@ -96,10 +96,10 @@ Public Class ZipDistrictDAL
         Try
             'First Pass updates Deletions
             detailDAL.Update(familyDataset, tr, DataRowState.Deleted)
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             detailDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
             If Transaction Is Nothing Then
@@ -116,17 +116,17 @@ Public Class ZipDistrictDAL
     End Sub
 
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "Extended Functionality: Batch Insert in DB"
 
-    Public Function ZDAndDetail_Batch_Insert(ByVal zipdistrictid As Guid, ByVal oCountryID As Guid, ByVal strShort_Desc As String, ByVal StrDescription As String, ByVal intZipCodeLowValue As Integer, ByVal intZipCodeHighValue As Integer) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/BATCH_INSERT")
+    Public Function ZDAndDetail_Batch_Insert(zipdistrictid As Guid, oCountryID As Guid, strShort_Desc As String, StrDescription As String, intZipCodeLowValue As Integer, intZipCodeHighValue As Integer) As Integer
+        Dim selectStmt As String = Config("/SQL/BATCH_INSERT")
         Dim inputParameters(TOTAL_PARAM_BATCH_INSERT) As DBHelper.DBHelperParameter
         Dim outputParameter(0) As DBHelper.DBHelperParameter
         inputParameters(ZIP_DISTRICT_ID) = New DBHelper.DBHelperParameter(COL_NAME_ZIP_DISTRICT_ID, zipdistrictid)
@@ -144,8 +144,8 @@ Public Class ZipDistrictDAL
         Return CType(outputParameter(0).Value, Integer)
 
     End Function
-    Public Function ZDAndDetail_Batch_Delete(ByVal zipdistrictid As Guid) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/BATCH_DELETE")
+    Public Function ZDAndDetail_Batch_Delete(zipdistrictid As Guid) As Integer
+        Dim selectStmt As String = Config("/SQL/BATCH_DELETE")
         Dim inputParameters(TOTAL_PARAM_BATCH_DELETE) As DBHelper.DBHelperParameter
         Dim outputParameter(0) As DBHelper.DBHelperParameter
         inputParameters(ZIP_DISTRICT_ID) = New DBHelper.DBHelperParameter(COL_NAME_ZIP_DISTRICT_ID, zipdistrictid)

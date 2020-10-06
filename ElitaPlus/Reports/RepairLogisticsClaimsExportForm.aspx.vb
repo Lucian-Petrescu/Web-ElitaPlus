@@ -8,26 +8,26 @@
             SetStateProperties()
         End Sub
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            ErrControllerMaster.Clear_Hide()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
 
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     'Page.RegisterStartupScript("ResizeForm", "<script language='javascript'>resizeForm();</script>")
                     TheReportCeInputControl.SetExportOnly()
                     TheReportCeInputControl.populateReportLanguages(RPT_FILENAME_EXPORT)
                     InitializeForm()
 
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
 
 
         End Sub
@@ -116,26 +116,26 @@
 
         Private Sub SetStateProperties()
             Dim oExpState As Assurant.ElitaPlus.ElitaPlusWebApp.PendingReviewPaymentClaimListForm.MyState
-            Me.State.claimNumber = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).claimNumber
-            Me.State.serialNumber = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).serialNumber
-            Me.State.serviceCenterid = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).servicecenterid
-            Me.State.Countryid = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).Countryid
-            Me.State.coveragetypeid = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).coveragetypeid
-            Me.State.claimstatus = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).claimstatus
-            Me.State.extclaimstatusid = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).extclaimstatusid
-            Me.State.manufacturerid = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).Manufacturerid
-            Me.State.Model = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).Model
-            Me.State.claimcreateddate = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).claimcreateddate
+            State.claimNumber = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).claimNumber
+            State.serialNumber = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).serialNumber
+            State.serviceCenterid = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).servicecenterid
+            State.Countryid = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).Countryid
+            State.coveragetypeid = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).coveragetypeid
+            State.claimstatus = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).claimstatus
+            State.extclaimstatusid = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).extclaimstatusid
+            State.manufacturerid = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).Manufacturerid
+            State.Model = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).Model
+            State.claimcreateddate = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).claimcreateddate
             'Me.State.enddate = CType(Me.CallingParameters, Claims.PendingReviewPaymentClaimListForm.MyState).enddate
-            Me.State.certificate = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).certificate
-            Me.State.skuclaimed = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).skuclaimed
-            Me.State.skureplaced = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).skureplaced
-            Me.State.servicelevelid = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).servicelevelid
-            Me.State.risktypeid = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).risktypeid
-            Me.State.skureppart = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).skureppart
-            Me.State.replacementtypeid = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).replacementtypeid
-            Me.State.datesearchtype = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).datesearchtype
-            Me.State.Page_Index = CType(Me.CallingParameters, PendingReviewPaymentClaimListForm.MyState).PageIndex
+            State.certificate = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).certificate
+            State.skuclaimed = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).skuclaimed
+            State.skureplaced = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).skureplaced
+            State.servicelevelid = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).servicelevelid
+            State.risktypeid = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).risktypeid
+            State.skureppart = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).skureppart
+            State.replacementtypeid = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).replacementtypeid
+            State.datesearchtype = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).datesearchtype
+            State.Page_Index = CType(CallingParameters, PendingReviewPaymentClaimListForm.MyState).PageIndex
         End Sub
 
         Public Class ReturnType
@@ -161,27 +161,27 @@
 
             Public page_index As Integer
             Public HasDataChanged As Boolean = False
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal returnPar As Object)
-                Me.LastOperation = LastOp
-                Me.claimNumber = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).claimNumber
-                Me.serialNumber = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).serialNumber
-                Me.certificate = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).certificate
-                Me.serviceCenterid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).serviceCenterid
-                Me.Countryid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).Countryid
-                Me.manufacturerid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).manufacturerid
-                Me.Model = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).Model
-                Me.claimstatus = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).claimstatus
-                Me.extclaimstatusid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).extclaimstatusid
-                Me.skuclaimed = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).skuclaimed
-                Me.skureplaced = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).skureplaced
-                Me.coveragetypeid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).coveragetypeid
-                Me.claimcreateddate = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).claimcreateddate
-                Me.datesearchtype = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).datesearchtype
-                Me.servicelevelid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).servicelevelid
-                Me.risktypeid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).risktypeid
-                Me.skureppart = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).skureppart
-                Me.replacementtypeid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).replacementtypeid
-                Me.page_index = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).Page_Index
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, returnPar As Object)
+                LastOperation = LastOp
+                claimNumber = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).claimNumber
+                serialNumber = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).serialNumber
+                certificate = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).certificate
+                serviceCenterid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).serviceCenterid
+                Countryid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).Countryid
+                manufacturerid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).manufacturerid
+                Model = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).Model
+                claimstatus = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).claimstatus
+                extclaimstatusid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).extclaimstatusid
+                skuclaimed = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).skuclaimed
+                skureplaced = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).skureplaced
+                coveragetypeid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).coveragetypeid
+                claimcreateddate = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).claimcreateddate
+                datesearchtype = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).datesearchtype
+                servicelevelid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).servicelevelid
+                risktypeid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).risktypeid
+                skureppart = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).skureppart
+                replacementtypeid = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).replacementtypeid
+                page_index = CType(returnPar, Reports.RepairLogisticsClaimsExportForm.MyState).Page_Index
 
             End Sub
         End Class
@@ -218,7 +218,7 @@
 #End Region
 
 #Region "Crystal Enterprise"
-        Private Sub btnGenRpt_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 Dim oparamdate As ParameterData
                 ReportCeBase.EnableReportCe(Me, TheReportCeInputControl)
@@ -227,7 +227,7 @@
                 Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
         Public Function AssignParamValuesAndRunReport() As ParameterData
@@ -235,31 +235,31 @@
             Dim ParamData As ParameterData
             With ParamData
                 .COMPANY_GROUP_ID = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                .CLAIM_NUMBER = Me.State.claimNumber
-                .SERIAL_NUMBER = Me.State.serialNumber
-                .SERVICE_CENTER_ID = Me.State.serviceCenterid
-                .COUNTRY_ID = Me.State.Countryid
-                .CERTIFICATE = Me.State.certificate
-                .MANUFACTURER_ID = Me.State.manufacturerid
-                .MODEL = Me.State.Model
-                .SKU_CLAIMED = Me.State.skuclaimed
-                .SKU_REPLACED = Me.State.skureplaced
-                .CLAIM_STATUS = Me.State.claimstatus
-                .EXTENDED_CLAIM_STATUS_ID = Me.State.extclaimstatusid
-                .COVERAGE_TYPE_ID = Me.State.coveragetypeid
-                If Me.State.claimcreateddate.FromValue.HasValue Then
-                    .BEGIN_DATE = CDate(Me.State.claimcreateddate.FromValue).ToString("MM/dd/yyyy")
+                .CLAIM_NUMBER = State.claimNumber
+                .SERIAL_NUMBER = State.serialNumber
+                .SERVICE_CENTER_ID = State.serviceCenterid
+                .COUNTRY_ID = State.Countryid
+                .CERTIFICATE = State.certificate
+                .MANUFACTURER_ID = State.manufacturerid
+                .MODEL = State.Model
+                .SKU_CLAIMED = State.skuclaimed
+                .SKU_REPLACED = State.skureplaced
+                .CLAIM_STATUS = State.claimstatus
+                .EXTENDED_CLAIM_STATUS_ID = State.extclaimstatusid
+                .COVERAGE_TYPE_ID = State.coveragetypeid
+                If State.claimcreateddate.FromValue.HasValue Then
+                    .BEGIN_DATE = CDate(State.claimcreateddate.FromValue).ToString("MM/dd/yyyy")
                 End If
 
-                If Me.State.claimcreateddate.ToValue.HasValue Then
-                    .END_DATE = CDate(Me.State.claimcreateddate.ToValue).ToString("MM/dd/yyyy")
+                If State.claimcreateddate.ToValue.HasValue Then
+                    .END_DATE = CDate(State.claimcreateddate.ToValue).ToString("MM/dd/yyyy")
                 End If
 
-                .DATE_SEARCH_TYPE = Me.State.datesearchtype.ToString()
-                .SERVICE_LEVEL_ID = Me.State.servicelevelid
-                .RISK_TYPE_ID = Me.State.risktypeid
-                .SKU_REPLACEMENT_PART = Me.State.skureppart
-                .REPLACEMENT_TYPE_ID = Me.State.replacementtypeid
+                .DATE_SEARCH_TYPE = State.datesearchtype.ToString()
+                .SERVICE_LEVEL_ID = State.servicelevelid
+                .RISK_TYPE_ID = State.risktypeid
+                .SKU_REPLACEMENT_PART = State.skureppart
+                .REPLACEMENT_TYPE_ID = State.replacementtypeid
                 .LANGUAGE_ID = ElitaPlusIdentity.Current.ActiveUser.LanguageId
                 .CULTURE_VALUE = TheReportCeInputControl.getCultureValue(True)
             End With
@@ -268,7 +268,7 @@
         End Function
 
 
-        Function SetParameters(ByVal data As ParameterData) As ReportCeBaseForm.Params
+        Function SetParameters(data As ParameterData) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim culturevalue As String = TheReportCeInputControl.getCultureValue(True)
@@ -318,10 +318,10 @@
 
 #End Region
 
-        Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+        Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
 
-            Dim retType As New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State)
-            Me.ReturnToCallingPage(retType)
+            Dim retType As New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State)
+            ReturnToCallingPage(retType)
         End Sub
     End Class
 End Namespace

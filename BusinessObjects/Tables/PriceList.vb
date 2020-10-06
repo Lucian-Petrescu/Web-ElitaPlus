@@ -10,46 +10,46 @@ Public Class PriceList
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New PriceListDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -60,20 +60,20 @@ Public Class PriceList
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New PriceListDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -85,8 +85,8 @@ Public Class PriceList
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        Me.Effective = Date.Now
-        Me.Expiration = New Date(2499, 12, 31, 23, 59, 59)
+        Effective = Date.Now
+        Expiration = New Date(2499, 12, 31, 23, 59, 59)
     End Sub
 #End Region
 
@@ -122,7 +122,7 @@ Public Class PriceList
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDAL.COL_NAME_CODE, Value)
+            SetValue(PriceListDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
@@ -139,7 +139,7 @@ Public Class PriceList
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceListDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(PriceListDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -156,7 +156,7 @@ Public Class PriceList
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(PriceListDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
@@ -171,7 +171,7 @@ Public Class PriceList
             End If
         End Get
         Set(value As Guid)
-            Me.SetValue(PriceListDAL.COL_NAME_DEFAULT_CURRENCY_ID, value)
+            SetValue(PriceListDAL.COL_NAME_DEFAULT_CURRENCY_ID, value)
         End Set
     End Property
 
@@ -188,7 +188,7 @@ Public Class PriceList
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceListDAL.COL_NAME_MANAGE_INVENTORY_ID, Value)
+            SetValue(PriceListDAL.COL_NAME_MANAGE_INVENTORY_ID, Value)
         End Set
     End Property
 
@@ -204,7 +204,7 @@ Public Class PriceList
         End Get
         Set(ByVal Value As DateTimeType)
             CheckDeleted()
-            Me.SetValue(PriceListDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(PriceListDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
@@ -221,7 +221,7 @@ Public Class PriceList
         End Get
         Set(ByVal Value As DateTimeType)
             CheckDeleted()
-            Me.SetValue(PriceListDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(PriceListDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
@@ -245,14 +245,14 @@ Public Class PriceList
 
             MyBase.Save()
             Dim dal As New PriceListDAL
-            dal.UpdateFamily(Me.Dataset)
+            dal.UpdateFamily(Dataset)
             'Reload the Data
-            If Me._isDSCreator AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso Row.RowState <> DataRowState.Detached Then
                 'Reload the Data from the DB
-                Dim objId As Guid = Me.Id
-                Me.Dataset = New DataSet
-                Me.Row = Nothing
-                Me.Load(objId)
+                Dim objId As Guid = Id
+                Dataset = New DataSet
+                Row = Nothing
+                Load(objId)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
@@ -263,12 +263,12 @@ Public Class PriceList
         Try
             Dim dal As New PriceListDAL
             dal.ProcessPriceListByStatus(PriceListID, PriceListDetailIDList, userNetworkID, status_xcd)
-            If Me._isDSCreator AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso Row.RowState <> DataRowState.Detached Then
                 'Reload the Data from the DB
-                Dim objId As Guid = Me.Id
-                Me.Dataset = New DataSet
-                Me.Row = Nothing
-                Me.Load(objId)
+                Dim objId As Guid = Id
+                Dataset = New DataSet
+                Row = Nothing
+                Load(objId)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
@@ -325,25 +325,25 @@ Public Class PriceList
     'Added manually to the code
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 
     Public Sub Copy(ByVal original As PriceList)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing List")
         End If
         MyBase.CopyFrom(original)
-        Me.Effective = Date.Now
-        Me.Expiration = New Date(2499, 12, 31, 23, 59, 59)
+        Effective = Date.Now
+        Expiration = New Date(2499, 12, 31, 23, 59, 59)
 
         ''''copy the children for cloning
         For Each detail As PriceListDetail In original.PriceListDetailChildren
-            Dim newDetail As PriceListDetail = Me.PriceListDetailChildren.GetNewChild
+            Dim newDetail As PriceListDetail = PriceListDetailChildren.GetNewChild
             newDetail.Copy(detail)
-            newDetail.PriceListId = Me.Id
-            newDetail.Effective = Me.Effective
-            newDetail.Expiration = Me.Expiration
+            newDetail.PriceListId = Id
+            newDetail.Effective = Effective
+            newDetail.Expiration = Expiration
             newDetail.Save()
         Next
         ' ''''cleared the service center children as it was storing the count of the parent service center
@@ -359,7 +359,7 @@ Public Class PriceList
 
     Public Function IsPriceListAssignedtoServiceCenter() As Boolean
         Try
-            Return (New ServiceCenterDAL).IsPriceListAssignedtoServiceIssue(Me.Code.ToUpper())
+            Return (New ServiceCenterDAL).IsPriceListAssignedtoServiceIssue(Code.ToUpper())
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
 
@@ -381,7 +381,7 @@ Public Class PriceList
             Dim returnString As String = String.Empty
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
-            For Each serviceCenter As ServiceCenter In Me.ServiceCenterChildren
+            For Each serviceCenter As ServiceCenter In ServiceCenterChildren
                 Dim found As Boolean = False
                 For Each cid As String In vendorlist
                     Dim vendor_id As Guid = New Guid(cid)
@@ -403,7 +403,7 @@ Public Class PriceList
                 Dim found As Boolean = False
                 Dim vendor_id As Guid = New Guid(cid)
                 Dim notFoundVendorId As Guid = New Guid()
-                For Each serviceCenter As ServiceCenter In Me.ServiceCenterChildren
+                For Each serviceCenter As ServiceCenter In ServiceCenterChildren
                     If vendor_id = serviceCenter.Id Then
                         notFoundVendorId = serviceCenter.Id
                         found = True : Exit For
@@ -412,9 +412,9 @@ Public Class PriceList
                 If Not found Then
                     ' ADD IT TO THE ORGINAL SERVICECENTER CHILDREN
                     ' GET THE BO FOR THIS SERVICE CENTER
-                    Dim newServiceCenter As ServiceCenter = Me.GetServiceCenterChild(New Guid(cid))
+                    Dim newServiceCenter As ServiceCenter = GetServiceCenterChild(New Guid(cid))
                     newServiceCenter.BeginEdit()
-                    newServiceCenter.PriceListCode = Me.Code
+                    newServiceCenter.PriceListCode = Code
                     newServiceCenter.EndEdit()
                     newServiceCenter.Save()
                 End If
@@ -499,14 +499,14 @@ Public Class PriceList
         Try
             Dim overlap As New OverlapValidationVisitorDAL
             Dim ds As New DataSet
-            ds = overlap.LoadList(Me.Id, Me.GetType.Name, Me.Code, Me.Effective, Me.Expiration, Guid.Empty)
+            ds = overlap.LoadList(Id, [GetType].Name, Code, Effective, Expiration, Guid.Empty)
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dtrow As DataRow In ds.Tables(0).Rows
                     Dim pId As Guid = New Guid(CType(dtrow(PriceListDAL.COL_NAME_PRICE_LIST_ID), Byte()))
-                    Dim ExpPlist As New PriceList(pId, Me.Dataset)
-                    If Me.Effective.Value < ExpPlist.Expiration.Value Then
+                    Dim ExpPlist As New PriceList(pId, Dataset)
+                    If Effective.Value < ExpPlist.Expiration.Value Then
                         'Expire overlapping list 1 second before current question
-                        ExpPlist.Accept(New ExpirationVisitor(Me.Effective))
+                        ExpPlist.Accept(New ExpirationVisitor(Effective))
                     End If
                 Next
                 Return True         'expired successfully
@@ -652,7 +652,7 @@ Public Class PriceList
 
     Public Function GetServiceCenterSelectionView() As ServiceCenterSelectionView
         Dim t As DataTable = ServiceCenterSelectionView.CreateTable
-        For Each detail As ServiceCenter In Me.ServiceCenterChildren
+        For Each detail As ServiceCenter In ServiceCenterChildren
             'If t.Rows.Count > 0 Then
             '    Dim foundRows() As DataRow
             '    t.DefaultView.RowFilter = "(service_center_id =  '" & GuidControl.GuidToHexString(detail.Id) & "')"
@@ -694,25 +694,25 @@ Public Class PriceList
 #End Region
 
     Public Function GetServiceCenterChild(ByVal childId As Guid) As ServiceCenter
-        Return CType(Me.ServiceCenterChildren.GetChild(childId), ServiceCenter)
+        Return CType(ServiceCenterChildren.GetChild(childId), ServiceCenter)
     End Function
 
     Public Function GetNewServiceCenterChild() As ServiceCenter
         'Dim newsvc As ServiceCenter = New ServiceCenter(New Guid)
-        Dim newServiceCenter As ServiceCenter = CType(Me.ServiceCenterChildren.GetNewChild, ServiceCenter)
+        Dim newServiceCenter As ServiceCenter = CType(ServiceCenterChildren.GetNewChild, ServiceCenter)
         With newServiceCenter
-            .PriceListCode = Me.Code
-            .Description = Me.Description
+            .PriceListCode = Code
+            .Description = Description
         End With
         Return newServiceCenter
     End Function
 
     Public Function GetNewVendorQuantityChild() As VendorQuantity
-        Return New VendorQuantity(Me.Dataset)
+        Return New VendorQuantity(Dataset)
     End Function
 
     Public Function GetNewVendorQuantityChild(id As Guid) As VendorQuantity
-        Return New VendorQuantity(id, Me.Dataset)
+        Return New VendorQuantity(id, Dataset)
     End Function
 
 #Region "Price List - Price List Detail Views"
@@ -725,7 +725,7 @@ Public Class PriceList
     Public Function GetPriceListSelectionView() As PriceListDetailSelectionView
         Dim t As DataTable = PriceListDetailSelectionView.CreateTable
         Dim detail As PriceListDetail
-        For Each detail In Me.PriceListDetailChildren
+        For Each detail In PriceListDetailChildren
             Dim row As DataRow = t.NewRow
 
             row(PriceListDetailSelectionView.COL_NAME_PRICE_LIST_DETAIL_ID) = detail.Id.ToByteArray
@@ -938,14 +938,14 @@ Public Class PriceList
 #End Region
 
     Public Function GetPriceListDetailChild(ByVal childId As Guid) As PriceListDetail
-        Return CType(Me.PriceListDetailChildren.GetChild(childId), PriceListDetail)
+        Return CType(PriceListDetailChildren.GetChild(childId), PriceListDetail)
     End Function
 
     Public Function GetNewPriceListDetailChild() As PriceListDetail
-        Dim newPriceListDetail As PriceListDetail = CType(Me.PriceListDetailChildren.GetNewChild, PriceListDetail)
+        Dim newPriceListDetail As PriceListDetail = CType(PriceListDetailChildren.GetNewChild, PriceListDetail)
 
         With newPriceListDetail
-            .PriceListId = Me.Id
+            .PriceListId = Id
         End With
         Return newPriceListDetail
     End Function

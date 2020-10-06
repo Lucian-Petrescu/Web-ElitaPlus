@@ -22,7 +22,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -77,61 +77,61 @@ Namespace Tables
 
 #Region "Page_Events"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.MasterPage.MessageController.Clear_Hide()
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            MasterPage.MessageController.Clear_Hide()
 
             Try
-                If Not Me.IsPostBack Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
-                    Me.TranslateGridHeader(Grid)
+                If Not IsPostBack Then
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    TranslateGridHeader(Grid)
                     UpdateBreadCrum()
 
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SortDirection = Me.State.SortExpression
+                    SortDirection = State.SortExpression
                     PopulateDropdown()
 
-                    If Me.State.IsGridVisible Then
-                        If Not (Me.State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.SelectedPageSize = Grid.PageSize) Then
-                            Grid.PageSize = Me.State.SelectedPageSize
+                    If State.IsGridVisible Then
+                        If Not (State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.SelectedPageSize = Grid.PageSize) Then
+                            Grid.PageSize = State.SelectedPageSize
                         End If
-                        cboPageSize.SelectedValue = CType(Me.State.SelectedPageSize, String)
-                        Me.PopulateGrid()
+                        cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
+                        PopulateGrid()
                     End If
-                    Me.SetGridItemStyleColor(Me.Grid)
+                    SetGridItemStyleColor(Grid)
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
+                MenuEnabled = True
+                IsReturningFromChild = True
                 Dim retObj As BillingCycleForm.ReturnType = CType(ReturnPar, BillingCycleForm.ReturnType)
-                Me.State.HasDataChanged = retObj.HasDataChanged
+                State.HasDataChanged = retObj.HasDataChanged
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
-                            Me.State.BillingCycleId = retObj.moBillingCycleId
-                            Me.State.IsGridVisible = True
+                        If retObj IsNot Nothing Then
+                            State.BillingCycleId = retObj.moBillingCycleId
+                            State.IsGridVisible = True
                         End If
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
-                        Me.State.BillingCycleId = Guid.Empty
+                        AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                        State.BillingCycleId = Guid.Empty
                     Case Else
-                        Me.State.BillingCycleId = Guid.Empty
+                        State.BillingCycleId = Guid.Empty
                 End Select
-                Grid.PageIndex = Me.State.PageIndex
-                cboPageSize.SelectedValue = CType(Me.State.SelectedPageSize, String)
-                Grid.PageSize = Me.State.SelectedPageSize
+                Grid.PageIndex = State.PageIndex
+                cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
+                Grid.PageSize = State.SelectedPageSize
                 ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -140,20 +140,20 @@ Namespace Tables
 #Region "Controlling Logic"
 
         Public Sub PopulateGrid()
-            If ((Me.State.SearchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-                Me.State.SearchDV = BillingCycle.GetList(Me.moDealerMultipleDrop.SelectedGuid, Me.moBillingCycleCodeText.Text.ToUpper)
+            If ((State.SearchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+                State.SearchDV = BillingCycle.GetList(moDealerMultipleDrop.SelectedGuid, moBillingCycleCodeText.Text.ToUpper)
             End If
 
-            If (Me.State.SearchDV.Count = 0) Then
+            If (State.SearchDV.Count = 0) Then
 
-                Me.State.bNoRow = True
-                CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
+                State.bNoRow = True
+                CreateHeaderForEmptyGrid(Grid, SortDirection)
             Else
-                Me.State.bNoRow = False
-                Me.Grid.Enabled = True
+                State.bNoRow = False
+                Grid.Enabled = True
             End If
 
-            Me.State.SearchDV.Sort = Me.State.SortExpression
+            State.SearchDV.Sort = State.SortExpression
             Grid.AutoGenerateColumns = False
 
             Grid.Columns(GRID_COL_BILLING_CYCLE_CODE_IDX).SortExpression = BillingCycle.BillingCycleSearchDV.COL_NAME_BILLING_CYCLE_CODE
@@ -161,21 +161,21 @@ Namespace Tables
             Grid.Columns(GRID_COL_START_DAY).SortExpression = BillingCycle.BillingCycleSearchDV.COL_NAME_START_DAY
             Grid.Columns(GRID_COL_END_DAY).SortExpression = BillingCycle.BillingCycleSearchDV.COL_NAME_END_DAY
             Grid.Columns(GRID_COL_RUN_DATE_OFFSET).SortExpression = BillingCycle.BillingCycleSearchDV.COL_NAME_BILLING_RUN_DATE_OFFSET_DAYS
-            HighLightSortColumn(Grid, Me.State.SortExpression)
+            HighLightSortColumn(Grid, State.SortExpression)
 
-            SetPageAndSelectedIndexFromGuid(Me.State.SearchDV, Me.State.BillingCycleId, Me.Grid, Me.State.PageIndex)
+            SetPageAndSelectedIndexFromGuid(State.SearchDV, State.BillingCycleId, Grid, State.PageIndex)
 
-            Me.Grid.DataSource = Me.State.SearchDV
-            HighLightSortColumn(Grid, Me.SortDirection)
-            Me.Grid.DataBind()
+            Grid.DataSource = State.SearchDV
+            HighLightSortColumn(Grid, SortDirection)
+            Grid.DataBind()
 
             ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            Session("recCount") = Me.State.SearchDV.Count
+            Session("recCount") = State.SearchDV.Count
 
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-            Me.lblRecordCount.Text = Me.State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            lblRecordCount.Text = State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         End Sub
 
         Private Sub PopulateDropdown()
@@ -186,47 +186,47 @@ Namespace Tables
         End Sub
 
         Private Sub SortAndBindGrid()
-            If (Me.State.SearchDV.Count = 0) Then
-                Me.State.bNoRow = True
-                CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
-                ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            If (State.SearchDV.Count = 0) Then
+                State.bNoRow = True
+                CreateHeaderForEmptyGrid(Grid, SortDirection)
+                ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
                 Grid.PagerSettings.Visible = True
                 If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
             Else
-                Me.State.bNoRow = False
-                Me.Grid.Enabled = True
-                Me.Grid.DataSource = Me.State.SearchDV
-                HighLightSortColumn(Grid, Me.SortDirection)
-                Me.Grid.DataBind()
-                ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+                State.bNoRow = False
+                Grid.Enabled = True
+                Grid.DataSource = State.SearchDV
+                HighLightSortColumn(Grid, SortDirection)
+                Grid.DataBind()
+                ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
                 If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
             End If
 
-            If Me.State.SearchDV.Count > 0 Then
-                Me.lblRecordCount.Text = Me.State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If State.SearchDV.Count > 0 Then
+                lblRecordCount.Text = State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             Else
-                Me.lblRecordCount.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_NO_RECORDS_FOUND)
+                lblRecordCount.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_NO_RECORDS_FOUND)
             End If
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
         End Sub
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("BILLING_CYCLE")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("BILLING_CYCLE")
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("BILLING_CYCLE")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("BILLING_CYCLE")
                 End If
             End If
         End Sub
 
         Private Sub ClearSearchCriteria()
             Try
-                Me.moDealerMultipleDrop.SelectedIndex = BLANK_ITEM_SELECTED
-                Me.moBillingCycleCodeText.Text = String.Empty
+                moDealerMultipleDrop.SelectedIndex = BLANK_ITEM_SELECTED
+                moBillingCycleCodeText.Text = String.Empty
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -237,84 +237,84 @@ Namespace Tables
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
 
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If Not dvRow Is Nothing And Not Me.State.bNoRow Then
+                If dvRow IsNot Nothing And Not State.bNoRow Then
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_BILLING_CYCLE_ID_IDX), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_BILLING_CYCLE_ID))
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_BILLING_CYCLE_CODE_IDX), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_BILLING_CYCLE_CODE))
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DEALER_IDX), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_DEALER_NAME))
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_START_DAY), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_START_DAY))
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_END_DAY), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_END_DAY))
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_RUN_DATE_OFFSET), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_BILLING_RUN_DATE_OFFSET_DAYS))
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_BILLING_CYCLE_ID_IDX), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_BILLING_CYCLE_ID))
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_BILLING_CYCLE_CODE_IDX), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_BILLING_CYCLE_CODE))
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DEALER_IDX), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_DEALER_NAME))
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_START_DAY), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_START_DAY))
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_END_DAY), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_END_DAY))
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_RUN_DATE_OFFSET), dvRow(BillingCycle.BillingCycleSearchDV.COL_NAME_BILLING_RUN_DATE_OFFSET_DAYS))
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub cboPageSize_SelectedIndexChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub cboPageSize_SelectedIndexChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_Sorting(ByVal source As Object, ByVal e As GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_Sorting(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
-                Me.State.SortExpression = Me.SortDirection
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.SortExpression = SortDirection
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanging(ByVal source As Object, ByVal e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(source As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Me.PopulateGrid()
+                State.PageIndex = e.NewPageIndex
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
             Try
                 If e.CommandName = "SelectAction" Then
                     Dim index As Integer = CInt(e.CommandArgument)
-                    Me.State.BillingCycleId = New Guid(Me.Grid.Rows(index).Cells(GRID_COL_BILLING_CYCLE_ID_IDX).Text)
-                    Me.callPage(BillingCycleForm.URL, Me.State.BillingCycleId)
+                    State.BillingCycleId = New Guid(Grid.Rows(index).Cells(GRID_COL_BILLING_CYCLE_ID_IDX).Text)
+                    callPage(BillingCycleForm.URL, State.BillingCycleId)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -322,35 +322,35 @@ Namespace Tables
 #End Region
 
 #Region "Button Clicks"
-        Private Sub moBtnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBtnSearch.Click
+        Private Sub moBtnSearch_Click(sender As Object, e As System.EventArgs) Handles moBtnSearch.Click
             Try
-                Me.State.PageIndex = 0
+                State.PageIndex = 0
                 If Not State.IsGridVisible Then
                     cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
                     If Not (Grid.PageSize = DEFAULT_NEW_UI_PAGE_SIZE) Then
                         cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
                         Grid.PageSize = State.SelectedPageSize
                     End If
-                    Me.State.IsGridVisible = True
+                    State.IsGridVisible = True
                 End If
-                Me.State.SearchDV = Nothing
-                Me.State.HasDataChanged = False
-                Me.PopulateGrid()
+                State.SearchDV = Nothing
+                State.HasDataChanged = False
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moBtnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBtnClearSearch.Click
+        Private Sub moBtnClearSearch_Click(sender As Object, e As System.EventArgs) Handles moBtnClearSearch.Click
             ClearSearchCriteria()
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.State.BillingCycleId = Guid.Empty
-                Me.callPage(BillingCycleForm.URL, Me.State.BillingCycleId)
+                State.BillingCycleId = Guid.Empty
+                callPage(BillingCycleForm.URL, State.BillingCycleId)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -358,7 +358,7 @@ Namespace Tables
 
 #Region "Helper Functions"
 
-        Private Sub PopulateDropdown(ByVal DealerList As DropDownList)
+        Private Sub PopulateDropdown(DealerList As DropDownList)
             Try
                 'Me.BindListControlToDataView(DealerList, CType(Dealer.getList(Guid.Empty, Guid.Empty, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id), DataView), "dealer", "dealer_id", , True)
                 Dim oDealerList As ListItem() = GetDealerListByCompanyForUser()
@@ -371,7 +371,7 @@ Namespace Tables
                                                     .SortFunc = AddressOf .GetDescription
                                                    })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
@@ -388,7 +388,7 @@ Namespace Tables
                 oListContext.CompanyId = Ele
                 Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = CType(oDealerListForCompany.Clone(),

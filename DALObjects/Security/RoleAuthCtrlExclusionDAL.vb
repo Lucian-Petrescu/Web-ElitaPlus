@@ -26,47 +26,47 @@ Public Class RoleAuthCtrlExclusionDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("auth_ctrl_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal oFormId As Guid, ByVal oRoleId As Guid, ByVal sControlName As String)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_FORM_ROLE_CONTROL")
+    Public Sub Load(familyDS As DataSet, oFormId As Guid, oRoleId As Guid, sControlName As String)
+        Dim selectStmt As String = Config("/SQL/LOAD_FORM_ROLE_CONTROL")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-            {New DBHelper.DBHelperParameter(Me.COL_NAME_FORM_ID, oFormId.ToByteArray), _
-             New DBHelper.DBHelperParameter(Me.COL_NAME_ROLE_ID, oRoleId.ToByteArray), _
-             New DBHelper.DBHelperParameter(Me.COL_NAME_CONTROL_NAME, sControlName)}
+            {New DBHelper.DBHelperParameter(COL_NAME_FORM_ID, oFormId.ToByteArray), _
+             New DBHelper.DBHelperParameter(COL_NAME_ROLE_ID, oRoleId.ToByteArray), _
+             New DBHelper.DBHelperParameter(COL_NAME_CONTROL_NAME, sControlName)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function PopulateList(ByVal oLanguageID As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_TABS_FORMS")
+    Public Function PopulateList(oLanguageID As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_TABS_FORMS")
         Dim ds As New DataSet
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, oLanguageID.ToByteArray) _
                     }
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -74,7 +74,7 @@ Public Class RoleAuthCtrlExclusionDAL
         Return ds
     End Function
 
-    Private Sub SortTable(ByVal oFromTable As DataTable, ByVal oToDataView As DataView)
+    Private Sub SortTable(oFromTable As DataTable, oToDataView As DataView)
         Dim oToTable As DataTable
         Dim oHeaders As DataColumnCollection = oFromTable.Columns
         Dim oHeader As DataColumn
@@ -122,7 +122,7 @@ Public Class RoleAuthCtrlExclusionDAL
     End Sub
 
 
-    Private Sub AppendRows(ByVal oFromDataView As DataView, ByVal oToTable As DataTable)
+    Private Sub AppendRows(oFromDataView As DataView, oToTable As DataTable)
         Dim oFromTable As DataTable = oFromDataView.Table
         Dim oHeaders As DataColumnCollection = oFromTable.Columns
         Dim oHeader As DataColumn
@@ -155,8 +155,8 @@ Public Class RoleAuthCtrlExclusionDAL
         Next
     End Sub
 
-    Private Function ObtainAControlPermission(ByVal sFormId As String, ByVal sControlName As String) As DataSet
-        Dim selectStmt As StringBuilder = New StringBuilder(Me.Config("/SQL/GET_CONTROL_PERMISSIONS"))
+    Private Function ObtainAControlPermission(sFormId As String, sControlName As String) As DataSet
+        Dim selectStmt As StringBuilder = New StringBuilder(Config("/SQL/GET_CONTROL_PERMISSIONS"))
         Dim ds As New DataSet
         Dim oFormId As Guid
 
@@ -164,7 +164,7 @@ Public Class RoleAuthCtrlExclusionDAL
         oFormId = New Guid(sFormId)
         selectStmt.Replace("#FormId", GuidControl.GuidToHexString(oFormId))
         Try
-            ds = DBHelper.Fetch(selectStmt.ToString, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt.ToString, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -172,7 +172,7 @@ Public Class RoleAuthCtrlExclusionDAL
         Return ds
     End Function
 
-    Public Function ObtainControlPermissions(ByVal sFormId As String, ByVal oControlNames As ArrayList) As DataView
+    Public Function ObtainControlPermissions(sFormId As String, oControlNames As ArrayList) As DataView
         Dim sControlName As String
         Dim oDataView As DataView
         Dim oTable As DataTable
@@ -183,21 +183,21 @@ Public Class RoleAuthCtrlExclusionDAL
         For Each sControlName In oControlNames
             ds = ObtainAControlPermission(sFormId, sControlName)
 
-            AppendRows(ds.Tables(Me.TABLE_NAME).DefaultView, oTable)
+            AppendRows(ds.Tables(TABLE_NAME).DefaultView, oTable)
         Next
         SortTable(oTable, oDataView)
         Return oDataView
     End Function
 
-    Public Function GetControlPermissionAllRoles(ByVal sFormCode As String, ByVal sControlName As String) As DataSet
-        Dim selectStmt As StringBuilder = New StringBuilder(Me.Config("/SQL/GET_CONTROL_PERMISSIONS_All_Roles"))
+    Public Function GetControlPermissionAllRoles(sFormCode As String, sControlName As String) As DataSet
+        Dim selectStmt As StringBuilder = New StringBuilder(Config("/SQL/GET_CONTROL_PERMISSIONS_All_Roles"))
         Dim ds As New DataSet
         Dim oFormId As Guid
 
         selectStmt.Replace("#ControlName", sControlName)
         selectStmt.Replace("#FormCode", sFormCode)
         Try
-            ds = DBHelper.Fetch(selectStmt.ToString, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt.ToString, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -206,12 +206,12 @@ Public Class RoleAuthCtrlExclusionDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

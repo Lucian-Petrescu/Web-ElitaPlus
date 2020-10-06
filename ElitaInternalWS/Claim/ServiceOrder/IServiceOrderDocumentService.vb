@@ -17,7 +17,7 @@ Namespace ServiceOrderDocument
             FaultContract(GetType(ValidationFault)),
             FaultContract(GetType(ImageRepositoryNotFoundFault)),
             ServiceKnownType(GetType(DownloadServiceOrderDocumentRequest))>
-        Function DownloadDocument(ByVal request As DownloadServiceOrderDocumentRequest) As DownloadServiceOrderDocumentResponse
+        Function DownloadDocument(request As DownloadServiceOrderDocumentRequest) As DownloadServiceOrderDocumentResponse
 
     End Interface
 End Namespace

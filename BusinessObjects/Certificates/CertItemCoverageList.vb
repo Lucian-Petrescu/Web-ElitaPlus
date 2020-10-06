@@ -1,16 +1,16 @@
 Public Class CertItemCoverageList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As Certificate)
+    Public Sub New(parent As Certificate)
         MyBase.New(LoadTable(parent), GetType(CertItemCoverage), parent)
     End Sub
 
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, CertItemCoverage).CertItemId.Equals(CType(Parent, Certificate).Id)
     End Function
 
-    Public Function Find(ByVal itemCoverageId As Guid) As CertItemCoverage
+    Public Function Find(itemCoverageId As Guid) As CertItemCoverage
         Dim bo As CertItemCoverage
         For Each bo In Me
             If bo.Id.Equals(itemCoverageId) Then Return bo
@@ -20,7 +20,7 @@ Public Class CertItemCoverageList
 
 
 #Region "Class Methods"
-    Private Shared Function LoadTable(ByVal parent As Certificate) As DataTable
+    Private Shared Function LoadTable(parent As Certificate) As DataTable
         'Try
         '    If Not parent.IsChildrenCollectionLoaded(GetType(CertItemCoverageList)) Then
         '        Dim dal As New CertItemCoverageDAL

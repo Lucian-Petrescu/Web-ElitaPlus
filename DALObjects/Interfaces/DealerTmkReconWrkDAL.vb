@@ -49,7 +49,7 @@ Public Class DealerTmkReconWrkDAL
 #End Region
 
 #Region "Delegate Signatures"
-    Public Delegate Sub AsyncCaller(ByVal oFileProcessedData As TeleMrktFileProcessedData, ByVal selectStmt As String)
+    Public Delegate Sub AsyncCaller(oFileProcessedData As TeleMrktFileProcessedData, selectStmt As String)
 #End Region
 
 #Region "Constructors"
@@ -61,48 +61,48 @@ Public Class DealerTmkReconWrkDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_tmk_recon_wrk_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
-    Private Function IsThereALikeClause(ByVal certNumberMask As String, ByVal campaignNumberMask As String, ByVal statusCodeMask As String) As Boolean
+    Private Function IsThereALikeClause(certNumberMask As String, campaignNumberMask As String, statusCodeMask As String) As Boolean
         Dim bIsLikeClause As Boolean
 
-        bIsLikeClause = Me.IsLikeClause(certNumberMask) OrElse Me.IsLikeClause(campaignNumberMask) OrElse Me.IsLikeClause(statusCodeMask)
+        bIsLikeClause = IsLikeClause(certNumberMask) OrElse IsLikeClause(campaignNumberMask) OrElse IsLikeClause(statusCodeMask)
         Return bIsLikeClause
     End Function
 
-    Public Function LoadList(ByVal dealerfileProcessedID As Guid, ByVal languageID As Guid) As DataSet
+    Public Function LoadList(dealerfileProcessedID As Guid, languageID As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() {New OracleParameter("language_id", languageID.ToByteArray), _
                                             New OracleParameter(COL_NAME_DEALERFILE_PROCESSED_ID, dealerfileProcessedID.ToByteArray)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadList(ByVal dealerfileProcessedID As Guid, ByVal certNumberMask As String, ByVal campaignNumberMask As String, ByVal statusCodeMask As String, ByVal languageID As Guid) As DataSet
+    Public Function LoadList(dealerfileProcessedID As Guid, certNumberMask As String, campaignNumberMask As String, statusCodeMask As String, languageID As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter
         Dim bIsLikeClause As Boolean = False
         Dim whereClauseConditions As String = ""
@@ -110,25 +110,25 @@ Public Class DealerTmkReconWrkDAL
 
         bIsLikeClause = IsThereALikeClause(certNumberMask, campaignNumberMask, statusCodeMask)
 
-        If ((Not (certNumberMask Is Nothing)) AndAlso (Me.FormatSearchMask(certNumberMask))) Then
+        If ((Not (certNumberMask Is Nothing)) AndAlso (FormatSearchMask(certNumberMask))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(dtrw.certificate)" & certNumberMask.ToUpper & ""
         End If
-        If ((Not (campaignNumberMask Is Nothing)) AndAlso (Me.FormatSearchMask(campaignNumberMask))) Then
+        If ((Not (campaignNumberMask Is Nothing)) AndAlso (FormatSearchMask(campaignNumberMask))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(dtrw.campaign_number)" & campaignNumberMask.ToUpper & ""
         End If
-        If ((Not (statusCodeMask Is Nothing)) AndAlso (Me.FormatSearchMask(statusCodeMask))) Then
+        If ((Not (statusCodeMask Is Nothing)) AndAlso (FormatSearchMask(statusCodeMask))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(dtrw.tmk_loaded)" & statusCodeMask.ToUpper & ""
         End If
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
         parameters = New OracleParameter() {New OracleParameter("language_id", languageID.ToByteArray), _
                                             New OracleParameter(COL_NAME_DEALERFILE_PROCESSED_ID, dealerfileProcessedID.ToByteArray)}
         Try
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return (ds)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -136,7 +136,7 @@ Public Class DealerTmkReconWrkDAL
 
     End Function
 
-    Private Sub AsyncExecuteSP(ByVal oFileProcessedData As TeleMrktFileProcessedData, ByVal selectStmt As String)
+    Private Sub AsyncExecuteSP(oFileProcessedData As TeleMrktFileProcessedData, selectStmt As String)
         Dim inputParameters(TOTAL_PARAM_SP) As DBHelperParameter
         Dim outputParameter(0) As DBHelperParameter
 
@@ -158,14 +158,14 @@ Public Class DealerTmkReconWrkDAL
         End If
     End Sub
 
-    Private Sub ExecuteSP(ByVal oFileProcessedData As TeleMrktFileProcessedData, ByVal selectStmt As String)
+    Private Sub ExecuteSP(oFileProcessedData As TeleMrktFileProcessedData, selectStmt As String)
         Dim aSyncHandler As New AsyncCaller(AddressOf AsyncExecuteSP)
         aSyncHandler.BeginInvoke(oFileProcessedData, selectStmt, Nothing, Nothing)
     End Sub
 
-    Public Sub ValidateFile(ByVal oData As TeleMrktFileProcessedData)
+    Public Sub ValidateFile(oData As TeleMrktFileProcessedData)
         Dim selectStmt As String
-        selectStmt = Me.Config("/SQL/VALIDATE_TMK")
+        selectStmt = Config("/SQL/VALIDATE_TMK")
         Try
             ExecuteSP(oData, selectStmt)
         Catch ex As Exception
@@ -173,9 +173,9 @@ Public Class DealerTmkReconWrkDAL
         End Try
     End Sub
 
-    Public Sub ProcessFile(ByVal oData As TeleMrktFileProcessedData)
+    Public Sub ProcessFile(oData As TeleMrktFileProcessedData)
         Dim selectStmt As String
-        selectStmt = Me.Config("/SQL/PROCESS_TMK")
+        selectStmt = Config("/SQL/PROCESS_TMK")
         Try
             ExecuteSP(oData, selectStmt)
         Catch ex As Exception
@@ -183,9 +183,9 @@ Public Class DealerTmkReconWrkDAL
         End Try
     End Sub
 
-    Public Sub DeleteFile(ByVal oData As TeleMrktFileProcessedData)
+    Public Sub DeleteFile(oData As TeleMrktFileProcessedData)
         Dim selectStmt As String
-        selectStmt = Me.Config("/SQL/DELETE_TMK")
+        selectStmt = Config("/SQL/DELETE_TMK")
         Try
             ExecuteSP(oData, selectStmt)
         Catch ex As Exception
@@ -195,12 +195,12 @@ Public Class DealerTmkReconWrkDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

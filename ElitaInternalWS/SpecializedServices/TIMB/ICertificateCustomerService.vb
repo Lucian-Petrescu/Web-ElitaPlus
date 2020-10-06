@@ -13,7 +13,7 @@ Namespace SpecializedServices.Timb
         FaultContract(GetType(CompanyNotFoundFault)),
         FaultContract(GetType(DealerNotFoundFault)),
         FaultContract(GetType(CertificateNotFoundFault))>
-        Function GetCertificateCustomer(ByVal request As CustomerByCertificateRequest) As CustomerResponse
+        Function GetCertificateCustomer(request As CustomerByCertificateRequest) As CustomerResponse
 
     End Interface
 End Namespace

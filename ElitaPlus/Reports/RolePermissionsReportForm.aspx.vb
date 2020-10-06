@@ -45,7 +45,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -54,32 +54,32 @@ Namespace Reports
 #End Region
 
 #Region "Handlers-Init"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -90,8 +90,8 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moRoleLabel)
-            Me.ClearLabelErrSign(moTabLabel)
+            ClearLabelErrSign(moRoleLabel)
+            ClearLabelErrSign(moTabLabel)
         End Sub
 
 #End Region
@@ -100,7 +100,7 @@ Namespace Reports
 
         Sub PopulateDropDowns()
             Dim roleLkl As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("GetRoleList")
-            Me.cboRole.Populate(roleLkl, New PopulateOptions() With
+            cboRole.Populate(roleLkl, New PopulateOptions() With
                 {
                     .AddBlankItem = True,
                     .BlankItemValue = "0",
@@ -111,7 +111,7 @@ Namespace Reports
             'Me.BindListTextToDataView(Me.cboRole, LookupListNew.GetRolesLookupList(), , "CODE", True)
             Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
             oListContext.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
-            Me.cboTab.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="GetTabList", context:=oListContext, languageCode:=Thread.CurrentPrincipal.GetLanguageCode()).ToArray(), New PopulateOptions() With
+            cboTab.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="GetTabList", context:=oListContext, languageCode:=Thread.CurrentPrincipal.GetLanguageCode()).ToArray(), New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = True,
                                                     .SortFunc = AddressOf .GetDescription
@@ -121,15 +121,15 @@ Namespace Reports
 
         Private Sub InitializeForm()
             PopulateDropDowns()
-            Me.rrole.Checked = True
-            Me.rtabs.Checked = True
+            rrole.Checked = True
+            rtabs.Checked = True
         End Sub
 
 #End Region
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal RoleId As String, ByVal TabId As String) As ReportCeBaseForm.Params
+        Function SetParameters(RoleId As String, TabId As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String = RPT_FILENAME
@@ -160,12 +160,12 @@ Namespace Reports
         End Function
 
         Private Sub GenerateReport()
-            Dim selectedRoleId As String = Me.GetSelectedValue(Me.cboRole)
-            Dim selectedRoleDesc As String = Me.GetSelectedDescription(Me.cboRole)
-            Dim selectedTabId As String = Me.GetSelectedDescription(Me.cboTab)
+            Dim selectedRoleId As String = GetSelectedValue(cboRole)
+            Dim selectedRoleDesc As String = GetSelectedDescription(cboRole)
+            Dim selectedTabId As String = GetSelectedDescription(cboTab)
             Dim RoleId As String, TabId As String
 
-            If Me.rrole.Checked Then
+            If rrole.Checked Then
                 RoleId = ALL
             Else
                 RoleId = selectedRoleId
@@ -175,7 +175,7 @@ Namespace Reports
                 End If
             End If
 
-            If Me.rtabs.Checked Then
+            If rtabs.Checked Then
                 TabId = ALL
             Else
                 TabId = selectedTabId

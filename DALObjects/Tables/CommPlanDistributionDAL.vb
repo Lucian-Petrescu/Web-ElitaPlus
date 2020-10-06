@@ -33,31 +33,31 @@ Public Class CommPlanDistributionDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("comm_plan_ext_distribution_id", id.ToByteArray)}
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
         Try
-            DBHelper.FetchSp(selectStmt, parameters, outParameters, familyDS, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, parameters, outParameters, familyDS, TABLE_NAME)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadAssociateByCommissions(ByVal id As Guid) As DataSet
+    Public Function LoadAssociateByCommissions(id As Guid) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/LOAD")
+            Dim selectStmt As String = Config("/SQL/LOAD")
 
             Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_comm_plan_dist_id", id.ToByteArray)}
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
 
             Dim ds As New DataSet
-            Dim tbl As String = Me.TABLE_NAME
+            Dim tbl As String = TABLE_NAME
 
             DBHelper.FetchSp(selectStmt, inparameters, outParameters, ds, tbl)
             Return ds
@@ -67,15 +67,15 @@ Public Class CommPlanDistributionDAL
         End Try
     End Function
 
-    Public Function LoadList(ByVal commPlanId As Guid) As DataSet
+    Public Function LoadList(commPlanId As Guid) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_COMM_PLAN_DIST_BY_PLAN")
+            Dim selectStmt As String = Config("/SQL/LOAD_LIST_COMM_PLAN_DIST_BY_PLAN")
 
             Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_comm_plan_id", commPlanId.ToByteArray)}
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
 
             Dim ds As New DataSet
-            Dim tbl As String = Me.TABLE_NAME
+            Dim tbl As String = TABLE_NAME
 
             DBHelper.FetchSp(selectStmt, inparameters, outParameters, ds, tbl)
             Return ds
@@ -85,15 +85,15 @@ Public Class CommPlanDistributionDAL
         End Try
     End Function
 
-    Public Function LoadListPlan(ByVal commPlanId As Guid) As DataSet
+    Public Function LoadListPlan(commPlanId As Guid) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_COMM_PLAN_DIST_BY_PLAN_ID")
+            Dim selectStmt As String = Config("/SQL/LOAD_LIST_COMM_PLAN_DIST_BY_PLAN_ID")
 
             Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_comm_plan_id", commPlanId.ToByteArray)}
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
 
             Dim ds As New DataSet
-            Dim tbl As String = Me.TABLE_NAME
+            Dim tbl As String = TABLE_NAME
 
             DBHelper.FetchSp(selectStmt, inparameters, outParameters, ds, tbl)
             Return ds
@@ -103,21 +103,21 @@ Public Class CommPlanDistributionDAL
         End Try
     End Function
 
-    Public Sub LoadList(ByVal commPlanId As Guid, ByVal familyDS As DataSet)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_COMM_PLAN_DIST_BY_PLAN_ID")
+    Public Sub LoadList(commPlanId As Guid, familyDS As DataSet)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_COMM_PLAN_DIST_BY_PLAN_ID")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_comm_plan_id", commPlanId.ToByteArray)}
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
         Try
-            DBHelper.FetchSp(selectStmt, parameters, outParameters, familyDS, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, parameters, outParameters, familyDS, TABLE_NAME)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function CommPaymentExist(ByVal pi_commmission_plan_id As Guid) As String
+    Public Function CommPaymentExist(pi_commmission_plan_id As Guid) As String
         Try
-            Dim selectStmt As String = Me.Config("/SQL/COMM_PAYMENT_EXIST")
+            Dim selectStmt As String = Config("/SQL/COMM_PAYMENT_EXIST")
 
             Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_Commmission_Plan_id", pi_commmission_plan_id.ToByteArray)}
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_status", GetType(String))}
@@ -132,9 +132,9 @@ Public Class CommPlanDistributionDAL
     End Function
 
     'US - 565821 - UI - Commission fields check null and position validation
-    Public Function CheckPositionExist(ByVal pi_position As Integer, ByVal pi_comm_plan_dist_id As Guid, ByVal pi_commmission_plan_id As Guid) As String
+    Public Function CheckPositionExist(pi_position As Integer, pi_comm_plan_dist_id As Guid, pi_commmission_plan_id As Guid) As String
         Try
-            Dim selectStmt As String = Me.Config("/SQL/CHECK_FOR_POSITION_EXIST")
+            Dim selectStmt As String = Config("/SQL/CHECK_FOR_POSITION_EXIST")
 
             Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_position", pi_position),
                                                                                                  New DBHelper.DBHelperParameter("pi_comm_plan_dist_id", pi_comm_plan_dist_id.ToByteArray),
@@ -156,7 +156,7 @@ Public Class CommPlanDistributionDAL
 #Region "Overloaded Methods"
     #Region "Overloaded Methods"
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         Dim commPlanDistDAL As New CommPlanDistributionDAL  
         
@@ -200,20 +200,20 @@ Public Class CommPlanDistributionDAL
     End Sub
 #End Region
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
             'MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
-            MyBase.UpdateFromSP(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+            MyBase.UpdateFromSP(ds.Tables(TABLE_NAME), Transaction, changesFilter)
             'MyBase.UpdateWithParam(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
     Private Function FetchStoredProcedure(methodName As String, storedProc As String, parameters() As OracleParameter, Optional familyDS As DataSet = Nothing) As DataSet
-        Dim tbl As String = Me.TABLE_NAME
+        Dim tbl As String = TABLE_NAME
         Dim ds As DataSet = If(familyDS Is Nothing, New DataSet(), familyDS)
 
         ds.Tables.Add(tbl)
@@ -227,7 +227,7 @@ Public Class CommPlanDistributionDAL
                     OracleDbHelper.Fetch(cmd, tbl, ds)
                 End Using
             End Using
-            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(Me.PAR_OUT_NAME_RETURN_CODE))
+            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
             If (Not par Is Nothing AndAlso par.Value = 200) Then
                 Throw New ElitaPlusException("ELP_COMM_PLAN_DISTRIBUTION - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If
@@ -238,12 +238,12 @@ Public Class CommPlanDistributionDAL
         Return ds
     End Function
 
-    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         command.AddParameter("pi_comm_plan_dist_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)
         command.AddParameter("po_exec_status", OracleDbType.Int32, ParameterDirection.Output)
     End Sub
 
-    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter("pi_comm_plan_dist_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)
             .AddParameter("pi_comm_plan_id", OracleDbType.Raw, sourceColumn:=COL_NAME_COMM_PLAN_ID)
@@ -259,7 +259,7 @@ Public Class CommPlanDistributionDAL
         End With
     End Sub
 
-    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter("pi_comm_plan_dist_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)
             .AddParameter("pi_comm_plan_id", OracleDbType.Raw, sourceColumn:=COL_NAME_COMM_PLAN_ID)

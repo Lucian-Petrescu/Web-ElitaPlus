@@ -25,7 +25,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -112,37 +112,37 @@ Namespace Tables
 
         Private IsReturningFromChild As Boolean = False
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles Me.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles Me.PageReturn
             Try
-                Me.IsReturningFromChild = True
+                IsReturningFromChild = True
                 Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.State.moExcludeListItemByRoleId = retObj.ExcludeListItemByRoleId
-                            Me.State.IsGridVisible = True
+                            State.moExcludeListItemByRoleId = retObj.ExcludeListItemByRoleId
+                            State.IsGridVisible = True
                         Case ElitaPlusPage.DetailPageCommand.Delete
-                            Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
-                            Me.State.moExcludeListItemByRoleId = Guid.Empty
+                            AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                            State.moExcludeListItemByRoleId = Guid.Empty
                         Case Else
-                            Me.State.moExcludeListItemByRoleId = Guid.Empty
+                            State.moExcludeListItemByRoleId = Guid.Empty
                     End Select
-                    Grid.PageIndex = Me.State.PageIndex
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                    Grid.PageSize = Me.State.PageSize
+                    Grid.PageIndex = State.PageIndex
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
+                    Grid.PageSize = State.PageSize
                     ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
-                    Me.State.CompanyId = retObj.CompanyIdSearchParam
-                    Me.State.ListId = retObj.ListIdSearchParam
-                    Me.State.ListItemId = retObj.ListItemIdSearchParam
-                    Me.State.RoleId = retObj.RoleIdSearchParam
+                    State.CompanyId = retObj.CompanyIdSearchParam
+                    State.ListId = retObj.ListIdSearchParam
+                    State.ListItemId = retObj.ListItemIdSearchParam
+                    State.RoleId = retObj.RoleIdSearchParam
 
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -159,15 +159,15 @@ Namespace Tables
             Public RoleIdSearchParam As Guid
             Public BoChanged As Boolean = False
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal oExcludeListItemByRoleId As Guid, ByVal SearchParam As ExcludeListItemByRoleForm.Parameters, Optional ByVal boChanged As Boolean = False)
-                Me.LastOperation = LastOp
-                Me.ExcludeListItemByRoleId = oExcludeListItemByRoleId
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, oExcludeListItemByRoleId As Guid, SearchParam As ExcludeListItemByRoleForm.Parameters, Optional ByVal boChanged As Boolean = False)
+                LastOperation = LastOp
+                ExcludeListItemByRoleId = oExcludeListItemByRoleId
                 Me.BoChanged = boChanged
-                If Not SearchParam Is Nothing Then
-                    Me.CompanyIdSearchParam = SearchParam.CompanyId
-                    Me.ListIdSearchParam = SearchParam.ListId
-                    Me.ListItemIdSearchParam = SearchParam.ListItemId
-                    Me.RoleIdSearchParam = SearchParam.RoleId
+                If SearchParam IsNot Nothing Then
+                    CompanyIdSearchParam = SearchParam.CompanyId
+                    ListIdSearchParam = SearchParam.ListId
+                    ListItemIdSearchParam = SearchParam.ListItemId
+                    RoleIdSearchParam = SearchParam.RoleId
                 End If
             End Sub
 
@@ -176,38 +176,38 @@ Namespace Tables
         '#End Region
 #Region "Page_Events"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 'SetSession()
                 'grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
                 If Not Page.IsPostBack Then
 
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                     UpdateBreadCrum()
 
                     TranslateGridHeader(Grid)
 
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SortDirection = Me.State.SortExpression
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
+                    SortDirection = State.SortExpression
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
                     PopulateDropdown()
-                    If Me.State.IsGridVisible Then
-                        If Not (Me.State.PageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.PageSize = Grid.PageSize) Then
-                            Grid.PageSize = Me.State.PageSize
+                    If State.IsGridVisible Then
+                        If Not (State.PageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.PageSize = Grid.PageSize) Then
+                            Grid.PageSize = State.PageSize
                         End If
-                        Me.PopulateGrid()
+                        PopulateGrid()
                     End If
-                    Me.SetGridItemStyleColor(Me.Grid)
+                    SetGridItemStyleColor(Grid)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
 #End Region
@@ -230,12 +230,12 @@ Namespace Tables
                 CompanyMultipleDrop.BindData(oDataView)
                 CompanyMultipleDrop.AutoPostBackDD = False
                 CompanyMultipleDrop.NothingSelected = True
-                CompanyMultipleDrop.SelectedGuid = Me.State.CompanyId
+                CompanyMultipleDrop.SelectedGuid = State.CompanyId
 
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(EXCLUDE_LIST_ITEM_BY_ROLE_LIST_FORM)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(EXCLUDE_LIST_ITEM_BY_ROLE_LIST_FORM)
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
         End Sub
 
@@ -250,9 +250,9 @@ Namespace Tables
                                   {
                                   .AddBlankItem = True
                                   })
-                BindSelectItem(Me.State.ListId.ToString, moListDescriptionDrop) 'ListItemsExcludeByRole
-                If Not Me.State.ListId.Equals(Guid.Empty) Then
-                    Dim strListCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_LIST, Me.GetSelectedItem(moListDescriptionDrop))
+                BindSelectItem(State.ListId.ToString, moListDescriptionDrop) 'ListItemsExcludeByRole
+                If Not State.ListId.Equals(Guid.Empty) Then
+                    Dim strListCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_LIST, GetSelectedItem(moListDescriptionDrop))
 
                     'Me.BindListControlToDataView(moListItemDescriptionDrop, LookupListNew.DropdownLookupList(strListCode, oLanguageId))
                     Dim listeItemLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList(strListCode, Thread.CurrentPrincipal.GetLanguageCode())
@@ -261,12 +261,12 @@ Namespace Tables
                                   .AddBlankItem = True,
                                   .ValueFunc = AddressOf .GetCode
                                   })
-                    BindSelectItem(Me.State.ListItemId.ToString, moListItemDescriptionDrop)
+                    BindSelectItem(State.ListItemId.ToString, moListItemDescriptionDrop)
                 End If
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(EXCLUDE_LIST_ITEM_BY_ROLE_LIST_FORM)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(EXCLUDE_LIST_ITEM_BY_ROLE_LIST_FORM)
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
         End Sub
 
@@ -279,15 +279,15 @@ Namespace Tables
                                   {
                                   .AddBlankItem = True
                                   })
-                BindSelectItem(Me.State.RoleId.ToString, moRoleDescriptionDrop)
+                BindSelectItem(State.RoleId.ToString, moRoleDescriptionDrop)
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(EXCLUDE_LIST_ITEM_BY_ROLE_LIST_FORM)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(EXCLUDE_LIST_ITEM_BY_ROLE_LIST_FORM)
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
         End Sub
 
-        Private Sub BindDataGrid(ByVal oDataView As DataView)
+        Private Sub BindDataGrid(oDataView As DataView)
             Grid.DataSource = oDataView
             Grid.DataBind()
         End Sub
@@ -297,45 +297,45 @@ Namespace Tables
             Dim oDataView As DataView
 
             Try
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = ExcludeListitemByRole.getList(CompanyMultipleDrop.SelectedGuid, Me.GetSelectedItem(moListDescriptionDrop), Me.GetSelectedItem(moListItemDescriptionDrop), Me.GetSelectedItem(moRoleDescriptionDrop), ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = ExcludeListitemByRole.getList(CompanyMultipleDrop.SelectedGuid, GetSelectedItem(moListDescriptionDrop), GetSelectedItem(moListItemDescriptionDrop), GetSelectedItem(moRoleDescriptionDrop), ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
                 End If
 
-                If (Me.State.searchDV.Count = 0) Then
+                If (State.searchDV.Count = 0) Then
 
-                    Me.State.bnoRow = True
-                    CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
+                    State.bnoRow = True
+                    CreateHeaderForEmptyGrid(Grid, SortDirection)
                 Else
-                    Me.State.bnoRow = False
-                    Me.Grid.Enabled = True
+                    State.bnoRow = False
+                    Grid.Enabled = True
                 End If
 
-                Me.State.searchDV.Sort = Me.State.SortExpression
+                State.searchDV.Sort = State.SortExpression
                 Grid.AutoGenerateColumns = False
 
-                Grid.Columns(Me.GRID_COL_COMPANY).SortExpression = ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_COMPANY_NAME
-                Grid.Columns(Me.GRID_COL_LIST_ITEM_DESCRIPTION).SortExpression = ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_LIST_ITEM_DESCRIPTION
-                Grid.Columns(Me.GRID_COL_LIST_DESCRIPTION).SortExpression = ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_LIST_DESCRIPTION
-                Grid.Columns(Me.GRID_COL_ROLE_DESCRIPTION).SortExpression = ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_ROLE_DESCRIPTION
-                HighLightSortColumn(Grid, Me.State.SortExpression)                
+                Grid.Columns(GRID_COL_COMPANY).SortExpression = ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_COMPANY_NAME
+                Grid.Columns(GRID_COL_LIST_ITEM_DESCRIPTION).SortExpression = ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_LIST_ITEM_DESCRIPTION
+                Grid.Columns(GRID_COL_LIST_DESCRIPTION).SortExpression = ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_LIST_DESCRIPTION
+                Grid.Columns(GRID_COL_ROLE_DESCRIPTION).SortExpression = ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_ROLE_DESCRIPTION
+                HighLightSortColumn(Grid, State.SortExpression)                
 
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.CompanyId, Me.Grid, Me.State.PageIndex)
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.CompanyId, Grid, State.PageIndex)
 
-                Me.Grid.DataSource = Me.State.searchDV
-                HighLightSortColumn(Grid, Me.SortDirection)
-                Me.Grid.DataBind()
+                Grid.DataSource = State.searchDV
+                HighLightSortColumn(Grid, SortDirection)
+                Grid.DataBind()
 
                 ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-                Session("recCount") = Me.State.searchDV.Count
+                Session("recCount") = State.searchDV.Count
 
                 If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -344,20 +344,20 @@ Namespace Tables
             moListItemDescriptionDrop.SelectedIndex = 0
             moListDescriptionDrop.SelectedIndex = 0
             moRoleDescriptionDrop.SelectedIndex = 0
-            Me.State.moExcludeListItemByRoleId = Guid.Empty
+            State.moExcludeListItemByRoleId = Guid.Empty
         End Sub
 
         Private Function GetDataView() As DataView
 
-            Return (ExcludeListitemByRole.getList(CompanyMultipleDrop.SelectedGuid, Me.GetSelectedItem(moListDescriptionDrop), Me.GetSelectedItem(moListItemDescriptionDrop), Me.GetSelectedItem(moRoleDescriptionDrop), ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+            Return (ExcludeListitemByRole.getList(CompanyMultipleDrop.SelectedGuid, GetSelectedItem(moListDescriptionDrop), GetSelectedItem(moListItemDescriptionDrop), GetSelectedItem(moRoleDescriptionDrop), ElitaPlusIdentity.Current.ActiveUser.LanguageId))
 
         End Function
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("EXCLUDE_LIST_ITEM_BY_ROLE")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("EXCLUDE_LIST_ITEM_BY_ROLE")
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("EXCLUDE_LIST_ITEM_BY_ROLE")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("EXCLUDE_LIST_ITEM_BY_ROLE")
                 End If
             End If
         End Sub
@@ -370,25 +370,25 @@ Namespace Tables
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.PageIndex = Grid.PageSize
-                Me.PopulateGrid()
+                State.PageIndex = Grid.PageSize
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moListDescriptionDropChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles moListDescriptionDrop.SelectedIndexChanged
+        Private Sub moListDescriptionDropChanged(source As Object, e As System.EventArgs) Handles moListDescriptionDrop.SelectedIndexChanged
             Try
-                Me.State.ListId = Me.GetSelectedItem(moListDescriptionDrop)
-                Dim strListCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_LIST, Me.State.ListId)
+                State.ListId = GetSelectedItem(moListDescriptionDrop)
+                Dim strListCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_LIST, State.ListId)
 
                 ' Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
                 ' Me.BindListControlToDataView(moListItemDescriptionDrop, LookupListNew.DropdownLookupList(strListCode, oLanguageId))
@@ -398,82 +398,82 @@ Namespace Tables
                                   .AddBlankItem = True,
                                   .ValueFunc = AddressOf .GetCode
                                   })
-                BindSelectItem(Me.State.ListItemId.ToString, moListItemDescriptionDrop)
+                BindSelectItem(State.ListItemId.ToString, moListItemDescriptionDrop)
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(EXCLUDE_LIST_ITEM_BY_ROLE_LIST_FORM)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(EXCLUDE_LIST_ITEM_BY_ROLE_LIST_FORM)
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
 
 
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Me.State.CompanyId = Guid.Empty
-                Me.PopulateGrid()
+                State.PageIndex = e.NewPageIndex
+                State.CompanyId = Guid.Empty
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
-                Me.State.SortExpression = Me.SortDirection
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.SortExpression = SortDirection
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
-                If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+                If dvRow IsNot Nothing And Not State.bnoRow Then
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                        btnEditItem = CType(e.Row.Cells(Me.GRID_COL_EDIT_IDX).FindControl("SelectAction"), LinkButton)
+                        btnEditItem = CType(e.Row.Cells(GRID_COL_EDIT_IDX).FindControl("SelectAction"), LinkButton)
                         btnEditItem.Text = dvRow(ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_LIST_ITEM_DESCRIPTION).ToString
-                        e.Row.Cells(Me.GRID_COL_LIST_DESCRIPTION).Text = dvRow(ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_LIST_DESCRIPTION).ToString
-                        e.Row.Cells(Me.GRID_COL_COMPANY).Text = dvRow(ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_COMPANY_NAME).ToString
-                        e.Row.Cells(Me.GRID_COL_ROLE_DESCRIPTION).Text = dvRow(ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_ROLE_DESCRIPTION).ToString
-                        e.Row.Cells(Me.GRID_COL_EXCLUDE_LIST_ITEM_BY_ROLE_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_EXCLUDE_LIST_ITEM_BY_ROLE_ID), Byte()))
+                        e.Row.Cells(GRID_COL_LIST_DESCRIPTION).Text = dvRow(ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_LIST_DESCRIPTION).ToString
+                        e.Row.Cells(GRID_COL_COMPANY).Text = dvRow(ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_COMPANY_NAME).ToString
+                        e.Row.Cells(GRID_COL_ROLE_DESCRIPTION).Text = dvRow(ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_ROLE_DESCRIPTION).ToString
+                        e.Row.Cells(GRID_COL_EXCLUDE_LIST_ITEM_BY_ROLE_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(ExcludeListitemByRole.ExcludeListitemByRoleSearchDV.COL_EXCLUDE_LIST_ITEM_BY_ROLE_ID), Byte()))
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
             Try
                 If e.CommandName = "SelectAction" Then
                     Dim index As Integer = CInt(e.CommandArgument)
-                    Me.State.moExcludeListItemByRoleId = New Guid(Me.Grid.Rows(index).Cells(Me.GRID_COL_EXCLUDE_LIST_ITEM_BY_ROLE_ID_IDX).Text)
-                    Me.callPage(ExcludeListItemByRoleForm.URL, New ExcludeListItemByRoleForm.Parameters(Me.State.moExcludeListItemByRoleId, Me.State.CompanyId, Me.State.ListId, Me.State.ListItemId, Me.State.RoleId))
+                    State.moExcludeListItemByRoleId = New Guid(Grid.Rows(index).Cells(GRID_COL_EXCLUDE_LIST_ITEM_BY_ROLE_ID_IDX).Text)
+                    callPage(ExcludeListItemByRoleForm.URL, New ExcludeListItemByRoleForm.Parameters(State.moExcludeListItemByRoleId, State.CompanyId, State.ListId, State.ListItemId, State.RoleId))
 
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -481,7 +481,7 @@ Namespace Tables
 #End Region
 
 #Region " Button Clicks "
-        Private Sub moBtnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnSearch.Click
+        Private Sub moBtnSearch_Click(sender As System.Object, e As System.EventArgs) Handles moBtnSearch.Click
             Try
                 ' Dim oState As TheState
                 If Not State.IsGridVisible Then
@@ -490,37 +490,37 @@ Namespace Tables
                         cboPageSize.SelectedValue = CType(State.PageSize, String)
                         Grid.PageSize = State.PageSize
                     End If
-                    Me.State.IsGridVisible = True
+                    State.IsGridVisible = True
                 End If
-                Grid.PageIndex = Me.NO_PAGE_INDEX
+                Grid.PageIndex = NO_PAGE_INDEX
                 Grid.DataMember = Nothing
-                Me.State.searchDV = Nothing
+                State.searchDV = Nothing
                 SetSession()
-                Grid.PageIndex = Me.NO_PAGE_INDEX
+                Grid.PageIndex = NO_PAGE_INDEX
                 Grid.DataMember = Nothing
-                Me.State.searchDV = Nothing
-                Me.PopulateGrid()
+                State.searchDV = Nothing
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moBtnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnClear.Click
+        Private Sub moBtnClear_Click(sender As System.Object, e As System.EventArgs) Handles moBtnClear.Click
             Try
                 ClearSearch()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.State.moExcludeListItemByRoleId = Guid.Empty
+                State.moExcludeListItemByRoleId = Guid.Empty
                 SetSession()
 
-                Me.callPage(ExcludeListItemByRoleForm.URL, Me.State.moExcludeListItemByRoleId)
+                callPage(ExcludeListItemByRoleForm.URL, State.moExcludeListItemByRoleId)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -528,15 +528,15 @@ Namespace Tables
 #Region "State-Management"
 
         Private Sub SetSession()
-            With Me.State                
+            With State                
                 .CompanyId = CompanyMultipleDrop.SelectedGuid
-                .ListId = Me.GetSelectedItem(moListDescriptionDrop)
-                .ListItemId = Me.GetSelectedItem(moListItemDescriptionDrop)
-                .RoleId = Me.GetSelectedItem(moRoleDescriptionDrop)
+                .ListId = GetSelectedItem(moListDescriptionDrop)
+                .ListItemId = GetSelectedItem(moListItemDescriptionDrop)
+                .RoleId = GetSelectedItem(moRoleDescriptionDrop)
                 .PageIndex = Grid.PageIndex
                 .PageSize = Grid.PageSize
-                .PageSort = Me.State.SortExpression
-                .SearchDataView = Me.State.searchDV
+                .PageSort = State.SortExpression
+                .SearchDataView = State.searchDV
             End With
         End Sub
 

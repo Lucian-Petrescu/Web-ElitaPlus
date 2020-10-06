@@ -9,20 +9,20 @@
     End Sub
     Public Sub New(ByVal oSearch As PriceListSearchDC)
         MyBase.New()
-        Me.InForceDate = oSearch.In_Force_Date
-        Me.ServiceCenterCode = oSearch.Service_Center_Code
-        Me.EquipmentClassCode = oSearch.Equipment_Class_Code
-        Me.RiskTypeCode = oSearch.Risk_Type_Code
-        Me.DealerCode = oSearch.Dealer_Code
-        Me.CompanyCode = oSearch.Company_Code
-        Me.ServiceClassCode = oSearch.Service_Class_Code
-        Me.ServiceTypeCode = oSearch.Service_Type_Code
-        Me.Make = oSearch.Make
-        Me.Model = oSearch.Model
-        Me.LowPrice = oSearch.Low_Price
-        Me.HighPrice = oSearch.High_Price
-        Me.ServiceLevelCode = oSearch.Service_Level_Code
-        Me.Validate()
+        InForceDate = oSearch.In_Force_Date
+        ServiceCenterCode = oSearch.Service_Center_Code
+        EquipmentClassCode = oSearch.Equipment_Class_Code
+        RiskTypeCode = oSearch.Risk_Type_Code
+        DealerCode = oSearch.Dealer_Code
+        CompanyCode = oSearch.Company_Code
+        ServiceClassCode = oSearch.Service_Class_Code
+        ServiceTypeCode = oSearch.Service_Type_Code
+        Make = oSearch.Make
+        Model = oSearch.Model
+        LowPrice = oSearch.Low_Price
+        HighPrice = oSearch.High_Price
+        ServiceLevelCode = oSearch.Service_Level_Code
+        Validate()
     End Sub
 
 #End Region
@@ -30,22 +30,22 @@
 #Region "Public Members"
 
     Public Sub Validate()
-        If (Me.InForceDate = Nothing Or Me.ServiceCenterCode = Nothing Or Me.CompanyCode = Nothing) And _
-            (Me.RiskTypeCode = Nothing And Me.EquipmentClassCode = Nothing) Then
+        If (InForceDate = Nothing Or ServiceCenterCode = Nothing Or CompanyCode = Nothing) And _
+            (RiskTypeCode = Nothing And EquipmentClassCode = Nothing) Then
             Throw New BOValidationException("GetPriceList Error: Must provide In Force Date, Service Center Code and Company Code along with Risk Type Code or Equipment Class Code", Assurant.ElitaPlus.Common.ErrorCodes.WS_PRICELIST_INVALID_SERVICE_CENTER_DTLS_INPUT)
         End If
 
-        Dim oServiceCenter As New ServiceCenter(Me.ServiceCenterCode)
+        Dim oServiceCenter As New ServiceCenter(ServiceCenterCode)
         If oServiceCenter Is Nothing Then
             Throw New BOValidationException("GetPriceList Error: Invalid Service Center Code ", Common.ErrorCodes.INVALID_SERVICE_CENTER_CODE)
         End If
 
-        Dim companyId As Guid = GetCompanyId(Me.CompanyCode)
+        Dim companyId As Guid = GetCompanyId(CompanyCode)
         If companyId.Equals(Guid.Empty) Then
             Throw New BOValidationException("GetPriceList Error: Invalid Company Code ", Assurant.ElitaPlus.Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
         End If
 
-        If (Not Me.DealerCode = Nothing) And (GetDealerID(companyId, Me.DealerCode).Equals(Guid.Empty)) Then
+        If (Not DealerCode = Nothing) And (GetDealerID(companyId, DealerCode).Equals(Guid.Empty)) Then
             Throw New BOValidationException("GetPriceList Error: Invalid Dealer Code ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_CODE)
         End If
 
@@ -83,7 +83,7 @@
     Public Function GetPriceList(ByVal oPriceListSearch As PriceListSearchDC) As DataSet Implements IPriceListSearch.GetPriceList
         Try
             Dim dal As New PriceListDetailDAL
-            Return dal.GetPriceList(Me.InForceDate, "", Me.CompanyCode, Me.ServiceCenterCode, Me.RiskTypeCode, Me.EquipmentClassCode, Me.DealerCode, Me.ServiceClassCode, Me.ServiceTypeCode, Make, Model, LowPrice, HighPrice, ServiceLevelCode)
+            Return dal.GetPriceList(InForceDate, "", CompanyCode, ServiceCenterCode, RiskTypeCode, EquipmentClassCode, DealerCode, ServiceClassCode, ServiceTypeCode, Make, Model, LowPrice, HighPrice, ServiceLevelCode)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try

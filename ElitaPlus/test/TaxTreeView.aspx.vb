@@ -84,7 +84,7 @@ Partial Class TaxTreeView
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -94,7 +94,7 @@ Partial Class TaxTreeView
 #End Region
 
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
 
         baseUrl = Request.Url.AbsolutePath
@@ -130,7 +130,7 @@ Partial Class TaxTreeView
         Try
             '     Tree.BindData(CountryTax.LoadTree(Me.moApplicationUser.CompanyCountryID, moApplicationUser.LanguageID))
         Catch ex As Exception
-            ELPWebConstants.ShowTranslatedMessageAsPopup(MAINTAIN_TAB_EXCLUSION_FORM001, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.Page, ex)
+            ELPWebConstants.ShowTranslatedMessageAsPopup(MAINTAIN_TAB_EXCLUSION_FORM001, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Page, ex)
         End Try
     End Sub
 End Class

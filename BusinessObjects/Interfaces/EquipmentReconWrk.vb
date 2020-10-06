@@ -42,49 +42,49 @@
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'Exiting BO
     Public Sub New(ByVal id As Guid, ByVal sModifiedDate As String)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
-        Me.VerifyConcurrency(sModifiedDate)
+        Dataset = New Dataset
+        Load(id)
+        VerifyConcurrency(sModifiedDate)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 #End Region
 #Region "DataView Retrieveing Methods"
     Protected Sub Load()
         Try
             Dim dal As New EquipmentReconDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -95,20 +95,20 @@
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New EquipmentReconDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -175,7 +175,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_FILE_PROCESSED_ID, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_FILE_PROCESSED_ID, Value)
         End Set
     End Property
 
@@ -192,7 +192,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_RECORD_TYPE, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_RECORD_TYPE, Value)
         End Set
     End Property
 
@@ -208,7 +208,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_MANUFACTURER, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_MANUFACTURER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=100)>
@@ -223,7 +223,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_MODEL, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 
@@ -240,7 +240,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -256,7 +256,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_IS_MASTER, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_IS_MASTER, Value)
         End Set
     End Property
 
@@ -272,7 +272,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_MASTER_EQUIPMENT_DESCRIPTION, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_MASTER_EQUIPMENT_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -289,7 +289,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_EQUIPMENT_CLASS, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_EQUIPMENT_CLASS, Value)
         End Set
     End Property
 
@@ -305,7 +305,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_EQUIPMENT_TYPE, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_EQUIPMENT_TYPE, Value)
         End Set
     End Property
 
@@ -321,7 +321,7 @@
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_MANUFACTURER_WARRANTY, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_MANUFACTURER_WARRANTY, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
@@ -336,7 +336,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_ATTRIBUTES, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_ATTRIBUTES, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
@@ -351,7 +351,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_NOTE1, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_NOTE1, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
@@ -366,7 +366,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_NOTE2, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_NOTE2, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
@@ -381,7 +381,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_NOTE3, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_NOTE3, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
@@ -396,7 +396,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_NOTE4, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_NOTE4, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
@@ -411,7 +411,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_NOTE5, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_NOTE5, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
@@ -426,7 +426,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_NOTE6, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_NOTE6, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
@@ -441,7 +441,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_NOTE7, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_NOTE7, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
@@ -456,7 +456,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_NOTE8, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_NOTE8, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
@@ -471,7 +471,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_NOTE9, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_NOTE9, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=4000)> _
@@ -486,7 +486,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_NOTE10, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_NOTE10, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=200)> _
@@ -501,7 +501,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_REJECT_REASON, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_REJECT_REASON, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=12)> _
@@ -516,7 +516,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_REJECT_CODE, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_REJECT_CODE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=1)> _
@@ -531,7 +531,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_LOAD_STATUS, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_LOAD_STATUS, Value)
         End Set
     End Property
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)> _
@@ -547,7 +547,7 @@
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_REJECT_MSG_PARMS, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_REJECT_MSG_PARMS, Value)
         End Set
     End Property
     Public Property ModifiedDate() As DateType
@@ -561,7 +561,7 @@
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_MODIFIED_DATE, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_MODIFIED_DATE, Value)
         End Set
     End Property
     Public Property ModifiedBy() As String
@@ -575,7 +575,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_MODIFIED_BY, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_MODIFIED_BY, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=255)> _
@@ -590,7 +590,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentReconDAL.COL_NAME_REPAIRABLE, Value)
+            SetValue(EquipmentReconDAL.COL_NAME_REPAIRABLE, Value)
         End Set
     End Property
 #End Region
@@ -647,15 +647,15 @@
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New EquipmentReconDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

@@ -25,32 +25,32 @@ Public Class CompanyWorkQueueIssueDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("company_wrkque_issue_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub LoadlistByIssue(ByVal familyDS As DataSet, ByVal Parentid As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_WQ_BY_ISSUE")
+    Public Sub LoadlistByIssue(familyDS As DataSet, Parentid As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_WQ_BY_ISSUE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("ISSUE_ID", Parentid.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function GetWorkQueueIdByIssueCompany(ByVal issueId As Guid, ByVal companyId As Guid) As Guid
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_WQ_BY_ISSUE_COMPANY")
+    Public Function GetWorkQueueIdByIssueCompany(issueId As Guid, companyId As Guid) As Guid
+        Dim selectStmt As String = Config("/SQL/LOAD_WQ_BY_ISSUE_COMPANY")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_ISSUE_ID, issueId.ToByteArray), New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, companyId.ToByteArray)}
         Try
             Dim obj As Object
@@ -69,12 +69,12 @@ Public Class CompanyWorkQueueIssueDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

@@ -16,7 +16,7 @@ Partial Class LocateMasterClaimListForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -52,10 +52,10 @@ Partial Class LocateMasterClaimListForm
         Public masterClaimProcCode As String
         Public selDateofLoss As Date
 
-        Public Sub New(ByVal dealerId As Guid, ByVal zipLocator As String,
-                        ByVal riskTypeId As Guid, ByVal ManufacturerId As Guid,
-                        ByVal covTypeCode As String,
-                        ByVal certItemCoverageId As Guid,
+        Public Sub New(dealerId As Guid, zipLocator As String,
+                        riskTypeId As Guid, ManufacturerId As Guid,
+                        covTypeCode As String,
+                        certItemCoverageId As Guid,
                         Optional ByVal showAcceptButton As Boolean = True,
                         Optional ByVal whenAcceptGoToCreateClaim As Boolean = True,
                         Optional ByVal _claimed_equipment As ClaimEquipment = Nothing,
@@ -69,7 +69,7 @@ Partial Class LocateMasterClaimListForm
             Me.ShowAcceptButton = showAcceptButton
             Me.WhenAcceptGoToCreateClaim = whenAcceptGoToCreateClaim
             Me.CertItemCoverageId = certItemCoverageId
-            Me.ClaimedEquipment = _claimed_equipment
+            ClaimedEquipment = _claimed_equipment
             Me.masterClaimProcCode = masterClaimProcCode
             Me.selDateofLoss = selDateofLoss
         End Sub
@@ -99,40 +99,40 @@ Partial Class LocateMasterClaimListForm
     Protected Shadows ReadOnly Property State() As MyState
         Get
             'Return CType(MyBase.State, MyState)
-            If Me.NavController.State Is Nothing Then
-                Me.NavController.State = New MyState
+            If NavController.State Is Nothing Then
+                NavController.State = New MyState
                 InitializeFromFlowSession()
-                Me.State.NewClaim = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM), Claim)
+                Me.State.NewClaim = CType(NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM), Claim)
             End If
-            Return CType(Me.NavController.State, MyState)
+            Return CType(NavController.State, MyState)
         End Get
     End Property
 
     Protected Sub InitializeFromFlowSession()
-        Me.State.inputParameters = CType(Me.NavController.ParametersPassed, Parameters)
+        State.inputParameters = CType(NavController.ParametersPassed, Parameters)
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.IsReturningFromChild = True
+            IsReturningFromChild = True
             Dim retObj As LocateServiceCenterDetailForm.ReturnType = CType(ReturnPar, LocateServiceCenterDetailForm.ReturnType)
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Dim pageParameters As Parameters = CType(Me.CallingParameters, Parameters)
-                Me.State.inputParameters = pageParameters
+                Dim pageParameters As Parameters = CType(CallingParameters, Parameters)
+                State.inputParameters = pageParameters
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -147,27 +147,27 @@ Partial Class LocateMasterClaimListForm
 #Region "Page_Events"
 
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
     End Sub
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.MasterPage.MessageController.Clear()
+        MasterPage.MessageController.Clear()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 UpdateBreadCrum()
-                Trace(Me, "CertItemCoverageId=" & GuidControl.GuidToHexString(Me.State.inputParameters.CertItemCoverageId))
+                Trace(Me, "CertItemCoverageId=" & GuidControl.GuidToHexString(State.inputParameters.CertItemCoverageId))
                 EnableDisableFields()
-                Me.PopulateGrid()
-                Me.SetGridItemStyleColor(Me.Grid)
+                PopulateGrid()
+                SetGridItemStyleColor(Grid)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 #End Region
 
@@ -176,19 +176,19 @@ Partial Class LocateMasterClaimListForm
     Private Sub PopulateGrid()
         Try
             Dim oContract As New Contract
-            Dim objCertItemCoverage As New CertItemCoverage(Me.State.inputParameters.CertItemCoverageId)
+            Dim objCertItemCoverage As New CertItemCoverage(State.inputParameters.CertItemCoverageId)
             Dim objCert As New Certificate(objCertItemCoverage.CertId)
-            oContract = Contract.GetContract(Me.State.inputParameters.DealerId, objCert.WarrantySalesDate.Value)
-            If Not oContract Is Nothing Then
+            oContract = Contract.GetContract(State.inputParameters.DealerId, objCert.WarrantySalesDate.Value)
+            If oContract IsNot Nothing Then
                 If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.AllowDifferentCoverage) = Codes.YESNO_Y Then
                     'ControlMgr.SetVisibleControl(Me, pnlUpfrontComm, True)
-                    Me.State.allowdifferentcoverage = True
+                    State.allowdifferentcoverage = True
                 End If
             End If
-            Dim dv As Claim.MaterClaimDV = Claim.getList(Me.State.inputParameters.CertItemCoverageId, Me.State.allowdifferentcoverage, Me.State.inputParameters.masterClaimProcCode, Me.State.inputParameters.selDateofLoss)
+            Dim dv As Claim.MaterClaimDV = Claim.getList(State.inputParameters.CertItemCoverageId, State.allowdifferentcoverage, State.inputParameters.masterClaimProcCode, State.inputParameters.selDateofLoss)
             ControlMgr.SetVisibleControl(Me, Grid, True)
 
-            If Me.State.inputParameters.masterClaimProcCode = Codes.MasterClmProc_BYDOL Then
+            If State.inputParameters.masterClaimProcCode = Codes.MasterClmProc_BYDOL Then
                 If dv.Count > 0 Then
                     ControlMgr.SetVisibleControl(Me, btnNew_WRITE, False)
                 Else
@@ -198,14 +198,14 @@ Partial Class LocateMasterClaimListForm
 
             'ValidSearchResultCount(dv.Count, True)
 
-            Me.Grid.AutoGenerateColumns = False
+            Grid.AutoGenerateColumns = False
 
             'SetPageAndSelectedIndexFromGuid(dv, Me.State.SelectedServiceCenterId, Me.Grid, Me.State.PageIndex)
-            Me.State.PageIndex = Me.Grid.CurrentPageIndex
-            Me.Grid.DataSource = dv
-            Me.Grid.DataBind()
+            State.PageIndex = Grid.CurrentPageIndex
+            Grid.DataSource = dv
+            Grid.DataBind()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -222,15 +222,15 @@ Partial Class LocateMasterClaimListForm
 
     Private Function LoadParameters() As LocateServiceCenterForm.Parameters
 
-        Return New LocateServiceCenterForm.Parameters(Me.State.inputParameters.DealerId,
-                                                      Me.State.inputParameters.ZipLocator,
-                                                      Me.State.inputParameters.RiskTypeId,
-                                                      Me.State.inputParameters.ManufacturerId,
-                                                      Me.State.inputParameters.CovTypeCode,
-                                                      Me.State.inputParameters.CertItemCoverageId,
+        Return New LocateServiceCenterForm.Parameters(State.inputParameters.DealerId,
+                                                      State.inputParameters.ZipLocator,
+                                                      State.inputParameters.RiskTypeId,
+                                                      State.inputParameters.ManufacturerId,
+                                                      State.inputParameters.CovTypeCode,
+                                                      State.inputParameters.CertItemCoverageId,
                                                       Guid.Empty,
-                                                      Me.State.inputParameters.ShowAcceptButton,
-                                                      , , , Me.State.inputParameters.ClaimedEquipment)
+                                                      State.inputParameters.ShowAcceptButton,
+                                                      , , , State.inputParameters.ClaimedEquipment)
     End Function
 
 #End Region
@@ -238,7 +238,7 @@ Partial Class LocateMasterClaimListForm
 #Region " Datagrid Related "
 
     'The Binding LOgic is here
-    Private Sub ItemDataBound(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub ItemDataBound(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
         'Try
         '    Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         '    Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
@@ -265,7 +265,7 @@ Partial Class LocateMasterClaimListForm
         'End Try
     End Sub
 
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles Grid.ItemCommand
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles Grid.ItemCommand
         Try
             If e.CommandName = "SelectAction" Then
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
@@ -273,48 +273,48 @@ Partial Class LocateMasterClaimListForm
 
                 If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem _
                     OrElse itemType = ListItemType.SelectedItem) Then
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_MSTR_CLAIM_NUMB) = CType(Me.Grid.Items(e.Item.ItemIndex).Cells(Me.GRID_COL_MSTR_CLAIM_IDX).FindControl("lblMasterClaimNumber"), Label).Text
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_DATE_OF_LOSS) = CType(Me.Grid.Items(e.Item.ItemIndex).Cells(Me.GRID_COL_DATE_OF_LOSS_IDX).FindControl("lblDateOfLoss"), Label).Text
-                    Me.NavController.Navigate(Me, "locate_service_center", Me.LoadParameters)
+                    NavController.FlowSession(FlowSessionKeys.SESSION_MSTR_CLAIM_NUMB) = CType(Grid.Items(e.Item.ItemIndex).Cells(GRID_COL_MSTR_CLAIM_IDX).FindControl("lblMasterClaimNumber"), Label).Text
+                    NavController.FlowSession(FlowSessionKeys.SESSION_DATE_OF_LOSS) = CType(Grid.Items(e.Item.ItemIndex).Cells(GRID_COL_DATE_OF_LOSS_IDX).FindControl("lblDateOfLoss"), Label).Text
+                    NavController.Navigate(Me, "locate_service_center", LoadParameters)
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemCreated
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemCreated
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As System.Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.SelectedServiceCenterId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.SelectedServiceCenterId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region " Buttons Clicks "
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.NavController.Navigate(Me, "back")
+            NavController.Navigate(Me, "back")
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.NavController.Navigate(Me, "locate_service_center", Me.LoadParameters)
+            NavController.Navigate(Me, "locate_service_center", LoadParameters)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 

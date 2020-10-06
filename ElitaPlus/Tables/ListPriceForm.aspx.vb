@@ -78,104 +78,104 @@ Namespace Tables
 #Region "Handlers"
 
 #Region "Hanlers-Init"
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Me.ErrControllerMaster.Clear_Hide()
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+            ErrControllerMaster.Clear_Hide()
             Try
                 Page.Master.Page.Form.DefaultButton = moBtnSearch.UniqueID
 
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
 
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.AddCalendar(Me.btnFromDate, Me.txtFromDate)
-                    Me.AddCalendar(Me.btnToDate, Me.txtToDate)
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    AddCalendar(btnFromDate, txtFromDate)
+                    AddCalendar(btnToDate, txtToDate)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
 
-                    Me.MenuEnabled = True
-                    Me.SetGridItemStyleColor(moListPriceGrid)
+                    MenuEnabled = True
+                    SetGridItemStyleColor(moListPriceGrid)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     PopulateDealer()
                     PopulateDropdowns()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
 
 #Region "Handlers-Grid"
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 moListPriceGrid.CurrentPageIndex = NewCurrentPageIndex(moListPriceGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.PageSize = moListPriceGrid.PageSize
+                State.PageSize = moListPriceGrid.PageSize
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moListPriceGrid_PageIndexChanged(ByVal source As Object, ByVal e As DataGridPageChangedEventArgs) Handles moListPriceGrid.PageIndexChanged
+        Private Sub moListPriceGrid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles moListPriceGrid.PageIndexChanged
             Try
                 moListPriceGrid.CurrentPageIndex = e.NewPageIndex
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moListPriceGrid_ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs) Handles moListPriceGrid.ItemCreated
+        Private Sub moListPriceGrid_ItemCreated(sender As Object, e As DataGridItemEventArgs) Handles moListPriceGrid.ItemCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moListPriceGrid_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles moListPriceGrid.SortCommand
+        Private Sub moListPriceGrid_SortCommand(source As Object, e As DataGridSortCommandEventArgs) Handles moListPriceGrid.SortCommand
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.moListPriceGrid.CurrentPageIndex = 0
-                Me.moListPriceGrid.SelectedIndex = -1
-                Me.PopulateGrid()
+                moListPriceGrid.CurrentPageIndex = 0
+                moListPriceGrid.SelectedIndex = -1
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moListPriceGrid_ItemDataBound(ByVal sender As Object, ByVal e As DataGridItemEventArgs) Handles moListPriceGrid.ItemDataBound
+        Private Sub moListPriceGrid_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles moListPriceGrid.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
                 If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem _
                     OrElse itemType = ListItemType.SelectedItem) Then
-                    e.Item.Cells(Me.GRID_COL_EFFECTIVE).Text = Me.GetDateFormattedString(DateHelper.GetDateValue(dvRow(ListPrice.ListPriceSearchDV.COL_NAME_EFFECTIVE).ToString()))
-                    e.Item.Cells(Me.GRID_COL_EXPIRATION).Text = Me.GetDateFormattedString(DateHelper.GetDateValue(dvRow(ListPrice.ListPriceSearchDV.COL_NAME_EXPIRATION).ToString()))
+                    e.Item.Cells(GRID_COL_EFFECTIVE).Text = GetDateFormattedString(DateHelper.GetDateValue(dvRow(ListPrice.ListPriceSearchDV.COL_NAME_EFFECTIVE).ToString()))
+                    e.Item.Cells(GRID_COL_EXPIRATION).Text = GetDateFormattedString(DateHelper.GetDateValue(dvRow(ListPrice.ListPriceSearchDV.COL_NAME_EXPIRATION).ToString()))
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Protected Sub moBtnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles moBtnSearch.Click
+        Protected Sub moBtnSearch_Click(sender As Object, e As EventArgs) Handles moBtnSearch.Click
             Try
 
-                Me.State.PageIndex = Me.NO_PAGE_INDEX
-                Me.State.searchDV = Nothing
+                State.PageIndex = NO_PAGE_INDEX
+                State.searchDV = Nothing
                 moListPriceGrid.DataMember = Nothing
                 moListPriceGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 moListPriceGrid.CurrentPageIndex = 0
@@ -195,32 +195,32 @@ Namespace Tables
                 'Dates
                 'High date must be higher than low date.
                 If txtFromDate.Text <> "" Or txtToDate.Text <> "" Then
-                    ExchangeRateListForm.ValidateBeginEndDate(Me.lblFromDate, Me.txtFromDate.Text, Me.lblToDate, Me.txtToDate.Text)
+                    ExchangeRateListForm.ValidateBeginEndDate(lblFromDate, txtFromDate.Text, lblToDate, txtToDate.Text)
                 End If
 
                 If txtFromDate.Text <> "" Then
-                    Me.State.FromDateMask = DateHelper.GetDateValue(Me.txtFromDate.Text).ToString(SP_DATE_FORMAT)
+                    State.FromDateMask = DateHelper.GetDateValue(txtFromDate.Text).ToString(SP_DATE_FORMAT)
                 Else
-                    Me.State.FromDateMask = String.Empty
+                    State.FromDateMask = String.Empty
                 End If
 
                 If txtToDate.Text <> "" Then
-                    Me.State.ToDateMask = DateHelper.GetDateValue(Me.txtToDate.Text).ToString(SP_DATE_FORMAT)
+                    State.ToDateMask = DateHelper.GetDateValue(txtToDate.Text).ToString(SP_DATE_FORMAT)
                 Else
-                    Me.State.ToDateMask = String.Empty
+                    State.ToDateMask = String.Empty
                 End If
 
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub moBtnClear_Click(ByVal sender As Object, ByVal e As EventArgs) Handles moBtnClear.Click
+        Protected Sub moBtnClear_Click(sender As Object, e As EventArgs) Handles moBtnClear.Click
             Try
                 ClearSearch()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -232,7 +232,7 @@ Namespace Tables
         Private Sub PopulateDropdowns()
             'Me.BindListControlToDataView(Me.ddlAmountType, LookupListNew.DropdownLookupList("LPAMOUNTTYPE", ElitaPlusIdentity.Current.ActiveUser.LanguageId, True))
             Dim amountTypeLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("LPAMOUNTTYPE", Thread.CurrentPrincipal.GetLanguageCode())
-            Me.ddlAmountType.Populate(amountTypeLkl, New PopulateOptions() With
+            ddlAmountType.Populate(amountTypeLkl, New PopulateOptions() With
              {
             .AddBlankItem = True
                   })
@@ -246,7 +246,7 @@ Namespace Tables
                 TheDealerControl.AutoPostBackDD = False
                 TheDealerControl.NothingSelected = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -257,38 +257,38 @@ Namespace Tables
 
             Try
 
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = ListPrice.GetList(TheDealerControl.SelectedGuid, tbSearchManufacturer.Text.Trim(), _
-                            tbSearchModel.Text.Trim(), tbSearchSKU.Text.Trim(), Me.State.FromDateMask, Me.State.ToDateMask, guidAmtType)
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = ListPrice.GetList(TheDealerControl.SelectedGuid, tbSearchManufacturer.Text.Trim(), _
+                            tbSearchModel.Text.Trim(), tbSearchSKU.Text.Trim(), State.FromDateMask, State.ToDateMask, guidAmtType)
                 End If
 
-                Me.State.PageIndex = Me.moListPriceGrid.CurrentPageIndex
-                Me.State.searchDV.Sort = Me.State.SortExpression
-                Me.moListPriceGrid.DataSource = Me.State.searchDV
-                HighLightSortColumn(moListPriceGrid, Me.State.SortExpression)
-                Me.moListPriceGrid.DataBind()
+                State.PageIndex = moListPriceGrid.CurrentPageIndex
+                State.searchDV.Sort = State.SortExpression
+                moListPriceGrid.DataSource = State.searchDV
+                HighLightSortColumn(moListPriceGrid, State.SortExpression)
+                moListPriceGrid.DataBind()
 
                 ControlMgr.SetVisibleControl(Me, trPageSize, moListPriceGrid.Visible)
 
-                Session("recCount") = Me.State.searchDV.Count
+                Session("recCount") = State.searchDV.Count
 
-                If Me.moListPriceGrid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If moListPriceGrid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub ClearSearch()
             TheDealerControl.SelectedIndex = 0
-            Me.tbSearchSKU.Text = ""
-            Me.tbSearchManufacturer.Text = ""
-            Me.tbSearchModel.Text = ""
-            Me.txtFromDate.Text = ""
-            Me.txtToDate.Text = ""
-            Me.ddlAmountType.SelectedIndex = -1
+            tbSearchSKU.Text = ""
+            tbSearchManufacturer.Text = ""
+            tbSearchModel.Text = ""
+            txtFromDate.Text = ""
+            txtToDate.Text = ""
+            ddlAmountType.SelectedIndex = -1
         End Sub
 
 #End Region
@@ -296,11 +296,11 @@ Namespace Tables
 #Region "State-Management"
 
         Private Sub SetSession()
-            With Me.State
+            With State
                 .PageIndex = moListPriceGrid.CurrentPageIndex
                 .PageSize = moListPriceGrid.PageSize
-                .PageSort = Me.State.SortExpression
-                .SearchDataView = Me.State.searchDV
+                .PageSort = State.SortExpression
+                .SearchDataView = State.searchDV
             End With
         End Sub
 

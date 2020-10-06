@@ -26,47 +26,47 @@ Public Class VSCClassCodeDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("class_code_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal codeidMask As Guid, _
-                                    ByVal ActiveMask As Guid, _
-                                    ByVal company_group_Id As Guid) As DataSet
+    Public Function LoadList(codeidMask As Guid, _
+                                    ActiveMask As Guid, _
+                                    company_group_Id As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
         Dim bIsLikeClause As Boolean = False
 
         If Not codeidMask.Equals(Guid.Empty) Then
-            whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & Me.COL_NAME_CLASS_CODE_ID & ") ='" & Me.GuidToSQLString(codeidMask) & "'"
+            whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & COL_NAME_CLASS_CODE_ID & ") ='" & GuidToSQLString(codeidMask) & "'"
         End If
 
 
         If Not ActiveMask.Equals(Guid.Empty) Then
-            whereClauseConditions &= Environment.NewLine & "AND UPPER(" & Me.COL_NAME_ACTIVE & ") ='" & Me.GuidToSQLString(ActiveMask) & "'"
+            whereClauseConditions &= Environment.NewLine & "AND UPPER(" & COL_NAME_ACTIVE & ") ='" & GuidToSQLString(ActiveMask) & "'"
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
 
@@ -77,7 +77,7 @@ Public Class VSCClassCodeDAL
 
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -90,12 +90,12 @@ Public Class VSCClassCodeDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

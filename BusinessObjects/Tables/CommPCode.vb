@@ -15,46 +15,46 @@ Public Class CommPCode
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CommPCodeDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -65,20 +65,20 @@ Public Class CommPCode
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New CommPCodeDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -119,7 +119,7 @@ Public Class CommPCode
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CommPCodeDAL.COL_NAME_PRODUCT_CODE_ID, Value)
+            SetValue(CommPCodeDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
 
@@ -136,7 +136,7 @@ Public Class CommPCode
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(CommPCodeDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(CommPCodeDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
@@ -153,7 +153,7 @@ Public Class CommPCode
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(CommPCodeDAL.COL_NAME_EXPIRATION_DATE, Value)
+            SetValue(CommPCodeDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
@@ -223,19 +223,19 @@ Public Class CommPCode
         Dim objCommPCodeEntity As CommPCodeEntity
         Dim oEntityDal As CommPCodeEntityDAL
 
-        If Me.Dataset.Tables.Contains(CommPCodeEntityDAL.TABLE_NAME) = True Then
-            oRow = Me.FindRow(commPCodeEntityId, CommPCodeEntityDAL.TABLE_KEY_NAME, Me.Dataset.Tables(CommPCodeEntityDAL.TABLE_NAME))
+        If Dataset.Tables.Contains(CommPCodeEntityDAL.TABLE_NAME) = True Then
+            oRow = FindRow(commPCodeEntityId, CommPCodeEntityDAL.TABLE_KEY_NAME, Dataset.Tables(CommPCodeEntityDAL.TABLE_NAME))
         End If
         If oRow Is Nothing Then 'it is Not in the dataset, so will bring it from the db
             ' is it new or old ?
             oEntityDal = New CommPCodeEntityDAL
             If oEntityDal.FindRecord(commPCodeEntityId) = True Then
                ' old
-                objCommPCodeEntity = New CommPCodeEntity(commPCodeEntityId, Me.Dataset)
+                objCommPCodeEntity = New CommPCodeEntity(commPCodeEntityId, Dataset)
             Else
                 'new 
-                objCommPCodeEntity = New CommPCodeEntity(True, commPCodeEntityId, Me.Dataset)
-                objCommPCodeEntity.CommPCodeId = Me.Id
+                objCommPCodeEntity = New CommPCodeEntity(True, commPCodeEntityId, Dataset)
+                objCommPCodeEntity.CommPCodeId = Id
             End If
         Else ' It is in DataSet
             objCommPCodeEntity = New CommPCodeEntity(oRow)
@@ -244,8 +244,8 @@ Public Class CommPCode
     End Function
 
     Public Function ClearCommPCodeEntity()
-        If (Me.Dataset.Tables.Contains(CommPCodeEntityDAL.TABLE_NAME) = True) Then
-            Me.Dataset.Tables.Remove(CommPCodeEntityDAL.TABLE_NAME)
+        If (Dataset.Tables.Contains(CommPCodeEntityDAL.TABLE_NAME) = True) Then
+            Dataset.Tables.Remove(CommPCodeEntityDAL.TABLE_NAME)
         End If
     End Function
 
@@ -255,7 +255,7 @@ Public Class CommPCode
         Dim isPMarkup As Boolean = False
 
         ClearCommPCodeEntity()
-        oTable = CommPCodeEntity.getEntities(Me.Dataset, Me.Id)
+        oTable = CommPCodeEntity.getEntities(Dataset, Id)
         'GetEntityTotals(oTable, totalPComm, isPComm, totalPMarkup, isPMarkup)
     End Sub
 
@@ -305,11 +305,11 @@ Public Class CommPCode
 #Region "Public Members"
 
     Public Function Copy(ByVal original As CommPCode) As DataView
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Comm Product Code")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
 
         'copy the children 
         Dim oDataView As DataView
@@ -321,11 +321,11 @@ Public Class CommPCode
         oDataView = CommPCodeEntity.getList(original.Id)
         oRows = oDataView.Table.Rows
         For Each oRow In oRows
-            oEntity = New CommPCodeEntity(Me.Dataset)
+            oEntity = New CommPCodeEntity(Dataset)
             oldEntityId = New Guid(CType(oRow(CommPCodeEntityDAL.COL_NAME_COMM_P_CODE_ENTITY_ID), Byte()))
             oldEntity = New CommPCodeEntity(oldEntityId, original.Dataset)
             oEntity.CommissionAmount = oldEntity.CommissionAmount
-            oEntity.CommPCodeId = Me.Id
+            oEntity.CommPCodeId = Id
             oEntity.EntityId = oldEntity.EntityId
             oEntity.IsCommFixedId = oldEntity.IsCommFixedId            
             oEntity.MarkupAmount = oldEntity.MarkupAmount
@@ -338,21 +338,21 @@ Public Class CommPCode
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me.Dataset.Tables.Contains(CommPCodeEntityDAL.TABLE_NAME) = True Then
-                ValidateEntityChildren(Me.Dataset.Tables(CommPCodeEntityDAL.TABLE_NAME))
+            If Dataset.Tables.Contains(CommPCodeEntityDAL.TABLE_NAME) = True Then
+                ValidateEntityChildren(Dataset.Tables(CommPCodeEntityDAL.TABLE_NAME))
             End If
 
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CommPCodeDAL
-                MyBase.UpdateFamily(Me.Dataset)
+                MyBase.UpdateFamily(Dataset)
                 '   dal.Update(Me.Row)
-                dal.UpdateFamily(Me.Dataset)  'New Code Added Manually                
+                dal.UpdateFamily(Dataset)  'New Code Added Manually                
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

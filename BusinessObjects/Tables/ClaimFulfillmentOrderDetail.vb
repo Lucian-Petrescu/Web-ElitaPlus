@@ -7,46 +7,46 @@ Public Class ClaimFulfillmentOrderDetail
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ClaimFulfillmentOrderDetailDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -57,20 +57,20 @@ Public Class ClaimFulfillmentOrderDetail
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New ClaimFulfillmentOrderDetailDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -79,11 +79,11 @@ Public Class ClaimFulfillmentOrderDetail
     End Sub
 
     Public Sub Copy(ByVal original As ClaimFulfillmentOrderDetail)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Claim Fullment Order Detail")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 #End Region
 
@@ -119,7 +119,7 @@ Public Class ClaimFulfillmentOrderDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_CODE, Value)
+            SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_CODE, Value)
         End Set
     End Property
 
@@ -135,7 +135,7 @@ Public Class ClaimFulfillmentOrderDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_DESCRIPTION, Value)
+            SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -150,7 +150,7 @@ Public Class ClaimFulfillmentOrderDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_HEADER_ID, Value)
+            SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_CF_ORDER_HEADER_ID, Value)
         End Set
     End Property
 
@@ -167,7 +167,7 @@ Public Class ClaimFulfillmentOrderDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_PRICE_LIST_SOURCE_XCD, Value)
+            SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_PRICE_LIST_SOURCE_XCD, Value)
         End Set
     End Property
 
@@ -182,7 +182,7 @@ Public Class ClaimFulfillmentOrderDetail
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
@@ -198,7 +198,7 @@ Public Class ClaimFulfillmentOrderDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_PRICE_LIST_CODE, Value)
+            SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_PRICE_LIST_CODE, Value)
         End Set
     End Property
 
@@ -214,7 +214,7 @@ Public Class ClaimFulfillmentOrderDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_EQUIPMENT_TYPE_XCD, Value)
+            SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_EQUIPMENT_TYPE_XCD, Value)
         End Set
     End Property
 
@@ -230,7 +230,7 @@ Public Class ClaimFulfillmentOrderDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_CLASS_XCD, Value)
+            SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_CLASS_XCD, Value)
         End Set
     End Property
 
@@ -247,7 +247,7 @@ Public Class ClaimFulfillmentOrderDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_TYPE_XCD, Value)
+            SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_TYPE_XCD, Value)
         End Set
     End Property
 
@@ -264,7 +264,7 @@ Public Class ClaimFulfillmentOrderDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_LEVEL_XCD, Value)
+            SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_SERVICE_LEVEL_XCD, Value)
         End Set
     End Property
 
@@ -281,7 +281,7 @@ Public Class ClaimFulfillmentOrderDetail
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_STOCK_ITEM_TYPE_XCD, Value)
+            SetValue(ClaimFulfillmentOrderDetailDAL.COL_NAME_STOCK_ITEM_TYPE_XCD, Value)
         End Set
     End Property
 
@@ -295,13 +295,13 @@ Public Class ClaimFulfillmentOrderDetail
         Try
             MyBase.Save()
             Dim dal As New ClaimFulfillmentOrderDetailDAL
-            dal.Update(Me.Row)
+            dal.Update(Row)
             'Reload the Data from the DB
-            If Me.Row.RowState <> DataRowState.Detached Then
-                Dim objId As Guid = Me.Id
-                Me.Dataset = New DataSet
-                Me.Row = Nothing
-                Me.Load(objId)
+            If Row.RowState <> DataRowState.Detached Then
+                Dim objId As Guid = Id
+                Dataset = New DataSet
+                Row = Nothing
+                Load(objId)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
@@ -309,18 +309,18 @@ Public Class ClaimFulfillmentOrderDetail
     End Sub
 
     Public Sub DeleteAndSave()
-        Me.BeginEdit()
+        BeginEdit()
 
         Try
-            Me.Delete()
-            Me.Save()
+            Delete()
+            Save()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Me.cancelEdit()
+            cancelEdit()
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         Catch ex As RowNotInTableException
             ex = Nothing
         Catch ex As Exception
-            Me.cancelEdit()
+            cancelEdit()
             Throw ex
         End Try
     End Sub

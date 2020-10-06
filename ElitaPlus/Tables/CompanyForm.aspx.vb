@@ -27,7 +27,7 @@ Partial Class CompanyForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -61,9 +61,9 @@ Partial Class CompanyForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As Company
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Company, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As Company, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -95,14 +95,14 @@ Partial Class CompanyForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.MyBO = New Company(CType(Me.CallingParameters, Guid))
+                State.MyBO = New Company(CType(CallingParameters, Guid))
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -110,55 +110,55 @@ Partial Class CompanyForm
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         'Me.ErrorCtrl.Clear_Hide() ' REQ-1295
-        Me.MasterPage.MessageController.Clear_Hide() ' REQ-1295
+        MasterPage.MessageController.Clear_Hide() ' REQ-1295
         'hide the user control...since we are doing our ownlist.
         'ControlMgr.SetVisibleControl(Me, PostalCodeFormatLists, False)
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
                 'REQ-1295
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(LBL_TABLES)
-                Me.AddCalendar_New(Me.ImgUniqueCertNumberEffDate, Me.TextboxUniqueCertNumberEffDate)
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(LBL_TABLES)
+                AddCalendar_New(ImgUniqueCertNumberEffDate, TextboxUniqueCertNumberEffDate)
                 UpdateBreadCrum()
                 'REQ-1295 : Changes Completed 
 
                 'Date Calendars
-                Me.MenuEnabled = False
+                MenuEnabled = False
                 ' Me.AddConfirmation(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
-                Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New Company
+                AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, True)
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New Company
                 End If
-                AttributeValues.ParentBusinessObject = CType(Me.State.MyBO, IAttributable)
+                AttributeValues.ParentBusinessObject = CType(State.MyBO, IAttributable)
                 AttributeValues.TranslateHeaders()
                 PopulateDropdowns()
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                PopulateFormFromBOs()
+                EnableDisableFields()
             Else
-                AttributeValues.ParentBusinessObject = CType(Me.State.MyBO, IAttributable)
+                AttributeValues.ParentBusinessObject = CType(State.MyBO, IAttributable)
             End If
             BindBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
     'REQ-1295
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(LBL_COMPANY)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(LBL_COMPANY)
+        If (State IsNot Nothing) Then
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(LBL_COMPANY)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(LBL_COMPANY)
         End If
     End Sub
 #End Region
@@ -172,27 +172,27 @@ Partial Class CompanyForm
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
 
         'Now disable depebding on the object state
-        If Me.State.MyBO.IsNew Then
+        If State.MyBO.IsNew Then
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
         End If
 
-        Me.ChangeEnabledProperty(Me.TextboxDescription, True)
-        Me.ChangeEnabledProperty(Me.TextboxCode, True)
-        Me.ChangeEnabledProperty(Me.TextboxTaxIdNumber, True)
-        Me.ChangeEnabledProperty(Me.TextboxFax, True)
-        Me.ChangeEnabledProperty(Me.TextboxPhone, True)
-        Me.ChangeEnabledProperty(Me.TextboxEmail, True)
-        Me.ChangeEnabledProperty(Me.TextboxRefundToleranceAmount, True)
-        Me.ChangeEnabledProperty(Me.TextboxMaxFollowupDays, True)
-        Me.ChangeEnabledProperty(Me.TextboxDefaultFollowupDays, True)
-        Me.ChangeEnabledProperty(Me.TextboxLegalDisclaimer, True)
-        Me.ChangeEnabledProperty(Me.txtSCPreINVWP, True)
+        ChangeEnabledProperty(TextboxDescription, True)
+        ChangeEnabledProperty(TextboxCode, True)
+        ChangeEnabledProperty(TextboxTaxIdNumber, True)
+        ChangeEnabledProperty(TextboxFax, True)
+        ChangeEnabledProperty(TextboxPhone, True)
+        ChangeEnabledProperty(TextboxEmail, True)
+        ChangeEnabledProperty(TextboxRefundToleranceAmount, True)
+        ChangeEnabledProperty(TextboxMaxFollowupDays, True)
+        ChangeEnabledProperty(TextboxDefaultFollowupDays, True)
+        ChangeEnabledProperty(TextboxLegalDisclaimer, True)
+        ChangeEnabledProperty(txtSCPreINVWP, True)
 
         EnableDisableUniqueCertFields()
 
-        If (Me.State.MyBO.UsePreInvoiceProcessId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
+        If (State.MyBO.UsePreInvoiceProcessId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
             'ControlMgr.SetVisibleControl(Me, LabelSCPreInvWP, True)
             'ControlMgr.SetVisibleControl(Me, txtSCPreINVWP, True)
             LabelSCPreInvWP.Style.Add("display", "block")
@@ -207,66 +207,66 @@ Partial Class CompanyForm
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Description", Me.LabelDescription)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Code", Me.LabelCode)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "TaxIdNumber", Me.LabelTaxIdNumber)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "BusinessCountryId", Me.LabelBusinessCountry)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Phone", Me.LabelPhone1)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Fax", Me.LabelFax)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Email", Me.LabelEmail)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "RefundToleranceAmt", Me.LabelRefundToleranceAmt)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "LanguageId", Me.LabelLanguage)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "InvoiceMethodId", Me.LabelInvoiceMethod)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ClaimNumberFormatId", Me.LabelClaimNumbFormatId)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CertNumberFormatId", Me.LabelCertNumberFormat)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "UsePreInvoiceProcessId", Me.LabelUsePreInvProcess)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "MaxFollowupDays", Me.LabelMaxFollowupDays)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "DefaultFollowupDays", Me.LabelDefaultFollowupDays)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "LegalDisclaimer", Me.LabelLegalDisclaimer)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "SalutationId", Me.LabelSalutation)
+        BindBOPropertyToLabel(State.MyBO, "Description", LabelDescription)
+        BindBOPropertyToLabel(State.MyBO, "Code", LabelCode)
+        BindBOPropertyToLabel(State.MyBO, "TaxIdNumber", LabelTaxIdNumber)
+        BindBOPropertyToLabel(State.MyBO, "BusinessCountryId", LabelBusinessCountry)
+        BindBOPropertyToLabel(State.MyBO, "Phone", LabelPhone1)
+        BindBOPropertyToLabel(State.MyBO, "Fax", LabelFax)
+        BindBOPropertyToLabel(State.MyBO, "Email", LabelEmail)
+        BindBOPropertyToLabel(State.MyBO, "RefundToleranceAmt", LabelRefundToleranceAmt)
+        BindBOPropertyToLabel(State.MyBO, "LanguageId", LabelLanguage)
+        BindBOPropertyToLabel(State.MyBO, "InvoiceMethodId", LabelInvoiceMethod)
+        BindBOPropertyToLabel(State.MyBO, "ClaimNumberFormatId", LabelClaimNumbFormatId)
+        BindBOPropertyToLabel(State.MyBO, "CertNumberFormatId", LabelCertNumberFormat)
+        BindBOPropertyToLabel(State.MyBO, "UsePreInvoiceProcessId", LabelUsePreInvProcess)
+        BindBOPropertyToLabel(State.MyBO, "MaxFollowupDays", LabelMaxFollowupDays)
+        BindBOPropertyToLabel(State.MyBO, "DefaultFollowupDays", LabelDefaultFollowupDays)
+        BindBOPropertyToLabel(State.MyBO, "LegalDisclaimer", LabelLegalDisclaimer)
+        BindBOPropertyToLabel(State.MyBO, "SalutationId", LabelSalutation)
 
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Address1", Me.Address1Label)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Address2", Me.Address2Label)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "City", Me.CityLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "RegionId", Me.StateLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "PostalCode", Me.ZipLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CountryId", Me.CountryLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CompanyGroupId", Me.LabelCompanyGroup)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CompanyTypeId", Me.LabelComapnyType)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "UPR_USES_WP_Id", Me.LabelUPR_USES_WP)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "MasterClaimProcessingId", Me.labelMasterClaim)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ServiceOrdersByDealerId", Me.lblSvcOrdersByDealer)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "RequireItemDescriptionId", Me.lblRequireItemDescription)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ClaimNumberOffset", Me.LabelCLAIM_NUMBER_OFFSET)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "UseZipDistrictId", Me.LabelUseZipDistrict)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AuthDetailRqrdId", Me.LabelAutDetailRqrd)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AutoProcessFileId", Me.LabelAutoProcessId)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "UseRecoveriesId", Me.LabelUseRecoveries)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AddlDACId", Me.labelAddlDAC)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ReportCommissionTaxId", Me.lblReportCommTax)
+        BindBOPropertyToLabel(State.MyBO, "Address1", Address1Label)
+        BindBOPropertyToLabel(State.MyBO, "Address2", Address2Label)
+        BindBOPropertyToLabel(State.MyBO, "City", CityLabel)
+        BindBOPropertyToLabel(State.MyBO, "RegionId", StateLabel)
+        BindBOPropertyToLabel(State.MyBO, "PostalCode", ZipLabel)
+        BindBOPropertyToLabel(State.MyBO, "CountryId", CountryLabel)
+        BindBOPropertyToLabel(State.MyBO, "CompanyGroupId", LabelCompanyGroup)
+        BindBOPropertyToLabel(State.MyBO, "CompanyTypeId", LabelComapnyType)
+        BindBOPropertyToLabel(State.MyBO, "UPR_USES_WP_Id", LabelUPR_USES_WP)
+        BindBOPropertyToLabel(State.MyBO, "MasterClaimProcessingId", labelMasterClaim)
+        BindBOPropertyToLabel(State.MyBO, "ServiceOrdersByDealerId", lblSvcOrdersByDealer)
+        BindBOPropertyToLabel(State.MyBO, "RequireItemDescriptionId", lblRequireItemDescription)
+        BindBOPropertyToLabel(State.MyBO, "ClaimNumberOffset", LabelCLAIM_NUMBER_OFFSET)
+        BindBOPropertyToLabel(State.MyBO, "UseZipDistrictId", LabelUseZipDistrict)
+        BindBOPropertyToLabel(State.MyBO, "AuthDetailRqrdId", LabelAutDetailRqrd)
+        BindBOPropertyToLabel(State.MyBO, "AutoProcessFileId", LabelAutoProcessId)
+        BindBOPropertyToLabel(State.MyBO, "UseRecoveriesId", LabelUseRecoveries)
+        BindBOPropertyToLabel(State.MyBO, "AddlDACId", labelAddlDAC)
+        BindBOPropertyToLabel(State.MyBO, "ReportCommissionTaxId", lblReportCommTax)
         ' following is accounting company for Elita->Felita interface
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AcctCompanyId", Me.LabelAcctCompany)
+        BindBOPropertyToLabel(State.MyBO, "AcctCompanyId", LabelAcctCompany)
 
 
         '09/11/2006 - ALR - Added for auto closing claims
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "DaysToCloseClaim", Me.LabelDaysToCloseClaim)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "EUMemberId", Me.lblEUMember)
+        BindBOPropertyToLabel(State.MyBO, "DaysToCloseClaim", LabelDaysToCloseClaim)
+        BindBOPropertyToLabel(State.MyBO, "EUMemberId", lblEUMember)
 
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "TimeZoneNameId", Me.Labeltime_zone_name)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ComputeTaxBasedId", Me.lblComputeTaxBased)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "BillingByDealerId", Me.LabelBILLING_BY_DEALER)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "PoliceRptForLossCovId", Me.lblPoliceRptForLoss)
+        BindBOPropertyToLabel(State.MyBO, "TimeZoneNameId", Labeltime_zone_name)
+        BindBOPropertyToLabel(State.MyBO, "ComputeTaxBasedId", lblComputeTaxBased)
+        BindBOPropertyToLabel(State.MyBO, "BillingByDealerId", LabelBILLING_BY_DEALER)
+        BindBOPropertyToLabel(State.MyBO, "PoliceRptForLossCovId", lblPoliceRptForLoss)
 
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "FtpSiteId", Me.lblFtpSite)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ReqCustomerLegalInfoId", Me.lblREQ_CUSTOMER_LEGAL_INFO_ID)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "UseTransferOfOwnership", Me.lblTransferOfOwnership)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "RequiresAgentCodeId", Me.lblRequiresAgntCd)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "UniqueCertificateNumbersId", Me.LabelUniqueCertificateNumber)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "UniqueCertEffectiveDate", Me.LabelUniqueCertNumberEffDate)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Override_WarrantyPrice_Check", Me.LabelOverride_WarrantyPriceid)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CertnumlookupbyId", Me.lblCertNumLookUpBy)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "SCPreInvWaitingPeriod", Me.LabelSCPreInvWP)
-        Me.ClearGridHeadersAndLabelsErrSign()
+        BindBOPropertyToLabel(State.MyBO, "FtpSiteId", lblFtpSite)
+        BindBOPropertyToLabel(State.MyBO, "ReqCustomerLegalInfoId", lblREQ_CUSTOMER_LEGAL_INFO_ID)
+        BindBOPropertyToLabel(State.MyBO, "UseTransferOfOwnership", lblTransferOfOwnership)
+        BindBOPropertyToLabel(State.MyBO, "RequiresAgentCodeId", lblRequiresAgntCd)
+        BindBOPropertyToLabel(State.MyBO, "UniqueCertificateNumbersId", LabelUniqueCertificateNumber)
+        BindBOPropertyToLabel(State.MyBO, "UniqueCertEffectiveDate", LabelUniqueCertNumberEffDate)
+        BindBOPropertyToLabel(State.MyBO, "Override_WarrantyPrice_Check", LabelOverride_WarrantyPriceid)
+        BindBOPropertyToLabel(State.MyBO, "CertnumlookupbyId", lblCertNumLookUpBy)
+        BindBOPropertyToLabel(State.MyBO, "SCPreInvWaitingPeriod", LabelSCPreInvWP)
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
     Protected Sub PopulateDropdowns()
@@ -276,7 +276,7 @@ Partial Class CompanyForm
         Dim yesNoLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode())
         ' Me.BindListControlToDataView(Me.cboBusinessCountryId, LookupListNew.DataView(LookupListNew.LK_COUNTRIES))--
         Dim countriesLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.Country, Thread.CurrentPrincipal.GetLanguageCode())
-        Me.cboBusinessCountryId.Populate(countriesLkl, New PopulateOptions() With
+        cboBusinessCountryId.Populate(countriesLkl, New PopulateOptions() With
             {
               .AddBlankItem = True
                 })
@@ -284,7 +284,7 @@ Partial Class CompanyForm
 
         'Me.BindListControlToDataView(Me.cboLanguageId, LookupListNew.DataView(LookupListNew.LK_LANGUAGES))
         Dim languageLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("LanguageList", Thread.CurrentPrincipal.GetLanguageCode())
-        Me.cboLanguageId.Populate(languageLkl, New PopulateOptions() With
+        cboLanguageId.Populate(languageLkl, New PopulateOptions() With
             {
               .AddBlankItem = True,
               .SortFunc = AddressOf .GetDescription
@@ -298,13 +298,13 @@ Partial Class CompanyForm
                                                        })
         ' Me.BindListControlToDataView(Me.cboClaimNumbFormatId, LookupListNew.DataView(LookupListNew.LK_CLAIM_FORMAT))
         Dim claimFormatLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ClaimFormat", Thread.CurrentPrincipal.GetLanguageCode())
-        Me.cboClaimNumbFormatId.Populate(claimFormatLkl, New PopulateOptions() With
+        cboClaimNumbFormatId.Populate(claimFormatLkl, New PopulateOptions() With
             {
               .AddBlankItem = True
                 })
         ' Me.BindListControlToDataView(Me.cboCertNumberFormat, LookupListNew.GetCertNumberFormatLookupList)
         Dim certNumberFormat As ListItem() = CommonConfigManager.Current.ListManager.GetList("CertNumberFormat", Thread.CurrentPrincipal.GetLanguageCode())
-        Me.cboCertNumberFormat.Populate(certNumberFormat, New PopulateOptions() With
+        cboCertNumberFormat.Populate(certNumberFormat, New PopulateOptions() With
             {
               .AddBlankItem = True
                 })
@@ -320,13 +320,13 @@ Partial Class CompanyForm
                                                        })
         ' Me.BindListControlToDataView(Me.moCountryDrop_WRITE, LookupListNew.DataView(LookupListNew.LK_COUNTRIES))
         'Dim countryListLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("Country", Thread.CurrentPrincipal.GetLanguageCode())
-        Me.moCountryDrop_WRITE.Populate(countriesLkl, New PopulateOptions() With
+        moCountryDrop_WRITE.Populate(countriesLkl, New PopulateOptions() With
             {
               .AddBlankItem = True
                 })
         ' Me.BindListControlToDataView(Me.cboCompanyGrpID, LookupListNew.DataView(LookupListNew.LK_COMPANY_GROUP))
         Dim companyGroupLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("CompanyGroup", Thread.CurrentPrincipal.GetLanguageCode())
-        Me.cboCompanyGrpID.Populate(companyGroupLkl, New PopulateOptions() With
+        cboCompanyGrpID.Populate(companyGroupLkl, New PopulateOptions() With
             {
               .AddBlankItem = True,
               .SortFunc = AddressOf .GetDescription
@@ -392,7 +392,7 @@ Partial Class CompanyForm
         'Me.BindListControlToDataView(Me.cboAcctCompany, LookupListNew.DataView(LookupListNew.LK_ACCTCOMPANY))
 
         Dim acctComapnyLKL As ListItem() = CommonConfigManager.Current.ListManager.GetList("AcctCompany", Thread.CurrentPrincipal.GetLanguageCode())
-        Me.cboAcctCompany.Populate(acctComapnyLKL, New PopulateOptions() With
+        cboAcctCompany.Populate(acctComapnyLKL, New PopulateOptions() With
                                                       {
                                                         .AddBlankItem = True
                                                        })
@@ -438,7 +438,7 @@ Partial Class CompanyForm
                                                        })
         ' Me.BindListControlToDataView(Me.ddlFtpSiteList, LookupListNew.GetFtpSiteLookupList(), , , True)
         Dim ftpSitelkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("FTPSITE", Thread.CurrentPrincipal.GetLanguageCode())
-        Me.ddlFtpSiteList.Populate(ftpSitelkl, New PopulateOptions() With
+        ddlFtpSiteList.Populate(ftpSitelkl, New PopulateOptions() With
                                                       {
                                                         .AddBlankItem = True
                                                        })
@@ -482,23 +482,23 @@ Partial Class CompanyForm
 
     End Sub
 
-    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
+    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
 
         Try
             LoadRegionDropown()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
     'Req-1295
-    Private Sub cboReqAgentCode_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboReqAgentCode.SelectedIndexChanged
+    Private Sub cboReqAgentCode_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboReqAgentCode.SelectedIndexChanged
         Try
-            Me.PopulateBOProperty(Me.State.MyBO, "RequiresAgentCodeId", Me.cboReqAgentCode)
+            PopulateBOProperty(State.MyBO, "RequiresAgentCodeId", cboReqAgentCode)
             CheckAndDisplayAgentWarning()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -516,119 +516,119 @@ Partial Class CompanyForm
     End Sub
     Protected Sub PopulateFormFromBOs()
         Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-        With Me.State.MyBO
+        With State.MyBO
 
-            Me.PopulateControlFromBOProperty(Me.TextboxDescription, .Description)
-            Me.PopulateControlFromBOProperty(Me.TextboxCode, .Code)
-            Me.PopulateControlFromBOProperty(Me.TextboxUniqueCertNumberEffDate, .UniqueCertEffectiveDate)
-            Me.PopulateControlFromBOProperty(Me.TextboxTaxIdNumber, .TaxIdNumber)
-            Me.PopulateControlFromBOProperty(Me.TextboxFax, .Fax)
-            Me.PopulateControlFromBOProperty(Me.TextboxPhone, .Phone)
-            Me.PopulateControlFromBOProperty(Me.TextboxEmail, .Email)
-            Me.PopulateControlFromBOProperty(Me.TextboxRefundToleranceAmount, .RefundToleranceAmt)
-            Me.PopulateControlFromBOProperty(Me.TextboxMaxFollowupDays, .MaxFollowupDays)
-            Me.PopulateControlFromBOProperty(Me.TextboxDefaultFollowupDays, .DefaultFollowupDays)
-            Me.PopulateControlFromBOProperty(Me.TextboxLegalDisclaimer, .LegalDisclaimer)
+            PopulateControlFromBOProperty(TextboxDescription, .Description)
+            PopulateControlFromBOProperty(TextboxCode, .Code)
+            PopulateControlFromBOProperty(TextboxUniqueCertNumberEffDate, .UniqueCertEffectiveDate)
+            PopulateControlFromBOProperty(TextboxTaxIdNumber, .TaxIdNumber)
+            PopulateControlFromBOProperty(TextboxFax, .Fax)
+            PopulateControlFromBOProperty(TextboxPhone, .Phone)
+            PopulateControlFromBOProperty(TextboxEmail, .Email)
+            PopulateControlFromBOProperty(TextboxRefundToleranceAmount, .RefundToleranceAmt)
+            PopulateControlFromBOProperty(TextboxMaxFollowupDays, .MaxFollowupDays)
+            PopulateControlFromBOProperty(TextboxDefaultFollowupDays, .DefaultFollowupDays)
+            PopulateControlFromBOProperty(TextboxLegalDisclaimer, .LegalDisclaimer)
 
-            Me.PopulateControlFromBOProperty(Me.Address1Text, .Address1)
-            Me.PopulateControlFromBOProperty(Me.Address2Text, .Address2)
-            Me.PopulateControlFromBOProperty(Me.CityText, .City)
-            Me.PopulateControlFromBOProperty(Me.ZipText, .PostalCode)
+            PopulateControlFromBOProperty(Address1Text, .Address1)
+            PopulateControlFromBOProperty(Address2Text, .Address2)
+            PopulateControlFromBOProperty(CityText, .City)
+            PopulateControlFromBOProperty(ZipText, .PostalCode)
 
             '09/11/2006 - ALR - Added for auto closing claims
-            Me.PopulateControlFromBOProperty(Me.TextboxDaysToCloseClaim, .DaysToCloseClaim)
+            PopulateControlFromBOProperty(TextboxDaysToCloseClaim, .DaysToCloseClaim)
 
-            Me.SetSelectedItem(Me.cboLanguageId, .LanguageId)
-            Me.SetSelectedItem(Me.cboBusinessCountryId, .BusinessCountryId)
-            Me.SetSelectedItem(Me.cboInvoiceMethodId, .InvoiceMethodId)
-            Me.SetSelectedItem(Me.cboClaimNumbFormatId, .ClaimNumberFormatId)
-            Me.SetSelectedItem(Me.cboCertNumberFormat, .CertNumberFormatId)
-            Me.SetSelectedItem(Me.cboSalutationId, .SalutationId)
-            Me.SetSelectedItem(Me.moCountryDrop_WRITE, .CountryId)
-            Me.SetSelectedItem(Me.cboCompanyGrpID, .CompanyGroupId)
+            SetSelectedItem(cboLanguageId, .LanguageId)
+            SetSelectedItem(cboBusinessCountryId, .BusinessCountryId)
+            SetSelectedItem(cboInvoiceMethodId, .InvoiceMethodId)
+            SetSelectedItem(cboClaimNumbFormatId, .ClaimNumberFormatId)
+            SetSelectedItem(cboCertNumberFormat, .CertNumberFormatId)
+            SetSelectedItem(cboSalutationId, .SalutationId)
+            SetSelectedItem(moCountryDrop_WRITE, .CountryId)
+            SetSelectedItem(cboCompanyGrpID, .CompanyGroupId)
             LoadRegionDropown()
-            Me.SetSelectedItem(Me.moRegionDrop_WRITE, .RegionId)
-            Me.SetSelectedItem(Me.cboCompanyType, .CompanyTypeId)
-            Me.SetSelectedItem(Me.cboUPR_USES_WP, .UPR_USES_WP_Id)
-            Me.SetSelectedItem(Me.cboSvcOrdersByDealerId, .ServiceOrdersByDealerId)
-            Me.SetSelectedItem(Me.cboRequireItemDescription, .RequireItemDescriptionId)
-            Me.SetSelectedItem(Me.cboEUMemberId, .EUMemberId)
-            Me.SetSelectedItem(Me.cboUseZipDistictId, .UseZipDistrictId)
-            Me.SetSelectedItem(Me.CboUniqueCertificateNumberID, .UniqueCertificateNumbersId)
-            Me.SetSelectedItem(Me.cboAuthDetailRqrdId, .AuthDetailRqrdId)
-            Me.SetSelectedItem(Me.cboAutoprocessid, .AutoProcessFileId)
-            Me.SetSelectedItem(Me.cboUseRecoveries, .UseRecoveriesId)
-            Me.SetSelectedItem(Me.cboAcctCompany, .AcctCompanyId)
+            SetSelectedItem(moRegionDrop_WRITE, .RegionId)
+            SetSelectedItem(cboCompanyType, .CompanyTypeId)
+            SetSelectedItem(cboUPR_USES_WP, .UPR_USES_WP_Id)
+            SetSelectedItem(cboSvcOrdersByDealerId, .ServiceOrdersByDealerId)
+            SetSelectedItem(cboRequireItemDescription, .RequireItemDescriptionId)
+            SetSelectedItem(cboEUMemberId, .EUMemberId)
+            SetSelectedItem(cboUseZipDistictId, .UseZipDistrictId)
+            SetSelectedItem(CboUniqueCertificateNumberID, .UniqueCertificateNumbersId)
+            SetSelectedItem(cboAuthDetailRqrdId, .AuthDetailRqrdId)
+            SetSelectedItem(cboAutoprocessid, .AutoProcessFileId)
+            SetSelectedItem(cboUseRecoveries, .UseRecoveriesId)
+            SetSelectedItem(cboAcctCompany, .AcctCompanyId)
             If Not .Override_WarrantyPrice_Check.Equals(System.Guid.Empty) Then
-                Me.SetSelectedItem(Me.cboOverride_WarrantyPriceid, .Override_WarrantyPrice_Check)
+                SetSelectedItem(cboOverride_WarrantyPriceid, .Override_WarrantyPrice_Check)
             End If
 
-            Me.SetSelectedItem(Me.cboAddlDAC, .AddlDACId)
+            SetSelectedItem(cboAddlDAC, .AddlDACId)
             If .AddlDACId.Equals(System.Guid.Empty) Then
-                Me.SetSelectedItem(Me.cboAddlDAC, LookupListNew.GetIdFromCode(LookupListNew.LK_ADDL_DAC, ADDL_DAC_NONE))
+                SetSelectedItem(cboAddlDAC, LookupListNew.GetIdFromCode(LookupListNew.LK_ADDL_DAC, ADDL_DAC_NONE))
             End If
 
             If Not .CertnumlookupbyId.Equals(System.Guid.Empty) Then
-                Me.SetSelectedItem(Me.cboCertNumLookUpBy, .CertnumlookupbyId)
+                SetSelectedItem(cboCertNumLookUpBy, .CertnumlookupbyId)
             End If
 
-            If Not Me.State.IsACopy Then
+            If Not State.IsACopy Then
                 PopulateUserControlAvailableSelectedCountries()
             End If
 
-            Me.PopulateControlFromBOProperty(Me.TextboxClaimNumberOffset, .ClaimNumberOffset)
-            Me.SetSelectedItem(Me.cboEUMemberId, .EUMemberId)
+            PopulateControlFromBOProperty(TextboxClaimNumberOffset, .ClaimNumberOffset)
+            SetSelectedItem(cboEUMemberId, .EUMemberId)
 
             If .ClipMethodId.Equals(System.Guid.Empty) Then
-                Me.SetSelectedItem(Me.cboCLIPMethod, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_CLIPMETHOD, ElitaPlusIdentity.Current.ActiveUser.LanguageId), Company.CLIP_METHOD_NONE))
+                SetSelectedItem(cboCLIPMethod, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_CLIPMETHOD, ElitaPlusIdentity.Current.ActiveUser.LanguageId), Company.CLIP_METHOD_NONE))
             Else
-                Me.SetSelectedItem(Me.cboCLIPMethod, .ClipMethodId)
+                SetSelectedItem(cboCLIPMethod, .ClipMethodId)
             End If
 
             If .ReportCommissionTaxId.Equals(System.Guid.Empty) Then
-                Me.SetSelectedItem(Me.ddlReportCommTax, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList("YESNO", ElitaPlusIdentity.Current.ActiveUser.LanguageId), "N"))
+                SetSelectedItem(ddlReportCommTax, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList("YESNO", ElitaPlusIdentity.Current.ActiveUser.LanguageId), "N"))
             Else
-                Me.SetSelectedItem(Me.ddlReportCommTax, .ReportCommissionTaxId)
+                SetSelectedItem(ddlReportCommTax, .ReportCommissionTaxId)
             End If
 
             If Not .TimeZoneNameId.Equals(System.Guid.Empty) Then
-                Me.SetSelectedItem(Me.cboTimeZoneName, .TimeZoneNameId)
+                SetSelectedItem(cboTimeZoneName, .TimeZoneNameId)
             End If
 
             If .ComputeTaxBasedId.Equals(System.Guid.Empty) Then
                 Dim dv As DataView = LookupListNew.DropdownLookupList(LookupListNew.LK_COMPUTE_TAX_BASED, langId)
-                Me.SetSelectedItem(Me.cboComputeTaxBased, LookupListNew.GetIdFromCode(dv, Codes.COMPUTE_TAX_BASED_CUSTOMERS_ADDRESS))
+                SetSelectedItem(cboComputeTaxBased, LookupListNew.GetIdFromCode(dv, Codes.COMPUTE_TAX_BASED_CUSTOMERS_ADDRESS))
             Else
-                Me.SetSelectedItem(Me.cboComputeTaxBased, .ComputeTaxBasedId)
+                SetSelectedItem(cboComputeTaxBased, .ComputeTaxBasedId)
             End If
 
-            Me.SetSelectedItem(Me.cboBilling_by_dealer, .BillingByDealerId)
-            Me.SetSelectedItem(Me.cboPoliceRptForLoss, .PoliceRptForLossCovId)
-            Me.SetSelectedItem(Me.ddlFtpSiteList, .FtpSiteId)
-            Me.SetSelectedItem(Me.cboREQ_CUSTOMER_LEGAL_INFO_ID, .ReqCustomerLegalInfoId)
+            SetSelectedItem(cboBilling_by_dealer, .BillingByDealerId)
+            SetSelectedItem(cboPoliceRptForLoss, .PoliceRptForLossCovId)
+            SetSelectedItem(ddlFtpSiteList, .FtpSiteId)
+            SetSelectedItem(cboREQ_CUSTOMER_LEGAL_INFO_ID, .ReqCustomerLegalInfoId)
 
             If Not .UseTransferOfOwnership.Equals(System.Guid.Empty) Then
-                Me.SetSelectedItem(Me.cboTransferOfOwnership, .UseTransferOfOwnership)
+                SetSelectedItem(cboTransferOfOwnership, .UseTransferOfOwnership)
             End If
 
             If Not .RequiresAgentCodeId.Equals(System.Guid.Empty) Then
-                Me.SetSelectedItem(Me.cboReqAgentCode, .RequiresAgentCodeId)
+                SetSelectedItem(cboReqAgentCode, .RequiresAgentCodeId)
                 CheckAndDisplayAgentWarning()
             End If
 
             If Not .MasterClaimProcessingId.Equals(System.Guid.Empty) Then
                 Dim lstValue As System.Web.UI.WebControls.ListItem
-                lstValue = Me.cboMasterClaimID.Items.FindByValue(.MasterClaimProcessingId.ToString())
-                If (Not lstValue Is Nothing) Then
-                    Me.SetSelectedItem(Me.cboMasterClaimID, .MasterClaimProcessingId)
+                lstValue = cboMasterClaimID.Items.FindByValue(.MasterClaimProcessingId.ToString())
+                If (lstValue IsNot Nothing) Then
+                    SetSelectedItem(cboMasterClaimID, .MasterClaimProcessingId)
                 End If
             End If
-            Me.SetSelectedItem(Me.ddlUsePreInvProcess, .UsePreInvoiceProcessId)
-            Me.PopulateControlFromBOProperty(Me.txtSCPreINVWP, .SCPreInvWaitingPeriod)
+            SetSelectedItem(ddlUsePreInvProcess, .UsePreInvoiceProcessId)
+            PopulateControlFromBOProperty(txtSCPreINVWP, .SCPreInvWaitingPeriod)
             '''''claim close rules control
-            If (Not Me.State.blnIsComingFromCopy) Then
-                ClaimCloseRules.CompanyId = Me.State.MyBO.Id
-                ClaimCloseRules.companyCode = Me.State.MyBO.Code
+            If (Not State.blnIsComingFromCopy) Then
+                ClaimCloseRules.CompanyId = State.MyBO.Id
+                ClaimCloseRules.companyCode = State.MyBO.Code
                 ClaimCloseRules.Populate()
             End If
 
@@ -646,75 +646,75 @@ Partial Class CompanyForm
 
     Protected Sub PopulateBOsFormFrom()
 
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.TextboxDescription)
-            Me.PopulateBOProperty(Me.State.MyBO, "Code", Me.TextboxCode)
-            Me.PopulateBOProperty(Me.State.MyBO, "LanguageId", Me.cboLanguageId)
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "Description", TextboxDescription)
+            PopulateBOProperty(State.MyBO, "Code", TextboxCode)
+            PopulateBOProperty(State.MyBO, "LanguageId", cboLanguageId)
 
-            Me.PopulateBOProperty(Me.State.MyBO, "TaxIdNumber", Me.TextboxTaxIdNumber)
-            Me.PopulateBOProperty(Me.State.MyBO, "BusinessCountryId", Me.cboBusinessCountryId)
-            Me.PopulateBOProperty(Me.State.MyBO, "Phone", Me.TextboxPhone)
-            Me.PopulateBOProperty(Me.State.MyBO, "Fax", Me.TextboxFax)
-            Me.PopulateBOProperty(Me.State.MyBO, "Email", Me.TextboxEmail.Text.ToLower)
-            Me.PopulateBOProperty(Me.State.MyBO, "RefundToleranceAmt", Me.TextboxRefundToleranceAmount)
-            Me.PopulateBOProperty(Me.State.MyBO, "InvoiceMethodId", Me.cboInvoiceMethodId)
-            Me.PopulateBOProperty(Me.State.MyBO, "ClaimNumberFormatId", Me.cboClaimNumbFormatId)
-            Me.PopulateBOProperty(Me.State.MyBO, "CertNumberFormatId", Me.cboCertNumberFormat)
-            Me.PopulateBOProperty(Me.State.MyBO, "MaxFollowupDays", Me.TextboxMaxFollowupDays)
-            Me.PopulateBOProperty(Me.State.MyBO, "DefaultFollowupDays", Me.TextboxDefaultFollowupDays)
-            Me.PopulateBOProperty(Me.State.MyBO, "LegalDisclaimer", Me.TextboxLegalDisclaimer)
-            Me.PopulateBOProperty(Me.State.MyBO, "SalutationId", Me.cboSalutationId)
+            PopulateBOProperty(State.MyBO, "TaxIdNumber", TextboxTaxIdNumber)
+            PopulateBOProperty(State.MyBO, "BusinessCountryId", cboBusinessCountryId)
+            PopulateBOProperty(State.MyBO, "Phone", TextboxPhone)
+            PopulateBOProperty(State.MyBO, "Fax", TextboxFax)
+            PopulateBOProperty(State.MyBO, "Email", TextboxEmail.Text.ToLower)
+            PopulateBOProperty(State.MyBO, "RefundToleranceAmt", TextboxRefundToleranceAmount)
+            PopulateBOProperty(State.MyBO, "InvoiceMethodId", cboInvoiceMethodId)
+            PopulateBOProperty(State.MyBO, "ClaimNumberFormatId", cboClaimNumbFormatId)
+            PopulateBOProperty(State.MyBO, "CertNumberFormatId", cboCertNumberFormat)
+            PopulateBOProperty(State.MyBO, "MaxFollowupDays", TextboxMaxFollowupDays)
+            PopulateBOProperty(State.MyBO, "DefaultFollowupDays", TextboxDefaultFollowupDays)
+            PopulateBOProperty(State.MyBO, "LegalDisclaimer", TextboxLegalDisclaimer)
+            PopulateBOProperty(State.MyBO, "SalutationId", cboSalutationId)
 
-            Me.PopulateBOProperty(Me.State.MyBO, "Address1", Me.Address1Text)
-            Me.PopulateBOProperty(Me.State.MyBO, "Address2", Me.Address2Text)
-            Me.PopulateBOProperty(Me.State.MyBO, "City", Me.CityText)
-            Me.PopulateBOProperty(Me.State.MyBO, "PostalCode", Me.ZipText)
-            Me.PopulateBOProperty(Me.State.MyBO, "RegionId", Me.moRegionDrop_WRITE)
-            Me.PopulateBOProperty(Me.State.MyBO, "CountryId", Me.moCountryDrop_WRITE)
-            Me.PopulateBOProperty(Me.State.MyBO, "CompanyGroupId", Me.cboCompanyGrpID)
-            Me.PopulateBOProperty(Me.State.MyBO, "CompanyTypeId", Me.cboCompanyType)
-            Me.PopulateBOProperty(Me.State.MyBO, "UPR_USES_WP_Id", Me.cboUPR_USES_WP)
-            Me.PopulateBOProperty(Me.State.MyBO, "MasterClaimProcessingId", Me.cboMasterClaimID)
-            Me.PopulateBOProperty(Me.State.MyBO, "ServiceOrdersByDealerId", Me.cboSvcOrdersByDealerId)
-            Me.PopulateBOProperty(Me.State.MyBO, "RequireItemDescriptionId", Me.cboRequireItemDescription)
+            PopulateBOProperty(State.MyBO, "Address1", Address1Text)
+            PopulateBOProperty(State.MyBO, "Address2", Address2Text)
+            PopulateBOProperty(State.MyBO, "City", CityText)
+            PopulateBOProperty(State.MyBO, "PostalCode", ZipText)
+            PopulateBOProperty(State.MyBO, "RegionId", moRegionDrop_WRITE)
+            PopulateBOProperty(State.MyBO, "CountryId", moCountryDrop_WRITE)
+            PopulateBOProperty(State.MyBO, "CompanyGroupId", cboCompanyGrpID)
+            PopulateBOProperty(State.MyBO, "CompanyTypeId", cboCompanyType)
+            PopulateBOProperty(State.MyBO, "UPR_USES_WP_Id", cboUPR_USES_WP)
+            PopulateBOProperty(State.MyBO, "MasterClaimProcessingId", cboMasterClaimID)
+            PopulateBOProperty(State.MyBO, "ServiceOrdersByDealerId", cboSvcOrdersByDealerId)
+            PopulateBOProperty(State.MyBO, "RequireItemDescriptionId", cboRequireItemDescription)
 
             '09/11/2006 - ALR - Added for auto closing claims
-            Me.PopulateBOProperty(Me.State.MyBO, "DaysToCloseClaim", Me.TextboxDaysToCloseClaim)
+            PopulateBOProperty(State.MyBO, "DaysToCloseClaim", TextboxDaysToCloseClaim)
 
-            Me.PopulateBOProperty(Me.State.MyBO, "ClaimNumberOffset", Me.TextboxClaimNumberOffset)
-            Me.PopulateBOProperty(Me.State.MyBO, "EUMemberId", Me.cboEUMemberId)
-            Me.PopulateBOProperty(Me.State.MyBO, "UseZipDistrictId", Me.cboUseZipDistictId)
-            Me.PopulateBOProperty(Me.State.MyBO, "UniqueCertificateNumbersId", Me.CboUniqueCertificateNumberID)
-            Me.PopulateBOProperty(Me.State.MyBO, "UniqueCertEffectiveDate", Me.TextboxUniqueCertNumberEffDate)
-            Me.PopulateBOProperty(Me.State.MyBO, "AuthDetailRqrdId", Me.cboAuthDetailRqrdId)
-            Me.PopulateBOProperty(Me.State.MyBO, "AutoProcessFileId", Me.cboAutoprocessid)
-            Me.PopulateBOProperty(Me.State.MyBO, "UseRecoveriesId", Me.cboUseRecoveries)
-            Me.PopulateBOProperty(Me.State.MyBO, "AcctCompanyId", Me.cboAcctCompany)
-            Me.PopulateBOProperty(Me.State.MyBO, "AddlDACId", Me.cboAddlDAC)
-            Me.PopulateBOProperty(Me.State.MyBO, "ClipMethodId", Me.cboCLIPMethod)
-            Me.PopulateBOProperty(Me.State.MyBO, "CertnumlookupbyId", Me.cboCertNumLookUpBy)
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportCommissionTaxId", Me.ddlReportCommTax)
+            PopulateBOProperty(State.MyBO, "ClaimNumberOffset", TextboxClaimNumberOffset)
+            PopulateBOProperty(State.MyBO, "EUMemberId", cboEUMemberId)
+            PopulateBOProperty(State.MyBO, "UseZipDistrictId", cboUseZipDistictId)
+            PopulateBOProperty(State.MyBO, "UniqueCertificateNumbersId", CboUniqueCertificateNumberID)
+            PopulateBOProperty(State.MyBO, "UniqueCertEffectiveDate", TextboxUniqueCertNumberEffDate)
+            PopulateBOProperty(State.MyBO, "AuthDetailRqrdId", cboAuthDetailRqrdId)
+            PopulateBOProperty(State.MyBO, "AutoProcessFileId", cboAutoprocessid)
+            PopulateBOProperty(State.MyBO, "UseRecoveriesId", cboUseRecoveries)
+            PopulateBOProperty(State.MyBO, "AcctCompanyId", cboAcctCompany)
+            PopulateBOProperty(State.MyBO, "AddlDACId", cboAddlDAC)
+            PopulateBOProperty(State.MyBO, "ClipMethodId", cboCLIPMethod)
+            PopulateBOProperty(State.MyBO, "CertnumlookupbyId", cboCertNumLookUpBy)
+            PopulateBOProperty(State.MyBO, "ReportCommissionTaxId", ddlReportCommTax)
 
-            Me.PopulateBOProperty(Me.State.MyBO, "TimeZoneNameId", Me.cboTimeZoneName)
-            Me.PopulateBOProperty(Me.State.MyBO, "ComputeTaxBasedId", Me.cboComputeTaxBased)
-            Me.PopulateBOProperty(Me.State.MyBO, "BillingByDealerId", Me.cboBilling_by_dealer)
-            Me.PopulateBOProperty(Me.State.MyBO, "PoliceRptForLossCovId", Me.cboPoliceRptForLoss)
+            PopulateBOProperty(State.MyBO, "TimeZoneNameId", cboTimeZoneName)
+            PopulateBOProperty(State.MyBO, "ComputeTaxBasedId", cboComputeTaxBased)
+            PopulateBOProperty(State.MyBO, "BillingByDealerId", cboBilling_by_dealer)
+            PopulateBOProperty(State.MyBO, "PoliceRptForLossCovId", cboPoliceRptForLoss)
 
-            Me.PopulateBOProperty(Me.State.MyBO, "FtpSiteId", Me.ddlFtpSiteList)
-            Me.PopulateBOProperty(Me.State.MyBO, "ReqCustomerLegalInfoId", Me.cboREQ_CUSTOMER_LEGAL_INFO_ID)
-            Me.PopulateBOProperty(Me.State.MyBO, "UseTransferOfOwnership", Me.cboTransferOfOwnership)
-            Me.PopulateBOProperty(Me.State.MyBO, "RequiresAgentCodeId", Me.cboReqAgentCode)
-            Me.PopulateBOProperty(Me.State.MyBO, "Override_WarrantyPrice_Check", Me.cboOverride_WarrantyPriceid)
-            Me.PopulateBOProperty(Me.State.MyBO, "UsePreInvoiceProcessId", Me.ddlUsePreInvProcess)
-            If (Me.State.MyBO.UsePreInvoiceProcessId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
-                Me.PopulateBOProperty(Me.State.MyBO, "SCPreInvWaitingPeriod", Me.txtSCPreINVWP)
+            PopulateBOProperty(State.MyBO, "FtpSiteId", ddlFtpSiteList)
+            PopulateBOProperty(State.MyBO, "ReqCustomerLegalInfoId", cboREQ_CUSTOMER_LEGAL_INFO_ID)
+            PopulateBOProperty(State.MyBO, "UseTransferOfOwnership", cboTransferOfOwnership)
+            PopulateBOProperty(State.MyBO, "RequiresAgentCodeId", cboReqAgentCode)
+            PopulateBOProperty(State.MyBO, "Override_WarrantyPrice_Check", cboOverride_WarrantyPriceid)
+            PopulateBOProperty(State.MyBO, "UsePreInvoiceProcessId", ddlUsePreInvProcess)
+            If (State.MyBO.UsePreInvoiceProcessId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
+                PopulateBOProperty(State.MyBO, "SCPreInvWaitingPeriod", txtSCPreINVWP)
             Else
-                Me.PopulateBOProperty(Me.State.MyBO, "SCPreInvWaitingPeriod", "0")
+                PopulateBOProperty(State.MyBO, "SCPreInvWaitingPeriod", "0")
             End If
             'Me.PopulateBOProperty(Me.State.MyBO, "EnablePeriodMileageVal", Me.ddlPeriodMileageVal, False, True)
         End With
 
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
 
@@ -725,104 +725,104 @@ Partial Class CompanyForm
 
 
     Protected Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+        State.ScreenSnapShotBO = Nothing 'Reset the backup copy
 
-        Me.State.MyBO = New Company
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        State.MyBO = New Company
+        PopulateFormFromBOs()
+        EnableDisableFields()
     End Sub
 
     Protected Sub CreateNewWithCopy()
 
-        Me.State.IsACopy = True
-        Me.State.blnIsComingFromCopy = True
-        Me.ClaimCloseRules.HideNewButton(True)
-        Me.State.OldCompanyId = Me.State.MyBO.Id
+        State.IsACopy = True
+        State.blnIsComingFromCopy = True
+        ClaimCloseRules.HideNewButton(True)
+        State.OldCompanyId = State.MyBO.Id
 
-        Me.PopulateBOsFormFrom()
+        PopulateBOsFormFrom()
 
         Dim newObj As New Company
-        newObj.Copy(Me.State.MyBO)
+        newObj.Copy(State.MyBO)
 
-        Me.State.MyBO = newObj
-        Me.State.MyBO.Code = Nothing
-        Me.State.MyBO.Description = Nothing
+        State.MyBO = newObj
+        State.MyBO.Code = Nothing
+        State.MyBO.Description = Nothing
 
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        PopulateFormFromBOs()
+        EnableDisableFields()
 
         Dim ContriesIDs As New ArrayList
         Dim cmpCountryIdStr As String
-        For Each cmpCountryIdStr In Me.UserControlAvailableSelectedCountries.SelectedList
+        For Each cmpCountryIdStr In UserControlAvailableSelectedCountries.SelectedList
             ContriesIDs.Add(cmpCountryIdStr)
         Next
-        Me.State.MyBO.AttachCountries(ContriesIDs)
+        State.MyBO.AttachCountries(ContriesIDs)
 
         'create the backup copy
-        Me.State.ScreenSnapShotBO = New Company
-        Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
-        Me.State.IsACopy = False
+        State.ScreenSnapShotBO = New Company
+        State.ScreenSnapShotBO.Clone(State.MyBO)
+        State.IsACopy = False
 
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                Me.State.MyBO.Save()
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                State.MyBO.Save()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
                     'Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
-                    Me.CreateNew()
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
                     'Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
-                    Me.CreateNewWithCopy()
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
                     'Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
-                    Me.MasterPage.MessageController.AddError(Me.State.LastErrMsg)
+                    MasterPage.MessageController.AddError(State.LastErrMsg)
             End Select
         End If
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
     Sub PopulateUserControlAvailableSelectedCountries()
-        Me.UserControlAvailableSelectedCountries.BackColor = "#d5d6e4"
+        UserControlAvailableSelectedCountries.BackColor = "#d5d6e4"
         ControlMgr.SetVisibleControl(Me, UserControlAvailableSelectedCountries, False)
-        If Not Me.State.MyBO.Id.Equals(Guid.Empty) Then
+        If Not State.MyBO.Id.Equals(Guid.Empty) Then
             Dim availableDv As DataView
             Dim selectedDv As DataView
 
-            Dim availDS As DataSet = Me.State.MyBO.GetAvailableCountries(Me.State.MyBO.Id)
+            Dim availDS As DataSet = State.MyBO.GetAvailableCountries(State.MyBO.Id)
             If availDS.Tables.Count > 0 Then
                 availableDv = New DataView(availDS.Tables(0))
             End If
 
-            Dim selectedDS As DataSet = Me.State.MyBO.GetSelectedCountries(Me.State.MyBO.Id)
+            Dim selectedDS As DataSet = State.MyBO.GetSelectedCountries(State.MyBO.Id)
 
             If selectedDS.Tables.Count > 0 Then
                 selectedDv = New DataView(selectedDS.Tables(0))
             End If
 
-            Me.UserControlAvailableSelectedCountries.SetAvailableData(availableDv, LookupListNew.COL_DESCRIPTION_NAME, "country_id")
-            Me.UserControlAvailableSelectedCountries.SetSelectedData(selectedDv, LookupListNew.COL_DESCRIPTION_NAME, "country_id")
+            UserControlAvailableSelectedCountries.SetAvailableData(availableDv, LookupListNew.COL_DESCRIPTION_NAME, "country_id")
+            UserControlAvailableSelectedCountries.SetSelectedData(selectedDv, LookupListNew.COL_DESCRIPTION_NAME, "country_id")
             ControlMgr.SetVisibleControl(Me, UserControlAvailableSelectedCountries, True)
             UserControlAvailableSelectedCountries.AvailableDesc = TranslationBase.TranslateLabelOrMessage(AVAILABLE_COUNTRIES)
             UserControlAvailableSelectedCountries.SelectedDesc = TranslationBase.TranslateLabelOrMessage(SELECTED_COUNTRIES)
@@ -834,17 +834,17 @@ Partial Class CompanyForm
         Dim OldCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
         Dim oAccCloseInfo As AccountingCloseInfo
         Dim saveDate As DateType
-        Me.State.year = DatePart("yyyy", Now).ToString
-        Me.State.MyBO.ResetAccountClosingInfoList()
+        State.year = DatePart("yyyy", Now).ToString
+        State.MyBO.ResetAccountClosingInfoList()
 
         Dim nNewCompanyIDs As ArrayList
-        nNewCompanyIDs = Me.State.MyBO.GetComanies(Me.State.MyBO.CompanyGroupId)
+        nNewCompanyIDs = State.MyBO.GetComanies(State.MyBO.CompanyGroupId)
         If nNewCompanyIDs.Count > 0 Then
             For i As Integer = 0 To nNewCompanyIDs.Count - 1
-                If Not Me.State.MyBO.Id.Equals(CType(nNewCompanyIDs.Item(i), Guid)) Then
-                    For Each oAccCloseInfo In Me.State.MyBO.AssociatedAccCloseInfo(CType(nNewCompanyIDs.Item(i), Guid))
+                If Not State.MyBO.Id.Equals(CType(nNewCompanyIDs.Item(i), Guid)) Then
+                    For Each oAccCloseInfo In State.MyBO.AssociatedAccCloseInfo(CType(nNewCompanyIDs.Item(i), Guid))
                         saveDate = oAccCloseInfo.ClosingDate
-                        Me.State.MyBO.AttachAccCloseInfo(saveDate)
+                        State.MyBO.AttachAccCloseInfo(saveDate)
                     Next
                     Exit For
                 End If
@@ -854,7 +854,7 @@ Partial Class CompanyForm
 
             For I As Integer = 1 To 12
                 saveDate = Date.Parse((MiscUtil.LastFridayOfMonth(LastDate.AddMonths(I)).ToString), System.Globalization.CultureInfo.CurrentCulture)
-                Me.State.MyBO.AttachAccCloseInfo(saveDate)
+                State.MyBO.AttachAccCloseInfo(saveDate)
             Next
         End If
     End Sub
@@ -862,14 +862,14 @@ Partial Class CompanyForm
     'REQ-1295
     Protected Sub CheckAndDisplayAgentWarning()
 
-        If ((Not Me.State Is Nothing) AndAlso (Not Me.State.MyBO Is Nothing) AndAlso
-            Me.State.MyBO.RequiresAgentCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
-            Dim ds As DataSet = Me.State.MyBO.GetCompanyDealerWithoutAgent(Me.State.MyBO.Id)
-            If (Not ds Is Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0) Then
+        If ((State IsNot Nothing) AndAlso (State.MyBO IsNot Nothing) AndAlso
+            State.MyBO.RequiresAgentCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
+            Dim ds As DataSet = State.MyBO.GetCompanyDealerWithoutAgent(State.MyBO.Id)
+            If (ds IsNot Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0) Then
                 Dim DealerCnt As Integer = CType(ds.Tables(0).Rows(0)(0).ToString(), Integer)
                 If (DealerCnt > 0) Then ' Display Warning in case there are dealers without Agent code settings 
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.MessageController.AddWarning(TranslationBase.TranslateLabelOrMessage(DEALER_WO_AGENTS), False)
+                    MasterPage.MessageController.Clear()
+                    MasterPage.MessageController.AddWarning(TranslationBase.TranslateLabelOrMessage(DEALER_WO_AGENTS), False)
                 End If
             End If
         End If
@@ -888,16 +888,16 @@ Partial Class CompanyForm
     End Sub
 
     Private Sub EnableDisableUniqueCertFields()
-        If Me.CboUniqueCertificateNumberID.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX Then
-            If Me.GetSelectedItem(Me.CboUniqueCertificateNumberID).Equals(GetYesID) Then
-                ControlMgr.SetVisibleControl(Me, Me.LabelUniqueCertNumberEffDate, True)
-                ControlMgr.SetVisibleControl(Me, Me.TextboxUniqueCertNumberEffDate, True)
-                ControlMgr.SetVisibleControl(Me, Me.ImgUniqueCertNumberEffDate, True)
+        If CboUniqueCertificateNumberID.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+            If GetSelectedItem(CboUniqueCertificateNumberID).Equals(GetYesID) Then
+                ControlMgr.SetVisibleControl(Me, LabelUniqueCertNumberEffDate, True)
+                ControlMgr.SetVisibleControl(Me, TextboxUniqueCertNumberEffDate, True)
+                ControlMgr.SetVisibleControl(Me, ImgUniqueCertNumberEffDate, True)
             Else
                 TextboxUniqueCertNumberEffDate.Text = String.Empty
-                ControlMgr.SetVisibleControl(Me, Me.LabelUniqueCertNumberEffDate, False)
-                ControlMgr.SetVisibleControl(Me, Me.TextboxUniqueCertNumberEffDate, False)
-                ControlMgr.SetVisibleControl(Me, Me.ImgUniqueCertNumberEffDate, False)
+                ControlMgr.SetVisibleControl(Me, LabelUniqueCertNumberEffDate, False)
+                ControlMgr.SetVisibleControl(Me, TextboxUniqueCertNumberEffDate, False)
+                ControlMgr.SetVisibleControl(Me, ImgUniqueCertNumberEffDate, False)
             End If
         End If
     End Sub
@@ -906,156 +906,156 @@ Partial Class CompanyForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                                Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                                HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            If Me.State.MyBO.ConstrVoilation = False Then
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            If State.MyBO.ConstrVoilation = False Then
+                HandleErrors(ex, MasterPage.MessageController)
                 ' Me.AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, Me.HiddenSaveChangesPromptResponse)
-                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = MasterPage.MessageController.Text
             Else
-                Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
             End If
         End Try
     End Sub
 
-    Private Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
 
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
                 '  Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                               Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                               HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
-                Me.CreateNewWithCopy()
+                CreateNewWithCopy()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
 
         Dim ContriesIDs As New ArrayList
         Dim cmpCountryIdStr As String
-        For Each cmpCountryIdStr In Me.UserControlAvailableSelectedCountries.SelectedList
+        For Each cmpCountryIdStr In UserControlAvailableSelectedCountries.SelectedList
             ContriesIDs.Add(cmpCountryIdStr)
         Next
-        Me.State.MyBO.DetachCountries(ContriesIDs)
-        Me.State.MyBO.DetachAccountClosingInfo()
+        State.MyBO.DetachCountries(ContriesIDs)
+        State.MyBO.DetachAccountClosingInfo()
 
         Dim addressDeleted As Boolean
         Try
             'Delete the Address
             'Me.UpdateUserCompany()
-            Me.State.MyBO.DeleteAndSave()
-            Me.State.HasDataChanged = True
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+            State.MyBO.DeleteAndSave()
+            State.HasDataChanged = True
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
                 ' Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                               Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                               HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
+                CreateNew()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSAVE_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnSAVE_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
+            PopulateBOsFormFrom()
             Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
-            If Me.State.MyBO.UniqueCertificateNumbersId.Equals(yesId) Then
+            If State.MyBO.UniqueCertificateNumbersId.Equals(yesId) Then
                 If Trim(TextboxUniqueCertNumberEffDate.Text) = String.Empty Then
-                    ElitaPlusPage.SetLabelError(Me.LabelUniqueCertNumberEffDate)
+                    ElitaPlusPage.SetLabelError(LabelUniqueCertNumberEffDate)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.UNIQUE_CERT_NUMBER_EFFECTIVE_DATE_REQD_ERR)
                 End If
             End If
 
-            If Me.State.MyBO.IsDirty Then
-                If Me.State.MyBO.IsNew Then
+            If State.MyBO.IsDirty Then
+                If State.MyBO.IsNew Then
                     CreateNewAccountingCloseInfo()
                 End If
-                Me.State.MyBO.Save()
+                State.MyBO.Save()
 
                 ''''REQ-5598
-                If (Me.State.blnIsComingFromCopy) Then
+                If (State.blnIsComingFromCopy) Then
                     ''''clone Claim Close Rules
                     Dim objCloseClaimRules As New ClaimCloseRules
-                    objCloseClaimRules.CopyClaimCloseRulesToNewCompany(Me.State.OldCompanyId, Me.State.MyBO.Id)
-                    Me.State.blnIsComingFromCopy = False
-                    Me.ClaimCloseRules.HideNewButton(False)
+                    objCloseClaimRules.CopyClaimCloseRulesToNewCompany(State.OldCompanyId, State.MyBO.Id)
+                    State.blnIsComingFromCopy = False
+                    ClaimCloseRules.HideNewButton(False)
                 End If
 
-                Me.State.HasDataChanged = True
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                State.HasDataChanged = True
+                PopulateFormFromBOs()
+                EnableDisableFields()
                 ' Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
             Else
                 ControlMgr.SetVisibleControl(Me, btnAccCloseDates, False)
                 ' Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
-                Me.MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
+                MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
             End If
         Catch ex As Exception
             ControlMgr.SetVisibleControl(Me, btnAccCloseDates, False)
-            If (Me.State.MyBO.UsePreInvoiceProcessId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
+            If (State.MyBO.UsePreInvoiceProcessId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
                 LabelSCPreInvWP.Style.Add("display", "block")
                 txtSCPreINVWP.Style.Add("display", "block")
             Else
                 LabelSCPreInvWP.Style.Add("display", "none")
                 txtSCPreINVWP.Style.Add("display", "none")
             End If
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnUndo_Write_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As Object, e As System.EventArgs) Handles btnUndo_Write.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New Company(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New Company(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
-                Me.State.MyBO = New Company
+                State.MyBO = New Company
             End If
 
-            Me.State.blnIsComingFromCopy = False
+            State.blnIsComingFromCopy = False
             'Me.ClaimCloseRules.HideNewButton(False)
 
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -1076,47 +1076,47 @@ Partial Class CompanyForm
         End If
     End Sub
 
-    Private Sub btnAccCloseDates_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAccCloseDates.Click
+    Private Sub btnAccCloseDates_Click(sender As System.Object, e As System.EventArgs) Handles btnAccCloseDates.Click
         Dim oUser As New User(ElitaPlusIdentity.Current.ActiveUser.Id)
         Dim OldCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
 
         Dim nNewCompanyIDs As New ArrayList
-        nNewCompanyIDs.Add(Me.State.MyBO.Id)
+        nNewCompanyIDs.Add(State.MyBO.Id)
         oUser.UpdateUserCompanies(nNewCompanyIDs)
         ElitaPlusIdentity.Current.ActiveUser.ResetUserCompany()
         oUser.AccountingCompaniesClearCache()
-        Me.callPage(Tables.AccountingCloseInfoForm.URL, OldCompanies)
+        callPage(Tables.AccountingCloseInfoForm.URL, OldCompanies)
     End Sub
 
 #End Region
 
-    Private Sub UserControlAvailableSelectedCountries_Attach(ByVal aSrc As Generic.UserControlAvailableSelected, ByVal attachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedCountries.Attach
+    Private Sub UserControlAvailableSelectedCountries_Attach(aSrc As Generic.UserControlAvailableSelected, attachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedCountries.Attach
         Try
             If attachedList.Count > 0 Then
-                Me.State.MyBO.AttachCountries(attachedList)
+                State.MyBO.AttachCountries(attachedList)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub UserControlAvailableSelectedCountries_Detach(ByVal aSrc As Generic.UserControlAvailableSelected, ByVal detachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedCountries.Detach
+    Private Sub UserControlAvailableSelectedCountries_Detach(aSrc As Generic.UserControlAvailableSelected, detachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedCountries.Detach
         Try
             If detachedList.Count > 0 Then
-                Me.State.MyBO.DetachCountries(detachedList)
+                State.MyBO.DetachCountries(detachedList)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub TextboxLegalDisclaimer_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextboxLegalDisclaimer.TextChanged
+    Private Sub TextboxLegalDisclaimer_TextChanged(sender As System.Object, e As System.EventArgs) Handles TextboxLegalDisclaimer.TextChanged
 
     End Sub
 
-    Private Sub ClaimCloseRules_RequestClaimCloseRulesData(ByVal sender As Object, ByRef e As UserControlClaimCloseRules.RequestDataEventArgs) Handles ClaimCloseRules.RequestClaimCloseRulesData
+    Private Sub ClaimCloseRules_RequestClaimCloseRulesData(sender As Object, ByRef e As UserControlClaimCloseRules.RequestDataEventArgs) Handles ClaimCloseRules.RequestClaimCloseRulesData
         Dim claimCloseRules As New ClaimCloseRules
-        claimCloseRules.CompanyId = Me.State.MyBO.Id
+        claimCloseRules.CompanyId = State.MyBO.Id
         e.Data = claimCloseRules.GetClaimCloseRules()
     End Sub
 End Class

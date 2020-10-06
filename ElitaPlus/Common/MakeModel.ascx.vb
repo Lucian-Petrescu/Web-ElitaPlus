@@ -12,7 +12,7 @@ Partial Class MakeModel
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -82,10 +82,10 @@ Partial Class MakeModel
 
     Public ReadOnly Property State() As MyState
         Get
-            If Me.Page.StateSession.Item(Me.UniqueID) Is Nothing Then
-                Me.Page.StateSession.Item(Me.UniqueID) = New MyState
+            If Page.StateSession.Item(UniqueID) Is Nothing Then
+                Page.StateSession.Item(UniqueID) = New MyState
             End If
-            Return CType(Me.Page.StateSession.Item(Me.UniqueID), MyState)
+            Return CType(Page.StateSession.Item(UniqueID), MyState)
         End Get
     End Property
 
@@ -115,7 +115,7 @@ Partial Class MakeModel
 
 #Region " Event Handlers"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
         If Not IsPostBack Then
             FillDropDowns("")
@@ -123,15 +123,15 @@ Partial Class MakeModel
 
     End Sub
 
-    Protected Sub MakeDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Protected Sub MakeDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs)
         FillDropDowns("Make")
     End Sub
 
-    Protected Sub ModelDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Protected Sub ModelDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs)
         FillDropDowns("Model")
     End Sub
 
-    Protected Sub TrimDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Protected Sub TrimDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs)
         FillDropDowns("Trim")
     End Sub
 #End Region
@@ -150,13 +150,13 @@ Partial Class MakeModel
     ''' 	[co1mkt]	4/10/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Private Function isEmpty(ByVal val As String) As Boolean
+    Private Function isEmpty(val As String) As Boolean
 
         Return (val Is Nothing) OrElse val.Trim.Length = 0
 
     End Function
 
-    Private Sub FillDropDowns(ByVal drop As String)
+    Private Sub FillDropDowns(drop As String)
 
         Dim selectNext As Boolean = False
         Dim dw As DataView
@@ -175,8 +175,8 @@ Partial Class MakeModel
                 MakeDrop.Enabled = True
 
                 'Restore Previously selected value
-                If Not isEmpty(Me.State.makeState) Then
-                    MakeDrop.SelectedValue = Me.State.makeState
+                If Not isEmpty(State.makeState) Then
+                    MakeDrop.SelectedValue = State.makeState
                     selectNext = True
                 End If
             End If
@@ -204,8 +204,8 @@ Partial Class MakeModel
             YearDrop.Enabled = False
 
             'Restore Previously selected value
-            If drop = "" And Not isEmpty(Me.State.ModelState) Then
-                ModelDrop.SelectedValue = Me.State.ModelState
+            If drop = "" And Not isEmpty(State.ModelState) Then
+                ModelDrop.SelectedValue = State.ModelState
                 selectNext = True
             End If
         End If
@@ -230,8 +230,8 @@ Partial Class MakeModel
             YearDrop.Enabled = False
 
             'Restore Previously selected value
-            If drop = "" And Not isEmpty(Me.State.EngineVersionState) Then
-                TrimDrop.SelectedValue = Me.State.EngineVersionState
+            If drop = "" And Not isEmpty(State.EngineVersionState) Then
+                TrimDrop.SelectedValue = State.EngineVersionState
                 selectNext = True
             End If
         End If
@@ -252,7 +252,7 @@ Partial Class MakeModel
             End If
 
             'Restore Previosly selected value
-            If drop = "" And Not isEmpty(Me.State.YearState) Then YearDrop.SelectedValue = Me.State.YearState
+            If drop = "" And Not isEmpty(State.YearState) Then YearDrop.SelectedValue = State.YearState
         End If
 
     End Sub

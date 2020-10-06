@@ -14,7 +14,7 @@ Public Class TaskManager
     Private ReadOnly _processThreadName As String
     Private _subscriberId As Guid
 
-    Public Sub New(ByVal processThreadName As String)
+    Public Sub New(processThreadName As String)
         _processThreadName = processThreadName
 
     End Sub
@@ -44,7 +44,7 @@ Public Class TaskManager
 
         'Get the Event
         Try
-            _publishedTask = PublishedTask.GetNextTask(Me.SubscriberId, Me.MachineName, Me.ProcessThreadName)
+            _publishedTask = PublishedTask.GetNextTask(SubscriberId, MachineName, ProcessThreadName)
 
         Catch ex As Exception
             Dim message As String = ex.Message
@@ -71,7 +71,7 @@ Public Class TaskManager
                 'Process the Task based on Event Type
                 'Todo Call dynamically using Reflection
                 Logger.AddDebugLog(String.Format("Processing Task|Task Name:{0}|START", ptask.Task.Description))
-                TaskFactory.CreateTask(ptask, Me.MachineName, Me.ProcessThreadName).Process()
+                TaskFactory.CreateTask(ptask, MachineName, ProcessThreadName).Process()
                 Logger.AddDebugLog(String.Format("Processing Task|Task Name:{0}|END", ptask.Task.Description))
                 status = TaskManagerReturnStatus.Success
             Else
@@ -85,7 +85,7 @@ Public Class TaskManager
         Return status
     End Function
 
-    Public Function Login(ByVal networkId As String, ByVal hub As String, ByVal machineDomain As String) As Boolean
+    Public Function Login(networkId As String, hub As String, machineDomain As String) As Boolean
         Logger.AddDebugLogEnter()
         Dim logging As StringBuilder = New StringBuilder()
         Dim errMsg As String = String.Empty

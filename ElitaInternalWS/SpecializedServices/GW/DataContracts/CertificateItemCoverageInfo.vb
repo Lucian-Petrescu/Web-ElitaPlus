@@ -103,10 +103,10 @@ Namespace SpecializedServices.GW
 
         End Sub
 
-        Public Sub New(ByVal pCertficateItemCoverage As CertificateItemCoverage,
-                       ByVal pCommonManager As CommonManager,
-                       ByVal pProduct As Product,
-                       ByVal pLangauge As String)
+        Public Sub New(pCertficateItemCoverage As CertificateItemCoverage,
+                       pCommonManager As CommonManager,
+                       pProduct As Product,
+                       pLangauge As String)
             ' Copy properties from Certificate Item to current instance
             Dim oCoverage As Coverage
             If pProduct.Items.Count >= 0 And Not pProduct.Items.Where(Function(i) i.ItemNumber = pCertficateItemCoverage.Item.ItemNumber).FirstOrDefault Is Nothing Then
@@ -156,10 +156,10 @@ Namespace SpecializedServices.GW
                                     pCertficateItemCoverage.Certificate.MethodOfRepairId.ToDescription(pCommonManager, ListCodes.MethodOfRepair, pLangauge))
 
                     If pCertficateItemCoverage.ItemCoverageDeductibles.Count > 0 Then
-                        Me.ItemCoverageDeductibles = New List(Of CertificateItemCoverageDeductibleInfo)
+                        ItemCoverageDeductibles = New List(Of CertificateItemCoverageDeductibleInfo)
 
                         For Each cicd As CertificateItemCoverageDeductible In pCertficateItemCoverage.ItemCoverageDeductibles
-                            DirectCast(Me.ItemCoverageDeductibles, IList(Of CertificateItemCoverageDeductibleInfo)).Add(New CertificateItemCoverageDeductibleInfo(cicd, pCommonManager, pLangauge))
+                            DirectCast(ItemCoverageDeductibles, IList(Of CertificateItemCoverageDeductibleInfo)).Add(New CertificateItemCoverageDeductibleInfo(cicd, pCommonManager, pLangauge))
                         Next
                     End If
 

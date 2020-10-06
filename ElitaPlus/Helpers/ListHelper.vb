@@ -70,13 +70,13 @@ Public Module ListHelper
     ''' <param name="pSortBy"></param>
     <Extension()>
     Public Sub PopulateOld(
-                       ByVal pListControl As ListControl,
-                       ByVal pListCode As String,
-                       ByVal pTextValueType As ListValueType,
-                       ByVal pValueValueType As ListValueType,
-                       ByVal pSpecialValueBehavior As PopulateBehavior,
-                       ByVal pSpecialValue As String,
-                       ByVal pSortBy As ListValueType)
+                       pListControl As ListControl,
+                       pListCode As String,
+                       pTextValueType As ListValueType,
+                       pValueValueType As ListValueType,
+                       pSpecialValueBehavior As PopulateBehavior,
+                       pSpecialValue As String,
+                       pSortBy As ListValueType)
         Dim i As Integer
 
         pListControl.Items.Clear()
@@ -138,7 +138,7 @@ Public Module ListHelper
     ''' <param name="pValueType"></param>
     ''' <returns></returns>
     <Extension()>
-    Private Function GetValue(ByVal pValue As DataEntities.ElitaListItem, ByVal pValueType As ListValueType) As String
+    Private Function GetValue(pValue As DataEntities.ElitaListItem, pValueType As ListValueType) As String
         Select Case pValueType
             Case ListValueType.Code
                 Return pValue.Code

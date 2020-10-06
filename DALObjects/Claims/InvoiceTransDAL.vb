@@ -82,7 +82,7 @@ Public Class InvoiceTransDAL
         MyBase.new()
     End Sub
 
-    Public Sub New(ByVal UserId As Guid)
+    Public Sub New(UserId As Guid)
         MyBase.new()
         _UserId = UserId
     End Sub
@@ -90,16 +90,16 @@ Public Class InvoiceTransDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters(9) As DBHelper.DBHelperParameter
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_BATCH_INVOICE, GetType(DataSet))}
 
-        parameters(0) = New DBHelper.DBHelperParameter(P_USER_ID, Me._UserId)
+        parameters(0) = New DBHelper.DBHelperParameter(P_USER_ID, _UserId)
         parameters(1) = New DBHelper.DBHelperParameter(P_INVOICE_TRANS_ID, id.ToByteArray)
         parameters(2) = New DBHelper.DBHelperParameter(P_SERVICE_CENTER_ID, DBNull.Value, GetType(System.Guid))
         parameters(3) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_NUMBER, DBNull.Value, GetType(System.String))
@@ -111,19 +111,19 @@ Public Class InvoiceTransDAL
         parameters(9) = New DBHelper.DBHelperParameter(P_INVOICE_RECEIVED_DATE, DBNull.Value, GetType(System.DateTime))
         
         Try
-            DBHelper.FetchSp(selectStmt, parameters, outParameters, familyDS, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, parameters, outParameters, familyDS, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function Load(ByVal id As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Function Load(id As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters(9) As DBHelper.DBHelperParameter
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_BATCH_INVOICE, GetType(DataSet))}
         Dim ds As New DataSet
 
-        parameters(0) = New DBHelper.DBHelperParameter(P_USER_ID, Me._UserId)
+        parameters(0) = New DBHelper.DBHelperParameter(P_USER_ID, _UserId)
         parameters(1) = New DBHelper.DBHelperParameter(P_INVOICE_TRANS_ID, id.ToByteArray)
         parameters(2) = New DBHelper.DBHelperParameter(P_SERVICE_CENTER_ID, DBNull.Value, GetType(System.Guid))
         parameters(3) = New DBHelper.DBHelperParameter(P_SVC_CONTROL_NUMBER, DBNull.Value, GetType(System.String))
@@ -137,16 +137,16 @@ Public Class InvoiceTransDAL
 
         Try
 
-            DBHelper.FetchSp(selectStmt, parameters, outParameters, ds, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, parameters, outParameters, ds, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadList(ByVal id As Guid, ByVal ServiceCenterId As Guid, ByVal InvoiceNumber As String, ByVal UserId As Guid, ByVal BatchNumber As String, ByVal svcControlAmount As String,
-                             ByVal InvoiceDate As String, ByVal invoiceTypeId As Guid, ByVal invoiceStatusId As Guid, ByVal invoiceReceivedDate As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Function LoadList(id As Guid, ServiceCenterId As Guid, InvoiceNumber As String, UserId As Guid, BatchNumber As String, svcControlAmount As String,
+                             InvoiceDate As String, invoiceTypeId As Guid, invoiceStatusId As Guid, invoiceReceivedDate As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_BATCH_INVOICE, GetType(DataSet))}
         Dim inParameters(9) As DBHelper.DBHelperParameter
 
@@ -207,15 +207,15 @@ Public Class InvoiceTransDAL
         End If
 
         Try
-            DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadbatchDetail(ByVal invoiceBatchid As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_DETAIL")
+    Public Function LoadbatchDetail(invoiceBatchid As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_DETAIL")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_INVOICE_TRANS_ID, invoiceBatchid.ToByteArray)}
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_BATCH_INVOICE, GetType(DataSet))}
         Dim ds As New DataSet
@@ -235,8 +235,8 @@ Public Class InvoiceTransDAL
 #Region " Create Method "
 
     'Calls the stored procedure CREATE_BATCH_CLAIMS to create elp_invoice_trans record
-    Public Function CreateBatch(ByVal ServiceCenterId As Guid, ByVal InvoiceNumber As String, ByVal InvoiceAmount As Double, ByVal BatchNumber As String, ByVal UserId As Guid, ByVal InvoiceDate As DateType, ByVal InvoiceStatusId As Guid, ByVal InvoiceReceivedDate As DateType, ByVal InvoiceTypeId As Guid) As Guid
-        Dim sqlStatement As String = Me.Config("/SQL/INSERT")
+    Public Function CreateBatch(ServiceCenterId As Guid, InvoiceNumber As String, InvoiceAmount As Double, BatchNumber As String, UserId As Guid, InvoiceDate As DateType, InvoiceStatusId As Guid, InvoiceReceivedDate As DateType, InvoiceTypeId As Guid) As Guid
+        Dim sqlStatement As String = Config("/SQL/INSERT")
 
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_RETURN, GetType(Guid))}
         Dim inParameters(8) As DBHelper.DBHelperParameter
@@ -286,8 +286,8 @@ Public Class InvoiceTransDAL
 #Region " Update Batch Method "
 
     'Calls the stored procedure CREATE_BATCH_CLAIMS to create elp_invoice_trans record
-    Public Function UpdateBatch(ByVal Id As Guid, ByVal ServiceCenterId As Guid, ByVal InvoiceNumber As String, ByVal InvoiceAmount As Double, ByVal BatchNumber As String, ByVal UserId As Guid, ByVal InvoiceDate As DateType, ByVal InvoiceStatusId As Guid, ByVal InvoiceReceivedDate As DateType, ByVal InvoiceTypeId As Guid) As Boolean
-        Dim sqlStatement As String = Me.Config("/SQL/UPDATE")
+    Public Function UpdateBatch(Id As Guid, ServiceCenterId As Guid, InvoiceNumber As String, InvoiceAmount As Double, BatchNumber As String, UserId As Guid, InvoiceDate As DateType, InvoiceStatusId As Guid, InvoiceReceivedDate As DateType, InvoiceTypeId As Guid) As Boolean
+        Dim sqlStatement As String = Config("/SQL/UPDATE")
 
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_RETURN, GetType(Integer))}
         Dim inParameters(8) As DBHelper.DBHelperParameter
@@ -340,9 +340,9 @@ Public Class InvoiceTransDAL
 #Region " Delete Methods "
 
     'Calls the stored procedure CREATE_BATCH_CLAIMS to create elp_invoice_trans record
-    Public Function DeleteBatch(ByVal id As Guid) As Boolean
+    Public Function DeleteBatch(id As Guid) As Boolean
 
-        Dim selectStmt As String = Me.Config("/SQL/DELETE_BATCH")
+        Dim selectStmt As String = Config("/SQL/DELETE_BATCH")
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_INVOICE_TRANS_ID, id.ToByteArray)}
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_RETURN, GetType(Integer))}
 
@@ -360,9 +360,9 @@ Public Class InvoiceTransDAL
 #Region " Process Method "
 
     'Calls the stored procedure CREATE_BATCH_CLAIMS to create elp_invoice_trans record
-    Public Function ProcessBatch(ByVal id As Guid, ByVal InvoiceTaxTypeId As Guid) As Boolean
+    Public Function ProcessBatch(id As Guid, InvoiceTaxTypeId As Guid) As Boolean
 
-        Dim selectStmt As String = Me.Config("/SQL/PROCESS_BATCH")
+        Dim selectStmt As String = Config("/SQL/PROCESS_BATCH")
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_INVOICE_TRANS_ID, id.ToByteArray), _
                                                             New DBHelper.DBHelperParameter(COL_NAME_INVOICE_TAX_TYPE_ID, InvoiceTaxTypeId.ToByteArray)}
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_RETURN, GetType(Integer))}
@@ -388,9 +388,9 @@ Public Class InvoiceTransDAL
 #Region " Save Claims "
 
     'Calls the stored procedure CREATE_BATCH_CLAIMS to create elp_invoice_trans record
-    Public Sub SaveClaims(ByVal ClaimSet As BatchClaimInvoice, ByVal id As Guid)
+    Public Sub SaveClaims(ClaimSet As BatchClaimInvoice, id As Guid)
 
-        Dim selectStmt As String = Me.Config("/SQL/SAVE_BATCH_CLAIMS")
+        Dim selectStmt As String = Config("/SQL/SAVE_BATCH_CLAIMS")
         Dim outParameters() As DBHelper.DBHelperParameter ' = New DBHelper.DBHelperParameter   {New DBHelper.DBHelperParameter(P_BATCH_INVOICE, GetType(DataSet))}
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                 {New DBHelper.DBHelperParameter(P_INVOICE_TRANS_ID, id), _
@@ -405,10 +405,10 @@ Public Class InvoiceTransDAL
 
     End Sub
 
-    Public Function SaveBatchTax(ByVal id As Guid, ByVal region_id As Guid, ByVal batch_number As String, ByVal tax1_amt As Decimal, ByVal tax2_amt As Decimal, _
-        ByVal user_id As Guid) As Boolean
+    Public Function SaveBatchTax(id As Guid, region_id As Guid, batch_number As String, tax1_amt As Decimal, tax2_amt As Decimal, _
+        user_id As Guid) As Boolean
 
-        Dim selectStmt As String = Me.Config("/SQL/SAVE_TAX_BATCH")
+        Dim selectStmt As String = Config("/SQL/SAVE_TAX_BATCH")
 
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                 {New DBHelper.DBHelperParameter(P_INVOICE_TRANS_ID, id.ToByteArray), _
@@ -442,27 +442,27 @@ Public Class InvoiceTransDAL
     'Created these methods to override the default methods as we are using stored procedures for the functionality in this 
     '  business object.  
 
-    Shadows Sub Update(ByVal row As DataRow, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Shadows Sub Update(row As DataRow, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         'DBHelper.Execute(row, Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, Transaction, changesFilter)
     End Sub
 
-    Shadows Sub UpdateWithParam(ByVal row As DataRow, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Shadows Sub UpdateWithParam(row As DataRow, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         'DBHelper.ExecuteWithParam(row, Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, Transaction, changesFilter)
     End Sub
 
     'This Method assumes you have the nodes  "/SQL/INSERT", "/SQL/UPDATE", "/SQL/DELETE" in your xml file
-    Shadows Sub Update(ByVal table As DataTable, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Shadows Sub Update(table As DataTable, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         'DBHelper.Execute(table, Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, Transaction, changesFilter)
     End Sub
 
-    Shadows Sub UpdateWithParam(ByVal table As DataTable, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Shadows Sub UpdateWithParam(table As DataTable, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         'DBHelper.ExecuteWithParam(table, Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, Transaction, changesFilter)
     End Sub
 
 #End Region
 
-    Public Function GetInvoiceTaxTypeDetails(ByVal taxtypeId As Guid, ByVal countryId As Guid, ByVal dealerId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/INVOICE_TAX_TYPE_DETAILS")
+    Public Function GetInvoiceTaxTypeDetails(taxtypeId As Guid, countryId As Guid, dealerId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/INVOICE_TAX_TYPE_DETAILS")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
         New DBHelper.DBHelperParameter(P_COUNTRY_ID, countryId.ToByteArray), _
         New DBHelper.DBHelperParameter(P_TAXTYPE_ID, taxtypeId.ToByteArray), _
@@ -470,7 +470,7 @@ Public Class InvoiceTransDAL
         Dim ds As New DataSet
         Dim tbl As String = "ELP_INVOICE_TRANS_DETAIL"
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -478,11 +478,11 @@ Public Class InvoiceTransDAL
     End Function
 
 
-    Public Function UpdateExcludeDeductible(ByVal strExcludeDeductible As String, ByVal invoiceTransDetailId As Guid) As Boolean
+    Public Function UpdateExcludeDeductible(strExcludeDeductible As String, invoiceTransDetailId As Guid) As Boolean
         Dim sqlStmt As String
         Dim parameters() As DBHelper.DBHelperParameter
 
-        sqlStmt = Me.Config("/SQL/UPDATE_EXCLUDE_DEDUCTIBLE")
+        sqlStmt = Config("/SQL/UPDATE_EXCLUDE_DEDUCTIBLE")
         parameters = New DBHelper.DBHelperParameter() { _
                         New DBHelper.DBHelperParameter("EXCLUDE_DEDUCTIBLE", strExcludeDeductible), _
                         New DBHelper.DBHelperParameter("INVOICE_TRANS_DETAIL_ID", invoiceTransDetailId.ToByteArray)}
@@ -498,11 +498,11 @@ Public Class InvoiceTransDAL
     End Function
 
 
-    Public Function UpdatePaymentAmount(ByVal invoiceTransDetailId As Guid) As Boolean
+    Public Function UpdatePaymentAmount(invoiceTransDetailId As Guid) As Boolean
         Dim sqlStmt As String
         Dim parameters() As DBHelper.DBHelperParameter
 
-        sqlStmt = Me.Config("/SQL/UPDATE_PAYMENT_AMOUNT")
+        sqlStmt = Config("/SQL/UPDATE_PAYMENT_AMOUNT")
         parameters = New DBHelper.DBHelperParameter() { _
                         New DBHelper.DBHelperParameter("INVOICE_TRANS_DETAIL_ID", invoiceTransDetailId.ToByteArray)}
 
@@ -516,8 +516,8 @@ Public Class InvoiceTransDAL
         End Try
     End Function
 
-    Public Function CheckforPreInvoice(ByVal batchNumber As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/CHECK_PRE_INVOICE")
+    Public Function CheckforPreInvoice(batchNumber As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/CHECK_PRE_INVOICE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
         New DBHelper.DBHelperParameter(P_BATCHNUMBER, batchNumber)}
         Dim ds As New DataSet
@@ -530,21 +530,21 @@ Public Class InvoiceTransDAL
         End Try
     End Function
 
-    Public Function GetInvoiceComments(ByVal invoice_trans As String) As DataSet
+    Public Function GetInvoiceComments(invoice_trans As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/INVOICE_COMMENTS")
+        Dim selectStmt As String = Config("/SQL/INVOICE_COMMENTS")
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
         Dim invoice_trans_id As Guid = New Guid(invoice_trans)
 
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_INVOICE_TRANS_ID, invoice_trans_id.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_INVOICE_TRANS_ID, invoice_trans_id.ToByteArray)}
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
     End Function
 
-    Public Function UpdateRejectReason(ByVal invoiceTransId As Guid, ByVal InvoiceComments As String) As Boolean
+    Public Function UpdateRejectReason(invoiceTransId As Guid, InvoiceComments As String) As Boolean
         
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_REJECT_REASON")
+        Dim selectStmt As String = Config("/SQL/UPDATE_REJECT_REASON")
         Dim inParameters(1) As DBHelper.DBHelperParameter
         Dim intErrCode As Integer
 
@@ -552,7 +552,7 @@ Public Class InvoiceTransDAL
         inParameters(1) = New DBHelper.DBHelperParameter("pi_invoice_trans_id", invoiceTransId.ToByteArray)
         
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                                New DBHelper.DBHelperParameter(Me.PO_RETURN_CODE, GetType(String))}
+                                New DBHelper.DBHelperParameter(PO_RETURN_CODE, GetType(String))}
 
         Dim ds As New DataSet
         Dim tbl As String = "UPDATE_REJECT_REASON"
@@ -576,18 +576,18 @@ Public Class InvoiceTransDAL
 
     End Function
 
-    Public Function GetBatchClosedClaims(ByVal serviceCenterId As Guid, ByVal batchNumber As String, ByVal InvoiceTransId As Guid, ByVal userId As Guid, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_BATCH_CLOSED_CLAIMS")
+    Public Function GetBatchClosedClaims(serviceCenterId As Guid, batchNumber As String, InvoiceTransId As Guid, userId As Guid, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_BATCH_CLOSED_CLAIMS")
         Dim inParameters(4) As DBHelper.DBHelperParameter
 
-        inParameters(0) = New DBHelper.DBHelperParameter(Me.COL_NAME_SERVICE_CENTER_ID, serviceCenterId.ToByteArray)
-        inParameters(1) = New DBHelper.DBHelperParameter(Me.COL_NAME_INVOICE_TRANS_ID, InvoiceTransId.ToByteArray)
-        inParameters(2) = New DBHelper.DBHelperParameter(Me.COL_NAME_USER_ID, userId.ToByteArray)
-        inParameters(3) = New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, languageId)
-        inParameters(4) = New DBHelper.DBHelperParameter(Me.COL_NAME_BATCH_NUMBER, batchNumber)
+        inParameters(0) = New DBHelper.DBHelperParameter(COL_NAME_SERVICE_CENTER_ID, serviceCenterId.ToByteArray)
+        inParameters(1) = New DBHelper.DBHelperParameter(COL_NAME_INVOICE_TRANS_ID, InvoiceTransId.ToByteArray)
+        inParameters(2) = New DBHelper.DBHelperParameter(COL_NAME_USER_ID, userId.ToByteArray)
+        inParameters(3) = New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId)
+        inParameters(4) = New DBHelper.DBHelperParameter(COL_NAME_BATCH_NUMBER, batchNumber)
 
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                                New DBHelper.DBHelperParameter(Me.P_CLAIMS, GetType(DataSet))}
+                                New DBHelper.DBHelperParameter(P_CLAIMS, GetType(DataSet))}
 
         Dim ds As New DataSet
         Dim tbl As String = "BATCH_CLOSED_CLAIMS"

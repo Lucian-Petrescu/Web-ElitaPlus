@@ -27,7 +27,7 @@ Public Class TranslationItemArray
     Public ReadOnly Property Items() As ICollection
 
         Get
-            Return Me.mList.Values
+            Return mList.Values
         End Get
 
     End Property
@@ -36,7 +36,7 @@ Public Class TranslationItemArray
 
         Get
 
-            Return Me.mList.Count
+            Return mList.Count
 
         End Get
 
@@ -46,14 +46,14 @@ Public Class TranslationItemArray
     Public Function Item(ByVal sUniqueID As String) As TranslationItem
 
 
-        Return CType(Me.mList.Item(sUniqueID), TranslationItem)
+        Return CType(mList.Item(sUniqueID), TranslationItem)
 
 
     End Function
 
     Public Function Contains(ByVal SearchCriteria As String) As Boolean
 
-        If Me.mList.ContainsKey(SearchCriteria) Then
+        If mList.ContainsKey(SearchCriteria) Then
 
             Return True
 

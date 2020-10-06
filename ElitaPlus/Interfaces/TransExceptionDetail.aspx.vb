@@ -115,7 +115,7 @@ Namespace Interfaces
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -171,125 +171,125 @@ Namespace Interfaces
             Public LastOperation As DetailPageCommand
             Public EditingBo As String
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As String, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As String, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
 #End Region
 
 #Region "Private Methods"
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
-                    Dim params As ArrayList = CType(Me.CallingParameters, ArrayList)
-                    If Not params Is Nothing AndAlso params.Count > 1 Then
-                        Me.State.transactionLogHeaderId = GuidControl.GuidToHexString(CType(params(0), Guid))
-                        Me.State.reprocess = CType(params(1), String)
-                        Me.State.ErrorCode = CType(params(2), String)
+                If CallingParameters IsNot Nothing Then
+                    Dim params As ArrayList = CType(CallingParameters, ArrayList)
+                    If params IsNot Nothing AndAlso params.Count > 1 Then
+                        State.transactionLogHeaderId = GuidControl.GuidToHexString(CType(params(0), Guid))
+                        State.reprocess = CType(params(1), String)
+                        State.ErrorCode = CType(params(2), String)
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             Try
                 ErrController.Clear_Hide()
                 GetRejectionMessage()
 
                 If Not Page.IsPostBack Then
-                    Me.SetGridItemStyleColor(Me.StatusGridView)
-                    Me.SetGridItemStyleColor(Me.PartsGridView)
-                    Me.SetGridItemStyleColor(Me.FollowUpGridView)
-                    Me.ShowMissingTranslations(ErrController)
-                    Me.State.statusPageIndex = 0
-                    Me.State.partPageIndex = 0
-                    Me.State.followupPageIndex = 0
-                    Me.State.IsComunaEnabled = ComunaEnabled
+                    SetGridItemStyleColor(StatusGridView)
+                    SetGridItemStyleColor(PartsGridView)
+                    SetGridItemStyleColor(FollowUpGridView)
+                    ShowMissingTranslations(ErrController)
+                    State.statusPageIndex = 0
+                    State.partPageIndex = 0
+                    State.followupPageIndex = 0
+                    State.IsComunaEnabled = ComunaEnabled
                     PopulateFormFromBO()
                     PopulateGrid()
                     SetButtonsState()
-                    If Me.State.IsComunaEnabled Then PopulateComunaFromBO()
+                    If State.IsComunaEnabled Then PopulateComunaFromBO()
                 End If
                 ClearErrLabels()
                 CheckIfComingFromSaveConfirm()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
         Protected Sub GetRejectionMessage()
             rejectionMsgLbl = TranslationBase.TranslateLabelOrMessage("REJECTION_MESSAGE", ElitaPlusIdentity.Current.ActiveUser.LanguageId) & ": "
-            rejectionMsgLbl = rejectionMsgLbl & Me.State.ErrorCode            
+            rejectionMsgLbl = rejectionMsgLbl & State.ErrorCode            
         End Sub
 
         Private Sub PopulateGrid()
             Try
-                If Me.State.dvStatus Is Nothing Then
-                    Me.State.dvStatus = TransactionLogHeader.GetStatusList(Me.State.transactionLogHeaderId)
+                If State.dvStatus Is Nothing Then
+                    State.dvStatus = TransactionLogHeader.GetStatusList(State.transactionLogHeaderId)
                 End If
 
-                If Me.State.dvPart Is Nothing Then
-                    Me.State.dvPart = TransactionLogHeader.GetPartList(Me.State.transactionLogHeaderId)
+                If State.dvPart Is Nothing Then
+                    State.dvPart = TransactionLogHeader.GetPartList(State.transactionLogHeaderId)
                 End If
 
-                If Me.State.dvFollowup Is Nothing Then
-                    Me.State.dvFollowup = TransactionLogHeader.GetFollowUpList(Me.State.transactionLogHeaderId)
+                If State.dvFollowup Is Nothing Then
+                    State.dvFollowup = TransactionLogHeader.GetFollowUpList(State.transactionLogHeaderId)
                 End If
 
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.dvStatus, Guid.Empty, Me.StatusGridView, Me.State.statusPageIndex)
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.dvPart, Guid.Empty, Me.PartsGridView, Me.State.partPageIndex)
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.dvFollowup, Guid.Empty, Me.FollowUpGridView, Me.State.followupPageIndex)
+                SetPageAndSelectedIndexFromGuid(State.dvStatus, Guid.Empty, StatusGridView, State.statusPageIndex)
+                SetPageAndSelectedIndexFromGuid(State.dvPart, Guid.Empty, PartsGridView, State.partPageIndex)
+                SetPageAndSelectedIndexFromGuid(State.dvFollowup, Guid.Empty, FollowUpGridView, State.followupPageIndex)
 
-                Me.TranslateGridHeader(Me.StatusGridView)
-                Me.TranslateGridHeader(Me.PartsGridView)
-                Me.TranslateGridHeader(Me.FollowUpGridView)
-                Me.TranslateGridControls(Me.StatusGridView)
-                Me.TranslateGridControls(Me.PartsGridView)
-                Me.TranslateGridControls(Me.FollowUpGridView)
+                TranslateGridHeader(StatusGridView)
+                TranslateGridHeader(PartsGridView)
+                TranslateGridHeader(FollowUpGridView)
+                TranslateGridControls(StatusGridView)
+                TranslateGridControls(PartsGridView)
+                TranslateGridControls(FollowUpGridView)
 
-                If Me.State.dvStatus.Count = 0 Then
-                    Dim dt As DataTable = Me.State.dvStatus.Table.Clone()
+                If State.dvStatus.Count = 0 Then
+                    Dim dt As DataTable = State.dvStatus.Table.Clone()
                     Dim dvEmpty As New TransactionLogHeader.TransactionStatusDV(dt)
                     TransactionLogHeader.TransactionStatusDV.AddNewRowToEmptyDV(dvEmpty)
-                    SetPageAndSelectedIndexFromGuid(dvEmpty, Guid.Empty, Me.StatusGridView, Me.State.statusPageIndex, False)
-                    SortAndBindGrid(Me.StatusGridView, dvEmpty, True, TransactionLogHeader.TransactionStatusDV.COL_EXTENDED_STATUS_DATE)
+                    SetPageAndSelectedIndexFromGuid(dvEmpty, Guid.Empty, StatusGridView, State.statusPageIndex, False)
+                    SortAndBindGrid(StatusGridView, dvEmpty, True, TransactionLogHeader.TransactionStatusDV.COL_EXTENDED_STATUS_DATE)
                 Else
-                    SetPageAndSelectedIndexFromGuid(Me.State.dvStatus, Guid.Empty, Me.StatusGridView, Me.State.statusPageIndex, False)
-                    SortAndBindGrid(Me.StatusGridView, Me.State.dvStatus, False, TransactionLogHeader.TransactionStatusDV.COL_EXTENDED_STATUS_DATE)
+                    SetPageAndSelectedIndexFromGuid(State.dvStatus, Guid.Empty, StatusGridView, State.statusPageIndex, False)
+                    SortAndBindGrid(StatusGridView, State.dvStatus, False, TransactionLogHeader.TransactionStatusDV.COL_EXTENDED_STATUS_DATE)
                 End If
 
-                If Me.State.dvPart.Count = 0 Then
-                    Dim dt As DataTable = Me.State.dvPart.Table.Clone()
+                If State.dvPart.Count = 0 Then
+                    Dim dt As DataTable = State.dvPart.Table.Clone()
                     Dim dvEmpty As New TransactionLogHeader.TransactionPartDV(dt)
                     TransactionLogHeader.TransactionPartDV.AddNewRowToEmptyDV(dvEmpty)
-                    SetPageAndSelectedIndexFromGuid(dvEmpty, Guid.Empty, Me.PartsGridView, Me.State.partPageIndex, False)
-                    SortAndBindGrid(Me.PartsGridView, dvEmpty, True, TransactionLogHeader.TransactionPartDV.COL_PART_CODE)
+                    SetPageAndSelectedIndexFromGuid(dvEmpty, Guid.Empty, PartsGridView, State.partPageIndex, False)
+                    SortAndBindGrid(PartsGridView, dvEmpty, True, TransactionLogHeader.TransactionPartDV.COL_PART_CODE)
                 Else
-                    SetPageAndSelectedIndexFromGuid(Me.State.dvPart, Guid.Empty, Me.PartsGridView, Me.State.partPageIndex, False)
-                    SortAndBindGrid(Me.PartsGridView, Me.State.dvPart, False, TransactionLogHeader.TransactionPartDV.COL_PART_CODE)
+                    SetPageAndSelectedIndexFromGuid(State.dvPart, Guid.Empty, PartsGridView, State.partPageIndex, False)
+                    SortAndBindGrid(PartsGridView, State.dvPart, False, TransactionLogHeader.TransactionPartDV.COL_PART_CODE)
                 End If
 
-                If Me.State.dvFollowup.Count = 0 Then
-                    Dim dt As DataTable = Me.State.dvFollowup.Table.Clone()
+                If State.dvFollowup.Count = 0 Then
+                    Dim dt As DataTable = State.dvFollowup.Table.Clone()
                     Dim dvEmpty As New TransactionLogHeader.TransactionFollowUpDV(dt)
                     TransactionLogHeader.TransactionFollowUpDV.AddNewRowToEmptyDV(dvEmpty)
-                    SetPageAndSelectedIndexFromGuid(dvEmpty, Guid.Empty, Me.FollowUpGridView, Me.State.followupPageIndex, False)
-                    SortAndBindGrid(Me.FollowUpGridView, dvEmpty, True, TransactionLogHeader.TransactionFollowUpDV.COL_COMMENT_CREATED_DATE)
+                    SetPageAndSelectedIndexFromGuid(dvEmpty, Guid.Empty, FollowUpGridView, State.followupPageIndex, False)
+                    SortAndBindGrid(FollowUpGridView, dvEmpty, True, TransactionLogHeader.TransactionFollowUpDV.COL_COMMENT_CREATED_DATE)
                 Else
-                    SetPageAndSelectedIndexFromGuid(Me.State.dvFollowup, Guid.Empty, Me.FollowUpGridView, Me.State.followupPageIndex, False)
-                    SortAndBindGrid(Me.FollowUpGridView, Me.State.dvFollowup, False, TransactionLogHeader.TransactionFollowUpDV.COL_COMMENT_CREATED_DATE)
+                    SetPageAndSelectedIndexFromGuid(State.dvFollowup, Guid.Empty, FollowUpGridView, State.followupPageIndex, False)
+                    SortAndBindGrid(FollowUpGridView, State.dvFollowup, False, TransactionLogHeader.TransactionFollowUpDV.COL_COMMENT_CREATED_DATE)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub SortAndBindGrid(ByVal gridView As GridView, ByVal dvBinding As DataView, Optional ByVal blnEmptyList As Boolean = False, Optional ByVal sortExpression As String = "1")
+        Private Sub SortAndBindGrid(gridView As GridView, dvBinding As DataView, Optional ByVal blnEmptyList As Boolean = False, Optional ByVal sortExpression As String = "1")
             gridView.DataSource = dvBinding
             HighLightSortColumn(gridView, sortExpression)
             gridView.DataBind()
@@ -304,17 +304,17 @@ Namespace Interfaces
 
         Private Sub PopulateComunaFromBO()
             Try
-                If Me.State.dvTransData Is Nothing Then Me.State.dvTransData = TransactionLogHeader.GetTransactionData(Me.State.transactionLogHeaderId)
+                If State.dvTransData Is Nothing Then State.dvTransData = TransactionLogHeader.GetTransactionData(State.transactionLogHeaderId)
 
-                If Not Me.State.dvTransData Is Nothing AndAlso Me.State.dvTransData.Count = 1 Then
-                    With Me.State.dvTransData
+                If State.dvTransData IsNot Nothing AndAlso State.dvTransData.Count = 1 Then
+                    With State.dvTransData
                         Try
-                            Me.SetSelectedItemByText(Me.moComunaDropdown, Me.State.dvTransData(0).Item(.COL_POSTAL_CODE).ToString)
+                            SetSelectedItemByText(moComunaDropdown, State.dvTransData(0).Item(.COL_POSTAL_CODE).ToString)
                         Catch ex As Exception
                             'The value is not in the comuna code list, get it from the Standerzation table
-                            Dim dvComunaStanderzation As DataView = ComunaStandardization.GetComunaStanderization(Me.State.dvTransData(0).Item(.COL_POSTAL_CODE).ToString)
+                            Dim dvComunaStanderzation As DataView = ComunaStandardization.GetComunaStanderization(State.dvTransData(0).Item(.COL_POSTAL_CODE).ToString)
                             Try
-                                Me.SetSelectedItem(Me.moComunaDropdown, New Guid(CType(dvComunaStanderzation.Item(0)("COMUNA_CODE_ID"), Byte())))
+                                SetSelectedItem(moComunaDropdown, New Guid(CType(dvComunaStanderzation.Item(0)("COMUNA_CODE_ID"), Byte())))
                             Catch ex_New As Exception
                                 'Throw New GUIException(Message.MSG_GUI_INVALID_VALUE, Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR_COMUNA_NOT_FOUND, ex)
                             End Try
@@ -322,171 +322,171 @@ Namespace Interfaces
                     End With
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
         Private Sub PopulateFormFromBO()
             Try
-                Me.State.dvTransData = TransactionLogHeader.GetTransactionData(Me.State.transactionLogHeaderId)
+                State.dvTransData = TransactionLogHeader.GetTransactionData(State.transactionLogHeaderId)
 
-                If Not Me.State.dvTransData Is Nothing AndAlso Me.State.dvTransData.Count = 1 Then
-                    With Me.State.dvTransData
-                        Me.State.hide = If(Me.State.dvTransData(0).Item(.COL_HIDE) Is DBNull.Value, "", CType(Me.State.dvTransData(0).Item(.COL_HIDE), String))
-                        Me.State.resend = If(Me.State.dvTransData(0).Item(.COL_RESEND) Is DBNull.Value, "", CType(Me.State.dvTransData(0).Item(.COL_RESEND), String))
-                        Me.State.originator = CType(Me.State.dvTransData(0).Item(.COL_ORIGINATOR), String)
-                        Me.State.functionTypeCode = CType(Me.State.dvTransData(0).Item(.COL_FUNCTION_TYPE_CODE), String)
+                If State.dvTransData IsNot Nothing AndAlso State.dvTransData.Count = 1 Then
+                    With State.dvTransData
+                        State.hide = If(State.dvTransData(0).Item(.COL_HIDE) Is DBNull.Value, "", CType(State.dvTransData(0).Item(.COL_HIDE), String))
+                        State.resend = If(State.dvTransData(0).Item(.COL_RESEND) Is DBNull.Value, "", CType(State.dvTransData(0).Item(.COL_RESEND), String))
+                        State.originator = CType(State.dvTransData(0).Item(.COL_ORIGINATOR), String)
+                        State.functionTypeCode = CType(State.dvTransData(0).Item(.COL_FUNCTION_TYPE_CODE), String)
 
-                        Me.PopulateControlFromBOProperty(Me.TextboxOriginator, Me.State.originator)
-                        ControlMgr.SetEnableControl(Me, Me.TextboxOriginator, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxFunction, Me.State.dvTransData(0).Item(.COL_FUNCTION_TYPE))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxFunction, False)
+                        PopulateControlFromBOProperty(TextboxOriginator, State.originator)
+                        ControlMgr.SetEnableControl(Me, TextboxOriginator, False)
+                        PopulateControlFromBOProperty(TextboxFunction, State.dvTransData(0).Item(.COL_FUNCTION_TYPE))
+                        ControlMgr.SetEnableControl(Me, TextboxFunction, False)
 
                         'REQ-391 Input GVS Chile claims without certificate
-                        If Not Me.State.dvTransData(0).Item(.COL_SERVICE_TYPE) Is Nothing OrElse Me.State.dvTransData(0).Item(.COL_SERVICE_TYPE).Equals(String.Empty) Then
-                            If Not Me.State.ErrorCode Is Nothing AndAlso (Me.State.ErrorCode.ToUpper.Equals(MSG_CERT_NOT_FOUND) _
-                                   Or Me.State.ErrorCode.ToUpper.Equals(MSG_NO_CERT_FOUND) _
-                                   Or Me.State.ErrorCode.ToUpper.Equals(MSG_NO_AVAILABLE_CERTIFICATE) _
-                                   Or Me.State.ErrorCode.ToUpper.Equals(MSG_INVALID_SERVICE_TYPE)) Then
-                                Me.cboServiceType.Visible = True
-                                Me.TextboxServiceType.Visible = False
+                        If State.dvTransData(0).Item(.COL_SERVICE_TYPE) IsNot Nothing OrElse State.dvTransData(0).Item(.COL_SERVICE_TYPE).Equals(String.Empty) Then
+                            If State.ErrorCode IsNot Nothing AndAlso (State.ErrorCode.ToUpper.Equals(MSG_CERT_NOT_FOUND) _
+                                   Or State.ErrorCode.ToUpper.Equals(MSG_NO_CERT_FOUND) _
+                                   Or State.ErrorCode.ToUpper.Equals(MSG_NO_AVAILABLE_CERTIFICATE) _
+                                   Or State.ErrorCode.ToUpper.Equals(MSG_INVALID_SERVICE_TYPE)) Then
+                                cboServiceType.Visible = True
+                                TextboxServiceType.Visible = False
 
                                 'Me.BindListControlToDataView(Me.cboServiceType, ServiceTypeList, "Description", "id", True)
-                                Me.cboServiceType.Populate(ServiceTypeList.ToArray(), New PopulateOptions() With
+                                cboServiceType.Populate(ServiceTypeList.ToArray(), New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
                                     })
 
                                 'Dim serviceTypeId As Guid = LookupListNew.GetIdFromDescription(ServiceTypeList, Me.State.dvTransData(0).Item(.COL_SERVICE_TYPE).ToString)
                                 Dim serviceTypeId As Guid = (From lst In ServiceTypeList
-                                                             Where lst.Translation = Me.State.dvTransData(0).Item(.COL_SERVICE_TYPE).ToString()
+                                                             Where lst.Translation = State.dvTransData(0).Item(.COL_SERVICE_TYPE).ToString()
                                                              Select lst.ListItemId).FirstOrDefault()
 
-                                Me.PopulateControlFromBOProperty(Me.cboServiceType, serviceTypeId)
-                                ControlMgr.SetEnableControl(Me, Me.cboServiceType, False)
-                                Me.State.OldServiceTypeValue = Me.State.dvTransData(0).Item(.COL_SERVICE_TYPE).ToString
+                                PopulateControlFromBOProperty(cboServiceType, serviceTypeId)
+                                ControlMgr.SetEnableControl(Me, cboServiceType, False)
+                                State.OldServiceTypeValue = State.dvTransData(0).Item(.COL_SERVICE_TYPE).ToString
                             Else
-                                Me.PopulateControlFromBOProperty(Me.TextboxServiceType, Me.State.dvTransData(0).Item(.COL_SERVICE_TYPE))
-                                ControlMgr.SetEnableControl(Me, Me.TextboxServiceType, False)
+                                PopulateControlFromBOProperty(TextboxServiceType, State.dvTransData(0).Item(.COL_SERVICE_TYPE))
+                                ControlMgr.SetEnableControl(Me, TextboxServiceType, False)
                             End If
                         End If
 
-                        Me.PopulateControlFromBOProperty(Me.TextboxCUSTOMER_NAME, Me.State.dvTransData(0).Item(.COL_CUSTOMER_NAME))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxCUSTOMER_NAME, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxTAX_ID, Me.State.dvTransData(0).Item(.COL_TAX_ID))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxTAX_ID, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxADDRESS1, Me.State.dvTransData(0).Item(.COL_ADDRESS1))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxADDRESS1, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxADDRESS2, Me.State.dvTransData(0).Item(.COL_ADDRESS2))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxADDRESS2, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxPOSTAL_CODE, Me.State.dvTransData(0).Item(.COL_POSTAL_CODE))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxPOSTAL_CODE, False)
-                        ControlMgr.SetEnableControl(Me, Me.moComunaDropdown, Me.State.IsComunaEnabled And Me.State.IsEditMode)
-                        If Me.State.IsComunaEnabled Then Me.State.OldComunaValue = Me.State.dvTransData(0).Item(.COL_POSTAL_CODE).ToString
-                        Me.PopulateControlFromBOProperty(Me.TextboxSTATE, Me.State.dvTransData(0).Item(.COL_STATE))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxSTATE, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxPHONE1, Me.State.dvTransData(0).Item(.COL_PHONE1))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxPHONE1, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxPHONE2, Me.State.dvTransData(0).Item(.COL_PHONE2))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxPHONE2, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxEMAIL, Me.State.dvTransData(0).Item(.COL_EMAIL))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxEMAIL, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxRETAILER, Me.State.dvTransData(0).Item(.COL_RETAILER))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxRETAILER, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxINVOICE_NUMBER, Me.State.dvTransData(0).Item(.COL_INVOICE_NUMBER))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxINVOICE_NUMBER, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxPRODUCT_SALES_DATE, Me.State.dvTransData(0).Item(.COL_PROD_SALES_DATE))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxPRODUCT_SALES_DATE, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxSALES_PRICE, Me.State.dvTransData(0).Item(.COL_PROD_SALES_PRICE))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxSALES_PRICE, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxMODEL, Me.State.dvTransData(0).Item(.COL_MODEL))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxMODEL, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxSERIAL_NUMBER, Me.State.dvTransData(0).Item(.COL_SERIAL_NUMBER))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxSERIAL_NUMBER, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxCLAIM_NUMBER, Me.State.dvTransData(0).Item(.COL_CLAIM_NUMBER))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxCLAIM_NUMBER, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxSERVICE_CENTER_CODE, Me.State.dvTransData(0).Item(.COL_SERVICE_CENTER_CODE))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxSERVICE_CENTER_CODE, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxGVS_SERVICE_ORDER_NUMBER, Me.State.dvTransData(0).Item(.COL_GVS_SERVICE_ORDER_NUM))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxGVS_SERVICE_ORDER_NUMBER, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxMETHOD_OF_REPAIR, Me.State.dvTransData(0).Item(.COL_METHOD_OF_REPAIR))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxMETHOD_OF_REPAIR, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxDATE_CLAIM_OPENED, Me.State.dvTransData(0).Item(.COL_CLAIM_CREATED_DATE))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxDATE_CLAIM_OPENED, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxPROBLEM_DESCRIPTION, Me.State.dvTransData(0).Item(.COL_PROBLEM_DESCRIPTION))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxPROBLEM_DESCRIPTION, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxTECHNICAL_REPORT, Me.State.dvTransData(0).Item(.COL_TECHNICAL_REPORT))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxTECHNICAL_REPORT, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxCLAIM_ACTIVITY, Me.State.dvTransData(0).Item(.COL_CLAIMACTIVITY_CODE))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxCLAIM_ACTIVITY, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxREPAIR_DATE, Me.State.dvTransData(0).Item(.COL_REPAIR_DATE))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxREPAIR_DATE, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxPICKUP_DATE, Me.State.dvTransData(0).Item(.COL_PICKUP_DATE))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxPICKUP_DATE, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxSCHEDULED_VISIT_DATE, Me.State.dvTransData(0).Item(.COL_SCHEDULE_VISIT_DATE))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxSCHEDULED_VISIT_DATE, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxEXPECTED_REPAIR_DATE, Me.State.dvTransData(0).Item(.COL_EXPECTED_REPAIR_DATE))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxEXPECTED_REPAIR_DATE, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxVISIT_DATE, Me.State.dvTransData(0).Item(.COL_VISIT_DATE))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxVISIT_DATE, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxDEFECT_REASON, Me.State.dvTransData(0).Item(.COL_DEFECT_REASON_CODE))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxDEFECT_REASON, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxLIABILITY_LIMIT, Me.State.dvTransData(0).Item(.COL_LIABILITY_LIMIT_AMOUNT))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxLIABILITY_LIMIT, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxLIABILITY_LIMIT_PERCENT, Me.State.dvTransData(0).Item(.COL_LIABILITY_LIMIT_PERCENT))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxLIABILITY_LIMIT_PERCENT, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxDEDUCTIBLE_AMOUNT, Me.State.dvTransData(0).Item(.COL_DEDUCTIBLE_AMOUNT))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxDEDUCTIBLE_AMOUNT, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxDEDUCTIBLE_PERCENT, Me.State.dvTransData(0).Item(.COL_DEDUCTIBLE_PERCENT))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxDEDUCTIBLE_PERCENT, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxLABOR_AMT, Me.State.dvTransData(0).Item(.COL_LABOR_AMOUNT))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxLABOR_AMT, False)
-                        Me.PopulateControlFromBOProperty(Me.TextboxSHIPPING, Me.State.dvTransData(0).Item(.COL_shipping))
-                        ControlMgr.SetEnableControl(Me, Me.TextboxSHIPPING, False)
+                        PopulateControlFromBOProperty(TextboxCUSTOMER_NAME, State.dvTransData(0).Item(.COL_CUSTOMER_NAME))
+                        ControlMgr.SetEnableControl(Me, TextboxCUSTOMER_NAME, False)
+                        PopulateControlFromBOProperty(TextboxTAX_ID, State.dvTransData(0).Item(.COL_TAX_ID))
+                        ControlMgr.SetEnableControl(Me, TextboxTAX_ID, False)
+                        PopulateControlFromBOProperty(TextboxADDRESS1, State.dvTransData(0).Item(.COL_ADDRESS1))
+                        ControlMgr.SetEnableControl(Me, TextboxADDRESS1, False)
+                        PopulateControlFromBOProperty(TextboxADDRESS2, State.dvTransData(0).Item(.COL_ADDRESS2))
+                        ControlMgr.SetEnableControl(Me, TextboxADDRESS2, False)
+                        PopulateControlFromBOProperty(TextboxPOSTAL_CODE, State.dvTransData(0).Item(.COL_POSTAL_CODE))
+                        ControlMgr.SetEnableControl(Me, TextboxPOSTAL_CODE, False)
+                        ControlMgr.SetEnableControl(Me, moComunaDropdown, State.IsComunaEnabled And State.IsEditMode)
+                        If State.IsComunaEnabled Then State.OldComunaValue = State.dvTransData(0).Item(.COL_POSTAL_CODE).ToString
+                        PopulateControlFromBOProperty(TextboxSTATE, State.dvTransData(0).Item(.COL_STATE))
+                        ControlMgr.SetEnableControl(Me, TextboxSTATE, False)
+                        PopulateControlFromBOProperty(TextboxPHONE1, State.dvTransData(0).Item(.COL_PHONE1))
+                        ControlMgr.SetEnableControl(Me, TextboxPHONE1, False)
+                        PopulateControlFromBOProperty(TextboxPHONE2, State.dvTransData(0).Item(.COL_PHONE2))
+                        ControlMgr.SetEnableControl(Me, TextboxPHONE2, False)
+                        PopulateControlFromBOProperty(TextboxEMAIL, State.dvTransData(0).Item(.COL_EMAIL))
+                        ControlMgr.SetEnableControl(Me, TextboxEMAIL, False)
+                        PopulateControlFromBOProperty(TextboxRETAILER, State.dvTransData(0).Item(.COL_RETAILER))
+                        ControlMgr.SetEnableControl(Me, TextboxRETAILER, False)
+                        PopulateControlFromBOProperty(TextboxINVOICE_NUMBER, State.dvTransData(0).Item(.COL_INVOICE_NUMBER))
+                        ControlMgr.SetEnableControl(Me, TextboxINVOICE_NUMBER, False)
+                        PopulateControlFromBOProperty(TextboxPRODUCT_SALES_DATE, State.dvTransData(0).Item(.COL_PROD_SALES_DATE))
+                        ControlMgr.SetEnableControl(Me, TextboxPRODUCT_SALES_DATE, False)
+                        PopulateControlFromBOProperty(TextboxSALES_PRICE, State.dvTransData(0).Item(.COL_PROD_SALES_PRICE))
+                        ControlMgr.SetEnableControl(Me, TextboxSALES_PRICE, False)
+                        PopulateControlFromBOProperty(TextboxMODEL, State.dvTransData(0).Item(.COL_MODEL))
+                        ControlMgr.SetEnableControl(Me, TextboxMODEL, False)
+                        PopulateControlFromBOProperty(TextboxSERIAL_NUMBER, State.dvTransData(0).Item(.COL_SERIAL_NUMBER))
+                        ControlMgr.SetEnableControl(Me, TextboxSERIAL_NUMBER, False)
+                        PopulateControlFromBOProperty(TextboxCLAIM_NUMBER, State.dvTransData(0).Item(.COL_CLAIM_NUMBER))
+                        ControlMgr.SetEnableControl(Me, TextboxCLAIM_NUMBER, False)
+                        PopulateControlFromBOProperty(TextboxSERVICE_CENTER_CODE, State.dvTransData(0).Item(.COL_SERVICE_CENTER_CODE))
+                        ControlMgr.SetEnableControl(Me, TextboxSERVICE_CENTER_CODE, False)
+                        PopulateControlFromBOProperty(TextboxGVS_SERVICE_ORDER_NUMBER, State.dvTransData(0).Item(.COL_GVS_SERVICE_ORDER_NUM))
+                        ControlMgr.SetEnableControl(Me, TextboxGVS_SERVICE_ORDER_NUMBER, False)
+                        PopulateControlFromBOProperty(TextboxMETHOD_OF_REPAIR, State.dvTransData(0).Item(.COL_METHOD_OF_REPAIR))
+                        ControlMgr.SetEnableControl(Me, TextboxMETHOD_OF_REPAIR, False)
+                        PopulateControlFromBOProperty(TextboxDATE_CLAIM_OPENED, State.dvTransData(0).Item(.COL_CLAIM_CREATED_DATE))
+                        ControlMgr.SetEnableControl(Me, TextboxDATE_CLAIM_OPENED, False)
+                        PopulateControlFromBOProperty(TextboxPROBLEM_DESCRIPTION, State.dvTransData(0).Item(.COL_PROBLEM_DESCRIPTION))
+                        ControlMgr.SetEnableControl(Me, TextboxPROBLEM_DESCRIPTION, False)
+                        PopulateControlFromBOProperty(TextboxTECHNICAL_REPORT, State.dvTransData(0).Item(.COL_TECHNICAL_REPORT))
+                        ControlMgr.SetEnableControl(Me, TextboxTECHNICAL_REPORT, False)
+                        PopulateControlFromBOProperty(TextboxCLAIM_ACTIVITY, State.dvTransData(0).Item(.COL_CLAIMACTIVITY_CODE))
+                        ControlMgr.SetEnableControl(Me, TextboxCLAIM_ACTIVITY, False)
+                        PopulateControlFromBOProperty(TextboxREPAIR_DATE, State.dvTransData(0).Item(.COL_REPAIR_DATE))
+                        ControlMgr.SetEnableControl(Me, TextboxREPAIR_DATE, False)
+                        PopulateControlFromBOProperty(TextboxPICKUP_DATE, State.dvTransData(0).Item(.COL_PICKUP_DATE))
+                        ControlMgr.SetEnableControl(Me, TextboxPICKUP_DATE, False)
+                        PopulateControlFromBOProperty(TextboxSCHEDULED_VISIT_DATE, State.dvTransData(0).Item(.COL_SCHEDULE_VISIT_DATE))
+                        ControlMgr.SetEnableControl(Me, TextboxSCHEDULED_VISIT_DATE, False)
+                        PopulateControlFromBOProperty(TextboxEXPECTED_REPAIR_DATE, State.dvTransData(0).Item(.COL_EXPECTED_REPAIR_DATE))
+                        ControlMgr.SetEnableControl(Me, TextboxEXPECTED_REPAIR_DATE, False)
+                        PopulateControlFromBOProperty(TextboxVISIT_DATE, State.dvTransData(0).Item(.COL_VISIT_DATE))
+                        ControlMgr.SetEnableControl(Me, TextboxVISIT_DATE, False)
+                        PopulateControlFromBOProperty(TextboxDEFECT_REASON, State.dvTransData(0).Item(.COL_DEFECT_REASON_CODE))
+                        ControlMgr.SetEnableControl(Me, TextboxDEFECT_REASON, False)
+                        PopulateControlFromBOProperty(TextboxLIABILITY_LIMIT, State.dvTransData(0).Item(.COL_LIABILITY_LIMIT_AMOUNT))
+                        ControlMgr.SetEnableControl(Me, TextboxLIABILITY_LIMIT, False)
+                        PopulateControlFromBOProperty(TextboxLIABILITY_LIMIT_PERCENT, State.dvTransData(0).Item(.COL_LIABILITY_LIMIT_PERCENT))
+                        ControlMgr.SetEnableControl(Me, TextboxLIABILITY_LIMIT_PERCENT, False)
+                        PopulateControlFromBOProperty(TextboxDEDUCTIBLE_AMOUNT, State.dvTransData(0).Item(.COL_DEDUCTIBLE_AMOUNT))
+                        ControlMgr.SetEnableControl(Me, TextboxDEDUCTIBLE_AMOUNT, False)
+                        PopulateControlFromBOProperty(TextboxDEDUCTIBLE_PERCENT, State.dvTransData(0).Item(.COL_DEDUCTIBLE_PERCENT))
+                        ControlMgr.SetEnableControl(Me, TextboxDEDUCTIBLE_PERCENT, False)
+                        PopulateControlFromBOProperty(TextboxLABOR_AMT, State.dvTransData(0).Item(.COL_LABOR_AMOUNT))
+                        ControlMgr.SetEnableControl(Me, TextboxLABOR_AMT, False)
+                        PopulateControlFromBOProperty(TextboxSHIPPING, State.dvTransData(0).Item(.COL_shipping))
+                        ControlMgr.SetEnableControl(Me, TextboxSHIPPING, False)
                     End With
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
         Private Sub SetButtonsState()
-            ControlMgr.SetEnableControl(Me, Me.btnBack, True)
+            ControlMgr.SetEnableControl(Me, btnBack, True)
 
-            If (Me.State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM Or _
-                Me.State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_CANCEL_SVC_INTEGRATION Or _
-                Me.State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_TRANSACTION_UPDATE Or _
-                Me.State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM) AndAlso _
-                Not (Me.State.hide = ALREADY_RESEND_OR_HIDE Or Me.State.resend = ALREADY_RESEND_OR_HIDE) AndAlso _
-                Me.State.reprocess = "Y" Then
+            If (State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM Or _
+                State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_CANCEL_SVC_INTEGRATION Or _
+                State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_TRANSACTION_UPDATE Or _
+                State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM) AndAlso _
+                Not (State.hide = ALREADY_RESEND_OR_HIDE Or State.resend = ALREADY_RESEND_OR_HIDE) AndAlso _
+                State.reprocess = "Y" Then
                 btnResend_WRITE.Text = TranslationBase.TranslateLabelOrMessage("REPROCESS", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-                ControlMgr.SetEnableControl(Me, Me.btnResend_WRITE, True)
-            ElseIf (Me.State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_NEW_CLAIM Or _
-                Me.State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_CLAIM Or _
-                Me.State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_SVC) AndAlso _
-                Not (Me.State.hide = ALREADY_RESEND_OR_HIDE Or Me.State.resend = ALREADY_RESEND_OR_HIDE) Then
-                ControlMgr.SetEnableControl(Me, Me.btnResend_WRITE, True)
+                ControlMgr.SetEnableControl(Me, btnResend_WRITE, True)
+            ElseIf (State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_NEW_CLAIM Or _
+                State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_CLAIM Or _
+                State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_SVC) AndAlso _
+                Not (State.hide = ALREADY_RESEND_OR_HIDE Or State.resend = ALREADY_RESEND_OR_HIDE) Then
+                ControlMgr.SetEnableControl(Me, btnResend_WRITE, True)
             Else
-                ControlMgr.SetVisibleControl(Me, Me.btnResend_WRITE, False)
+                ControlMgr.SetVisibleControl(Me, btnResend_WRITE, False)
             End If
 
-            If Not (Me.State.hide = ALREADY_RESEND_OR_HIDE Or Me.State.resend = ALREADY_RESEND_OR_HIDE) Then
-                ControlMgr.SetEnableControl(Me, Me.btnHide_Write, True)
+            If Not (State.hide = ALREADY_RESEND_OR_HIDE Or State.resend = ALREADY_RESEND_OR_HIDE) Then
+                ControlMgr.SetEnableControl(Me, btnHide_Write, True)
             Else
-                ControlMgr.SetVisibleControl(Me, Me.btnHide_Write, False)
+                ControlMgr.SetVisibleControl(Me, btnHide_Write, False)
             End If
 
-            ControlMgr.SetVisibleControl(Me, Me.btnUndo_Write, Me.State.IsComunaEnabled)
-            ControlMgr.SetVisibleControl(Me, Me.btnEdit_WRITE, Me.State.IsComunaEnabled)
-            ControlMgr.SetVisibleControl(Me, Me.btnAdd_WRITE, Me.State.IsComunaEnabled)
-            ControlMgr.SetVisibleControl(Me, Me.moComunaDropdown, Me.State.IsComunaEnabled)
-            ControlMgr.SetVisibleControl(Me, Me.LabelComuna, Me.State.IsComunaEnabled)
+            ControlMgr.SetVisibleControl(Me, btnUndo_Write, State.IsComunaEnabled)
+            ControlMgr.SetVisibleControl(Me, btnEdit_WRITE, State.IsComunaEnabled)
+            ControlMgr.SetVisibleControl(Me, btnAdd_WRITE, State.IsComunaEnabled)
+            ControlMgr.SetVisibleControl(Me, moComunaDropdown, State.IsComunaEnabled)
+            ControlMgr.SetVisibleControl(Me, LabelComuna, State.IsComunaEnabled)
 
         End Sub
 
 #End Region
 
 #Region "DataViewRelated "
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles StatusGridView.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles StatusGridView.Sorting
             'Try
             '    Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
 
@@ -511,77 +511,77 @@ Namespace Interfaces
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles StatusGridView.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles StatusGridView.PageIndexChanging
 
         End Sub
 
-        Protected Sub ItemBound_StatusGridView(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles StatusGridView.RowDataBound
+        Protected Sub ItemBound_StatusGridView(source As Object, e As GridViewRowEventArgs) Handles StatusGridView.RowDataBound
             Try
                 BaseItemBound(source, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Protected Sub ItemBound_PartsGridView(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles PartsGridView.RowDataBound
+        Protected Sub ItemBound_PartsGridView(source As Object, e As GridViewRowEventArgs) Handles PartsGridView.RowDataBound
             Try
                 BaseItemBound(source, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles PartsGridView.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles PartsGridView.PageIndexChanged
             Try
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles PartsGridView.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles PartsGridView.PageIndexChanging
             Try
                 PartsGridView.PageIndex = e.NewPageIndex
                 State.partPageIndex = PartsGridView.PageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub ItemBound_FollowUpGridView(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles FollowUpGridView.RowDataBound
+        Protected Sub ItemBound_FollowUpGridView(source As Object, e As GridViewRowEventArgs) Handles FollowUpGridView.RowDataBound
             Try
                 BaseItemBound(source, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Protected Sub ItemCreated_StatusGridView(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+        Protected Sub ItemCreated_StatusGridView(sender As Object, e As GridViewRowEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Protected Sub ItemCreated_PartsGridView(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+        Protected Sub ItemCreated_PartsGridView(sender As Object, e As GridViewRowEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Protected Sub ItemCreated_FollowUpGridView(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+        Protected Sub ItemCreated_FollowUpGridView(sender As Object, e As GridViewRowEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
@@ -589,84 +589,84 @@ Namespace Interfaces
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(LabelServiceType)
+            ClearLabelErrSign(LabelServiceType)
         End Sub
 #End Region
 #Region "Button Click Handlers"
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                If Me.State.IsComunaEnabled AndAlso Me.ComunaChanged Then
-                    Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                If State.IsComunaEnabled AndAlso ComunaChanged Then
+                    AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.transactionLogHeaderId, False))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.transactionLogHeaderId, False))
                 End If
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub btnResend_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnResend_WRITE.Click
+        Private Sub btnResend_Click(sender As System.Object, e As System.EventArgs) Handles btnResend_WRITE.Click
             Try
                 'Resend confirmation
-                If (Me.State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM Or _
-                    Me.State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_CANCEL_SVC_INTEGRATION Or _
-                    Me.State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_TRANSACTION_UPDATE Or _
-                    Me.State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM) Then
-                    Me.DisplayMessage(Message.MSG_PROMPT_FOR_PROCESS_RECORDS, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                If (State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM Or _
+                    State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_CANCEL_SVC_INTEGRATION Or _
+                    State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_TRANSACTION_UPDATE Or _
+                    State.functionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM) Then
+                    DisplayMessage(Message.MSG_PROMPT_FOR_PROCESS_RECORDS, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 Else
-                    Me.DisplayMessage(Message.MSG_PROMPT_FOR_RESEND_TRANSACTION, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                    DisplayMessage(Message.MSG_PROMPT_FOR_RESEND_TRANSACTION, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 End If
 
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
-                Me.State.cmdResendOrHide = DALObjects.TransactionLogHeaderDAL.CMD_RESEND
-                If Me.State.IsComunaEnabled Then
-                    Me.State.IsEditMode = False
-                    Me.EnableDisableFields()
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+                State.cmdResendOrHide = DALObjects.TransactionLogHeaderDAL.CMD_RESEND
+                If State.IsComunaEnabled Then
+                    State.IsEditMode = False
+                    EnableDisableFields()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub btnHide_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnHide_Write.Click
+        Private Sub btnHide_Click(sender As System.Object, e As System.EventArgs) Handles btnHide_Write.Click
             Try
                 'Hide confirmation
-                Me.DisplayMessage(Message.MSG_PROMPT_FOR_HIDE_TRANSACTION, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
-                Me.State.cmdResendOrHide = DALObjects.TransactionLogHeaderDAL.CMD_HIDE
+                DisplayMessage(Message.MSG_PROMPT_FOR_HIDE_TRANSACTION, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+                State.cmdResendOrHide = DALObjects.TransactionLogHeaderDAL.CMD_HIDE
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+        Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
             'Get out of Edit mode
             Try
                 UndoChanges()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub btnEdit_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEdit_WRITE.Click
+        Private Sub btnEdit_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnEdit_WRITE.Click
             Try
-                Me.State.IsEditMode = True
-                Me.EnableDisableFields()
+                State.IsEditMode = True
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub btnAdd_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+        Private Sub btnAdd_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
             Try
                 'Call the Comuna Standardization screen (ComunaStandardizationForm.aspx)
-                Me.callPage(ComunaStandardizationForm.URL, Nothing)
+                callPage(ComunaStandardizationForm.URL, Nothing)
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
@@ -680,31 +680,31 @@ Namespace Interfaces
 #Region "Controlling Logic"
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
             Try
-                If Not confResponse Is Nothing AndAlso (confResponse = Me.MSG_VALUE_YES Or confResponse = Me.CONFIRM_MESSAGE_OK) Then
-                    Select Case Me.State.ActionInProgress
+                If confResponse IsNot Nothing AndAlso (confResponse = MSG_VALUE_YES Or confResponse = CONFIRM_MESSAGE_OK) Then
+                    Select Case State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Accept
                             'Resend or Hide transaction
                             ResendOrHideTransaction()
                         Case ElitaPlusPage.DetailPageCommand.Back
                             ResendOrHideTransaction()
                     End Select
-                ElseIf Not confResponse Is Nothing AndAlso (confResponse = Me.MSG_VALUE_NO Or confResponse = Me.CONFIRM_MESSAGE_CANCEL) Then
-                    Select Case Me.State.ActionInProgress
+                ElseIf confResponse IsNot Nothing AndAlso (confResponse = MSG_VALUE_NO Or confResponse = CONFIRM_MESSAGE_CANCEL) Then
+                    Select Case State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Accept
                             ' Do nothing
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.transactionLogHeaderId, False))
+                            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.transactionLogHeaderId, False))
                     End Select
 
                 End If
 
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = ""
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = ""
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
@@ -713,8 +713,8 @@ Namespace Interfaces
                 Dim outputParameters() As DALObjects.DBHelper.DBHelperParameter
                 Dim newServiceTypeValue As String = Nothing
 
-                If Me.cboServiceType.Visible Then
-                    Dim serviceTypeGuid As Guid = Me.GetSelectedItem(Me.cboServiceType)
+                If cboServiceType.Visible Then
+                    Dim serviceTypeGuid As Guid = GetSelectedItem(cboServiceType)
                     If serviceTypeGuid.Equals(Guid.Empty) Then
                         ElitaPlusPage.SetLabelError(LabelServiceType)
                         Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_SERVICE_TYPE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_SERVICE_TYPE)
@@ -724,32 +724,32 @@ Namespace Interfaces
                                                                         Where lst.ListItemId = serviceTypeGuid
                                                                         Select lst.Code).FirstOrDefault()
                 End If
-                If Me.State.IsComunaEnabled AndAlso ComunaChanged() Then
-                    outputParameters = TransactionLogHeader.ResendOrHideTransaction(Me.State.cmdResendOrHide, New Guid(GuidControl.HexToByteArray(Me.State.transactionLogHeaderId)), Me.moComunaDropdown.SelectedItem.Text, newServiceTypeValue)
+                If State.IsComunaEnabled AndAlso ComunaChanged() Then
+                    outputParameters = TransactionLogHeader.ResendOrHideTransaction(State.cmdResendOrHide, New Guid(GuidControl.HexToByteArray(State.transactionLogHeaderId)), moComunaDropdown.SelectedItem.Text, newServiceTypeValue)
                 Else
-                    outputParameters = TransactionLogHeader.ResendOrHideTransaction(Me.State.cmdResendOrHide, New Guid(GuidControl.HexToByteArray(Me.State.transactionLogHeaderId)), Nothing, newServiceTypeValue)
+                    outputParameters = TransactionLogHeader.ResendOrHideTransaction(State.cmdResendOrHide, New Guid(GuidControl.HexToByteArray(State.transactionLogHeaderId)), Nothing, newServiceTypeValue)
                 End If
 
 
                 If CType(outputParameters(0).Value, Integer) = 0 Then
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
-                    Me.DisplayMessageWithSubmit(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+                    DisplayMessageWithSubmit(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Else
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
-                    Me.DisplayMessageWithSubmit(CType(outputParameters(1).Value, String), "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+                    DisplayMessageWithSubmit(CType(outputParameters(1).Value, String), "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
 
                 PopulateFormFromBO()
                 PopulateGrid()
                 SetButtonsState()
-                If Me.State.IsComunaEnabled Then
-                    Me.State.IsEditMode = False
-                    Me.EnableDisableFields()
+                If State.IsComunaEnabled Then
+                    State.IsEditMode = False
+                    EnableDisableFields()
                 End If
 
                 Return True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
                 Return False
             End Try
         End Function
@@ -777,56 +777,56 @@ Namespace Interfaces
                 Next
                 Return blnIsComunaEnabled
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
                 Return False
             End Try
         End Function
 
         Protected Sub PopulateComunaDropDown()
-            Me.BindListControlToDataView(Me.moComunaDropdown, COMUNALIST, "Description", "id", True)
+            BindListControlToDataView(moComunaDropdown, COMUNALIST, "Description", "id", True)
         End Sub
 
-        Protected Sub ShowHideComunaButtons(ByVal blnIsComunaEnabled As Boolean)
-            ControlMgr.SetVisibleControl(Me, Me.btnEdit_WRITE, blnIsComunaEnabled)
-            ControlMgr.SetVisibleControl(Me, Me.btnAdd_WRITE, blnIsComunaEnabled)
-            ControlMgr.SetVisibleControl(Me, Me.btnUndo_Write, blnIsComunaEnabled)
-            ControlMgr.SetEnableControl(Me, Me.btnEdit_WRITE, blnIsComunaEnabled)
-            ControlMgr.SetEnableControl(Me, Me.btnUndo_Write, False)
-            ControlMgr.SetEnableControl(Me, Me.btnAdd_WRITE, blnIsComunaEnabled)
+        Protected Sub ShowHideComunaButtons(blnIsComunaEnabled As Boolean)
+            ControlMgr.SetVisibleControl(Me, btnEdit_WRITE, blnIsComunaEnabled)
+            ControlMgr.SetVisibleControl(Me, btnAdd_WRITE, blnIsComunaEnabled)
+            ControlMgr.SetVisibleControl(Me, btnUndo_Write, blnIsComunaEnabled)
+            ControlMgr.SetEnableControl(Me, btnEdit_WRITE, blnIsComunaEnabled)
+            ControlMgr.SetEnableControl(Me, btnUndo_Write, False)
+            ControlMgr.SetEnableControl(Me, btnAdd_WRITE, blnIsComunaEnabled)
         End Sub
 
         Protected Sub EnableDisableFields()
 
-            If (Me.State.IsEditMode) Then
-                ControlMgr.SetVisibleForControlFamily(Me, Me.btnEdit_WRITE, False, True)
-                ControlMgr.SetVisibleForControlFamily(Me, Me.btnAdd_WRITE, False, True)
-                ControlMgr.SetEnableControl(Me, Me.btnUndo_Write, True)
-                ControlMgr.SetEnableControl(Me, Me.cboServiceType, True)
-                ControlMgr.SetEnableControl(Me, Me.moComunaDropdown, Me.State.IsComunaEnabled)
+            If (State.IsEditMode) Then
+                ControlMgr.SetVisibleForControlFamily(Me, btnEdit_WRITE, False, True)
+                ControlMgr.SetVisibleForControlFamily(Me, btnAdd_WRITE, False, True)
+                ControlMgr.SetEnableControl(Me, btnUndo_Write, True)
+                ControlMgr.SetEnableControl(Me, cboServiceType, True)
+                ControlMgr.SetEnableControl(Me, moComunaDropdown, State.IsComunaEnabled)
             Else
-                ControlMgr.SetVisibleForControlFamily(Me, Me.btnEdit_WRITE, True, True)
-                ControlMgr.SetVisibleForControlFamily(Me, Me.btnAdd_WRITE, True, True)
-                ControlMgr.SetEnableControl(Me, Me.btnUndo_Write, False)
-                ControlMgr.SetEnableControl(Me, Me.btnAdd_WRITE, True)
-                ControlMgr.SetEnableControl(Me, Me.cboServiceType, False)
-                ControlMgr.SetEnableControl(Me, Me.moComunaDropdown, False)
+                ControlMgr.SetVisibleForControlFamily(Me, btnEdit_WRITE, True, True)
+                ControlMgr.SetVisibleForControlFamily(Me, btnAdd_WRITE, True, True)
+                ControlMgr.SetEnableControl(Me, btnUndo_Write, False)
+                ControlMgr.SetEnableControl(Me, btnAdd_WRITE, True)
+                ControlMgr.SetEnableControl(Me, cboServiceType, False)
+                ControlMgr.SetEnableControl(Me, moComunaDropdown, False)
             End If
 
 
         End Sub
 
         Private Sub UndoChanges()
-            Me.State.IsEditMode = False
-            Me.PopulateFormFromBO()
-            Me.EnableDisableFields()
+            State.IsEditMode = False
+            PopulateFormFromBO()
+            EnableDisableFields()
             'Me.MenuEnabled = True
-            Me.ErrController.Clear_Hide()            
+            ErrController.Clear_Hide()            
         End Sub
 
         Protected Function ComunaChanged() As Boolean
 
-            If Not Me.moComunaDropdown.SelectedItem.Text.Equals(String.Empty) Then
-                If (Me.moComunaDropdown.SelectedItem.Text = Me.State.OldComunaValue) Then
+            If Not moComunaDropdown.SelectedItem.Text.Equals(String.Empty) Then
+                If (moComunaDropdown.SelectedItem.Text = State.OldComunaValue) Then
                     Return False
                 Else
                     Return True
@@ -838,8 +838,8 @@ Namespace Interfaces
         End Function
         Protected Function ServiceTypeChanged() As Boolean
 
-            If Not Me.cboServiceType.SelectedItem.Text.Equals(String.Empty) Then
-                If (Me.cboServiceType.SelectedItem.Text = Me.State.OldServiceTypeValue) Then
+            If Not cboServiceType.SelectedItem.Text.Equals(String.Empty) Then
+                If (cboServiceType.SelectedItem.Text = State.OldServiceTypeValue) Then
                     Return False
                 Else
                     Return True

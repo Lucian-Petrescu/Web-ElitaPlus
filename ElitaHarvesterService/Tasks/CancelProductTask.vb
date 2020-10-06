@@ -6,7 +6,7 @@ Imports Assurant.ElitaPlus.Common
 Public NotInheritable Class CancelProductTask
     Inherits AntivirusProductTaskBase
 
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 
@@ -55,7 +55,7 @@ Public NotInheritable Class CancelProductTask
 
                 UpdateCustomerItem()
             Else
-                Throw New Exception(Me.FailReason)
+                Throw New Exception(FailReason)
             End If
             Logger.AddDebugLogExit()
         Catch ex As Exception
@@ -71,8 +71,8 @@ Public NotInheritable Class CancelProductTask
         Dim oWebPasswd As WebPasswd
         oWebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CANCEL_AV_PRODUCT), True)
         cancelProductClient = New Antivirus.CancelProduct.CancelProductClient("CustomBinding_ICancelProduct", oWebPasswd.Url)
-        Me.UserName = oWebPasswd.UserId
-        Me.Password = oWebPasswd.Password
+        UserName = oWebPasswd.UserId
+        Password = oWebPasswd.Password
         Return cancelProductClient
     End Function
 
@@ -104,7 +104,7 @@ Public NotInheritable Class CancelProductTask
         Select Case VendorName
             Case CancelProductRequestProductInfoVendorName.McAfee
                 cprDevice = New CancelProductRequestDeviceInfo()
-                cprDevice.DeviceType = Me.DeviceType
+                cprDevice.DeviceType = DeviceType
             Case CancelProductRequestProductInfoVendorName.AVG
                 'Do nothing for AVG
             Case CancelProductRequestProductInfoVendorName.Kaspersky
@@ -116,8 +116,8 @@ Public NotInheritable Class CancelProductTask
 
     Private Function GetUserAuthorization() As CancelProductRequestUserAuthorization
         Dim cpUserAuth As CancelProductRequestUserAuthorization = New CancelProductRequestUserAuthorization()
-        cpUserAuth.UserId = Me.UserName
-        cpUserAuth.Password = Me.Password
+        cpUserAuth.UserId = UserName
+        cpUserAuth.Password = Password
 
         Return cpUserAuth
     End Function
@@ -158,14 +158,14 @@ Public NotInheritable Class CancelProductTask
             flag = False
             sb.Append(String.Format("Activation Key is missing for Customer Registration Id {0}", GuidControl.GuidToHexString(CustRegistration.Id)))
             Logger.AddError(sb.ToString())
-            Me.FailReason = sb.ToString()
+            FailReason = sb.ToString()
         End If
 
         If ((flag) AndAlso (String.IsNullOrEmpty(CustomerItem.OrderRefNum))) Then
             flag = False
             sb.Append(String.Format("Order Reference Number (Subscriber ID) is missing for Customer Registration Id {0}", GuidControl.GuidToHexString(CustRegistration.Id)))
             Logger.AddError(sb.ToString())
-            Me.FailReason = sb.ToString()
+            FailReason = sb.ToString()
         End If
         Return flag
     End Function

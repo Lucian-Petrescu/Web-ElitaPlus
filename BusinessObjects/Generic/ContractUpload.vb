@@ -8,46 +8,46 @@ Public Class ContractUpload
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ContractUploadDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -58,20 +58,20 @@ Public Class ContractUpload
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New ContractUploadDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -112,7 +112,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_UPLOAD_SESSION_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_UPLOAD_SESSION_ID, Value)
         End Set
     End Property
 
@@ -129,7 +129,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_RECORD_NUMBER, Value)
+            SetValue(ContractUploadDAL.COL_NAME_RECORD_NUMBER, Value)
         End Set
     End Property
 
@@ -146,7 +146,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_VALIDATION_ERRORS, Value)
+            SetValue(ContractUploadDAL.COL_NAME_VALIDATION_ERRORS, Value)
         End Set
     End Property
 
@@ -163,7 +163,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
@@ -180,7 +180,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -197,7 +197,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_CONTRACT_TYPE_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_CONTRACT_TYPE_ID, Value)
         End Set
     End Property
 
@@ -214,7 +214,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(ContractUploadDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
@@ -231,7 +231,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(ContractUploadDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
@@ -248,7 +248,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_COMMISSIONS_PERCENT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_COMMISSIONS_PERCENT, Value)
         End Set
     End Property
 
@@ -265,7 +265,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_MARKETING_PERCENT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_MARKETING_PERCENT, Value)
         End Set
     End Property
 
@@ -282,7 +282,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_ADMIN_EXPENSE, Value)
+            SetValue(ContractUploadDAL.COL_NAME_ADMIN_EXPENSE, Value)
         End Set
     End Property
 
@@ -299,7 +299,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_PROFIT_PERCENT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_PROFIT_PERCENT, Value)
         End Set
     End Property
 
@@ -316,7 +316,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_LOSS_COST_PERCENT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_LOSS_COST_PERCENT, Value)
         End Set
     End Property
 
@@ -333,7 +333,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_CURRENCY_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_CURRENCY_ID, Value)
         End Set
     End Property
 
@@ -350,7 +350,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_TYPE_OF_MARKETING_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_TYPE_OF_MARKETING_ID, Value)
         End Set
     End Property
 
@@ -367,7 +367,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID, Value)
         End Set
     End Property
 
@@ -384,7 +384,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_TYPE_OF_INSURANCE_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_TYPE_OF_INSURANCE_ID, Value)
         End Set
     End Property
 
@@ -401,7 +401,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_MIN_REPLACEMENT_COST, Value)
+            SetValue(ContractUploadDAL.COL_NAME_MIN_REPLACEMENT_COST, Value)
         End Set
     End Property
 
@@ -418,7 +418,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_WARRANTY_MAX_DELAY, Value)
+            SetValue(ContractUploadDAL.COL_NAME_WARRANTY_MAX_DELAY, Value)
         End Set
     End Property
 
@@ -435,7 +435,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_NET_COMMISSIONS_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_NET_COMMISSIONS_ID, Value)
         End Set
     End Property
 
@@ -452,7 +452,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_NET_MARKETING_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_NET_MARKETING_ID, Value)
         End Set
     End Property
 
@@ -469,7 +469,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_NET_TAXES_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_NET_TAXES_ID, Value)
         End Set
     End Property
 
@@ -486,7 +486,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_DEDUCTIBLE, Value)
+            SetValue(ContractUploadDAL.COL_NAME_DEDUCTIBLE, Value)
         End Set
     End Property
 
@@ -503,7 +503,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_WAITING_PERIOD, Value)
+            SetValue(ContractUploadDAL.COL_NAME_WAITING_PERIOD, Value)
         End Set
     End Property
 
@@ -520,7 +520,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_FUNDING_SOURCE_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_FUNDING_SOURCE_ID, Value)
         End Set
     End Property
 
@@ -537,7 +537,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_EDIT_MODEL_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_EDIT_MODEL_ID, Value)
         End Set
     End Property
 
@@ -554,7 +554,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_DEALER_MARKUP_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_DEALER_MARKUP_ID, Value)
         End Set
     End Property
 
@@ -571,7 +571,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_AUTO_MFG_COVERAGE_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_AUTO_MFG_COVERAGE_ID, Value)
         End Set
     End Property
 
@@ -588,7 +588,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_RESTRICT_MARKUP_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_RESTRICT_MARKUP_ID, Value)
         End Set
     End Property
 
@@ -605,7 +605,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_LAYOUT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_LAYOUT, Value)
         End Set
     End Property
 
@@ -622,7 +622,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_SUSPENSE_DAYS, Value)
+            SetValue(ContractUploadDAL.COL_NAME_SUSPENSE_DAYS, Value)
         End Set
     End Property
 
@@ -639,7 +639,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_CANCELLATION_DAYS, Value)
+            SetValue(ContractUploadDAL.COL_NAME_CANCELLATION_DAYS, Value)
         End Set
     End Property
 
@@ -656,7 +656,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_COMMENT1, Value)
+            SetValue(ContractUploadDAL.COL_NAME_COMMENT1, Value)
         End Set
     End Property
 
@@ -673,7 +673,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_FIXED_ESC_DURATION_FLAG, Value)
+            SetValue(ContractUploadDAL.COL_NAME_FIXED_ESC_DURATION_FLAG, Value)
         End Set
     End Property
 
@@ -690,7 +690,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_POLICY, Value)
+            SetValue(ContractUploadDAL.COL_NAME_POLICY, Value)
         End Set
     End Property
 
@@ -707,7 +707,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_REPLACEMENT_POLICY_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_REPLACEMENT_POLICY_ID, Value)
         End Set
     End Property
 
@@ -724,7 +724,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_COINSURANCE_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_COINSURANCE_ID, Value)
         End Set
     End Property
 
@@ -741,7 +741,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_PARTICIPATION_PERCENT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_PARTICIPATION_PERCENT, Value)
         End Set
     End Property
 
@@ -758,7 +758,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_ID_VALIDATION_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_ID_VALIDATION_ID, Value)
         End Set
     End Property
 
@@ -775,7 +775,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_CLAIM_CONTROL_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_CLAIM_CONTROL_ID, Value)
         End Set
     End Property
 
@@ -792,7 +792,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_RATING_PLAN, Value)
+            SetValue(ContractUploadDAL.COL_NAME_RATING_PLAN, Value)
         End Set
     End Property
 
@@ -809,7 +809,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_CURRENCY_CONVERSION_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_CURRENCY_CONVERSION_ID, Value)
         End Set
     End Property
 
@@ -826,7 +826,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_CURRENCY_OF_COVERAGES_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_CURRENCY_OF_COVERAGES_ID, Value)
         End Set
     End Property
 
@@ -843,7 +843,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_REMAINING_MFG_DAYS, Value)
+            SetValue(ContractUploadDAL.COL_NAME_REMAINING_MFG_DAYS, Value)
         End Set
     End Property
 
@@ -860,7 +860,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_ACSEL_PROD_CODE_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_ACSEL_PROD_CODE_ID, Value)
         End Set
     End Property
 
@@ -877,7 +877,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_CANCELLATION_REASON_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_CANCELLATION_REASON_ID, Value)
         End Set
     End Property
 
@@ -894,7 +894,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_FULL_REFUND_DAYS, Value)
+            SetValue(ContractUploadDAL.COL_NAME_FULL_REFUND_DAYS, Value)
         End Set
     End Property
 
@@ -911,7 +911,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_AUTO_SET_LIABILITY_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_AUTO_SET_LIABILITY_ID, Value)
         End Set
     End Property
 
@@ -928,7 +928,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_DEDUCTIBLE_PERCENT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_DEDUCTIBLE_PERCENT, Value)
         End Set
     End Property
 
@@ -945,7 +945,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_COVERAGE_DEDUCTIBLE_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_COVERAGE_DEDUCTIBLE_ID, Value)
         End Set
     End Property
 
@@ -962,7 +962,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_IGNORE_INCOMING_PREMIUM_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_IGNORE_INCOMING_PREMIUM_ID, Value)
         End Set
     End Property
 
@@ -979,7 +979,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_REPAIR_DISCOUNT_PCT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_REPAIR_DISCOUNT_PCT, Value)
         End Set
     End Property
 
@@ -996,7 +996,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT, Value)
         End Set
     End Property
 
@@ -1013,7 +1013,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_IGNORE_COVERAGE_AMT_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_IGNORE_COVERAGE_AMT_ID, Value)
         End Set
     End Property
 
@@ -1030,7 +1030,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_BACKEND_CLAIMS_ALLOWED_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_BACKEND_CLAIMS_ALLOWED_ID, Value)
         End Set
     End Property
 
@@ -1047,7 +1047,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_EDIT_MFG_TERM_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_EDIT_MFG_TERM_ID, Value)
         End Set
     End Property
 
@@ -1064,7 +1064,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_ACCT_BUSINESS_UNIT_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_ACCT_BUSINESS_UNIT_ID, Value)
         End Set
     End Property
 
@@ -1081,7 +1081,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_INSTALLMENT_PAYMENT_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_INSTALLMENT_PAYMENT_ID, Value)
         End Set
     End Property
 
@@ -1098,7 +1098,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_DAYS_OF_FIRST_PYMT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_DAYS_OF_FIRST_PYMT, Value)
         End Set
     End Property
 
@@ -1115,7 +1115,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_DAYS_TO_SEND_LETTER, Value)
+            SetValue(ContractUploadDAL.COL_NAME_DAYS_TO_SEND_LETTER, Value)
         End Set
     End Property
 
@@ -1132,7 +1132,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_DAYS_TO_CANCEL_CERT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_DAYS_TO_CANCEL_CERT, Value)
         End Set
     End Property
 
@@ -1149,7 +1149,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_DEDUCT_BY_MFG_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_DEDUCT_BY_MFG_ID, Value)
         End Set
     End Property
 
@@ -1166,7 +1166,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_PENALTY_PCT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_PENALTY_PCT, Value)
         End Set
     End Property
 
@@ -1183,7 +1183,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_CLIP_PERCENT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_CLIP_PERCENT, Value)
         End Set
     End Property
 
@@ -1200,7 +1200,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_IS_COMM_P_CODE_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_IS_COMM_P_CODE_ID, Value)
         End Set
     End Property
 
@@ -1217,7 +1217,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_BASE_INSTALLMENTS, Value)
+            SetValue(ContractUploadDAL.COL_NAME_BASE_INSTALLMENTS, Value)
         End Set
     End Property
 
@@ -1234,7 +1234,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_BILLING_CYCLE_FREQUENCY, Value)
+            SetValue(ContractUploadDAL.COL_NAME_BILLING_CYCLE_FREQUENCY, Value)
         End Set
     End Property
 
@@ -1251,7 +1251,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_MAX_INSTALLMENTS, Value)
+            SetValue(ContractUploadDAL.COL_NAME_MAX_INSTALLMENTS, Value)
         End Set
     End Property
 
@@ -1268,7 +1268,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_INSTALLMENTS_BASE_REDUCER, Value)
+            SetValue(ContractUploadDAL.COL_NAME_INSTALLMENTS_BASE_REDUCER, Value)
         End Set
     End Property
 
@@ -1285,7 +1285,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_PAST_DUE_MONTHS_ALLOWED, Value)
+            SetValue(ContractUploadDAL.COL_NAME_PAST_DUE_MONTHS_ALLOWED, Value)
         End Set
     End Property
 
@@ -1302,7 +1302,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_COLLECTION_RE_ATTEMPTS, Value)
+            SetValue(ContractUploadDAL.COL_NAME_COLLECTION_RE_ATTEMPTS, Value)
         End Set
     End Property
 
@@ -1319,7 +1319,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_INCLUDE_FIRST_PMT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_INCLUDE_FIRST_PMT, Value)
         End Set
     End Property
 
@@ -1336,7 +1336,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_COLLECTION_CYCLE_TYPE_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_COLLECTION_CYCLE_TYPE_ID, Value)
         End Set
     End Property
 
@@ -1353,7 +1353,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_CYCLE_DAY, Value)
+            SetValue(ContractUploadDAL.COL_NAME_CYCLE_DAY, Value)
         End Set
     End Property
 
@@ -1370,7 +1370,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_OFFSET_BEFORE_DUE_DATE, Value)
+            SetValue(ContractUploadDAL.COL_NAME_OFFSET_BEFORE_DUE_DATE, Value)
         End Set
     End Property
 
@@ -1387,7 +1387,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_INS_PREMIUM_FACTOR, Value)
+            SetValue(ContractUploadDAL.COL_NAME_INS_PREMIUM_FACTOR, Value)
         End Set
     End Property
 
@@ -1404,7 +1404,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_EXTEND_COVERAGE_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_EXTEND_COVERAGE_ID, Value)
         End Set
     End Property
 
@@ -1421,7 +1421,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_EXTRA_MONS_TO_EXTEND_COVERAGE, Value)
+            SetValue(ContractUploadDAL.COL_NAME_EXTRA_MONS_TO_EXTEND_COVERAGE, Value)
         End Set
     End Property
 
@@ -1438,7 +1438,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_EXTRA_DAYS_TO_EXTEND_COVERAGE, Value)
+            SetValue(ContractUploadDAL.COL_NAME_EXTRA_DAYS_TO_EXTEND_COVERAGE, Value)
         End Set
     End Property
 
@@ -1455,7 +1455,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_ALLOW_DIFFERENT_COVERAGE, Value)
+            SetValue(ContractUploadDAL.COL_NAME_ALLOW_DIFFERENT_COVERAGE, Value)
         End Set
     End Property
 
@@ -1472,7 +1472,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_ALLOW_NO_EXTENDED, Value)
+            SetValue(ContractUploadDAL.COL_NAME_ALLOW_NO_EXTENDED, Value)
         End Set
     End Property
 
@@ -1489,7 +1489,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_NUM_OF_CLAIMS, Value)
+            SetValue(ContractUploadDAL.COL_NAME_NUM_OF_CLAIMS, Value)
         End Set
     End Property
 
@@ -1506,7 +1506,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_CLAIM_LIMIT_BASED_ON_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_CLAIM_LIMIT_BASED_ON_ID, Value)
         End Set
     End Property
 
@@ -1523,7 +1523,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_DAYS_TO_REPORT_CLAIM, Value)
+            SetValue(ContractUploadDAL.COL_NAME_DAYS_TO_REPORT_CLAIM, Value)
         End Set
     End Property
 
@@ -1540,7 +1540,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_MARKETING_PROMO_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_MARKETING_PROMO_ID, Value)
         End Set
     End Property
 
@@ -1557,7 +1557,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_CUST_ADDRESS_REQUIRED_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_CUST_ADDRESS_REQUIRED_ID, Value)
         End Set
     End Property
 
@@ -1574,7 +1574,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_FIRST_PYMT_MONTHS, Value)
+            SetValue(ContractUploadDAL.COL_NAME_FIRST_PYMT_MONTHS, Value)
         End Set
     End Property
 
@@ -1591,7 +1591,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_ALLOW_MULTIPLE_REJECTIONS_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_ALLOW_MULTIPLE_REJECTIONS_ID, Value)
         End Set
     End Property
 
@@ -1608,7 +1608,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID, Value)
         End Set
     End Property
 
@@ -1625,7 +1625,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_PRO_RATA_METHOD_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_PRO_RATA_METHOD_ID, Value)
         End Set
     End Property
 
@@ -1642,7 +1642,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_PAY_OUTSTANDING_PREMIUM_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_PAY_OUTSTANDING_PREMIUM_ID, Value)
         End Set
     End Property
 
@@ -1659,7 +1659,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_AUTHORIZED_AMOUNT_MAX_UPDATES, Value)
+            SetValue(ContractUploadDAL.COL_NAME_AUTHORIZED_AMOUNT_MAX_UPDATES, Value)
         End Set
     End Property
 
@@ -1676,7 +1676,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_RECURRING_PREMIUM_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_RECURRING_PREMIUM_ID, Value)
         End Set
     End Property
 
@@ -1693,7 +1693,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_RECURRING_WARRANTY_PERIOD, Value)
+            SetValue(ContractUploadDAL.COL_NAME_RECURRING_WARRANTY_PERIOD, Value)
         End Set
     End Property
 
@@ -1710,7 +1710,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_ALLOW_PYMT_SKIP_MONTHS, Value)
+            SetValue(ContractUploadDAL.COL_NAME_ALLOW_PYMT_SKIP_MONTHS, Value)
         End Set
     End Property
 
@@ -1727,7 +1727,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_NUMBER_OF_DAYS_TO_REACTIVATE, Value)
+            SetValue(ContractUploadDAL.COL_NAME_NUMBER_OF_DAYS_TO_REACTIVATE, Value)
         End Set
     End Property
 
@@ -1744,7 +1744,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_BILLING_CYCLE_TYPE_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_BILLING_CYCLE_TYPE_ID, Value)
         End Set
     End Property
 
@@ -1761,7 +1761,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_DAILY_RATE_BASED_ON_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_DAILY_RATE_BASED_ON_ID, Value)
         End Set
     End Property
 
@@ -1778,7 +1778,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_ALLOW_BILLING_AFTER_CNCLTN, Value)
+            SetValue(ContractUploadDAL.COL_NAME_ALLOW_BILLING_AFTER_CNCLTN, Value)
         End Set
     End Property
 
@@ -1795,7 +1795,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_ALLOW_COLLCTN_AFTER_CNCLTN, Value)
+            SetValue(ContractUploadDAL.COL_NAME_ALLOW_COLLCTN_AFTER_CNCLTN, Value)
         End Set
     End Property
 
@@ -1812,7 +1812,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_REPLACEMENT_POLICY_CLAIM_COUNT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_REPLACEMENT_POLICY_CLAIM_COUNT, Value)
         End Set
     End Property
 
@@ -1829,7 +1829,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_FUTURE_DATE_ALLOW_FOR_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_FUTURE_DATE_ALLOW_FOR_ID, Value)
         End Set
     End Property
 
@@ -1846,7 +1846,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_IGNORE_WAITING_PERIOD_WSD_PSD, Value)
+            SetValue(ContractUploadDAL.COL_NAME_IGNORE_WAITING_PERIOD_WSD_PSD, Value)
         End Set
     End Property
 
@@ -1863,7 +1863,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_ALLOW_COVERAGE_MARKUP_DTBN, Value)
+            SetValue(ContractUploadDAL.COL_NAME_ALLOW_COVERAGE_MARKUP_DTBN, Value)
         End Set
     End Property
 
@@ -1880,7 +1880,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_NUM_OF_REPAIR_CLAIMS, Value)
+            SetValue(ContractUploadDAL.COL_NAME_NUM_OF_REPAIR_CLAIMS, Value)
         End Set
     End Property
 
@@ -1897,7 +1897,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_NUM_OF_REPLACEMENT_CLAIMS, Value)
+            SetValue(ContractUploadDAL.COL_NAME_NUM_OF_REPLACEMENT_CLAIMS, Value)
         End Set
     End Property
 
@@ -1912,7 +1912,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_PAYMENT_PROCESSING_TYPE_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_PAYMENT_PROCESSING_TYPE_ID, Value)
         End Set
     End Property
 
@@ -1928,7 +1928,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_THIRD_PARTY_NAME, Value)
+            SetValue(ContractUploadDAL.COL_NAME_THIRD_PARTY_NAME, Value)
         End Set
     End Property
 
@@ -1944,7 +1944,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_THIRD_PARTY_TAX_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_THIRD_PARTY_TAX_ID, Value)
         End Set
     End Property
 
@@ -1961,7 +1961,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_RDO_NAME, Value)
+            SetValue(ContractUploadDAL.COL_NAME_RDO_NAME, Value)
         End Set
     End Property
 
@@ -1977,7 +1977,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_RDO_TAX_ID, Value)
+            SetValue(ContractUploadDAL.COL_NAME_RDO_TAX_ID, Value)
         End Set
     End Property
 
@@ -1992,7 +1992,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_RDO_PERCENT, Value)
+            SetValue(ContractUploadDAL.COL_NAME_RDO_PERCENT, Value)
         End Set
     End Property
 
@@ -2010,7 +2010,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_POLICY_TYPE_CODE, Value)
+            SetValue(ContractUploadDAL.COL_NAME_POLICY_TYPE_CODE, Value)
         End Set
     End Property
 
@@ -2027,7 +2027,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_POLICY_GENERATION_CODE, Value)
+            SetValue(ContractUploadDAL.COL_NAME_POLICY_GENERATION_CODE, Value)
         End Set
     End Property
 
@@ -2044,7 +2044,7 @@ Public Class ContractUpload
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ContractUploadDAL.COL_NAME_LINE_OF_BUSINESS_CODE, Value)
+            SetValue(ContractUploadDAL.COL_NAME_LINE_OF_BUSINESS_CODE, Value)
         End Set
     End Property
 
@@ -2054,15 +2054,15 @@ Public Class ContractUpload
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ContractUploadDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

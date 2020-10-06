@@ -13,31 +13,31 @@ Public Class Cache
 #End Region
 
 #Region "Constructors"
-    Public Sub New(ByVal commonEntryExpirationTimeInMin As Long)
-        Me.expTimeInMin = commonEntryExpirationTimeInMin
-        Me.dalLookupTable = New dalLookupTable
+    Public Sub New(commonEntryExpirationTimeInMin As Long)
+        expTimeInMin = commonEntryExpirationTimeInMin
+        dalLookupTable = New dalLookupTable
     End Sub
 
     Public Sub New()
-        Me.expTimeInMin = DEFAULT_EXPIRATION_TIME
-        Me.dalLookupTable = New dalLookupTable
+        expTimeInMin = DEFAULT_EXPIRATION_TIME
+        dalLookupTable = New dalLookupTable
     End Sub
 #End Region
 
 #Region "Class Methods"
     'Expires according to Cache Configuration
-    Public Sub AddEntry(ByVal key As String, ByVal obj As Object)
-        Me.AddEntry(key, obj, Me.expTimeInMin)
+    Public Sub AddEntry(key As String, obj As Object)
+        AddEntry(key, obj, expTimeInMin)
     End Sub
 
     'Never Expires
-    Public Sub AddPermanentEntry(ByVal key As String, ByVal obj As Object)
-        Me.AddEntry(key, obj, NEVER_EXPIRE_AGE)
+    Public Sub AddPermanentEntry(key As String, obj As Object)
+        AddEntry(key, obj, NEVER_EXPIRE_AGE)
     End Sub
 
     'Expires according to "expTimeInMin" parameter value 
     '"expTimeInMin" = 0 WILL NEVER EXPIRE
-    Public Sub AddEntry(ByVal key As String, ByVal obj As Object, ByVal expTimeInMin As Long)
+    Public Sub AddEntry(key As String, obj As Object, expTimeInMin As Long)
         Dim entry As New CacheEntry
         With entry
             .obj = obj
@@ -47,19 +47,19 @@ Public Class Cache
                 .expireAt = Date.Now.AddMinutes(expTimeInMin)
             End If
         End With
-        If Me.cacheTable.ContainsKey(key) Then
+        If cacheTable.ContainsKey(key) Then
             Throw New CacheException(DUPLICATE_ENTRY_ERR_MSG)
         Else
-            Me.cacheTable.Add(key, entry)
+            cacheTable.Add(key, entry)
         End If
     End Sub
 
-    Public Function GetEntry(ByVal key As String) As Object
-        Dim entry As CacheEntry = Me.cacheTable.Item(key)
+    Public Function GetEntry(key As String) As Object
+        Dim entry As CacheEntry = cacheTable.Item(key)
         Dim obj As Object = Nothing
         If Not entry Is Nothing Then
             If entry.expireAt <= Date.Now Then
-                Me.InvalidateEntry(key)
+                InvalidateEntry(key)
             Else
                 obj = entry.obj
             End If
@@ -67,16 +67,16 @@ Public Class Cache
         Return obj
     End Function
 
-    Public Sub InvalidateEntry(ByVal key As String)
-        Me.cacheTable.Remove(key)
+    Public Sub InvalidateEntry(key As String)
+        cacheTable.Remove(key)
     End Sub
 
     Public Sub InvalidateAllEntries()
-        Me.cacheTable.Clear()
+        cacheTable.Clear()
     End Sub
 
     Public Function GetDalLookupTable() As dalLookupTable
-        Return Me.dalLookupTable
+        Return dalLookupTable
     End Function
 #End Region
 

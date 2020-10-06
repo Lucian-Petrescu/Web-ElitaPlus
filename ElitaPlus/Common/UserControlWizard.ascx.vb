@@ -20,19 +20,19 @@ Public Class UserControlWizard
             End If
             Return _steps
         End Get
-        Set(ByVal value As List(Of StepDefinition))
+        Set(value As List(Of StepDefinition))
             _steps = value
         End Set
     End Property
 
-    Protected Overrides Sub Render(ByVal writer As System.Web.UI.HtmlTextWriter)
+    Protected Overrides Sub Render(writer As System.Web.UI.HtmlTextWriter)
         MyBase.Render(writer)
 
         Dim blnFirst As Boolean = True
         With writer
             .BeginRender()
             .RenderBeginTag("ul")
-            For Each oStep As StepDefinition In Me.Steps
+            For Each oStep As StepDefinition In Steps
                 .RenderBeginTag("li")
 
                 If Not blnFirst Then
@@ -72,15 +72,15 @@ Public Class UserControlWizard
     End Sub
 
     'START  DEF-2584
-    Protected Overrides Sub LoadControlState(ByVal savedState As Object)
-        If (Not savedState Is Nothing) Then
+    Protected Overrides Sub LoadControlState(savedState As Object)
+        If (savedState IsNot Nothing) Then
             Steps = CType(savedState, List(Of StepDefinition))
         End If
     End Sub
     Protected Overrides Function SaveControlState() As Object
         Return CType(Steps, Object)
     End Function
-    Protected Overrides Sub OnInit(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnInit(e As System.EventArgs)
         MyBase.OnInit(e)
         MyBase.Page.RegisterRequiresControlState(Me)
     End Sub
@@ -100,11 +100,11 @@ Public Class StepDefinition
         Me.New(String.Empty, String.Empty, False)
     End Sub
 
-    Public Sub New(ByVal header As String, ByVal textHtml As String)
+    Public Sub New(header As String, textHtml As String)
         Me.New(header, textHtml, False)
     End Sub
 
-    Public Sub New(ByVal header As String, ByVal textHtml As String, ByVal isSelected As Boolean)
+    Public Sub New(header As String, textHtml As String, isSelected As Boolean)
 
     End Sub
 
@@ -113,7 +113,7 @@ Public Class StepDefinition
         Get
             Return _stepNumber
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             _stepNumber = value
         End Set
     End Property
@@ -123,7 +123,7 @@ Public Class StepDefinition
         Get
             Return _stepName
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _stepName = value
         End Set
     End Property
@@ -133,7 +133,7 @@ Public Class StepDefinition
         Get
             Return _isSelected
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             _isSelected = value
         End Set
     End Property
@@ -143,7 +143,7 @@ Public Class StepDefinition
         Get
             Return _translate
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             _translate = value
         End Set
     End Property

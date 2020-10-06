@@ -38,29 +38,29 @@ Public Class VSCCoverageDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("vsc_coverage_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadListByPlanID(ByVal LanguageID As Guid, ByVal PlanID As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_PLAN_ID")
+    Public Function LoadListByPlanID(LanguageID As Guid, PlanID As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_PLAN_ID")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                     New DBHelper.DBHelperParameter("language_id", LanguageID.ToByteArray), _
                     New DBHelper.DBHelperParameter("vsc_plan_id", PlanID.ToByteArray)}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -72,22 +72,22 @@ Public Class VSCCoverageDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "LOAD VSC COVERAGE LIST"
-    Public Function Load_VSC_Coverage_Plan(ByVal VSC_PLAN_ID As Guid, ByVal DEALER As String, ByVal DEALER_NAME As String, ByVal CODE As String, ByVal M_DATE As String, ByVal companygroupId As Guid) As DataSet  '
+    Public Function Load_VSC_Coverage_Plan(VSC_PLAN_ID As Guid, DEALER As String, DEALER_NAME As String, CODE As String, M_DATE As String, companygroupId As Guid) As DataSet  '
         Dim selectStmt As String
         Dim parameters() As DBHelper.DBHelperParameter
 
-        selectStmt = Me.Config("/SQL/VSC_COVERAGE_LOAD_LIST")
+        selectStmt = Config("/SQL/VSC_COVERAGE_LOAD_LIST")
 
         Dim inClauseCondition As String
         Dim whereClauseConditions As String = ""
@@ -113,27 +113,27 @@ Public Class VSCCoverageDAL
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
 
         End If
 
         ' - -dynamic_where_clause
         Try
             Dim ds As DataSet
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function Load_VSC_Coverage(ByVal VSC_PLAN_ID As Guid) As DataSet  '
+    Public Function Load_VSC_Coverage(VSC_PLAN_ID As Guid) As DataSet  '
         Dim selectStmt As String
         Dim parameters() As DBHelper.DBHelperParameter
 
-        selectStmt = Me.Config("/SQL/VSC_COVERAGE_LIST")
+        selectStmt = Config("/SQL/VSC_COVERAGE_LIST")
         Dim whereClauseConditions As String = ""
 
         If Not VSC_PLAN_ID.Equals(Guid.Empty) Then
@@ -141,16 +141,16 @@ Public Class VSCCoverageDAL
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
 
         End If
 
         ' - -dynamic_where_clause
         Try
             Dim ds As DataSet
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

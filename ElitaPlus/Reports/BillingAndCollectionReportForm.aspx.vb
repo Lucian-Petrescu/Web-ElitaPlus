@@ -80,7 +80,7 @@ Namespace Reports
         Private designerPlaceholderDeclaration As System.Object
 
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -90,40 +90,40 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
             'Put user code to initialize the page here
-            Me.errorctrl.Clear_Hide()
+            errorctrl.Clear_Hide()
 
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     LabelReportHeader.Text = RPT_FILENAME_WINDOW
 
                     InitializeForm()
 
                     'Date Calendars
-                    Me.AddCalendar(Me.btnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.btnEndDate, Me.moEndDateText)
+                    AddCalendar(btnBeginDate, moBeginDateText)
+                    AddCalendar(btnEndDate, moEndDateText)
                 Else
                     ClearErrLabels()
                 End If
 
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.errorctrl)
+                HandleErrors(ex, errorctrl)
             End Try
 
-            Me.ShowMissingTranslations(Me.errorctrl)
+            ShowMissingTranslations(errorctrl)
         End Sub
 #End Region
 
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(mobegindatelabel)
-            Me.ClearLabelErrSign(moenddatelabel)
+            ClearLabelErrSign(mobegindatelabel)
+            ClearLabelErrSign(moenddatelabel)
             '            Me.ClearLabelErrSign(lblCoverage)
-            Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
-            If Me.rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
+            ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+            If rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
             '     If Me.rbCoverage.Checked Then ddlCoverage.SelectedIndex = -1
         End Sub
 
@@ -146,9 +146,9 @@ Namespace Reports
             PopulateDropDowns()
 
             Dim t As Date = Date.Now.AddMonths(-1).AddDays(1)
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now)
-            Me.rdealer.Checked = True
+            moBeginDateText.Text = GetDateFormattedString(t)
+            moEndDateText.Text = GetDateFormattedString(Date.Now)
+            rdealer.Checked = True
             '    Me.rbCoverage.Checked = True
         End Sub
 
@@ -156,7 +156,7 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btngenrpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btngenrpt.Click
             Try
                 Dim params As ReportCeBaseForm.Params
 
@@ -173,7 +173,7 @@ Namespace Reports
                 Dim beginDate As String = ReportCeBase.FormatDate(mobegindatelabel, moBeginDateText.Text)
 
 
-                If Me.rdealer.Checked Then
+                If rdealer.Checked Then
                     selectedDealerId = Guid.Empty
                 Else
                     If selectedDealerId.Equals(Guid.Empty) Then
@@ -211,7 +211,7 @@ Namespace Reports
             Catch ex As Threading.ThreadAbortException
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.errorctrl)
+                HandleErrors(ex, errorctrl)
             End Try
         End Sub
 
@@ -219,14 +219,14 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal rptMode As String,
-                               ByVal userId As String,
-                               ByVal RPT_Type As String,
-                               ByVal Date_Type As String,
-                               ByVal beginDate As String,
-                               ByVal endDate As String,
-                               ByVal company_groupId As String,
-                               ByVal dealerId As String) As ReportCeBaseForm.Params
+        Function SetParameters(rptMode As String,
+                               userId As String,
+                               RPT_Type As String,
+                               Date_Type As String,
+                               beginDate As String,
+                               endDate As String,
+                               company_groupId As String,
+                               dealerId As String) As ReportCeBaseForm.Params
             ' ByVal CoverageId As String) As ReportCeBaseForm.Params
 
             Dim reportName As String
@@ -256,7 +256,7 @@ Namespace Reports
             repParams(6) = New ReportCeBaseForm.RptParam("PI_DEALER_ID", dealerId, SubfileName)
             '  repParams(6) = New ReportCeBaseForm.RptParam("PI_COVERAGE_ID", CoverageId, SubfileName)
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With Params
                 .msRptName = reportName
@@ -271,7 +271,7 @@ Namespace Reports
 
 #End Region
 
-        Protected Sub rdealer_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rdealer.CheckedChanged
+        Protected Sub rdealer_CheckedChanged(sender As Object, e As EventArgs) Handles rdealer.CheckedChanged
 
         End Sub
     End Class

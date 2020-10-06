@@ -10,46 +10,46 @@ Public Class Issue
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New IssueDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             SetValue(dal.COL_NAME_EFFECTIVE, EquipmentListDetail.GetCurrentDateTime())
             SetValue(dal.COL_NAME_EXPIRATION, ISSUE_EXPIRATION_DEFAULT)
@@ -62,20 +62,20 @@ Public Class Issue
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New IssueDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -129,7 +129,7 @@ Public Class Issue
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_CODE, Value)
+            SetValue(IssueDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
@@ -147,7 +147,7 @@ Public Class Issue
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(IssueDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -163,7 +163,7 @@ Public Class Issue
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_ISSUE_TYPE_ID, Value)
+            SetValue(IssueDAL.COL_NAME_ISSUE_TYPE_ID, Value)
         End Set
     End Property
 
@@ -180,7 +180,7 @@ Public Class Issue
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(IssueDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
@@ -197,7 +197,7 @@ Public Class Issue
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(IssueDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
     Public Property IssueProcessor() As String
@@ -211,7 +211,7 @@ Public Class Issue
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_ISSUE_PROCESSOR, Value)
+            SetValue(IssueDAL.COL_NAME_ISSUE_PROCESSOR, Value)
         End Set
     End Property
 
@@ -226,7 +226,7 @@ Public Class Issue
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_DENIED_REASON, Value)
+            SetValue(IssueDAL.COL_NAME_DENIED_REASON, Value)
         End Set
     End Property
     Public Property SPClaimType() As String
@@ -240,7 +240,7 @@ Public Class Issue
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_SP_CLAIM_TYPE, Value)
+            SetValue(IssueDAL.COL_NAME_SP_CLAIM_TYPE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=500)>
@@ -255,7 +255,7 @@ Public Class Issue
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_SP_CLAIM_VALUE, Value)
+            SetValue(IssueDAL.COL_NAME_SP_CLAIM_VALUE, Value)
         End Set
     End Property
     '''TODO: Add RegEx Validations
@@ -271,7 +271,7 @@ Public Class Issue
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_PRE_CONDITIONS, Value)
+            SetValue(IssueDAL.COL_NAME_PRE_CONDITIONS, Value)
         End Set
     End Property
 
@@ -281,8 +281,8 @@ Public Class Issue
             If (m_preConditionsList Is Nothing) Then
                 m_preConditionsList = New List(Of String)()
 
-                If (Not String.IsNullOrWhiteSpace(Me.PreConditions)) Then
-                    m_preConditionsList.AddRange(Me.PreConditions.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries))
+                If (Not String.IsNullOrWhiteSpace(PreConditions)) Then
+                    m_preConditionsList.AddRange(PreConditions.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries))
                 End If
             End If
 
@@ -302,7 +302,7 @@ Public Class Issue
 
     Public ReadOnly Property MyDataset() As DataSet
         Get
-            Return Me.Dataset
+            Return Dataset
         End Get
     End Property
 
@@ -312,15 +312,15 @@ Public Class Issue
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New IssueDAL
-                Me.UpdateTranslation()
-                dal.UpdateFamily(Me.Dataset)
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                UpdateTranslation()
+                dal.UpdateFamily(Dataset)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -340,26 +340,26 @@ Public Class Issue
 
         DropdownId = QuestionList.GetDropdownId(ISSUE_DESCRIPTION)
         If Not DropdownId = Guid.Empty Then
-            listItemId = (New IssueDAL).GetListItembyCode(Me.Code.ToUpper, DropdownId)
+            listItemId = (New IssueDAL).GetListItembyCode(Code.ToUpper, DropdownId)
             If listItemId = Guid.Empty Then
-                retVal = dropdownBO.AddDropdownItem(Me.Code.ToUpper, Codes.YESNO_Y, Codes.YESNO_Y, DropdownId, Me.Description, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+                retVal = dropdownBO.AddDropdownItem(Code.ToUpper, Codes.YESNO_Y, Codes.YESNO_Y, DropdownId, Description, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
             Else
-                retVal = dropdownBO.UpdateDropdownItem(listItemId, Me.Code.ToUpper,
-                         Codes.YESNO_Y, Codes.YESNO_Y, Me.Description, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+                retVal = dropdownBO.UpdateDropdownItem(listItemId, Code.ToUpper,
+                         Codes.YESNO_Y, Codes.YESNO_Y, Description, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
             End If
         End If
         'DEF-2855
 
         DropdownId = QuestionList.GetDropdownId(ICTYP)
         If Not DropdownId = Guid.Empty Then
-            If Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count > 0 Then
-                If Not Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added) Is Nothing Then
-                    For Each TECrow As DataRow In Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added).Rows
+            If MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count > 0 Then
+                If Not MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added) Is Nothing Then
+                    For Each TECrow As DataRow In MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added).Rows
                         retVal = dropdownBO.AddDropdownItem(TECrow(_CODE).ToString, Codes.YESNO_Y, Codes.YESNO_Y, DropdownId, TECrow(_TEXT).ToString, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
                     Next
                 End If
-                If Not Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified) Is Nothing Then
-                    For Each TECrow As DataRow In Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified).Rows
+                If Not MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified) Is Nothing Then
+                    For Each TECrow As DataRow In MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified).Rows
                         If Not GetDropdownCodeToUpdate(TECrow(ISSUE_COMMENT_ID)) = String.Empty Then
                             retVal = dropdownBO.UpdateDropdownItem(QuestionList.GetDropdownItemId(DropdownId,
                                      GetDropdownCodeToUpdate(TECrow(ISSUE_COMMENT_ID))), TECrow(_CODE).ToString,
@@ -367,8 +367,8 @@ Public Class Issue
                         End If
                     Next
                 End If
-                If Not Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Deleted) Is Nothing Then
-                    For Each TECrow As DataRow In Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Deleted).Rows
+                If Not MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Deleted) Is Nothing Then
+                    For Each TECrow As DataRow In MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Deleted).Rows
                         'If Not QuestionList.GetDropdownItemId(DropdownId, TECrow(_CODE).ToString) = Guid.Empty Then
                         '    retVal = dropdownBO.DeleteDropdownItem(QuestionList.GetDropdownItemId(DropdownId, TECrow(_CODE).ToString))
                         'End If
@@ -612,14 +612,14 @@ Public Class Issue
 
     '' ---
     Public Function GetNotesChild(ByVal childId As Guid) As IssueComment
-        Return CType(Me.IssueNotesChildren.GetChild(childId), IssueComment)
+        Return CType(IssueNotesChildren.GetChild(childId), IssueComment)
     End Function
 
 
     Public Function GetNotesSelectionView() As NotesSelectionView
         Dim t As DataTable = NotesSelectionView.CreateTable
         Dim detail As IssueComment
-        For Each detail In Me.IssueNotesChildren
+        For Each detail In IssueNotesChildren
             Dim row As DataRow = t.NewRow
             row(NotesSelectionView.COL_NAME_ISSUE_COMMENT_ID) = detail.Id.ToByteArray
             row(NotesSelectionView.COL_NAME_NAME_ISSUE_COMMENT_TYPE_ID) = detail.IssueCommentTypeId.ToByteArray
@@ -652,33 +652,33 @@ Public Class Issue
     End Class
 
     Public Function GetQuestionsChild(ByVal childId As Guid) As IssueQuestion
-        Return CType(Me.IssueQuestionsChildren.GetChild(childId), IssueQuestion)
+        Return CType(IssueQuestionsChildren.GetChild(childId), IssueQuestion)
     End Function
 
     Public Function GetRulesChild(ByVal childId As Guid) As RuleIssue
-        Return CType(Me.IssueRulesChildren.GetChild(childId), RuleIssue)
+        Return CType(IssueRulesChildren.GetChild(childId), RuleIssue)
     End Function
 
     '' ---
     Public Function GetNewNotesChild() As IssueComment
-        Dim NewNotesList As IssueComment = CType(Me.IssueNotesChildren.GetNewChild, IssueComment)
-        NewNotesList.IssueId = Me.Id
+        Dim NewNotesList As IssueComment = CType(IssueNotesChildren.GetNewChild, IssueComment)
+        NewNotesList.IssueId = Id
         Return NewNotesList
     End Function
 
     Public Function GetNewQuestionsChild() As IssueQuestion
-        Dim NewQuestionsList As IssueQuestion = CType(Me.IssueQuestionsChildren.GetNewChild, IssueQuestion)
-        NewQuestionsList.IssueId = Me.Id
-        NewQuestionsList.Effective = Me.Effective
-        NewQuestionsList.Expiration = Me.Expiration
+        Dim NewQuestionsList As IssueQuestion = CType(IssueQuestionsChildren.GetNewChild, IssueQuestion)
+        NewQuestionsList.IssueId = Id
+        NewQuestionsList.Effective = Effective
+        NewQuestionsList.Expiration = Expiration
         Return NewQuestionsList
     End Function
 
     Public Function GetNewRulesChild() As RuleIssue
-        Dim NewRulesList As RuleIssue = CType(Me.IssueRulesChildren.GetNewChild, RuleIssue)
-        NewRulesList.IssueId = Me.Id
-        NewRulesList.Effective = Me.Effective.Value
-        NewRulesList.Expiration = Me.Expiration.Value
+        Dim NewRulesList As RuleIssue = CType(IssueRulesChildren.GetNewChild, RuleIssue)
+        NewRulesList.IssueId = Id
+        NewRulesList.Effective = Effective.Value
+        NewRulesList.Expiration = Expiration.Value
         Return NewRulesList
     End Function
 
@@ -691,8 +691,8 @@ Public Class Issue
     End Property
 
     Public Function GetNewCompanyWorkQueueIssueChild() As CompanyWorkQueueIssue
-        Dim NewNotesList As CompanyWorkQueueIssue = CType(Me.CompanyWorkQueueIssueChildren.GetNewChild, CompanyWorkQueueIssue)
-        NewNotesList.IssueId = Me.Id
+        Dim NewNotesList As CompanyWorkQueueIssue = CType(CompanyWorkQueueIssueChildren.GetNewChild, CompanyWorkQueueIssue)
+        NewNotesList.IssueId = Id
         Return NewNotesList
     End Function
 
@@ -702,7 +702,7 @@ Public Class Issue
 
         Dim WQ_List As WrkQueue.WorkQueue() = WorkQueue.GetList("*", "", "CLM", Nothing, False)
 
-        For Each detail In Me.CompanyWorkQueueIssueChildren
+        For Each detail In CompanyWorkQueueIssueChildren
             Dim row As DataRow = t.NewRow
             row(WorkQyueueSelectionView.COL_NAME_COMPANY_WRKQUEUE_ID) = detail.Id.ToByteArray
             row(WorkQyueueSelectionView.COL_NAME_NAME_WORKQUEUE_ID) = detail.WorkqueueId.ToByteArray
@@ -761,7 +761,7 @@ Public Class Issue
         Try
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
-            For Each WQ_Issue As CompanyWorkQueueIssue In Me.CompanyWorkQueueIssueChildren
+            For Each WQ_Issue As CompanyWorkQueueIssue In CompanyWorkQueueIssueChildren
                 Dim dFound As Boolean = False
                 For Each Str As String In SelectedQueue
                     Dim WorkQueue_id As Guid = New Guid(Str)
@@ -779,14 +779,14 @@ Public Class Issue
             'next now add those items which are there in user control but we don't have it
             For Each Str As String In SelectedQueue
                 Dim dFound As Boolean = False
-                For Each WQ_Issue As CompanyWorkQueueIssue In Me.CompanyWorkQueueIssueChildren
+                For Each WQ_Issue As CompanyWorkQueueIssue In CompanyWorkQueueIssueChildren
                     Dim WorkQueue_id As Guid = New Guid(Str)
                     If WQ_Issue.WorkqueueId = WorkQueue_id Then
                         dFound = True : Exit For
                     End If
                 Next
                 If Not dFound Then
-                    Dim CompWQ As CompanyWorkQueueIssue = Me.GetNewCompanyWorkQueueIssueChild()
+                    Dim CompWQ As CompanyWorkQueueIssue = GetNewCompanyWorkQueueIssueChild()
                     CompWQ.BeginEdit()
                     CompWQ.WorkqueueId = New Guid(Str)
                     CompWQ.CompanyId = GetcompanyIdfromWorkQueue(CompWQ.WorkqueueId)
@@ -819,45 +819,45 @@ Public Class Issue
     'Added manually to the code
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 
     Public Sub Copy(ByVal original As Issue)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Detail List")
         End If
         MyBase.CopyFrom(original)
         'copy the childrens        
         Dim ChildIssueComment As IssueComment
         For Each ChildIssueComment In original.IssueNotesChildren
-            Dim newDetail As IssueComment = Me.IssueNotesChildren.GetNewChild
+            Dim newDetail As IssueComment = IssueNotesChildren.GetNewChild
             newDetail.Copy(ChildIssueComment)
-            newDetail.IssueId = Me.Id
+            newDetail.IssueId = Id
             newDetail.Save()
         Next
 
         Dim ChildIssueQuestion As IssueQuestion
         For Each ChildIssueQuestion In original.IssueQuestionsChildren
-            Dim newDetail As IssueQuestion = Me.IssueQuestionsChildren.GetNewChild
+            Dim newDetail As IssueQuestion = IssueQuestionsChildren.GetNewChild
             newDetail.Copy(ChildIssueQuestion)
-            newDetail.IssueId = Me.Id
+            newDetail.IssueId = Id
             newDetail.Save()
         Next
 
         Dim ChildRuleIssue As RuleIssue
         For Each ChildRuleIssue In original.IssueRulesChildren
-            Dim newDetail As RuleIssue = Me.IssueRulesChildren.GetNewChild
+            Dim newDetail As RuleIssue = IssueRulesChildren.GetNewChild
             newDetail.Copy(ChildRuleIssue)
-            newDetail.IssueId = Me.Id
+            newDetail.IssueId = Id
             newDetail.Save()
         Next
 
         Dim ChildCompanyWorkQueueIssue As CompanyWorkQueueIssue
         For Each ChildRuleIssue In original.CompanyWorkQueueIssueChildren
-            Dim newDetail As CompanyWorkQueueIssue = Me.CompanyWorkQueueIssueChildren.GetNewChild
+            Dim newDetail As CompanyWorkQueueIssue = CompanyWorkQueueIssueChildren.GetNewChild
             newDetail.Copy(ChildRuleIssue)
-            newDetail.IssueId = Me.Id
+            newDetail.IssueId = Id
             newDetail.Save()
         Next
 
@@ -915,11 +915,11 @@ Public Class Issue
             Dim dv As Issue.IssueSearchDV = New Issue.IssueSearchDV(EquipDal.LoadList(Code, String.Empty,
                    ActiveOn, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
-            If Not Me.Code Is Nothing And Not Me.Effective Is Nothing Then
+            If Not Code Is Nothing And Not Effective Is Nothing Then
                 For Each dr As DataRow In dv.Table.Rows
-                    If ((dr(IssueDAL.COL_NAME_CODE).ToString.ToUpper = Me.Code.ToUpper) And
-                        (dr(IssueDAL.COL_NAME_EFFECTIVE) = Date.Parse(Me.Effective).ToString("dd-MMM-yyyy")) And
-                        Not DirectCast(dr(IssueDAL.COL_NAME_ISSUE_ID), Byte()).SequenceEqual(Me.Id.ToByteArray)) Then
+                    If ((dr(IssueDAL.COL_NAME_CODE).ToString.ToUpper = Code.ToUpper) And
+                        (dr(IssueDAL.COL_NAME_EFFECTIVE) = Date.Parse(Effective).ToString("dd-MMM-yyyy")) And
+                        Not DirectCast(dr(IssueDAL.COL_NAME_ISSUE_ID), Byte()).SequenceEqual(Id.ToByteArray)) Then
                         Return True
                     End If
                 Next
@@ -939,9 +939,9 @@ Public Class Issue
                    ActiveOn, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
             For Each dr As DataRow In dv.Table.Rows
-                If ((Not dr(EquipmentDAL.COL_NAME_CODE) = Me.Code) And
-                    (Not dr(EquipmentDAL.COL_NAME_EFFECTIVE) >= Equals(Me.Effective)) And
-                    (Not dr(EquipmentDAL.COL_NAME_EXPIRATION) <= Equals(Me.Expiration))) Then
+                If ((Not dr(EquipmentDAL.COL_NAME_CODE) = Code) And
+                    (Not dr(EquipmentDAL.COL_NAME_EFFECTIVE) >= Equals(Effective)) And
+                    (Not dr(EquipmentDAL.COL_NAME_EXPIRATION) <= Equals(Expiration))) Then
                     Return True
                 End If
             Next
@@ -979,8 +979,8 @@ Public Class Issue
     Public Function IsDuplicaetNoteType() As Boolean
         Dim notesTypeList As System.Collections.Generic.List(Of Guid) = New System.Collections.Generic.List(Of Guid)()
         Dim temp As Byte()
-        If Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count > 0 Then
-            For Each Row As DataRow In Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows
+        If MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count > 0 Then
+            For Each Row As DataRow In MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows
                 temp = Row(ISSUE_COMMENT_TYPE_ID)
                 If notesTypeList.Contains(New Guid(temp)) Then
                     Continue For
@@ -989,7 +989,7 @@ Public Class Issue
                 End If
             Next
         End If
-        If notesTypeList.Count < Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count Then
+        If notesTypeList.Count < MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count Then
             Return False
         Else
             Return True

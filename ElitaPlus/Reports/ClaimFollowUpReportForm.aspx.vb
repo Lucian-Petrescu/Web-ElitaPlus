@@ -73,7 +73,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -86,30 +86,30 @@ Namespace Reports
         Private Sub InitializeForm()
             PopulateDropDowns()
             Dim t As Date = Date.Now.AddDays(-1)
-            Me.moBeginFollowUpDateText.Text = GetDateFormattedString(t)
-            Me.moEndFollowUpDateText.Text = GetDateFormattedString(Date.Now)
-            Me.rDealer.Checked = True
-            Me.rSvcCtr.Checked = True
+            moBeginFollowUpDateText.Text = GetDateFormattedString(t)
+            moEndFollowUpDateText.Text = GetDateFormattedString(Date.Now)
+            rDealer.Checked = True
+            rSvcCtr.Checked = True
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     TheRptCeInputControl.populateReportLanguages(RPT_FILENAME)
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginFollowUpDate, Me.moBeginFollowUpDateText)
-                    Me.AddCalendar(Me.BtnEndFollowUpDate, Me.moEndFollowUpDateText)
+                    AddCalendar(BtnBeginFollowUpDate, moBeginFollowUpDateText)
+                    AddCalendar(BtnEndFollowUpDate, moEndFollowUpDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
 
         End Sub
 
@@ -117,12 +117,12 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -133,10 +133,10 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moBeginFollowUpDateLabel)
-            Me.ClearLabelErrSign(moEndFollowUpDateLabel)
-            Me.ClearLabelErrSign(moDealerLabel)
-            Me.ClearLabelErrSign(SvcCtrLabel)
+            ClearLabelErrSign(moBeginFollowUpDateLabel)
+            ClearLabelErrSign(moEndFollowUpDateLabel)
+            ClearLabelErrSign(moDealerLabel)
+            ClearLabelErrSign(SvcCtrLabel)
 
         End Sub
 
@@ -152,7 +152,7 @@ Namespace Reports
         Private Sub PopulateDealerDropDown()
             'Me.BindListControlToDataView(Me.cboDealer, LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "CODE"), , , True)
             Dim oDealerList = GetDealerListByCompanyForUser()
-            Me.cboDealer.Populate(oDealerList, New PopulateOptions() With
+            cboDealer.Populate(oDealerList, New PopulateOptions() With
                                                {
                                                 .AddBlankItem = True
                                                 })
@@ -171,7 +171,7 @@ Namespace Reports
                 oListContext.CountryId = UserCountries(Index)
                 Dim oServiceCenter As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceCenterListByCountry", context:=oListContext)
                 If oServiceCenter.Count > 0 Then
-                    If Not serviceCenterListLkl Is Nothing Then
+                    If serviceCenterListLkl IsNot Nothing Then
                         serviceCenterListLkl.AddRange(oServiceCenter)
                     Else
                         serviceCenterListLkl = oServiceCenter.Clone()
@@ -179,7 +179,7 @@ Namespace Reports
 
                 End If
             Next
-            Me.cboSvcCtr.Populate(serviceCenterListLkl.ToArray(), New PopulateOptions() With
+            cboSvcCtr.Populate(serviceCenterListLkl.ToArray(), New PopulateOptions() With
         {
           .AddBlankItem = True
         })
@@ -198,7 +198,7 @@ Namespace Reports
                 oListContext.CompanyId = UserCompanies(Index)
                 Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = oDealerListForCompany.Clone()
@@ -215,8 +215,8 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal userId As String, ByVal langCode As String, ByVal dealerCode As String, ByVal svcCtrCode As String, ByVal beginFollowUpDate As String,
-                                  ByVal endFollowUpDate As String, ByVal createdby As String, ByVal sortBy As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, langCode As String, dealerCode As String, svcCtrCode As String, beginFollowUpDate As String,
+                                  endFollowUpDate As String, createdby As String, sortBy As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params
@@ -231,7 +231,7 @@ Namespace Reports
                 culturecode = TheRptCeInputControl.getCultureValue(True)
             End If
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             Dim repParams() As ReportCeBaseForm.RptParam = New ReportCeBaseForm.RptParam() _
                     {
@@ -256,17 +256,17 @@ Namespace Reports
             Dim userId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.Id)
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Dim langCode As String = LookupListNew.GetCodeFromId("LANGUAGES", langId)
-            Dim selectedDealerId As Guid = Me.GetSelectedItem(Me.cboDealer)
+            Dim selectedDealerId As Guid = GetSelectedItem(cboDealer)
             Dim dvDealer As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "CODE")
             Dim dealerCode As String = LookupListNew.GetCodeFromId(dvDealer, selectedDealerId)
-            Dim selectedSvcCtrId As Guid = Me.GetSelectedItem(Me.cboSvcCtr)
+            Dim selectedSvcCtrId As Guid = GetSelectedItem(cboSvcCtr)
             'Dim dvSvcCtr As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID).Id)
             Dim dvSvcCtr As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
             Dim svcCtrCode As String = LookupListNew.GetCodeFromId(dvSvcCtr, selectedSvcCtrId)
             Dim svcCtrName As String = LookupListNew.GetDescriptionFromId(dvSvcCtr, selectedSvcCtrId)
             Dim dvRiskType As DataView = LookupListNew.GetRiskTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
             Dim dvRepairType As DataView = LookupListNew.GetMethodOfRepairLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            Dim sortBy As String = Me.rdReportSortOrder.SelectedValue
+            Dim sortBy As String = rdReportSortOrder.SelectedValue
 
 
             Dim dvCoverageType As DataView = LookupListNew.GetCoverageTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
@@ -281,7 +281,7 @@ Namespace Reports
             endDate = ReportCeBase.FormatDate(moEndFollowUpDateLabel, moEndFollowUpDateText.Text)
             beginDate = ReportCeBase.FormatDate(moBeginFollowUpDateLabel, moBeginFollowUpDateText.Text)
 
-            If Me.rDealer.Checked Then
+            If rDealer.Checked Then
                 dealerCode = ALL
             Else
                 If selectedDealerId.Equals(Guid.Empty) Then
@@ -290,7 +290,7 @@ Namespace Reports
                 End If
             End If
 
-            If Me.rSvcCtr.Checked Then
+            If rSvcCtr.Checked Then
                 svcCtrCode = ALL
             Else
                 If selectedSvcCtrId.Equals(Guid.Empty) Then

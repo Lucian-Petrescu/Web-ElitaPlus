@@ -41,46 +41,46 @@ Public Class IssueTypeDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("issue_type_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
 
-    Public Function LoadList(ByVal code As String, _
-                                         ByVal description As String, _
-                                         ByVal languageId As Guid) As DataSet
+    Public Function LoadList(code As String, _
+                                         description As String, _
+                                         languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = String.Empty
         Dim ds As New DataSet
 
-        If ((Not (code Is Nothing)) AndAlso (Me.FormatSearchMask(code))) Then
-            whereClauseConditions &= " WHERE " & Environment.NewLine & "UPPER(" & Me.COL_NAME_CODE & ")" & code.ToUpper
+        If ((Not (code Is Nothing)) AndAlso (FormatSearchMask(code))) Then
+            whereClauseConditions &= " WHERE " & Environment.NewLine & "UPPER(" & COL_NAME_CODE & ")" & code.ToUpper
         End If
 
-        If ((Not (description Is Nothing)) AndAlso (Me.FormatSearchMask(description))) Then
+        If ((Not (description Is Nothing)) AndAlso (FormatSearchMask(description))) Then
             If (Not (whereClauseConditions = String.Empty)) Then
                 whereClauseConditions &= " AND "
             Else
                 whereClauseConditions &= " WHERE "
             End If
-            whereClauseConditions &= Environment.NewLine & "UPPER(" & Me.COL_NAME_DESCRIPTION & ")" & description.ToUpper
+            whereClauseConditions &= Environment.NewLine & "UPPER(" & COL_NAME_DESCRIPTION & ")" & description.ToUpper
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {})
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -91,14 +91,14 @@ Public Class IssueTypeDAL
 
 #Region "CRUD Methods"
     
-    Public Function GetDropdownId(ByVal listCode As String) As Guid
-        Dim selectStmt As String = Me.Config("/SQL/DROPDOWN_ID")
+    Public Function GetDropdownId(listCode As String) As Guid
+        Dim selectStmt As String = Config("/SQL/DROPDOWN_ID")
         Dim ds As New DataSet
         Dim listCodeParam As DBHelper.DBHelperParameter
         Dim id As Byte()
         Try
-            listCodeParam = New DBHelper.DBHelperParameter(Me.COL_NAME_CODE, listCode)
-            id = DBHelper.Fetch(ds, selectStmt, Me.TABLE_LIST, New DBHelper.DBHelperParameter() {listCodeParam}).Tables(Me.TABLE_LIST).Rows(0)(COL_NAME_LIST_ID)
+            listCodeParam = New DBHelper.DBHelperParameter(COL_NAME_CODE, listCode)
+            id = DBHelper.Fetch(ds, selectStmt, TABLE_LIST, New DBHelper.DBHelperParameter() {listCodeParam}).Tables(TABLE_LIST).Rows(0)(COL_NAME_LIST_ID)
             If Not id Is Nothing Then
                 Return New Guid(id)
             Else
@@ -110,19 +110,19 @@ Public Class IssueTypeDAL
         End Try
     End Function
 
-    Public Function GetDropdownItemId(ByVal dropdownId As Guid, ByVal itemCode As String) As Guid
-        Dim selectStmt As String = Me.Config("/SQL/DROPDOWN_ITEM_ID")
+    Public Function GetDropdownItemId(dropdownId As Guid, itemCode As String) As Guid
+        Dim selectStmt As String = Config("/SQL/DROPDOWN_ITEM_ID")
         Dim ds As New DataSet
         Dim itemCodeParam As DBHelper.DBHelperParameter
         Dim dropdownIdParam As DBHelper.DBHelperParameter
         Dim tempDS As DataSet
         Dim id As Byte()
         Try
-            itemCodeParam = New DBHelper.DBHelperParameter(Me.COL_NAME_CODE, itemCode)
-            dropdownIdParam = New DBHelper.DBHelperParameter(Me.COL_NAME_LIST_ID, DropdownId.ToByteArray)
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_LIST_ITEM, New DBHelper.DBHelperParameter() {itemCodeParam, dropdownIdParam})
-            If ds.Tables(Me.TABLE_LIST_ITEM).Rows.Count > 0 Then
-                id = ds.Tables(Me.TABLE_LIST_ITEM).Rows(0)(COL_NAME_LIST_ITEM_ID)
+            itemCodeParam = New DBHelper.DBHelperParameter(COL_NAME_CODE, itemCode)
+            dropdownIdParam = New DBHelper.DBHelperParameter(COL_NAME_LIST_ID, DropdownId.ToByteArray)
+            DBHelper.Fetch(ds, selectStmt, TABLE_LIST_ITEM, New DBHelper.DBHelperParameter() {itemCodeParam, dropdownIdParam})
+            If ds.Tables(TABLE_LIST_ITEM).Rows.Count > 0 Then
+                id = ds.Tables(TABLE_LIST_ITEM).Rows(0)(COL_NAME_LIST_ITEM_ID)
                 Return New Guid(id)
             Else
                 Return Guid.Empty
@@ -134,8 +134,8 @@ Public Class IssueTypeDAL
     End Function
 
 
-    Public Function AddDropdownItem(ByVal code As String, ByVal maintainable_by_user As String, ByVal display_to_user As String, ByVal list_id As Guid, ByVal englishTranslation As String, ByVal userId As String, ByVal tr As IDbTransaction) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/ADD_DROPDOWN_ITEM")
+    Public Function AddDropdownItem(code As String, maintainable_by_user As String, display_to_user As String, list_id As Guid, englishTranslation As String, userId As String, tr As IDbTransaction) As Integer
+        Dim selectStmt As String = Config("/SQL/ADD_DROPDOWN_ITEM")
 
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                             New DBHelper.DBHelperParameter("p_code", code), _
@@ -155,8 +155,8 @@ Public Class IssueTypeDAL
         Return retVal
     End Function
 
-    Public Function UpdateDropdownItem(ByVal listItemId As Guid, ByVal code As String, ByVal maintainable_by_user As String, ByVal display_to_user As String, ByVal englishTranslation As String, ByVal userId As String, ByVal Transaction As IDbTransaction) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_DROPDOWN_ITEM")
+    Public Function UpdateDropdownItem(listItemId As Guid, code As String, maintainable_by_user As String, display_to_user As String, englishTranslation As String, userId As String, Transaction As IDbTransaction) As Integer
+        Dim selectStmt As String = Config("/SQL/UPDATE_DROPDOWN_ITEM")
 
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                             New DBHelper.DBHelperParameter("p_list_item_id", listItemId.ToByteArray), _
@@ -176,8 +176,8 @@ Public Class IssueTypeDAL
         Return retVal
     End Function
 
-    Public Function DeleteDropdownItem(ByVal listItemId As Guid) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/DELETE_DROPDOWN_ITEM")
+    Public Function DeleteDropdownItem(listItemId As Guid) As Integer
+        Dim selectStmt As String = Config("/SQL/DELETE_DROPDOWN_ITEM")
 
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                             New DBHelper.DBHelperParameter("p_list_item_id", listItemId.ToByteArray)}
@@ -196,18 +196,18 @@ Public Class IssueTypeDAL
 
 #Region "Overloaded Methods"
 
-    Public Sub Update(ByVal ds As DataSet, ByRef Transaction As IDbTransaction, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Sub Update(ds As DataSet, ByRef Transaction As IDbTransaction, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
 
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         Dim tr As IDbTransaction = Transaction
         Dim retVal As Integer = 0
@@ -217,15 +217,15 @@ Public Class IssueTypeDAL
         End If
 
         Try
-            If Me.MyDropDownAction = "Add" Then
-                MyBase.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added)
-                retVal = Me.AddDropdownItem(Me.MyDropDownNewItemCode, "Y", "Y", Me.MyDropDownParentId, Me.MyDropDownNewItemDesc, Me.MyDropDownUser, tr)
-            ElseIf Me.MyDropDownAction = "Update" Then
-                MyBase.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Modified)
-                retVal = Me.UpdateDropdownItem(Me.MyDropDownListItemId, Me.MyDropDownNewItemCode, "Y", "Y", Me.MyDropDownNewItemDesc, Me.MyDropDownUser, tr)
+            If MyDropDownAction = "Add" Then
+                MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added)
+                retVal = AddDropdownItem(MyDropDownNewItemCode, "Y", "Y", MyDropDownParentId, MyDropDownNewItemDesc, MyDropDownUser, tr)
+            ElseIf MyDropDownAction = "Update" Then
+                MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Modified)
+                retVal = UpdateDropdownItem(MyDropDownListItemId, MyDropDownNewItemCode, "Y", "Y", MyDropDownNewItemDesc, MyDropDownUser, tr)
             Else
-                Me.Update(familyDataset, tr, DataRowState.Deleted)
-                retVal = Me.DeleteDropdownItem(Me.MyDropDownListItemId)
+                Update(familyDataset, tr, DataRowState.Deleted)
+                retVal = DeleteDropdownItem(MyDropDownListItemId)
             End If
 
             If retVal <> 0 Then

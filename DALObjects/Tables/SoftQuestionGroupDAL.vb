@@ -28,28 +28,28 @@ Public Class SoftQuestionGroupDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("soft_question_group_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal description As String, ByVal companyGroupId As Guid) As DataSet
+    Public Function LoadList(description As String, companyGroupId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter
         description = GetFormattedSearchStringForSQL(description)
         parameters = New DBHelper.DBHelperParameter() _
@@ -57,7 +57,7 @@ Public Class SoftQuestionGroupDAL
                                      New DBHelper.DBHelperParameter(COL_NAME_COMPANY_GROUP_ID, companyGroupId.ToByteArray())}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -71,7 +71,7 @@ Public Class SoftQuestionGroupDAL
 #Region "Overloaded Methods"
 
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
             tr = DBHelper.GetNewTransaction
@@ -84,9 +84,9 @@ Public Class SoftQuestionGroupDAL
             'because if it is a new softquestions group, we might get foreign key violation.
             'so to achieve this,we process deletes later....
 
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             riskTypeDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection
@@ -101,9 +101,9 @@ Public Class SoftQuestionGroupDAL
         End Try
     End Sub
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

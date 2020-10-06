@@ -26,9 +26,9 @@ Namespace SpecializedServices.Tisa
 
             If (Not CustomerData Is Nothing) Then
 
-                Me.CustomerName = CustomerData.Rows(0)("Customer_Name").ToString()
-                Me.IdentificationNumber = CustomerData.Rows(0)("Identification_Number").ToString()
-                Me.PhoneNumber = CustomerData.Rows(0)("Work_Phone").ToString()
+                CustomerName = CustomerData.Rows(0)("Customer_Name").ToString()
+                IdentificationNumber = CustomerData.Rows(0)("Identification_Number").ToString()
+                PhoneNumber = CustomerData.Rows(0)("Work_Phone").ToString()
 
             End If
         End Sub

@@ -10,7 +10,7 @@ Namespace Olita
 
 #Region "Operations"
 
-        Public Function Hello(ByVal name As String) As String Implements IOlitaWcf.Hello
+        Public Function Hello(name As String) As String Implements IOlitaWcf.Hello
             Dim sRet As String
 
             sRet = MyBase.Hello(name)
@@ -24,7 +24,7 @@ Namespace Olita
             Return sRet
         End Function
 
-        Public Function LoginBody(ByVal networkID As String, ByVal password As String, ByVal group As String) _
+        Public Function LoginBody(networkID As String, password As String, group As String) _
                                             As String Implements IOlitaWcf.LoginBody
             Dim sRet As String
 
@@ -32,9 +32,9 @@ Namespace Olita
             Return sRet
         End Function
 
-        Public Function ProcessRequest(ByVal token As String, _
-                                    ByVal functionToProcess As String, _
-                                    ByVal xmlStringDataIn As String) As String _
+        Public Function ProcessRequest(token As String, _
+                                    functionToProcess As String, _
+                                    xmlStringDataIn As String) As String _
                                         Implements IOlitaWcf.ProcessRequest
             Dim sRet As String
 

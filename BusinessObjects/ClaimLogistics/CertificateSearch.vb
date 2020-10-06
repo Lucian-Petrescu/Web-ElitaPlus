@@ -42,8 +42,8 @@ Public Class CertificateSearch
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -54,10 +54,10 @@ Public Class CertificateSearch
     Private Sub Load(ByVal ds As CertificateSearchDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As BOValidationException
             Throw ex
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -78,13 +78,13 @@ Public Class CertificateSearch
                     Throw New BOValidationException("Invalid Parameters Error", Common.ErrorCodes.WS_MISSING_SEARCH_CRITERION)
                 End If
 
-                If Not .IsCert_NumberNull Then Me.CertNumber = .Cert_Number
-                If Not .IsCustomer_NameNull Then Me.CustomerName = .Customer_Name
-                If Not .IsCustomer_PhoneNull Then Me.CustomerPhone = .Customer_Phone
+                If Not .IsCert_NumberNull Then CertNumber = .Cert_Number
+                If Not .IsCustomer_NameNull Then CustomerName = .Customer_Name
+                If Not .IsCustomer_PhoneNull Then CustomerPhone = .Customer_Phone
                 If Not .IsRecords_To_ReturnNull Then
-                    Me.RecordsToReturn = .Records_To_Return
+                    RecordsToReturn = .Records_To_Return
                 Else
-                    Me.RecordsToReturn = 100
+                    RecordsToReturn = 100
                 End If
 
             End With
@@ -107,52 +107,52 @@ Public Class CertificateSearch
     <ValidateParameters("")> _
     Public Property CertNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CERT_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CERT_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
     <ValidateParameters("")> _
     Public Property CustomerName() As String
         Get
-            If Row(Me.DATA_COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CUSTOMER_NAME), String)
+                Return CType(Row(DATA_COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CUSTOMER_NAME, Value)
+            SetValue(DATA_COL_NAME_CUSTOMER_NAME, Value)
         End Set
     End Property
 
     <ValidateParameters("")> _
     Public Property CustomerPhone() As String
         Get
-            If Row(Me.DATA_COL_NAME_CUSTOMER_PHONE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CUSTOMER_PHONE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CUSTOMER_PHONE), String)
+                Return CType(Row(DATA_COL_NAME_CUSTOMER_PHONE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CUSTOMER_PHONE, Value)
+            SetValue(DATA_COL_NAME_CUSTOMER_PHONE, Value)
         End Set
     End Property
 
 
     Public Property RecordsToReturn() As Integer
         Get
-            Return Me._recordsToRreturn
+            Return _recordsToRreturn
         End Get
         Set(ByVal Value As Integer)
             _recordsToRreturn = Value
@@ -164,11 +164,11 @@ Public Class CertificateSearch
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
             Dim cert As New Certificate
-            Dim _CertListDataSet As DataSet = cert.OlitaGetCertificatesList(Me.CertNumber, Me.CustomerName, Me.CustomerPhone, , Me.RecordsToReturn)
-            _CertListDataSet.DataSetName = Me.DATASET_NAME
-            _CertListDataSet.Tables(CertificateDAL.TABLE_NAME).TableName = Me.DATASET_TABLE_NAME
+            Dim _CertListDataSet As DataSet = cert.OlitaGetCertificatesList(CertNumber, CustomerName, CustomerPhone, , RecordsToReturn)
+            _CertListDataSet.DataSetName = DATASET_NAME
+            _CertListDataSet.Tables(CertificateDAL.TABLE_NAME).TableName = DATASET_TABLE_NAME
             'Return (XMLHelper.FromDatasetToXML_Std(_CertListDataSet))
             Return (XMLHelper.FromDatasetToXML(_CertListDataSet, Nothing, True, True, True, False, True))
 

@@ -9,7 +9,7 @@ Public NotInheritable Class SSRSReportServerCredentials
     Private _userName As String
     Private _password As String
     Private _domain As String
-    Public Sub New(ByVal conn As ssHelperConnection)
+    Public Sub New(conn As ssHelperConnection)
         _userName = conn.dbUserID
         _password = conn.dbPW
         _domain = conn.domain
@@ -191,7 +191,7 @@ Public Class SSHelper
     'do not allow to create instanSsS of this class, force them to
     'use the shared GetSSHelper method.  Note however that this method
     'is called internally by the CreateSession method
-    Public Sub New(ByVal conn As ssHelperConnection)
+    Public Sub New(conn As ssHelperConnection)
         Status = RptStatus.SUCCESS
         With conn
             Dim SSRSReportViewer As ReportViewer
@@ -267,7 +267,7 @@ Public Class SSHelper
         Get
             Return moInstanceId
         End Get
-        Set(ByVal Value As Long)
+        Set(Value As Long)
             moInstanceId = Value
         End Set
     End Property
@@ -276,7 +276,7 @@ Public Class SSHelper
         Get
             Return moError.status
         End Get
-        Set(ByVal Value As RptStatus)
+        Set(Value As RptStatus)
             moError.status = Value
         End Set
     End Property
@@ -285,7 +285,7 @@ Public Class SSHelper
         Get
             Return moError.msg
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             moError.msg = Value.Replace(Microsoft.VisualBasic.Constants.vbLf, String.Empty)
         End Set
     End Property
@@ -303,12 +303,12 @@ Public Class SSHelper
 
     End Function
 
-    Public Function GetDataSourceCredentials(ByVal oSSRptViwer As ReportViewer) As DataSourceCredentials
+    Public Function GetDataSourceCredentials(oSSRptViwer As ReportViewer) As DataSourceCredentials
 
         Dim dsCredential As New DataSourceCredentials
         Dim dataSource As ReportDataSourceInfoCollection
         dataSource = oSSRptViwer.ServerReport.GetDataSources()
-        If (Not oSSRptViwer.ServerReport.GetDataSources() Is Nothing AndAlso oSSRptViwer.ServerReport.GetDataSources().Count > 0) Then
+        If (oSSRptViwer.ServerReport.GetDataSources() IsNot Nothing AndAlso oSSRptViwer.ServerReport.GetDataSources().Count > 0) Then
             dsCredential.Name = dataSource.Item(0).Name
             dsCredential.UserId = dbUserID
             dsCredential.Password = dbPW

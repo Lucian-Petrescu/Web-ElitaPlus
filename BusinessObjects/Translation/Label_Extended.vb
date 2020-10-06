@@ -8,46 +8,46 @@ Public Class Label_Extended
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, Optional ByVal useFamilyId As Boolean = False)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id, useFamilyId)
+        Dataset = familyDS
+        Load(id, useFamilyId)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New LabelDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -58,30 +58,30 @@ Public Class Label_Extended
     Protected Sub Load(ByVal id As Guid, Optional ByVal useFamilyId As Boolean = False)
         Try
             Dim dal As New LabelDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
                 If useFamilyId Then
-                    Me.Row = Me.FindRow(id, dal.COL_NAME_DICT_ITEM_ID, Me.Dataset.Tables(dal.TABLE_NAME))
+                    Row = FindRow(id, dal.COL_NAME_DICT_ITEM_ID, Dataset.Tables(dal.TABLE_NAME))
                 Else
-                    Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+                    Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
                 End If
                 'Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id, useFamilyId)
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id, useFamilyId)
                 If useFamilyId Then
-                    Me.Row = Me.FindRow(id, dal.COL_NAME_DICT_ITEM_ID, Me.Dataset.Tables(dal.TABLE_NAME))
+                    Row = FindRow(id, dal.COL_NAME_DICT_ITEM_ID, Dataset.Tables(dal.TABLE_NAME))
                 Else
-                    Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+                    Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
                 End If
 
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -122,7 +122,7 @@ Public Class Label_Extended
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(LabelDAL.COL_NAME_UI_PROG_CODE, Value)
+            SetValue(LabelDAL.COL_NAME_UI_PROG_CODE, Value)
         End Set
     End Property
 
@@ -139,7 +139,7 @@ Public Class Label_Extended
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(LabelDAL.COL_NAME_IN_USE, Value)
+            SetValue(LabelDAL.COL_NAME_IN_USE, Value)
         End Set
     End Property
 
@@ -156,7 +156,7 @@ Public Class Label_Extended
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(LabelDAL.COL_NAME_DICT_ITEM_ID, Value)
+            SetValue(LabelDAL.COL_NAME_DICT_ITEM_ID, Value)
         End Set
     End Property
 
@@ -167,15 +167,15 @@ Public Class Label_Extended
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New LabelDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

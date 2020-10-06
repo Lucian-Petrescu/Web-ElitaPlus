@@ -70,8 +70,8 @@ Public Class ClaimValidation
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -82,10 +82,10 @@ Public Class ClaimValidation
     Private Sub Load(ByVal ds As ClaimValidationDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -102,8 +102,8 @@ Public Class ClaimValidation
         Try
             If ds.TRANSACTION_HEADER.Count = 0 Or ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
             With ds.TRANSACTION_HEADER.Item(0)
-                Me.TransactionId = .TRANSACTION_ID
-                Me.FunctionTypeCode = .FUNCTION_TYPE
+                TransactionId = .TRANSACTION_ID
+                FunctionTypeCode = .FUNCTION_TYPE
             End With
 
             ' Now only support claim update validation
@@ -231,15 +231,15 @@ Public Class ClaimValidation
 
             Dim outputXml As XElement = <ClaimValidation>
                                             <TRANSACTION_HEADER>
-                                                <TRANSACTION_ID><%= Me.TransactionId %></TRANSACTION_ID>
-                                                <FUNCTION_TYPE><%= Me.FunctionTypeCode %></FUNCTION_TYPE>
+                                                <TRANSACTION_ID><%= TransactionId %></TRANSACTION_ID>
+                                                <FUNCTION_TYPE><%= FunctionTypeCode %></FUNCTION_TYPE>
                                             </TRANSACTION_HEADER>
                                         </ClaimValidation>
 
 
             ' Now only support claim update validation
             ' For claim insert, open for future implementation
-            If Not (Me.FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM) Then
+            If Not (FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM) Then
                 Dim errorInfo As String = "User:" & ElitaPlusIdentity.Current.ActiveUser.NetworkId & "; Date:" & Date.Now.ToString("s") & TimeZoneInfo.Local.ToString.Substring(4, 6)
                 outputXml = <Error>
                                 <Code><%= Common.ErrorCodes.ERR_FUNCTION_TYPE_CODE %></Code>

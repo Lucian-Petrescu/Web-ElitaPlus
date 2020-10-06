@@ -12,7 +12,7 @@
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -43,7 +43,7 @@
         Private mbAddNothingSelected As Boolean = True
         Private mnCodeFieldLength As Integer = 10
         Private mnStartDropIndex As Integer = 0
-        Public Event SelectedDropChanged(ByVal aSrc As ServiceClassServiceTypeControl)
+        Public Event SelectedDropChanged(aSrc As ServiceClassServiceTypeControl)
         Private moAdditionalOnClickJavaScript As String = ""
         Private moClassControlID As String = "ServiceClassServiceTypeControl_cboClass"
         Private moTypeControlID As String = "ServiceClassServiceTypeControl_cboType"
@@ -61,7 +61,7 @@
             Get
                 Return msCaption
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 msCaption = Value
             End Set
         End Property
@@ -69,7 +69,7 @@
             Get
                 Return msClassColumnName
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 msClassColumnName = Value
             End Set
         End Property
@@ -87,7 +87,7 @@
             Get
                 Return msGuidValueColumnName
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 msGuidValueColumnName = Value
             End Set
         End Property
@@ -96,7 +96,7 @@
             Get
                 Return mbAddNothingSelected
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 mbAddNothingSelected = Value
             End Set
         End Property
@@ -105,7 +105,7 @@
             Get
                 Return mnCodeFieldLength
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 mnCodeFieldLength = Value
             End Set
         End Property
@@ -122,7 +122,7 @@
             Get
                 Return mnStartDropIndex
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 mnStartDropIndex = Value
             End Set
         End Property
@@ -132,7 +132,7 @@
                 Dim oGuid As Guid = ElitaPlusPage.GetSelectedItem(cboServiceClass)
                 Return oGuid
             End Get
-            Set(ByVal Value As Guid)
+            Set(Value As Guid)
                 'ElitaPlusPage.BindSelectItem(Value.ToString, cboServiceClass)
                 'ElitaPlusPage.BindSelectItem(Value.ToString, cboServiceType)
             End Set
@@ -143,7 +143,7 @@
                 Dim oGuid As Guid = ElitaPlusPage.GetSelectedItem(cboServiceClass)
                 Return oGuid
             End Get
-            Set(ByVal Value As Guid)
+            Set(Value As Guid)
                 ElitaPlusPage.BindSelectItem(Value.ToString, cboServiceClass)
                 'moTextBoxServiceClass.Text = cboServiceClass.SelectedItem.Text.ToString()
                 LoadServiceTypes()
@@ -155,7 +155,7 @@
                 Dim oGuid As Guid = ElitaPlusPage.GetSelectedItem(cboServiceType)
                 Return oGuid
             End Get
-            Set(ByVal Value As Guid)
+            Set(Value As Guid)
                 ElitaPlusPage.BindSelectItem(Value.ToString, cboServiceType)
                 'moTextBoxServiceType.Text = cboServiceType.SelectedItem.Text.ToString()
             End Set
@@ -187,7 +187,7 @@
             Get
                 Return cboServiceClass.SelectedIndex
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 cboServiceClass.SelectedIndex = Value
                 'moMultipleColumnDropDesc.SelectedIndex = Value
             End Set
@@ -196,7 +196,7 @@
             Get
                 Return cboServiceType.SelectedIndex
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 cboServiceType.SelectedIndex = Value
             End Set
         End Property
@@ -205,7 +205,7 @@
             Get
                 Return moAdditionalOnClickJavaScript
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moAdditionalOnClickJavaScript = Value
             End Set
         End Property
@@ -214,7 +214,7 @@
             Get
                 Return moTypeControlID
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moTypeControlID = Value
             End Set
         End Property
@@ -223,7 +223,7 @@
             Get
                 Return moClassControlID
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moClassControlID = Value
             End Set
         End Property
@@ -232,7 +232,7 @@
             Get
                 Return moCaptionControlID
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moCaptionControlID = Value
             End Set
         End Property
@@ -241,7 +241,7 @@
             Get
                 Return mbDisabled
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 mbDisabled = Value
             End Set
         End Property
@@ -250,11 +250,11 @@
             Get
                 Return cboServiceClass.AutoPostBack
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 cboServiceClass.AutoPostBack = Value
                 'cboServiceType.AutoPostBack = Value
                 If Not Value Then
-                    cboServiceClass.Attributes.Add("onchange", Me.AdditionalOnClickJavaScript & "ToggleSelection('" & Me.cboServiceClass.ClientID & "', '" & Me.cboServiceType.ClientID & "', 'D', '')")
+                    cboServiceClass.Attributes.Add("onchange", AdditionalOnClickJavaScript & "ToggleSelection('" & cboServiceClass.ClientID & "', '" & cboServiceType.ClientID & "', 'D', '')")
                     'cboServiceType.Attributes.Add("onchange", Me.AdditionalOnClickJavaScript & "ToggleSelection('" & Me.cboServiceClass.ClientID & "', '" & Me.cboServiceType.ClientID & "', 'C', '')")
                     'If Not Me.moOmitRegisteringJavaScriptCode Then
                     '    Me.RegisterJavaScriptCode()
@@ -268,20 +268,20 @@
             Get
                 Return mMode
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 mMode = Value
                 Select Case Value
                     Case Me.MODES.EDIT_MODE
-                        Me.cboServiceClass.Visible = False
-                        Me.cboServiceType.Visible = False
+                        cboServiceClass.Visible = False
+                        cboServiceType.Visible = False
                         'Me.ServiceClassText.Visible = True
                         'Me.ServiceTypeText.Visible = True
                         'Me.lb_DropDown.Enabled = False
                         'Me.ServiceClassLabel.Enabled = False
                         'Me.ServiceTypeLabel.Enabled = False
                     Case Me.MODES.NEW_MODE
-                        Me.cboServiceClass.Visible = True
-                        Me.cboServiceType.Visible = True
+                        cboServiceClass.Visible = True
+                        cboServiceType.Visible = True
                         'Me.ServiceClassText.Visible = False
                         'Me.ServiceTypeText.Visible = False
                         'Me.lb_DropDown.Enabled = True
@@ -297,7 +297,7 @@
                 Return cboServiceClass.Visible
                 Return cboServiceType.Visible
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 cboServiceClass.Visible = Value
                 cboServiceType.Visible = Value
             End Set
@@ -307,7 +307,7 @@
             Get
                 Return cboServiceClass.Width
             End Get
-            Set(ByVal Value As Unit)
+            Set(Value As Unit)
                 cboServiceClass.Width = Value
             End Set
         End Property
@@ -362,17 +362,17 @@
         End Property
 #End Region
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             If Not Page.IsPostBack Then
                 'If Not Me.Caption.Equals(String.Empty) Then
                 '    Me.lb_DropDown.Text = Me.Caption.Replace(":", "") + ":"
                 'End If
                 cboServiceType.Enabled = False
-                If Not Me.cboServiceClass.SelectedValue.Equals(Nothing) Then
+                If Not cboServiceClass.SelectedValue.Equals(Nothing) Then
                     'Me.cboServiceType.SelectedIndex = -1
-                    If Not Me.cboServiceType.Items.Count.Equals(0) Then
+                    If Not cboServiceType.Items.Count.Equals(0) Then
                         'Me.cboServiceType.Items.FindByValue(GuidControl.GuidToHexString(Me.ServiceTypeGuid)).Selected = True
-                        cboServiceType.SelectedValue = Me.ServiceTypeGuid.ToString()
+                        cboServiceType.SelectedValue = ServiceTypeGuid.ToString()
 
                         If Not Guid.Empty = ServiceClassGuid Then
                             cboServiceType.Enabled = True
@@ -386,8 +386,8 @@
 
 #Region "Handlers-DropDown"
 
-        Private Sub moMultipleColumnDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboServiceClass.SelectedIndexChanged
-            Me.cboServiceType.SelectedIndex = -1
+        Private Sub moMultipleColumnDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboServiceClass.SelectedIndexChanged
+            cboServiceType.SelectedIndex = -1
             'Me.cboServiceType.Items.FindByValue(cboServiceClass.SelectedValue).Selected = True
             LoadServiceTypes()
             If cboServiceClass.SelectedIndex > 0 Then
@@ -502,14 +502,14 @@
         '    ElitaPlusPage.BindListControlToDataView(cboServiceType, oDataView, ClassColumnName, , mbAddNothingSelected)
 
         'End Sub
-        Public Sub ChangeEnabledControlProperty(ByVal blnEnabledState As Boolean)
-            Page.ChangeEnabledControlProperty(Me.cboServiceClass, blnEnabledState)
-            Page.ChangeEnabledControlProperty(Me.cboServiceType, blnEnabledState)
+        Public Sub ChangeEnabledControlProperty(blnEnabledState As Boolean)
+            Page.ChangeEnabledControlProperty(cboServiceClass, blnEnabledState)
+            Page.ChangeEnabledControlProperty(cboServiceType, blnEnabledState)
         End Sub
 
-        Public Sub SetControl(ByVal AutoPostBack As Boolean, _
-                              ByVal Mode As Integer, _
-                              ByVal NothingSelected As Boolean, _
+        Public Sub SetControl(AutoPostBack As Boolean, _
+                              Mode As Integer, _
+                              NothingSelected As Boolean, _
                               Optional ByVal dv As DataView = Nothing, _
                               Optional ByVal Caption As String = "", _
                               Optional ByVal overRideSingularity As Boolean = False, _
@@ -522,17 +522,17 @@
                               Optional ByVal TabIndexStartingNumber As Int16 = 0, _
                               Optional ByVal disabled As Boolean = False)
 
-            If Not Code_HTML_ID = "" Then Me.CodeControlHTMLID = Code_HTML_ID
-            If Not Description_HTML_ID = "" Then Me.DescriptionHTMLID = Description_HTML_ID
-            If Not Caption_HTML_ID = "" Then Me.CaptionHTMLID = Caption_HTML_ID
+            If Not Code_HTML_ID = "" Then CodeControlHTMLID = Code_HTML_ID
+            If Not Description_HTML_ID = "" Then DescriptionHTMLID = Description_HTML_ID
+            If Not Caption_HTML_ID = "" Then CaptionHTMLID = Caption_HTML_ID
 
             Me.AdditionalOnClickJavaScript = additionalOnClickJavaScript
-            Me.moOmitRegisteringJavaScriptCode = OmitRegisteringJavaScriptCode
-            Me.AutoPostBackDD = AutoPostBack
+            moOmitRegisteringJavaScriptCode = OmitRegisteringJavaScriptCode
+            AutoPostBackDD = AutoPostBack
 
             If Caption = "" Then
                 Me.Caption = TranslationBase.TranslateLabelOrMessage("COMPANY")
-            ElseIf Not Caption.Equals(Me.NO_CAPTION) Then
+            ElseIf Not Caption.Equals(NO_CAPTION) Then
                 Me.Caption = Caption
                 'Me.lb_DropDown.Text = Me.Caption
                 ' If addColonToCaption AndAlso Me.lb_DropDown.Text.IndexOf(":") < 0 Then Me.lb_DropDown.Text &= ":"
@@ -546,12 +546,12 @@
             LoadDropdownData()
 
             If Not overRideSingularity Then
-                overRideSingularity = dv.Count > Me.SINGLE_ITEM
+                overRideSingularity = dv.Count > SINGLE_ITEM
             End If
 
             If Mode = Me.MODES.NEW_MODE And overRideSingularity Then
                 Me.Mode = Me.MODES.NEW_MODE
-                Me.cboServiceType.Enabled = False
+                cboServiceType.Enabled = False
             Else
                 Me.NothingSelected = False
                 Me.Mode = Me.MODES.EDIT_MODE

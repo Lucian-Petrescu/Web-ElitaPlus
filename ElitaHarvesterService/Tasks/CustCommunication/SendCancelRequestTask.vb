@@ -18,7 +18,7 @@ Public Class SendCancelRequestTask
 
 #Region "Constructors"
 
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 
@@ -29,7 +29,7 @@ Public Class SendCancelRequestTask
         Get
             Return _certCancelReqId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _certCancelReqId = value
         End Set
     End Property
@@ -38,7 +38,7 @@ Public Class SendCancelRequestTask
         Get
             Return _oCertCancelRequest
         End Get
-        Set(ByVal value As CertCancelRequest)
+        Set(value As CertCancelRequest)
             _oCertCancelRequest = value
         End Set
     End Property
@@ -47,7 +47,7 @@ Public Class SendCancelRequestTask
         Get
             Return _certificateId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _certificateId = value
         End Set
     End Property
@@ -56,7 +56,7 @@ Public Class SendCancelRequestTask
         Get
             Return _oCertificate
         End Get
-        Set(ByVal value As Certificate)
+        Set(value As Certificate)
             _oCertificate = value
         End Set
     End Property

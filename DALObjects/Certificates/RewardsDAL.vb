@@ -59,26 +59,26 @@ Public Class RewardsDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
+    Public Sub Load(familyDS As DataSet, id As Guid)
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(TABLE_KEY_NAME, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadRewardList(ByVal CompanyId As Guid, ByVal DealerId As Guid, ByVal CertificateNumber As String, ByVal RewardStatus As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadRewardList(CompanyId As Guid, DealerId As Guid, CertificateNumber As String, RewardStatus As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As DataSet = New DataSet
-        Dim outputParameter(Me.PO_CURSOR_REWARD) As DBHelper.DBHelperParameter
+        Dim outputParameter(PO_CURSOR_REWARD) As DBHelper.DBHelperParameter
         Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
@@ -94,7 +94,7 @@ Public Class RewardsDAL
         param = New DBHelper.DBHelperParameter("pi_reward_status", RewardStatus)
         inParameters.Add(param)
 
-        outputParameter(Me.PO_CURSOR_REWARD) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME_REWARD_LIST, GetType(DataSet))
+        outputParameter(PO_CURSOR_REWARD) = New DBHelper.DBHelperParameter(SP_PARAM_NAME_REWARD_LIST, GetType(DataSet))
 
         Try
             DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetRewardList")
@@ -108,15 +108,15 @@ Public Class RewardsDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
         If ds Is Nothing Then
             Return
         End If
         If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
             Throw New NotSupportedException()
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 

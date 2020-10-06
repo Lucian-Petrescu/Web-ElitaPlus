@@ -35,27 +35,27 @@
 #End Region
 
 #Region "Load Methods"
-    Public Sub LoadSchema(ByVal ds As DataSet, ByVal dealerFileProcessedID As Guid)
+    Public Sub LoadSchema(ds As DataSet, dealerFileProcessedID As Guid)
         Load(ds, dealerFileProcessedID)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal dealerFileProcessedID As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, dealerFileProcessedID As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_DEALERFILE_PROCESSED_ID, dealerFileProcessedID.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal dealerReconWrkId As Guid) As DataSet
+    Public Function LoadList(dealerReconWrkId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_DEALER_RECON_WRK_ID, dealerReconWrkId.ToByteArray)}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -66,16 +66,16 @@
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
     End Sub
 #End Region
 
 #Region "Bundles Save Method"
-    Public Function SaveBundles(ByVal ds As DataSet) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_BUNDLES")
+    Public Function SaveBundles(ds As DataSet) As Integer
+        Dim selectStmt As String = Config("/SQL/UPDATE_BUNDLES")
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("BUNDLES", ds.GetXml, GetType(Xml.XmlDocument))}
-        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.P_RETURN, GetType(Integer))}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_RETURN, GetType(Integer))}
 
         Try
 

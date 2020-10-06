@@ -20,18 +20,18 @@ Namespace Security
         Friend Property Token As String
 
         Friend Function GetNetworkId() As String
-            Return Me.Decrypt(Me.NetworkId)
+            Return Decrypt(NetworkId)
         End Function
 
         Friend Function GetPassword() As String
-            Return Me.Decrypt(Me.Password)
+            Return Decrypt(Password)
         End Function
 
         Friend Function GetGroup() As String
-            Return Me.Decrypt(Me.Group)
+            Return Decrypt(Group)
         End Function
 
-        Private Function Decrypt(ByVal input As String) As String
+        Private Function Decrypt(input As String) As String
             Try
                 Dim buffer As Byte() = Convert.FromBase64String(input)
                 Return System.Text.Encoding.UTF8.GetString(buffer)

@@ -111,53 +111,53 @@ Public Class ClaimloadReconWrk
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     Public Sub New(ByVal id As Guid, ByVal sModifiedDate As String)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
-        Me.VerifyConcurrency(sModifiedDate)
+        Dataset = New DataSet
+        Load(id)
+        VerifyConcurrency(sModifiedDate)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ClaimloadReconWrkDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -168,20 +168,20 @@ Public Class ClaimloadReconWrk
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New ClaimloadReconWrkDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -221,13 +221,13 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_CLAIMLOAD_FILE_PROCESSED_ID, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_CLAIMLOAD_FILE_PROCESSED_ID, Value)
         End Set
     End Property
 
     Public ReadOnly Property ParentId As Guid Implements IFileLoadReconWork.ParentId
         Get
-            Return Me.ClaimloadFileProcessedId
+            Return ClaimloadFileProcessedId
         End Get
     End Property
 
@@ -244,7 +244,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_REJECT_CODE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_REJECT_CODE, Value)
         End Set
     End Property
 
@@ -261,7 +261,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_REJECT_REASON, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_REJECT_REASON, Value)
         End Set
     End Property
 
@@ -278,7 +278,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_CLAIM_LOADED, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_CLAIM_LOADED, Value)
         End Set
     End Property
 
@@ -293,7 +293,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -310,7 +310,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_RECORD_TYPE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_RECORD_TYPE, Value)
         End Set
     End Property
 
@@ -327,7 +327,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_DEALER_CODE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
@@ -344,7 +344,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_CERTIFICATE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_CERTIFICATE, Value)
         End Set
     End Property
 
@@ -361,7 +361,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_CLAIM_TYPE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_CLAIM_TYPE, Value)
         End Set
     End Property
 
@@ -378,7 +378,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_AUTHORIZATION_NUM, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_AUTHORIZATION_NUM, Value)
         End Set
     End Property
 
@@ -395,7 +395,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_EXTERNAL_CREATED_DATE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_EXTERNAL_CREATED_DATE, Value)
         End Set
     End Property
 
@@ -412,7 +412,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_COVERAGE_CODE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_COVERAGE_CODE, Value)
         End Set
     End Property
 
@@ -429,7 +429,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_DATE_OF_LOSS, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_DATE_OF_LOSS, Value)
         End Set
     End Property
 
@@ -446,7 +446,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_CAUSE_OF_LOSS, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_CAUSE_OF_LOSS, Value)
         End Set
     End Property
 
@@ -463,7 +463,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PROBLEM_DESCRIPTION, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PROBLEM_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -480,7 +480,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_COMMENTS, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_COMMENTS, Value)
         End Set
     End Property
 
@@ -497,7 +497,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_SPECIAL_INSTRUCTIONS, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_SPECIAL_INSTRUCTIONS, Value)
         End Set
     End Property
 
@@ -514,7 +514,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_REASON_CLOSED, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_REASON_CLOSED, Value)
         End Set
     End Property
 
@@ -531,7 +531,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_MANUFACTURER, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_MANUFACTURER, Value)
         End Set
     End Property
 
@@ -548,7 +548,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_MODEL, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 
@@ -565,7 +565,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_SERIAL_NUMBER, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_SERIAL_NUMBER, Value)
         End Set
     End Property
 
@@ -582,7 +582,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_SERVICE_CENTER_CODE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
@@ -599,7 +599,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_INVOICE_NUMBER, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_INVOICE_NUMBER, Value)
         End Set
     End Property
 
@@ -616,7 +616,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_AMOUNT, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_AMOUNT, Value)
         End Set
     End Property
 
@@ -633,7 +633,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_ESTIMATE_AMOUNT, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_ESTIMATE_AMOUNT, Value)
         End Set
     End Property
 
@@ -650,7 +650,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PRODUCT_CODE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
@@ -667,7 +667,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_DEFECT_REASON, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_DEFECT_REASON, Value)
         End Set
     End Property
 
@@ -684,7 +684,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_REPAIR_CODE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_REPAIR_CODE, Value)
         End Set
     End Property
 
@@ -701,7 +701,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_CALLER_NAME, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_CALLER_NAME, Value)
         End Set
     End Property
 
@@ -718,7 +718,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_CONTACT_NAME, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_CONTACT_NAME, Value)
         End Set
     End Property
 
@@ -735,7 +735,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_REPAIR_DATE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_REPAIR_DATE, Value)
         End Set
     End Property
 
@@ -752,7 +752,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_VISIT_DATE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_VISIT_DATE, Value)
         End Set
     End Property
 
@@ -769,7 +769,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PICKUP_DATE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PICKUP_DATE, Value)
         End Set
     End Property
 
@@ -786,7 +786,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_CERT_ID, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_CERT_ID, Value)
         End Set
     End Property
 
@@ -803,7 +803,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_CERT_ITEM_COV_ID, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_CERT_ITEM_COV_ID, Value)
         End Set
     End Property
 
@@ -820,7 +820,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_ORIGINAL_CLAIM_ID, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_ORIGINAL_CLAIM_ID, Value)
         End Set
     End Property
 
@@ -837,7 +837,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_SERVICE_CENTER_ID, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
     End Property
 
@@ -854,7 +854,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_POLICE_REPORT_NUM, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_POLICE_REPORT_NUM, Value)
         End Set
     End Property
 
@@ -871,7 +871,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_OFFICER_NAME, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_OFFICER_NAME, Value)
         End Set
     End Property
 
@@ -888,7 +888,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_POLICE_STATION_CODE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_POLICE_STATION_CODE, Value)
         End Set
     End Property
 
@@ -905,7 +905,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_DOCUMENT_TYPE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_DOCUMENT_TYPE, Value)
         End Set
     End Property
 
@@ -922,7 +922,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_RG_NUMBER, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_RG_NUMBER, Value)
         End Set
     End Property
 
@@ -939,7 +939,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_DOCUMENT_AGENCY, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_DOCUMENT_AGENCY, Value)
         End Set
     End Property
 
@@ -956,7 +956,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_DOCUMENT_ISSUE_DATE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_DOCUMENT_ISSUE_DATE, Value)
         End Set
     End Property
 
@@ -973,7 +973,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_ID_TYPE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_ID_TYPE, Value)
         End Set
     End Property
 
@@ -989,7 +989,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_REJECT_MSG_PARMS, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_REJECT_MSG_PARMS, Value)
         End Set
     End Property
 
@@ -1006,7 +1006,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_DEVICE_RECEPTION_DATE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_DEVICE_RECEPTION_DATE, Value)
         End Set
     End Property
 
@@ -1023,7 +1023,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_REPLACEMENT_TYPE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_REPLACEMENT_TYPE, Value)
         End Set
     End Property
 
@@ -1040,7 +1040,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_REPLACEMENT_MANUFACTURER, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_REPLACEMENT_MANUFACTURER, Value)
         End Set
     End Property
 
@@ -1057,7 +1057,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_REPLACEMENT_MODEL, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_REPLACEMENT_MODEL, Value)
         End Set
     End Property
 
@@ -1074,7 +1074,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_REPLACEMENT_SERIAL_NUMBER, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_REPLACEMENT_SERIAL_NUMBER, Value)
         End Set
     End Property
 
@@ -1091,7 +1091,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_REPLACEMENT_SKU, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_REPLACEMENT_SKU, Value)
         End Set
     End Property
 
@@ -1108,7 +1108,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_DEDUCTIBLE_COLLECTED, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_DEDUCTIBLE_COLLECTED, Value)
         End Set
     End Property
 
@@ -1125,7 +1125,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_LABOR_AMOUNT, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_LABOR_AMOUNT, Value)
         End Set
     End Property
 
@@ -1142,7 +1142,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PARTS_AMOUNT, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PARTS_AMOUNT, Value)
         End Set
     End Property
 
@@ -1159,7 +1159,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_SERVICE_AMOUNT, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_SERVICE_AMOUNT, Value)
         End Set
     End Property
 
@@ -1176,7 +1176,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_SHIPPING_AMOUNT, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_SHIPPING_AMOUNT, Value)
         End Set
     End Property
 
@@ -1193,7 +1193,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_1_SKU, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_1_SKU, Value)
         End Set
     End Property
 
@@ -1210,7 +1210,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_1_DESCRIPTION, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_1_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -1227,7 +1227,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_2_SKU, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_2_SKU, Value)
         End Set
     End Property
 
@@ -1244,7 +1244,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_2_DESCRIPTION, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_2_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -1261,7 +1261,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_3_SKU, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_3_SKU, Value)
         End Set
     End Property
 
@@ -1278,7 +1278,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_3_DESCRIPTION, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_3_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -1295,7 +1295,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_4_SKU, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_4_SKU, Value)
         End Set
     End Property
 
@@ -1312,7 +1312,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_4_DESCRIPTION, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_4_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -1329,7 +1329,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_5_SKU, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_5_SKU, Value)
         End Set
     End Property
 
@@ -1346,7 +1346,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_5_DESCRIPTION, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PART_5_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -1363,7 +1363,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_SERVICE_LEVEL, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_SERVICE_LEVEL, Value)
         End Set
     End Property
 
@@ -1380,7 +1380,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_DEALER_REFERENCE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_DEALER_REFERENCE, Value)
         End Set
     End Property
 
@@ -1397,7 +1397,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_POS, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_POS, Value)
         End Set
     End Property
 
@@ -1414,7 +1414,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_PROBLEM_FOUND, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_PROBLEM_FOUND, Value)
         End Set
     End Property
 
@@ -1431,7 +1431,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_FINAL_STATUS, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_FINAL_STATUS, Value)
         End Set
     End Property
 
@@ -1448,7 +1448,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_TECHNICAL_REPORT, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_TECHNICAL_REPORT, Value)
         End Set
     End Property
 
@@ -1465,7 +1465,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_DELIVERY_DATE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_DELIVERY_DATE, Value)
         End Set
     End Property
 
@@ -1482,7 +1482,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_BATCH_NUMBER, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_BATCH_NUMBER, Value)
         End Set
     End Property
 
@@ -1498,7 +1498,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_INCOMING_ENTIRE_RECORD, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_INCOMING_ENTIRE_RECORD, Value)
         End Set
     End Property
 
@@ -1513,7 +1513,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_COMMENT_TYPE_ID, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_COMMENT_TYPE_ID, Value)
         End Set
     End Property
 
@@ -1530,7 +1530,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_COMMENT_TYPE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_COMMENT_TYPE, Value)
         End Set
     End Property
 
@@ -1547,7 +1547,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_TRACKING_NUMBER, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_TRACKING_NUMBER, Value)
         End Set
     End Property
 
@@ -1562,7 +1562,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
         End Set
     End Property
 
@@ -1577,7 +1577,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_INVOICE_DATE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_INVOICE_DATE, Value)
         End Set
     End Property
 
@@ -1593,7 +1593,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_RISK_TYPE_ENGLISH, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_RISK_TYPE_ENGLISH, Value)
         End Set
     End Property
 
@@ -1609,7 +1609,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_ITEM_DESCRIPTION, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_ITEM_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -1624,7 +1624,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_TRIP_AMOUNT, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_TRIP_AMOUNT, Value)
         End Set
     End Property
 
@@ -1639,7 +1639,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_OTHER_AMOUNT, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_OTHER_AMOUNT, Value)
         End Set
     End Property
 
@@ -1655,7 +1655,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_OTHER_EXPLANATION, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_OTHER_EXPLANATION, Value)
         End Set
     End Property
 
@@ -1671,7 +1671,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_CLAIM_NUMBER, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
@@ -1687,7 +1687,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_EXTENDED_STATUS_CODE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_EXTENDED_STATUS_CODE, Value)
         End Set
     End Property
 
@@ -1702,7 +1702,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_EXTENDED_STATUS_DATE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_EXTENDED_STATUS_DATE, Value)
         End Set
     End Property
 
@@ -1718,7 +1718,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_TRACKING_NUM_TO_CUST, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_TRACKING_NUM_TO_CUST, Value)
         End Set
     End Property
 
@@ -1734,7 +1734,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_TRACKING_NUM_TO_SC, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_TRACKING_NUM_TO_SC, Value)
         End Set
     End Property
 
@@ -1749,13 +1749,13 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_DEVICE_SHIPPED_TO_SC_DATE, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_DEVICE_SHIPPED_TO_SC_DATE, Value)
         End Set
     End Property
 
     Public ReadOnly Property FamilyDataSet As DataSet Implements IFileLoadReconWork.FamilyDataSet
         Get
-            Return Me.Dataset
+            Return Dataset
         End Get
     End Property
 
@@ -1772,7 +1772,7 @@ Public Class ClaimloadReconWrk
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimloadReconWrkDAL.COL_NAME_Deductile_Included, Value)
+            SetValue(ClaimloadReconWrkDAL.COL_NAME_Deductile_Included, Value)
         End Set
     End Property
 
@@ -1783,15 +1783,15 @@ Public Class ClaimloadReconWrk
     Public Overrides Sub Save() Implements IFileLoadReconWork.Save
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimloadReconWrkDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

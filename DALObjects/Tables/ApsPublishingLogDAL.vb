@@ -30,7 +30,7 @@ Public Class ApsPublishingLogDAL
     Public Sub New()
 
     End Sub
-    Public Sub New(ByVal TableName As String)
+    Public Sub New(TableName As String)
         MyBase.new()
         TABLE_NAME = TableName
     End Sub
@@ -39,30 +39,30 @@ Public Class ApsPublishingLogDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal Header As String, _
-                             ByVal Code As String, _
-                             ByVal MachineName As String, _
-                             ByVal UserName As String, _
-                             ByVal TypeName As String, _
-                             ByVal generationDate As SearchCriteriaStructType(Of Date), _
-                             ByVal languageid As Guid) As DataSet
+    Public Function LoadList(Header As String, _
+                             Code As String, _
+                             MachineName As String, _
+                             UserName As String, _
+                             TypeName As String, _
+                             generationDate As SearchCriteriaStructType(Of Date), _
+                             languageid As Guid) As DataSet
 
         Dim selectStmt As String = String.Empty
-        selectStmt = Me.Config("/SQL/LOAD_LIST_APS_ORACLE")
+        selectStmt = Config("/SQL/LOAD_LIST_APS_ORACLE")
 
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {}
@@ -74,40 +74,40 @@ Public Class ApsPublishingLogDAL
         'End If
 
         If (Not (TypeName Is Nothing)) Then
-            whereClauseConditions &= Environment.NewLine & " UPPER(" & Me.COL_NAME_TYPE & ") = '" & TypeName.ToUpper & "' AND"
+            whereClauseConditions &= Environment.NewLine & " UPPER(" & COL_NAME_TYPE & ") = '" & TypeName.ToUpper & "' AND"
         End If
-        If ((Not (Header Is Nothing)) AndAlso (Me.FormatSearchMask(Header))) Then
-            whereClauseConditions &= Environment.NewLine & " UPPER(" & Me.COL_NAME_HEADER & ") " & Header.ToUpper & " AND"
+        If ((Not (Header Is Nothing)) AndAlso (FormatSearchMask(Header))) Then
+            whereClauseConditions &= Environment.NewLine & " UPPER(" & COL_NAME_HEADER & ") " & Header.ToUpper & " AND"
         End If
-        If ((Not (Code Is Nothing)) AndAlso (Me.FormatSearchMask(Code))) Then
-            whereClauseConditions &= Environment.NewLine & " UPPER(" & Me.COL_NAME_CODE & ") " & Code.ToUpper & " AND "
-        End If
-
-        If ((Not (MachineName Is Nothing)) AndAlso (Me.FormatSearchMask(MachineName))) Then
-            whereClauseConditions &= Environment.NewLine & " UPPER(" & Me.COL_NAME_MACHINE_NAME & ") " & MachineName.ToUpper & " AND "
+        If ((Not (Code Is Nothing)) AndAlso (FormatSearchMask(Code))) Then
+            whereClauseConditions &= Environment.NewLine & " UPPER(" & COL_NAME_CODE & ") " & Code.ToUpper & " AND "
         End If
 
-        If ((Not (UserName Is Nothing)) AndAlso (Me.FormatSearchMask(UserName))) Then
-            whereClauseConditions &= Environment.NewLine & " UPPER(" & Me.COL_NAME_USER_NAME & ") " & UserName.ToUpper & " AND "
+        If ((Not (MachineName Is Nothing)) AndAlso (FormatSearchMask(MachineName))) Then
+            whereClauseConditions &= Environment.NewLine & " UPPER(" & COL_NAME_MACHINE_NAME & ") " & MachineName.ToUpper & " AND "
         End If
 
-        whereClauseConditions &= generationDate.ToSqlString(Me.TABLE_NAME, Me.COL_NAME_GENERATION_DATE_TIME, parameters).Remove(0, 4) 'remove the first and appened by ToSqlString extension method
+        If ((Not (UserName Is Nothing)) AndAlso (FormatSearchMask(UserName))) Then
+            whereClauseConditions &= Environment.NewLine & " UPPER(" & COL_NAME_USER_NAME & ") " & UserName.ToUpper & " AND "
+        End If
+
+        whereClauseConditions &= generationDate.ToSqlString(TABLE_NAME, COL_NAME_GENERATION_DATE_TIME, parameters).Remove(0, 4) 'remove the first and appened by ToSqlString extension method
 
         ''''set the table name dynamically
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_FROM_CLAUSE_PLACE_HOLDER, TABLE_NAME)
+        selectStmt = selectStmt.Replace(DYNAMIC_FROM_CLAUSE_PLACE_HOLDER, TABLE_NAME)
 
         If Not whereClauseConditions.Equals(String.Empty) Then
             whereClauseConditions = " WHERE " & whereClauseConditions
             'whereClauseConditions = whereClauseConditions.Remove(whereClauseConditions.Length - 4)
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
 
         Dim ds As New DataSet
         Try
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -117,12 +117,12 @@ Public Class ApsPublishingLogDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

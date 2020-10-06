@@ -46,20 +46,20 @@ Namespace Tables
         End Property
 
         Private Sub SetStateProperties()
-            Me.State.moEarningPatternId = CType(Me.CallingParameters, Guid)
-            Me.State.moOldEarningPatternId = CType(Me.CallingParameters, Guid)
-            If Me.State.moEarningPatternId.Equals(Guid.Empty) Then
-                Me.State.IsEarningPatternNew = True
+            State.moEarningPatternId = CType(CallingParameters, Guid)
+            State.moOldEarningPatternId = CType(CallingParameters, Guid)
+            If State.moEarningPatternId.Equals(Guid.Empty) Then
+                State.IsEarningPatternNew = True
                 BindBoPropertiesToLabels()
-                Me.AddLabelDecorations(TheEarningPattern)
+                AddLabelDecorations(TheEarningPattern)
                 ClearAll()
                 EnableButtons(False)
                 PopulateAll()
                 EnableFields(True)
             Else
-                Me.State.IsEarningPatternNew = False
+                State.IsEarningPatternNew = False
                 BindBoPropertiesToLabels()
-                Me.AddLabelDecorations(TheEarningPattern)
+                AddLabelDecorations(TheEarningPattern)
                 EnableButtons(True)
                 PopulateAll()
                 EnableFields(False)
@@ -122,13 +122,13 @@ Namespace Tables
             Get
 
                 If moEarningPattern Is Nothing Then
-                    If Me.State.IsEarningPatternNew = True Then
+                    If State.IsEarningPatternNew = True Then
                         ' For creating, inserting
                         moEarningPattern = New EarningPattern
-                        Me.State.moEarningPatternId = moEarningPattern.Id
+                        State.moEarningPatternId = moEarningPattern.Id
                     Else
                         ' For updating, deleting
-                        moEarningPattern = New EarningPattern(Me.State.moEarningPatternId)
+                        moEarningPattern = New EarningPattern(State.moEarningPatternId)
                     End If
                 End If
 
@@ -179,7 +179,7 @@ Namespace Tables
             Get
                 Return moEarningPercentIDLabel.Text
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moEarningPercentIDLabel.Text = Value
             End Set
         End Property
@@ -188,7 +188,7 @@ Namespace Tables
             Get
                 Return Convert.ToBoolean(moIsNewPercentLabel.Text)
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 moIsNewPercentLabel.Text = Value.ToString
             End Set
         End Property
@@ -219,7 +219,7 @@ Namespace Tables
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -227,30 +227,30 @@ Namespace Tables
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
                 'Preserve values during postbacks
-                Me.PreserveValues()
+                PreserveValues()
                 moErrorControllerPercent.Clear_Hide()
                 moErrorController.Clear_Hide()
                 ClearLabelsErrSign()
                 ClearGridHeaders(moDataGrid)
                 If Not Page.IsPostBack Then
-                    Me.TranslateGridHeader(Me.moDataGrid)
-                    Me.SetGridItemStyleColor(moDataGrid)
-                    Me.SetStateProperties()
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, _
-                                                                       Me.MSG_TYPE_CONFIRM, True)
-                    Me.AddCalendar(Me.BtnEffectiveDate, Me.moEffectiveText)
-                    Me.AddCalendar(Me.BtnExpirationDate, Me.moExpirationText)
+                    TranslateGridHeader(moDataGrid)
+                    SetGridItemStyleColor(moDataGrid)
+                    SetStateProperties()
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, _
+                                                                       MSG_TYPE_CONFIRM, True)
+                    AddCalendar(BtnEffectiveDate, moEffectiveText)
+                    AddCalendar(BtnExpirationDate, moExpirationText)
                 End If
                 BindBoPropertiesToLabels()
                 CheckIfComingFromConfirm()
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
-            Me.ShowMissingTranslations(moErrorController)
+            ShowMissingTranslations(moErrorController)
         End Sub
 
 #End Region
@@ -258,15 +258,15 @@ Namespace Tables
 #Region "Handlers-DropDown"
 
         Private Sub PreserveValues()
-            Me.State.selectedDescription = Me.moDescriptionText.Text
-            Me.State.selectedEffective = Me.moEffectiveText.Text
-            Me.State.selectedExpiration = Me.moExpirationText.Text
-            Me.State.selectedCode = Me.moCodeText.Text
+            State.selectedDescription = moDescriptionText.Text
+            State.selectedEffective = moEffectiveText.Text
+            State.selectedExpiration = moExpirationText.Text
+            State.selectedCode = moCodeText.Text
         End Sub
 
-        Private Sub moCodeDrop_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moCodeDrop.SelectedIndexChanged
-            TheEarningPattern.EarningCodeId = Me.GetSelectedItem(moCodeDrop)
-            Me.PopulateEarningCode()
+        Private Sub moCodeDrop_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles moCodeDrop.SelectedIndexChanged
+            TheEarningPattern.EarningCodeId = GetSelectedItem(moCodeDrop)
+            PopulateEarningCode()
         End Sub
 
 #End Region
@@ -275,111 +275,111 @@ Namespace Tables
 
         Private Sub SaveChanges()
             If ApplyChanges() = True Then
-                Me.State.boChanged = True
+                State.boChanged = True
                 ClearEarningPercent()
-                If Me.State.IsEarningPatternNew = True Then
-                    Me.State.IsEarningPatternNew = False
+                If State.IsEarningPatternNew = True Then
+                    State.IsEarningPatternNew = False
                 End If
-                If Me.State.IsNewWithCopy Then
-                    Me.State.IsNewWithCopy = False
+                If State.IsNewWithCopy Then
+                    State.IsNewWithCopy = False
                 End If
                 PopulateAll()
                 EnableFields(False)
             End If
         End Sub
 
-        Private Sub btnApply_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+        Private Sub btnApply_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
             Try
                 SaveChanges()
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
         Private Sub GoBack()
             Dim retType As New EarningPatternListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, _
-                                                                                Me.State.moEarningPatternId, Me.State.boChanged)
-            Me.ReturnToCallingPage(retType)
+                                                                                State.moEarningPatternId, State.boChanged)
+            ReturnToCallingPage(retType)
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, _
-                                                Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, _
+                                                HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
-                Me.State.IsUndo = True
+                State.IsUndo = True
                 PopulateAll()
 
-                If Me.State.IsNewWithCopy And Me.State.IsUndo Then
-                    Me.State.IsUndo = False
-                    Me.State.IsNewWithCopy = False
-                    Me.State.IsEarningPatternNew = False
+                If State.IsNewWithCopy And State.IsUndo Then
+                    State.IsUndo = False
+                    State.IsNewWithCopy = False
+                    State.IsEarningPatternNew = False
                     EnableButtons(True)
                     EnableFields(False)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
         Private Sub CreateNew()
             ClearForNew()
             ClearAll()
-            Me.EnableButtons(False)
-            Me.PopulateAll()
-            Me.EnableFields(True)
+            EnableButtons(False)
+            PopulateAll()
+            EnableFields(True)
         End Sub
 
         Private Sub ClearForNew()
-            Me.State.moEarningPatternId = Guid.Empty
-            Me.State.IsEarningPatternNew = True
+            State.moEarningPatternId = Guid.Empty
+            State.IsEarningPatternNew = True
             moEarningPattern = Nothing
-            Me.State.selectedDescription = Nothing
-            Me.State.selectedCode = Nothing
-            Me.State.selectedEffective = Nothing
-            Me.State.selectedExpiration = Nothing
+            State.selectedDescription = Nothing
+            State.selectedCode = Nothing
+            State.selectedEffective = Nothing
+            State.selectedExpiration = Nothing
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
         Private Sub CreateNewCopy()
 
             'Clear Earning Pattern BO
-            Me.State.moEarningPatternId = Guid.Empty
-            Me.State.IsEarningPatternNew = True
-            Me.EnableFields(True)
-            Me.State.IsNewWithCopy = True
-            Me.SetGridControls(moDataGrid, True)
-            Me.EnableButtons(False)
-            If Me.State.IsNewWithCopy Then
+            State.moEarningPatternId = Guid.Empty
+            State.IsEarningPatternNew = True
+            EnableFields(True)
+            State.IsNewWithCopy = True
+            SetGridControls(moDataGrid, True)
+            EnableButtons(False)
+            If State.IsNewWithCopy Then
                 EnableNewPercentButtons(False)
             End If
         End Sub
 
         Private Sub LoadPercentList()
-            If Me.State.IsNewWithCopy = False Then
+            If State.IsNewWithCopy = False Then
                 If moDataGrid.Rows.Count > 0 Then
                     Dim i As Integer = 0
                     Dim oEarningPercent(moDataGrid.Rows.Count - 1) As EarningPercent
@@ -388,33 +388,33 @@ Namespace Tables
                         oEarningPercent(i) = New EarningPercent
                         oEarningPercent(i).EarningPatternId = TheEarningPattern.Id
 
-                        If moDataGrid.Rows(i).Cells(Me.EARNING_TERM).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oEarningPercent(i), "EarningTerm", CType(moDataGrid.Rows(i).Cells(EARNING_TERM).Controls(1), Label).Text)
+                        If moDataGrid.Rows(i).Cells(EARNING_TERM).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                            PopulateBOProperty(oEarningPercent(i), "EarningTerm", CType(moDataGrid.Rows(i).Cells(EARNING_TERM).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oEarningPercent(i), "EarningTerm", CType(moDataGrid.Rows(i).Cells(EARNING_TERM).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oEarningPercent(i), "EarningTerm", CType(moDataGrid.Rows(i).Cells(EARNING_TERM).Controls(1), TextBox).Text)
                         End If
                         If moDataGrid.Rows(i).Cells(EARNING_PERCENT).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oEarningPercent(i), "EarningPercent", CType(moDataGrid.Rows(i).Cells(EARNING_PERCENT).Controls(1), Label).Text)
+                            PopulateBOProperty(oEarningPercent(i), "EarningPercent", CType(moDataGrid.Rows(i).Cells(EARNING_PERCENT).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oEarningPercent(i), "EarningPercent", CType(moDataGrid.Rows(i).Cells(EARNING_PERCENT).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oEarningPercent(i), "EarningPercent", CType(moDataGrid.Rows(i).Cells(EARNING_PERCENT).Controls(1), TextBox).Text)
                         End If
                     Next
-                    Me.State.moPercentList = oEarningPercent
+                    State.moPercentList = oEarningPercent
                 End If
             Else
                 Dim oEarnPrct As EarningPercent
                 Dim oDataViewOld As DataView, j As Integer
 
-                oDataViewOld = oEarnPrct.GetList(Me.State.moOldEarningPatternId) 'Get data from existing pattern
+                oDataViewOld = oEarnPrct.GetList(State.moOldEarningPatternId) 'Get data from existing pattern
                 If oDataViewOld.Count > 0 Then
                     Dim oEarningPrct(oDataViewOld.Count - 1) As EarningPercent
                     For j = 0 To oDataViewOld.Count - 1
                         oEarningPrct(j) = New EarningPercent
                         oEarningPrct(j).EarningPatternId = TheEarningPattern.Id
-                        Me.PopulateBOProperty(oEarningPrct(j), "EarningTerm", oDataViewOld(j)(COL_EARNING_TERM).ToString)
-                        Me.PopulateBOProperty(oEarningPrct(j), "EarningPercent", oDataViewOld(j)(COL_EARNING_PERCENT).ToString)
+                        PopulateBOProperty(oEarningPrct(j), "EarningTerm", oDataViewOld(j)(COL_EARNING_TERM).ToString)
+                        PopulateBOProperty(oEarningPrct(j), "EarningPercent", oDataViewOld(j)(COL_EARNING_PERCENT).ToString)
                     Next
-                    Me.State.moPercentList = oEarningPrct
+                    State.moPercentList = oEarningPrct
                 End If
             End If
         End Sub
@@ -422,52 +422,52 @@ Namespace Tables
         Public Function SavePercentList() As Boolean
             Dim i As Integer = 0
             Try
-                If Me.State.IsNewWithCopy = True And Not Me.State.moPercentList Is Nothing Then
+                If State.IsNewWithCopy = True And State.moPercentList IsNot Nothing Then
                     'Associate each detail record to the newly created pattern record
                     'and Save each detail Record
-                    For i = 0 To Me.State.moPercentList.Length - 1
-                        Me.State.moPercentList(i).EarningPatternId = TheEarningPattern.Id
-                        Me.State.moPercentList(i).Save()
+                    For i = 0 To State.moPercentList.Length - 1
+                        State.moPercentList(i).EarningPatternId = TheEarningPattern.Id
+                        State.moPercentList(i).Save()
                     Next
                 End If
             Catch ex As Exception
                 Dim j As Integer
                 'REPLACE THIS LOOP BY A DB ROLLBACK
                 For j = 0 To i - 1
-                    Me.State.moPercentList(j).Delete()
-                    Me.State.moPercentList(j).Save()
+                    State.moPercentList(j).Delete()
+                    State.moPercentList(j).Save()
                 Next
-                Me.HandleErrors(ex, Me.moErrorControllerPercent)
+                HandleErrors(ex, moErrorControllerPercent)
                 Return False
             End Try
             Return True
         End Function
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     CreateNewCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
                 If DeleteEarningPattern() = True Then
-                    Me.State.boChanged = True
+                    State.boChanged = True
                     Dim retType As New EarningPatternListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete, _
-                                    Me.State.moEarningPatternId)
+                                    State.moEarningPatternId)
                     retType.BoChanged = True
-                    Me.ReturnToCallingPage(retType)
+                    ReturnToCallingPage(retType)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -476,24 +476,24 @@ Namespace Tables
 #Region "Handlers-Labels"
 
         Private Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(TheEarningPattern, DESCRIPTION_PROPERTY, moDescriptionLabel)
-            Me.BindBOPropertyToLabel(TheEarningPattern, CODE_PROPERTY, moCodeLabel)
-            Me.BindBOPropertyToLabel(TheEarningPattern, EFECTIVE_PROPERTY, moEffectiveLabel)
-            Me.BindBOPropertyToLabel(TheEarningPattern, EXPIRATION_PROPERTY, moExpirationLabel)
-            Me.BindBOPropertyToLabel(TheEarningPattern, EARNING_CODE_ID_PROPERTY, moCodeLabel)
-            Me.BindBOPropertyToLabel(TheEarningPattern, EARNING_PATTERN_START_ON_PROPERTY, EPStartsOnLabel)
+            BindBOPropertyToLabel(TheEarningPattern, DESCRIPTION_PROPERTY, moDescriptionLabel)
+            BindBOPropertyToLabel(TheEarningPattern, CODE_PROPERTY, moCodeLabel)
+            BindBOPropertyToLabel(TheEarningPattern, EFECTIVE_PROPERTY, moEffectiveLabel)
+            BindBOPropertyToLabel(TheEarningPattern, EXPIRATION_PROPERTY, moExpirationLabel)
+            BindBOPropertyToLabel(TheEarningPattern, EARNING_CODE_ID_PROPERTY, moCodeLabel)
+            BindBOPropertyToLabel(TheEarningPattern, EARNING_PATTERN_START_ON_PROPERTY, EPStartsOnLabel)
         End Sub
 
         Private Sub ClearLabelsErrSign()
-            Me.ClearLabelErrSign(moDescriptionLabel)
-            Me.ClearLabelErrSign(moCodeLabel)
-            Me.ClearLabelErrSign(moEffectiveLabel)
-            Me.ClearLabelErrSign(moExpirationLabel)
+            ClearLabelErrSign(moDescriptionLabel)
+            ClearLabelErrSign(moCodeLabel)
+            ClearLabelErrSign(moEffectiveLabel)
+            ClearLabelErrSign(moExpirationLabel)
         End Sub
 
         Private Sub BindBoPropertiesToGridHeader()
-            Me.BindBOPropertyToGridHeader(TheEarningPercent, EARNING_TERM_PROPERTY, moDataGrid.Columns(EARNING_TERM))
-            Me.BindBOPropertyToGridHeader(TheEarningPercent, EARNING_PERCENT_PROPERTY, moDataGrid.Columns(EARNING_PERCENT))
+            BindBOPropertyToGridHeader(TheEarningPercent, EARNING_TERM_PROPERTY, moDataGrid.Columns(EARNING_TERM))
+            BindBOPropertyToGridHeader(TheEarningPercent, EARNING_PERCENT_PROPERTY, moDataGrid.Columns(EARNING_PERCENT))
         End Sub
 
 #End Region
@@ -508,105 +508,105 @@ Namespace Tables
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
 
         ' Earning-Percent DataGrid
-        Public Sub ItemCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+        Public Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moDataGrid_PageIndexChanged(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moDataGrid.PageIndexChanging
+        Private Sub moDataGrid_PageIndexChanged(source As System.Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moDataGrid.PageIndexChanging
             Try
                 ResetIndexes()
                 moDataGrid.PageIndex = e.NewPageIndex
                 PopulatePercentList(ACTION_CANCEL_DELETE)
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
         'The pencil was clicked
-        Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
             Dim nIndex As Integer
             Try
-                If Me.State.IsNewWithCopy = True Then
+                If State.IsNewWithCopy = True Then
                     Exit Sub
                 End If
 
-                If e.CommandName = Me.EDIT_COMMAND_NAME Then
-                    Me.State.IsEditMode = True
+                If e.CommandName = EDIT_COMMAND_NAME Then
+                    State.IsEditMode = True
                     nIndex = CInt(e.CommandArgument)
                     moDataGrid.EditIndex = nIndex
                     moDataGrid.SelectedIndex = nIndex
-                    Dim gd As String = CType(Me.moDataGrid.Rows(nIndex).Cells(Me.DBEARNING_PERCENT_ID).FindControl("moEARNING_PERCENT_ID"), Label).Text
-                    Me.State.selectedEarningPercentId = New Guid(gd)
+                    Dim gd As String = CType(moDataGrid.Rows(nIndex).Cells(DBEARNING_PERCENT_ID).FindControl("moEARNING_PERCENT_ID"), Label).Text
+                    State.selectedEarningPercentId = New Guid(gd)
                     '      EnableForEditRateButtons(True)
                     PopulatePercentList(ACTION_EDIT)
                     PopulateEarningPercent()
-                    Me.SetGridControls(moDataGrid, False)
-                    Me.SetFocusInGrid(moDataGrid, nIndex, EARNING_PERCENT)
-                    EnableDisableControls(Me.moEarningPatternEditPanel, True)
+                    SetGridControls(moDataGrid, False)
+                    SetFocusInGrid(moDataGrid, nIndex, EARNING_PERCENT)
+                    EnableDisableControls(moEarningPatternEditPanel, True)
                     setbuttons(False)
-                ElseIf (e.CommandName = Me.DELETE_COMMAND_NAME) Then
+                ElseIf (e.CommandName = DELETE_COMMAND_NAME) Then
                     nIndex = CInt(e.CommandArgument)
-                    EarningPercentID = Me.GetGridText(moDataGrid, nIndex, EARNING_PERCENT_ID)
+                    EarningPercentID = GetGridText(moDataGrid, nIndex, EARNING_PERCENT_ID)
                     If DeleteSelectedPercent(nIndex) = True Then
                         PopulatePercentList(ACTION_CANCEL_DELETE)
                     End If
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
         'The Binding Logic is here
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moDataGrid.RowDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moDataGrid.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-            If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+            If dvRow IsNot Nothing And Not State.bnoRow Then
 
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    CType(e.Row.Cells(Me.DBEARNING_PERCENT_ID).FindControl("moEARNING_PERCENT_ID"), Label).Text = GetGuidStringFromByteArray(CType(dvRow(Me.DBEARNING_PERCENT_ID), Byte()))
-                    If (Me.State.IsEditMode = True _
-                            AndAlso Me.State.selectedEarningPercentId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(Me.DBEARNING_PERCENT_ID), Byte())))) Then
-                        CType(e.Row.Cells(Me.DBEARNING_TERM).FindControl("moEarningTermLabel"), Label).Text = dvRow(Me.DBEARNING_TERM).ToString
-                        CType(e.Row.Cells(Me.DBEARNING_PERCENT).FindControl("moEarningPercentText"), TextBox).Text = dvRow(Me.DBEARNING_PERCENT).ToString
+                    CType(e.Row.Cells(DBEARNING_PERCENT_ID).FindControl("moEARNING_PERCENT_ID"), Label).Text = GetGuidStringFromByteArray(CType(dvRow(DBEARNING_PERCENT_ID), Byte()))
+                    If (State.IsEditMode = True _
+                            AndAlso State.selectedEarningPercentId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(DBEARNING_PERCENT_ID), Byte())))) Then
+                        CType(e.Row.Cells(DBEARNING_TERM).FindControl("moEarningTermLabel"), Label).Text = dvRow(DBEARNING_TERM).ToString
+                        CType(e.Row.Cells(DBEARNING_PERCENT).FindControl("moEarningPercentText"), TextBox).Text = dvRow(DBEARNING_PERCENT).ToString
                     Else
-                        CType(e.Row.Cells(Me.DBEARNING_TERM).FindControl("moEarningTermLabel"), Label).Text = dvRow(Me.DBEARNING_TERM).ToString
-                        CType(e.Row.Cells(Me.DBEARNING_PERCENT).FindControl("moEarningPercentLabel"), Label).Text = dvRow(Me.DBEARNING_PERCENT).ToString
+                        CType(e.Row.Cells(DBEARNING_TERM).FindControl("moEarningTermLabel"), Label).Text = dvRow(DBEARNING_TERM).ToString
+                        CType(e.Row.Cells(DBEARNING_PERCENT).FindControl("moEarningPercentLabel"), Label).Text = dvRow(DBEARNING_PERCENT).ToString
 
                     End If
                     'e.Row.Cells(Me.ACCT_COMPANY_DESCRIPTION_COL).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_COMPANY_DESCRIPTION).ToString
                 End If
             End If
         End Sub
-        Protected Sub ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles moDataGrid.RowDataBound
+        Protected Sub ItemBound(source As Object, e As GridViewRowEventArgs) Handles moDataGrid.RowDataBound
             Try
                 BaseItemBound(source, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
         Private Sub ResetIndexes()
-            moDataGrid.EditIndex = Me.NO_ITEM_SELECTED_INDEX
-            moDataGrid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+            moDataGrid.EditIndex = NO_ITEM_SELECTED_INDEX
+            moDataGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
         End Sub
 
 #End Region
 
 #Region "Handlers-Percentage-Buttons"
 
-        Private Sub setbuttons(ByVal enable As Boolean)
+        Private Sub setbuttons(enable As Boolean)
             ControlMgr.SetEnableControl(Me, btnBack, enable)
             ControlMgr.SetEnableControl(Me, btnApply_WRITE, enable)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enable)
@@ -623,48 +623,48 @@ Namespace Tables
                     IsNewPercent = False
                 End If
                 PopulatePercentList(ACTION_SAVE)
-                EnableDisableControls(Me.moEarningPatternEditPanel, False)
+                EnableDisableControls(moEarningPatternEditPanel, False)
                 setbuttons(True)
             End If
         End Sub
 
-        Private Sub BtnSavePercent_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSavePercent_WRITE.Click
+        Private Sub BtnSavePercent_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnSavePercent_WRITE.Click
             Try
                 SavePercentChanges()
             Catch ex As Exception
-                If (Not ex.InnerException Is Nothing) AndAlso (ex.InnerException.Message = INCORRECT_FORMAT) Then
+                If (ex.InnerException IsNot Nothing) AndAlso (ex.InnerException.Message = INCORRECT_FORMAT) Then
                     moErrorControllerPercent.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_PERCENT_MUST_BE_NUMERIC_ERR)
                     moErrorControllerPercent.Show()
                 Else
-                    Me.HandleErrors(ex, Me.moErrorControllerPercent)
+                    HandleErrors(ex, moErrorControllerPercent)
                 End If
             End Try
         End Sub
 
-        Private Sub BtnCancelPercent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnCancelPercent.Click
+        Private Sub BtnCancelPercent_Click(sender As System.Object, e As System.EventArgs) Handles BtnCancelPercent.Click
             'Pencil button in not in edit mode
             Try
                 IsNewPercent = False
                 EnableForEditPercentButtons(False)
                 PopulatePercentList(ACTION_CANCEL_DELETE)
-                EnableDisableControls(Me.moEarningPatternEditPanel, False)
+                EnableDisableControls(moEarningPatternEditPanel, False)
                 setbuttons(True)
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorControllerPercent)
+                HandleErrors(ex, moErrorControllerPercent)
             End Try
         End Sub
 
-        Private Sub BtnNewPercent_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewPercent_WRITE.Click
+        Private Sub BtnNewPercent_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNewPercent_WRITE.Click
             Try
                 IsNewPercent = True
                 EarningPercentID = Guid.Empty.ToString
                 PopulatePercentList(ACTION_NEW)
-                Me.SetGridControls(moDataGrid, False)
-                Me.SetFocusInGrid(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT)
-                EnableDisableControls(Me.moEarningPatternEditPanel, True)
+                SetGridControls(moDataGrid, False)
+                SetFocusInGrid(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT)
+                EnableDisableControls(moEarningPatternEditPanel, True)
                 setbuttons(False)
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorControllerPercent)
+                HandleErrors(ex, moErrorControllerPercent)
             End Try
         End Sub
 
@@ -674,23 +674,23 @@ Namespace Tables
 
 #Region "Button Management"
 
-        Private Sub EnableEffective(ByVal bIsEnable As Boolean)
+        Private Sub EnableEffective(bIsEnable As Boolean)
             ControlMgr.SetEnableControl(Me, moEffectiveText, bIsEnable)
             ControlMgr.SetVisibleControl(Me, BtnEffectiveDate, bIsEnable)
         End Sub
 
-        Private Sub EnableExpiration(ByVal bIsEnable As Boolean)
+        Private Sub EnableExpiration(bIsEnable As Boolean)
             ControlMgr.SetEnableControl(Me, moExpirationText, bIsEnable)
             ControlMgr.SetVisibleControl(Me, BtnExpirationDate, bIsEnable)
         End Sub
 
-        Private Sub EnableFields(ByVal bIsEnable As Boolean)
+        Private Sub EnableFields(bIsEnable As Boolean)
             ControlMgr.SetEnableControl(Me, moCodeDrop, bIsEnable)
             EnableEffective(True)
             EnableExpiration(True)
         End Sub
 
-        Private Sub EnableButtons(ByVal bIsReadWrite As Boolean)
+        Private Sub EnableButtons(bIsReadWrite As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, bIsReadWrite)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, bIsReadWrite)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, bIsReadWrite)
@@ -701,7 +701,7 @@ Namespace Tables
 #Region "Clear"
 
         Private Sub ClearEarningPercent()
-            If Not Me.State.IsNewWithCopy Then
+            If Not State.IsNewWithCopy Then
                 EnablePercentButtons(False)
                 'Pencil button in not in edit mode
                 '   ResetIndexes()
@@ -711,7 +711,7 @@ Namespace Tables
         End Sub
 
         Private Sub ClearFields()
-            If Not Me.State.IsNewWithCopy Then
+            If Not State.IsNewWithCopy Then
                 ClearList(moCodeDrop)
                 ClearList(moEPStartsOnDrop)
                 ClearEarningPercent()
@@ -748,9 +748,9 @@ Namespace Tables
             Dim oEarningCode As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="EarningCodesByCompanyGroup", context:=oListContext)
             Dim earningPatterns As ListItem() = CommonConfigManager.Current.ListManager.GetList("EPSO", Thread.CurrentPrincipal.GetLanguageCode())
 
-            If Me.State.IsNewWithCopy And Me.State.IsUndo Then
-                Me.State.moEarningPatternId = Me.State.moOldEarningPatternId
-                moEarningPattern = New EarningPattern(Me.State.moEarningPatternId)
+            If State.IsNewWithCopy And State.IsUndo Then
+                State.moEarningPatternId = State.moOldEarningPatternId
+                moEarningPattern = New EarningPattern(State.moEarningPatternId)
             End If
 
             moCodeDrop.Populate(oEarningCode, New PopulateOptions() With
@@ -785,18 +785,18 @@ Namespace Tables
 
         Private Sub PopulateFields()
             Try
-                If IsPostBack And Not Me.State.IsUndo Then
+                If IsPostBack And Not State.IsUndo Then
                     ' JLR - Restore Presviously Selected Values
-                    moDescriptionText.Text = Me.State.selectedDescription
-                    moCodeText.Text = Me.State.selectedCode
-                    moEffectiveText.Text = Me.State.selectedEffective
-                    moExpirationText.Text = Me.State.selectedExpiration
-                    Me.State.IsUndo = False
+                    moDescriptionText.Text = State.selectedDescription
+                    moCodeText.Text = State.selectedCode
+                    moEffectiveText.Text = State.selectedEffective
+                    moExpirationText.Text = State.selectedExpiration
+                    State.IsUndo = False
                 Else
                     ' JLR - Otherwise load values from BO unless it is new with copy
                     ' In that case, BO has been cleared but we want to preserve the values 
                     ' already in the screen
-                    If Not Me.State.IsNewWithCopy Then
+                    If Not State.IsNewWithCopy Then
                         'JLR==> PopulateControlFromBOProperty(moDescriptionText, TheEarningPattern.Description)
                         'JLR==> PopulateControlFromBOProperty(moCodeText, TheEarningPattern.Code)
                         If TheEarningPattern.Effective Is Nothing Then
@@ -810,7 +810,7 @@ Namespace Tables
                             PopulateControlFromBOProperty(moExpirationText, TheEarningPattern.Expiration.Value.ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture))
                         End If
                     Else
-                        If Me.State.IsUndo = True Then
+                        If State.IsUndo = True Then
                             If TheEarningPattern.Effective Is Nothing Then
                                 PopulateControlFromBOProperty(moEffectiveText, TheEarningPattern.Effective)
                             Else
@@ -841,10 +841,10 @@ Namespace Tables
             ' Me.State.moEarningCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_EARNING_CODES, moCodeText.Text)
             ' TheEarningPattern.EarningCodeId = Me.State.moEarningCodeId
 
-            Me.PopulateBOProperty(TheEarningPattern, "EarningCodeId", moCodeDrop)
-            If Microsoft.VisualBasic.IsDate(moEffectiveText.Text) Then Me.PopulateBOProperty(TheEarningPattern, "Effective", CType(moEffectiveText.Text, Date).ToString) Else PopulateBOProperty(TheEarningPattern, "Effective", "")
-            If Microsoft.VisualBasic.IsDate(moExpirationText.Text) Then Me.PopulateBOProperty(TheEarningPattern, "Expiration", CType(moExpirationText.Text, Date).ToString) Else PopulateBOProperty(TheEarningPattern, "Expiration", "")
-            Me.PopulateBOProperty(TheEarningPattern, "EarningPatternStartsOnId", moEPStartsOnDrop)
+            PopulateBOProperty(TheEarningPattern, "EarningCodeId", moCodeDrop)
+            If Microsoft.VisualBasic.IsDate(moEffectiveText.Text) Then PopulateBOProperty(TheEarningPattern, "Effective", CType(moEffectiveText.Text, Date).ToString) Else PopulateBOProperty(TheEarningPattern, "Effective", "")
+            If Microsoft.VisualBasic.IsDate(moExpirationText.Text) Then PopulateBOProperty(TheEarningPattern, "Expiration", CType(moExpirationText.Text, Date).ToString) Else PopulateBOProperty(TheEarningPattern, "Expiration", "")
+            PopulateBOProperty(TheEarningPattern, "EarningPatternStartsOnId", moEPStartsOnDrop)
         End Sub
 
         Private Function IsDirtyBO() As Boolean
@@ -870,7 +870,7 @@ Namespace Tables
             With TheEarningPattern
                 bIsDirty = IsDirtyBO()
                 .Save()
-                Me.LoadPercentList()
+                LoadPercentList()
                 If SavePercentList() Then
                     EnableButtons(True)
                 Else
@@ -882,9 +882,9 @@ Namespace Tables
             End With
             If (bIsOk = True) Then
                 If bIsDirty = True Then
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                 Else
-                    Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+                    AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
                 End If
             End If
             Return bIsOk
@@ -925,7 +925,7 @@ Namespace Tables
             If Microsoft.VisualBasic.IsDate(moExpirationText.Text) Then moExpirationDate = CType(moExpirationText.Text, Date)
 
             With TheEarningPattern
-                If Me.State.IsEarningPatternNew Then
+                If State.IsEarningPatternNew Then
                     Return False
                 Else
                     If CType(.Effective.ToString, Date) <> moEffectiveDate _
@@ -944,21 +944,21 @@ Namespace Tables
 
 #Region "Earning-Percent Button Management"
 
-        Private Sub EnableEditPercentButtons(ByVal bIsReadWrite As Boolean)
+        Private Sub EnableEditPercentButtons(bIsReadWrite As Boolean)
             ControlMgr.SetEnableControl(Me, BtnSavePercent_WRITE, bIsReadWrite)
             ControlMgr.SetEnableControl(Me, BtnCancelPercent, bIsReadWrite)
         End Sub
 
-        Private Sub EnableNewPercentButtons(ByVal bIsReadWrite As Boolean)
+        Private Sub EnableNewPercentButtons(bIsReadWrite As Boolean)
             ControlMgr.SetEnableControl(Me, btnNewPercent_WRITE, bIsReadWrite)
         End Sub
 
-        Private Sub EnablePercentButtons(ByVal bIsReadWrite As Boolean)
+        Private Sub EnablePercentButtons(bIsReadWrite As Boolean)
             EnableNewPercentButtons(bIsReadWrite)
             EnableEditPercentButtons(bIsReadWrite)
         End Sub
 
-        Private Sub EnableForEditPercentButtons(ByVal bIsReadWrite As Boolean)
+        Private Sub EnableForEditPercentButtons(bIsReadWrite As Boolean)
             EnableNewPercentButtons(Not bIsReadWrite)
             EnableEditPercentButtons(bIsReadWrite)
         End Sub
@@ -971,18 +971,18 @@ Namespace Tables
             Dim oEarningPercent As EarningPercent
             Dim oDataView As DataView, oDataViewOld As DataView
 
-            If Me.State.IsEarningPatternNew = True And Not Me.State.IsNewWithCopy Then Return
+            If State.IsEarningPatternNew = True And Not State.IsNewWithCopy Then Return
 
             Try
 
-                If Me.State.IsNewWithCopy Then
-                    If Me.State.IsUndo = True Then
+                If State.IsNewWithCopy Then
+                    If State.IsUndo = True Then
                         oDataView = oEarningPercent.GetList(TheEarningPattern.Id)
                     Else
-                        oDataViewOld = oEarningPercent.GetList(Me.State.moOldEarningPatternId)
+                        oDataViewOld = oEarningPercent.GetList(State.moOldEarningPatternId)
                         oDataView = oEarningPercent.GetList(Guid.Empty)
                         If Not oAction = ACTION_CANCEL_DELETE Then
-                            Me.LoadPercentList()
+                            LoadPercentList()
                         End If
                         oDataView = getDataFromExistingPattern(oDataViewOld, oDataView.Table) 'getDVFromArray(Me.State.moPercentList, oDataView.Table)
                     End If
@@ -992,40 +992,40 @@ Namespace Tables
 
                 Select Case oAction
                     Case ACTION_NONE
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, moDataGrid, 0)
+                        SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, moDataGrid, 0)
                         EnableForEditPercentButtons(False)
                     Case ACTION_SAVE
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Me.GetGuidFromString(EarningPercentID), moDataGrid, _
+                        SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(EarningPercentID), moDataGrid, _
                                     moDataGrid.PageIndex)
                         EnableForEditPercentButtons(False)
-                        Me.State.IsEditMode = False
+                        State.IsEditMode = False
                     Case ACTION_CANCEL_DELETE
-                        Me.State.IsEditMode = False
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, moDataGrid, _
+                        State.IsEditMode = False
+                        SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, moDataGrid, _
                                     moDataGrid.PageIndex)
                         EnableForEditPercentButtons(False)
-                        If Me.State.IsNewWithCopy Then
+                        If State.IsNewWithCopy Then
                             EnableNewPercentButtons(False)
                         End If
 
                     Case ACTION_EDIT
-                        If Me.State.IsNewWithCopy Then
-                            EarningPercentID = Me.State.moPercentList(moDataGrid.SelectedIndex).Id.ToString
+                        If State.IsNewWithCopy Then
+                            EarningPercentID = State.moPercentList(moDataGrid.SelectedIndex).Id.ToString
                         Else
-                            EarningPercentID = Me.GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT_ID)
+                            EarningPercentID = GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT_ID)
                         End If
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Me.GetGuidFromString(EarningPercentID), moDataGrid, _
+                        SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(EarningPercentID), moDataGrid, _
                                     moDataGrid.PageIndex, True)
                         EnableForEditPercentButtons(True)
                     Case ACTION_NEW
-                        If Me.State.IsNewWithCopy Then oDataView.Table.DefaultView.Sort() = Nothing ' Clear sort, so that the new line shows up at the bottom
+                        If State.IsNewWithCopy Then oDataView.Table.DefaultView.Sort() = Nothing ' Clear sort, so that the new line shows up at the bottom
                         Dim oRow As DataRow = oDataView.Table.NewRow
                         oRow(DBEARNING_PERCENT_ID) = TheEarningPercent.Id.ToByteArray
                         oRow(DBEARNING_TERM) = oDataView.Count + 1
-                        Me.State.IsEditMode = True
-                        Me.State.selectedEarningPercentId = GetGuidFromString(GetGuidStringFromByteArray(CType(oRow(DBEARNING_PERCENT_ID), Byte())))
+                        State.IsEditMode = True
+                        State.selectedEarningPercentId = GetGuidFromString(GetGuidStringFromByteArray(CType(oRow(DBEARNING_PERCENT_ID), Byte())))
                         oDataView.Table.Rows.Add(oRow)
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Me.GetGuidFromString(EarningPercentID), moDataGrid, _
+                        SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(EarningPercentID), moDataGrid, _
                                     moDataGrid.PageIndex, True)
                         EnableForEditPercentButtons(True)
 
@@ -1043,15 +1043,15 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Function getDVFromArray(ByVal oArray() As EarningPercent, ByVal oDtable As DataTable) As DataView
+        Private Function getDVFromArray(oArray() As EarningPercent, oDtable As DataTable) As DataView
 
             Dim oRow As DataRow
             Dim oEarningPercent As EarningPercent
             For Each oEarningPercent In oArray
-                If Not oEarningPercent Is Nothing Then
+                If oEarningPercent IsNot Nothing Then
                     oRow = oDtable.NewRow
-                    oRow(Me.COL_EARNING_TERM) = oEarningPercent.EarningTerm.Value
-                    oRow(Me.COL_EARNING_PERCENT) = oEarningPercent.EarningPercent.Value
+                    oRow(COL_EARNING_TERM) = oEarningPercent.EarningTerm.Value
+                    oRow(COL_EARNING_PERCENT) = oEarningPercent.EarningPercent.Value
                     oDtable.Rows.Add(oRow)
                 End If
             Next
@@ -1060,7 +1060,7 @@ Namespace Tables
 
         End Function
 
-        Private Function getDataFromExistingPattern(ByVal dv As DataView, ByVal oDtable As DataTable) As DataView
+        Private Function getDataFromExistingPattern(dv As DataView, oDtable As DataTable) As DataView
             Dim i As Integer
             Dim oRow As DataRow
             If dv.Count = 0 Then
@@ -1086,15 +1086,15 @@ Namespace Tables
         End Sub
 
         Private Sub PopulateEarningPercent()
-            If Me.State.IsNewWithCopy Then
-                With Me.State.moPercentList(moDataGrid.SelectedIndex)
-                    Me.SetSelectedGridText(moDataGrid, EARNING_TERM, .EarningTerm.ToString)
-                    Me.SetSelectedGridText(moDataGrid, EARNING_PERCENT, .EarningPercent.ToString)
+            If State.IsNewWithCopy Then
+                With State.moPercentList(moDataGrid.SelectedIndex)
+                    SetSelectedGridText(moDataGrid, EARNING_TERM, .EarningTerm.ToString)
+                    SetSelectedGridText(moDataGrid, EARNING_PERCENT, .EarningPercent.ToString)
                 End With
             Else
                 With TheEarningPercent
-                    Me.SetSelectedGridText(moDataGrid, EARNING_TERM, .EarningTerm.ToString)
-                    Me.SetSelectedGridText(moDataGrid, EARNING_PERCENT, .EarningPercent.Value.ToString)
+                    SetSelectedGridText(moDataGrid, EARNING_TERM, .EarningTerm.ToString)
+                    SetSelectedGridText(moDataGrid, EARNING_PERCENT, .EarningPercent.Value.ToString)
                 End With
             End If
 
@@ -1107,15 +1107,15 @@ Namespace Tables
         Private Sub PopulatePercentBOFromForm()
             With TheEarningPercent
                 .EarningPatternId = TheEarningPattern.Id
-                Me.PopulateBOProperty(TheEarningPercent, "EarningTerm", Me.GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_TERM))
-                Me.PopulateBOProperty(TheEarningPercent, "EarningPercent", Me.GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT))
+                PopulateBOProperty(TheEarningPercent, "EarningTerm", GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_TERM))
+                PopulateBOProperty(TheEarningPercent, "EarningPercent", GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT))
             End With
         End Sub
 
         Private Function IsDirtyPercentBO() As Boolean
             Dim bIsDirty As Boolean = True
-            If moDataGrid.EditIndex = Me.NO_ITEM_SELECTED_INDEX Then Return False
-            Dim sEarningPercentID As String = Me.GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT_ID)
+            If moDataGrid.EditIndex = NO_ITEM_SELECTED_INDEX Then Return False
+            Dim sEarningPercentID As String = GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT_ID)
             Try
                 With TheEarningPercent
                     PopulatePercentBOFromForm()
@@ -1132,13 +1132,13 @@ Namespace Tables
             Dim bIsOk As Boolean = True
             Dim bIsDirty As Boolean
             If moDataGrid.EditIndex < 0 Then Return False
-            If Me.State.IsNewWithCopy Then
-                Me.LoadPercentList()
-                Me.State.moPercentList(moDataGrid.SelectedIndex).Validate()
+            If State.IsNewWithCopy Then
+                LoadPercentList()
+                State.moPercentList(moDataGrid.SelectedIndex).Validate()
                 Return bIsOk
             End If
             If IsNewPercent = False Then
-                EarningPercentID = Me.GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT_ID)
+                EarningPercentID = GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT_ID)
             End If
             BindBoPropertiesToGridHeader()
             With TheEarningPercent
@@ -1149,21 +1149,21 @@ Namespace Tables
             End With
             If (bIsOk = True) Then
                 If bIsDirty = True Then
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                 Else
-                    Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+                    AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
                 End If
             End If
             Return bIsOk
         End Function
 
         ' The user selected a specific Percentage to Delete
-        Private Function DeleteSelectedPercent(ByVal nIndex As Integer) As Boolean
+        Private Function DeleteSelectedPercent(nIndex As Integer) As Boolean
             Dim bIsOk As Boolean = True
             Try
-                If Me.State.IsNewWithCopy Then
-                    If Me.State.moPercentList Is Nothing Then Me.LoadPercentList()
-                    Me.State.moPercentList(nIndex) = Nothing
+                If State.IsNewWithCopy Then
+                    If State.moPercentList Is Nothing Then LoadPercentList()
+                    State.moPercentList(nIndex) = Nothing
                 Else
                     With TheEarningPercent()
                         If .IsLastterm() = False Then
@@ -1188,7 +1188,7 @@ Namespace Tables
         End Function
 
         ' Delete a Percentage from a DataView Row
-        Private Function DeleteAPercent(ByVal oRow As DataRow) As Boolean
+        Private Function DeleteAPercent(oRow As DataRow) As Boolean
             Dim bIsOk As Boolean = True
             Try
                 Dim oEarningPercent As EarningPercent = New EarningPercent(New Guid(CType(oRow(DBEARNING_PERCENT_ID), Byte())))
@@ -1227,20 +1227,20 @@ Namespace Tables
 #Region "State-Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and go back to Search Page
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             GoBack()
                         End If
 
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' Go back to Search Page
                         GoBack()
                 End Select
@@ -1252,7 +1252,7 @@ Namespace Tables
         Protected Sub CheckIfComingFromConfirm()
             ComingFromBack()
             'Clean after consuming the action
-            Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+            HiddenSaveChangesPromptResponse.Value = String.Empty
         End Sub
 
 #End Region

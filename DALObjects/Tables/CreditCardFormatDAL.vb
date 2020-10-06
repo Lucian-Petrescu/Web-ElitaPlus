@@ -29,39 +29,39 @@ Public Class CreditCardFormatDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("credit_card_format_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim RegularExpressionDAL As New RegularExpressionDAL
 
         Dim tr As IDbTransaction = Transaction
@@ -72,11 +72,11 @@ Public Class CreditCardFormatDAL
             'First Pass updates Deletions
             'to be used by maintain invoice use case
             RegularExpressionDAL.Update(familyDataset, tr, DataRowState.Deleted)
-            Me.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
             RegularExpressionDAL.Update(familyDataset.Tables(RegularExpressionDAL.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
-            Me.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
 
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection
@@ -94,9 +94,9 @@ Public Class CreditCardFormatDAL
 
 #Region "CRUD Methods"
 
-    Public Function LoadList(ByVal CreditCardTypeId As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadList(CreditCardTypeId As Guid, languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
 
         If Not CreditCardTypeId.Equals(Guid.Empty) Then
@@ -104,9 +104,9 @@ Public Class CreditCardFormatDAL
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
 
         End If
 
@@ -114,16 +114,16 @@ Public Class CreditCardFormatDAL
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
 
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadByCode(ByVal CreditCardTypeCode As String, ByVal languageId As Guid) As DataSet
+    Public Function LoadByCode(CreditCardTypeCode As String, languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BY_CODE")
+        Dim selectStmt As String = Config("/SQL/LOAD_BY_CODE")
 
 
         Dim parameters() As OracleParameter
@@ -131,7 +131,7 @@ Public Class CreditCardFormatDAL
                                             New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
 
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try

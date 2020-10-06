@@ -22,13 +22,13 @@ Namespace Core
 #Region "IInstanceProvider Members"
 
         Public Function GetInstance(instanceContext As InstanceContext, message As Message) As Object Implements IInstanceProvider.GetInstance
-            Return Me.GetInstance(instanceContext)
+            Return GetInstance(instanceContext)
         End Function
 
         Public Function GetInstance(instanceContext As InstanceContext) As Object Implements IInstanceProvider.GetInstance
             Dim returnObj As Object
 
-            returnObj = Me.container.Resolve(instanceContext.Host.Description.ServiceType)
+            returnObj = container.Resolve(instanceContext.Host.Description.ServiceType)
 
             Return returnObj
         End Function

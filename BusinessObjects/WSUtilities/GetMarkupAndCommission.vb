@@ -47,8 +47,8 @@ Public Class GetMarkupAndCommission
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -59,10 +59,10 @@ Public Class GetMarkupAndCommission
     Private Sub Load(ByVal ds As GetMarkupAndCommissionDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -79,25 +79,25 @@ Public Class GetMarkupAndCommission
             If ds.GetMarkupAndCommission.Count = 0 Then Exit Sub
             With ds.GetMarkupAndCommission.Item(0)
 
-                If Not .IsDealerCodeNull Then Me.DealerCode = .DealerCode
-                If Not .IsCertificateNumberNull Then Me.CertificateNumber = .CertificateNumber
+                If Not .IsDealerCodeNull Then DealerCode = .DealerCode
+                If Not .IsCertificateNumberNull Then CertificateNumber = .CertificateNumber
                 If Not .IsBeginDateNull Then
-                    Me.BeginDate = CType(.BeginDate, DateTime)
+                    BeginDate = CType(.BeginDate, DateTime)
                 Else
-                    Me.BeginDate = Nothing
+                    BeginDate = Nothing
                 End If
 
                 If Not .IsEndDateNull Then
-                    Me.EndDate = CType(.EndDate, DateTime)                    
+                    EndDate = CType(.EndDate, DateTime)                    
                 Else
-                    Me.EndDate = Nothing
+                    EndDate = Nothing
                 End If
 
 
                 If Not .IsRequestNumberNull Then
-                    Me.RequestNumber = .RequestNumber
+                    RequestNumber = .RequestNumber
                 Else
-                    Me.RequestNumber = 0 'default
+                    RequestNumber = 0 'default
                 End If
 
 
@@ -120,36 +120,36 @@ Public Class GetMarkupAndCommission
 
     Public Property DealerCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_DEALER), String)
+                Return CType(Row(DATA_COL_NAME_DEALER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER, Value)
+            SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
     Public Property CertificateNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_CERTIFICATE_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERTIFICATE_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CERTIFICATE_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_CERTIFICATE_NUMBER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CERTIFICATE_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CERTIFICATE_NUMBER, Value)
         End Set
     End Property
 
     Public Property EndDate() As DateType
         Get
             CheckDeleted()
-            If Row(Me.DATA_COL_NAME_END_DATE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_END_DATE) Is DBNull.Value Then
                 Return Nothing
             Else                
                 Return New DateType(CType(Row(DATA_COL_NAME_END_DATE), DateTime))
@@ -157,14 +157,14 @@ Public Class GetMarkupAndCommission
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(DATA_COL_NAME_END_DATE, Value)
+            SetValue(DATA_COL_NAME_END_DATE, Value)
         End Set
     End Property
 
     Public Property BeginDate() As DateType
         Get
             CheckDeleted()
-            If Row(Me.DATA_COL_NAME_BEGIN_DATE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_BEGIN_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
                 Return New DateType(CType(Row(DATA_COL_NAME_BEGIN_DATE), DateTime))
@@ -172,22 +172,22 @@ Public Class GetMarkupAndCommission
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(DATA_COL_NAME_BEGIN_DATE, Value)
+            SetValue(DATA_COL_NAME_BEGIN_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property RequestNumber() As Integer
         Get
-            If Row(Me.DATA_COL_NAME_REQUEST_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_REQUEST_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_REQUEST_NUMBER), Integer)
+                Return CType(Row(DATA_COL_NAME_REQUEST_NUMBER), Integer)
             End If
         End Get
         Set(ByVal Value As Integer)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_REQUEST_NUMBER, Value)
+            SetValue(DATA_COL_NAME_REQUEST_NUMBER, Value)
         End Set
     End Property
 
@@ -197,22 +197,22 @@ Public Class GetMarkupAndCommission
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
             Dim cert As New Certificate
 
             Dim _CertListDataSet As DataSet
-            If Not Me.BeginDate Is Nothing AndAlso Not Me.EndDate Is Nothing Then
-                _CertListDataSet = cert.GetMarkupAndCommissionList(Me.RequestNumber, Me.DealerId, Me.BeginDate, Me.EndDate, Me.CertificateNumber)
-            ElseIf Not Me.BeginDate Is Nothing Then
-                _CertListDataSet = cert.GetMarkupAndCommissionList(Me.RequestNumber, Me.DealerId, Me.BeginDate, Nothing, Me.CertificateNumber)
-            ElseIf Not Me.EndDate Is Nothing Then
-                _CertListDataSet = cert.GetMarkupAndCommissionList(Me.RequestNumber, Me.DealerId, Nothing, Me.EndDate, Me.CertificateNumber)
+            If Not BeginDate Is Nothing AndAlso Not EndDate Is Nothing Then
+                _CertListDataSet = cert.GetMarkupAndCommissionList(RequestNumber, DealerId, BeginDate, EndDate, CertificateNumber)
+            ElseIf Not BeginDate Is Nothing Then
+                _CertListDataSet = cert.GetMarkupAndCommissionList(RequestNumber, DealerId, BeginDate, Nothing, CertificateNumber)
+            ElseIf Not EndDate Is Nothing Then
+                _CertListDataSet = cert.GetMarkupAndCommissionList(RequestNumber, DealerId, Nothing, EndDate, CertificateNumber)
             Else
-                _CertListDataSet = cert.GetMarkupAndCommissionList(Me.RequestNumber, Me.DealerId, Nothing, Nothing, Me.CertificateNumber)
+                _CertListDataSet = cert.GetMarkupAndCommissionList(RequestNumber, DealerId, Nothing, Nothing, CertificateNumber)
             End If
 
 
-            _CertListDataSet.DataSetName = Me.DATASET_NAME
+            _CertListDataSet.DataSetName = DATASET_NAME
             Return (XMLHelper.FromDatasetToXML(_CertListDataSet, Nothing, True, True, True, False, True))
 
         Catch ex As BOValidationException
@@ -233,20 +233,20 @@ Public Class GetMarkupAndCommission
 
     Private ReadOnly Property DealerId() As Guid
         Get
-            If Me._dealerId.Equals(Guid.Empty) AndAlso Not Me.DealerCode Is Nothing AndAlso Not Me.DealerCode.Equals(String.Empty) Then
+            If _dealerId.Equals(Guid.Empty) AndAlso Not DealerCode Is Nothing AndAlso Not DealerCode.Equals(String.Empty) Then
 
                 Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
                 If list Is Nothing Then
                     Throw New BOValidationException("GetMarkupAndCommission Error: ", Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE)
                 End If
-                Me._dealerId = LookupListNew.GetIdFromCode(list, Me.DealerCode)
+                _dealerId = LookupListNew.GetIdFromCode(list, DealerCode)
                 If _dealerId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("GetMarkupAndCommission Error: ", Common.ErrorCodes.WS_DEALER_NOT_FOUND)
                 End If
                 list = Nothing
             End If
 
-            Return Me._dealerId
+            Return _dealerId
         End Get
     End Property
 

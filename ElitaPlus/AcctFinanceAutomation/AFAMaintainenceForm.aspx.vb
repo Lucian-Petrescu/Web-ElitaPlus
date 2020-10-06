@@ -48,8 +48,8 @@ Public Class AFAMaintainenceForm
 
 
     Private Sub UpdateBreadCrum()
-        If (Not State Is Nothing) Then
-            If (Not State Is Nothing) Then
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
                 MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                     TranslationBase.TranslateLabelOrMessage("AFAMAINTAINENCEFORM")
                 MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("AFAMAINTAINENCEFORM")
@@ -57,7 +57,7 @@ Public Class AFAMaintainenceForm
         End If
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         MasterPage.MessageController.Clear()
         Try
             If Not IsPostBack Then
@@ -125,7 +125,7 @@ Public Class AFAMaintainenceForm
             oListContext.CompanyId = userCompanies(index)
             Dim oDealerListForCompany As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
-                If Not oDealerList Is Nothing Then
+                If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
                 Else
                     oDealerList = oDealerListForCompany.Clone()
@@ -138,7 +138,7 @@ Public Class AFAMaintainenceForm
 
     End Function
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
 
             If GetSelectedItem(ddlDealer) = Guid.Empty Then
@@ -227,7 +227,7 @@ Public Class AFAMaintainenceForm
 #Region "Date Functions"
 
 
-    Private Function GetFirstDayOfMonth(ByVal iMonth As Int32, ByVal iYear As Int32) As DateTime
+    Private Function GetFirstDayOfMonth(iMonth As Int32, iYear As Int32) As DateTime
         'set return value to the last day of the month for any date passed in to the method
         'create a datetime variable set to the passed in date
         Dim dtFrom As New DateTime(iYear, iMonth, 1)
@@ -237,7 +237,7 @@ Public Class AFAMaintainenceForm
         Return dtFrom
     End Function
 
-    Private Function GetLastDayOfMonth(ByVal iMonth As Int32, ByVal iYear As Int32) As DateTime
+    Private Function GetLastDayOfMonth(iMonth As Int32, iYear As Int32) As DateTime
         'set return value to the last day of the month for any date passed in to the method
         'create a datetime variable set to the passed in date
         Dim dtTo As New DateTime(iYear, iMonth, 1)
@@ -251,7 +251,7 @@ Public Class AFAMaintainenceForm
 
 #End Region
 
-    Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         ddlDealer.SelectedIndex = NoRowSelectedIndex
 
         ClearSearchResults()
@@ -273,7 +273,7 @@ Public Class AFAMaintainenceForm
     End Sub
 
 
-    Private Sub GridProcessStatus_PageIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles GridProcessStatus.PageIndexChanged
+    Private Sub GridProcessStatus_PageIndexChanged(sender As Object, e As EventArgs) Handles GridProcessStatus.PageIndexChanged
         Try
             State.PageIndex = GridProcessStatus.PageIndex
             PopulateGrid()
@@ -282,7 +282,7 @@ Public Class AFAMaintainenceForm
         End Try
     End Sub
 
-    Private Sub GridProcessStatus_PageIndexChanging(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles GridProcessStatus.PageIndexChanging
+    Private Sub GridProcessStatus_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridProcessStatus.PageIndexChanging
         Try
             GridProcessStatus.PageIndex = e.NewPageIndex
             State.PageIndex = GridProcessStatus.PageIndex
@@ -291,7 +291,7 @@ Public Class AFAMaintainenceForm
         End Try
     End Sub
 
-    Public Sub GridRowGridProcessStatus_RowCreated(ByVal sender As System.Object, ByVal e As GridViewRowEventArgs) Handles GridProcessStatus.RowCreated
+    Public Sub GridRowGridProcessStatus_RowCreated(sender As System.Object, e As GridViewRowEventArgs) Handles GridProcessStatus.RowCreated
         Try
             BaseItemCreated(sender, e)
 
@@ -301,7 +301,7 @@ Public Class AFAMaintainenceForm
     End Sub
 
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(GridProcessStatus, State.SearchActiveDv.Count, State.PageSize)
@@ -312,7 +312,7 @@ Public Class AFAMaintainenceForm
         End Try
     End Sub
 
-    Private Sub BtnReRunRecon_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnReRunRecon.Click
+    Private Sub BtnReRunRecon_Click(sender As Object, e As EventArgs) Handles BtnReRunRecon.Click
         Dim result As Boolean
         Try
 
@@ -331,7 +331,7 @@ Public Class AFAMaintainenceForm
 
     End Sub
 
-    Private Sub BtnReRunInvoice_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnReRunInvoice.Click
+    Private Sub BtnReRunInvoice_Click(sender As Object, e As EventArgs) Handles BtnReRunInvoice.Click
         Dim result As Boolean
         Try
 

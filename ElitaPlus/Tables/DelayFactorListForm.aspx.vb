@@ -18,7 +18,7 @@ Partial Class DelayFactorListForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -92,49 +92,49 @@ Partial Class DelayFactorListForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
 
-        Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
-        Me.ErrorCtrl.Clear_Hide()
+        Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
+        ErrorCtrl.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 PopulateDealer()
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                Me.SortDirection = Me.State.SortExpression
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        Grid.PageSize = Me.State.selectedPageSize
+                SortDirection = State.SortExpression
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        Grid.PageSize = State.selectedPageSize
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
 
-                Me.SetGridItemStyleColor(Me.Grid)
+                SetGridItemStyleColor(Grid)
             End If
             'Me.DisplayProgressBarOnClick(Me.btnSearch, "Loading_Claims")
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
 
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
-            Me.State.searchDV = Nothing
+            MenuEnabled = True
+            IsReturningFromChild = True
+            State.searchDV = Nothing
             'Dim retObj As ClaimForm.ReturnType = CType(Me.ReturnedValues, ClaimForm.ReturnType)
             'If Not retObj Is Nothing AndAlso retObj.BoChanged Then
             '    Me.State.searchDV = Nothing
             'End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
 
     End Sub
 
@@ -157,7 +157,7 @@ Partial Class DelayFactorListForm
                                         "multipleDropControl_lb_DropDown", _
                                         False, _
                                         0)
-            Me.TheDealerControl.SelectedGuid = Me.State.DealerId
+            TheDealerControl.SelectedGuid = State.DealerId
             ' Me.BindListControlToDataView(moDealerDrop, LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies), , , True)
             'BindSelectItem(Me.State.DealerId.ToString, moDealerDrop)
         Catch ex As Exception
@@ -167,7 +167,7 @@ Partial Class DelayFactorListForm
         End Try
     End Sub
 
-    Private Sub SortSvc(ByVal oSortDv As DataView)
+    Private Sub SortSvc(oSortDv As DataView)
         Try
             If ElitaPlusIdentity.Current.ActiveUser.IsServiceCenter Then
                 oSortDv.RowFilter = "(LANGUAGE_ID =  '" & _
@@ -175,63 +175,63 @@ Partial Class DelayFactorListForm
                   "') AND ((CODE = 'CLNUM') OR (CODE = 'CUSTN'))"
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
     Public Sub PopulateGrid()
 
         Try
-            Me.State.DealerId = TheDealerControl.SelectedGuid
+            State.DealerId = TheDealerControl.SelectedGuid
 
-            If (Me.State.searchDV Is Nothing) Then
-                Me.State.searchDV = DelayFactor.GetDelayFactorByDealer(Me.State.DealerId, ElitaPlusIdentity.Current.ActiveUser.Companies)
+            If (State.searchDV Is Nothing) Then
+                State.searchDV = DelayFactor.GetDelayFactorByDealer(State.DealerId, ElitaPlusIdentity.Current.ActiveUser.Companies)
 
-                If (Me.State.SearchClicked) Then
-                    Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
-                    Me.State.SearchClicked = False
+                If (State.SearchClicked) Then
+                    ValidSearchResultCount(State.searchDV.Count, True)
+                    State.SearchClicked = False
                 End If
             End If
 
-            Me.State.searchDV.Sort = Me.SortDirection
-            Me.Grid.AutoGenerateColumns = False
+            State.searchDV.Sort = SortDirection
+            Grid.AutoGenerateColumns = False
 
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedContractId, Me.Grid, Me.State.PageIndex)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedContractId, Grid, State.PageIndex)
             SortAndBindGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
     Private Sub SortAndBindGrid()
-        Me.State.PageIndex = Me.Grid.PageIndex
-        If (Me.State.searchDV.Count = 0) Then
+        State.PageIndex = Grid.PageIndex
+        If (State.searchDV.Count = 0) Then
 
-            Me.State.bnoRow = True
-            CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
+            State.bnoRow = True
+            CreateHeaderForEmptyGrid(Grid, SortDirection)
         Else
-            Me.State.bnoRow = False
-            Me.Grid.Enabled = True
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.SortDirection)
-            Me.Grid.DataBind()
+            State.bnoRow = False
+            Grid.Enabled = True
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, SortDirection)
+            Grid.DataBind()
         End If
 
         If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.State.searchDV.Count > 0 Then
+        If State.searchDV.Count > 0 Then
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         Else
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
 
@@ -245,93 +245,93 @@ Partial Class DelayFactorListForm
         Get
             Return ViewState("SortDirection").ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
 
     'The Binding LOgic is here
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
 
         Try
-            If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+            If dvRow IsNot Nothing And Not State.bnoRow Then
 
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    e.Row.Cells(Me.GRID_COL_DEALER_IDX).Text = dvRow(DelayFactor.DelayFactorSearchDV.COL_DEALER_NAME).ToString
-                    e.Row.Cells(Me.GRID_COL_START_DATE_IDX).Text = dvRow(DelayFactor.DelayFactorSearchDV.COL_EFFECTIVE_DATE).ToString
-                    e.Row.Cells(Me.GRID_COL_END_DATE_IDX).Text = dvRow(DelayFactor.DelayFactorSearchDV.COL_EXPIRATION_DATE).ToString
-                    e.Row.Cells(Me.GRID_COL_DEALER_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(DelayFactor.DelayFactorSearchDV.COL_DEALER_ID), Byte()))
+                    e.Row.Cells(GRID_COL_DEALER_IDX).Text = dvRow(DelayFactor.DelayFactorSearchDV.COL_DEALER_NAME).ToString
+                    e.Row.Cells(GRID_COL_START_DATE_IDX).Text = dvRow(DelayFactor.DelayFactorSearchDV.COL_EFFECTIVE_DATE).ToString
+                    e.Row.Cells(GRID_COL_END_DATE_IDX).Text = dvRow(DelayFactor.DelayFactorSearchDV.COL_EXPIRATION_DATE).ToString
+                    e.Row.Cells(GRID_COL_DEALER_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(DelayFactor.DelayFactorSearchDV.COL_DEALER_ID), Byte()))
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.PopulateGrid()
+            State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
                 Dim index As Integer = CInt(e.CommandArgument)
 
-                Me.State.DealerId = New Guid((Me.Grid.Rows(index).Cells(Me.GRID_COL_DEALER_ID_IDX).Text))
-                Me.State.Effective = CType((Me.Grid.Rows(index).Cells(Me.GRID_COL_START_DATE_IDX).Text), Date)
-                Me.State.Expiration = CType((Me.Grid.Rows(index).Cells(Me.GRID_COL_END_DATE_IDX).Text), Date)
-                params.Add(Me.State.DealerId)
-                params.Add(Me.State.Effective.ToString)
-                params.Add(Me.State.Expiration.ToString)
-                Me.callPage(DelayFactorForm.URL, params)
+                State.DealerId = New Guid((Grid.Rows(index).Cells(GRID_COL_DEALER_ID_IDX).Text))
+                State.Effective = CType((Grid.Rows(index).Cells(GRID_COL_START_DATE_IDX).Text), Date)
+                State.Expiration = CType((Grid.Rows(index).Cells(GRID_COL_END_DATE_IDX).Text), Date)
+                params.Add(State.DealerId)
+                params.Add(State.Effective.ToString)
+                params.Add(State.Expiration.ToString)
+                callPage(DelayFactorForm.URL, params)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Public Sub RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.selectedContractId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.selectedContractId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-            If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression + " DESC"
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression + " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression + " ASC"
+                SortDirection = e.SortExpression + " ASC"
             End If
-            Me.State.SortExpression = Me.SortDirection
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.SortExpression = SortDirection
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -339,41 +339,41 @@ Partial Class DelayFactorListForm
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
         Try
             'Me.PopulateSearchFieldsFromState()
-            Me.State.SearchClicked = True
-            Me.State.PageIndex = 0
-            Me.State.selectedContractId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.PopulateGrid()
+            State.SearchClicked = True
+            State.PageIndex = 0
+            State.selectedContractId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub BtnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNew_WRITE.Click
+    Private Sub BtnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnNew_WRITE.Click
         Try
             params.Add(Guid.Empty)  ' Dealer_ID
             params.Add("")          ' Effective
             params.Add("")          ' Expiration
-            Me.callPage(DelayFactorForm.URL, params)
+            callPage(DelayFactorForm.URL, params)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
         Try
             Try
                 TheDealerControl.SelectedIndex = 0
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 

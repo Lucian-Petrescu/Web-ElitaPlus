@@ -60,7 +60,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -70,32 +70,32 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -106,8 +106,8 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moMonthYearLabel)
-            Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(moMonthYearLabel)
+            ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
         End Sub
 
 #End Region
@@ -139,15 +139,15 @@ Namespace Reports
         Private Sub InitializeForm()
             PopulateDealerDropDown()
             PopulateMonthYear()
-            Me.RadiobuttonTotalsOnly.Checked = True
+            RadiobuttonTotalsOnly.Checked = True
         End Sub
 
 #End Region
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal language As String, ByVal company_code As String, ByVal dealerCode As String,
-                               ByVal month As String, ByVal year As String, ByVal isTotalsOnly As String) As ReportCeBaseForm.Params
+        Function SetParameters(language As String, company_code As String, dealerCode As String,
+                               month As String, year As String, isTotalsOnly As String) As ReportCeBaseForm.Params
             TheRptCeInputControl.populateReportLanguages(RPT_FILENAME)
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String = TheRptCeInputControl.getReportName(RPT_FILENAME, False)
@@ -204,7 +204,7 @@ Namespace Reports
                 ElitaPlusPage.SetLabelError(moMonthYearLabel)
                 Throw New GUIException(Message.MSG_INVALID_YEARMONTH, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_YEAR_ENTERED_ERROR)
             End If
-            If Me.RadiobuttonTotalsOnly.Checked Then
+            If RadiobuttonTotalsOnly.Checked Then
                 isTotalsOnly = YES
             Else
                 isTotalsOnly = NO

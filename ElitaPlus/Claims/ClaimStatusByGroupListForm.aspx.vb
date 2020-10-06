@@ -78,15 +78,15 @@ Partial Public Class ClaimStatusByGroupListForm
 
 #Region "State-Management"
     Private Sub SetSession()
-        With Me.State
+        With State
             .PageIndex = Grid.CurrentPageIndex
             .PageSize = Grid.PageSize
         End With
     End Sub
 
     Private Sub GetSession()
-        With Me.State
-            Me.Grid.PageSize = .PageSize
+        With State
+            Grid.PageSize = .PageSize
             cboPageSize.SelectedValue = CType(.PageSize, String)
         End With
     End Sub
@@ -97,61 +97,61 @@ Partial Public Class ClaimStatusByGroupListForm
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
-                Me.SetDefaultButton(Me.rdoDealer, btnSearch)
-                Me.SetDefaultButton(Me.rdoCompanyGroup, btnSearch)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
+                SetDefaultButton(rdoDealer, btnSearch)
+                SetDefaultButton(rdoCompanyGroup, btnSearch)
                 SetButtonState()
                 PopulateDealer()
 
-                If Me.IsReturningFromChild Then
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                    Grid.PageSize = Me.State.PageSize
-                    Me.PopulateGrid()
+                If IsReturningFromChild Then
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
+                    Grid.PageSize = State.PageSize
+                    PopulateGrid()
                 End If
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
             'Me.State.searchDV = Nothing
 
             Dim retObj As ClaimStatusByGroupForm.ReturnType = CType(ReturnPar, ClaimStatusByGroupForm.ReturnType)
-            Me.State.HasDataChanged = retObj.HasDataChanged
+            State.HasDataChanged = retObj.HasDataChanged
 
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
-                        Me.State.dealerId = retObj.dealerId
+                    If retObj IsNot Nothing Then
+                        State.dealerId = retObj.dealerId
                         If retObj.ObjectType = retObj.TargetType.CompanyGroup Then
-                            Me.rdoCompanyGroup.Checked = True
-                            Me.rdoDealer.Checked = False
+                            rdoCompanyGroup.Checked = True
+                            rdoDealer.Checked = False
                         Else
-                            Me.rdoDealer.Checked = True
-                            Me.rdoCompanyGroup.Checked = False
+                            rdoDealer.Checked = True
+                            rdoCompanyGroup.Checked = False
                         End If
 
-                        Me.State.IsGridVisible = True
+                        State.IsGridVisible = True
                     End If
             End Select
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Page_LoadComplete(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.LoadComplete
+    Private Sub Page_LoadComplete(sender As System.Object, e As System.EventArgs) Handles MyBase.LoadComplete
         EnableDisableFields()
     End Sub
 #End Region
@@ -173,48 +173,48 @@ Partial Public Class ClaimStatusByGroupListForm
                                         "multipleDropControl_lb_DropDown", _
                                         False, _
                                         0)
-            Me.TheDealerControl.SelectedGuid = Me.State.dealerId
+            TheDealerControl.SelectedGuid = State.dealerId
         Catch ex As Exception
-            Me.ErrControllerMaster.AddError(BRANCH_LIST_FORM001)
-            Me.ErrControllerMaster.AddError(ex.Message, False)
-            Me.ErrControllerMaster.Show()
+            ErrControllerMaster.AddError(BRANCH_LIST_FORM001)
+            ErrControllerMaster.AddError(ex.Message, False)
+            ErrControllerMaster.Show()
         End Try
     End Sub
 
     Private Sub PopulateGrid()
 
-        Me.State.dealerId = TheDealerControl.SelectedGuid
+        State.dealerId = TheDealerControl.SelectedGuid
 
-        If Me.State.searchDV Is Nothing Then SearchClaimStatusByGroup()
+        If State.searchDV Is Nothing Then SearchClaimStatusByGroup()
 
-        Me.Grid.AutoGenerateColumns = False
+        Grid.AutoGenerateColumns = False
 
-        If Me.State.dealerId.Equals(Guid.Empty) Then
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Authentication.CurrentUser.CompanyGroup.Id, Me.Grid, Me.State.PageIndex, (Grid.EditItemIndex > GRID_NO_SELECTEDITEM_INX))
+        If State.dealerId.Equals(Guid.Empty) Then
+            SetPageAndSelectedIndexFromGuid(State.searchDV, Authentication.CurrentUser.CompanyGroup.Id, Grid, State.PageIndex, (Grid.EditItemIndex > GRID_NO_SELECTEDITEM_INX))
         Else
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.dealerId, Me.Grid, Me.State.PageIndex, (Grid.EditItemIndex > GRID_NO_SELECTEDITEM_INX))
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.dealerId, Grid, State.PageIndex, (Grid.EditItemIndex > GRID_NO_SELECTEDITEM_INX))
         End If
 
-        Me.State.PageIndex = Me.Grid.CurrentPageIndex
-        Me.Grid.DataSource = Me.State.searchDV
-        Me.Grid.DataBind()
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        State.PageIndex = Grid.CurrentPageIndex
+        Grid.DataSource = State.searchDV
+        Grid.DataBind()
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
         'Session("recCount") = Me.State.searchDV.Count
-        If Me.Grid.Visible Then
-            Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        If Grid.Visible Then
+            lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         End If
 
     End Sub
 
     Private Sub SearchClaimStatusByGroup()
 
-        State.searchDV = ClaimStatusByGroup.getList(GetSearchBy(), Authentication.CurrentUser.CompanyGroup.Id, Me.State.dealerId)
+        State.searchDV = ClaimStatusByGroup.getList(GetSearchBy(), Authentication.CurrentUser.CompanyGroup.Id, State.dealerId)
 
-        With Me.State
-            .bDealer = Me.rdoDealer.Checked
-            .bCompanyGroup = Me.rdoCompanyGroup.Checked
+        With State
+            .bDealer = rdoDealer.Checked
+            .bCompanyGroup = rdoCompanyGroup.Checked
         End With
 
     End Sub
@@ -225,84 +225,84 @@ Partial Public Class ClaimStatusByGroupListForm
 #End Region
 
 #Region "Grid related"
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
-                Me.IsNew = "N"
+                IsNew = "N"
                 params.Add(GetSearchBy())
-                params.Add(Me.State.dealerId)
-                params.Add(Me.IsNew)
-                Me.callPage(ClaimStatusByGroup.URL, params)
+                params.Add(State.dealerId)
+                params.Add(IsNew)
+                callPage(ClaimStatusByGroup.URL, params)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
         Try
             If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                Me.PopulateControlFromBOProperty(e.Item.Cells(Me.GRID_COL_COMPANY_GROUP_NAME_IDX), dvRow(ClaimStatusByGroup.ClaimStatusByGroupSearchDV.COL_NAME_COMPANY_GROUP_NAME))
-                Me.PopulateControlFromBOProperty(e.Item.Cells(Me.GRID_COL_COMPANY_GROUP_CODE_IDX), dvRow(ClaimStatusByGroup.ClaimStatusByGroupSearchDV.COL_NAME_COMPANY_GROUP_CODE))
+                PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_COMPANY_GROUP_NAME_IDX), dvRow(ClaimStatusByGroup.ClaimStatusByGroupSearchDV.COL_NAME_COMPANY_GROUP_NAME))
+                PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_COMPANY_GROUP_CODE_IDX), dvRow(ClaimStatusByGroup.ClaimStatusByGroupSearchDV.COL_NAME_COMPANY_GROUP_CODE))
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.CurrentPageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.CurrentPageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region
 
 #Region "Button event handlers"
-    Protected Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
-        Me.rdoCompanyGroup.Checked = True
+    Protected Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+        rdoCompanyGroup.Checked = True
     End Sub
 
-    Protected Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.HasDataChanged = False
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.HasDataChanged = False
+            PopulateGrid()
         Catch ex As Exception
-            Me.State.IsGridVisible = False
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.State.IsGridVisible)
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            State.IsGridVisible = False
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, State.IsGridVisible)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
     Private Function GetSearchBy() As Assurant.ElitaPlus.DALObjects.ClaimStatusByGroupDAL.SearchByType
         Dim SearchBy As Assurant.ElitaPlus.DALObjects.ClaimStatusByGroupDAL.SearchByType
 
-        If Me.rdoDealer.Checked Then
+        If rdoDealer.Checked Then
             SearchBy = DALObjects.ClaimStatusByGroupDAL.SearchByType.Dealer
         Else
             SearchBy = DALObjects.ClaimStatusByGroupDAL.SearchByType.CompanyGroup
@@ -311,34 +311,34 @@ Partial Public Class ClaimStatusByGroupListForm
         Return SearchBy
     End Function
 
-    Private Sub BtnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNew_WRITE.Click
+    Private Sub BtnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnNew_WRITE.Click
         Try
-            Me.IsNew = "Y"
+            IsNew = "Y"
             params.Add(GetSearchBy())                               ' SearchBy: 1=Dealer; 2=ComanpyGroup
             params.Add(Guid.Empty)
-            params.Add(Me.IsNew)
-            Me.callPage(ClaimStatusByGroup.URL, params)
+            params.Add(IsNew)
+            callPage(ClaimStatusByGroup.URL, params)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Public Sub onchange_rdoDealer(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rdoDealer.CheckedChanged
+    Public Sub onchange_rdoDealer(sender As System.Object, e As System.EventArgs) Handles rdoDealer.CheckedChanged
         Try
-            Me.State.dealerId = Guid.Empty
-            Me.State.searchDV = Nothing
+            State.dealerId = Guid.Empty
+            State.searchDV = Nothing
             PopulateDealer()
             SetButtonState()
             'Me.PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Public Sub onchange_rdoCompanyGroup(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rdoCompanyGroup.CheckedChanged
-        Me.State.dealerId = Guid.Empty
-        Me.State.searchDV = Nothing
+    Public Sub onchange_rdoCompanyGroup(sender As System.Object, e As System.EventArgs) Handles rdoCompanyGroup.CheckedChanged
+        State.dealerId = Guid.Empty
+        State.searchDV = Nothing
         PopulateDealer()
         SetButtonState()
         'Me.PopulateGrid()
@@ -348,15 +348,15 @@ Partial Public Class ClaimStatusByGroupListForm
         Try
             If GetSearchBy() = ClaimStatusByGroupForm.SearchByType.CompanyGroup Then
                 If ClaimStatusByGroup.IsClaimStatusExist(ClaimStatusByGroupForm.SearchByType.CompanyGroup, Authentication.CurrentUser.CompanyGroup.Id, Guid.Empty) Then
-                    ControlMgr.SetEnableControl(Me, Me.BtnNew_WRITE, False)
+                    ControlMgr.SetEnableControl(Me, BtnNew_WRITE, False)
                 Else
-                    ControlMgr.SetEnableControl(Me, Me.BtnNew_WRITE, True)
+                    ControlMgr.SetEnableControl(Me, BtnNew_WRITE, True)
                 End If
             Else
-                ControlMgr.SetEnableControl(Me, Me.BtnNew_WRITE, True)
+                ControlMgr.SetEnableControl(Me, BtnNew_WRITE, True)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 

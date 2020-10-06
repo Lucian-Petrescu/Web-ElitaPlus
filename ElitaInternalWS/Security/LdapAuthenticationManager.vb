@@ -43,7 +43,7 @@ Namespace Security
 
 #Region "Methods"
 
-        Friend Function GetPrincipal(ByVal userName As String) As ElitaPlusPrincipal
+        Friend Function GetPrincipal(userName As String) As ElitaPlusPrincipal
             Try
                 Dim cacheItem As CacheData
                 cacheItem = _cacheStore.GetData(userName)
@@ -67,7 +67,7 @@ Namespace Security
         ''' <param name="password">LDAP Password for User</param>
         ''' <returns>True when Authentication is Successful, false otherwise</returns>
         ''' <remarks>The class uses combination of Cache and LDAP to Authentication</remarks>
-        Friend Function ValidateLdapUser(ByVal userName As String, ByVal password As String) As Boolean
+        Friend Function ValidateLdapUser(userName As String, password As String) As Boolean
             Try
             '' Validate User Name against Cache
             Dim data As CacheData = _cacheStore.GetData(userName.ToUpperInvariant())
@@ -159,7 +159,7 @@ Namespace Security
             ''' </summary>
             ''' <param name="inputString">String to be Hashed</param>
             ''' <returns>Hash of Input String</returns>
-            Private Shared Function HashPassword(ByVal inputString As String) As String
+            Private Shared Function HashPassword(inputString As String) As String
                 Dim encoding As New UnicodeEncoding()
 
                 If inputString IsNot Nothing AndAlso hashAlgorithm IsNot Nothing AndAlso encoding IsNot Nothing Then
@@ -197,9 +197,9 @@ Namespace Security
 
 #End Region
 
-            Friend Sub New(ByVal token As String, ByVal password As String)
-                Me._token = token
-                Me._password = HashPassword(password)
+            Friend Sub New(token As String, password As String)
+                _token = token
+                _password = HashPassword(password)
             End Sub
 
             Friend ReadOnly Property Token As String
@@ -208,7 +208,7 @@ Namespace Security
                 End Get
             End Property
 
-            Friend Function ValidatePassword(ByVal password As String) As Boolean
+            Friend Function ValidatePassword(password As String) As Boolean
                 Return (_password = HashPassword(password))
             End Function
 
@@ -222,17 +222,17 @@ Namespace Security
             Private ReadOnly _duration As TimeSpan
             Private _syncRoot As Object
 
-            Public Sub New(ByVal duration As TimeSpan)
+            Public Sub New(duration As TimeSpan)
                 _duration = duration
                 _store = New Dictionary(Of TKey, CacheItem(Of TData))
                 _syncRoot = New Object
             End Sub
 
-            Public Function GetData(ByVal key As TKey) As TData
+            Public Function GetData(key As TKey) As TData
                 SyncLock (_syncRoot)
                     If (Not _store.ContainsKey(key)) Then Return Nothing
                     Dim item As CacheItem(Of TData) = _store(key)
-                    If (item.CacheDateTime.Add(Me._duration) < DateTime.Now) Then
+                    If (item.CacheDateTime.Add(_duration) < DateTime.Now) Then
                         _store.Remove(key)
                         Return Nothing
                     End If
@@ -240,14 +240,14 @@ Namespace Security
                 End SyncLock
             End Function
 
-            Public Sub Remove(ByVal key As TKey)
+            Public Sub Remove(key As TKey)
                 SyncLock (_syncRoot)
                     If (Not _store.ContainsKey(key)) Then Return
                     _store.Remove(key)
                 End SyncLock
             End Sub
 
-            Public Sub Add(ByVal key As TKey, ByVal data As TData)
+            Public Sub Add(key As TKey, data As TData)
                 SyncLock (_syncRoot)
                     If (_store.ContainsKey(key)) Then
                         Dim item As CacheItem(Of TData) = _store(key)
@@ -267,9 +267,9 @@ Namespace Security
                 Private ReadOnly _data As TType
                 Private ReadOnly _cacheDateTime As DateTime
 
-                Friend Sub New(ByVal data As TType)
-                    Me._data = data
-                    Me._cacheDateTime = DateTime.Now
+                Friend Sub New(data As TType)
+                    _data = data
+                    _cacheDateTime = DateTime.Now
                 End Sub
 
                 ''' <summary>

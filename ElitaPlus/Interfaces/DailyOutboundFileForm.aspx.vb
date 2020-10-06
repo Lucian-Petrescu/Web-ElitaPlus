@@ -92,20 +92,20 @@ Public Class DailyOutboundFileForm
 
 #End Region
 #Region "Page event handlers"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         Try
-            Me.MasterPage.MessageController.Clear()
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Interfaces")
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Daily OutBound File")
-            Me.UpdateBreadCrum()
+            MasterPage.MessageController.Clear()
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Interfaces")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Daily OutBound File")
+            UpdateBreadCrum()
 
-            If Not Me.IsPostBack Then
-                Me.AddCalendar(Me.Imagebtnbegindate, Me.txtbegindate)
-                Me.AddCalendar(Me.ImageBbtnEndDate, Me.txtEnddate)
-                Me.chknewenrolment.Checked = True
-                Me.chkcancellations.Checked = True
-                Me.chkbilling.Checked = True
+            If Not IsPostBack Then
+                AddCalendar(Imagebtnbegindate, txtbegindate)
+                AddCalendar(ImageBbtnEndDate, txtEnddate)
+                chknewenrolment.Checked = True
+                chkcancellations.Checked = True
+                chkbilling.Checked = True
                 'lblPageSize.Visible = False
                 'cboPageSize.Visible = False
                 'colonSepertor.Visible = False
@@ -116,43 +116,43 @@ Public Class DailyOutboundFileForm
                 Session("Checked_Items") = Nothing
                 HiddenIsCheckBoxEdited.Value = "0"
                 checkboxParentHidden.Value = ""
-                If Not Me.IsReturningFromChild Then
+                If Not IsReturningFromChild Then
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     If ElitaPlusIdentity.Current.ActiveUser.IsDealer Then
                         State.dealerId = ElitaPlusIdentity.Current.ActiveUser.ScDealerId
                     End If
                 End If
 
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        Grid.PageSize = Me.State.selectedPageSize
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        Grid.PageSize = State.selectedPageSize
                     End If
                     'Me.PopulateGrid()
                 End If
-                Me.SetGridItemStyleColor(Me.Grid)
+                SetGridItemStyleColor(Grid)
 
             End If
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
 
 
     End Sub
     Private Sub UpdateBreadCrum()
 
-        If (Not Me.State Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+        If (State IsNot Nothing) Then
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                 TranslationBase.TranslateLabelOrMessage("Daily OutBound File")
         End If
 
     End Sub
 #End Region
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             If HiddenIsCheckBoxEdited.Value = "1" Then
                 RememberOldValues()
@@ -161,10 +161,10 @@ Public Class DailyOutboundFileForm
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
             ' PopulateGrid()
-            If Me.State.SearchClicked = True Then
-                ShowGrid(Me.State.searchDV)
+            If State.SearchClicked = True Then
+                ShowGrid(State.searchDV)
             Else
-                ShowGrid(Me.State.ViewDV)
+                ShowGrid(State.ViewDV)
             End If
 
             '''''
@@ -172,7 +172,7 @@ Public Class DailyOutboundFileForm
             Dim HeaderChkBx As CheckBox = CType(Grid.HeaderRow.FindControl("HeaderChkBx"), CheckBox)
             For Each gr As GridViewRow In Grid.Rows
                 Dim chkrow As CheckBox = CType(gr.FindControl("SelectChkBx"), CheckBox)
-                If Me.State.SelectAllClicked = True Then
+                If State.SelectAllClicked = True Then
                     'If checkboxParentHidden.Value = "selectAllChecked" Then
                     chkrow.Checked = True
                     'HeaderChkBx.Checked = True
@@ -183,7 +183,7 @@ Public Class DailyOutboundFileForm
 
             Next
 
-            If Me.State.SelectAllClicked = True Then
+            If State.SelectAllClicked = True Then
                 'If checkboxParentHidden.Value = "selectAllChecked" Then
                 HeaderChkBx.Checked = True
             Else
@@ -210,12 +210,12 @@ Public Class DailyOutboundFileForm
                     index = gv.Cells(1).Text.ToString() + gv.Cells(3).Text.ToString() + gv.Cells(4).Text.ToString() + gv.Cells(5).Text.ToString() + GuidControl.ByteArrayToGuid(Grid.DataKeys(gv.RowIndex).Values(7)).ToString()
                     Dim result As Boolean = CType(gv.FindControl("SelectChkBx"), CheckBox).Checked
 
-                    If (Not Session("Checked_Items") Is Nothing) Then
+                    If (Session("Checked_Items") IsNot Nothing) Then
                         selectedList = CType(Session("Checked_Items"), ArrayList)
                     End If
                     'For view
-                    If Me.State.viewclicked Then
-                        If Me.State.SelectAllClicked Then
+                    If State.viewclicked Then
+                        If State.SelectAllClicked Then
                             If result = False Then
                                 If Not selectedList.Contains(index) Then
                                     selectedList.Add(index)
@@ -237,11 +237,11 @@ Public Class DailyOutboundFileForm
                                 End If
                             End If
                         End If
-                        If (Not selectedList Is Nothing) Then
+                        If (selectedList IsNot Nothing) Then
                             Session("Checked_Items") = selectedList
                         End If
                     Else
-                        If Me.State.SelectAllClicked Then
+                        If State.SelectAllClicked Then
                             If result = False Then
                                 If Not selectedList.Contains(index) Then
                                     selectedList.Add(index)
@@ -265,7 +265,7 @@ Public Class DailyOutboundFileForm
                     End If
 
                 Next
-                If Me.State.SearchClicked Then
+                If State.SearchClicked Then
                     If selectedList.Count > 0 Then
                         Dim strSelectedList() As String = CType(selectedList.ToArray(GetType(String)), String())
                         Dim strJoinedString As String
@@ -273,7 +273,7 @@ Public Class DailyOutboundFileForm
                         strJoinedString = String.Join(",", strSelectedList)
                         Session("Selcted_Items") = strJoinedString
 
-                        If (Not selectedList Is Nothing) Then
+                        If (selectedList IsNot Nothing) Then
                             Session("Checked_Items") = selectedList
                         End If
                     End If
@@ -294,20 +294,20 @@ Public Class DailyOutboundFileForm
             If HiddenIsCheckBoxEdited.Value = "1" Then
                 Dim selectedList As New ArrayList
                 selectedList = CType(Session("Checked_Items"), ArrayList)
-                If (Not selectedList Is Nothing And selectedList.Count > 0) Then
+                If (selectedList IsNot Nothing And selectedList.Count > 0) Then
                     For Each gv As GridViewRow In Grid.Rows
                         Dim index As String = String.Empty ' Guid = GuidControl.ByteArrayToGuid(Grid.DataKeys(gv.RowIndex).Value)
                         index = gv.Cells(1).Text.ToString() + gv.Cells(3).Text.ToString() + gv.Cells(4).Text.ToString() + gv.Cells(5).Text.ToString() + GuidControl.ByteArrayToGuid(Grid.DataKeys(gv.RowIndex).Values(7)).ToString()
                         Dim selectChkBx As CheckBox = CType(gv.FindControl("SelectChkBx"), CheckBox)
-                        If Me.State.viewclicked = True Then
+                        If State.viewclicked = True Then
                             If (selectedList.Contains(index)) Then
-                                If Me.State.SelectAllClicked Then
+                                If State.SelectAllClicked Then
                                     selectChkBx.Checked = False
                                 Else
                                     selectChkBx.Checked = True
                                 End If
                             Else
-                                If Me.State.SelectAllClicked Then
+                                If State.SelectAllClicked Then
                                     selectChkBx.Checked = True
                                     ' selectedList.Remove(index)
                                 Else
@@ -316,7 +316,7 @@ Public Class DailyOutboundFileForm
                             End If
                         Else
                             If (selectedList.Contains(index)) Then
-                                If Me.State.SelectAllClicked Then
+                                If State.SelectAllClicked Then
                                     selectChkBx.Checked = False
                                 Else
                                     selectChkBx.Checked = True
@@ -331,35 +331,35 @@ Public Class DailyOutboundFileForm
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.PageIndex = State.PageIndex
             ' Me.PopulateGrid()
-            If Me.State.SearchClicked = True Then
-                ShowGrid(Me.State.searchDV)
+            If State.SearchClicked = True Then
+                ShowGrid(State.searchDV)
             Else
-                ShowGrid(Me.State.ViewDV)
+                ShowGrid(State.ViewDV)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             If e.Row.RowType = DataControlRowType.DataRow Then
                 Dim chkSelected As CheckBox = CType(e.Row.FindControl("Selectchkbx"), CheckBox)
                 chkSelected.Checked = False
 
-                If Me.State.viewclicked = True Then
+                If State.viewclicked = True Then
                     chkSelected.Checked = True
                 End If
 
@@ -369,50 +369,50 @@ Public Class DailyOutboundFileForm
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
+            State.PageIndex = 0
             'Me.PopulateGrid()
 
-            If Me.State.SearchClicked = True Then
-                ShowGrid(Me.State.searchDV)
+            If State.SearchClicked = True Then
+                ShowGrid(State.searchDV)
             Else
-                ShowGrid(Me.State.ViewDV)
+                ShowGrid(State.ViewDV)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
-    Protected Sub chkbxHeader_checkChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub chkbxHeader_checkChanged(sender As Object, e As EventArgs)
         Try
 
             Dim chk As CheckBox = TryCast(sender, CheckBox)
             Session("Checked_Items") = Nothing
             Session("Selcted_Items") = Nothing
             If chk.Checked Then
-                Me.State.SelectAllClicked = True
+                State.SelectAllClicked = True
             Else
-                Me.State.SelectAllClicked = False
+                State.SelectAllClicked = False
             End If
 
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Protected Sub chkbxSelect_checkChanged(ByVal sender As Object, ByVal e As EventArgs) 'Handles Grid.SelectedIndexChanged
+    Protected Sub chkbxSelect_checkChanged(sender As Object, e As EventArgs) 'Handles Grid.SelectedIndexChanged
         Try
             Dim chk As CheckBox = CType(sender, CheckBox)
             Dim test As Boolean = chk.Checked
@@ -423,40 +423,40 @@ Public Class DailyOutboundFileForm
 #Region "Controlling Logic"
     Public Sub ClearSearch()
         Try
-            Me.txtCertificatenumb.Text = String.Empty
-            Me.txtbegindate.Text = String.Empty
-            Me.txtEnddate.Text = String.Empty
-            Me.drpCompany.SelectedIndex = 0
-            Me.txtComDescription.Text = String.Empty
+            txtCertificatenumb.Text = String.Empty
+            txtbegindate.Text = String.Empty
+            txtEnddate.Text = String.Empty
+            drpCompany.SelectedIndex = 0
+            txtComDescription.Text = String.Empty
             If Not ElitaPlusIdentity.Current.ActiveUser.IsDealer Then
-                Me.drpDealer.SelectedIndex = 0
+                drpDealer.SelectedIndex = 0
             End If
-            Me.txtDeaDescription.Text = String.Empty
+            txtDeaDescription.Text = String.Empty
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
     Public Sub PopulateSearchFieldsFromState()
 
         Try
-            Me.txtbegindate.Text = Me.State.begindate
-            Me.txtEnddate.Text = Me.State.enddate
-            Me.txtCertificatenumb.Text = Me.State.CertNumber
-            Me.drpCompany.SelectedValue = Me.State.CompanyCode
-            Me.drpDealer.SelectedValue = Me.State.DealerCode
-            Me.chkbilling.Checked = True
-            Me.chkcancellations.Checked = True
-            Me.chknewenrolment.Checked = True
-            Me.PopulateDealerDropdown(Me.drpDealer)
+            txtbegindate.Text = State.begindate
+            txtEnddate.Text = State.enddate
+            txtCertificatenumb.Text = State.CertNumber
+            drpCompany.SelectedValue = State.CompanyCode
+            drpDealer.SelectedValue = State.DealerCode
+            chkbilling.Checked = True
+            chkcancellations.Checked = True
+            chknewenrolment.Checked = True
+            PopulateDealerDropdown(drpDealer)
             Dim dv As DataView = LookupListNew.GetUserCompaniesLookupList()
 
-            Me.PopulateCompanyDropdown(Me.drpCompany)
+            PopulateCompanyDropdown(drpCompany)
             'Me.State.dealerId = Me.GetSelectedItem(Me.drpDealer)
             'Me.State.dealerName = LookupListNew.GetCodeFromId("DEALERS", Me.State.dealerId)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
 
@@ -464,41 +464,41 @@ Public Class DailyOutboundFileForm
     Public Function PopulateStateFromSearchFields() As Boolean
         'Dim dblAmount As Double
         Try
-            Me.State.begindate = Me.txtbegindate.Text
-            Me.State.enddate = Me.txtEnddate.Text
-            Me.State.CertNumber = Me.txtCertificatenumb.Text
+            State.begindate = txtbegindate.Text
+            State.enddate = txtEnddate.Text
+            State.CertNumber = txtCertificatenumb.Text
             'Me.State.companyId = CompanyMultipleDrop.SelectedGuid
             'Me.State.CompanyCode = LookupListNew.GetCompanyCodeFromDescription(Me.State.companyId)
-            Me.State.CompanyCode = drpCompany.SelectedItem.Text
+            State.CompanyCode = drpCompany.SelectedItem.Text
             'Me.State.DealerCode = Me.drpDealer.SelectedIndex.ToString()
             'If Me.State.dealerId <> Guid.Empty And drpDealer.Items.Count > 0 Then Me.SetSelectedItem(drpDealer, Me.State.dealerId)
-            Me.State.DealerCode = drpDealer.SelectedItem.Text
+            State.DealerCode = drpDealer.SelectedItem.Text
 
-            If Me.chknewenrolment.Checked = True Then
-                Me.State.SelectionNewEnrollmnt = Y_YES
+            If chknewenrolment.Checked = True Then
+                State.SelectionNewEnrollmnt = Y_YES
             Else
-                Me.State.SelectionNewEnrollmnt = N_No
+                State.SelectionNewEnrollmnt = N_No
             End If
 
-            If Me.chkcancellations.Checked = True Then
-                Me.State.selectionCancel = Y_YES
+            If chkcancellations.Checked = True Then
+                State.selectionCancel = Y_YES
             Else
-                Me.State.selectionCancel = N_No
+                State.selectionCancel = N_No
             End If
 
-            If Me.chkbilling.Checked = True Then
-                Me.State.selectionbilling = Y_YES
+            If chkbilling.Checked = True Then
+                State.selectionbilling = Y_YES
             Else
-                Me.State.selectionbilling = N_No
+                State.selectionbilling = N_No
             End If
 
-            If Me.txtCertificatenumb.Text = "" Then
-                Me.State.selectiononcert = N_No
+            If txtCertificatenumb.Text = "" Then
+                State.selectiononcert = N_No
             Else
-                Me.State.selectiononcert = Y_YES
+                State.selectiononcert = Y_YES
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Function
@@ -511,10 +511,10 @@ Public Class DailyOutboundFileForm
             Dim processeddatestr As String = String.Empty
             Dim processeddate As DateTime = New DateTime
 
-            If Me.State.Processed_date.Length > 0 Then
+            If State.Processed_date.Length > 0 Then
 
                 Try
-                    processeddate = DateTime.Parse(Me.State.Processed_date.ToString(),
+                    processeddate = DateTime.Parse(State.Processed_date.ToString(),
                                                     System.Threading.Thread.CurrentThread.CurrentCulture,
                                                     System.Globalization.DateTimeStyles.NoCurrentDateDefault)
                 Catch ex As Exception
@@ -526,14 +526,14 @@ Public Class DailyOutboundFileForm
 
             Dim Begindatestr As String = String.Empty
             Dim begindate As DateTime = New DateTime
-            If Me.State.begindate.Length > 0 Then
+            If State.begindate.Length > 0 Then
 
                 Try
-                    begindate = DateTime.Parse(Me.State.begindate.ToString(),
+                    begindate = DateTime.Parse(State.begindate.ToString(),
                                                     System.Threading.Thread.CurrentThread.CurrentCulture,
                                                     System.Globalization.DateTimeStyles.NoCurrentDateDefault)
                 Catch ex As Exception
-                    Me.SetLabelError(lblbegindate)
+                    SetLabelError(lblbegindate)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Message.MSG_INVALID_DATE)
                 End Try
 
@@ -543,50 +543,50 @@ Public Class DailyOutboundFileForm
             Dim Enddatestr As String = String.Empty
             Dim enddate As DateTime = New DateTime
 
-            If Me.State.enddate.Length > 0 Then
+            If State.enddate.Length > 0 Then
 
                 Try
-                    enddate = DateTime.Parse(Me.State.enddate.ToString(),
+                    enddate = DateTime.Parse(State.enddate.ToString(),
                                                     System.Threading.Thread.CurrentThread.CurrentCulture,
                                                     System.Globalization.DateTimeStyles.NoCurrentDateDefault)
                 Catch ex As Exception
-                    Me.SetLabelError(lblEnddate)
+                    SetLabelError(lblEnddate)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Message.MSG_INVALID_DATE)
                 End Try
 
                 Enddatestr = enddate.ToString(DALObjects.DALBase.DOTNET_QUERY_DATEFORMAT)
             End If
 
-            DailyObdFileDetailTemp.getDetailRecordsList(Me.State.CompanyCode,
-                                                              Me.State.DealerCode,
-                                                              Me.State.CertNumber,
-                                                              Me.State.SelectionNewEnrollmnt,
-                                                               Me.State.selectionCancel,
-                                                               Me.State.selectionbilling,
+            DailyObdFileDetailTemp.getDetailRecordsList(State.CompanyCode,
+                                                              State.DealerCode,
+                                                              State.CertNumber,
+                                                              State.SelectionNewEnrollmnt,
+                                                               State.selectionCancel,
+                                                               State.selectionbilling,
                                                                begindate,
                                                                enddate,
-                                                               Me.State.Called_From,
-                                                               processeddate, Me.State.selectiononcert)
+                                                               State.Called_From,
+                                                               processeddate, State.selectiononcert)
 
 
-            If (Me.State.searchDV Is Nothing) Then
+            If (State.searchDV Is Nothing) Then
                 'If Me.State.SearchClicked = True Then
                 'Me.State.IsGridVisible = True
                 'trPageSize.Visible = True
-                Me.State.searchDV = DailyObdFileDetailTemp.getList(Me.State.begindate, Me.State.enddate,
-                                                                     Me.State.CertNumber,
-                                                                Me.State.SelectionNewEnrollmnt,
-                                                                Me.State.selectionCancel,
-                                                                Me.State.selectionbilling)
+                State.searchDV = DailyObdFileDetailTemp.getList(State.begindate, State.enddate,
+                                                                     State.CertNumber,
+                                                                State.SelectionNewEnrollmnt,
+                                                                State.selectionCancel,
+                                                                State.selectionbilling)
 
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub PopulateDealerDropdown(ByVal dealerDropDownList As DropDownList)
+    Private Sub PopulateDealerDropdown(dealerDropDownList As DropDownList)
         Try
             'Dim dv As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "Code")
             'If ElitaPlusIdentity.Current.ActiveUser.IsDealer Then
@@ -603,7 +603,7 @@ Public Class DailyOutboundFileForm
                                                                       .CompanyId = CompanyId
                                                                     })
                 If Dealers.Count > 0 Then
-                    If Not DealerList Is Nothing Then
+                    If DealerList IsNot Nothing Then
                         DealerList.AddRange(Dealers)
                     Else
                         DealerList = Dealers.Clone()
@@ -638,16 +638,16 @@ Public Class DailyOutboundFileForm
             'dealerDropDownList.DataBind()
             'dealerDropDownList.Items.Insert(0, New ListItem("  ", " "))
 
-            If Me.State.dealerId <> Guid.Empty Then
-                Me.SetSelectedItem(dealerDropDownList, Me.State.dealerId)
+            If State.dealerId <> Guid.Empty Then
+                SetSelectedItem(dealerDropDownList, State.dealerId)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub PopulateCompanyDropdown(ByVal companyDropDownList As DropDownList)
+    Private Sub PopulateCompanyDropdown(companyDropDownList As DropDownList)
         Try
             'Me.BindListControlToDataView(Me.drpCompany, LookupListNew.GetCompanyLookupList(), "CODE", "Description", True)
             Dim oCompanyId As Guid = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
@@ -657,64 +657,64 @@ Public Class DailyOutboundFileForm
             companyDropDownList.DataBind()
             companyDropDownList.Items.Insert(0, New ListItem("  ", " "))
 
-            If Me.State.companyId <> Guid.Empty Then
-                Me.SetSelectedItem(companyDropDownList, oCompanyId)
+            If State.companyId <> Guid.Empty Then
+                SetSelectedItem(companyDropDownList, oCompanyId)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Button Event Handlers"
-    Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+    Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
-            Me.ClearSearch()
+            ClearSearch()
             'Me.State.IsGridVisible = False
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             HiddenIsCheckBoxEdited.Value = "0"
             Session("Checked_Items") = Nothing
             Session("Selcted_Items") = Nothing
-            If (Me.txtComDescription.Text = "" And Me.txtDeaDescription.Text = "" And Me.txtCertificatenumb.Text = "" And Me.txtbegindate.Text = "" And Me.txtEnddate.Text = "") Then
+            If (txtComDescription.Text = "" And txtDeaDescription.Text = "" And txtCertificatenumb.Text = "" And txtbegindate.Text = "" And txtEnddate.Text = "") Then
 
-            ElseIf (Me.txtComDescription.Text = "") Then
+            ElseIf (txtComDescription.Text = "") Then
                 Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_REQUIRED)
 
-            ElseIf (Me.txtDeaDescription.Text = "") Then
+            ElseIf (txtDeaDescription.Text = "") Then
                 Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_REQUIRED)
 
-            ElseIf (Me.txtbegindate.Text = "" And Me.txtEnddate.Text = "") Then
+            ElseIf (txtbegindate.Text = "" And txtEnddate.Text = "") Then
                 Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_VALUE_IS_REQUIRED_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_VALUE_IS_REQUIRED_ERR)
 
-            ElseIf (Me.txtbegindate.Text = "") Then
+            ElseIf (txtbegindate.Text = "") Then
                 Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_DATE_REQUIRED_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_DATE_REQUIRED_ERR)
-            ElseIf (Me.txtEnddate.Text = "") Then
+            ElseIf (txtEnddate.Text = "") Then
                 Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_END_DATE_REQUIRED_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_END_DATE_REQUIRED_ERR)
                 'DEF 3256
-            ElseIf (DateTime.Parse(Me.txtEnddate.Text) > Date.Now.AddDays(-1)) Then
+            ElseIf (DateTime.Parse(txtEnddate.Text) > Date.Now.AddDays(-1)) Then
                 Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_END_DATE_MUST_NOT_BE_HIGHER_THAN_YESTERDAY_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_END_DATE_MUST_NOT_BE_HIGHER_THAN_YESTERDAY_ERR)
 
-            ElseIf (DateTime.Parse(Me.txtbegindate.Text) > DateTime.Parse(Me.txtEnddate.Text)) Then
+            ElseIf (DateTime.Parse(txtbegindate.Text) > DateTime.Parse(txtEnddate.Text)) Then
                 Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_END_DATE_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_END_DATE_ERR)
             End If
-            Me.State.SearchClicked = True
-            Me.State.viewclicked = False
-            Me.btnDelectRecords.Visible = False
-            Me.btnSaveRecords.Visible = False
-            Me.State.PageIndex = 0
-            Me.State.selectedFileDetailtempId = Guid.Empty
-            Me.State.IsGridVisible = False
-            Me.State.searchDV = Nothing
+            State.SearchClicked = True
+            State.viewclicked = False
+            btnDelectRecords.Visible = False
+            btnSaveRecords.Visible = False
+            State.PageIndex = 0
+            State.selectedFileDetailtempId = Guid.Empty
+            State.IsGridVisible = False
+            State.searchDV = Nothing
             checkboxParentHidden.Value = "selectAllNotChecked"
-            Me.State.SelectAllClicked = False
-            Me.PopulateGrid()
-            ShowGrid(Me.State.searchDV)
+            State.SelectAllClicked = False
+            PopulateGrid()
+            ShowGrid(State.searchDV)
             btnDelectRecords.Visible = False
             btnSaveRecords.Visible = True
             ' End If
@@ -723,42 +723,42 @@ Public Class DailyOutboundFileForm
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
-    Protected Sub btnView_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnView.Click
+    Protected Sub btnView_Click(sender As Object, e As EventArgs) Handles btnView.Click
         Try
             Session("Checked_Items") = Nothing
             Session("Selcted_Items") = Nothing
-            Me.State.viewclicked = True
-            Me.State.SearchClicked = False
+            State.viewclicked = True
+            State.SearchClicked = False
             btnSaveRecords.Visible = False
             btnDelectRecords.Visible = True
-            Me.State.ViewDV = Nothing
-            Me.State.IsGridVisible = False
-            Me.State.PageIndex = 0
+            State.ViewDV = Nothing
+            State.IsGridVisible = False
+            State.PageIndex = 0
             'Me.PopulateGrid()
 
-            If Me.State.viewclicked = True Then
-                Me.State.IsGridVisible = True
-                Me.State.ViewDV = DailyOutboundFileDetail.getviewList()
+            If State.viewclicked = True Then
+                State.IsGridVisible = True
+                State.ViewDV = DailyOutboundFileDetail.getviewList()
             End If
 
             btnDelectRecords.Visible = True
             btnSaveRecords.Visible = False
-            If Me.State.ViewDV.Table.Rows.Count > 0 Then
+            If State.ViewDV.Table.Rows.Count > 0 Then
                 checkboxParentHidden.Value = "selectAllChecked"
             Else
                 checkboxParentHidden.Value = "selectAllNotChecked"
             End If
-            ShowGrid(Me.State.ViewDV)
-            Me.State.SelectAllClicked = True
+            ShowGrid(State.ViewDV)
+            State.SelectAllClicked = True
             'checkboxParentHidden.Value = "selectAllChecked"
             HiddenIsCheckBoxEdited.Value = "0"
 
-            If Me.State.ViewDV.Table.Rows.Count > 0 Then
+            If State.ViewDV.Table.Rows.Count > 0 Then
                 '''check the header checkbox in the grid view
                 Dim HeaderChkBx As New CheckBox
                 HeaderChkBx = CType(Grid.HeaderRow.FindControl("HeaderChkBx"), CheckBox)
@@ -770,46 +770,46 @@ Public Class DailyOutboundFileForm
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
 
         End Try
     End Sub
 
-    Private Sub ShowGrid(ByVal dv As DataView)
+    Private Sub ShowGrid(dv As DataView)
         Try
             Dim sortBy As String = String.Empty
             If dv.Count > 0 Then
-                Me.State.IsGridVisible = True
-                Me.Grid.AutoGenerateColumns = False
-                SetPageAndSelectedIndexFromGuid(dv, Me.State.selectedFileDetailtempId, Me.Grid, Me.State.PageIndex)
+                State.IsGridVisible = True
+                Grid.AutoGenerateColumns = False
+                SetPageAndSelectedIndexFromGuid(dv, State.selectedFileDetailtempId, Grid, State.PageIndex)
 
-                Me.Grid.DataSource = dv
-                Me.Grid.AllowSorting = True
+                Grid.DataSource = dv
+                Grid.AllowSorting = True
 
-                If (Not Me.State.SortExpression.Equals(String.Empty)) Then
-                    dv.Sort = Me.State.SortExpression
+                If (Not State.SortExpression.Equals(String.Empty)) Then
+                    dv.Sort = State.SortExpression
                 Else
-                    Me.State.SortExpression = sortBy
+                    State.SortExpression = sortBy
                 End If
-                HighLightSortColumn(Me.Grid, Me.State.SortExpression, Me.IsNewUI)
+                HighLightSortColumn(Grid, State.SortExpression, IsNewUI)
 
-                Me.Grid.DataBind()
+                Grid.DataBind()
                 Session("recCount") = dv.Count
                 trPageSize.Visible = True
 
-                If Me.State.viewclicked = True Then
+                If State.viewclicked = True Then
                     'Dim HeaderChkBx As CheckBox = CType(Grid.HeaderRow.FindControl("HeaderChkBx"), CheckBox)
                     'HeaderChkBx.Checked = True
                     If checkboxParentHidden.Value = "selectAllChecked" Then
-                        Me.State.SelectAllClicked = True
+                        State.SelectAllClicked = True
                     Else
-                        Me.State.SelectAllClicked = False
+                        State.SelectAllClicked = False
                     End If
                 End If
 
                 'Me.ValidSearchResultCountNew(dv.Count, True)
             Else
-                Me.State.IsGridVisible = False
+                State.IsGridVisible = False
                 Grid.DataSource = Nothing
                 Grid.DataBind()
                 trPageSize.Visible = False
@@ -818,14 +818,14 @@ Public Class DailyOutboundFileForm
 
                 'If Me.State.SelectAllClicked = False Then
                 If checkboxParentHidden.Value = "selectAllNotChecked" Or checkboxParentHidden.Value = "" Then
-                    If Me.State.IsRecordDeleted = False Then
-                        Me.HandleGridMessages(NO_Record_Found, True)
+                    If State.IsRecordDeleted = False Then
+                        HandleGridMessages(NO_Record_Found, True)
                     End If
-                    Me.State.IsRecordDeleted = False
+                    State.IsRecordDeleted = False
                 End If
             End If
 
-            Me.lblRecordCount.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            lblRecordCount.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
         Catch ex As Exception
 
@@ -835,7 +835,7 @@ Public Class DailyOutboundFileForm
 
 
 
-    Private Sub btnSaveRecords_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSaveRecords.Click
+    Private Sub btnSaveRecords_Click(sender As Object, e As System.EventArgs) Handles btnSaveRecords.Click
         Try
             Dim company_id As Guid
             Dim dealer_id As Guid
@@ -853,73 +853,73 @@ Public Class DailyOutboundFileForm
             Dim dailyOutboundFileDetailDAL As New DailyOutboundFileDetailDAL
             'Save
             Dim selectedList As String
-            If (Not Session("Selcted_Items") Is Nothing) Then
+            If (Session("Selcted_Items") IsNot Nothing) Then
                 selectedList = CType(Session("Selcted_Items"), String)
             End If
             Dim savedRecCount As Integer = 0
-            If Not selectedList Is Nothing Then
+            If selectedList IsNot Nothing Then
 
                 'If Grid.Rows.Count > 0 Then
                 'If Me.State.SelectAllClicked = False Then
                 'If checkboxParentHidden.Value = "selectAllChecked" Then
                 Dim tempRow() As DataRow
-                For i As Integer = 0 To Me.State.searchDV.Table.Rows.Count - 1 'selectedList.Count - 1
+                For i As Integer = 0 To State.searchDV.Table.Rows.Count - 1 'selectedList.Count - 1
                     'tempRow = Me.State.ViewDV.Table.Select("Cert_Number='" & selectedList(i).ToString() & "'")
                     'tempRow = Me.State.ViewDV.Table.Rows.Find(selectedList(i))
-                    If Me.State.SelectAllClicked = True Then
-                        If Not selectedList.Contains(Me.State.searchDV.Table.Rows(i)("Cert_number").ToString() + Me.State.searchDV.Table.Rows(i)("REC_NEW_BUSINESS").ToString() + Me.State.searchDV.Table.Rows(i)("REC_CANCEL").ToString() + Me.State.searchDV.Table.Rows(i)("REC_BILLING").ToString() + GuidControl.ByteArrayToGuid(Me.State.searchDV.Table.Rows(i)("Billing_Detail_Id")).ToString()) Then
+                    If State.SelectAllClicked = True Then
+                        If Not selectedList.Contains(State.searchDV.Table.Rows(i)("Cert_number").ToString() + State.searchDV.Table.Rows(i)("REC_NEW_BUSINESS").ToString() + State.searchDV.Table.Rows(i)("REC_CANCEL").ToString() + State.searchDV.Table.Rows(i)("REC_BILLING").ToString() + GuidControl.ByteArrayToGuid(State.searchDV.Table.Rows(i)("Billing_Detail_Id")).ToString()) Then
 
-                            certNo = Me.State.searchDV.Table.Rows(i)("cert_number").ToString()
+                            certNo = State.searchDV.Table.Rows(i)("cert_number").ToString()
                             'createdDate = gr.Cells(2).Text.ToString() 'DateTime.Parse()
-                            certcreatedDate = DateTime.Parse(Me.State.searchDV.Table.Rows(i)("cert_created_date").ToString(),
+                            certcreatedDate = DateTime.Parse(State.searchDV.Table.Rows(i)("cert_created_date").ToString(),
                                                         System.Threading.Thread.CurrentThread.CurrentCulture,
                                                         System.Globalization.DateTimeStyles.NoCurrentDateDefault)
-                            enrollments = Me.State.searchDV.Table.Rows(i)("rec_new_business").ToString()
-                            cancellations = Me.State.searchDV.Table.Rows(i)("rec_cancel").ToString()
-                            billing = Me.State.searchDV.Table.Rows(i)("rec_billing").ToString()
+                            enrollments = State.searchDV.Table.Rows(i)("rec_new_business").ToString()
+                            cancellations = State.searchDV.Table.Rows(i)("rec_cancel").ToString()
+                            billing = State.searchDV.Table.Rows(i)("rec_billing").ToString()
 
-                            company_id = GuidControl.ByteArrayToGuid(Me.State.searchDV.Table.Rows(i)("company_id"))
-                            dealer_id = GuidControl.ByteArrayToGuid(Me.State.searchDV.Table.Rows(i)("dealer_id"))
-                            cert_id = GuidControl.ByteArrayToGuid(Me.State.searchDV.Table.Rows(i)("cert_id"))
+                            company_id = GuidControl.ByteArrayToGuid(State.searchDV.Table.Rows(i)("company_id"))
+                            dealer_id = GuidControl.ByteArrayToGuid(State.searchDV.Table.Rows(i)("dealer_id"))
+                            cert_id = GuidControl.ByteArrayToGuid(State.searchDV.Table.Rows(i)("cert_id"))
 
-                            createdDate = DateTime.Parse(Me.State.searchDV.Table.Rows(i)("created_date").ToString(),
+                            createdDate = DateTime.Parse(State.searchDV.Table.Rows(i)("created_date").ToString(),
                                                        System.Threading.Thread.CurrentThread.CurrentCulture,
                                                        System.Globalization.DateTimeStyles.NoCurrentDateDefault)
-                            recordType = Me.State.searchDV.Table.Rows(i)("record_type").ToString()
-                            createdBy = Me.State.searchDV.Table.Rows(i)("created_by").ToString()
-                            billing_detail_id = GuidControl.ByteArrayToGuid(Me.State.searchDV.Table.Rows(i)("billing_detail_id"))
+                            recordType = State.searchDV.Table.Rows(i)("record_type").ToString()
+                            createdBy = State.searchDV.Table.Rows(i)("created_by").ToString()
+                            billing_detail_id = GuidControl.ByteArrayToGuid(State.searchDV.Table.Rows(i)("billing_detail_id"))
 
                             DailyOutboundFileDetail.InsertDetailRecord(company_id, dealer_id, cert_id, certcreatedDate, certNo, enrollments, cancellations, billing, recordType, createdDate, createdBy, billing_detail_id)
                             'dailyOutboundFileDetailDAL.insertdetailrecords(company_id, dealer_id, certNo, createdDate, enrollments, cancellations, billing)
-                            DailyObdFileDetailTemp.DeleteTempRecord(GuidControl.ByteArrayToGuid(Me.State.searchDV.Table.Rows(i)("File_Detail_Temp_Id")))
+                            DailyObdFileDetailTemp.DeleteTempRecord(GuidControl.ByteArrayToGuid(State.searchDV.Table.Rows(i)("File_Detail_Temp_Id")))
                             savedRecCount += 1
                         End If
                     Else
-                        If selectedList.Contains(Me.State.searchDV.Table.Rows(i)("Cert_number").ToString() + Me.State.searchDV.Table.Rows(i)("REC_NEW_BUSINESS").ToString() + Me.State.searchDV.Table.Rows(i)("REC_CANCEL").ToString() + Me.State.searchDV.Table.Rows(i)("REC_BILLING").ToString() + GuidControl.ByteArrayToGuid(Me.State.searchDV.Table.Rows(i)("Billing_Detail_Id")).ToString()) Then
+                        If selectedList.Contains(State.searchDV.Table.Rows(i)("Cert_number").ToString() + State.searchDV.Table.Rows(i)("REC_NEW_BUSINESS").ToString() + State.searchDV.Table.Rows(i)("REC_CANCEL").ToString() + State.searchDV.Table.Rows(i)("REC_BILLING").ToString() + GuidControl.ByteArrayToGuid(State.searchDV.Table.Rows(i)("Billing_Detail_Id")).ToString()) Then
 
-                            certNo = Me.State.searchDV.Table.Rows(i)("cert_number").ToString()
+                            certNo = State.searchDV.Table.Rows(i)("cert_number").ToString()
                             'createdDate = gr.Cells(2).Text.ToString() 'DateTime.Parse()
-                            certcreatedDate = DateTime.Parse(Me.State.searchDV.Table.Rows(i)("cert_created_date").ToString(),
+                            certcreatedDate = DateTime.Parse(State.searchDV.Table.Rows(i)("cert_created_date").ToString(),
                                                         System.Threading.Thread.CurrentThread.CurrentCulture,
                                                         System.Globalization.DateTimeStyles.NoCurrentDateDefault)
-                            enrollments = Me.State.searchDV.Table.Rows(i)("rec_new_business").ToString()
-                            cancellations = Me.State.searchDV.Table.Rows(i)("rec_cancel").ToString()
-                            billing = Me.State.searchDV.Table.Rows(i)("rec_billing").ToString()
+                            enrollments = State.searchDV.Table.Rows(i)("rec_new_business").ToString()
+                            cancellations = State.searchDV.Table.Rows(i)("rec_cancel").ToString()
+                            billing = State.searchDV.Table.Rows(i)("rec_billing").ToString()
 
-                            company_id = GuidControl.ByteArrayToGuid(Me.State.searchDV.Table.Rows(i)("company_id"))
-                            dealer_id = GuidControl.ByteArrayToGuid(Me.State.searchDV.Table.Rows(i)("dealer_id"))
-                            cert_id = GuidControl.ByteArrayToGuid(Me.State.searchDV.Table.Rows(i)("cert_id"))
+                            company_id = GuidControl.ByteArrayToGuid(State.searchDV.Table.Rows(i)("company_id"))
+                            dealer_id = GuidControl.ByteArrayToGuid(State.searchDV.Table.Rows(i)("dealer_id"))
+                            cert_id = GuidControl.ByteArrayToGuid(State.searchDV.Table.Rows(i)("cert_id"))
 
-                            createdDate = DateTime.Parse(Me.State.searchDV.Table.Rows(i)("created_date").ToString(),
+                            createdDate = DateTime.Parse(State.searchDV.Table.Rows(i)("created_date").ToString(),
                                                        System.Threading.Thread.CurrentThread.CurrentCulture,
                                                        System.Globalization.DateTimeStyles.NoCurrentDateDefault)
-                            recordType = Me.State.searchDV.Table.Rows(i)("record_type").ToString()
-                            createdBy = Me.State.searchDV.Table.Rows(i)("created_by").ToString()
-                            billing_detail_id = GuidControl.ByteArrayToGuid(Me.State.searchDV.Table.Rows(i)("billing_detail_id"))
+                            recordType = State.searchDV.Table.Rows(i)("record_type").ToString()
+                            createdBy = State.searchDV.Table.Rows(i)("created_by").ToString()
+                            billing_detail_id = GuidControl.ByteArrayToGuid(State.searchDV.Table.Rows(i)("billing_detail_id"))
 
                             DailyOutboundFileDetail.InsertDetailRecord(company_id, dealer_id, cert_id, certcreatedDate, certNo, enrollments, cancellations, billing, recordType, createdDate, createdBy, billing_detail_id)
                             'dailyOutboundFileDetailDAL.insertdetailrecords(company_id, dealer_id, certNo, createdDate, enrollments, cancellations, billing)
-                            DailyObdFileDetailTemp.DeleteTempRecord(GuidControl.ByteArrayToGuid(Me.State.searchDV.Table.Rows(i)("File_Detail_Temp_Id")))
+                            DailyObdFileDetailTemp.DeleteTempRecord(GuidControl.ByteArrayToGuid(State.searchDV.Table.Rows(i)("File_Detail_Temp_Id")))
                             savedRecCount += 1
                         End If
                     End If
@@ -927,8 +927,8 @@ Public Class DailyOutboundFileForm
 
             Else
                 ''''save select all records
-                If Me.State.SelectAllClicked = True And selectedList Is Nothing Then
-                    For Each dr As DataRow In Me.State.searchDV.Table.Rows
+                If State.SelectAllClicked = True And selectedList Is Nothing Then
+                    For Each dr As DataRow In State.searchDV.Table.Rows
                         company_id = GuidControl.ByteArrayToGuid(dr("company_id"))
                         dealer_id = GuidControl.ByteArrayToGuid(dr("dealer_id"))
                         cert_id = GuidControl.ByteArrayToGuid(dr("cert_id"))
@@ -957,38 +957,38 @@ Public Class DailyOutboundFileForm
 
                 End If
             End If
-            Me.State.searchDV = Nothing
+            State.searchDV = Nothing
             PopulateGrid()
-            ShowGrid(Me.State.searchDV)
-            Me.State.SelectAllClicked = False
+            ShowGrid(State.searchDV)
+            State.SelectAllClicked = False
             'End If
             If savedRecCount > 0 Then
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
             Else
-                Me.MasterPage.MessageController.AddError(Message.MSG_ATLEAST_ONE_RECORD_SHLD_BE_CHECKED, True)
+                MasterPage.MessageController.AddError(Message.MSG_ATLEAST_ONE_RECORD_SHLD_BE_CHECKED, True)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 
-    Protected Sub btnDelectRecords_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDelectRecords.Click
+    Protected Sub btnDelectRecords_Click(sender As Object, e As EventArgs) Handles btnDelectRecords.Click
         Try
             Dim delRecCount As Integer = 0
             Dim uchk As CheckBox
             Dim selectedList As New ArrayList
-            If (Not Session("Checked_Items") Is Nothing) Then
+            If (Session("Checked_Items") IsNot Nothing) Then
                 selectedList = CType(Session("Checked_Items"), ArrayList)
             End If
 
             'If selectedList.Count = 0 Then
             If selectedList Is Nothing Then
                 If checkboxParentHidden.Value = "selectAllNotChecked" Then
-                    For Each dr As DataRow In Me.State.ViewDV.Table.Rows
+                    For Each dr As DataRow In State.ViewDV.Table.Rows
                         DailyOutboundFileDetail.DeleteDetailRecord(GuidControl.ByteArrayToGuid(dr("file_detail_Id")))
-                        Me.State.IsRecordDeleted = True
+                        State.IsRecordDeleted = True
                         delRecCount += 1
                     Next
                 End If
@@ -996,42 +996,42 @@ Public Class DailyOutboundFileForm
                 Dim fileDetailId As Guid = Guid.Empty
                 Dim tempRow() As DataRow
 
-                For i As Integer = 0 To Me.State.ViewDV.Table.Rows.Count - 1 'selectedList.Count - 1
-                    If Me.State.SelectAllClicked = True Then
-                        If selectedList.Contains(Me.State.ViewDV.Table.Rows(i)("Cert_number").ToString() + Me.State.ViewDV.Table.Rows(i)("REC_NEW_BUSINESS").ToString() + Me.State.ViewDV.Table.Rows(i)("REC_CANCEL").ToString() + Me.State.ViewDV.Table.Rows(i)("REC_BILLING").ToString() + GuidControl.ByteArrayToGuid(Me.State.ViewDV.Table.Rows(i)("Billing_Detail_Id")).ToString()) Then
-                            fileDetailId = GuidControl.ByteArrayToGuid(Me.State.ViewDV.Table.Rows(i)("file_detail_id"))
+                For i As Integer = 0 To State.ViewDV.Table.Rows.Count - 1 'selectedList.Count - 1
+                    If State.SelectAllClicked = True Then
+                        If selectedList.Contains(State.ViewDV.Table.Rows(i)("Cert_number").ToString() + State.ViewDV.Table.Rows(i)("REC_NEW_BUSINESS").ToString() + State.ViewDV.Table.Rows(i)("REC_CANCEL").ToString() + State.ViewDV.Table.Rows(i)("REC_BILLING").ToString() + GuidControl.ByteArrayToGuid(State.ViewDV.Table.Rows(i)("Billing_Detail_Id")).ToString()) Then
+                            fileDetailId = GuidControl.ByteArrayToGuid(State.ViewDV.Table.Rows(i)("file_detail_id"))
                             DailyOutboundFileDetail.DeleteDetailRecord(fileDetailId)
-                            Me.State.IsRecordDeleted = True
+                            State.IsRecordDeleted = True
                             delRecCount += 1
                         End If
                     Else
-                        If Not selectedList.Contains(Me.State.ViewDV.Table.Rows(i)("Cert_number").ToString() + Me.State.ViewDV.Table.Rows(i)("REC_NEW_BUSINESS").ToString() + Me.State.ViewDV.Table.Rows(i)("REC_CANCEL").ToString() + Me.State.ViewDV.Table.Rows(i)("REC_BILLING").ToString() + GuidControl.ByteArrayToGuid(Me.State.ViewDV.Table.Rows(i)("Billing_Detail_Id")).ToString()) Then
-                            fileDetailId = GuidControl.ByteArrayToGuid(Me.State.ViewDV.Table.Rows(i)("file_detail_id"))
+                        If Not selectedList.Contains(State.ViewDV.Table.Rows(i)("Cert_number").ToString() + State.ViewDV.Table.Rows(i)("REC_NEW_BUSINESS").ToString() + State.ViewDV.Table.Rows(i)("REC_CANCEL").ToString() + State.ViewDV.Table.Rows(i)("REC_BILLING").ToString() + GuidControl.ByteArrayToGuid(State.ViewDV.Table.Rows(i)("Billing_Detail_Id")).ToString()) Then
+                            fileDetailId = GuidControl.ByteArrayToGuid(State.ViewDV.Table.Rows(i)("file_detail_id"))
                             DailyOutboundFileDetail.DeleteDetailRecord(fileDetailId)
-                            Me.State.IsRecordDeleted = True
+                            State.IsRecordDeleted = True
                             delRecCount += 1
                         End If
                     End If
                 Next
                 'End If
             End If
-            If Me.State.IsRecordDeleted Then
-                Me.State.SelectAllClicked = True ''to supress No Records Found message
+            If State.IsRecordDeleted Then
+                State.SelectAllClicked = True ''to supress No Records Found message
                 checkboxParentHidden.Value = "selectAllChecked"
                 btnView_Click(sender, e)
                 If delRecCount > 0 Then
-                    Me.MasterPage.MessageController.AddSuccess(Message.DELETE_RECORD_CONFIRMATION, True)
+                    MasterPage.MessageController.AddSuccess(Message.DELETE_RECORD_CONFIRMATION, True)
                 Else
-                    Me.MasterPage.MessageController.AddError(Message.MSG_ATLEAST_ONE_RECORD_SHLD_BE_UNCHECK, True)
+                    MasterPage.MessageController.AddError(Message.MSG_ATLEAST_ONE_RECORD_SHLD_BE_UNCHECK, True)
                 End If
             Else
-                Me.MasterPage.MessageController.AddError(Message.MSG_ATLEAST_ONE_RECORD_SHLD_BE_UNCHECK, True)
+                MasterPage.MessageController.AddError(Message.MSG_ATLEAST_ONE_RECORD_SHLD_BE_UNCHECK, True)
             End If
             'Me.State.SelectAllClicked = False
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 End Class

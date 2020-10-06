@@ -33,34 +33,34 @@ Public Class AnswerDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("answer_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Sub LoadList(ByVal familyDS As DataSet, ByVal SoftQuestionID As Guid, ByVal CurrentDate As DateTime)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Sub LoadList(familyDS As DataSet, SoftQuestionID As Guid, CurrentDate As DateTime)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter = New OracleParameter() _
                                              {New OracleParameter(COL_NAME_SOFT_QUESTION_ID, OracleDbType.Raw, 16), _
                                              New OracleParameter("current_date", OracleDbType.Date)}
         Try
             parameters(0).Value = SoftQuestionID.ToByteArray
             parameters(1).Value = CurrentDate
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -69,32 +69,32 @@ Public Class AnswerDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "Public methods"
-    Public Function GetAnswerList(ByVal SoftQuestionID As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_ANSWER_LIST")
+    Public Function GetAnswerList(SoftQuestionID As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_ANSWER_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_SOFT_QUESTION_ID, SoftQuestionID.ToByteArray)}
         Dim ds As New DataSet
         Try
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
     Public Function GetNewAnswerCode() As String
-        Dim selectStmt As String = Me.Config("/SQL/GET_NEW_ANSWER_CODE")
+        Dim selectStmt As String = Config("/SQL/GET_NEW_ANSWER_CODE")
         Try
-            Dim DV As DataView = DBHelper.Fetch(selectStmt, Me.TABLE_NAME).Tables(0).DefaultView
+            Dim DV As DataView = DBHelper.Fetch(selectStmt, TABLE_NAME).Tables(0).DefaultView
             Dim strCode As String = DV(0)(0).ToString
             '6 digits in answer code Prefixed by "A"
             strCode = "A" & strCode.PadLeft(6, "0")
@@ -104,13 +104,13 @@ Public Class AnswerDAL
         End Try
     End Function
 
-    Public Function GetAnswerCodeByValue(ByVal AnswerValue As String) As String
-        Dim selectStmt As String = Me.Config("/SQL/GET_ANSWER_CODE_BY_VALUE")
+    Public Function GetAnswerCodeByValue(AnswerValue As String) As String
+        Dim selectStmt As String = Config("/SQL/GET_ANSWER_CODE_BY_VALUE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                         {New DBHelper.DBHelperParameter(AnswerDAL.COL_NAME_ANSWER_VALUE.ToUpper, AnswerValue)}
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             If Not ds.Tables(0).Rows.Count = 0 Then
                 Return ds.Tables(0).Rows(0)(0).ToString
             End If
@@ -118,13 +118,13 @@ Public Class AnswerDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function GetAnswerDataByCode(ByVal AnswerCode As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_ANSWER_DATA_BY_CODE")
+    Public Function GetAnswerDataByCode(AnswerCode As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_ANSWER_DATA_BY_CODE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                         {New DBHelper.DBHelperParameter(AnswerDAL.COL_NAME_ANSWER_CODE.ToUpper, AnswerCode)}
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return  ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

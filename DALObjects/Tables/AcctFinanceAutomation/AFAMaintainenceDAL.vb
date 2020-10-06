@@ -37,7 +37,7 @@ Public Class AFAMaintainenceDAL
 #Region "Load Methods"
 
 
-    Public Function GetProcessStatus(ByVal dealerId As Guid, ByVal languageId As Guid, ByVal firstDayOfMonth As Date, ByVal lastDayOfMonth As Date) As DataSet
+    Public Function GetProcessStatus(dealerId As Guid, languageId As Guid, firstDayOfMonth As Date, lastDayOfMonth As Date) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_PROCESS_STATUS")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(INPUT_PARAM_NAME_LANGUAGE_ID, languageId.ToByteArray),
@@ -58,7 +58,7 @@ Public Class AFAMaintainenceDAL
 
     'ReRunReconciliation
     ' Execute Store Procedure
-    Public Function ReRunReconciliation(ByVal dealerId As Guid, ByVal firstDayOfMonth As Date, ByVal lastDayOfMonth As Date, ByVal userName As String) As Boolean
+    Public Function ReRunReconciliation(dealerId As Guid, firstDayOfMonth As Date, lastDayOfMonth As Date, userName As String) As Boolean
 
         Dim selectStmt As String = Config("/SQL/RERUN_RECONCILIATION")
         Dim inputParameters() As DBHelper.DBHelperParameter
@@ -85,7 +85,7 @@ Public Class AFAMaintainenceDAL
     End Function
 
     ' Execute Store Procedure
-    Public Function ReRunInvoice(ByVal dealerId As Guid, ByVal firstDayOfMonth As Date, ByVal lastDayOfMonth As Date, ByVal userName As String) As Boolean
+    Public Function ReRunInvoice(dealerId As Guid, firstDayOfMonth As Date, lastDayOfMonth As Date, userName As String) As Boolean
 
         Dim selectStmt As String = Config("/SQL/RERUN_INVOICE")
         Dim inputParameters() As DBHelper.DBHelperParameter

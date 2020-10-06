@@ -6,48 +6,48 @@ Public Class ReplacementPart
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ReplacementPartDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class ReplacementPart
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ReplacementPartDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -109,9 +109,9 @@ Public Class ReplacementPart
                 Return New Guid(CType(Row(ReplacementPartDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ReplacementPartDAL.COL_NAME_CLAIM_ID, Value)
+            SetValue(ReplacementPartDAL.COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
@@ -125,9 +125,9 @@ Public Class ReplacementPart
                 Return CType(Row(ReplacementPartDAL.COL_NAME_SKU_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ReplacementPartDAL.COL_NAME_SKU_NUMBER, Value)
+            SetValue(ReplacementPartDAL.COL_NAME_SKU_NUMBER, Value)
         End Set
     End Property
 
@@ -141,9 +141,9 @@ Public Class ReplacementPart
                 Return CType(Row(ReplacementPartDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ReplacementPartDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(ReplacementPartDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -153,15 +153,15 @@ Public Class ReplacementPart
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ReplacementPartDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -182,13 +182,13 @@ Public Class ReplacementPart
     Public Property Claim As ClaimBase
         Get
             If (_claim Is Nothing) Then
-                If Not Me.ClaimId.Equals(Guid.Empty) Then
-                    Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.ClaimId, Me.Dataset, False)
+                If Not ClaimId.Equals(Guid.Empty) Then
+                    Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ClaimId, Dataset, False)
                 End If
             End If
             Return _claim
         End Get
-        Private Set(ByVal value As ClaimBase)
+        Private Set(value As ClaimBase)
             If (_claim Is Nothing OrElse value Is Nothing OrElse Not _claim.Equals(value)) Then
                 _claim = value
             End If
@@ -201,15 +201,15 @@ End Class
 Public Class ReplacementPartList
     Inherits BusinessObjectListEnumerableBase(Of ClaimBase, ReplacementPart)
 
-    Public Sub New(ByVal parent As ClaimBase)
+    Public Sub New(parent As ClaimBase)
         MyBase.New(LoadTable(parent), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, ReplacementPart).ClaimId.Equals(CType(Parent, ClaimBase).Id)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As ClaimBase) As DataTable
+    Private Shared Function LoadTable(parent As ClaimBase) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(ReplacementPartList)) Then
                 Dim dal As New ReplacementPartDAL

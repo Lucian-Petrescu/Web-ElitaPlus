@@ -19,7 +19,7 @@ Namespace Certificates
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -41,19 +41,19 @@ Namespace Certificates
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
         End Sub
 
         ' This is the initialization Method
-        Public Sub InitController(ByVal certificateId As Guid, Optional ByVal riskTypeDescription As String = Nothing, Optional ByVal companyCode As String = Nothing)
+        Public Sub InitController(certificateId As Guid, Optional ByVal riskTypeDescription As String = Nothing, Optional ByVal companyCode As String = Nothing)
             Dim oCertificateCtrl As New Certificate(certificateId)
             InitController(oCertificateCtrl, riskTypeDescription, companyCode)
 
         End Sub
 
         ' This is the initialization Method
-        Public Sub InitController(ByVal oCertificateCtrl As Certificate, Optional ByVal riskTypeDescription As String = Nothing, Optional ByVal companyCode As String = Nothing)
+        Public Sub InitController(oCertificateCtrl As Certificate, Optional ByVal riskTypeDescription As String = Nothing, Optional ByVal companyCode As String = Nothing)
 
             EnableControls()
             PopulateFormFromCertificateCtrl(oCertificateCtrl, riskTypeDescription, companyCode)
@@ -70,39 +70,39 @@ Namespace Certificates
 
         End Sub
 
-        Public Sub PopulateFormFromCertificateCtrl(ByVal oCertificateCtrl As Certificate, Optional ByVal riskTypeDescription As String = Nothing, Optional ByVal companyCode As String = Nothing)
+        Public Sub PopulateFormFromCertificateCtrl(oCertificateCtrl As Certificate, Optional ByVal riskTypeDescription As String = Nothing, Optional ByVal companyCode As String = Nothing)
             With oCertificateCtrl
-                Me.moCertificateText.Text = .CertNumber
-                Me.moWarrantySoldOnText.Text = CType(.WarrantySalesDate.Value, String)
-                Me.moWarrantySoldOnText.Text = ElitaPlusPage.GetDateFormattedStringNullable(.WarrantySalesDate.Value)
-                Me.moStatusText.Text = .StatusCode
+                moCertificateText.Text = .CertNumber
+                moWarrantySoldOnText.Text = CType(.WarrantySalesDate.Value, String)
+                moWarrantySoldOnText.Text = ElitaPlusPage.GetDateFormattedStringNullable(.WarrantySalesDate.Value)
+                moStatusText.Text = .StatusCode
                 If Not (.SubscriberStatus.Equals(Guid.Empty)) Then
-                    Me.moSubStatusText.Text = LookupListNew.GetCodeFromId("SUBSTAT", .SubscriberStatus)
+                    moSubStatusText.Text = LookupListNew.GetCodeFromId("SUBSTAT", .SubscriberStatus)
                 Else
-                    ControlMgr.SetVisibleControl(Page, Me.moSubStatusLabel, False)
-                    ControlMgr.SetVisibleControl(Page, Me.moSubStatusText, False)
+                    ControlMgr.SetVisibleControl(Page, moSubStatusLabel, False)
+                    ControlMgr.SetVisibleControl(Page, moSubStatusText, False)
                 End If
 
-                Me.moCompanyNameText.Text = companyCode
+                moCompanyNameText.Text = companyCode
                 If Not (.DealerId.Equals(Guid.Empty)) Then
-                    Me.moDealerNameText.Text = .getDealerDescription
-                    ElitaPlusPage.Trace(Me.Page, "Dealer =" & Me.moDealerNameText.Text & "@ Cert=" & Me.moCertificateText.Text)
-                    Me.moDealerGroupText.Text = .getDealerGroupName
+                    moDealerNameText.Text = .getDealerDescription
+                    ElitaPlusPage.Trace(Page, "Dealer =" & moDealerNameText.Text & "@ Cert=" & moCertificateText.Text)
+                    moDealerGroupText.Text = .getDealerGroupName
                 End If
-                If Not riskTypeDescription Is Nothing Then
-                    Me.TextboxCustomerName.Text = getSalutation(oCertificateCtrl) & .CustomerName
-                    Me.TextboxRiskType.Text = riskTypeDescription
-                    ControlMgr.SetVisibleControl(Page, Me.moCompanyNameText, True)
+                If riskTypeDescription IsNot Nothing Then
+                    TextboxCustomerName.Text = getSalutation(oCertificateCtrl) & .CustomerName
+                    TextboxRiskType.Text = riskTypeDescription
+                    ControlMgr.SetVisibleControl(Page, moCompanyNameText, True)
                     'ControlMgr.SetVisibleControl(Page, TextboxCustomerName, True)
                     ControlMgr.SetVisibleControl(Page, TextboxRiskType, True)
                     'ControlMgr.SetVisibleControl(Page, Me.LabelCompanyName, True)
                     ControlMgr.SetVisibleControl(Page, LabelCustomerName, True)
                     ControlMgr.SetVisibleControl(Page, LabelRiskType, True)
-                    If Not Me.LabelCustomerName.Text.EndsWith(":") Then
-                        Me.LabelCustomerName.Text &= ":"
+                    If Not LabelCustomerName.Text.EndsWith(":") Then
+                        LabelCustomerName.Text &= ":"
                     End If
-                    If Not Me.LabelRiskType.Text.EndsWith(":") Then
-                        Me.LabelRiskType.Text &= ":"
+                    If Not LabelRiskType.Text.EndsWith(":") Then
+                        LabelRiskType.Text &= ":"
                     End If
                 Else
                     'ControlMgr.SetVisibleControl(Page, Me.moCompanyText, False)
@@ -120,7 +120,7 @@ Namespace Certificates
         End Sub
 
 
-        Private Function getSalutation(ByVal oCertificateCtrl As Certificate) As String
+        Private Function getSalutation(oCertificateCtrl As Certificate) As String
 
             '  Dim companyBO As Assurant.ElitaPlus.BusinessObjectsNew.Company = New Assurant.ElitaPlus.BusinessObjectsNew.Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
             Dim companyBO As Assurant.ElitaPlus.BusinessObjectsNew.Company = New Assurant.ElitaPlus.BusinessObjectsNew.Company(oCertificateCtrl.CompanyId)

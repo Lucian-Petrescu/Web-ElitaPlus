@@ -8,40 +8,40 @@ Public Class PriceGroup
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New PriceGroupDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -52,20 +52,20 @@ Public Class PriceGroup
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New PriceGroupDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -78,7 +78,7 @@ Public Class PriceGroup
     'Initialization code for new objects
     Private Sub Initialize()
 
-        Me.CountryId = CType(ElitaPlusIdentity.Current.ActiveUser.Countries.Item(0), Guid)
+        CountryId = CType(ElitaPlusIdentity.Current.ActiveUser.Countries.Item(0), Guid)
 
     End Sub
 #End Region
@@ -109,7 +109,7 @@ Public Class PriceGroup
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(PriceGroupDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(PriceGroupDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
@@ -126,7 +126,7 @@ Public Class PriceGroup
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceGroupDAL.COL_NAME_SHORT_DESC, Value)
+            SetValue(PriceGroupDAL.COL_NAME_SHORT_DESC, Value)
         End Set
     End Property
 
@@ -143,7 +143,7 @@ Public Class PriceGroup
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(PriceGroupDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(PriceGroupDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -156,16 +156,16 @@ Public Class PriceGroup
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New PriceGroupDAL
                 'dal.Update(Me.Row) 'Original code generated replced by the code below
-                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+                dal.UpdateFamily(Dataset) 'New Code Added Manually
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -176,21 +176,21 @@ Public Class PriceGroup
     'Added manually to the code
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 
     Public Sub Copy(ByVal original As PriceGroup)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Price Group")
         End If
         MyBase.CopyFrom(original)
         'copy the childrens        
         Dim detail As PriceGroupDetail
         For Each detail In original.PriceGroupDetailChildren
-            Dim newDetail As PriceGroupDetail = Me.PriceGroupDetailChildren.GetNewChild
+            Dim newDetail As PriceGroupDetail = PriceGroupDetailChildren.GetNewChild
             newDetail.Copy(detail)
-            newDetail.PriceGroupId = Me.Id
+            newDetail.PriceGroupId = Id
             newDetail.Save()
         Next
     End Sub
@@ -279,7 +279,7 @@ Public Class PriceGroup
     Public Function GetDetailSelectionView() As PriceGroupDetailSelectionView
         Dim t As DataTable = PriceGroupDetailSelectionView.CreateTable
         Dim detail As PriceGroupDetail
-        For Each detail In Me.PriceGroupDetailChildren
+        For Each detail In PriceGroupDetailChildren
             Dim row As DataRow = t.NewRow
             row(PriceGroupDetailSelectionView.DETAIL_ID_COL_NAME) = detail.Id.ToByteArray
             row(PriceGroupDetailSelectionView.EFFECTIVE_DATE_COL_NAME) = detail.EffectiveDate.Value
@@ -302,7 +302,7 @@ Public Class PriceGroup
     Public Function GetDetailSelectionView(ByVal company_group_id As Guid) As PriceGroupDetailSelectionView
         Dim t As DataTable = PriceGroupDetailSelectionView.CreateTable
         Dim detail As PriceGroupDetail
-        For Each detail In Me.PriceGroupDetailChildren(company_group_id, True)
+        For Each detail In PriceGroupDetailChildren(company_group_id, True)
             Dim row As DataRow = t.NewRow
             row(PriceGroupDetailSelectionView.DETAIL_ID_COL_NAME) = detail.Id.ToByteArray
             row(PriceGroupDetailSelectionView.EFFECTIVE_DATE_COL_NAME) = detail.EffectiveDate.Value
@@ -347,12 +347,12 @@ Public Class PriceGroup
     End Class
 
     Public Function GetChild(ByVal childId As Guid) As PriceGroupDetail
-        Return CType(Me.PriceGroupDetailChildren.GetChild(childId), PriceGroupDetail)
+        Return CType(PriceGroupDetailChildren.GetChild(childId), PriceGroupDetail)
     End Function
 
     Public Function GetNewChild() As PriceGroupDetail
-        Dim newPgDetail As PriceGroupDetail = CType(Me.PriceGroupDetailChildren.GetNewChild, PriceGroupDetail)
-        newPgDetail.PriceGroupId = Me.Id
+        Dim newPgDetail As PriceGroupDetail = CType(PriceGroupDetailChildren.GetNewChild, PriceGroupDetail)
+        newPgDetail.PriceGroupId = Id
         Return newPgDetail
     End Function
 
@@ -364,7 +364,7 @@ Public Class PriceGroup
 
         Dim effectivePGDetailBO As PriceGroupDetail
 
-        For Each pgDetailBO In Me.PriceGroupDetailChildren(riskTypeId)
+        For Each pgDetailBO In PriceGroupDetailChildren(riskTypeId)
 
             '            If ((pgDetailBO.EffectiveDate.Value < Today) AndAlso _
             '               (Today.Subtract(pgDetailBO.EffectiveDate.Value).Days < minDaysDifference)) Then

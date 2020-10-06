@@ -21,7 +21,7 @@ Public Class SendClaimGiftCardEMailTask
 
 #Region "Constructors"
 
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
         Logger.AddInfo("In SendClaimGiftCardEmailTask class ")
     End Sub
@@ -55,7 +55,7 @@ Public Class SendClaimGiftCardEMailTask
         Get
             Return _claimId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _claimId = value
         End Set
     End Property
@@ -64,7 +64,7 @@ Public Class SendClaimGiftCardEMailTask
         Get
             Return _certificate
         End Get
-        Set(ByVal value As Certificate)
+        Set(value As Certificate)
             _certificate = value
         End Set
     End Property
@@ -73,7 +73,7 @@ Public Class SendClaimGiftCardEMailTask
         Get
             Return _claimbase
         End Get
-        Set(ByVal value As ClaimBase)
+        Set(value As ClaimBase)
             _claimbase = value
         End Set
     End Property
@@ -82,7 +82,7 @@ Public Class SendClaimGiftCardEMailTask
         Get
             Return _claimAuthorization
         End Get
-        Set(ByVal value As ClaimAuthorization)
+        Set(value As ClaimAuthorization)
             _claimAuthorization = value
         End Set
     End Property
@@ -92,7 +92,7 @@ Public Class SendClaimGiftCardEMailTask
         Get
             Return _disbursement
         End Get
-        Set(ByVal value As Disbursement)
+        Set(value As Disbursement)
             _disbursement = value
         End Set
     End Property
@@ -146,7 +146,7 @@ Public Class SendClaimGiftCardEMailTask
 
                 If String.IsNullOrEmpty(response.GiftCardSerialNumber) Then
                     Logger.AddError("GiftCardSerialNumber is blank for the Reference Number and Dealer {0}:{1}:{2}:{3}" + request.GiftcardRequest.ReferenceNumber + ":" + oCertificate.Dealer.DealerName + ":" + response.ErrorCode + ":" + response.ErrorMessage)
-                    Me.FailReason = "Gift Card Serial Number is blank"
+                    FailReason = "Gift Card Serial Number is blank"
                     Throw New Exception(FailReason)
                 End If
 
@@ -184,7 +184,7 @@ Public Class SendClaimGiftCardEMailTask
 
             Else
                 Logger.AddError("Darty Service Failed for the Reference Number and Dealer {0}:{1}:{2}" + request.GiftcardRequest.ReferenceNumber + ":" + oCertificate.Dealer.DealerName + ":" + response.ErrorMessage)
-                Me.FailReason = "Error Received: " + response.ErrorCode
+                FailReason = "Error Received: " + response.ErrorCode
                 Throw New Exception(FailReason)
             End If
         Catch ex As Exception
@@ -272,7 +272,7 @@ Public Class SendClaimGiftCardEMailTask
 
     End Function
 
-    Private Function PopulateCustomerAndGiftCardStaticInfo(ByVal certificate As Certificate) As GenerateGiftCardRequest
+    Private Function PopulateCustomerAndGiftCardStaticInfo(certificate As Certificate) As GenerateGiftCardRequest
 
         Dim request As New GenerateGiftCardRequest With {
             .FirstName = certificate.CustomerFirstName,
@@ -717,7 +717,7 @@ Public Class SendClaimGiftCardEMailTask
     '    End Try
     'End Function
 
-    Private Function GenerateEncryptedGiftCardLink(ByVal response As GenerateGiftCardResponse, ByVal certificate As Certificate, ByVal claim As ClaimBase) As String
+    Private Function GenerateEncryptedGiftCardLink(response As GenerateGiftCardResponse, certificate As Certificate, claim As ClaimBase) As String
 
         Dim giftcardData As String = String.Empty
         Dim encryptionSource As String = String.Empty
@@ -890,7 +890,7 @@ Public Class Request
         Get
             Return _giftcardRequest
         End Get
-        Set(ByVal value As GenerateGiftCardRequest)
+        Set(value As GenerateGiftCardRequest)
             _giftcardRequest = value
         End Set
     End Property
@@ -898,7 +898,7 @@ Public Class Request
         Get
             Return _entityName
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _entityName = value
         End Set
     End Property
@@ -907,7 +907,7 @@ Public Class Request
         Get
             Return _entityId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _entityId = value
         End Set
     End Property

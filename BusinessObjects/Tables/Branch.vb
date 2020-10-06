@@ -9,46 +9,46 @@ Public Class Branch
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New BranchDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -59,20 +59,20 @@ Public Class Branch
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New BranchDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -132,7 +132,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_BRANCH_CODE, Value)
+            SetValue(BranchDAL.COL_NAME_BRANCH_CODE, Value)
         End Set
     End Property
 
@@ -149,7 +149,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(BranchDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -166,7 +166,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_ADDRESS1, Value)
+            SetValue(BranchDAL.COL_NAME_ADDRESS1, Value)
         End Set
     End Property
 
@@ -183,7 +183,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_ADDRESS2, Value)
+            SetValue(BranchDAL.COL_NAME_ADDRESS2, Value)
         End Set
     End Property
 
@@ -200,7 +200,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_ADDRESS3, Value)
+            SetValue(BranchDAL.COL_NAME_ADDRESS3, Value)
         End Set
     End Property
 
@@ -216,7 +216,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_CITY, Value)
+            SetValue(BranchDAL.COL_NAME_CITY, Value)
         End Set
     End Property
 
@@ -232,7 +232,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_REGION_ID, Value)
+            SetValue(BranchDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 
@@ -249,7 +249,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(BranchDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
@@ -265,7 +265,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_POSTAL_CODE, Value)
+            SetValue(BranchDAL.COL_NAME_POSTAL_CODE, Value)
         End Set
     End Property
 
@@ -281,7 +281,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_BRANCH_NAME, Value)
+            SetValue(BranchDAL.COL_NAME_BRANCH_NAME, Value)
         End Set
     End Property
 
@@ -297,7 +297,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_CONTACT_PHONE, Value)
+            SetValue(BranchDAL.COL_NAME_CONTACT_PHONE, Value)
         End Set
     End Property
 
@@ -314,7 +314,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_CONTACT_EXT, Value)
+            SetValue(BranchDAL.COL_NAME_CONTACT_EXT, Value)
         End Set
     End Property
 
@@ -331,7 +331,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_CONTACT_FAX, Value)
+            SetValue(BranchDAL.COL_NAME_CONTACT_FAX, Value)
         End Set
     End Property
 
@@ -348,7 +348,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_CONTACT_EMAIL, Value)
+            SetValue(BranchDAL.COL_NAME_CONTACT_EMAIL, Value)
         End Set
     End Property
 
@@ -364,7 +364,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_MARKET, Value)
+            SetValue(BranchDAL.COL_NAME_MARKET, Value)
         End Set
     End Property
 
@@ -379,7 +379,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_BANK_INFO_ID, Value)
+            SetValue(BranchDAL.COL_NAME_BANK_INFO_ID, Value)
         End Set
     End Property
 
@@ -394,7 +394,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_BRANCH_TYPE_ID, Value)
+            SetValue(BranchDAL.COL_NAME_BRANCH_TYPE_ID, Value)
         End Set
     End Property
 
@@ -411,7 +411,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_STORE_MANAGER, Value)
+            SetValue(BranchDAL.COL_NAME_STORE_MANAGER, Value)
         End Set
     End Property
 
@@ -428,7 +428,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_MARKETING_REGION, Value)
+            SetValue(BranchDAL.COL_NAME_MARKETING_REGION, Value)
         End Set
     End Property
 
@@ -443,7 +443,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_OPEN_DATE, Value)
+            SetValue(BranchDAL.COL_NAME_OPEN_DATE, Value)
         End Set
     End Property
 
@@ -458,7 +458,7 @@ Public Class Branch
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_CLOSE_DATE, Value)
+            SetValue(BranchDAL.COL_NAME_CLOSE_DATE, Value)
         End Set
     End Property
 
@@ -469,15 +469,15 @@ Public Class Branch
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New BranchDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -492,23 +492,23 @@ Public Class Branch
     End Property
 
     Public Sub DeleteAndSave()
-        Me.CheckDeleted()
-        Me.BeginEdit()
+        CheckDeleted()
+        BeginEdit()
         Try
-            Me.Delete()
-            Me.Save()
+            Delete()
+            Save()
         Catch ex As Exception
-            Me.cancelEdit()
+            cancelEdit()
             Throw ex
         End Try
     End Sub
 
     Public Sub Copy(ByVal original As Branch)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing branch")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
 #End Region

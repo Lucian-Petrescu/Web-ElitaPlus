@@ -3,8 +3,8 @@
 Public Module DALExtension
 
     <Extension()> _
-    Public Function ToLoadExclusionClause(ByVal familtyDs As DataSet, ByVal predicatePrefix As String, ByVal predicateColumnName As String, ByVal dsTableName As String, ByVal dsColumnName As String, _
-                                          ByVal dsCompareValue As Guid, ByRef parameters() As DBHelper.DBHelperParameter) As String
+    Public Function ToLoadExclusionClause(familtyDs As DataSet, predicatePrefix As String, predicateColumnName As String, dsTableName As String, dsColumnName As String, _
+                                          dsCompareValue As Guid, ByRef parameters() As DBHelper.DBHelperParameter) As String
 
         If (dsCompareValue.Equals(Guid.Empty)) Then Return Nothing
 
@@ -22,8 +22,8 @@ Public Module DALExtension
     End Function
 
     <Extension()> _
-    Public Function ToLoadExclusionClause(ByVal dataTable As DataTable, ByVal predicatePrefix As String, ByVal predicateColumnName As String, ByVal dsColumnName As String, _
-                                          ByVal dsCompareValue As Guid, ByRef parameters() As DBHelper.DBHelperParameter) As String
+    Public Function ToLoadExclusionClause(dataTable As DataTable, predicatePrefix As String, predicateColumnName As String, dsColumnName As String, _
+                                          dsCompareValue As Guid, ByRef parameters() As DBHelper.DBHelperParameter) As String
 
         If (dsCompareValue.Equals(Guid.Empty)) Then Return Nothing
 
@@ -79,12 +79,12 @@ Public Module DALExtension
 
 
     <Extension()> _
-    Public Function ToSqlString(Of TType)(ByVal value As SearchCriteriaType(Of TType), ByVal columnName As String, ByRef parameters() As DBHelper.DBHelperParameter) As String
+    Public Function ToSqlString(Of TType)(value As SearchCriteriaType(Of TType), columnName As String, ByRef parameters() As DBHelper.DBHelperParameter) As String
         Return value.ToSqlString(String.Empty, columnName, parameters)
     End Function
 
     <Extension()> _
-    Public Function ToSqlString(Of TType)(ByVal value As SearchCriteriaType(Of TType), ByVal tableName As String, ByVal columnName As String, ByRef parameters() As DBHelper.DBHelperParameter) _
+    Public Function ToSqlString(Of TType)(value As SearchCriteriaType(Of TType), tableName As String, columnName As String, ByRef parameters() As DBHelper.DBHelperParameter) _
         As String
         Dim strSqlString As String
 

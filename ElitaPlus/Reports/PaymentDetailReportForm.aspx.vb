@@ -53,13 +53,13 @@ Namespace Reports
 #End Region
 
 #End Region
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
-            Me.ClearLabelsErrSign()
+            MasterPage.MessageController.Clear_Hide()
+            ClearLabelsErrSign()
 
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
 
 
                     TheReportExtractInputControl.ViewVisible = False
@@ -67,45 +67,45 @@ Namespace Reports
                     TheReportExtractInputControl.ExportDataVisible = False
                     TheReportExtractInputControl.DestinationVisible = False
                     TheReportExtractInputControl.SchedulerVisible = False
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                     InitializeForm()
-                    Me.SetFormTab(PAGETAB)
+                    SetFormTab(PAGETAB)
                     UpdateBreadCrum()
 
                     LoadCompanyList()
 
                 End If
-                Me.InstallDisplayNewReportProgressBar()
+                InstallDisplayNewReportProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(moBeginDateLabel)
-                Me.ClearLabelErrSign(moEndDateLabel)
-                Me.ClearLabelErrSign(lblCompany)
-                Me.ClearLabelErrSign(lblDealer)
+                ClearLabelErrSign(moBeginDateLabel)
+                ClearLabelErrSign(moEndDateLabel)
+                ClearLabelErrSign(lblCompany)
+                ClearLabelErrSign(lblDealer)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub InitializeForm()
             'RadiobuttonTotalsOnly.Checked = True
             Dim t As Date = Date.Now.AddMonths(-1).AddDays(1)
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now)
+            moBeginDateText.Text = GetDateFormattedString(t)
+            moEndDateText.Text = GetDateFormattedString(Date.Now)
         End Sub
 
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
 
         Protected Sub LoadCompanyList()
@@ -129,12 +129,12 @@ Namespace Reports
 
 
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -152,7 +152,7 @@ Namespace Reports
             beginDate = ReportExtractBase.FormatDate(moBeginDateLabel, moBeginDateText.Text)
 
             'Company selection validation
-            If Me.State.selectedCompanyCodes Is Nothing OrElse Me.State.selectedCompanyCodes.Count = 0 Then
+            If State.selectedCompanyCodes Is Nothing OrElse State.selectedCompanyCodes.Count = 0 Then
                 ElitaPlusPage.SetLabelError(lblCompany)
                 Throw New GUIException(Message.MSG_INVALID_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_REQUIRED)
             Else
@@ -160,7 +160,7 @@ Namespace Reports
             End If
 
             'Dealer selection validation
-            If Not Me.State.selectedDealerCodes Is Nothing OrElse Me.State.selectedDealerCodes.Count > 0 Then
+            If State.selectedDealerCodes IsNot Nothing OrElse State.selectedDealerCodes.Count > 0 Then
                 strSelectedDealersCodes = ConvertToCommSepString(State.selectedDealerCodes)
             End If
 
@@ -170,17 +170,17 @@ Namespace Reports
             reportParams.AppendFormat("pi_Dealer_Codes => '{0}'", strSelectedDealersCodes)
 
 
-            Me.State.MyBO = New ReportRequests
-            Me.State.ForEdit = True
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "PAYMENT_DETAIL")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "elita.R_PaymentDetail.Report")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
-            Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+            State.MyBO = New ReportRequests
+            State.ForEdit = True
+            PopulateBOProperty(State.MyBO, "ReportType", "PAYMENT_DETAIL")
+            PopulateBOProperty(State.MyBO, "ReportProc", "elita.R_PaymentDetail.Report")
+            PopulateBOProperty(State.MyBO, "ReportParameters", reportParams.ToString())
+            PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
 
             ScheduleReport()
         End Sub
 
-        Public Function ConvertToCommSepString(ByVal strList As List(Of String)) As String
+        Public Function ConvertToCommSepString(strList As List(Of String)) As String
             Dim strResult As String
             For Each s As String In strList
                 strResult = strResult + s + ","
@@ -191,30 +191,30 @@ Namespace Reports
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = DateTime.Now
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
 
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                    State.IsNew = False
+                    State.HasDataChanged = True
+                    State.MyBO.CreateJob(scheduleDate)
 
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
 
                     btnGenRpt.Enabled = False
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 #Region "Regions: Attach - Detach Event Handlers"
 
-        Protected Sub AddCompany_Click(ByVal sender As Object, ByVal e As EventArgs) Handles AddCompany.Click
+        Protected Sub AddCompany_Click(sender As Object, e As EventArgs) Handles AddCompany.Click
             If AvailableCompanyList.SelectedIndex <> -1 Then
                 Dim SelectedItem As System.Web.UI.WebControls.ListItem
                 SelectedItem = AvailableCompanyList.SelectedItem
@@ -227,8 +227,8 @@ Namespace Reports
             End If
         End Sub
 
-        Private Sub SaveSelectedCompany(ByVal strAction As String)
-            Me.State.selectedCompanyCodes.Clear()
+        Private Sub SaveSelectedCompany(strAction As String)
+            State.selectedCompanyCodes.Clear()
             Dim companyIDList As New ArrayList
             Dim CompanyID As Guid
             Dim i As Integer, guidTemp As Guid, companycode As String
@@ -240,14 +240,14 @@ Namespace Reports
                     guidTemp = State.AvailableCompanyDV(j).ListItemId
                     If guidTemp = CompanyID Then
                         companycode = State.AvailableCompanyDV(j).Code
-                        Me.State.selectedCompanyCodes.Add(companycode)
+                        State.selectedCompanyCodes.Add(companycode)
                         Exit For
                     End If
                 Next
             Next
             PopulateUserControlAvailableSelectedDealers(companyIDList, strAction)
         End Sub
-        Protected Sub RemoveCompany_Click(ByVal sender As Object, ByVal e As EventArgs) Handles RemoveCompany.Click
+        Protected Sub RemoveCompany_Click(sender As Object, e As EventArgs) Handles RemoveCompany.Click
             If SelectedCompanyList.SelectedIndex <> -1 Then
                 Dim SelectedItem As System.Web.UI.WebControls.ListItem
                 SelectedItem = SelectedCompanyList.SelectedItem
@@ -260,7 +260,7 @@ Namespace Reports
             End If
         End Sub
 
-        Sub PopulateUserControlAvailableSelectedDealers(ByVal companyIDList As ArrayList, ByVal strAction As String)
+        Sub PopulateUserControlAvailableSelectedDealers(companyIDList As ArrayList, strAction As String)
             If companyIDList.Count > 0 Then
                 ' State.AvailableDealerDV = LookupListNew.GetDealerLookupList(companyIDList, True, Nothing, "description", False, True)
                 Dim selectedDv As DataView = Nothing
@@ -319,7 +319,7 @@ Namespace Reports
                 SelectedDealerList.Items.Clear()
             End If
         End Sub
-        Private Function GetDealerListByCompanyForUser(ByVal companyIDList As ArrayList) As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
+        Private Function GetDealerListByCompanyForUser(companyIDList As ArrayList) As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
             Dim Index As Integer
             Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
 
@@ -332,7 +332,7 @@ Namespace Reports
                 oListContext.CompanyId = UserCompanies(Index)
                 Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = oDealerListForCompany.Clone()
@@ -344,7 +344,7 @@ Namespace Reports
             Return oDealerList.ToArray()
 
         End Function
-        Protected Sub AddDealer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles AddDealer.Click
+        Protected Sub AddDealer_Click(sender As Object, e As EventArgs) Handles AddDealer.Click
             If AvailableDealerList.SelectedIndex <> -1 Then
                 Dim SelectedItem As System.Web.UI.WebControls.ListItem
                 SelectedItem = AvailableDealerList.SelectedItem
@@ -358,7 +358,7 @@ Namespace Reports
             End If
         End Sub
 
-        Protected Sub RemoveDealer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles RemoveDealer.Click
+        Protected Sub RemoveDealer_Click(sender As Object, e As EventArgs) Handles RemoveDealer.Click
             If SelectedDealerList.SelectedIndex <> -1 Then
                 Dim SelectedItem As System.Web.UI.WebControls.ListItem
                 SelectedItem = SelectedDealerList.SelectedItem
@@ -372,7 +372,7 @@ Namespace Reports
         End Sub
 
         Private Sub SaveSelectedDealer()
-            Me.State.selectedDealerCodes.Clear()
+            State.selectedDealerCodes.Clear()
             Dim DealerID As Guid
             Dim i As Integer, guidTemp As Guid, dealercode As String
 
@@ -383,7 +383,7 @@ Namespace Reports
                     guidTemp = State.AvailableDealerDV(j).ListItemId
                     If guidTemp = DealerID Then
                         dealercode = State.AvailableDealerDV(j).code
-                        Me.State.selectedDealerCodes.Add(dealercode)
+                        State.selectedDealerCodes.Add(dealercode)
                     End If
                 Next
             Next

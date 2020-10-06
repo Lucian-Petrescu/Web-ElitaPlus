@@ -25,33 +25,33 @@ Public Class ProcessAllServiceOrders
 
     Public ReadOnly Property State() As MyState
         Get
-            If Me.NavController.State Is Nothing Then
-                Me.NavController.State = New MyState
+            If NavController.State Is Nothing Then
+                NavController.State = New MyState
             End If
-            Return CType(Me.NavController.State, MyState)
+            Return CType(NavController.State, MyState)
         End Get
     End Property
 #End Region
 
-    Public Sub Process(ByVal callingPage As System.Web.UI.Page, ByVal navCtrl As INavigationController) Implements IStateController.Process
-        Me.NavController = navCtrl
+    Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+        NavController = navCtrl
         Me.CallingPage = CType(callingPage, ElitaPlusPage)
 
         Try
-            Select Case Me.State.Stage
+            Select Case State.Stage
                 Case ProcessingStage.Processing_Start
-                    If Not NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_ORDER) Is Nothing Then
-                        Me.State.Stage = ProcessingStage.Processing_New_SO
+                    If NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_ORDER) IsNot Nothing Then
+                        State.Stage = ProcessingStage.Processing_New_SO
                         NavController.Navigate(callingPage, FlowEvents.EVENT_PROCESS_SERVICEORDER, NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_ORDER))
-                    ElseIf Not NavController.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER) Is Nothing Then
-                        Me.State.Stage = ProcessingStage.Processing_Old_SO
+                    ElseIf NavController.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER) IsNot Nothing Then
+                        State.Stage = ProcessingStage.Processing_Old_SO
                         NavController.Navigate(callingPage, FlowEvents.EVENT_PROCESS_SERVICEORDER, NavController.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER))
                     Else
                         EndProcess()
                     End If
                 Case ProcessingStage.Processing_New_SO
-                    If Not NavController.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER) Is Nothing Then
-                        Me.State.Stage = ProcessingStage.Processing_Old_SO
+                    If NavController.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER) IsNot Nothing Then
+                        State.Stage = ProcessingStage.Processing_Old_SO
                         NavController.Navigate(callingPage, FlowEvents.EVENT_PROCESS_SERVICEORDER, NavController.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER))
                     Else
                         EndProcess()
@@ -65,10 +65,10 @@ Public Class ProcessAllServiceOrders
     End Sub
 
     Sub EndProcess()
-        Me.NavController.FlowSession(FlowSessionKeys.SESSION_PREV_SERVICEORDER) = Nothing
-        Me.NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER) = Nothing
-        Me.NavController.FlowSession(FlowSessionKeys.SESSION_EMAIL_SENT) = Nothing
-        Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_BACK)
+        NavController.FlowSession(FlowSessionKeys.SESSION_PREV_SERVICEORDER) = Nothing
+        NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER) = Nothing
+        NavController.FlowSession(FlowSessionKeys.SESSION_EMAIL_SENT) = Nothing
+        NavController.Navigate(CallingPage, FlowEvents.EVENT_BACK)
     End Sub
 
 
@@ -83,16 +83,16 @@ Public Class ProcessServiceOrder
     Private ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder
 #End Region
 
-    Public Sub Process(ByVal callingPage As System.Web.UI.Page, ByVal navCtrl As INavigationController) Implements IStateController.Process
+    Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
         Try
-            Me.NavController = navCtrl
+            NavController = navCtrl
             Me.CallingPage = CType(callingPage, ElitaPlusPage)
-            Me.ServiceOrderBO = CType(Me.NavController.ParametersPassed, Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder)
+            ServiceOrderBO = CType(NavController.ParametersPassed, Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder)
 
-            Dim claimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.ServiceOrderBO.ClaimId)
+            Dim claimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ServiceOrderBO.ClaimId)
 
-            Me.NavController.FlowSession(FlowSessionKeys.SESSION_PREV_SERVICEORDER) = Me.NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER)
-            Me.NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER) = ServiceOrderBO
+            NavController.FlowSession(FlowSessionKeys.SESSION_PREV_SERVICEORDER) = NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER)
+            NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER) = ServiceOrderBO
 
             Dim oServiceCenter As ServiceCenter
 
@@ -100,9 +100,9 @@ Public Class ProcessServiceOrder
             Dim isServiceCenterEmail As Boolean = False
             Dim isSalvageCenterEmail As Boolean = False
             Dim isPreview As Boolean = False
-            Boolean.TryParse(CStr(Me.NavController.FlowSession(FlowSessionKeys.SESSION_IS_CUSTOMER_EMAIL)), isCustomerEmail)
-            Boolean.TryParse(CStr(Me.NavController.FlowSession(FlowSessionKeys.SESSION_IS_SERVICE_CENTER_EMAIL)), isServiceCenterEmail)
-            Boolean.TryParse(CStr(Me.NavController.FlowSession(FlowSessionKeys.SESSION_IS_SALVAGE_CENTER_EMAIL)), isSalvageCenterEmail)
+            Boolean.TryParse(CStr(NavController.FlowSession(FlowSessionKeys.SESSION_IS_CUSTOMER_EMAIL)), isCustomerEmail)
+            Boolean.TryParse(CStr(NavController.FlowSession(FlowSessionKeys.SESSION_IS_SERVICE_CENTER_EMAIL)), isServiceCenterEmail)
+            Boolean.TryParse(CStr(NavController.FlowSession(FlowSessionKeys.SESSION_IS_SALVAGE_CENTER_EMAIL)), isSalvageCenterEmail)
 
             If (claimBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple) Then
                 isPreview = True
@@ -119,24 +119,24 @@ Public Class ProcessServiceOrder
 
                 If EnvironmentContext.Current.Environment <> Environments.Production Then
                     strMsg = TranslationBase.TranslateLabelOrMessage(Message.MSG_SERVICEORDER_SEND_EMAIL_CONFIRM) & " Test_" & oServiceCenter.Email
-                    If Not oServiceCenter.CcEmail Is Nothing AndAlso oServiceCenter.CcEmail.Length > 0 Then
+                    If oServiceCenter.CcEmail IsNot Nothing AndAlso oServiceCenter.CcEmail.Length > 0 Then
                         strCcMsg = TranslationBase.TranslateLabelOrMessage(Message.MSG_AND_A_COPY_TO) & " Test_" & oServiceCenter.CcEmail
                         strMsg = strMsg & " " & strCcMsg
                     End If
                     strMsg = strMsg & " ?"
                 Else
                     strMsg = TranslationBase.TranslateLabelOrMessage(Message.MSG_SERVICEORDER_SEND_EMAIL_CONFIRM) & " " & oServiceCenter.Email & " "
-                    If Not oServiceCenter.CcEmail Is Nothing AndAlso oServiceCenter.CcEmail.Length > 0 Then
+                    If oServiceCenter.CcEmail IsNot Nothing AndAlso oServiceCenter.CcEmail.Length > 0 Then
                         strCcMsg = TranslationBase.TranslateLabelOrMessage(Message.MSG_AND_A_COPY_TO) & " " & oServiceCenter.CcEmail
                         strMsg = strMsg & " " & strCcMsg
                     End If
                     strMsg = strMsg & " ?"
                 End If
 
-                If (Me.NavController.CurrentFlow.Name = "CREATE_CLAIM_FROM_CERTIFICATE") Then
-                    Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False, False, isServiceCenterEmail))
+                If (NavController.CurrentFlow.Name = "CREATE_CLAIM_FROM_CERTIFICATE") Then
+                    NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False, False, isServiceCenterEmail))
                 Else
-                    Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False))
+                    NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False))
                 End If
             Else
                 Dim oCert As New Certificate(claimBO.Certificate.Id)
@@ -145,12 +145,12 @@ Public Class ProcessServiceOrder
 
                 email = If(EnvironmentContext.Current.Environment <> Environments.Production, "test_" + oCert.Email, oCert.Email)
 
-                    If (Not oCert.Email Is Nothing) AndAlso (oCert.Email.Trim.Length > 0) AndAlso System.Text.RegularExpressions.Regex.IsMatch(email, ElitaPlus.Common.RegExConstants.EMAIL_REGEX) Then
+                    If (oCert.Email IsNot Nothing) AndAlso (oCert.Email.Trim.Length > 0) AndAlso System.Text.RegularExpressions.Regex.IsMatch(email, ElitaPlus.Common.RegExConstants.EMAIL_REGEX) Then
                         strMsg = TranslationBase.TranslateLabelOrMessage(Message.MSG_SERVICEORDER_SEND_CUSTOMER_EMAIL_CONFIRM) & " " & email
-                        If (Me.NavController.CurrentFlow.Name = "CREATE_CLAIM_FROM_CERTIFICATE") Then
-                            Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_CUSTOMER_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False, False, isCustomerEmail))
+                        If (NavController.CurrentFlow.Name = "CREATE_CLAIM_FROM_CERTIFICATE") Then
+                            NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_CUSTOMER_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False, False, isCustomerEmail))
                         Else
-                            Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_CUSTOMER_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False))
+                            NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_CUSTOMER_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False))
                         End If
                     Else
                         'Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_PREVIEW_SERVICE_ORDER)
@@ -166,30 +166,30 @@ Public Class ProcessServiceOrder
                 If Not oSalvageCenter.Email = Nothing Then
                     If EnvironmentContext.Current.Environment <> Environments.Production Then
                         strMsg = TranslationBase.TranslateLabelOrMessage(Message.MSG_SERVICEORDER_SEND_EMAIL_CONFIRM) & " Test_" & oSalvageCenter.Email
-                        If Not oSalvageCenter.CcEmail Is Nothing AndAlso oSalvageCenter.CcEmail.Length > 0 Then
+                        If oSalvageCenter.CcEmail IsNot Nothing AndAlso oSalvageCenter.CcEmail.Length > 0 Then
                             strCcMsg = TranslationBase.TranslateLabelOrMessage(Message.MSG_AND_A_COPY_TO) & " Test_" & oSalvageCenter.CcEmail
                             strMsg = strMsg & " " & strCcMsg
                         End If
                         strMsg = strMsg & " ?"
                     Else
                         strMsg = TranslationBase.TranslateLabelOrMessage(Message.MSG_SERVICEORDER_SEND_EMAIL_CONFIRM) & " " & oSalvageCenter.Email & " "
-                        If Not oSalvageCenter.CcEmail Is Nothing AndAlso oSalvageCenter.CcEmail.Length > 0 Then
+                        If oSalvageCenter.CcEmail IsNot Nothing AndAlso oSalvageCenter.CcEmail.Length > 0 Then
                             strCcMsg = TranslationBase.TranslateLabelOrMessage(Message.MSG_AND_A_COPY_TO) & " " & oSalvageCenter.CcEmail
                             strMsg = strMsg & " " & strCcMsg
                         End If
                         strMsg = strMsg & " ?"
                     End If
 
-                    If (Me.NavController.CurrentFlow.Name = "CREATE_CLAIM_FROM_CERTIFICATE") Then
-                        Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_SALVAGE_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False, False, isSalvageCenterEmail))
+                    If (NavController.CurrentFlow.Name = "CREATE_CLAIM_FROM_CERTIFICATE") Then
+                        NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_SALVAGE_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False, False, isSalvageCenterEmail))
                     Else
-                        Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_SALVAGE_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False))
+                        NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_SALVAGE_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False))
                     End If
                 End If
             End If
 
             If isPreview Then
-                Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_PREVIEW_SERVICE_ORDER)
+                NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_PREVIEW_SERVICE_ORDER)
             End If
         Catch ex As Threading.ThreadAbortException
         End Try
@@ -206,18 +206,18 @@ Public Class ProcessServiceOrderCustomerEmail
     Private ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder
 #End Region
 
-    Public Sub Process(ByVal callingPage As System.Web.UI.Page, ByVal navCtrl As INavigationController) Implements IStateController.Process
+    Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
         Try
-            Me.NavController = navCtrl
+            NavController = navCtrl
             Me.CallingPage = CType(callingPage, ElitaPlusPage)
 
-            If Not NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_ORDER) Is Nothing Then
-                Me.ServiceOrderBO = CType(NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_ORDER), ServiceOrder)
-            ElseIf Not NavController.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER) Is Nothing Then
-                Me.ServiceOrderBO = CType(NavController.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER), ServiceOrder)
+            If NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_ORDER) IsNot Nothing Then
+                ServiceOrderBO = CType(NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_ORDER), ServiceOrder)
+            ElseIf NavController.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER) IsNot Nothing Then
+                ServiceOrderBO = CType(NavController.FlowSession(FlowSessionKeys.SESSION_OLD_SERVICE_ORDER), ServiceOrder)
             End If
 
-            Dim claimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.ServiceOrderBO.ClaimId)
+            Dim claimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ServiceOrderBO.ClaimId)
 
             'Me.NavController.FlowSession(FlowSessionKeys.SESSION_PREV_SERVICEORDER) = Me.NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER)
             'Me.NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER) = ServiceOrderBO
@@ -229,14 +229,14 @@ Public Class ProcessServiceOrderCustomerEmail
 
             email = If(EnvironmentContext.Current.Environment <> Environments.Production, "test_" + oCert.Email, oCert.Email)
 
-            If (Not oCert.Email Is Nothing) AndAlso (oCert.Email.Trim.Length > 0) AndAlso System.Text.RegularExpressions.Regex.IsMatch(email, ElitaPlus.Common.RegExConstants.EMAIL_REGEX) Then
+            If (oCert.Email IsNot Nothing) AndAlso (oCert.Email.Trim.Length > 0) AndAlso System.Text.RegularExpressions.Regex.IsMatch(email, ElitaPlus.Common.RegExConstants.EMAIL_REGEX) Then
                 strMsg = TranslationBase.TranslateLabelOrMessage(Message.MSG_SERVICEORDER_SEND_CUSTOMER_EMAIL_CONFIRM) & " " & email
-                Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_CUSTOMER_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False))
+                NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_CUSTOMER_EMAIL_PROMPT, New StateControllerYesNoPrompt.Parameters(strMsg, False))
             Else
-                If Me.NavController.FlowSession(FlowSessionKeys.SESSION_EMAIL_SENT) Is Nothing OrElse Me.NavController.FlowSession(FlowSessionKeys.SESSION_EMAIL_SENT).ToString = "N" Then
-                    Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_PREVIEW_SERVICE_ORDER)
+                If NavController.FlowSession(FlowSessionKeys.SESSION_EMAIL_SENT) Is Nothing OrElse NavController.FlowSession(FlowSessionKeys.SESSION_EMAIL_SENT).ToString = "N" Then
+                    NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_PREVIEW_SERVICE_ORDER)
                 Else
-                    Me.NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_SENT)
+                    NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_SENT)
                 End If
             End If
 
@@ -258,29 +258,29 @@ Public Class ProcessEmail
 
 #End Region
 
-    Public Sub Process(ByVal callingPage As System.Web.UI.Page, ByVal navCtrl As INavigationController) Implements IStateController.Process
+    Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
         Try
-            Me.NavController = navCtrl
+            NavController = navCtrl
             Me.CallingPage = CType(callingPage, ElitaPlusPage)
 
             Dim ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder = _
-                    CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER), Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder)
+                    CType(NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER), Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder)
 
             Dim ClaimBo As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ServiceOrderBO.ClaimId)
             ProcessEmail(ServiceOrderBO, ClaimBo)
-            Me.NavController.FlowSession(FlowSessionKeys.SESSION_EMAIL_SENT) = "Y"
+            NavController.FlowSession(FlowSessionKeys.SESSION_EMAIL_SENT) = "Y"
 
-            Me.NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_SENT)
+            NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_SENT)
             '    Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_BACK)
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_NOT_SENT)
+            NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_NOT_SENT)
         End Try
 
     End Sub
 
-    Private Sub ProcessEmail(ByVal ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder, ByVal oClaim As ClaimBase)
+    Private Sub ProcessEmail(ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder, oClaim As ClaimBase)
         Dim oServiceCenter As ServiceCenter
         If oClaim.LoanerCenterId.Equals(Guid.Empty) Then
             oServiceCenter = New ServiceCenter(oClaim.ServiceCenterId)
@@ -301,7 +301,7 @@ Public Class ProcessEmail
         End If
 
         Dim subjectStr As String = TranslationBase.TranslateLabelOrMessage(Message.MSG_SERVICEORDER_SUBJECT, companyBO.LanguageId) & " : " & oClaim.ClaimNumber
-        If Not oClaim.AuthorizationNumber Is Nothing AndAlso oClaim.AuthorizationNumber <> "" Then
+        If oClaim.AuthorizationNumber IsNot Nothing AndAlso oClaim.AuthorizationNumber <> "" Then
             subjectStr = subjectStr & " / " & TranslationBase.TranslateLabelOrMessage(Message.MSG_SERVICEORDER_SUBJECT_AUTH, companyBO.LanguageId) & " : " & oClaim.AuthorizationNumber
         End If
 
@@ -316,7 +316,7 @@ Public Class ProcessEmail
             '08/24/2006 - ALR - Added the check for the serviceOrderImage as nothing.  If not nothing
             '                   continues as usual.  If nothing, calls the serviceOrderController to reprint
             '                   based on the serviceOrderImageData
-            If Not ServiceOrderBO.ServiceOrderImage Is Nothing Then
+            If ServiceOrderBO.ServiceOrderImage IsNot Nothing Then
                 SendEmail(oClaim.ClaimNumber, msgStr & companyBO.LegalDisclaimer, "BCC_" & companyBO.Email, companyBO.Email, subjectStr, ServiceOrderBO.ServiceOrderImage, True, pdfTempFileName)
                 SendEmail(oClaim.ClaimNumber, ". " & companyBO.LegalDisclaimer, emailAddressTo, companyBO.Email, subjectStr, ServiceOrderBO.ServiceOrderImage, False, pdfTempFileName, emailAddressCc)
             Else
@@ -347,7 +347,7 @@ Public Class ProcessEmail
             ' This section is for test only. The request is to have this capability only for test.
             ' Test Emial ID: mailinelita.so.test@assurant.com
             Dim testEmailID As String = "mailinelita.so.test@assurant.com"
-            If Not ServiceOrderBO.ServiceOrderImage Is Nothing Then
+            If ServiceOrderBO.ServiceOrderImage IsNot Nothing Then
                 SendEmail(oClaim.ClaimNumber, msgStr & companyBO.LegalDisclaimer, testEmailID, testEmailID, subjectStr, ServiceOrderBO.ServiceOrderImage, True, pdfTempFileName)
                 SendEmail(oClaim.ClaimNumber, ". " & companyBO.LegalDisclaimer, testEmailID, testEmailID, subjectStr, ServiceOrderBO.ServiceOrderImage, False, pdfTempFileName, testEmailID)
             Else
@@ -377,7 +377,7 @@ Public Class ProcessEmail
     End Sub
 
 #Region "Email Related"
-    Private Function RemoveInvalidChar(ByVal filename As String) As String
+    Private Function RemoveInvalidChar(filename As String) As String
         Dim index As Integer
         For index = 0 To FILE_NAME_INVALID_CHARACTERS.Length - 1
             'replace the invalid character with blank
@@ -386,14 +386,14 @@ Public Class ProcessEmail
         Return filename
     End Function
 
-    Private Sub SendEmail(ByVal claimNumber As String, _
-                              ByVal strMessage As String, _
-                              ByVal strToAddress As String, _
-                              ByVal strFromAddress As String, _
-                              ByVal strSubject As String, _
-                              ByVal objPDF As Byte(), _
-                              ByVal isFirstMail As Boolean, _
-                              ByVal pdfTempFileName As String, _
+    Private Sub SendEmail(claimNumber As String, _
+                              strMessage As String, _
+                              strToAddress As String, _
+                              strFromAddress As String, _
+                              strSubject As String, _
+                              objPDF As Byte(), _
+                              isFirstMail As Boolean, _
+                              pdfTempFileName As String, _
                               Optional ByVal strCcAddress As String = "")
         Try
             '  Dim pdfPath As String = System.AppDomain.CurrentDomain.BaseDirectory & "Temporary Files/"
@@ -449,13 +449,13 @@ Public Class ProcessEmail
 
     '09/08/2006 - This alternate sendEmail method is used to create and send the HTML attachment 
     '             instead of the PDF from above
-    Private Sub SendEmail(ByVal claimNumber As String, _
-                              ByVal strMessage As String, _
-                              ByVal strToAddress As String, _
-                              ByVal strFromAddress As String, _
-                              ByVal strSubject As String, _
-                              ByVal sServiceOrder As String, _
-                              ByVal TempFileName As String, _
+    Private Sub SendEmail(claimNumber As String, _
+                              strMessage As String, _
+                              strToAddress As String, _
+                              strFromAddress As String, _
+                              strSubject As String, _
+                              sServiceOrder As String, _
+                              TempFileName As String, _
                               Optional ByVal strCcAddress As String = "")
 
 
@@ -472,7 +472,7 @@ Public Class ProcessEmail
         Try
 
             Dim maAttach As MailAttachment
-            If Not sServiceOrder Is Nothing Then
+            If sServiceOrder IsNot Nothing Then
                 maAttach = New MailAttachment(TempFileName)
             End If
 
@@ -485,7 +485,7 @@ Public Class ProcessEmail
                 .Body = strMessage
                 .Subject = strSubject
                 .BodyFormat = MailFormat.Text
-                If Not sServiceOrder Is Nothing Then .Attachments.Add(maAttach)
+                If sServiceOrder IsNot Nothing Then .Attachments.Add(maAttach)
             End With
 
             SmtpMail.SmtpServer = AppConfig.ServiceOrderEmail.SmtpServer
@@ -519,27 +519,27 @@ Public Class ProcessCustomerEmail
 
 #End Region
 
-    Public Sub Process(ByVal callingPage As System.Web.UI.Page, ByVal navCtrl As INavigationController) Implements IStateController.Process
+    Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
         Try
-            Me.NavController = navCtrl
+            NavController = navCtrl
             Me.CallingPage = CType(callingPage, ElitaPlusPage)
 
             Dim ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder = _
-                    CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER), Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder)
+                    CType(NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER), Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder)
 
             Dim ClaimBo As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ServiceOrderBO.ClaimId)
             ProcessEmail(ServiceOrderBO, ClaimBo)
-            Me.NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_SENT)
+            NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_SENT)
             '    Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_BACK)
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_NOT_SENT)
+            NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_NOT_SENT)
         End Try
 
     End Sub
 
-    Private Sub ProcessEmail(ByVal ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder, ByVal oClaim As ClaimBase)
+    Private Sub ProcessEmail(ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder, oClaim As ClaimBase)
         Dim oServiceCenter As ServiceCenter
         Dim oCert As Certificate
 
@@ -563,7 +563,7 @@ Public Class ProcessCustomerEmail
         Dim emailBody As String = ServiceOrder.GetSericeOrderEmailContent(companyBO.Id)
 
         Dim subjectStr As String = TranslationBase.TranslateLabelOrMessage(Message.MSG_SERVICEORDER_SUBJECT, companyBO.LanguageId) & " : " & oClaim.ClaimNumber
-        If Not oClaim.AuthorizationNumber Is Nothing AndAlso oClaim.AuthorizationNumber <> "" Then
+        If oClaim.AuthorizationNumber IsNot Nothing AndAlso oClaim.AuthorizationNumber <> "" Then
             subjectStr = subjectStr & " / " & TranslationBase.TranslateLabelOrMessage(Message.MSG_SERVICEORDER_SUBJECT_AUTH, companyBO.LanguageId) & " : " & oClaim.AuthorizationNumber
         End If
 
@@ -578,7 +578,7 @@ Public Class ProcessCustomerEmail
             '08/24/2006 - ALR - Added the check for the serviceOrderImage as nothing.  If not nothing
             '                   continues as usual.  If nothing, calls the serviceOrderController to reprint
             '                   based on the serviceOrderImageData
-            If Not ServiceOrderBO.ServiceOrderImage Is Nothing Then
+            If ServiceOrderBO.ServiceOrderImage IsNot Nothing Then
                 SendEmail(oClaim.ClaimNumber, ". " & companyBO.LegalDisclaimer, emailAddressTo, companyBO.Email, subjectStr, ServiceOrderBO.ServiceOrderImage, False, pdfTempFileName, "", emailBody)
             Else
 
@@ -607,7 +607,7 @@ Public Class ProcessCustomerEmail
             ' This section is for test only. The request is to have this capability only for test.
             ' Test Emial ID: mailinelita.so.test@assurant.com
             Dim testEmailID As String = "mailinelita.so.test@assurant.com"
-            If Not ServiceOrderBO.ServiceOrderImage Is Nothing Then
+            If ServiceOrderBO.ServiceOrderImage IsNot Nothing Then
                 SendEmail(oClaim.ClaimNumber, ". " & companyBO.LegalDisclaimer, testEmailID, testEmailID, subjectStr, ServiceOrderBO.ServiceOrderImage, False, pdfTempFileName, testEmailID, emailBody)
             Else
 
@@ -635,7 +635,7 @@ Public Class ProcessCustomerEmail
     End Sub
 
 #Region "Email Related"
-    Private Function RemoveInvalidChar(ByVal filename As String) As String
+    Private Function RemoveInvalidChar(filename As String) As String
         Dim index As Integer
         For index = 0 To FILE_NAME_INVALID_CHARACTERS.Length - 1
             'replace the invalid character with blank
@@ -644,14 +644,14 @@ Public Class ProcessCustomerEmail
         Return filename
     End Function
 
-    Private Sub SendEmail(ByVal claimNumber As String,
-                              ByVal strMessage As String,
-                              ByVal strToAddress As String,
-                              ByVal strFromAddress As String,
-                              ByVal strSubject As String,
-                              ByVal objPDF As Byte(),
-                              ByVal isFirstMail As Boolean,
-                              ByVal pdfTempFileName As String,
+    Private Sub SendEmail(claimNumber As String,
+                              strMessage As String,
+                              strToAddress As String,
+                              strFromAddress As String,
+                              strSubject As String,
+                              objPDF As Byte(),
+                              isFirstMail As Boolean,
+                              pdfTempFileName As String,
                               Optional ByVal strCcAddress As String = "",
                               Optional ByVal strEmailBody As String = ""
                           )
@@ -711,13 +711,13 @@ Public Class ProcessCustomerEmail
 
     '09/08/2006 - This alternate sendEmail method is used to create and send the HTML attachment 
     '             instead of the PDF from above
-    Private Sub SendEmail(ByVal claimNumber As String,
-                              ByVal strMessage As String,
-                              ByVal strToAddress As String,
-                              ByVal strFromAddress As String,
-                              ByVal strSubject As String,
-                              ByVal sServiceOrder As String,
-                              ByVal TempFileName As String,
+    Private Sub SendEmail(claimNumber As String,
+                              strMessage As String,
+                              strToAddress As String,
+                              strFromAddress As String,
+                              strSubject As String,
+                              sServiceOrder As String,
+                              TempFileName As String,
                               Optional ByVal strCcAddress As String = "",
                               Optional ByVal strEmailBody As String = "")
 
@@ -735,7 +735,7 @@ Public Class ProcessCustomerEmail
         Try
 
             Dim maAttach As MailAttachment
-            If Not sServiceOrder Is Nothing Then
+            If sServiceOrder IsNot Nothing Then
                 maAttach = New MailAttachment(TempFileName)
             End If
 
@@ -750,7 +750,7 @@ Public Class ProcessCustomerEmail
                 .BodyFormat = MailFormat.Text
                 .Body = strEmailBody
                 .BodyEncoding = System.Text.Encoding.UTF8
-                If Not sServiceOrder Is Nothing Then .Attachments.Add(maAttach)
+                If sServiceOrder IsNot Nothing Then .Attachments.Add(maAttach)
             End With
 
             SmtpMail.SmtpServer = AppConfig.ServiceOrderEmail.SmtpServer
@@ -784,29 +784,29 @@ Public Class ProcessSalvageCenterEmail
 
 #End Region
 
-    Public Sub Process(ByVal callingPage As System.Web.UI.Page, ByVal navCtrl As INavigationController) Implements IStateController.Process
+    Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
         Try
-            Me.NavController = navCtrl
+            NavController = navCtrl
             Me.CallingPage = CType(callingPage, ElitaPlusPage)
 
             Dim ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder = _
-                    CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER), Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder)
+                    CType(NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER), Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder)
 
             Dim ClaimBo As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ServiceOrderBO.ClaimId)
             ProcessSalvageCenterEmail(ServiceOrderBO, ClaimBo)
-            Me.NavController.FlowSession(FlowSessionKeys.SESSION_EMAIL_SENT) = "Y"
+            NavController.FlowSession(FlowSessionKeys.SESSION_EMAIL_SENT) = "Y"
 
-            Me.NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_SENT)
+            NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_SENT)
             '    Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_BACK)
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_NOT_SENT)
+            NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_NOT_SENT)
         End Try
 
     End Sub
 
-    Private Sub ProcessSalvageCenterEmail(ByVal ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder, ByVal oClaim As ClaimBase)
+    Private Sub ProcessSalvageCenterEmail(ServiceOrderBO As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder, oClaim As ClaimBase)
         Dim oServiceCenter As ServiceCenter
         oServiceCenter = New ServiceCenter(oClaim.Dealer.DefaultSalvgeCenterId)
         Dim companyBO As Company = New Company(oClaim.CompanyId)
@@ -822,7 +822,7 @@ Public Class ProcessSalvageCenterEmail
         End If
 
         Dim subjectStr As String = TranslationBase.TranslateLabelOrMessage(Message.MSG_SERVICEORDER_SUBJECT, companyBO.LanguageId) & " : " & oClaim.ClaimNumber
-        If Not oClaim.AuthorizationNumber Is Nothing AndAlso oClaim.AuthorizationNumber <> "" Then
+        If oClaim.AuthorizationNumber IsNot Nothing AndAlso oClaim.AuthorizationNumber <> "" Then
             subjectStr = subjectStr & " / " & TranslationBase.TranslateLabelOrMessage(Message.MSG_SERVICEORDER_SUBJECT_AUTH, companyBO.LanguageId) & " : " & oClaim.AuthorizationNumber
         End If
 
@@ -837,7 +837,7 @@ Public Class ProcessSalvageCenterEmail
             '08/24/2006 - ALR - Added the check for the serviceOrderImage as nothing.  If not nothing
             '                   continues as usual.  If nothing, calls the serviceOrderController to reprint
             '                   based on the serviceOrderImageData
-            If Not ServiceOrderBO.ServiceOrderImage Is Nothing Then
+            If ServiceOrderBO.ServiceOrderImage IsNot Nothing Then
                 SendEmail(oClaim.ClaimNumber, msgStr & companyBO.LegalDisclaimer, "BCC_" & companyBO.Email, companyBO.Email, subjectStr, ServiceOrderBO.ServiceOrderImage, True, pdfTempFileName)
                 SendEmail(oClaim.ClaimNumber, ". " & companyBO.LegalDisclaimer, emailAddressTo, companyBO.Email, subjectStr, ServiceOrderBO.ServiceOrderImage, False, pdfTempFileName, emailAddressCc)
             Else
@@ -868,7 +868,7 @@ Public Class ProcessSalvageCenterEmail
             ' This section is for test only. The request is to have this capability only for test.
             ' Test Emial ID: mailinelita.so.test@assurant.com
             Dim testEmailID As String = "mailinelita.so.test@assurant.com"
-            If Not ServiceOrderBO.ServiceOrderImage Is Nothing Then
+            If ServiceOrderBO.ServiceOrderImage IsNot Nothing Then
                 SendEmail(oClaim.ClaimNumber, msgStr & companyBO.LegalDisclaimer, testEmailID, testEmailID, subjectStr, ServiceOrderBO.ServiceOrderImage, True, pdfTempFileName)
                 SendEmail(oClaim.ClaimNumber, ". " & companyBO.LegalDisclaimer, testEmailID, testEmailID, subjectStr, ServiceOrderBO.ServiceOrderImage, False, pdfTempFileName, testEmailID)
             Else
@@ -898,7 +898,7 @@ Public Class ProcessSalvageCenterEmail
     End Sub
 
 #Region "Email Related"
-    Private Function RemoveInvalidChar(ByVal filename As String) As String
+    Private Function RemoveInvalidChar(filename As String) As String
         Dim index As Integer
         For index = 0 To FILE_NAME_INVALID_CHARACTERS.Length - 1
             'replace the invalid character with blank
@@ -907,14 +907,14 @@ Public Class ProcessSalvageCenterEmail
         Return filename
     End Function
 
-    Private Sub SendEmail(ByVal claimNumber As String, _
-                              ByVal strMessage As String, _
-                              ByVal strToAddress As String, _
-                              ByVal strFromAddress As String, _
-                              ByVal strSubject As String, _
-                              ByVal objPDF As Byte(), _
-                              ByVal isFirstMail As Boolean, _
-                              ByVal pdfTempFileName As String, _
+    Private Sub SendEmail(claimNumber As String, _
+                              strMessage As String, _
+                              strToAddress As String, _
+                              strFromAddress As String, _
+                              strSubject As String, _
+                              objPDF As Byte(), _
+                              isFirstMail As Boolean, _
+                              pdfTempFileName As String, _
                               Optional ByVal strCcAddress As String = "")
         Try
             '  Dim pdfPath As String = System.AppDomain.CurrentDomain.BaseDirectory & "Temporary Files/"
@@ -970,13 +970,13 @@ Public Class ProcessSalvageCenterEmail
 
     '09/08/2006 - This alternate sendEmail method is used to create and send the HTML attachment 
     '             instead of the PDF from above
-    Private Sub SendEmail(ByVal claimNumber As String, _
-                              ByVal strMessage As String, _
-                              ByVal strToAddress As String, _
-                              ByVal strFromAddress As String, _
-                              ByVal strSubject As String, _
-                              ByVal sServiceOrder As String, _
-                              ByVal TempFileName As String, _
+    Private Sub SendEmail(claimNumber As String, _
+                              strMessage As String, _
+                              strToAddress As String, _
+                              strFromAddress As String, _
+                              strSubject As String, _
+                              sServiceOrder As String, _
+                              TempFileName As String, _
                               Optional ByVal strCcAddress As String = "")
 
 
@@ -993,7 +993,7 @@ Public Class ProcessSalvageCenterEmail
         Try
 
             Dim maAttach As MailAttachment
-            If Not sServiceOrder Is Nothing Then
+            If sServiceOrder IsNot Nothing Then
                 maAttach = New MailAttachment(TempFileName)
             End If
 
@@ -1006,7 +1006,7 @@ Public Class ProcessSalvageCenterEmail
                 .Body = strMessage
                 .Subject = strSubject
                 .BodyFormat = MailFormat.Text
-                If Not sServiceOrder Is Nothing Then .Attachments.Add(maAttach)
+                If sServiceOrder IsNot Nothing Then .Attachments.Add(maAttach)
             End With
 
             SmtpMail.SmtpServer = AppConfig.ServiceOrderEmail.SmtpServer

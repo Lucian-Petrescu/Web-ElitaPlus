@@ -50,7 +50,7 @@ Namespace Tables
 #End Region
 
 #Region "Page Return"
-        Private Sub Page_PageReturn(ByVal returnFromUrl As String, ByVal returnParameter As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(returnFromUrl As String, returnParameter As Object) Handles MyBase.PageReturn
             MenuEnabled = True
             Dim returnObject As PageReturnType(Of Object) = CType(returnParameter, PageReturnType(Of Object))
             If (returnObject.HasDataChanged) Then State.SearchDv = Nothing
@@ -59,7 +59,7 @@ Namespace Tables
 #End Region
 
 #Region "Page_Events"
-        Private Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             Try
                 MasterPage.MessageController.Clear_Hide()
 
@@ -149,16 +149,16 @@ Namespace Tables
 #End Region
 
 #Region "Datagrid Related"
-        Private Sub DepreciationScheduleGridView_RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles DepreciationScheduleGridView.RowCreated
+        Private Sub DepreciationScheduleGridView_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles DepreciationScheduleGridView.RowCreated
             BaseItemCreated(sender, e)
         End Sub
-        Private Sub DepreciationScheduleGridView_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles DepreciationScheduleGridView.RowDataBound
+        Private Sub DepreciationScheduleGridView_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles DepreciationScheduleGridView.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
 
-                If Not dvRow Is Nothing Then
+                If dvRow IsNot Nothing Then
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
                         btnEditItem = CType(e.Row.Cells(GridColDepreciationScheduleCode).FindControl("SelectAction"), LinkButton)
                         btnEditItem.CommandArgument = e.Row.RowIndex.ToString
@@ -175,7 +175,7 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Sub DepreciationScheduleGridView_RowCommand(ByVal source As Object, ByVal e As GridViewCommandEventArgs) Handles DepreciationScheduleGridView.RowCommand
+        Private Sub DepreciationScheduleGridView_RowCommand(source As Object, e As GridViewCommandEventArgs) Handles DepreciationScheduleGridView.RowCommand
             Try
                 Select Case e.CommandName
                     Case SelectActionCommand
@@ -190,7 +190,7 @@ Namespace Tables
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As GridViewPageEventArgs) Handles DepreciationScheduleGridView.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles DepreciationScheduleGridView.PageIndexChanging
             Try
                 State.PageIndex = e.NewPageIndex
                 PopulateGrid()
@@ -199,7 +199,7 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As GridViewSortEventArgs) Handles DepreciationScheduleGridView.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles DepreciationScheduleGridView.Sorting
             Try
                 If (State.SortColumn = e.SortExpression) Then
                     State.SortDirection = If(State.SortDirection = WebControls.SortDirection.Ascending, WebControls.SortDirection.Descending, WebControls.SortDirection.Ascending)
@@ -213,7 +213,7 @@ Namespace Tables
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub PageSizeCombo_SelectedIndexChanged(ByVal source As Object, ByVal e As EventArgs) Handles PageSizeCombo.SelectedIndexChanged
+        Private Sub PageSizeCombo_SelectedIndexChanged(source As Object, e As EventArgs) Handles PageSizeCombo.SelectedIndexChanged
             Try
                 State.SelectedPageSize = CType(PageSizeCombo.SelectedValue, Integer)
                 State.PageIndex = NewCurrentPageIndex(DepreciationScheduleGridView, State.SearchDv.Count(), State.SelectedPageSize)
@@ -226,7 +226,7 @@ Namespace Tables
 #End Region
 
 #Region "Button Clicks"
-        Private Sub SearchButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles SearchButton.Click
+        Private Sub SearchButton_Click(sender As Object, e As EventArgs) Handles SearchButton.Click
             Try
                 ClearSearchResults()
                 SetStateSession()
@@ -236,7 +236,7 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Sub ClearSearchButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ClearSearchButton.Click
+        Private Sub ClearSearchButton_Click(sender As Object, e As EventArgs) Handles ClearSearchButton.Click
             Try
                 ClearSearchCriteria()
                 ClearSearchResults()
@@ -246,7 +246,7 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Sub NewButton_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles NewButton_WRITE.Click
+        Private Sub NewButton_WRITE_Click(sender As Object, e As EventArgs) Handles NewButton_WRITE.Click
             Try
                 Dim guidTempDepreciationScheduleId As Guid = Guid.Empty
                 callPage(DepreciationScheduleForm.Url, guidTempDepreciationScheduleId)

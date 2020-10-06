@@ -16,7 +16,7 @@ Imports System.Runtime.Serialization
 #End Region
 
 #Region "Constructors"
-    Public Sub New(ByVal errType As DatabaseAccessErrorType, Optional ByVal innerException As Exception = Nothing, _
+    Public Sub New(errType As DatabaseAccessErrorType, Optional ByVal innerException As Exception = Nothing, _
     Optional ByVal userMsg As String = Nothing)
         MyBase.New("Error trying to access the Database", innerException)
 
@@ -24,34 +24,34 @@ Imports System.Runtime.Serialization
         If userMsg Is Nothing Then
             Select Case _errType
                 Case DatabaseAccessErrorType.ReadErr
-                    Me.Code = ErrorCodes.DB_READ_ERROR
+                    Code = ErrorCodes.DB_READ_ERROR
                 Case DatabaseAccessErrorType.WriteErr
                     If (Not innerException Is Nothing) Then
                         If (innerException.ToString.Contains("ORA-20999")) Then
-                            Me.Code = ErrorCodes.DB_ERROR_POSTAL_CODE_FORMAT_NOT_RIGHT   '"Postal Code format not correct"
+                            Code = ErrorCodes.DB_ERROR_POSTAL_CODE_FORMAT_NOT_RIGHT   '"Postal Code format not correct"
                             'Throw New ElitaPlusException(Me.Code, Me.Code)
                             ' Throw New Exception(ErrorCodes.DB_ERROR_POSTAL_CODE_FORMAT_NOT_RIGHT)
                         ElseIf (innerException.ToString.Contains("ORA-20998")) Then
-                            Me.Code = ErrorCodes.DB_ERROR_COMUNA_NOT_FOUND   '"Comuna Entered NOt Found. Please enter the correct Comuna"
+                            Code = ErrorCodes.DB_ERROR_COMUNA_NOT_FOUND   '"Comuna Entered NOt Found. Please enter the correct Comuna"
                             'Throw New ElitaPlusException(Me.Code, Me.Code)
                             'Throw New Exception(ErrorCodes.DB_ERROR_COMUNA_NOT_FOUND)
                         ElseIf (innerException.ToString.Contains("ORA-06512")) And (innerException.ToString.Contains("ELITA.GETPOSTALCODE")) Then
-                            Me.Code = ErrorCodes.DB_ERROR_POSTAL_CODE_FORMAT_NOT_RIGHT
+                            Code = ErrorCodes.DB_ERROR_POSTAL_CODE_FORMAT_NOT_RIGHT
                         Else
-                            Me.Code = ErrorCodes.DB_WRITE_ERROR
+                            Code = ErrorCodes.DB_WRITE_ERROR
                         End If
                     Else
-                        Me.Code = ErrorCodes.DB_WRITE_ERROR
+                        Code = ErrorCodes.DB_WRITE_ERROR
                     End If
 
             End Select
         Else
-            Me.Code = userMsg
+            Code = userMsg
         End If
 
     End Sub
 
-    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+    Protected Sub New(info As SerializationInfo, context As StreamingContext)
         MyBase.New(info, context)
     End Sub
 
@@ -60,7 +60,7 @@ Imports System.Runtime.Serialization
 #Region "Properties"
     Public ReadOnly Property ErrorType() As DatabaseAccessErrorType
         Get
-            Return Me._errType
+            Return _errType
         End Get
     End Property
 #End Region

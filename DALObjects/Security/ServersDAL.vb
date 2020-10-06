@@ -57,24 +57,24 @@ Public Class ServersDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("server_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal sHubRegion As String, ByVal sMachinePrefix As String, _
-                    ByVal sEnvironment As String, Optional ByVal webServiceName As String = Nothing, _
+    Public Sub Load(familyDS As DataSet, sHubRegion As String, sMachinePrefix As String, _
+                    sEnvironment As String, Optional ByVal webServiceName As String = Nothing, _
                     Optional ByVal webServiceFunctionName As String = Nothing)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BY_CODE")
+        Dim selectStmt As String = Config("/SQL/LOAD_BY_CODE")
         Dim objWebServiceParam As String
         If Not webServiceName Is Nothing Then
             objWebServiceParam = webServiceName.ToUpper()
@@ -91,7 +91,7 @@ Public Class ServersDAL
                                         New DBHelper.DBHelperParameter(COL_NAME_MACHINE_PREFIX, sMachinePrefix.ToUpper), _
                                         New DBHelper.DBHelperParameter(COL_NAME_ENVIRONMENT, sEnvironment.ToUpper)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -103,32 +103,32 @@ Public Class ServersDAL
     '    Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
     'End Function
 
-    Public Function LoadList(ByVal envStr As String, ByVal description As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(envStr As String, description As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(envStr) Then
-            whereClauseConditions &= " WHERE " & Environment.NewLine & "UPPER(" & Me.COL_NAME_ENVIRONMENT & ") " & envStr.ToUpper
+        If FormatSearchMask(envStr) Then
+            whereClauseConditions &= " WHERE " & Environment.NewLine & "UPPER(" & COL_NAME_ENVIRONMENT & ") " & envStr.ToUpper
         End If
 
 
-        If Me.FormatSearchMask(description) Then
+        If FormatSearchMask(description) Then
             If whereClauseConditions = "" Then
-                whereClauseConditions &= " WHERE " & Environment.NewLine & "UPPER(" & Me.COL_NAME_DESCRIPTION & ") " & description.ToUpper
+                whereClauseConditions &= " WHERE " & Environment.NewLine & "UPPER(" & COL_NAME_DESCRIPTION & ") " & description.ToUpper
             Else
-                whereClauseConditions &= environment.NewLine & "AND  UPPER(" & Me.COL_NAME_DESCRIPTION & ") " & description.ToUpper
+                whereClauseConditions &= environment.NewLine & "AND  UPPER(" & COL_NAME_DESCRIPTION & ") " & description.ToUpper
             End If
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim ds As New DataSet
         Try
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -138,12 +138,12 @@ Public Class ServersDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
@@ -151,8 +151,8 @@ Public Class ServersDAL
 
 #Region "Additional Logic"
 
-    Public Function TestBatchServices(ByVal UserName As String, ByVal Password As String, ByVal Group As String) As String
-        Dim selectStmt As String = Me.Config("/SQL/TEST_BATCH")
+    Public Function TestBatchServices(UserName As String, Password As String, Group As String) As String
+        Dim selectStmt As String = Config("/SQL/TEST_BATCH")
 
         Try
             Return DBHelper.ExecuteScalar(String.Format(selectStmt, UserName, Password, Group)).ToString

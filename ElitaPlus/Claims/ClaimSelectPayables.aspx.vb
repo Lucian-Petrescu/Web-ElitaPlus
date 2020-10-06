@@ -67,25 +67,25 @@ Public Class ClaimSelectPayables
 
 #Region "Page Parameters"
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Me.State.PymntGroupId = CType(Me.CallingParameters, Guid)
+            If CallingParameters IsNot Nothing Then
+                State.PymntGroupId = CType(CallingParameters, Guid)
 
-                If Not Me.State.PymntGroupId.Equals(Guid.Empty) Then
-                    Me.State.MyPaymentGroupBO = New ClaimPaymentGroup(Me.State.PymntGroupId)
+                If Not State.PymntGroupId.Equals(Guid.Empty) Then
+                    State.MyPaymentGroupBO = New ClaimPaymentGroup(State.PymntGroupId)
                 Else
-                    Me.State.MyPaymentGroupBO = New ClaimPaymentGroup()
-                    Me.State.MyPaymentGroupBO.CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
-                    Me.State.MyPaymentGroupBO.PaymentGroupNumber = "1" 'This is a temporary Number assignment for New PaymentGroup
-                    Me.State.MyPaymentGroupBO.PaymentGroupStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENT_GRP_STAT, _
+                    State.MyPaymentGroupBO = New ClaimPaymentGroup()
+                    State.MyPaymentGroupBO.CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
+                    State.MyPaymentGroupBO.PaymentGroupNumber = "1" 'This is a temporary Number assignment for New PaymentGroup
+                    State.MyPaymentGroupBO.PaymentGroupStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENT_GRP_STAT, _
                                                                                                  Codes.PYMNT_GRP_STATUS_OPEN)
-                    Me.State.MyPaymentGroupBO.PaymentGroupDate = Date.Now
+                    State.MyPaymentGroupBO.PaymentGroupDate = Date.Now
                     Me.State.MyPaymentGroupBO.PaymentGroupTotal = 0D
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
@@ -94,19 +94,19 @@ Public Class ClaimSelectPayables
 #Region "Page Events"
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & _
-                    TranslationBase.TranslateLabelOrMessage("PAYMENT_GROUP_SEARCH") & Me.MasterPage.PageTab & ElitaBase.Sperator & _
-                    TranslationBase.TranslateLabelOrMessage("PAYMENT_GROUP_DETAIL") & Me.MasterPage.PageTab & ElitaBase.Sperator & _
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & _
+                    TranslationBase.TranslateLabelOrMessage("PAYMENT_GROUP_SEARCH") & MasterPage.PageTab & ElitaBase.Sperator & _
+                    TranslationBase.TranslateLabelOrMessage("PAYMENT_GROUP_DETAIL") & MasterPage.PageTab & ElitaBase.Sperator & _
                     TranslationBase.TranslateLabelOrMessage("SELECT_PAYABLES")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("SELECT_PAYABLES")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("SELECT_PAYABLES")
             End If
         End If
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.MasterPage.MessageController.Clear()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        MasterPage.MessageController.Clear()
         UpdateBreadCrum()
         If Not Page.IsPostBack Then
             TranslateGridHeader(Grid)
@@ -116,26 +116,26 @@ Public Class ClaimSelectPayables
 #End Region
 
 #Region "Button Click Handlers"
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.ReturnToCallingPage()
+            ReturnToCallingPage()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
 
         Dim hasErrors As Boolean = False
         If (Not moInvoiceDateRange.IsEmpty) Then hasErrors = hasErrors Or Not moInvoiceDateRange.Validate()
         If (hasErrors) Then Exit Sub
 
-        Me.State.SearchClicked = True
-        Me.State.searchDV = Nothing
+        State.SearchClicked = True
+        State.searchDV = Nothing
         PopulateGrid()
     End Sub
 
-    Private Sub btnContinue_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnContinue.Click
+    Private Sub btnContinue_Click(sender As Object, e As System.EventArgs) Handles btnContinue.Click
         Dim payableSelected As Boolean = False
         Dim chk As CheckBox
         Dim pgdRow As GridViewRow
@@ -143,22 +143,22 @@ Public Class ClaimSelectPayables
         Try
             'Loop through the visible items in the grid and check the status of the checkbox on each one.
             For Each pgdRow In Grid.Rows
-                chk = CType(pgdRow.FindControl(Me.GRID_CHECK_ADD_CLAIM_AUTH_CHECKBOX), CheckBox)
-                If Not chk Is Nothing And chk.Checked = True Then
+                chk = CType(pgdRow.FindControl(GRID_CHECK_ADD_CLAIM_AUTH_CHECKBOX), CheckBox)
+                If chk IsNot Nothing And chk.Checked = True Then
                     payableSelected = True
                     Exit For
                 End If
             Next
 
             If Not payableSelected Then
-                Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_NO_RECORD_SELECTED, True)
+                MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_NO_RECORD_SELECTED, True)
                 Exit Sub
             End If
 
             AddClaims()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -178,34 +178,34 @@ Public Class ClaimSelectPayables
             'Loop through the visible items in the grid and check the status of the checkbox on each one.
             For Each pgdRow In Grid.Rows
                 claimAuthReconAmount = 0D
-                chk = CType(pgdRow.FindControl(Me.GRID_CHECK_ADD_CLAIM_AUTH_CHECKBOX), CheckBox)
-                chkExcludeDed = CType(pgdRow.FindControl(Me.GRID_CLAIM_EXCLUDE_DEDUCTIBLE_CHECKBOX), CheckBox)
-                If Not chk Is Nothing Then
-                    claimAuthId = New Guid(CType(pgdRow.FindControl(Me.GRID_CLAIM_AUTH_ID_LABEL), Label).Text)
-                    claimAuthReconAmount = New DecimalType(CDec(CType(pgdRow.FindControl(Me.GRID_RECONCILED_AMOUNT_LABEL), Label).Text))
+                chk = CType(pgdRow.FindControl(GRID_CHECK_ADD_CLAIM_AUTH_CHECKBOX), CheckBox)
+                chkExcludeDed = CType(pgdRow.FindControl(GRID_CLAIM_EXCLUDE_DEDUCTIBLE_CHECKBOX), CheckBox)
+                If chk IsNot Nothing Then
+                    claimAuthId = New Guid(CType(pgdRow.FindControl(GRID_CLAIM_AUTH_ID_LABEL), Label).Text)
+                    claimAuthReconAmount = New DecimalType(CDec(CType(pgdRow.FindControl(GRID_RECONCILED_AMOUNT_LABEL), Label).Text))
 
                     If chk.Checked = True Then
 
-                        If Not chkExcludeDed Is Nothing And chkExcludeDed.Checked = True Then
+                        If chkExcludeDed IsNot Nothing And chkExcludeDed.Checked = True Then
                             excludeDed = "Y"
                         Else
                             excludeDed = "N"
                         End If
 
-                        Me.State.MyPaymentGroupBO.CreatePaymentGroupDetail(claimAuthId, excludeDed, claimAuthReconAmount, paymentAmount)
+                        State.MyPaymentGroupBO.CreatePaymentGroupDetail(claimAuthId, excludeDed, claimAuthReconAmount, paymentAmount)
 
                     End If
                 End If
             Next
 
-            Me.State.MyPaymentGroupBO.PaymentGroupTotal = Me.State.MyPaymentGroupBO.PaymentGroupTotal.Value + paymentAmount.Value
+            State.MyPaymentGroupBO.PaymentGroupTotal = State.MyPaymentGroupBO.PaymentGroupTotal.Value + paymentAmount.Value
 
             If Not pageIndexChanging Then
-                Me.State.MyPaymentGroupBO.Save()
-                Me.ReturnToCallingPage(Me.State.MyPaymentGroupBO.Id)
+                State.MyPaymentGroupBO.Save()
+                ReturnToCallingPage(State.MyPaymentGroupBO.Id)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -216,17 +216,17 @@ Public Class ClaimSelectPayables
 
     Private Sub PopulateGrid()
         Try
-            If Me.State.searchDV Is Nothing Then
+            If State.searchDV Is Nothing Then
 
-                Me.State.searchDV = ClaimPaymentGroupDetail.SelectPayables(Me.moClaimNumber.Text, _
-                                                                           Me.moInvoiceGroupNumber.Text, _
-                                                                           Me.moInvoiceNumber.Text, Me.moMobileNumber.Text, _
+                State.searchDV = ClaimPaymentGroupDetail.SelectPayables(moClaimNumber.Text, _
+                                                                           moInvoiceGroupNumber.Text, _
+                                                                           moInvoiceNumber.Text, moMobileNumber.Text, _
                                                                            DirectCast(moInvoiceDateRange.Value, SearchCriteriaStructType(Of Date)), _
-                                                                           Me.moAccountNumber.Text, Me.moServiceCenter.Text, _
-                                                                           Me.moAuthNumber.Text)
-                If Me.State.SearchClicked Then
-                    Me.ValidSearchResultCountNew(Me.State.searchDV.Count, True)
-                    Me.State.SearchClicked = False
+                                                                           moAccountNumber.Text, moServiceCenter.Text, _
+                                                                           moAuthNumber.Text)
+                If State.SearchClicked Then
+                    ValidSearchResultCountNew(State.searchDV.Count, True)
+                    State.SearchClicked = False
                 End If
             End If
 
@@ -249,31 +249,31 @@ Public Class ClaimSelectPayables
             '    Next
             'End If
 
-            Me.Grid.AutoGenerateColumns = False
-            Grid.DataSource = Me.State.searchDV
+            Grid.AutoGenerateColumns = False
+            Grid.DataSource = State.searchDV
 
-            If (Not Me.State.SortExpression.Equals(String.Empty)) Then
-                Me.State.searchDV.Sort = Me.State.SortExpression 'Me.SortDirection
+            If (Not State.SortExpression.Equals(String.Empty)) Then
+                State.searchDV.Sort = State.SortExpression 'Me.SortDirection
             End If
 
-            HighLightSortColumn(Grid, Me.State.SortExpression, True) 'Me.SortDirection
+            HighLightSortColumn(Grid, State.SortExpression, True) 'Me.SortDirection
 
             Grid.DataBind()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim claimAuthId As Guid
@@ -283,18 +283,18 @@ Public Class ClaimSelectPayables
                 'adding an attribute for onclick event on the check box in the header 
                 'and passing the ClientID of the Select All checkbox
                 Dim chkAll As CheckBox
-                chkAll = CType(e.Row.Cells(Me.GRID_CLAIM_COL_SELECTED_IDX).FindControl(Me.GRID_CHECK_ALL_CLAIM_AUTH_CHECKBOX), CheckBox)
-                If Not chkAll Is Nothing Then
+                chkAll = CType(e.Row.Cells(GRID_CLAIM_COL_SELECTED_IDX).FindControl(GRID_CHECK_ALL_CLAIM_AUTH_CHECKBOX), CheckBox)
+                If chkAll IsNot Nothing Then
                     chkAll.Attributes("onClick") = "javascript:SelectAll('" & chkAll.ClientID & "')"
                 End If
             End If
 
-            If Not dvRow Is Nothing Then
+            If dvRow IsNot Nothing Then
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
 
                     Dim txtDueDate As Label
-                    txtDueDate = CType(e.Row.Cells(Me.GRID_CLAIM_COL_DUE_DATE_IDX).FindControl(Me.GRID_DUE_DATE_LABEL), Label)
-                    If Not txtDueDate Is Nothing AndAlso Not dvRow(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_DUE_DATE) Is DBNull.Value Then
+                    txtDueDate = CType(e.Row.Cells(GRID_CLAIM_COL_DUE_DATE_IDX).FindControl(GRID_DUE_DATE_LABEL), Label)
+                    If txtDueDate IsNot Nothing AndAlso dvRow(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_DUE_DATE) IsNot DBNull.Value Then
                         txtDueDate.Text = GetDateFormattedStringNullable(CType(dvRow(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_DUE_DATE), Date))
                     End If
 
@@ -302,19 +302,19 @@ Public Class ClaimSelectPayables
                     objclaimAuth = DirectCast(New ClaimAuthorization(claimAuthId), ClaimAuthorization)
 
                     Dim chkSelectClaimAuth As CheckBox
-                    chkSelectClaimAuth = CType(e.Row.Cells(Me.GRID_CLAIM_COL_SELECTED_IDX).FindControl(Me.GRID_CHECK_ADD_CLAIM_AUTH_CHECKBOX), CheckBox)
-                    If Not chkSelectClaimAuth Is Nothing Then
+                    chkSelectClaimAuth = CType(e.Row.Cells(GRID_CLAIM_COL_SELECTED_IDX).FindControl(GRID_CHECK_ADD_CLAIM_AUTH_CHECKBOX), CheckBox)
+                    If chkSelectClaimAuth IsNot Nothing Then
                         'Get the latest Claim Status for this Claim and Check if it is 'Pending Review for Payment'
                         Dim maxClaimStatus As ClaimStatus = ClaimStatus.GetLatestClaimStatus(objclaimAuth.Claim_Id)
-                        If Not maxClaimStatus Is Nothing AndAlso maxClaimStatus.StatusCode = Codes.CLAIM_EXTENDED_STATUS__PENDING_REVIEW_FOR_PAYMENT Then
+                        If maxClaimStatus IsNot Nothing AndAlso maxClaimStatus.StatusCode = Codes.CLAIM_EXTENDED_STATUS__PENDING_REVIEW_FOR_PAYMENT Then
                             ControlMgr.SetEnableControl(Me, chkSelectClaimAuth, False)
                             chkSelectClaimAuth.ToolTip = CLAIM_AUTH_TOOLTIP
                         End If
                     End If
 
                     Dim chkExcludeDed As CheckBox
-                    chkExcludeDed = CType(e.Row.Cells(Me.GRID_CLAIM_COL_EXCLUDE_DEDUCTIBLE_IDX).FindControl(Me.GRID_CLAIM_EXCLUDE_DEDUCTIBLE_CHECKBOX), CheckBox)
-                    If Not chkExcludeDed Is Nothing Then
+                    chkExcludeDed = CType(e.Row.Cells(GRID_CLAIM_COL_EXCLUDE_DEDUCTIBLE_IDX).FindControl(GRID_CLAIM_EXCLUDE_DEDUCTIBLE_CHECKBOX), CheckBox)
+                    If chkExcludeDed IsNot Nothing Then
                         chkExcludeDed.ToolTip = String.Empty
                         If Not objclaimAuth.ContainsDeductible Then
                             ControlMgr.SetEnableControl(Me, chkExcludeDed, False)
@@ -326,7 +326,7 @@ Public Class ClaimSelectPayables
                             ControlMgr.SetEnableControl(Me, chkExcludeDed, False)
                             chkExcludeDed.ToolTip = "Dealer Does Not Pay Deductble"
                         End If
-                        Me.PopulateControlFromBOProperty(chkExcludeDed, dvRow(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_EXCLUDE_DEDUCTIBLE))
+                        PopulateControlFromBOProperty(chkExcludeDed, dvRow(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_EXCLUDE_DEDUCTIBLE))
                     End If
 
                 End If
@@ -337,51 +337,51 @@ Public Class ClaimSelectPayables
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
 
         AddClaims(True)
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
-            Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+            State.PageIndex = e.NewPageIndex
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
+            Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
 
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 #End Region
 
 
-    Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
-        Me.State.SearchClicked = False
-        Me.moClaimNumber.Text = String.Empty
-        Me.moInvoiceGroupNumber.Text = String.Empty
-        Me.moInvoiceNumber.Text = String.Empty
-        Me.moMobileNumber.Text = String.Empty
-        Me.moAccountNumber.Text = String.Empty
-        Me.moServiceCenter.Text = String.Empty
-        Me.moAuthNumber.Text = String.Empty
-        Me.moInvoiceDateRange.Clear()
+    Private Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
+        State.SearchClicked = False
+        moClaimNumber.Text = String.Empty
+        moInvoiceGroupNumber.Text = String.Empty
+        moInvoiceNumber.Text = String.Empty
+        moMobileNumber.Text = String.Empty
+        moAccountNumber.Text = String.Empty
+        moServiceCenter.Text = String.Empty
+        moAuthNumber.Text = String.Empty
+        moInvoiceDateRange.Clear()
     End Sub
 
 End Class

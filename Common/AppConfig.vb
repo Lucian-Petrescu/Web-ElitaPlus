@@ -50,7 +50,7 @@ Public Class AppConfig
     End Function
 
   
-    Public Shared Function AppEncrypt(ByVal sValue As String) As String
+    Public Shared Function AppEncrypt(sValue As String) As String
         Dim sEncryptStr As String
         Try
             RMEncryptor.ivb = AppDefaultIV()
@@ -61,7 +61,7 @@ Public Class AppConfig
 
         Return sEncryptStr
     End Function
-    Public Shared Function AppEncrypt(ByVal sValue As String, ByVal bIV() As Byte) As String
+    Public Shared Function AppEncrypt(sValue As String, bIV() As Byte) As String
         Dim sEncryptStr As String
         Try
             RMEncryptor.ivb = bIV
@@ -75,7 +75,7 @@ Public Class AppConfig
     End Function
 
 
-    Public Shared Function AppDecrypt(ByVal sEncrypted As String) As String
+    Public Shared Function AppDecrypt(sEncrypted As String) As String
         Dim sDecrypt As String
         Try
             RMEncryptor.ivb = AppDefaultIV()
@@ -87,7 +87,7 @@ Public Class AppConfig
         Return sDecrypt
     End Function
 
-    Public Shared Function AppDecrypt(ByVal sEncrypted As String, ByVal bIV() As Byte) As String
+    Public Shared Function AppDecrypt(sEncrypted As String, bIV() As Byte) As String
         Dim sDecrypt As String
 
         Try
@@ -169,7 +169,7 @@ Public Class AppConfig
             End Get
         End Property
 
-        Public Shared ReadOnly Property UserId(ByVal privacyUserType As AppConfig.DataProtectionPrivacyLevel) As String
+        Public Shared ReadOnly Property UserId(privacyUserType As AppConfig.DataProtectionPrivacyLevel) As String
             Get
                 Dim sStrConnect As String = AppConfig.Config.GetSettingValue(AppConfig.MANUAL_PREFIX & "DB_USERID")
                 If String.IsNullOrWhiteSpace(sStrConnect) Then
@@ -195,7 +195,7 @@ Public Class AppConfig
             End Get
         End Property
 
-        Public Shared ReadOnly Property Password(ByVal privacyUserType As AppConfig.DataProtectionPrivacyLevel) As String
+        Public Shared ReadOnly Property Password(privacyUserType As AppConfig.DataProtectionPrivacyLevel) As String
             Get
                 Dim sStrConnect As String = AppConfig.Config.GetSettingValue(AppConfig.MANUAL_PREFIX & "DB_PASSWORD")
 
@@ -563,7 +563,7 @@ Public Class AppConfig
     End Property
 
 
-    Public Shared Sub SetModeLog(ByVal logType As Integer, ByVal mode As Boolean)
+    Public Shared Sub SetModeLog(logType As Integer, mode As Boolean)
         'Dim pubList As ArrayList = CurrentPublishingConfiguration.Publishers
         'Dim pub As PublisherSettings
         'Dim index As Integer = 0
@@ -583,23 +583,23 @@ Public Class AppConfig
 
     End Sub
 
-    Public Shared Sub Log(ByVal message As IPublishableMessage)
+    Public Shared Sub Log(message As IPublishableMessage)
         PublishingManager.Publish(message, CurrentPublishingConfiguration)
     End Sub
 
-    Public Shared Sub Log(ByVal ex As Exception)
+    Public Shared Sub Log(ex As Exception)
         PublishingManager.Publish(ex, CurrentPublishingConfiguration)
     End Sub
 
-    Public Shared Sub Log(ByVal message As String)
+    Public Shared Sub Log(message As String)
         PublishingManager.Publish(message, CurrentPublishingConfiguration)
     End Sub
 
-    Public Shared Sub DebugLog(ByVal message As String)
+    Public Shared Sub DebugLog(message As String)
         Log(New DebugMessage(message))
     End Sub
 
-    Public Shared Sub Debug(ByVal msg As String)
+    Public Shared Sub Debug(msg As String)
         Try
             AppConfig.DebugLog(msg)
         Catch ex1 As Exception
@@ -609,7 +609,7 @@ Public Class AppConfig
     Public Class DebugMessage
         Inherits BasePublishableMessage
 
-        Public Sub New(ByVal message As String)
+        Public Sub New(message As String)
             MyBase.New(message, DEBUG_MESSAGE_TYPE)
         End Sub
 
@@ -628,7 +628,7 @@ Public Class AppConfig
             End Get
         End Property
 
-        Public Shared Sub Trace(ByVal id As String, ByVal pageName As String, ByVal msg As String)
+        Public Shared Sub Trace(id As String, pageName As String, msg As String)
             If TraceOn = True Then
                 Dim fullMsg As String = "Tid=" & id & "@ Pname=" & pageName & "@ " & msg
                 Debug(fullMsg)
@@ -766,7 +766,7 @@ Public Class AppConfig
 
     Public Class Config
 
-        Public Shared Function GetCustomConfigValue(ByVal sectionName As String, ByVal keyName As String) As String
+        Public Shared Function GetCustomConfigValue(sectionName As String, keyName As String) As String
             Dim value As String
             Dim data As System.Collections.Specialized.NameValueCollection
             data = System.Configuration.ConfigurationSettings.GetConfig(sectionName)
@@ -774,11 +774,11 @@ Public Class AppConfig
             Return value
         End Function
 
-        Public Shared Function GetSettingValue(ByVal keyName As String) As String
+        Public Shared Function GetSettingValue(keyName As String) As String
             Return GetCustomConfigValue(AppConfig.SECTION_SETTING, keyName)
         End Function
 
-        Public Shared Function GetExternalValue(ByVal keyName As String) As String
+        Public Shared Function GetExternalValue(keyName As String) As String
             Return GetCustomConfigValue(AppConfig.SECTION_EXTERNAL, keyName)
         End Function
 
@@ -791,7 +791,7 @@ Public Class AppConfig
     Public Class WebService
 
         ' ApplicationId ¦ UserId ¦ LDAP Group
-        Public Shared ReadOnly Property ComplexName(ByVal networkId As String) As String
+        Public Shared ReadOnly Property ComplexName(networkId As String) As String
             Get
                 Dim sStrConnect As String = AppId() & FIELD_SEPARATOR & networkId & FIELD_SEPARATOR & Group()
 
@@ -818,7 +818,7 @@ Public Class AppConfig
         End Property
 
         ' ApplicationId ¦ UserId ¦ LDAP Group
-        Public Shared ReadOnly Property AppId(ByVal complexName As String) As String
+        Public Shared ReadOnly Property AppId(complexName As String) As String
             Get
                 Dim appUsername As String
                 Dim sepPos As Integer = complexName.IndexOf(FIELD_SEPARATOR)
@@ -830,7 +830,7 @@ Public Class AppConfig
         End Property
 
         ' ApplicationId ¦ UserId ¦ LDAP Group
-        Public Shared ReadOnly Property UserId(ByVal complexName As String) As String
+        Public Shared ReadOnly Property UserId(complexName As String) As String
             Get
                 Dim username As String
                 Dim sepPos As Integer = complexName.IndexOf(FIELD_SEPARATOR)
@@ -859,7 +859,7 @@ Public Class AppConfig
         End Property
 
         ' ApplicationId ¦ UserId ¦ LDAP Group
-        Public Shared ReadOnly Property Group(ByVal complexName As String) As String
+        Public Shared ReadOnly Property Group(complexName As String) As String
             Get
                 Dim ldapGroup As String
                 Dim lastSepPos As Integer = complexName.LastIndexOf(FIELD_SEPARATOR)

@@ -78,7 +78,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -88,34 +88,34 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -125,12 +125,12 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
             Handles moUserCompanyMultipleDrop.SelectedDropChanged
             Try
                 PopulateDealerDropDown()
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -139,9 +139,9 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
-            Me.ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
             'If Me.rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
         End Sub
 
@@ -156,7 +156,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, "* " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
 
             End If
@@ -171,21 +171,21 @@ Namespace Reports
             PopulateCompaniesDropdown()
             PopulateDealerDropDown()
             'Dim t As Date = Date.Now.AddMonths(-1).AddDays(1)
-            Me.moBeginDateText.Text = GetDateFormattedString(Date.Now)
-            Me.TheRptCeInputControl.SetExportOnly()
+            moBeginDateText.Text = GetDateFormattedString(Date.Now)
+            TheRptCeInputControl.SetExportOnly()
         End Sub
 
 #End Region
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal selectedDealerId As String, ByVal beginDate As String, ByVal langCode As String) As ReportCeBaseForm.Params
+        Function SetParameters(selectedDealerId As String, beginDate As String, langCode As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim moReportFormat As ReportCeBaseForm.RptFormat
             Dim reportName As String = TheRptCeInputControl.getReportName(RPT_FILENAME_EXPORT, True)
             Dim culturevalue As String = TheRptCeInputControl.getCultureValue(True, GuidControl.GuidToHexString((UserCompanyMultipleDrop.SelectedGuid)))
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(RPT_FILENAME_WINDOW)
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(RPT_FILENAME_WINDOW)
 
             moReportFormat = ReportCeBase.GetReportFormat(Me)
 
@@ -242,12 +242,12 @@ Namespace Reports
             reportParams.AppendFormat("pi_begin_date => '{0}',", beginDate)
             reportParams.AppendFormat("pi_lang_code => '{0}'", langCode)
 
-            Me.State.MyBO = New ReportRequests
-            Me.State.ForEdit = True
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "COVERAGE_DEFINITIONS")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "R_ExportCoverageDefinitions.Oralce_Export")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
-            Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+            State.MyBO = New ReportRequests
+            State.ForEdit = True
+            PopulateBOProperty(State.MyBO, "ReportType", "COVERAGE_DEFINITIONS")
+            PopulateBOProperty(State.MyBO, "ReportProc", "R_ExportCoverageDefinitions.Oralce_Export")
+            PopulateBOProperty(State.MyBO, "ReportParameters", reportParams.ToString())
+            PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
 
             'ReportCeBase.EnableReportCe(Me, TheRptCeInputControl)
 
@@ -259,17 +259,17 @@ Namespace Reports
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = TheRptCeInputControl.GetSchedDate()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
 
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                    State.IsNew = False
+                    State.HasDataChanged = True
+                    State.MyBO.CreateJob(scheduleDate)
 
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
 
                     btnGenRpt.Enabled = False
@@ -278,7 +278,7 @@ Namespace Reports
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 

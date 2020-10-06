@@ -74,7 +74,7 @@ Namespace Tables
                 Get
                     Return mnPageIndex
                 End Get
-                Set(ByVal Value As Integer)
+                Set(Value As Integer)
                     mnPageIndex = Value
                 End Set
             End Property
@@ -83,7 +83,7 @@ Namespace Tables
                 Get
                     Return mnPageSize
                 End Get
-                Set(ByVal Value As Integer)
+                Set(Value As Integer)
                     mnPageSize = Value
                 End Set
             End Property
@@ -92,7 +92,7 @@ Namespace Tables
                 Get
                     Return msPageSort
                 End Get
-                Set(ByVal Value As String)
+                Set(Value As String)
                     msPageSort = Value
                 End Set
             End Property
@@ -101,7 +101,7 @@ Namespace Tables
                 Get
                     Return moSearchDataView
                 End Get
-                Set(ByVal Value As DataView)
+                Set(Value As DataView)
                     moSearchDataView = Value
                 End Set
             End Property
@@ -135,7 +135,7 @@ Namespace Tables
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -146,14 +146,14 @@ Namespace Tables
 #Region "page events"
 
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Try
-                Me.MasterPage.MessageController.Clear()
-                Me.Form.DefaultButton = btnSearch.UniqueID
-                If Not Me.IsPostBack Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                MasterPage.MessageController.Clear()
+                Form.DefaultButton = btnSearch.UniqueID
+                If Not IsPostBack Then
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                     UpdateBreadCrum()
                     TranslateGridHeader(Grid)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
@@ -162,10 +162,10 @@ Namespace Tables
                 Else
                     CheckIfComingFromDeleteConfirm()
                 End If
-                Me.DisplayNewProgressBarOnClick(Me.btnSearch, "LOADING_CONSENT_ACTIONS")
-                Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+                DisplayNewProgressBarOnClick(btnSearch, "LOADING_CONSENT_ACTIONS")
+                ShowMissingTranslations(MasterPage.MessageController)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -173,41 +173,41 @@ Namespace Tables
 #End Region
 
 #Region "Handlers-DropDown"
-        Private Sub moReferencetypeDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moReferenceTypeDrop.SelectedIndexChanged
+        Private Sub moReferencetypeDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moReferenceTypeDrop.SelectedIndexChanged
             Try
                 ClearForReferenceType()
                 If moReferenceTypeDrop.SelectedIndex > 0 Then
                     PopulateControls()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moReferenceValueDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moReferenceValueDrop.SelectedIndexChanged
+        Private Sub moReferenceValueDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moReferenceValueDrop.SelectedIndexChanged
             Try
                 ClearForReferenceValue()
                 If moReferenceValueDrop.SelectedIndex > 0 Then
                     PopulateConsentType()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moConsentTypeDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moConsentTypeDrop.SelectedIndexChanged
+        Private Sub moConsentTypeDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moConsentTypeDrop.SelectedIndexChanged
             Try
                 ClearForConsentType()
                 If moConsentTypeDrop.SelectedIndex > 0 Then
                     PopulateConsentField()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 
-        Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 State.PageSize = CType(cboPageSize.SelectedValue, Integer)
                 State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
@@ -224,18 +224,18 @@ Namespace Tables
 
         Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
             Try
-                Me.SetStateProperties()
-                Me.State.PageIndex = 0
-                Me.State.selectedConsentId = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.searchClick = True
-                Me.State.searchDV = Nothing
+                SetStateProperties()
+                State.PageIndex = 0
+                State.selectedConsentId = Guid.Empty
+                State.IsGridVisible = True
+                State.searchClick = True
+                State.searchDV = Nothing
                 PopulateGrid()
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+        Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
             Try
 
                 ' Clear all search options typed or selected by the user
@@ -245,7 +245,7 @@ Namespace Tables
                 SetStateProperties()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -255,27 +255,27 @@ Namespace Tables
         Private Sub PopulateReferenceTypes()
             Try
 
-                Me.moReferenceTypeDrop.Populate(CommonConfigManager.Current.ListManager.GetList("REFERENCE_TYPE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                moReferenceTypeDrop.Populate(CommonConfigManager.Current.ListManager.GetList("REFERENCE_TYPE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                                 {
                                                  .AddBlankItem = True,
                                                  .BlankItemValue = String.Empty,
                                                  .ValueFunc = AddressOf PopulateOptions.GetCode
                                                 })
                 ' Me.State.ReferenceType = Me.GetSelectedValue(moReferenceTypeDrop)
-                BindSelectItem(Me.State.ReferenceType, moReferenceTypeDrop)
-                If Me.State.IsGridVisible Then
+                BindSelectItem(State.ReferenceType, moReferenceTypeDrop)
+                If State.IsGridVisible Then
                     PopulateControls()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub PopulateControls()
             Try
                 If moReferenceTypeDrop.SelectedIndex > 0 Then
-                    Me.State.ReferenceType = Me.GetSelectedValue(moReferenceTypeDrop)
-                    Select Case Me.State.ReferenceType
+                    State.ReferenceType = GetSelectedValue(moReferenceTypeDrop)
+                    Select Case State.ReferenceType
                         Case "ELP_COMPANY"
                             PopulateCompaniesDropdown()
                         Case "ELP_DEALER"
@@ -285,7 +285,7 @@ Namespace Tables
                     End Select
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -307,14 +307,14 @@ Namespace Tables
                                                     .TextFunc = companyTextFunc
                                                    })
 
-                BindSelectItem(Me.State.ReferenceValueId.ToString, moReferenceValueDrop)
+                BindSelectItem(State.ReferenceValueId.ToString, moReferenceValueDrop)
                 ControlMgr.SetEnableControl(Me, moReferenceValueDrop, True)
-                If Me.State.IsGridVisible AndAlso moReferenceValueDrop.SelectedIndex > 0 Then
+                If State.IsGridVisible AndAlso moReferenceValueDrop.SelectedIndex > 0 Then
                     ClearForConsentType()
-                    Me.PopulateConsentType()
+                    PopulateConsentType()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -329,14 +329,14 @@ Namespace Tables
                                                     .AddBlankItem = True,
                                                     .TextFunc = dealerTextFunc
                                                    })
-                BindSelectItem(Me.State.ReferenceValueId.ToString, moReferenceValueDrop)
+                BindSelectItem(State.ReferenceValueId.ToString, moReferenceValueDrop)
                 ControlMgr.SetEnableControl(Me, moReferenceValueDrop, True)
-                If Me.State.IsGridVisible AndAlso moReferenceValueDrop.SelectedIndex > 0 Then
+                If State.IsGridVisible AndAlso moReferenceValueDrop.SelectedIndex > 0 Then
                     ClearForConsentType()
-                    Me.PopulateConsentType()
+                    PopulateConsentType()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -350,46 +350,46 @@ Namespace Tables
                                                    {
                                                     .AddBlankItem = True
                                                    })
-                BindSelectItem(Me.State.ReferenceValueId.ToString, moReferenceValueDrop)
+                BindSelectItem(State.ReferenceValueId.ToString, moReferenceValueDrop)
                 ControlMgr.SetEnableControl(Me, moReferenceValueDrop, True)
-                If Me.State.IsGridVisible AndAlso moReferenceValueDrop.SelectedIndex > 0 Then
+                If State.IsGridVisible AndAlso moReferenceValueDrop.SelectedIndex > 0 Then
                     ClearForConsentType()
-                    Me.PopulateConsentType()
+                    PopulateConsentType()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub PopulateConsentType()
             Try
-                Me.moConsentTypeDrop.Populate(CommonConfigManager.Current.ListManager.GetList("CONSENT_TYPE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                moConsentTypeDrop.Populate(CommonConfigManager.Current.ListManager.GetList("CONSENT_TYPE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                                                 {.AddBlankItem = True,
                                                                  .BlankItemValue = String.Empty,
                                                                  .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                                                                 })
-                BindSelectItem(Me.State.ConsentType, moConsentTypeDrop)
+                BindSelectItem(State.ConsentType, moConsentTypeDrop)
                 ControlMgr.SetEnableControl(Me, moConsentTypeDrop, True)
-                If Me.State.IsGridVisible AndAlso moConsentTypeDrop.SelectedIndex > 0 Then
-                    Me.PopulateConsentField()
+                If State.IsGridVisible AndAlso moConsentTypeDrop.SelectedIndex > 0 Then
+                    PopulateConsentField()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub PopulateConsentField()
             Try
-                Me.moConsentFieldNameDrop.Populate(CommonConfigManager.Current.ListManager.GetList("CONSENT_FIELD_NAME", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                moConsentFieldNameDrop.Populate(CommonConfigManager.Current.ListManager.GetList("CONSENT_FIELD_NAME", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                                                 {
                                                                     .AddBlankItem = True,
                                                                     .BlankItemValue = String.Empty,
                                                                     .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                                                                 })
-                BindSelectItem(Me.State.ConsentField, moConsentFieldNameDrop)
+                BindSelectItem(State.ConsentField, moConsentFieldNameDrop)
                 ControlMgr.SetEnableControl(Me, moConsentFieldNameDrop, True)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -407,7 +407,7 @@ Namespace Tables
                 oListContext.CompanyId = UserCompanies(Index)
                 Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = oDealerListForCompany.Clone()
@@ -427,7 +427,7 @@ Namespace Tables
 
             Dim oCountriesListForUser As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="UserCountries", context:=oListContext)
             If oCountriesListForUser.Count > 0 Then
-                If Not oCountriesList Is Nothing Then
+                If oCountriesList IsNot Nothing Then
                     oCountriesList.AddRange(oCountriesListForUser)
                 Else
                     oCountriesList = oCountriesListForUser.Clone()
@@ -443,43 +443,43 @@ Namespace Tables
             Try
 
                 Dim sortBy As String = String.Empty
-                If (Me.State.searchDV Is Nothing) Then
-                    If (Not (Me.State.selectedSortById.Equals(Guid.Empty))) Then
-                        sortBy = LookupListNew.GetCodeFromId("REFERENCE_TYPE", Me.State.selectedSortById)
+                If (State.searchDV Is Nothing) Then
+                    If (Not (State.selectedSortById.Equals(Guid.Empty))) Then
+                        sortBy = LookupListNew.GetCodeFromId("REFERENCE_TYPE", State.selectedSortById)
                     End If
-                    Me.State.searchDV = ConsentActions.getConsentActionsList(Me.State.ReferenceType,
-                                                                             Me.State.ReferenceValueId,
-                                                                             Me.State.ConsentType,
-                                                                             Me.State.ConsentField,
+                    State.searchDV = ConsentActions.getConsentActionsList(State.ReferenceType,
+                                                                             State.ReferenceValueId,
+                                                                             State.ConsentType,
+                                                                             State.ConsentField,
                                                                              ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
 
-                    If Me.State.searchClick Then
-                        Me.ValidSearchResultCountNew(Me.State.searchDV.Count, True)
-                        Me.State.searchClick = False
+                    If State.searchClick Then
+                        ValidSearchResultCountNew(State.searchDV.Count, True)
+                        State.searchClick = False
                     End If
                 End If
 
                 Grid.PageSize = CType(cboPageSize.SelectedValue, Integer)
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedConsentId, Me.Grid, Me.State.PageIndex)
-                Me.Grid.DataSource = Me.State.searchDV
-                Me.State.PageIndex = Me.Grid.PageIndex
-                If (Not Me.State.SortExpression.Equals(String.Empty)) Then
-                    Me.State.searchDV.Sort = Me.State.SortExpression
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedConsentId, Grid, State.PageIndex)
+                Grid.DataSource = State.searchDV
+                State.PageIndex = Grid.PageIndex
+                If (Not State.SortExpression.Equals(String.Empty)) Then
+                    State.searchDV.Sort = State.SortExpression
                 Else
-                    Me.State.SortExpression = sortBy
-                    Me.State.searchDV.Sort = Me.State.SortExpression
+                    State.SortExpression = sortBy
+                    State.searchDV.Sort = State.SortExpression
                 End If
 
-                HighLightSortColumn(Me.Grid, Me.State.SortExpression, Me.IsNewUI)
-                Me.Grid.DataBind()
+                HighLightSortColumn(Grid, State.SortExpression, IsNewUI)
+                Grid.DataBind()
 
                 ControlMgr.SetVisibleControl(Me, Grid, True)
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
-                Session("recCount") = Me.State.searchDV.Count
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
+                Session("recCount") = State.searchDV.Count
 
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
 
                 If State.searchDV.Count = 0 Then
@@ -505,11 +505,11 @@ Namespace Tables
                     cboPageSize.Visible = False
                     colonSepertor.Visible = False
                 End If
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub EnableDropDowns(ByVal bIsEnable As Boolean)
+        Private Sub EnableDropDowns(bIsEnable As Boolean)
             ControlMgr.SetEnableControl(Me, moReferenceValueDrop, bIsEnable)
             ControlMgr.SetEnableControl(Me, moConsentTypeDrop, bIsEnable)
             ControlMgr.SetEnableControl(Me, moConsentFieldNameDrop, bIsEnable)
@@ -521,20 +521,20 @@ Namespace Tables
 
         Private Sub ClearForReferenceType()
             ClearForReferenceValue()
-            Me.ClearList(moReferenceValueDrop)
+            ClearList(moReferenceValueDrop)
             ControlMgr.SetEnableControl(Me, moReferenceValueDrop, False)
             'moRiskDrop.Enabled = False
         End Sub
 
         Private Sub ClearForReferenceValue()
             ClearForConsentType()
-            Me.ClearList(moConsentTypeDrop)
+            ClearList(moConsentTypeDrop)
             ControlMgr.SetEnableControl(Me, moConsentTypeDrop, False)
             'moRiskDrop.Enabled = False
         End Sub
 
         Private Sub ClearForConsentType()
-            Me.ClearList(moConsentFieldNameDrop)
+            ClearList(moConsentFieldNameDrop)
             ControlMgr.SetEnableControl(Me, moConsentFieldNameDrop, False)
             'moCoverageTypeDrop.Enabled = False
         End Sub
@@ -555,10 +555,10 @@ Namespace Tables
 
 #Region "Other"
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                     TranslationBase.TranslateLabelOrMessage("CONSENT_ACTIONS")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CONSENT_ACTIONS")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CONSENT_ACTIONS")
             End If
         End Sub
 
@@ -579,7 +579,7 @@ Namespace Tables
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Protected Sub ClearStateValues()
@@ -613,7 +613,7 @@ Namespace Tables
 
 #Region "Grid Action"
 
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 If (e.Row.RowType = DataControlRowType.DataRow) _
@@ -627,52 +627,52 @@ Namespace Tables
                     e.Row.Cells(GRID_COL_EXPIRATION_IDX).Text = dvRow(ConsentActions.ConsentActionsSearchDV.COL_EXPIRATION).ToString
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
             Try
-                Me.State.PageIndex = Grid.PageIndex
-                Me.State.selectedConsentId = Guid.Empty
+                State.PageIndex = Grid.PageIndex
+                State.selectedConsentId = Guid.Empty
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
                 Grid.PageIndex = e.NewPageIndex
                 State.PageIndex = Grid.PageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+        Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -680,56 +680,56 @@ Namespace Tables
 
 #Region "Helper functions"
         Protected Sub CheckIfComingFromDeleteConfirm()
-            Dim confResponse As String = Me.HiddenDeletePromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            Dim confResponse As String = HiddenDeletePromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
                 If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
                     DoDelete()
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Delete
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = MSG_VALUE_NO Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Delete
                 End Select
             End If
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenDeletePromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenDeletePromptResponse.Value = ""
         End Sub
 
         Private Sub DoDelete()
             'Do the delete here
-            Me.State.ActionInProgress = DetailPageCommand.Nothing_
+            State.ActionInProgress = DetailPageCommand.Nothing_
             'Save the RiskTypeId in the Session
 
-            Dim obj As ConsentActions = New ConsentActions(Me.State.ConsentActionsId)
+            Dim obj As ConsentActions = New ConsentActions(State.ConsentActionsId)
 
             obj.DeleteAndSave()
 
-            Me.MasterPage.MessageController.AddSuccess(MSG_RECORD_DELETED_OK, True)
+            MasterPage.MessageController.AddSuccess(MSG_RECORD_DELETED_OK, True)
 
-            Me.State.PageIndex = Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
 
             'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-            Me.State.IsAfterSave = True
-            Me.State.searchDV = Nothing
+            State.IsAfterSave = True
+            State.searchDV = Nothing
             PopulateGrid()
-            Me.State.PageIndex = Grid.PageIndex
-            Me.State.IsEditMode = False
+            State.PageIndex = Grid.PageIndex
+            State.IsEditMode = False
         End Sub
         Protected Sub Grid_RowCommand(sender As Object, e As GridViewCommandEventArgs)
             Try
                 Dim index As Integer
                 If (e.CommandName = DELETE_COMMAND) Then
                     index = CInt(e.CommandArgument)
-                    Me.State.ConsentActionsId = New Guid(CType(Me.Grid.Rows(index).Cells(GRID_COL_CONSENT_ID_IDX).FindControl(GRID_CTRL_NAME_LABLE_CONSENT_ID), Label).Text)
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenDeletePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    State.ConsentActionsId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_CONSENT_ID_IDX).FindControl(GRID_CTRL_NAME_LABLE_CONSENT_ID), Label).Text)
+                    DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region

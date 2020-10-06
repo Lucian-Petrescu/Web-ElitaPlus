@@ -92,7 +92,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -102,46 +102,46 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
-            Me.ClearLabelsErrSign()
+            ErrorCtrl.Clear_Hide()
+            ClearLabelsErrSign()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 Else
                     ClearErrLabels()
-                    If Not ViewState("dtLatestAccountingCloseDate") Is System.DBNull.Value Then
+                    If ViewState("dtLatestAccountingCloseDate") IsNot System.DBNull.Value Then
                         dtLatestAccountingCloseDate = CType(ViewState("dtLatestAccountingCloseDate"), Date)
                     End If
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
 
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(BeginMonthYearLabel)
-                Me.ClearLabelErrSign(EndMonthYearLabel)
-                Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(BeginMonthYearLabel)
+                ClearLabelErrSign(EndMonthYearLabel)
+                ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -152,10 +152,10 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(BeginMonthYearLabel)
-            Me.ClearLabelErrSign(EndMonthYearLabel)
-            Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
-            If Me.rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
+            ClearLabelErrSign(BeginMonthYearLabel)
+            ClearLabelErrSign(EndMonthYearLabel)
+            ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+            If rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
         End Sub
 
 #End Region
@@ -183,13 +183,13 @@ Namespace Reports
             Dim listcontext As ListContext = New ListContext()
             listcontext.CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
             Dim YearListLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ClosingYearsByCompany", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.BeginYearDropDownList.Populate(YearListLkl, New PopulateOptions() With
+            BeginYearDropDownList.Populate(YearListLkl, New PopulateOptions() With
              {
             .AddBlankItem = True,
             .ValueFunc = AddressOf PopulateOptions.GetCode
                   })
             '  Me.BindListTextToDataView(Me.EndYearDropDownList, dv, , , True)
-            Me.EndYearDropDownList.Populate(YearListLkl, New PopulateOptions() With
+            EndYearDropDownList.Populate(YearListLkl, New PopulateOptions() With
              {
             .AddBlankItem = True,
             .ValueFunc = AddressOf PopulateOptions.GetCode
@@ -201,12 +201,12 @@ Namespace Reports
             '   dv.Sort = "CODE"
             Dim monthLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("MONTH", Thread.CurrentPrincipal.GetLanguageCode())
             '  Me.BindListControlToDataView(Me.BeginMonthDropDownList, dv, , , True)
-            Me.BeginMonthDropDownList.Populate(monthLkl, New PopulateOptions() With
+            BeginMonthDropDownList.Populate(monthLkl, New PopulateOptions() With
            {
               .AddBlankItem = True
            })
             ' Me.BindListControlToDataView(Me.EndMonthDropDownList, dv, , , True)
-            Me.EndMonthDropDownList.Populate(monthLkl, New PopulateOptions() With
+            EndMonthDropDownList.Populate(monthLkl, New PopulateOptions() With
            {
               .AddBlankItem = True
            })
@@ -216,8 +216,8 @@ Namespace Reports
             PopulateYearsDropdown()
             PopulateMonthsDropdown()
             PopulateDealerDropDown()
-            Me.rdealer.Checked = True
-            Me.RadiobuttonDealer.Checked = True
+            rdealer.Checked = True
+            RadiobuttonDealer.Checked = True
 
             'Disable Export option
             If moReportCeInputControl Is Nothing Then
@@ -234,13 +234,13 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal userId As String, ByVal dealerCode As String, ByVal selectedBeginYearMonth As String,
-                               ByVal selectedEndYearMonth As String, ByVal summaryCode As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, dealerCode As String, selectedBeginYearMonth As String,
+                               selectedEndYearMonth As String, summaryCode As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params
             reportFormat = ReportCeBase.GetReportFormat(Me)
-            reportName = Me.RPT_FILENAME
+            reportName = RPT_FILENAME
             If (reportFormat = ReportCeBase.RptFormat.TEXT_TAB) OrElse (reportFormat = ReportCeBase.RptFormat.TEXT_CSV) Then
                 reportName = RPT_FILENAME_EXPORT
             End If
@@ -266,10 +266,10 @@ Namespace Reports
 
         Private Sub GenerateReport()
             Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
-            Dim selectedBeginYear As String = Me.GetSelectedDescription(Me.BeginYearDropDownList)
-            Dim selectedEndYear As String = Me.GetSelectedDescription(Me.EndYearDropDownList)
-            Dim selectedBeginMonthID As Guid = Me.GetSelectedItem(Me.BeginMonthDropDownList)
-            Dim selectedEndMonthID As Guid = Me.GetSelectedItem(Me.EndMonthDropDownList)
+            Dim selectedBeginYear As String = GetSelectedDescription(BeginYearDropDownList)
+            Dim selectedEndYear As String = GetSelectedDescription(EndYearDropDownList)
+            Dim selectedBeginMonthID As Guid = GetSelectedItem(BeginMonthDropDownList)
+            Dim selectedEndMonthID As Guid = GetSelectedItem(EndMonthDropDownList)
             Dim selectedBeginMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedBeginMonthID)
             Dim selectedEndMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedEndMonthID)
             Dim selectedBeginYearMonth As String = selectedBeginYear & selectedBeginMonth
@@ -281,15 +281,15 @@ Namespace Reports
 
 
             'Dates
-            ReportCeBase.ValidateBeginEndDate(BeginMonthYearLabel, "01-" & Me.GetSelectedDescription(Me.BeginMonthDropDownList).ToString & "-" & selectedBeginYear,
-                EndMonthYearLabel, "01-" & Me.GetSelectedDescription(Me.EndMonthDropDownList).ToString & "-" & selectedEndYear)
+            ReportCeBase.ValidateBeginEndDate(BeginMonthYearLabel, "01-" & GetSelectedDescription(BeginMonthDropDownList).ToString & "-" & selectedBeginYear,
+                EndMonthYearLabel, "01-" & GetSelectedDescription(EndMonthDropDownList).ToString & "-" & selectedEndYear)
 
             'Summary code
-            If Me.RadiobuttonDealer.Checked Then
+            If RadiobuttonDealer.Checked Then
                 summaryCode = SUMMARIZE_BY_DEALER
-            ElseIf Me.RadiobuttonRiskType.Checked Then
+            ElseIf RadiobuttonRiskType.Checked Then
                 summaryCode = SUMMARIZE_BY_RISK_TYPE
-            ElseIf Me.RadiobuttonRiskTypePerDealer.Checked Then
+            ElseIf RadiobuttonRiskTypePerDealer.Checked Then
                 summaryCode = SUMMARIZE_BY_RISK_TYPE_PER_DEALER
             End If
 
@@ -306,11 +306,11 @@ Namespace Reports
 
             'Accounting close dates validation
             Dim beginDate As Date = Date.Parse((selectedBeginYear & "/" & selectedBeginMonth & "/01"), System.Globalization.CultureInfo.InvariantCulture)
-            Me.ValidateAccountingCloseDate(beginDate, BeginMonthYearLabel)
+            ValidateAccountingCloseDate(beginDate, BeginMonthYearLabel)
             Dim endDate As Date = Date.Parse((selectedEndYear & "/" & selectedEndMonth & "/15"), System.Globalization.CultureInfo.InvariantCulture)
-            Me.ValidateAccountingCloseDate(endDate, EndMonthYearLabel)
+            ValidateAccountingCloseDate(endDate, EndMonthYearLabel)
 
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             Else
                 If selectedDealerId.Equals(Guid.Empty) Then
@@ -328,7 +328,7 @@ Namespace Reports
 
         End Sub
 
-        Private Sub ValidateAccountingCloseDate(ByVal dtDateToCompare As Date, ByVal lbl As Label)
+        Private Sub ValidateAccountingCloseDate(dtDateToCompare As Date, lbl As Label)
             If dtDateToCompare > dtLatestAccountingCloseDate Then
                 ElitaPlusPage.SetLabelError(lbl)
                 Throw New GUIException(Message.MSG_ACCOUNTING_MONTH_NOT_YET_COMPLETED_IS_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ACCOUNTING_MONTH_NOT_YET_COMPLETED_IS_NOT_ALLOWED)

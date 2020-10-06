@@ -77,7 +77,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -112,27 +112,27 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
-            Me.ClearLabelsErrSign()
+            MasterPage.MessageController.Clear_Hide()
+            ClearLabelsErrSign()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
 
                     TheReportExtractInputControl.ViewVisible = False
                     TheReportExtractInputControl.PdfVisible = False
                     TheReportExtractInputControl.ExportDataVisible = False
                     TheReportExtractInputControl.DestinationVisible = False
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.UsePageTabTitleInBreadCrum = False
                     UpdateBreadCrum()
                     InitializeForm()
 
                 End If
-                Me.InstallDisplayNewReportProgressBar()
+                InstallDisplayNewReportProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
 #End Region
@@ -140,12 +140,12 @@ Namespace Reports
 #Region "Handlers-Buttons"
 
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -154,14 +154,14 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New) Handles moUserCompanyMultipleDrop.SelectedDropChanged
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New) Handles moUserCompanyMultipleDrop.SelectedDropChanged
             Try
                 PopulateDealerGroup()
                 PopulateCurrencyDropdown()
                 PopulateDealerDropDown()
 
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -205,7 +205,7 @@ Namespace Reports
             Dim listcontext As ListContext = New ListContext()
             listcontext.CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
             Dim YearListLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ClosingYearsByCompany", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.YearDropDownList.Populate(YearListLkl, New PopulateOptions() With
+            YearDropDownList.Populate(YearListLkl, New PopulateOptions() With
              {
             .AddBlankItem = True,
             .ValueFunc = AddressOf PopulateOptions.GetCode,
@@ -218,7 +218,7 @@ Namespace Reports
             'dv.Sort = "CODE"
             'BindListControlToDataView(Me.MonthDropDownList, dv, , , True)
             Dim monthLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("MONTH", Thread.CurrentPrincipal.GetLanguageCode())
-            Me.MonthDropDownList.Populate(monthLkl, New PopulateOptions() With
+            MonthDropDownList.Populate(monthLkl, New PopulateOptions() With
            {
               .AddBlankItem = True
            })
@@ -248,13 +248,13 @@ Namespace Reports
             If Not UserCompanyMultipleDrop.SelectedGuid = Guid.Empty Then
                 'Dim dv As DataView = LookupListNew.GetCurrenciesForCompanyandDealersInCompanyLookupList(UserCompanyMultipleDrop.SelectedGuid)
                 'BindListControlToDataView(Me.ddlCurrency, dv, , , True)
-                Me.ddlCurrency.Populate(currLkl, New PopulateOptions() With
+                ddlCurrency.Populate(currLkl, New PopulateOptions() With
                  {
                  .AddBlankItem = True,
                  .TextFunc = currTextFunc
                  })
                 ' BindListControlToDataView(Me.ddlDealerCurrency, dv, , , True)
-                Me.ddlDealerCurrency.Populate(currLkl, New PopulateOptions() With
+                ddlDealerCurrency.Populate(currLkl, New PopulateOptions() With
                 {
                .AddBlankItem = True,
                .TextFunc = currTextFunc
@@ -262,13 +262,13 @@ Namespace Reports
             Else
                 'Dim dv As DataView = LookupListNew.GetCurrenciesForCompanyandDealersInCompanyLookupList(UserCompanyMultipleDrop.SelectedGuid)
                 'BindListControlToDataView(Me.ddlCurrency, dv, , , True)
-                Me.ddlCurrency.Populate(currLkl, New PopulateOptions() With
+                ddlCurrency.Populate(currLkl, New PopulateOptions() With
                  {
                  .AddBlankItem = True,
                  .TextFunc = currTextFunc
                  })
                 'BindListControlToDataView(Me.ddlDealerCurrency, dv, , , True)
-                Me.ddlDealerCurrency.Populate(currLkl, New PopulateOptions() With
+                ddlDealerCurrency.Populate(currLkl, New PopulateOptions() With
                 {
                .AddBlankItem = True,
                .TextFunc = currTextFunc
@@ -282,26 +282,26 @@ Namespace Reports
             PopulateYearsDropdown()
             PopulateMonthsDropdown()
             PopulateDealerGroup()
-            Me.rdealer.Checked = True
+            rdealer.Checked = True
 
         End Sub
 
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(MonthYearLabel)
-                Me.ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
-                Me.ClearLabelErrSign(UserDealerMultipleDrop.CaptionLabel)
-                Me.ClearLabelErrSign(GroupLabel)
-                Me.ClearLabelErrSign(lblCurrency)
+                ClearLabelErrSign(MonthYearLabel)
+                ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(UserDealerMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(GroupLabel)
+                ClearLabelErrSign(lblCurrency)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
 
 #End Region
@@ -310,8 +310,8 @@ Namespace Reports
 
             Dim reportParams As New System.Text.StringBuilder
             Dim NetworkId As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
-            Dim selectedYear As String = GetSelectedDescription(Me.YearDropDownList)
-            Dim selectedMonthID As Guid = GetSelectedItem(Me.MonthDropDownList)
+            Dim selectedYear As String = GetSelectedDescription(YearDropDownList)
+            Dim selectedMonthID As Guid = GetSelectedItem(MonthDropDownList)
             Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
             Dim selectedYearMonth As String = selectedYear & selectedMonth
             Dim compCode As String = UserCompanyMultipleDrop.SelectedCode
@@ -319,22 +319,22 @@ Namespace Reports
             Dim dvDealer As DataView = LookupListNew.GetDealerLookupList(UserCompanyMultipleDrop.SelectedGuid)
             Dim dealerCode As String = LookupListNew.GetCodeFromId(dvDealer, selectedDealerId)
             Dim selectByGroup As String
-            Dim selectedGroupId As Guid = GetSelectedItem(Me.cboDealerGroup)
+            Dim selectedGroupId As Guid = GetSelectedItem(cboDealerGroup)
             Dim compid As Guid = UserCompanyMultipleDrop.SelectedGuid
             Dim dealerForCurId As Guid = Guid.Empty
             Dim rptCurrencyId As Guid = Guid.Empty
 
             'Def-26227: Added separate condition to validate month, year and combination of both.
             If selectedMonthID.Equals(Guid.Empty) AndAlso selectedYear.Equals(String.Empty) Then
-                ElitaPlusPage.SetLabelError(Me.MonthYearLabel)
+                ElitaPlusPage.SetLabelError(MonthYearLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_UPR_YEARMONTH_MUST_BE_SELECTED_ERR)
 
             ElseIf selectedMonthID.Equals(Guid.Empty) Then
-                ElitaPlusPage.SetLabelError(Me.MonthYearLabel)
+                ElitaPlusPage.SetLabelError(MonthYearLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_UPR_MONTH_MUST_BE_SELECTED_ERR)
 
             ElseIf selectedYear.Equals(String.Empty) Then
-                ElitaPlusPage.SetLabelError(Me.MonthYearLabel)
+                ElitaPlusPage.SetLabelError(MonthYearLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_UPR_YEAR_MUST_BE_SELECTED_ERR)
 
             End If
@@ -349,7 +349,7 @@ Namespace Reports
 
             'Select All Dealers or a particular dealer or only dealers with Currency 
             'or Select All Groups or a particular group
-            If (Not rdealer.Checked AndAlso Not Me.rGroup.Checked AndAlso selectedDealerId.Equals(Guid.Empty) AndAlso ddlDealerCurrency.SelectedIndex = 0 AndAlso selectedGroupId.Equals(Guid.Empty)) Then
+            If (Not rdealer.Checked AndAlso Not rGroup.Checked AndAlso selectedDealerId.Equals(Guid.Empty) AndAlso ddlDealerCurrency.SelectedIndex = 0 AndAlso selectedGroupId.Equals(Guid.Empty)) Then
                 Throw New GUIException(Message.MSG_GUI_INVALID_SELECTION, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_GROUP_MUST_BE_SELECTED_ERR)
             End If
             'currency should be selected for every run
@@ -357,18 +357,18 @@ Namespace Reports
                 ElitaPlusPage.SetLabelError(lblCurrency)
                 Throw New GUIException(Message.MSG_GUI_INVALID_SELECTION, Assurant.ElitaPlus.Common.ErrorCodes.GUI_CURRENCY_MUST_BE_SELECTED_ERR)
             Else
-                rptCurrencyId = New Guid(Me.ddlCurrency.SelectedValue)
+                rptCurrencyId = New Guid(ddlCurrency.SelectedValue)
             End If
 
             If ddlDealerCurrency.SelectedIndex > 0 Then
-                dealerForCurId = New Guid(Me.ddlDealerCurrency.SelectedValue)
+                dealerForCurId = New Guid(ddlDealerCurrency.SelectedValue)
             End If
 
             selectByGroup = NO
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
                 UserDealerMultipleDrop.SelectedIndex = 0
-            ElseIf Me.rGroup.Checked Then
+            ElseIf rGroup.Checked Then
                 selectByGroup = ALL
                 dealerCode = ALL
             End If
@@ -390,13 +390,13 @@ Namespace Reports
                 reportParams.AppendFormat("pi_dealer_with_Cur => '{0}',", DALBase.GuidToSQLString(dealerForCurId))
                 reportParams.AppendFormat("pi_currency_id => '{0}'", DALBase.GuidToSQLString(rptCurrencyId))
 
-                Me.State.MyBO = New ReportRequests
-                Me.State.ForEdit = True
+                State.MyBO = New ReportRequests
+                State.ForEdit = True
 
-                Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "UPR_EXTRACT")
-                Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "r_uprextract.report")
-                Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
-                Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+                PopulateBOProperty(State.MyBO, "ReportType", "UPR_EXTRACT")
+                PopulateBOProperty(State.MyBO, "ReportProc", "r_uprextract.report")
+                PopulateBOProperty(State.MyBO, "ReportParameters", reportParams.ToString())
+                PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
 
                 ScheduleReport()
             ElseIf ExchangeRateErrorMessage = "100" Then
@@ -409,22 +409,22 @@ Namespace Reports
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = TheReportExtractInputControl.GetSchedDate()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
 
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                    State.IsNew = False
+                    State.HasDataChanged = True
+                    State.MyBO.CreateJob(scheduleDate)
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
                     btnGenRpt.Enabled = False
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 

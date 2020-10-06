@@ -24,7 +24,7 @@
         If String.IsNullOrEmpty(Value) Then
             Return False
         Else
-            Return String.Compare(Value, Me.XcdValue, StringComparison.InvariantCultureIgnoreCase) = 0
+            Return String.Compare(Value, XcdValue, StringComparison.InvariantCultureIgnoreCase) = 0
         End If
     End Function
 End Class

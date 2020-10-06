@@ -22,7 +22,7 @@ Namespace Utilities
 
 #Region " Private Methods"
 
-        Private Function CompactData(ByVal dw As DataView) As String
+        Private Function CompactData(dw As DataView) As String
 
             Dim result As String = String.Empty
 
@@ -57,7 +57,7 @@ Namespace Utilities
 
 #Region "Operations"
 
-        Public Function Hello(ByVal name As String) As String Implements IUtilityWcf.Hello
+        Public Function Hello(name As String) As String Implements IUtilityWcf.Hello
             Dim sRet As String
 
             sRet = MyBase.Hello(name)
@@ -71,7 +71,7 @@ Namespace Utilities
             Return sRet
         End Function
 
-        Public Function LoginBody(ByVal networkID As String, ByVal password As String, ByVal group As String) _
+        Public Function LoginBody(networkID As String, password As String, group As String) _
                                             As String Implements IUtilityWcf.LoginBody
             Dim sRet As String
 
@@ -79,9 +79,9 @@ Namespace Utilities
             Return sRet
         End Function
 
-        Public Function ProcessRequest(ByVal token As String, _
-                                    ByVal functionToProcess As String, _
-                                    ByVal xmlStringDataIn As String) As String _
+        Public Function ProcessRequest(token As String, _
+                                    functionToProcess As String, _
+                                    xmlStringDataIn As String) As String _
                                         Implements IUtilityWcf.ProcessRequest
             Dim sRet As String
 
@@ -90,13 +90,13 @@ Namespace Utilities
         End Function
 
 
-        Public Function GetVSCMakes(ByVal token As String, ByVal wsConsumer As String) As String _
+        Public Function GetVSCMakes(token As String, wsConsumer As String) As String _
                                             Implements IUtilityWcf.GetVSCMakes
             ElitaService.VerifyToken(True, token)
             Dim objCompanyGroup As CompanyGroup = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup
             Dim companyGroupID As Guid = objCompanyGroup.Id
             Dim dv As DataView = LookupListNew.GetVSCMakeLookupList(companyGroupID)
-            If wsConsumer.ToUpper.Equals(Me.WS_CONSUMER_CLIENT) Then
+            If wsConsumer.ToUpper.Equals(WS_CONSUMER_CLIENT) Then
                 Return CompactData(dv)
             Else
                 Dim ds As New DataSet
@@ -106,11 +106,11 @@ Namespace Utilities
 
         End Function
 
-        Public Function GetVSCModels(ByVal token As String, ByVal wsConsumer As String, _
-                                    ByVal make As String) As String Implements IUtilityWcf.GetVSCModels
+        Public Function GetVSCModels(token As String, wsConsumer As String, _
+                                    make As String) As String Implements IUtilityWcf.GetVSCModels
             ElitaService.VerifyToken(True, token)
             Dim dv As DataView = LookupListNew.GetVSCModelsLookupList(make)
-            If wsConsumer.ToUpper.Equals(Me.WS_CONSUMER_CLIENT) Then
+            If wsConsumer.ToUpper.Equals(WS_CONSUMER_CLIENT) Then
                 Return CompactData(dv)
             Else
                 Dim ds As New DataSet
@@ -120,12 +120,12 @@ Namespace Utilities
 
         End Function
 
-        Public Function GetVSCVersions(ByVal token As String, ByVal wsConsumer As String, _
-                                       ByVal model As String, ByVal make As String) As String _
+        Public Function GetVSCVersions(token As String, wsConsumer As String, _
+                                       model As String, make As String) As String _
                                        Implements IUtilityWcf.GetVSCVersions
             ElitaService.VerifyToken(True, token)
             Dim dv As DataView = LookupListNew.GetVSCTrimLookupList(model, make)
-            If wsConsumer.ToUpper.Equals(Me.WS_CONSUMER_CLIENT) Then
+            If wsConsumer.ToUpper.Equals(WS_CONSUMER_CLIENT) Then
                 Return CompactData(dv)
             Else
                 Dim ds As New DataSet
@@ -135,12 +135,12 @@ Namespace Utilities
 
         End Function
 
-        Public Function GetVSCYears(ByVal token As String, ByVal wsConsumer As String, _
-                                    ByVal trim As String, ByVal model As String, ByVal make As String) _
+        Public Function GetVSCYears(token As String, wsConsumer As String, _
+                                    trim As String, model As String, make As String) _
                                     As String Implements IUtilityWcf.GetVSCYears
             ElitaService.VerifyToken(True, token)
             Dim dv As DataView = LookupListNew.GetVSCYearsLookupList(trim, model, make)
-            If wsConsumer.ToUpper.Equals(Me.WS_CONSUMER_CLIENT) Then
+            If wsConsumer.ToUpper.Equals(WS_CONSUMER_CLIENT) Then
                 Return CompactData(dv)
             Else
                 Dim ds As New DataSet

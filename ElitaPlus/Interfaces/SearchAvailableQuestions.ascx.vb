@@ -6,10 +6,10 @@ Public Class SearchAvailableQuestions
     Inherits System.Web.UI.UserControl
 
 #Region "Event Declaration"
-    Public Delegate Sub SearchFilterEventHandler(ByVal sender As Object, ByVal Args As SearchAvailableQuestionsEventArgs)
-    Public Delegate Sub SaveQuestionsListDetail(ByVal sender As Object, ByVal Args As SearchAvailableQuestionsEventArgs)
-    Public Delegate Sub CancelButtonClicked(ByVal sender As Object, ByVal args As SearchAvailableQuestionsEventArgs)
-    Public Delegate Sub CustomPopulateDropDown(ByVal sender As Object, ByVal args As SearchAvailableQuestionsEventArgs)
+    Public Delegate Sub SearchFilterEventHandler(sender As Object, Args As SearchAvailableQuestionsEventArgs)
+    Public Delegate Sub SaveQuestionsListDetail(sender As Object, Args As SearchAvailableQuestionsEventArgs)
+    Public Delegate Sub CancelButtonClicked(sender As Object, args As SearchAvailableQuestionsEventArgs)
+    Public Delegate Sub CustomPopulateDropDown(sender As Object, args As SearchAvailableQuestionsEventArgs)
 
     Public Event ExecuteSearchFilter As SearchFilterEventHandler
     Public Event EventSaveQuestionsListDetail As SaveQuestionsListDetail
@@ -35,18 +35,18 @@ Public Class SearchAvailableQuestions
 
     Public Property dvAvailableQuestions As DataView
         Get
-            Return Me._dvAvailableQuestions
+            Return _dvAvailableQuestions
         End Get
-        Set(ByVal value As DataView)
-            Me._dvAvailableQuestions = value
+        Set(value As DataView)
+            _dvAvailableQuestions = value
         End Set
     End Property
 
     Public Property dvSelectedQuestions As DataView
         Get
-            Return Me._dvSelectedQuestions
+            Return _dvSelectedQuestions
         End Get
-        Set(ByVal value As DataView)
+        Set(value As DataView)
             _dvSelectedQuestions = value
         End Set
     End Property
@@ -59,19 +59,19 @@ Public Class SearchAvailableQuestions
 
     Public ReadOnly Property Issue As Guid
         Get
-            Return New Guid(Me.cboIssue.SelectedValue)
+            Return New Guid(cboIssue.SelectedValue)
         End Get
     End Property
 
     Public ReadOnly Property QuestionList As String
         Get
-            Return Me.moQuestionList.Text
+            Return moQuestionList.Text
         End Get
     End Property
 
     Public ReadOnly Property SearchTags As String
         Get
-            Return Me.moSearchTags.Text
+            Return moSearchTags.Text
         End Get
     End Property
 
@@ -79,7 +79,7 @@ Public Class SearchAvailableQuestions
         Get
             Return _ShowCancelButton
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             _ShowCancelButton = value
         End Set
     End Property
@@ -89,7 +89,7 @@ Public Class SearchAvailableQuestions
         Get
             Return _ShowUpButton
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             _ShowUpButton = value
         End Set
     End Property
@@ -98,7 +98,7 @@ Public Class SearchAvailableQuestions
         Get
             Return _ShowDownButton
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             _ShowDownButton = value
         End Set
     End Property
@@ -106,33 +106,33 @@ Public Class SearchAvailableQuestions
 #End Region
 
 #Region "Event Handlers"
-    Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         GetAvailableEquipment(Me)
         UserControlAvailableSelectedQuestionsCodes.RemoveSelectedFromAvailable()
     End Sub
 
-    Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+    Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         clearControls()
         UserControlAvailableSelectedQuestionsCodes.RemoveSelectedFromAvailable()
     End Sub
 
-    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
+    Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Dim args As New SearchAvailableQuestionsEventArgs(Me)
-        RaiseEvent EventSaveQuestionsListDetail(Me.btnSearch, args)
+        RaiseEvent EventSaveQuestionsListDetail(btnSearch, args)
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         UserControlAvailableSelectedQuestionsCodes.BackColor = "#d5d6e4"
         If Not Page.IsPostBack Then
             PopulateuserControl()
             GetAvailableEquipment()
-            Me.btnCancel.Visible = Me.ShowCancelButton
-            Me.UserControlAvailableSelectedQuestionsCodes.ShowUpButton = Me.ShowUpButton
-            Me.UserControlAvailableSelectedQuestionsCodes.ShowDownButton = Me.ShowDownButton
-            BindSelected(Me.dvSelectedQuestions)
+            btnCancel.Visible = ShowCancelButton
+            UserControlAvailableSelectedQuestionsCodes.ShowUpButton = ShowUpButton
+            UserControlAvailableSelectedQuestionsCodes.ShowDownButton = ShowDownButton
+            BindSelected(dvSelectedQuestions)
         End If
-        Me.UserControlAvailableSelectedQuestionsCodes.ShowUpButton = True
-        Me.UserControlAvailableSelectedQuestionsCodes.ShowDownButton = True
+        UserControlAvailableSelectedQuestionsCodes.ShowUpButton = True
+        UserControlAvailableSelectedQuestionsCodes.ShowDownButton = True
     End Sub
 #End Region
 
@@ -144,7 +144,7 @@ Public Class SearchAvailableQuestions
                 CommonConfigManager.Current.ListManager.GetList(listCode:="IssueTypeList",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-        Me.cboIssue.Populate(IssueTypeList.ToArray(),
+        cboIssue.Populate(IssueTypeList.ToArray(),
                                 New PopulateOptions() With
                                 {
                                     .AddBlankItem = True
@@ -153,8 +153,8 @@ Public Class SearchAvailableQuestions
 
     Private Sub GetAvailableEquipment(Optional ByVal pControl As SearchAvailableQuestions = Nothing)
         Dim args As New SearchAvailableQuestionsEventArgs(pControl)
-        RaiseEvent ExecuteSearchFilter(Me.btnSearch, args)
-        If Not args.dvAvailableQuestions Is Nothing Then
+        RaiseEvent ExecuteSearchFilter(btnSearch, args)
+        If args.dvAvailableQuestions IsNot Nothing Then
             UserControlAvailableSelectedQuestionsCodes.SetAvailableData(args.dvAvailableQuestions, "DESCRIPTION", "ID")
         End If
     End Sub
@@ -165,8 +165,8 @@ Public Class SearchAvailableQuestions
         GetAvailableEquipment(Me)
 
     End Sub
-    Public Sub BindSelected(ByVal dvSelected As DataView)
-        If Not dvSelected Is Nothing Then
+    Public Sub BindSelected(dvSelected As DataView)
+        If dvSelected IsNot Nothing Then
             With UserControlAvailableSelectedQuestionsCodes
                 .SetSelectedData(dvSelected, COL_NAME_DESCRIPTION, COL_NAME_ID, False, False)
                 .RemoveSelectedFromAvailable()
@@ -175,11 +175,11 @@ Public Class SearchAvailableQuestions
     End Sub
 #End Region
 
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         clearControls()
         Dim args As New SearchAvailableQuestionsEventArgs(Me)
         RaiseEvent EventCancelButtonClicked(btnCancel, args)
-        BindSelected(Me.dvSelectedQuestions)
+        BindSelected(dvSelectedQuestions)
     End Sub
 
 End Class
@@ -197,13 +197,13 @@ Public Class SearchAvailableQuestionsEventArgs
 #End Region
 
 #Region "Constructor"
-    Sub New(ByVal pObject As SearchAvailableQuestions)
-        If Not pObject Is Nothing Then
+    Sub New(pObject As SearchAvailableQuestions)
+        If pObject IsNot Nothing Then
             With pObject
-                Me.Issue = .Issue
-                Me._QuestionList = .QuestionList
-                Me._SearchTags = .SearchTags
-                Me.listSelectedQuestions = .listSelectedQuestions
+                Issue = .Issue
+                _QuestionList = .QuestionList
+                _SearchTags = .SearchTags
+                listSelectedQuestions = .listSelectedQuestions
             End With
         End If
     End Sub
@@ -214,7 +214,7 @@ Public Class SearchAvailableQuestionsEventArgs
         Get
             Return _Issue
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _Issue = value
         End Set
     End Property
@@ -222,7 +222,7 @@ Public Class SearchAvailableQuestionsEventArgs
         Get
             Return _QuestionList
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _QuestionList = value
         End Set
     End Property
@@ -230,7 +230,7 @@ Public Class SearchAvailableQuestionsEventArgs
         Get
             Return _SearchTags
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _SearchTags = value
         End Set
     End Property
@@ -239,7 +239,7 @@ Public Class SearchAvailableQuestionsEventArgs
         Get
             Return _dvResults
         End Get
-        Set(ByVal value As DataView)
+        Set(value As DataView)
             _dvResults = value
         End Set
     End Property
@@ -248,7 +248,7 @@ Public Class SearchAvailableQuestionsEventArgs
         Get
             Return _selectedQuestions
         End Get
-        Set(ByVal value As ArrayList)
+        Set(value As ArrayList)
             _selectedQuestions = value
         End Set
     End Property

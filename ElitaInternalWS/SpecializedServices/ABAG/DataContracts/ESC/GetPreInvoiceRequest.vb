@@ -12,7 +12,7 @@ Namespace SpecializedServices.Abag
         Get
             Return _CompanyCode
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _CompanyCode = value
         End Set
     End Property
@@ -23,7 +23,7 @@ Namespace SpecializedServices.Abag
         Get
             Return _ServiceCenterCode
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _ServiceCenterCode = value
         End Set
     End Property
@@ -34,7 +34,7 @@ Namespace SpecializedServices.Abag
         Get
             Return _SCPreInvoiceDateFrom
         End Get
-        Set(ByVal value As DateTime)
+        Set(value As DateTime)
             _SCPreInvoiceDateFrom = value
         End Set
     End Property
@@ -45,7 +45,7 @@ Namespace SpecializedServices.Abag
         Get
             Return _SCPreInvoiceDateTo
         End Get
-        Set(ByVal value As DateTime)
+        Set(value As DateTime)
             _SCPreInvoiceDateTo = value
         End Set
     End Property

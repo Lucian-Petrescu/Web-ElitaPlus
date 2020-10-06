@@ -3,7 +3,7 @@ Public Module DurationComputationExtensions
 
 
     <Extension()>
-    Public Function GetFVSTMonths(ByVal pFromDate As Date, ByVal pToDate As Date) As Integer
+    Public Function GetFVSTMonths(pFromDate As Date, pToDate As Date) As Integer
 
         If (pFromDate > pToDate) Then
             Throw New InvalidOperationException("From Date greather than To Date")

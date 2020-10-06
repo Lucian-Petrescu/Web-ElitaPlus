@@ -77,7 +77,7 @@
             Get
                 Return _moselectedFileName
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _moselectedFileName = value
             End Set
         End Property
@@ -86,7 +86,7 @@
             Get
                 Return _moselectedFileId
             End Get
-            Set(ByVal value As Guid)
+            Set(value As Guid)
                 _moselectedFileId = value
             End Set
         End Property
@@ -125,11 +125,11 @@
     End Property
 
     Private Sub SetStateProperties()
-        If Not CallingParameters Is Nothing Then
+        If CallingParameters IsNot Nothing Then
             Dim param As InvoiceReconWrkForm.Parameters = New InvoiceReconWrkForm.Parameters()
-            param = CType(Me.CallingParameters, InvoiceReconWrkForm.Parameters)
-            Me.State.ClaimloadfileID = param.selectedFileId
-            Me.State.ClaimloadfileName = param.selectedFileName
+            param = CType(CallingParameters, InvoiceReconWrkForm.Parameters)
+            State.ClaimloadfileID = param.selectedFileId
+            State.ClaimloadfileName = param.selectedFileName
 
         End If
     End Sub
@@ -137,13 +137,13 @@
 #End Region
 
 #Region "Page events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
         'Me.ErrController2.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
                 TranslateGridHeader(Grid)
                 SetStateProperties()
                 populateReadyOnly()
@@ -152,27 +152,27 @@
                 CheckIfComingFromSaveConfirm()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 #End Region
 
 #Region "Helper Function"
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSavePagePromptResponse.Value
+        Dim confResponse As String = HiddenSavePagePromptResponse.Value
         Try
             If Not confResponse.Equals(String.Empty) Then
-                If confResponse = Me.MSG_VALUE_YES Then
+                If confResponse = MSG_VALUE_YES Then
                     'SavePage()
                 End If
-                Me.HiddenSavePagePromptResponse.Value = String.Empty
-                Me.HiddenIsPageDirty.Value = String.Empty
+                HiddenSavePagePromptResponse.Value = String.Empty
+                HiddenIsPageDirty.Value = String.Empty
 
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
                         Dim retType As New ClaimLoadForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimloadfileID)
-                        Me.ReturnToCallingPage(retType)
+                        ReturnToCallingPage(retType)
                     Case ElitaPlusPage.DetailPageCommand.GridPageSize
                         Grid.PageIndex = NewCurrentPageIndex(Grid, State.RecordCount, State.PageSize)
                         State.PageSize = CType(cboPageSize.SelectedValue, Integer)
@@ -182,7 +182,7 @@
                 PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -191,10 +191,10 @@
         dv = InvoiceReconWrk.LoadList(State.ClaimloadfileID)
         State.RecordCount = dv.Count
 
-        SetPageAndSelectedIndexFromGuid(dv, Nothing, Me.Grid, Me.State.PageIndex, False)
-        Me.Grid.DataSource = dv
-        Me.Grid.DataBind()
-        Me.lblRecordCount.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        SetPageAndSelectedIndexFromGuid(dv, Nothing, Grid, State.PageIndex, False)
+        Grid.DataSource = dv
+        Grid.DataBind()
+        lblRecordCount.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
     End Sub
 
@@ -203,14 +203,14 @@
     End Sub
 
     Function IsDataGPageDirty() As Boolean
-        Dim Result As String = Me.HiddenIsPageDirty.Value.ToUpper
+        Dim Result As String = HiddenIsPageDirty.Value.ToUpper
         Return Result.Equals("YES")
     End Function
 
     Private Sub SavePage()
         Dim index As Integer = 0
         Dim objRecon As InvoiceReconWrk
-        Dim totItems As Integer = Me.Grid.Rows.Count
+        Dim totItems As Integer = Grid.Rows.Count
 
         If totItems > 0 Then
             objRecon = CreateBoFromGrid(0)
@@ -229,7 +229,7 @@
         Next
     End Sub
 
-    Private Function CreateBoFromGrid(ByVal index As Integer) As InvoiceReconWrk
+    Private Function CreateBoFromGrid(index As Integer) As InvoiceReconWrk
         Dim ReconWrkId As Guid
         Dim objReconWrk As InvoiceReconWrk
         Dim sModifiedDate As String
@@ -242,7 +242,7 @@
         Return objReconWrk
     End Function
 
-    Private Sub PopulateBOFromForm(ByVal objReconWrk As InvoiceReconWrk)
+    Private Sub PopulateBOFromForm(objReconWrk As InvoiceReconWrk)
 
         PopulateBOItem(objReconWrk, "RecordType", COL_Record_Type)
         PopulateBOItem(objReconWrk, "RejectCode", COL_Reject_Code)
@@ -281,37 +281,37 @@
         'End If
     End Sub
 
-    Private Sub PopulateBOItem(ByVal objReconWrk As InvoiceReconWrk, ByVal oPropertyName As String, ByVal oCellPosition As Integer)
-        PopulateBOProperty(objReconWrk, oPropertyName, CType(Me.GetSelectedGridControl(Grid, oCellPosition), TextBox))
+    Private Sub PopulateBOItem(objReconWrk As InvoiceReconWrk, oPropertyName As String, oCellPosition As Integer)
+        PopulateBOProperty(objReconWrk, oPropertyName, CType(GetSelectedGridControl(Grid, oCellPosition), TextBox))
     End Sub
 
-    Protected Sub BindBoPropertiesToGridHeaders(ByVal objRecon As InvoiceReconWrk)
-        Me.BindBOPropertyToGridHeader(objRecon, "RecordType", Grid.Columns(COL_Record_Type))
-        Me.BindBOPropertyToGridHeader(objRecon, "RejectCode", Grid.Columns(COL_Reject_Code))
-        Me.BindBOPropertyToGridHeader(objRecon, "RejectReason", Grid.Columns(COL_Reject_Reason))
+    Protected Sub BindBoPropertiesToGridHeaders(objRecon As InvoiceReconWrk)
+        BindBOPropertyToGridHeader(objRecon, "RecordType", Grid.Columns(COL_Record_Type))
+        BindBOPropertyToGridHeader(objRecon, "RejectCode", Grid.Columns(COL_Reject_Code))
+        BindBOPropertyToGridHeader(objRecon, "RejectReason", Grid.Columns(COL_Reject_Reason))
 
-        Me.BindBOPropertyToGridHeader(objRecon, "CompanyCode", Grid.Columns(COL_Company_Code))
+        BindBOPropertyToGridHeader(objRecon, "CompanyCode", Grid.Columns(COL_Company_Code))
 
-        Me.BindBOPropertyToGridHeader(objRecon, "InvoiceNumber", Grid.Columns(COL_Invoice_Number))
-        Me.BindBOPropertyToGridHeader(objRecon, "InvoiceDate", Grid.Columns(COL_Invoice_Date))
-        Me.BindBOPropertyToGridHeader(objRecon, "RepairDate", Grid.Columns(COL_Repair_Date))
-        Me.BindBOPropertyToGridHeader(objRecon, "DueDate", Grid.Columns(COL_Due_Date))
-        Me.BindBOPropertyToGridHeader(objRecon, "Attributes", Grid.Columns(COL_Attributes))
-        Me.BindBOPropertyToGridHeader(objRecon, "ServiceCenterCode", Grid.Columns(COL_Service_Center))
+        BindBOPropertyToGridHeader(objRecon, "InvoiceNumber", Grid.Columns(COL_Invoice_Number))
+        BindBOPropertyToGridHeader(objRecon, "InvoiceDate", Grid.Columns(COL_Invoice_Date))
+        BindBOPropertyToGridHeader(objRecon, "RepairDate", Grid.Columns(COL_Repair_Date))
+        BindBOPropertyToGridHeader(objRecon, "DueDate", Grid.Columns(COL_Due_Date))
+        BindBOPropertyToGridHeader(objRecon, "Attributes", Grid.Columns(COL_Attributes))
+        BindBOPropertyToGridHeader(objRecon, "ServiceCenterCode", Grid.Columns(COL_Service_Center))
 
-        Me.BindBOPropertyToGridHeader(objRecon, "ClaimNumber", Grid.Columns(COL_Claim_Number))
+        BindBOPropertyToGridHeader(objRecon, "ClaimNumber", Grid.Columns(COL_Claim_Number))
 
-        Me.BindBOPropertyToGridHeader(objRecon, "AuthorizationNumber", Grid.Columns(COL_Authorization_Number))
+        BindBOPropertyToGridHeader(objRecon, "AuthorizationNumber", Grid.Columns(COL_Authorization_Number))
 
-        Me.BindBOPropertyToGridHeader(objRecon, "LineItemNumber", Grid.Columns(COL_Line_Item_Number))
-        Me.BindBOPropertyToGridHeader(objRecon, "VendorSKU", Grid.Columns(COL_Vendor_SKU))
-        Me.BindBOPropertyToGridHeader(objRecon, "VendorSKUDescription", Grid.Columns(COL_Vendor_SKU_DESCRIPTION))
+        BindBOPropertyToGridHeader(objRecon, "LineItemNumber", Grid.Columns(COL_Line_Item_Number))
+        BindBOPropertyToGridHeader(objRecon, "VendorSKU", Grid.Columns(COL_Vendor_SKU))
+        BindBOPropertyToGridHeader(objRecon, "VendorSKUDescription", Grid.Columns(COL_Vendor_SKU_DESCRIPTION))
 
 
-        Me.BindBOPropertyToGridHeader(objRecon, "ServiceLevel", Grid.Columns(COL_SERVICE_LEVEL))
-        Me.BindBOPropertyToGridHeader(objRecon, "Amount", Grid.Columns(COL_Amount))
+        BindBOPropertyToGridHeader(objRecon, "ServiceLevel", Grid.Columns(COL_SERVICE_LEVEL))
+        BindBOPropertyToGridHeader(objRecon, "Amount", Grid.Columns(COL_Amount))
 
-        Me.ClearGridViewHeadersAndLabelsErrSign()
+        ClearGridViewHeadersAndLabelsErrSign()
     End Sub
 
 
@@ -319,33 +319,33 @@
 
 #Region "Grid related"
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = Grid.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             BaseItemBound(sender, e)
             If e.Row.RowType = DataControlRowType.DataRow Then
@@ -381,24 +381,24 @@
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
                 ctlTxt.Text = dvRow(InvoiceReconWrk.COL_NAME_INVOICE_DATE).ToString
                 ctlCanlendar = CType(e.Row.Cells(COL_Invoice_Date).FindControl(Ctl_Invoice_Date_Calendar), ImageButton)
-                If (Not ctlCanlendar Is Nothing) Then
-                    Me.AddCalendar(ctlCanlendar, ctlTxt)
+                If (ctlCanlendar IsNot Nothing) Then
+                    AddCalendar(ctlCanlendar, ctlTxt)
                 End If
 
                 ctlTxt = CType(e.Row.Cells(COL_Repair_Date).FindControl(Ctl_Repair_Date), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
                 ctlTxt.Text = dvRow(InvoiceReconWrk.COL_NAME_REPAIR_DATE).ToString
                 ctlCanlendar = CType(e.Row.Cells(COL_Repair_Date).FindControl(Ctl_Repair_Date_Calendar), ImageButton)
-                If (Not ctlCanlendar Is Nothing) Then
-                    Me.AddCalendar(ctlCanlendar, ctlTxt)
+                If (ctlCanlendar IsNot Nothing) Then
+                    AddCalendar(ctlCanlendar, ctlTxt)
                 End If
 
                 ctlTxt = CType(e.Row.Cells(COL_Due_Date).FindControl(Ctl_Due_Date), TextBox)
                 ctlTxt.Attributes.Add("onchange", "setDirty()")
                 ctlTxt.Text = dvRow(InvoiceReconWrk.COL_NAME_DUE_DATE).ToString
                 ctlCanlendar = CType(e.Row.Cells(COL_Due_Date).FindControl(Ctl_Due_Date_Calendar), ImageButton)
-                If (Not ctlCanlendar Is Nothing) Then
-                    Me.AddCalendar(ctlCanlendar, ctlTxt)
+                If (ctlCanlendar IsNot Nothing) Then
+                    AddCalendar(ctlCanlendar, ctlTxt)
                 End If
 
                 ctlTxt = CType(e.Row.Cells(COL_Attributes).FindControl(Ctl_Attributes), TextBox)
@@ -438,22 +438,22 @@
 
             End If
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             If IsDataGPageDirty() Then
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
-                DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
+                DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
             Else
-                Me.State.PageIndex = NewCurrentPageIndex(Grid, State.RecordCount, State.PageSize)
-                Me.PopulateGrid()
+                State.PageIndex = NewCurrentPageIndex(Grid, State.RecordCount, State.PageSize)
+                PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
@@ -464,37 +464,37 @@
 
 
 #Region "button event handlers"
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
             If IsDataGPageDirty() Then
-                DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
                 Dim retType As New ClaimLoadForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimloadfileID)
-                Me.ReturnToCallingPage(retType)
+                ReturnToCallingPage(retType)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+    Private Sub btnUndo_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
         Try
             PopulateGrid()
-            Me.HiddenIsPageDirty.Value = String.Empty
+            HiddenIsPageDirty.Value = String.Empty
         Catch ex As Exception
-            Me.HandleErrors(ex, ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub SaveButton_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+    Private Sub SaveButton_WRITE_Click(sender As Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
         Try
             SavePage()
-            Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-            Me.HiddenIsPageDirty.Value = String.Empty
+            DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+            HiddenIsPageDirty.Value = String.Empty
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 

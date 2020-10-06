@@ -7,7 +7,7 @@ Public Class DealerContext
 
     Private Sub CheckDBConnection()
         If Me.Database.Connection.State = ConnectionState.Closed Then
-            Me.Database.Connection.Open()
+            Database.Connection.Open()
         End If
     End Sub
 
@@ -20,7 +20,7 @@ Public Class DealerContext
                                ByVal pExpectedPremiumIsWpId As Nullable(Of Guid),
                                ByVal pProductTaxTypeId As Nullable(Of Guid),
                                ByVal pSalesDate As Date) As String
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
         dbCommand.CommandText = "elita.elp_utl_tax.Get_Tax_Amount"
 
@@ -41,7 +41,7 @@ Public Class DealerContext
         Try
             CheckDBConnection()
             dbCommand.ExecuteNonQuery()
-            Me.Database.Connection.Close()
+            Database.Connection.Close()
 
             Return Convert.ToDecimal(o_TaxAmount.Value.ToString())
         Catch ex As DataException

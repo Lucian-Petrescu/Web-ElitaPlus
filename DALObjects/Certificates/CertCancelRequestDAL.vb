@@ -89,46 +89,46 @@ Public Class CertCancelRequestDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_cancel_request_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadByCertId(ByVal certId As Guid) As DataSet
+    Public Function LoadByCertId(certId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BY_CERT_ID")
+        Dim selectStmt As String = Config("/SQL/LOAD_BY_CERT_ID")
         Try
-            parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CERT_ID, certId.ToByteArray)}
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_KEY_NAME, parameters)
+            parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ID, certId.ToByteArray)}
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_KEY_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
@@ -136,30 +136,30 @@ Public Class CertCancelRequestDAL
 #Region "StoreProcedures Control"
 
     ' Execute Store Procedure
-    Public Function ExecuteCancelRequestSP(ByVal oCertCancelRequestData As CertCancelRequestData, ByRef dblRefundAmount As Double, ByRef strMsg As String) As CertCancelRequestData
-        Dim selectStmt As String = Me.Config("/SQL/PROCESS_CANCELLATION_REQUEST")
-        Dim inputParameters(Me.TOTAL_INPUT_PARAM_CANCEL_REQUEST) As DBHelperParameter
-        Dim outputParameter(Me.TOTAL_OUTPUT_PARAM_CANCEL_REQUEST) As DBHelperParameter
+    Public Function ExecuteCancelRequestSP(oCertCancelRequestData As CertCancelRequestData, ByRef dblRefundAmount As Double, ByRef strMsg As String) As CertCancelRequestData
+        Dim selectStmt As String = Config("/SQL/PROCESS_CANCELLATION_REQUEST")
+        Dim inputParameters(TOTAL_INPUT_PARAM_CANCEL_REQUEST) As DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_CANCEL_REQUEST) As DBHelperParameter
 
         With oCertCancelRequestData
-            inputParameters(Me.P_CERT_ID) = New DBHelperParameter(Me.COL_NAME_P_CERT_ID, .certId.ToByteArray)
-            inputParameters(Me.P_CERT_CANCEL_REQUEST_ID) = New DBHelperParameter(Me.COL_NAME_P_CERT_CANCEL_REQUEST_ID, .certCancelRequestId.ToByteArray)
-            inputParameters(Me.P_CANCELLATION_REASON_ID) = New DBHelperParameter(Me.COL_NAME_P_CANCELLATION_REASON_ID, .cancellationReasonId.ToByteArray)
-            inputParameters(Me.P_CANCELLATION_DATE) = New DBHelperParameter(Me.COL_NAME_P_CANCELLATION_DATE, .cancellationDate)
-            inputParameters(Me.P_CANCELLATION_REQUEST_DATE) = New DBHelperParameter(Me.COL_NAME_P_CANCELLATION_REQUEST_DATE, .cancelRequestDate)
-            inputParameters(Me.P_PROOF_OF_DOCUMENTATION) = New DBHelperParameter(Me.COL_NAME_P_PROOF_OF_DOCUMENTATION, .proofOfDocumentation)
-            inputParameters(Me.P_USE_EXISTING_BANK_INFO) = New DBHelperParameter(Me.COL_NAME_P_USE_EXISTING_BANK_INFO, .useExistingBankInfo)
-            inputParameters(Me.P_IBAN_NUMBER) = New DBHelperParameter(Me.P_IBAN_NUMBER, .ibanNumber)
-            inputParameters(Me.P_ACCOUNT_NUMBER) = New DBHelperParameter(Me.P_ACCOUNT_NUMBER, .accountNumber)
-            inputParameters(Me.P_BANK_INFO_ID) = New DBHelperParameter(Me.COL_NAME_P_BANK_INFO_ID, .bankInfoId.ToByteArray)
-            inputParameters(Me.P_COMMENT_TYPE_ID) = New DBHelperParameter(Me.COL_NAME_P_COMMENT_TYPE_ID, .commentTypeId.ToByteArray)
-            inputParameters(Me.P_CALLER_NAME) = New DBHelperParameter(Me.P_CALLER_NAME, .callerName)
-            inputParameters(Me.P_COMMENTS) = New DBHelperParameter(Me.P_COMMENTS, .comments)
-            inputParameters(Me.P_CREATED_BY) = New DBHelperParameter(Me.P_CREATED_BY, .created_by)
+            inputParameters(P_CERT_ID) = New DBHelperParameter(COL_NAME_P_CERT_ID, .certId.ToByteArray)
+            inputParameters(P_CERT_CANCEL_REQUEST_ID) = New DBHelperParameter(COL_NAME_P_CERT_CANCEL_REQUEST_ID, .certCancelRequestId.ToByteArray)
+            inputParameters(P_CANCELLATION_REASON_ID) = New DBHelperParameter(COL_NAME_P_CANCELLATION_REASON_ID, .cancellationReasonId.ToByteArray)
+            inputParameters(P_CANCELLATION_DATE) = New DBHelperParameter(COL_NAME_P_CANCELLATION_DATE, .cancellationDate)
+            inputParameters(P_CANCELLATION_REQUEST_DATE) = New DBHelperParameter(COL_NAME_P_CANCELLATION_REQUEST_DATE, .cancelRequestDate)
+            inputParameters(P_PROOF_OF_DOCUMENTATION) = New DBHelperParameter(COL_NAME_P_PROOF_OF_DOCUMENTATION, .proofOfDocumentation)
+            inputParameters(P_USE_EXISTING_BANK_INFO) = New DBHelperParameter(COL_NAME_P_USE_EXISTING_BANK_INFO, .useExistingBankInfo)
+            inputParameters(P_IBAN_NUMBER) = New DBHelperParameter(P_IBAN_NUMBER, .ibanNumber)
+            inputParameters(P_ACCOUNT_NUMBER) = New DBHelperParameter(P_ACCOUNT_NUMBER, .accountNumber)
+            inputParameters(P_BANK_INFO_ID) = New DBHelperParameter(COL_NAME_P_BANK_INFO_ID, .bankInfoId.ToByteArray)
+            inputParameters(P_COMMENT_TYPE_ID) = New DBHelperParameter(COL_NAME_P_COMMENT_TYPE_ID, .commentTypeId.ToByteArray)
+            inputParameters(P_CALLER_NAME) = New DBHelperParameter(P_CALLER_NAME, .callerName)
+            inputParameters(P_COMMENTS) = New DBHelperParameter(P_COMMENTS, .comments)
+            inputParameters(P_CREATED_BY) = New DBHelperParameter(P_CREATED_BY, .created_by)
 
-            outputParameter(Me.P_RETURN) = New DBHelperParameter(Me.COL_NAME_P_RETURN, GetType(Integer))
-            outputParameter(Me.P_REFUND_AMOUNT) = New DBHelperParameter(Me.COL_NAME_P_REFUND_AMOUNT, GetType(Double))
-            outputParameter(Me.P_EXCEPTION_MSG) = New DBHelperParameter(Me.COL_NAME_P_EXCEPTION_MSG, GetType(String), 50)
+            outputParameter(P_RETURN) = New DBHelperParameter(COL_NAME_P_RETURN, GetType(Integer))
+            outputParameter(P_REFUND_AMOUNT) = New DBHelperParameter(COL_NAME_P_REFUND_AMOUNT, GetType(Double))
+            outputParameter(P_EXCEPTION_MSG) = New DBHelperParameter(COL_NAME_P_EXCEPTION_MSG, GetType(String), 50)
 
         End With
 

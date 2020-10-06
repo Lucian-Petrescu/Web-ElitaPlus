@@ -68,10 +68,10 @@ Namespace Tables
                     Dim s As String
                     Dim i As Integer
                     Dim sortExp As String = ""
-                    For i = 0 To Me.SortColumns.Length - 1
-                        If Not Me.SortColumns(i) Is Nothing Then
-                            sortExp &= Me.SortColumns(i)
-                            If Me.IsSortDesc(i) Then sortExp &= " DESC"
+                    For i = 0 To SortColumns.Length - 1
+                        If SortColumns(i) IsNot Nothing Then
+                            sortExp &= SortColumns(i)
+                            If IsSortDesc(i) Then sortExp &= " DESC"
                             sortExp &= ","
                         End If
                     Next
@@ -79,7 +79,7 @@ Namespace Tables
                 End Get
             End Property
 
-            Public Sub ToggleSort1(ByVal gridColIndex As Integer)
+            Public Sub ToggleSort1(gridColIndex As Integer)
                 IsSortDesc(gridColIndex) = Not IsSortDesc(gridColIndex)
             End Sub
         End Class
@@ -88,52 +88,52 @@ Namespace Tables
 #Region "Page Return"
         Private IsReturningFromChild As Boolean = False
 
-        Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.IsReturningFromChild = True
-                If Me.State.searchDV Is Nothing Then
-                    Me.State.IsGridVisible = False
+                IsReturningFromChild = True
+                If State.searchDV Is Nothing Then
+                    State.IsGridVisible = False
                 Else
-                    Me.State.IsGridVisible = True
+                    State.IsGridVisible = True
                 End If
                 Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
 
-                Me.State.HasDataChanged = retObj.BoChanged
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                State.HasDataChanged = retObj.BoChanged
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
 
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            If Me.State.moChkIsCommProdCode = True Then
-                                Me.State.moCommPCodeId = retObj.moCommissionPeriodId
-                                Me.State.moCommissionPeriodId = Guid.Empty
+                            If State.moChkIsCommProdCode = True Then
+                                State.moCommPCodeId = retObj.moCommissionPeriodId
+                                State.moCommissionPeriodId = Guid.Empty
                             Else
-                                Me.State.moCommissionPeriodId = retObj.moCommissionPeriodId
-                                Me.State.moCommPCodeId = Guid.Empty
+                                State.moCommissionPeriodId = retObj.moCommissionPeriodId
+                                State.moCommPCodeId = Guid.Empty
                             End If
                         Case Else
-                            Me.State.moCommissionPeriodId = Guid.Empty
-                            Me.State.moCommPCodeId = Guid.Empty
+                            State.moCommissionPeriodId = Guid.Empty
+                            State.moCommPCodeId = Guid.Empty
                     End Select
-                    Me.PopulateDealerDropDown()
-                    If Me.State.IsGridVisible Then
-                        If Me.State.moChkIsCommProdCode = True Then
-                            GridCommPrd.PageIndex = Me.State.mnPageIndex
-                            GridCommPrd.PageSize = Me.State.PageSize
-                            cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                            GridCommPrd.PageSize = Me.State.PageSize
+                    PopulateDealerDropDown()
+                    If State.IsGridVisible Then
+                        If State.moChkIsCommProdCode = True Then
+                            GridCommPrd.PageIndex = State.mnPageIndex
+                            GridCommPrd.PageSize = State.PageSize
+                            cboPageSize.SelectedValue = CType(State.PageSize, String)
+                            GridCommPrd.PageSize = State.PageSize
                             ControlMgr.SetVisibleControl(Me, trPageSize, GridCommPrd.Visible)
                             chkIsCommProdCode.Checked = True
-                            If moDealerMultipleDrop.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX Then
+                            If moDealerMultipleDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                                 PopulateProductCode()
                             End If
                         Else
-                            Grid.PageIndex = Me.State.mnPageIndex
-                            Grid.PageSize = Me.State.PageSize
-                            cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                            Grid.PageSize = Me.State.PageSize
+                            Grid.PageIndex = State.mnPageIndex
+                            Grid.PageSize = State.PageSize
+                            cboPageSize.SelectedValue = CType(State.PageSize, String)
+                            Grid.PageSize = State.PageSize
                             ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
                             chkIsCommProdCode.Checked = False
                         End If
@@ -141,7 +141,7 @@ Namespace Tables
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -150,9 +150,9 @@ Namespace Tables
             Public moCommissionPeriodId As Guid
             Public BoChanged As Boolean = False
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal oCommissionPeriodId As Guid, Optional ByVal boChanged As Boolean = False)
-                Me.LastOperation = LastOp
-                Me.moCommissionPeriodId = oCommissionPeriodId
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, oCommissionPeriodId As Guid, Optional ByVal boChanged As Boolean = False)
+                LastOperation = LastOp
+                moCommissionPeriodId = oCommissionPeriodId
                 Me.BoChanged = boChanged
             End Sub
 
@@ -203,7 +203,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -213,103 +213,103 @@ Namespace Tables
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
+            MasterPage.MessageController.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     ' Set Master Page Header
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
 
                     ' Update Bread Crum
                     UpdateBreadCrum()
 
-                    Me.SortDirection = CommissionPeriod.CommissionPeriodSearchDV.COL_DEALER_NAME
+                    SortDirection = CommissionPeriod.CommissionPeriodSearchDV.COL_DEALER_NAME
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.TranslateGridHeader(Grid)
-                    Me.TranslateGridControls(Grid)
-                    Me.TranslateGridHeader(GridCommPrd)
-                    Me.TranslateGridControls(GridCommPrd)
-                    If Not Me.IsReturningFromChild Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    TranslateGridHeader(Grid)
+                    TranslateGridControls(Grid)
+                    TranslateGridHeader(GridCommPrd)
+                    TranslateGridControls(GridCommPrd)
+                    If Not IsReturningFromChild Then
                         ' It is The First Time
                         ' It is not Returning from Detail
-                        ControlMgr.SetVisibleControl(Me, Me.trPageSize, False)
+                        ControlMgr.SetVisibleControl(Me, trPageSize, False)
                         PopulateDealerDropDown()
                     Else
                         ' It is returning from detail
-                        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-                        ControlMgr.SetVisibleControl(Me, trPageSize, Me.State.IsGridVisible)
-                        If Me.State.IsGridVisible Then
-                            Me.PopulateGrid()
+                        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+                        ControlMgr.SetVisibleControl(Me, trPageSize, State.IsGridVisible)
+                        If State.IsGridVisible Then
+                            PopulateGrid()
                         End If
                     End If
-                    Me.SetGridItemStyleColor(Me.Grid)
-                    Me.SetGridItemStyleColor(Me.GridCommPrd)
+                    SetGridItemStyleColor(Grid)
+                    SetGridItemStyleColor(GridCommPrd)
                     If chkIsCommProdCode.Checked Then
                         ControlMgr.SetVisibleControl(Me, moProdCodePanel_WRITE, True)
                     Else
                         ControlMgr.SetVisibleControl(Me, moProdCodePanel_WRITE, False)
                     End If
                 End If
-                If Me.IsReturningFromChild = True Then
-                    Me.IsReturningFromChild = False
+                If IsReturningFromChild = True Then
+                    IsReturningFromChild = False
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub BtnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClear.Click
+        Private Sub BtnClear_Click(sender As System.Object, e As System.EventArgs) Handles btnClear.Click
             Try
                 ClearAll()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub BtnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Private Sub BtnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
             Try
-                Grid.PageIndex = Me.NO_PAGE_INDEX
-                GridCommPrd.PageIndex = Me.NO_PAGE_INDEX
-                Me.State.searchDV = Nothing
-                Me.State.searchBtnClicked = True
-                Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid ' Me.GetSelectedItem(moDealerDrop)
-                Me.State.HasDataChanged = False
-                Me.State.IsGridVisible = True
+                Grid.PageIndex = NO_PAGE_INDEX
+                GridCommPrd.PageIndex = NO_PAGE_INDEX
+                State.searchDV = Nothing
+                State.searchBtnClicked = True
+                State.moDealerId = moDealerMultipleDrop.SelectedGuid ' Me.GetSelectedItem(moDealerDrop)
+                State.HasDataChanged = False
+                State.IsGridVisible = True
                 PopulateGrid()
-                Me.State.searchBtnClicked = False
+                State.searchBtnClicked = False
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnNew_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew.Click
+        Private Sub btnNew_Click(sender As Object, e As System.EventArgs) Handles btnNew.Click
             Try
-                Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(moDealerDrop)
+                State.moDealerId = moDealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(moDealerDrop)
                 If chkIsCommProdCode.Checked Then
-                    Me.State.moCommPCodeId = Guid.Empty
-                    Me.State.moChkIsCommProdCode = True
-                    Me.State.mnPageIndex = GridCommPrd.PageIndex
-                    Me.State.moProductCodeId = Me.GetSelectedItem(moProductDrop)
-                    Me.callPage(CommPCodeForm.URL, Me.State.moCommPCodeId)
+                    State.moCommPCodeId = Guid.Empty
+                    State.moChkIsCommProdCode = True
+                    State.mnPageIndex = GridCommPrd.PageIndex
+                    State.moProductCodeId = GetSelectedItem(moProductDrop)
+                    callPage(CommPCodeForm.URL, State.moCommPCodeId)
                 Else
-                    Me.State.moCommissionPeriodId = Guid.Empty
-                    Me.State.moChkIsCommProdCode = False
-                    Me.State.mnPageIndex = Grid.PageIndex
-                    Me.State.moProductCodeId = Guid.Empty
-                    Me.callPage(CommissionPeriodForm.URL, Me.State.moCommissionPeriodId)
+                    State.moCommissionPeriodId = Guid.Empty
+                    State.moChkIsCommProdCode = False
+                    State.mnPageIndex = Grid.PageIndex
+                    State.moProductCodeId = Guid.Empty
+                    callPage(CommissionPeriodForm.URL, State.moCommissionPeriodId)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -321,157 +321,157 @@ Namespace Tables
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
 
         'The Binding Logic is here
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-            If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+            If dvRow IsNot Nothing And Not State.bnoRow Then
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    e.Row.Cells(Me.COMMISSION_PERIOD_ID).Text = GetGuidStringFromByteArray(CType(dvRow(CommissionPeriod.CommissionPeriodSearchDV.COL_COMMISSION_PERIOD_ID), Byte()))
-                    e.Row.Cells(Me.GRID_COL_COMPANY_CODE_IDX).Text = dvRow(CommissionPeriod.CommissionPeriodSearchDV.COL_COMPANY_CODE).ToString
-                    e.Row.Cells(Me.GRID_COL_DEALER_IDX).Text = dvRow(CommissionPeriod.CommissionPeriodSearchDV.COL_DEALER_NAME).ToString
-                    e.Row.Cells(Me.GRID_COL_EFFECTIVE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CommissionPeriod.CommissionPeriodSearchDV.COL_EFFECTIVE_DATE), Date))
-                    e.Row.Cells(Me.GRID_COL_EXPIRATION_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CommissionPeriod.CommissionPeriodSearchDV.COL_EXPIRATION_DATE), Date))
+                    e.Row.Cells(COMMISSION_PERIOD_ID).Text = GetGuidStringFromByteArray(CType(dvRow(CommissionPeriod.CommissionPeriodSearchDV.COL_COMMISSION_PERIOD_ID), Byte()))
+                    e.Row.Cells(GRID_COL_COMPANY_CODE_IDX).Text = dvRow(CommissionPeriod.CommissionPeriodSearchDV.COL_COMPANY_CODE).ToString
+                    e.Row.Cells(GRID_COL_DEALER_IDX).Text = dvRow(CommissionPeriod.CommissionPeriodSearchDV.COL_DEALER_NAME).ToString
+                    e.Row.Cells(GRID_COL_EFFECTIVE_IDX).Text = GetDateFormattedString(CType(dvRow(CommissionPeriod.CommissionPeriodSearchDV.COL_EFFECTIVE_DATE), Date))
+                    e.Row.Cells(GRID_COL_EXPIRATION_IDX).Text = GetDateFormattedString(CType(dvRow(CommissionPeriod.CommissionPeriodSearchDV.COL_EXPIRATION_DATE), Date))
                 End If
             End If
         End Sub
-        Private Sub Grid_PageIndexChanged(ByVal source As System.Object,
-            ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As System.Object,
+            e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
 
-                Me.State.mnPageIndex = e.NewPageIndex
+                State.mnPageIndex = e.NewPageIndex
                 Grid.PageIndex = e.NewPageIndex
-                Me.State.moCommissionPeriodId = Guid.Empty
+                State.moCommissionPeriodId = Guid.Empty
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+        Public Sub RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+        Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
             Try
 
-                If e.CommandName = Me.SELECT_COMMAND_NAME Then
+                If e.CommandName = SELECT_COMMAND_NAME Then
                     Dim index As Integer = CInt(e.CommandArgument)
                     'Me.State.moCommissionPeriodId = New Guid(CType(Me.Grid.Rows(index).Cells(Me.COMMISSION_PERIOD_ID).FindControl(Me.GRID_CTRL_NAME_COMM_PERIOD_ID), Label).Text)
-                    Me.State.moCommissionPeriodId = New Guid(Me.Grid.Rows(index).Cells(Me.COMMISSION_PERIOD_ID).Text)
+                    State.moCommissionPeriodId = New Guid(Grid.Rows(index).Cells(COMMISSION_PERIOD_ID).Text)
 
-                    Me.State.mnPageIndex = Grid.PageIndex
-                    Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(moDealerDrop)
-                    Me.callPage(CommissionPeriodForm.URL, Me.State.moCommissionPeriodId)
+                    State.mnPageIndex = Grid.PageIndex
+                    State.moDealerId = moDealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(moDealerDrop)
+                    callPage(CommissionPeriodForm.URL, State.moCommissionPeriodId)
 
                 End If
             Catch ex As Threading.ThreadAbortException
                 '  System.Threading.Thread.Sleep(500)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
 
-                Me.State.mnPageIndex = 0
-                Me.PopulateGrid()
+                State.mnPageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub GridCommPrd_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridCommPrd.RowDataBound
+        Private Sub GridCommPrd_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridCommPrd.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-            If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+            If dvRow IsNot Nothing And Not State.bnoRow Then
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    e.Row.Cells(Me.COMM_P_CODE_ID).Text = GetGuidStringFromByteArray(CType(dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_COMM_P_CODE_ID), Byte()))
-                    e.Row.Cells(Me.GRID_COL_COMPANY_CODE_IDX).Text = dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_COMPANY_CODE).ToString
-                    e.Row.Cells(Me.GRID_COL_DEALER_IDX).Text = dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_DEALER_NAME).ToString
-                    e.Row.Cells(Me.GRID_COL_PRODUCT_IDX).Text = dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_PRODUCT_CODE).ToString
-                    e.Row.Cells(Me.GRID_COL_CM_EFFECTIVE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_EFFECTIVE_DATE), Date))
-                    e.Row.Cells(Me.GRID_COL_CM_EXPIRATION_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_EXPIRATION_DATE), Date))
+                    e.Row.Cells(COMM_P_CODE_ID).Text = GetGuidStringFromByteArray(CType(dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_COMM_P_CODE_ID), Byte()))
+                    e.Row.Cells(GRID_COL_COMPANY_CODE_IDX).Text = dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_COMPANY_CODE).ToString
+                    e.Row.Cells(GRID_COL_DEALER_IDX).Text = dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_DEALER_NAME).ToString
+                    e.Row.Cells(GRID_COL_PRODUCT_IDX).Text = dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_PRODUCT_CODE).ToString
+                    e.Row.Cells(GRID_COL_CM_EFFECTIVE_IDX).Text = GetDateFormattedString(CType(dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_EFFECTIVE_DATE), Date))
+                    e.Row.Cells(GRID_COL_CM_EXPIRATION_IDX).Text = GetDateFormattedString(CType(dvRow(CommissionPeriod.CommPrdPeriodSearchDV.COL_EXPIRATION_DATE), Date))
                 End If
             End If
         End Sub
-        Private Sub GridCommPrd_PageIndexChanged(ByVal source As System.Object,
-             ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridCommPrd.PageIndexChanging
+        Private Sub GridCommPrd_PageIndexChanged(source As System.Object,
+             e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridCommPrd.PageIndexChanging
             Try
-                Me.State.mnPageIndex = e.NewPageIndex
+                State.mnPageIndex = e.NewPageIndex
                 GridCommPrd.PageIndex = e.NewPageIndex
-                Me.State.moCommPCodeId = Guid.Empty
+                State.moCommPCodeId = Guid.Empty
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Public Sub GridCommPrd_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridCommPrd.RowCreated
+        Public Sub GridCommPrd_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridCommPrd.RowCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub GridCommPrd_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridCommPrd.RowCommand
+        Private Sub GridCommPrd_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridCommPrd.RowCommand
             Try
 
-                If e.CommandName = Me.SELECT_COMMAND_NAME Then
+                If e.CommandName = SELECT_COMMAND_NAME Then
                     Dim index As Integer = CInt(e.CommandArgument)
-                    Me.State.moCommPCodeId = New Guid(Me.GridCommPrd.Rows(index).Cells(Me.COMM_P_CODE_ID).Text)
+                    State.moCommPCodeId = New Guid(GridCommPrd.Rows(index).Cells(COMM_P_CODE_ID).Text)
 
-                    Me.State.mnPageIndex = Grid.PageIndex
-                    Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid
-                    Me.State.moProductCodeId = Me.GetSelectedItem(moProductDrop)
-                    Me.callPage(CommPCodeForm.URL, Me.State.moCommPCodeId)
+                    State.mnPageIndex = Grid.PageIndex
+                    State.moDealerId = moDealerMultipleDrop.SelectedGuid
+                    State.moProductCodeId = GetSelectedItem(moProductDrop)
+                    callPage(CommPCodeForm.URL, State.moCommPCodeId)
 
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub GridCommPrd_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridCommPrd.Sorting
+        Private Sub GridCommPrd_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridCommPrd.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
 
-                Me.State.mnPageIndex = 0
-                Me.PopulateGrid()
+                State.mnPageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -482,9 +482,9 @@ Namespace Tables
 
         Private Sub ClearAll()
 
-            moDealerMultipleDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
+            moDealerMultipleDrop.SelectedIndex = BLANK_ITEM_SELECTED
             If chkIsCommProdCode.Checked Then
-                Me.ClearList(moProductDrop)
+                ClearList(moProductDrop)
             End If
         End Sub
 
@@ -492,9 +492,9 @@ Namespace Tables
 
 #Region "Populate"
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
             End If
         End Sub
 
@@ -511,10 +511,10 @@ Namespace Tables
 
                 moDealerMultipleDrop.BindData(oDataView)
                 moDealerMultipleDrop.AutoPostBackDD = True
-                moDealerMultipleDrop.SelectedGuid = Me.State.moDealerId
+                moDealerMultipleDrop.SelectedGuid = State.moDealerId
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -524,7 +524,7 @@ Namespace Tables
                 Dim oListContext As New ListContext
                 oListContext.DealerId = oDealerId
                 Dim productListForDealer As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:=ListCodes.ProductCodeByDealer, context:=oListContext)
-                Me.moProductDrop.Populate(productListForDealer, New PopulateOptions() With
+                moProductDrop.Populate(productListForDealer, New PopulateOptions() With
                 {
                     .TextFunc = AddressOf .GetCode,
                     .AddBlankItem = True,
@@ -532,10 +532,10 @@ Namespace Tables
                 })
 
                 'Me.BindListControlToDataView(moProductDrop, LookupListNew.GetProductCodeLookupList(oDealerId), "CODE", , True)
-                BindSelectItem(Me.State.moProductCodeId.ToString, moProductDrop)
+                BindSelectItem(State.moProductCodeId.ToString, moProductDrop)
                 ControlMgr.SetEnableControl(Me, moProductDrop, True)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -544,7 +544,7 @@ Namespace Tables
 
             With oCommissionPeriod
                 .companyIds = ElitaPlusIdentity.Current.ActiveUser.Companies
-                .dealerId = Me.State.moDealerId
+                .dealerId = State.moDealerId
             End With
 
             Return oCommissionPeriod
@@ -556,8 +556,8 @@ Namespace Tables
 
             With oCommPrdData
                 .companyIds = ElitaPlusIdentity.Current.ActiveUser.Companies
-                .ProductCodeId = Me.State.moProductCodeId
-                .dealerId = Me.State.moDealerId
+                .ProductCodeId = State.moProductCodeId
+                .dealerId = State.moDealerId
             End With
 
             Return oCommPrdData
@@ -566,119 +566,119 @@ Namespace Tables
 
         Private Sub PopulateGrid()
             Try
-                Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid
+                State.moDealerId = moDealerMultipleDrop.SelectedGuid
                 If chkIsCommProdCode.Checked Then
-                    Me.State.moChkIsCommProdCode = True
-                    Me.State.moProductCodeId = Me.GetSelectedItem(moProductDrop)
+                    State.moChkIsCommProdCode = True
+                    State.moProductCodeId = GetSelectedItem(moProductDrop)
                     'If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-                    Me.State.searchDV = CommissionPeriod.getCommPrdList(GetCommPrdSearchParm)
+                    State.searchDV = CommissionPeriod.getCommPrdList(GetCommPrdSearchParm)
                     'End If
                 Else
-                    Me.State.moProductCodeId = Guid.Empty
-                    Me.State.moChkIsCommProdCode = False
+                    State.moProductCodeId = Guid.Empty
+                    State.moChkIsCommProdCode = False
                     'If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-                    Me.State.searchDV = CommissionPeriod.getList(GetSearchParm)
+                    State.searchDV = CommissionPeriod.getList(GetSearchParm)
                     'End If
 
                 End If
 
-                Me.State.searchDV.Sort = Me.SortDirection
+                State.searchDV.Sort = SortDirection
                 If chkIsCommProdCode.Checked Then
-                    Me.GridCommPrd.AutoGenerateColumns = False
-                    SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.moCommPCodeId, Me.GridCommPrd, Me.State.mnPageIndex)
+                    GridCommPrd.AutoGenerateColumns = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.moCommPCodeId, GridCommPrd, State.mnPageIndex)
                 Else
-                    Me.Grid.AutoGenerateColumns = False
-                    SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.moCommissionPeriodId, Me.Grid, Me.State.mnPageIndex)
+                    Grid.AutoGenerateColumns = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.moCommissionPeriodId, Grid, State.mnPageIndex)
                 End If
 
-                Me.SortAndBindGrid()
+                SortAndBindGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub SortAndBindGrid()
             If chkIsCommProdCode.Checked Then
-                Me.State.mnPageIndex = Me.GridCommPrd.PageIndex
-                If (Me.State.searchDV.Count = 0) Then
-                    Me.State.bnoRow = True
-                    CreateHeaderForEmptyGrid(GridCommPrd, Me.SortDirection)
+                State.mnPageIndex = GridCommPrd.PageIndex
+                If (State.searchDV.Count = 0) Then
+                    State.bnoRow = True
+                    CreateHeaderForEmptyGrid(GridCommPrd, SortDirection)
                 Else
-                    Me.State.bnoRow = False
-                    Me.GridCommPrd.Enabled = True
-                    Me.GridCommPrd.DataSource = Me.State.searchDV
-                    HighLightSortColumn(GridCommPrd, Me.SortDirection)
-                    Me.GridCommPrd.DataBind()
+                    State.bnoRow = False
+                    GridCommPrd.Enabled = True
+                    GridCommPrd.DataSource = State.searchDV
+                    HighLightSortColumn(GridCommPrd, SortDirection)
+                    GridCommPrd.DataBind()
                 End If
 
                 If Not GridCommPrd.BottomPagerRow.Visible Then GridCommPrd.BottomPagerRow.Visible = True
 
-                ControlMgr.SetVisibleControl(Me, GridCommPrd, Me.State.IsGridVisible)
-                ControlMgr.SetVisibleControl(Me, Grid, Not Me.State.IsGridVisible)
+                ControlMgr.SetVisibleControl(Me, GridCommPrd, State.IsGridVisible)
+                ControlMgr.SetVisibleControl(Me, Grid, Not State.IsGridVisible)
 
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.GridCommPrd.Visible)
+                ControlMgr.SetVisibleControl(Me, trPageSize, GridCommPrd.Visible)
 
-                Session("recCount") = Me.State.searchDV.Count
+                Session("recCount") = State.searchDV.Count
 
-                If Me.State.searchDV.Count > 0 Then
+                If State.searchDV.Count > 0 Then
 
-                    If Me.GridCommPrd.Visible Then
-                        Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    If GridCommPrd.Visible Then
+                        lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                     End If
                 Else
-                    If Me.GridCommPrd.Visible Then
-                        Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    If GridCommPrd.Visible Then
+                        lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                     End If
                 End If
             Else
-                Me.State.mnPageIndex = Me.Grid.PageIndex
-                If (Me.State.searchDV.Count = 0) Then
-                    Me.State.bnoRow = True
-                    CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
+                State.mnPageIndex = Grid.PageIndex
+                If (State.searchDV.Count = 0) Then
+                    State.bnoRow = True
+                    CreateHeaderForEmptyGrid(Grid, SortDirection)
                 Else
-                    Me.State.bnoRow = False
-                    Me.Grid.Enabled = True
-                    Me.Grid.DataSource = Me.State.searchDV
-                    HighLightSortColumn(Grid, Me.SortDirection)
-                    Me.Grid.DataBind()
+                    State.bnoRow = False
+                    Grid.Enabled = True
+                    Grid.DataSource = State.searchDV
+                    HighLightSortColumn(Grid, SortDirection)
+                    Grid.DataBind()
                 End If
 
                 If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
-                ControlMgr.SetVisibleControl(Me, GridCommPrd, Not Me.State.IsGridVisible)
-                ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+                ControlMgr.SetVisibleControl(Me, GridCommPrd, Not State.IsGridVisible)
+                ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-                Session("recCount") = Me.State.searchDV.Count
+                Session("recCount") = State.searchDV.Count
 
-                If Me.State.searchDV.Count > 0 Then
+                If State.searchDV.Count > 0 Then
 
-                    If Me.Grid.Visible Then
-                        Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    If Grid.Visible Then
+                        lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                     End If
                 Else
-                    If Me.Grid.Visible Then
-                        Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    If Grid.Visible Then
+                        lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                     End If
                 End If
             End If
         End Sub
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 If chkIsCommProdCode.Checked Then
-                    Me.GridCommPrd.PageIndex = NewCurrentPageIndex(GridCommPrd, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                    Me.State.PageSize = GridCommPrd.PageSize
+                    GridCommPrd.PageIndex = NewCurrentPageIndex(GridCommPrd, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+                    State.PageSize = GridCommPrd.PageSize
                 Else
-                    Me.Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                    Me.State.PageSize = Grid.PageSize
+                    Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+                    State.PageSize = Grid.PageSize
                 End If
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub chkIsCommProdCode_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkIsCommProdCode.CheckedChanged
+        Protected Sub chkIsCommProdCode_CheckedChanged(sender As Object, e As EventArgs) Handles chkIsCommProdCode.CheckedChanged
             If chkIsCommProdCode.Checked Then
                 ControlMgr.SetVisibleControl(Me, moProdCodePanel_WRITE, True)
             Else
@@ -688,19 +688,19 @@ Namespace Tables
             ControlMgr.SetVisibleControl(Me, Grid, False)
             ControlMgr.SetVisibleControl(Me, trPageSize, False)
 
-            Me.State.moDealerId = Guid.Empty
+            State.moDealerId = Guid.Empty
             PopulateDealerDropDown()
-            Me.ClearList(moProductDrop)
+            ClearList(moProductDrop)
         End Sub
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New) _
            Handles moDealerMultipleDrop.SelectedDropChanged
             Try
-                Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid
-                If moDealerMultipleDrop.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX And chkIsCommProdCode.Checked Then
+                State.moDealerId = moDealerMultipleDrop.SelectedGuid
+                If moDealerMultipleDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX And chkIsCommProdCode.Checked Then
                     PopulateProductCode()
                 End If
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 

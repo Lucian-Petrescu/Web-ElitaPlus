@@ -7,24 +7,24 @@ Namespace SpecializedServices.GW
     Public Class DealerInfo
         Private Property CommonManager As ICommonManager
 
-        Public Sub New(pCert As Certificate, ByVal pDealer As Dealer, pCommonManager As CommonManager,
-                       ByVal pAddress As Address, ByVal pCountryManager As ICountryManager)
+        Public Sub New(pCert As Certificate, pDealer As Dealer, pCommonManager As CommonManager,
+                       pAddress As Address, pCountryManager As ICountryManager)
             Dim oContract As Contract
             oContract = pDealer.Contracts.Where(Function(c) pCert.WarrantySalesDate >= c.Effective AndAlso pCert.WarrantySalesDate <= c.Expiration).FirstOrDefault
-            Me.DealerName = pDealer.DealerName
-            Me.DealerNumber = pDealer.DealerCode
-            Me.OriginalDealerNumber = String.Empty
-            Me.DealerType = pDealer.DealerTypeId.ToDescription(pCommonManager, ListCodes.DealerType, LanguageCodes.USEnglish)
-            Me.NumOfClaims = oContract.NumOfClaims
-            Me.NumOfRepairClaims = oContract.NumOfRepairClaims
-            Me.NumOfReplacementClaims = oContract.NumOfReplacementClaims
-            Me.DaysToReportClaim = oContract.DaysToReportClaim
-            Me.ClaimWaitingPeriod = oContract.WAITING_PERIOD
-            Me.ClaimLimitBasedOnCode = oContract.ClaimLimitBasedOnId.ToCode(pCommonManager, ListCodes.ClaimLimitBasedOn, LanguageCodes.USEnglish)
-            Me.ClaimLimitBasedOnDesc = oContract.ClaimLimitBasedOnId.ToDescription(pCommonManager, ListCodes.ClaimLimitBasedOn, LanguageCodes.USEnglish)
-            Me.DealerTaxId = pDealer.TAX_ID_NUMBER
+            DealerName = pDealer.DealerName
+            DealerNumber = pDealer.DealerCode
+            OriginalDealerNumber = String.Empty
+            DealerType = pDealer.DealerTypeId.ToDescription(pCommonManager, ListCodes.DealerType, LanguageCodes.USEnglish)
+            NumOfClaims = oContract.NumOfClaims
+            NumOfRepairClaims = oContract.NumOfRepairClaims
+            NumOfReplacementClaims = oContract.NumOfReplacementClaims
+            DaysToReportClaim = oContract.DaysToReportClaim
+            ClaimWaitingPeriod = oContract.WAITING_PERIOD
+            ClaimLimitBasedOnCode = oContract.ClaimLimitBasedOnId.ToCode(pCommonManager, ListCodes.ClaimLimitBasedOn, LanguageCodes.USEnglish)
+            ClaimLimitBasedOnDesc = oContract.ClaimLimitBasedOnId.ToDescription(pCommonManager, ListCodes.ClaimLimitBasedOn, LanguageCodes.USEnglish)
+            DealerTaxId = pDealer.TAX_ID_NUMBER
             If Not pAddress Is Nothing Then
-                Me.DealerAddress = New AddressInfo(pAddress, pCountryManager)
+                DealerAddress = New AddressInfo(pAddress, pCountryManager)
             End If
         End Sub
 

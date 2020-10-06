@@ -24,7 +24,7 @@ Public Class DealerRejectForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -118,67 +118,67 @@ Public Class DealerRejectForm
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
-            Me.UpdateBreadCrum()
-            If Not Me.IsPostBack Then
-                ClearGridHeaders(Me.DataGridRejectCode)
+            UpdateBreadCrum()
+            If Not IsPostBack Then
+                ClearGridHeaders(DataGridRejectCode)
                 'Me.ShowMissingTranslations(ErrorControl)
-                Me.SetGridItemStyleColor(Me.DataGridRejectCode)
-                Me.PopulateDropdown()
-                Me.SetControlState()
-                cboPageSize.SelectedValue = Me.State.PageSize.ToString()
+                SetGridItemStyleColor(DataGridRejectCode)
+                PopulateDropdown()
+                SetControlState()
+                cboPageSize.SelectedValue = State.PageSize.ToString()
             End If
 
-            Me.btnAdd_WRITE.Visible = False
-            Me.btnBack.Visible = False
+            btnAdd_WRITE.Visible = False
+            btnBack.Visible = False
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("DEALER") & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("DEALER_REJECT_CODE")
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("DEALER_REJECT_CODE")
-        Me.MasterPage.MessageController.Clear()
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("TABLES") & ElitaBase.Sperator & Me.MasterPage.PageTab
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("DEALER") & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("DEALER_REJECT_CODE")
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("DEALER_REJECT_CODE")
+        MasterPage.MessageController.Clear()
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("TABLES") & ElitaBase.Sperator & MasterPage.PageTab
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 '' ''Me.State.claimId = CType(CallingPar, Guid)
                 '' ''Me.State.ClaimBO = New Claim(Me.State.claimId)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
             Dim retObj As DealerRejectForm.ReturnType = CType(ReturnPar, DealerRejectForm.ReturnType)
-            If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                Me.State.searchDV = Nothing
+            If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                State.searchDV = Nothing
             End If
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
+                    If retObj IsNot Nothing Then
                         If Not retObj.EditingBo.IsNew Then
-                            Me.State.selectedMsgCodeId = retObj.EditingBo.Id
+                            State.selectedMsgCodeId = retObj.EditingBo.Id
                         End If
-                        Me.State.IsGridVisible = True
+                        State.IsGridVisible = True
                     End If
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -191,9 +191,9 @@ Public Class DealerRejectForm
         Public HasDataChanged As Boolean
         Public dealerId As Guid = Guid.Empty
 
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As DealerRejectCode, Optional ByVal boChanged As Boolean = False)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As DealerRejectCode, Optional ByVal boChanged As Boolean = False)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.BoChanged = boChanged
         End Sub
 
@@ -205,44 +205,44 @@ Public Class DealerRejectForm
 #Region "Datagrid Related "
     Private Sub SetControlState()
 
-        If (Me.State.IsEditMode) Then
+        If (State.IsEditMode) Then
             ControlMgr.SetEnableControl(Me, btnCancel, True)
             ControlMgr.SetEnableControl(Me, btnSave, True)
             ControlMgr.SetEnableControl(Me, mobtnSearch, False)
             ControlMgr.SetEnableControl(Me, mobtnClearSearch, False)
-            Me.MenuEnabled = False
-            If Me.DataGridRejectCode.PageCount > 1 Then
-                Me.DataGridRejectCode.PagerStyle.Visible = False
+            MenuEnabled = False
+            If DataGridRejectCode.PageCount > 1 Then
+                DataGridRejectCode.PagerStyle.Visible = False
             End If
         Else
             ControlMgr.SetEnableControl(Me, btnCancel, False)
             ControlMgr.SetEnableControl(Me, btnSave, False)
             ControlMgr.SetEnableControl(Me, mobtnSearch, True)
             ControlMgr.SetEnableControl(Me, mobtnClearSearch, True)
-            Me.MenuEnabled = True
-            If Me.DataGridRejectCode.PageCount > 1 Then
-                Me.DataGridRejectCode.PagerStyle.Visible = True
+            MenuEnabled = True
+            If DataGridRejectCode.PageCount > 1 Then
+                DataGridRejectCode.PagerStyle.Visible = True
             End If
         End If
 
     End Sub
 
-    Public Sub OnCheckedChangeEvent(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.State.IsEditMode = True
-        Me.SetControlState()
+    Public Sub OnCheckedChangeEvent(sender As Object, e As System.EventArgs)
+        State.IsEditMode = True
+        SetControlState()
     End Sub
 
-    Private Sub DataGridRejectCode_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles DataGridRejectCode.ItemCreated
+    Private Sub DataGridRejectCode_ItemCreated(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles DataGridRejectCode.ItemCreated
         Try
             If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Then
                 AddHandler CType(e.Item.Cells(GRID_COL_SELECTED_CHK_IDX).FindControl(GRID_CTL_SELECTED_CHKBOX), CheckBox).CheckedChanged, AddressOf OnCheckedChangeEvent
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub ItemBound(ByVal source As Object, ByVal e As DataGridItemEventArgs) Handles DataGridRejectCode.ItemDataBound
+    Protected Sub ItemBound(source As Object, e As DataGridItemEventArgs) Handles DataGridRejectCode.ItemDataBound
         Try
             BaseItemBound(source, e)
 
@@ -251,7 +251,7 @@ Public Class DealerRejectForm
                 Dim i As Integer
                 Dim disableRow As Boolean = False
 
-                If Not drv(DALObjects.DealerRejectCodeDAL.COL_NAME_DEALER_REJECT_CODE_ID) Is System.DBNull.Value Then
+                If drv(DALObjects.DealerRejectCodeDAL.COL_NAME_DEALER_REJECT_CODE_ID) IsNot System.DBNull.Value Then
                     CType(e.Item.Cells(GRID_COL_SELECTED_CHK_IDX).FindControl(GRID_CTL_SELECTED_CHKBOX), CheckBox).Checked = True
                 Else
                     CType(e.Item.Cells(GRID_COL_SELECTED_CHK_IDX).FindControl(GRID_CTL_SELECTED_CHKBOX), CheckBox).Checked = False
@@ -259,42 +259,42 @@ Public Class DealerRejectForm
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 
-    Public Sub DataGridRejectCode_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles DataGridRejectCode.ItemCommand
+    Public Sub DataGridRejectCode_ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles DataGridRejectCode.ItemCommand
         Try
             If e.CommandName = SELECT_ACTION_COMMAND Then
                 If Not e.CommandArgument.ToString().Equals(String.Empty) Then
-                    Me.State.selectedMsgCodeId = New Guid(e.CommandArgument.ToString())
-                    Me.callPage(DealerRejectForm.URL, Me.State.selectedMsgCodeId)
+                    State.selectedMsgCodeId = New Guid(e.CommandArgument.ToString())
+                    callPage(DealerRejectForm.URL, State.selectedMsgCodeId)
                 End If
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             If (TypeOf ex Is System.Reflection.TargetInvocationException) AndAlso
            (TypeOf ex.InnerException Is Threading.ThreadAbortException) Then Return
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+    Protected Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub DataGridRejectCode_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridRejectCode.PageIndexChanged
+    Private Sub DataGridRejectCode_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridRejectCode.PageIndexChanged
         Try
-            Me.DataGridRejectCode.CurrentPageIndex = e.NewPageIndex
-            Me.State.PageIndex = Me.DataGridRejectCode.CurrentPageIndex
+            DataGridRejectCode.CurrentPageIndex = e.NewPageIndex
+            State.PageIndex = DataGridRejectCode.CurrentPageIndex
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub EnableDisableControl(ByVal ctl As System.Web.UI.Control, Optional ByVal disabled As Boolean = False)
+    Protected Sub EnableDisableControl(ctl As System.Web.UI.Control, Optional ByVal disabled As Boolean = False)
         'If Not (permType = FormAuthorization.enumPermissionType.EDIT) Or disabled Then
         '    ControlMgr.SetEnableControl(Me, CType(ctl, System.Web.UI.WebControls.WebControl), False)
         'Else
@@ -317,11 +317,11 @@ Public Class DealerRejectForm
 
 
         'ErrorControl.Clear_Hide()
-        ClearGridHeaders(Me.DataGridRejectCode)
+        ClearGridHeaders(DataGridRejectCode)
 
         Try
 
-            For i = 0 To Me.DataGridRejectCode.Items.Count - 1
+            For i = 0 To DataGridRejectCode.Items.Count - 1
                 Dim selected As Boolean = False
                 Dim isNew As String = ""
 
@@ -363,7 +363,7 @@ Public Class DealerRejectForm
                         Dim curBO As DealerRejectCode
                         curBO = GetDealerRejectCodeBO(isFirstBO, Guid.Empty)
 
-                        curBO.DealerId = Me.State.DealerId
+                        curBO.DealerId = State.DealerId
                         curBO.MsgCodeId = msgCodeId
                         curBO.RecordTypeId = recordTypeId
 
@@ -395,27 +395,27 @@ Public Class DealerRejectForm
 
             If DataChanged Then
                 csFamilyBO.Save()
-                Me.State.searchDV = Nothing
-                Me.State.IsEditMode = False
+                State.searchDV = Nothing
+                State.IsEditMode = False
                 'EnableDisableControl(Me.btnBack, False)
                 ' EnableDisableControl(Me.NewButton_WRITE, False) 'DEF-1333
-                Me.SetGridItemStyleColor(Me.DataGridRejectCode)
+                SetGridItemStyleColor(DataGridRejectCode)
 
                 PopulateGrid()
-                Me.AddInfoMsg(MSG_RECORD_SAVED_OK)
+                AddInfoMsg(MSG_RECORD_SAVED_OK)
             Else
-                Me.AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                AddInfoMsg(MSG_RECORD_NOT_SAVED)
             End If
 
             csFamilyBO = Nothing
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Function GetDealerRejectCodeBO(ByVal isFirstBO As Boolean, ByVal dealerRejectCodeId As Guid) As DealerRejectCode
+    Private Function GetDealerRejectCodeBO(isFirstBO As Boolean, dealerRejectCodeId As Guid) As DealerRejectCode
 
         If isFirstBO Then
             If dealerRejectCodeId.Equals(Guid.Empty) Then
@@ -432,72 +432,72 @@ Public Class DealerRejectForm
 
     End Function
 
-    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+    Private Sub btnSave_Click(sender As System.Object, e As System.EventArgs) Handles btnSave.Click
         Try
             'Me.ErrorControl.Clear_Hide()
-            Me.SaveChanges()
+            SaveChanges()
             'Me.ErrorControl.Show()
-            Me.State.IsEditMode = False
-            Me.SetControlState()
+            State.IsEditMode = False
+            SetControlState()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(sender As System.Object, e As System.EventArgs) Handles btnCancel.Click
         Try
             'Me.ErrorControl.Clear_Hide()
-            Me.State.IsEditMode = False
-            Me.SetControlState()
+            State.IsEditMode = False
+            SetControlState()
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub moBtnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles mobtnSearch.Click
+    Private Sub moBtnSearch_Click(sender As Object, e As System.EventArgs) Handles mobtnSearch.Click
         Try
-            If (Not Me.State.DealerRejectCodeBO Is Nothing AndAlso Me.State.DealerRejectCodeBO.IsDirty) Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Undo
+            If (State.DealerRejectCodeBO IsNot Nothing AndAlso State.DealerRejectCodeBO.IsDirty) Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Undo
             Else
                 'Me.ErrorControl.Clear_Hide()
-                Me.SetStateProperties()
+                SetStateProperties()
 
-                Me.State.PageIndex = 0
-                Me.State.selectedMsgCodeId = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.searchDV = Nothing
-                Me.State.HasDataChanged = False
-                Me.State.IsEditMode = False
-                Me.SetControlState()
+                State.PageIndex = 0
+                State.selectedMsgCodeId = Guid.Empty
+                State.IsGridVisible = True
+                State.searchDV = Nothing
+                State.HasDataChanged = False
+                State.IsEditMode = False
+                SetControlState()
                 cboPageSize.SelectedValue = CType(State.PageSize, String)
-                Me.PopulateGrid()
+                PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub moBtnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles mobtnClearSearch.Click
+    Private Sub moBtnClearSearch_Click(sender As Object, e As System.EventArgs) Handles mobtnClearSearch.Click
         'Me.ErrorControl.Clear_Hide()
         ClearSearchCriteria()
-        Me.State.IsEditMode = False
-        Me.SetControlState()
+        State.IsEditMode = False
+        SetControlState()
     End Sub
 
     Private Sub ClearSearchCriteria()
 
         Try
-            Me.ClearStateValues()
+            ClearStateValues()
             ' Clear all search options typed or selected by the user
-            Me.ClearAllSearchOptions()
+            ClearAllSearchOptions()
 
             ' Update the Bo state properties with the new value
-            Me.SetStateProperties()
+            SetStateProperties()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -505,21 +505,21 @@ Public Class DealerRejectForm
     Private Sub SetStateProperties()
 
         Try
-            If Me.State Is Nothing Then
+            If State Is Nothing Then
                 Trace(Me, "Restoring State")
-                Me.RestoreState(New MyState)
+                RestoreState(New MyState)
             End If
 
-            Me.ClearStateValues()
+            ClearStateValues()
 
-            Me.State.DealerId = Me.DealerMultipleDrop.SelectedGuid()
-            Me.State.RecordTypeId = GetSelectedItem(Me.ddlRecordType)
-            Me.State.RejectCodeMask = Me.TextboxRejectCode.Text.ToUpper.Trim
-            Me.State.RejectReasonMask = Me.TextboxRejectReason.Text.ToUpper.Trim
-            Me.State.RejectMsgTypeId = GetSelectedItem(ddlRectionMsgType)
+            State.DealerId = DealerMultipleDrop.SelectedGuid()
+            State.RecordTypeId = GetSelectedItem(ddlRecordType)
+            State.RejectCodeMask = TextboxRejectCode.Text.ToUpper.Trim
+            State.RejectReasonMask = TextboxRejectReason.Text.ToUpper.Trim
+            State.RejectMsgTypeId = GetSelectedItem(ddlRectionMsgType)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -527,41 +527,41 @@ Public Class DealerRejectForm
         Try
             'clear State
 
-            Me.State.DealerId = Guid.Empty
-            Me.State.RecordTypeId = Guid.Empty
-            Me.State.RejectCodeMask = String.Empty
-            Me.State.RejectReasonMask = String.Empty
-            Me.State.RejectMsgTypeId = Guid.Empty
+            State.DealerId = Guid.Empty
+            State.RecordTypeId = Guid.Empty
+            State.RejectCodeMask = String.Empty
+            State.RejectReasonMask = String.Empty
+            State.RejectMsgTypeId = Guid.Empty
 
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
+            State.IsGridVisible = True
+            State.searchDV = Nothing
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
     Protected Sub ClearAllSearchOptions()
 
-        Me.DealerMultipleDrop.SelectedIndex = BLANK_ITEM_SELECTED
+        DealerMultipleDrop.SelectedIndex = BLANK_ITEM_SELECTED
 
-        Me.TextboxRejectCode.Text = String.Empty
-        Me.TextboxRejectReason.Text = String.Empty
+        TextboxRejectCode.Text = String.Empty
+        TextboxRejectReason.Text = String.Empty
 
         ddlRecordType.SelectedIndex = NO_ITEM_SELECTED_INDEX
         ddlRectionMsgType.SelectedIndex = NO_ITEM_SELECTED_INDEX
 
-        Me.State.PageIndex = Me.DataGridRejectCode.CurrentPageIndex
-        Me.DataGridRejectCode.DataSource = Me.State.searchDV
-        Me.DataGridRejectCode.DataBind()
+        State.PageIndex = DataGridRejectCode.CurrentPageIndex
+        DataGridRejectCode.DataSource = State.searchDV
+        DataGridRejectCode.DataBind()
 
     End Sub
 
-    Public Function CheckNull(ByVal val As Object) As String
+    Public Function CheckNull(val As Object) As String
         Dim retStr As String = ""
 
-        If Not val Is DBNull.Value Then
+        If val IsNot DBNull.Value Then
             If val.GetType Is GetType(Byte()) Then
                 retStr = GetGuidStringFromByteArray(CType(val, Byte()))
             ElseIf val.GetType Is GetType(BooleanType) Then
@@ -616,54 +616,54 @@ Public Class DealerRejectForm
     Protected Sub PopulateGrid()
 
         If (ddlRectionMsgType.Items.Count > 0 AndAlso ddlRectionMsgType.SelectedIndex <= 0) Then
-            Me.State.searchDV = Nothing
+            State.searchDV = Nothing
             DataGridRejectCode.DataSource = Nothing
             DataGridRejectCode.DataBind()
             Throw New GUIException(Message.MSG_INVALID_SERVICE_CENTER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_REJ_MESSAGE_TYPE_MUST_BE_SELECTED_ERR)
         End If
 
         If (ddlRecordType.Items.Count > 0 AndAlso ddlRecordType.SelectedIndex <= 0) Then
-            Me.State.searchDV = Nothing
+            State.searchDV = Nothing
             DataGridRejectCode.DataSource = Nothing
             DataGridRejectCode.DataBind()
             Throw New GUIException(Message.MSG_INVALID_SERVICE_CENTER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_RECORD_TYPE_MUST_BE_SELECTED_ERR)
         End If
 
-        If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-            Me.State.searchDV = DealerRejectCode.GetList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.State.RecordTypeId, Me.State.DealerId, Me.State.RejectCodeMask, Me.State.RejectReasonMask, Me.State.RejectMsgTypeId)
+        If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+            State.searchDV = DealerRejectCode.GetList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, State.RecordTypeId, State.DealerId, State.RejectCodeMask, State.RejectReasonMask, State.RejectMsgTypeId)
         End If
 
 
-        Me.DataGridRejectCode.AutoGenerateColumns = False
-        Me.DataGridRejectCode.PageSize = State.PageSize
+        DataGridRejectCode.AutoGenerateColumns = False
+        DataGridRejectCode.PageSize = State.PageSize
 
 
-        If (Me.State.IsEditMode) Then
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedMsgCodeId, Me.DataGridRejectCode, Me.State.PageIndex, Me.State.IsEditMode)
+        If (State.IsEditMode) Then
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedMsgCodeId, DataGridRejectCode, State.PageIndex, State.IsEditMode)
         Else
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedMsgCodeId, Me.DataGridRejectCode, Me.State.PageIndex)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedMsgCodeId, DataGridRejectCode, State.PageIndex)
         End If
 
-        Me.DataGridRejectCode.DataSource = Me.State.searchDV
-        Me.State.PageIndex = Me.DataGridRejectCode.CurrentPageIndex
-        Me.DataGridRejectCode.DataBind()
+        DataGridRejectCode.DataSource = State.searchDV
+        State.PageIndex = DataGridRejectCode.CurrentPageIndex
+        DataGridRejectCode.DataBind()
 
         If State.searchDV.Count = 0 Then
-            Me.btnSave.Enabled = False
-            Me.btnCancel.Enabled = False
+            btnSave.Enabled = False
+            btnCancel.Enabled = False
         End If
 
-        Session("recCount") = Me.State.searchDV.Count
-        Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        Session("recCount") = State.searchDV.Count
+        lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
     End Sub
 
     Private Sub ddlRectionMsgType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlRectionMsgType.SelectedIndexChanged
         Try
             ddlRecordType.Items.Clear()
             If (ddlRectionMsgType.SelectedIndex <> NO_ITEM_SELECTED_INDEX) Then
-                Me.State.RejectMsgTypeId = GetSelectedItem(ddlRectionMsgType)
+                State.RejectMsgTypeId = GetSelectedItem(ddlRectionMsgType)
 
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_MSG_TYPE, Me.State.RejectMsgTypeId) = MSG_CODE_DLR_REJECT Then
+                If LookupListNew.GetCodeFromId(LookupListNew.LK_MSG_TYPE, State.RejectMsgTypeId) = MSG_CODE_DLR_REJECT Then
 
                     'Dim dv As DataView = LookupListNew.GetRecordTypeLookupList(Authentication.LangId, True) 'RECTYP
 
@@ -680,16 +680,16 @@ Public Class DealerRejectForm
                                                         Where Not notStringList.Contains(x.Code)
                                                         Select x).ToArray()
 
-                    Me.ddlRecordType.Populate(FilteredRecord, New PopulateOptions() With
+                    ddlRecordType.Populate(FilteredRecord, New PopulateOptions() With
                         {
                             .AddBlankItem = True,
                             .SortFunc = AddressOf PopulateOptions.GetDescription
                         })
 
                     ddlRecordType.SelectedIndex = BLANK_ITEM_SELECTED
-                    Me.EnableDisableControl(Me.ddlRecordType, True)
+                    EnableDisableControl(ddlRecordType, True)
 
-                ElseIf (LookupListNew.GetCodeFromId(LookupListNew.LK_MSG_TYPE, Me.State.RejectMsgTypeId) = MSG_CODE_DLR_PYMT_REJECT) Then
+                ElseIf (LookupListNew.GetCodeFromId(LookupListNew.LK_MSG_TYPE, State.RejectMsgTypeId) = MSG_CODE_DLR_PYMT_REJECT) Then
                     Dim dv As DataView = LookupListNew.GetPaymentRecordTypeLookupList(Authentication.LangId, True)
                     If (dv.Count > 0) Then
                         Dim condition As String = "CODE <> 'X'"
@@ -700,18 +700,18 @@ Public Class DealerRejectForm
                     Dim FilteredRecord As ListItem() = (From x In recordTypeLkl
                                                         Where Not x.Code = "X"
                                                         Select x).ToArray()
-                    Me.ddlRecordType.Populate(FilteredRecord, New PopulateOptions() With
+                    ddlRecordType.Populate(FilteredRecord, New PopulateOptions() With
                                               {
                                               .AddBlankItem = True,
                                               .SortFunc = AddressOf PopulateOptions.GetDescription
                                               })
                     ddlRecordType.SelectedIndex = BLANK_ITEM_SELECTED
-                    Me.EnableDisableControl(Me.ddlRecordType, True)
+                    EnableDisableControl(ddlRecordType, True)
                 End If
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -728,35 +728,35 @@ Public Class DealerRejectForm
 
     Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
-            Me.State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.selectedPageSize = Me.State.PageSize
-            Me.State.PageIndex = NewCurrentPageIndex(DataGridRejectCode, State.searchDV.Count, State.PageSize)
+            State.PageSize = CType(cboPageSize.SelectedValue, Integer)
+            State.selectedPageSize = State.PageSize
+            State.PageIndex = NewCurrentPageIndex(DataGridRejectCode, State.searchDV.Count, State.PageSize)
             DataGridRejectCode.CurrentPageIndex = NewCurrentPageIndex(DataGridRejectCode, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.State.selectedPageSize = DataGridRejectCode.PageSize
-            Me.PopulateGrid()
+            State.selectedPageSize = DataGridRejectCode.PageSize
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 #End Region
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        Dim lastAction As ElitaPlusPage.DetailPageCommand = Me.State.ActionInProgress
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        Dim lastAction As ElitaPlusPage.DetailPageCommand = State.ActionInProgress
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
             Select Case lastAction
                 Case ElitaPlusPage.DetailPageCommand.Undo
-                    Me.SetStateProperties()
-                    Me.State.PageIndex = 0
-                    Me.State.selectedMsgCodeId = Guid.Empty
-                    Me.State.IsGridVisible = True
-                    Me.State.searchDV = Nothing
-                    Me.State.HasDataChanged = False
-                    Me.State.IsEditMode = False
-                    Me.SetControlState()
+                    SetStateProperties()
+                    State.PageIndex = 0
+                    State.selectedMsgCodeId = Guid.Empty
+                    State.IsGridVisible = True
+                    State.searchDV = Nothing
+                    State.HasDataChanged = False
+                    State.IsEditMode = False
+                    SetControlState()
                     cboPageSize.SelectedValue = CType(State.PageSize, String)
-                    Me.PopulateGrid()
+                    PopulateGrid()
             End Select
 
 
@@ -765,10 +765,10 @@ Public Class DealerRejectForm
 
     Private Sub CleanPopupInput()
         Try
-            If Not Me.State Is Nothing Then
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            If State IsNot Nothing Then
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
                 'Me.State.LastErrMsg = ""
-                Me.HiddenSaveChangesPromptResponse.Value = ""
+                HiddenSaveChangesPromptResponse.Value = ""
             End If
         Catch ex As Exception
             '  Me.HandleErrors(ex, Me.ErrorCtrl)

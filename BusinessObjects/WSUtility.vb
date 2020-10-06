@@ -29,7 +29,7 @@ Public Class WSUtility
 
     Public Sub New(ByVal DS As DataSet)
         MyBase.New()
-        Me.Dataset = DS
+        Dataset = DS
 
     End Sub
 

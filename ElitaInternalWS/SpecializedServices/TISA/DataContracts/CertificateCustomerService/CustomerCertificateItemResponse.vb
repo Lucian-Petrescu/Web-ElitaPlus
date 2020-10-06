@@ -29,12 +29,12 @@ Public Class CustomerCertificateItemResponse
 
     Public Sub New(Item As DataTable)
         If (Not Item Is Nothing) Then
-            Me.Manufacturer = Item.Rows(0)("make").ToString()
-            Me.Model = Item.Rows(0)("model").ToString()
-            Me.ProductCode = Item.Rows(0)("product_code").ToString()
-            Me.ProductDescription = Item.Rows(0)("description").ToString()
-            Me.SerialNumber = Item.Rows(0)("serial_number").ToString()
-            Me.SKUNumber = Item.Rows(0)("sku_number").ToString()
+            Manufacturer = Item.Rows(0)("make").ToString()
+            Model = Item.Rows(0)("model").ToString()
+            ProductCode = Item.Rows(0)("product_code").ToString()
+            ProductDescription = Item.Rows(0)("description").ToString()
+            SerialNumber = Item.Rows(0)("serial_number").ToString()
+            SKUNumber = Item.Rows(0)("sku_number").ToString()
 
         End If
     End Sub

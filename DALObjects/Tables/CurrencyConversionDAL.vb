@@ -47,31 +47,31 @@ Public Class CurrencyConversionDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("currency_conversion_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 
-    Public Function GetCurrecyRates(ByVal dealerId As Guid, ByVal FromDate As String, ByVal ToDate As String)
+    Public Function GetCurrecyRates(dealerId As Guid, FromDate As String, ToDate As String)
 
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
 
         If (Not (FromDate.Equals(String.Empty))) AndAlso (Not (ToDate.Equals(String.Empty))) Then
@@ -83,48 +83,48 @@ Public Class CurrencyConversionDAL
 
         Try
             parameters = New OracleParameter() {New OracleParameter(TABLE_KEY_NAME, dealerId.ToByteArray)}
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetLastRate(ByVal dealerId As Guid, ByVal currency1Id As Guid, ByVal currency2Id As Guid)
+    Public Function GetLastRate(dealerId As Guid, currency1Id As Guid, currency2Id As Guid)
 
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_LAST_RATE")
+        Dim selectStmt As String = Config("/SQL/GET_LAST_RATE")
 
         Try
             parameters = New OracleParameter() {New OracleParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray), _
                                              New OracleParameter(COL_NAME_CURRENCY1_ID, currency1Id.ToByteArray), _
                                              New OracleParameter(COL_NAME_CURRENCY2_ID, currency2Id.ToByteArray)}
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
 
-    Public Function FindMaxDate(ByVal dealerId As Guid, ByVal currency1Id As Guid, ByVal currency2Id As Guid) As DataSet
+    Public Function FindMaxDate(dealerId As Guid, currency1Id As Guid, currency2Id As Guid) As DataSet
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/FIND_MAX_DATE")
+        Dim selectStmt As String = Config("/SQL/FIND_MAX_DATE")
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray), _
                                             New OracleParameter(COL_NAME_CURRENCY1_ID, currency1Id.ToByteArray), _
                                             New OracleParameter(COL_NAME_CURRENCY2_ID, currency2Id.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
     'Public Overloads Sub Delete(ByVal dealerId As Guid, ByVal Currency1Id As Guid, ByVal currency2Id As Guid, ByVal effectiveDate As DateType, ByVal expirationDate As DateType, Optional ByVal Transaction As IDbTransaction = Nothing)
@@ -153,28 +153,28 @@ Public Class CurrencyConversionDAL
 #Region "StoreProcedures Control"
 
     ' Insert new Rates
-    Public Function ExecuteSP(ByVal dealerID As Guid, ByVal fromdate As DateType, ByVal todate As DateType, _
-                              ByVal currency1id As Guid, ByVal currency2id As Guid, ByVal currency1rate As Double, _
-                              ByVal currency2rate As Double) As String
+    Public Function ExecuteSP(dealerID As Guid, fromdate As DateType, todate As DateType, _
+                              currency1id As Guid, currency2id As Guid, currency1rate As Double, _
+                              currency2rate As Double) As String
         Dim inputParameters(TOTAL_PARAM_IN) As DBHelper.DBHelperParameter
         Dim outputParameter(TOTAL_PARAM_OUT) As DBHelper.DBHelperParameter
-        Dim selectStmt As String = Me.Config("/SQL/INSERT_NEW_RATES")
+        Dim selectStmt As String = Config("/SQL/INSERT_NEW_RATES")
         Dim oErrMess As String
 
-        inputParameters(Me.PARAM_IN_DEALER_ID) = New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, dealerID)
+        inputParameters(PARAM_IN_DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerID)
 
         If Not fromdate Is Nothing Then
-            inputParameters(Me.PARAM_IN_FROM_DATE) = New DBHelper.DBHelperParameter(Me.COL_NAME_EFFECTIVE_DATE, fromdate.Value)
+            inputParameters(PARAM_IN_FROM_DATE) = New DBHelper.DBHelperParameter(COL_NAME_EFFECTIVE_DATE, fromdate.Value)
         End If
 
         If Not todate Is Nothing Then
-            inputParameters(Me.PARAM_IN_TO_DATE) = New DBHelper.DBHelperParameter(Me.FILD_NAME_EXPIRATION_DATE, todate.Value)
+            inputParameters(PARAM_IN_TO_DATE) = New DBHelper.DBHelperParameter(FILD_NAME_EXPIRATION_DATE, todate.Value)
         End If
 
-        inputParameters(Me.PARAM_IN_CURRENCY1_ID) = New DBHelper.DBHelperParameter(Me.COL_NAME_CURRENCY1_ID, currency1id)
-        inputParameters(Me.PARAM_IN_CURRENCY2_ID) = New DBHelper.DBHelperParameter(Me.COL_NAME_CURRENCY2_ID, currency2id)
-        inputParameters(Me.PARAM_IN_CURRENCY1_RATE) = New DBHelper.DBHelperParameter(Me.COL_NAME_CURRENCY1_RATE, currency1rate)
-        inputParameters(Me.PARAM_IN_CURRENCY2_RATE) = New DBHelper.DBHelperParameter(Me.COL_NAME_CURRENCY2_RATE, currency2rate)
+        inputParameters(PARAM_IN_CURRENCY1_ID) = New DBHelper.DBHelperParameter(COL_NAME_CURRENCY1_ID, currency1id)
+        inputParameters(PARAM_IN_CURRENCY2_ID) = New DBHelper.DBHelperParameter(COL_NAME_CURRENCY2_ID, currency2id)
+        inputParameters(PARAM_IN_CURRENCY1_RATE) = New DBHelper.DBHelperParameter(COL_NAME_CURRENCY1_RATE, currency1rate)
+        inputParameters(PARAM_IN_CURRENCY2_RATE) = New DBHelper.DBHelperParameter(COL_NAME_CURRENCY2_RATE, currency2rate)
 
 
         outputParameter(PARAM_OUT_RETURN_CODE) = New DBHelper.DBHelperParameter(RETURN_CODE, GetType(Integer))
@@ -188,25 +188,25 @@ Public Class CurrencyConversionDAL
     End Function
 
     'Delete Rates
-    Public Function ExecuteSP(ByVal dealerID As Guid, ByVal fromdate As DateType, ByVal todate As DateType, _
-                              ByVal currency1id As Guid, ByVal currency2id As Guid) As String
+    Public Function ExecuteSP(dealerID As Guid, fromdate As DateType, todate As DateType, _
+                              currency1id As Guid, currency2id As Guid) As String
         Dim inputParameters(DELETE_PARAM_IN) As DBHelper.DBHelperParameter
         Dim outputParameter(TOTAL_PARAM_OUT) As DBHelper.DBHelperParameter
-        Dim selectStmt As String = Me.Config("/SQL/DELETE_RATES")
+        Dim selectStmt As String = Config("/SQL/DELETE_RATES")
         Dim oErrMess As String
 
-        inputParameters(Me.PARAM_IN_DEALER_ID) = New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, dealerID)
+        inputParameters(PARAM_IN_DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerID)
 
         If Not fromdate Is Nothing Then
-            inputParameters(Me.PARAM_IN_FROM_DATE) = New DBHelper.DBHelperParameter(Me.COL_NAME_EFFECTIVE_DATE, fromdate.Value)
+            inputParameters(PARAM_IN_FROM_DATE) = New DBHelper.DBHelperParameter(COL_NAME_EFFECTIVE_DATE, fromdate.Value)
         End If
 
         If Not todate Is Nothing Then
-            inputParameters(Me.PARAM_IN_TO_DATE) = New DBHelper.DBHelperParameter(Me.FILD_NAME_EXPIRATION_DATE, todate.Value)
+            inputParameters(PARAM_IN_TO_DATE) = New DBHelper.DBHelperParameter(FILD_NAME_EXPIRATION_DATE, todate.Value)
         End If
 
-        inputParameters(Me.PARAM_IN_CURRENCY1_ID) = New DBHelper.DBHelperParameter(Me.COL_NAME_CURRENCY1_ID, currency1id)
-        inputParameters(Me.PARAM_IN_CURRENCY2_ID) = New DBHelper.DBHelperParameter(Me.COL_NAME_CURRENCY2_ID, currency2id)
+        inputParameters(PARAM_IN_CURRENCY1_ID) = New DBHelper.DBHelperParameter(COL_NAME_CURRENCY1_ID, currency1id)
+        inputParameters(PARAM_IN_CURRENCY2_ID) = New DBHelper.DBHelperParameter(COL_NAME_CURRENCY2_ID, currency2id)
 
         outputParameter(PARAM_OUT_RETURN_CODE) = New DBHelper.DBHelperParameter(RETURN_CODE, GetType(Integer))
         outputParameter(PARAM_OUT_MESSAGE) = New DBHelper.DBHelperParameter(RETURN_MESSAGE, GetType(String), 30)

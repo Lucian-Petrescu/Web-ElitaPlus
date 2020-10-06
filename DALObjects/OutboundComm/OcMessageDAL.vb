@@ -28,38 +28,38 @@
 #End Region
 
 #Region "Load Methods"
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("oc_message_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal dealerId As Guid,
-                             ByVal searchBy As String,
-                             ByVal conditionMask As String,
-                             ByVal languageid As Guid) As DataSet
+    Public Function LoadList(dealerId As Guid,
+                             searchBy As String,
+                             conditionMask As String,
+                             languageid As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_DEALER_AND_CONDITION")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_DEALER_AND_CONDITION")
         Dim inClausecondition As String = String.Empty
         Dim whereClauseConditions As String = String.Empty
         Dim dealerWhereClauseConditions As String = String.Empty
 
         If (Not String.IsNullOrEmpty(searchBy)) And (Not String.IsNullOrEmpty(conditionMask)) Then
             conditionMask = conditionMask.Trim()
-            If Me.FormatSearchMask(conditionMask) Then
+            If FormatSearchMask(conditionMask) Then
                 whereClauseConditions &= Environment.NewLine & "and UPPER(" & searchBy & ") " & conditionMask.ToUpper
             End If
         End If
@@ -75,36 +75,36 @@
         End If
 
         If Not String.IsNullOrEmpty(whereClauseConditions) Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, String.Empty)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, String.Empty)
         End If
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("language_id", languageid.ToByteArray)}
 
         Try
             Dim ds As DataSet = New DataSet()
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Sub SendAdhocMessage(ByVal dealer_id As Guid,
-                            ByVal msg_for As String,
-                            ByVal id As Guid,
-                            ByVal template_code As String,
-                            ByVal std_recipient As String,
-                            ByVal cst_recipient As String,
-                            ByVal std_parameter As String,
-                            ByVal cst_parameter As String,
-                            ByVal sender As String,
+    Public Sub SendAdhocMessage(dealer_id As Guid,
+                            msg_for As String,
+                            id As Guid,
+                            template_code As String,
+                            std_recipient As String,
+                            cst_recipient As String,
+                            std_parameter As String,
+                            cst_parameter As String,
+                            sender As String,
                             ByRef message_id As Guid,
                             ByRef err_no As Integer,
                             ByRef err_msg As String)
 
-        Dim selectStmt As String = Me.Config("/SQL/SEND_ADHOC_MESSAGE")
+        Dim selectStmt As String = Config("/SQL/SEND_ADHOC_MESSAGE")
         Dim inputParameters() As DBHelper.DBHelperParameter
         Dim outputParameter(2) As DBHelper.DBHelperParameter
 
@@ -135,7 +135,7 @@
 
     End Sub
 
-    Function SetParameter(ByVal name As String, ByVal value As Object) As DBHelper.DBHelperParameter
+    Function SetParameter(name As String, value As Object) As DBHelper.DBHelperParameter
         name = name.Trim
         If value Is Nothing Then value = DBNull.Value
         If value.GetType Is GetType(String) Then value = DirectCast(value, String).Trim

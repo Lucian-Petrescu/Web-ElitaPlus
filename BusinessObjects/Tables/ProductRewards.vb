@@ -15,46 +15,46 @@
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ProductRewardsDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -65,20 +65,20 @@
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New ProductRewardsDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -88,15 +88,15 @@
 
 
     Public Sub InitTable()
-        Me.Dataset.Tables(ProductRewardsDAL.TABLE_NAME).Rows.Clear()
+        Dataset.Tables(ProductRewardsDAL.TABLE_NAME).Rows.Clear()
     End Sub
 
     Public Sub AddRowsToTable(ByVal rowval As DataRow, Optional ByVal updateRowVal As Boolean = False)
         Dim dal As New ProductRewardsDAL
-        Me.Row = Me.FindRow(Id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
-        Me.Row(1) = rowval(1)
-        Me.Row(2) = rowval(2)
-        Me.Row(3) = rowval(3)
+        Row = FindRow(Id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
+        Row(1) = rowval(1)
+        Row(2) = rowval(2)
+        Row(3) = rowval(3)
 
     End Sub
 
@@ -135,7 +135,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_PRODUCT_CODE_ID, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
 
@@ -152,7 +152,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_REWARD_NAME, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_REWARD_NAME, Value)
         End Set
     End Property
 
@@ -169,7 +169,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_REWARD_TYPE, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_REWARD_TYPE, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
@@ -184,7 +184,7 @@
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_REWARD_AMOUNT, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_REWARD_AMOUNT, Value)
         End Set
     End Property
 
@@ -200,7 +200,7 @@
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_MIN_PURCHASE_PRICE, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_MIN_PURCHASE_PRICE, Value)
         End Set
     End Property
 
@@ -216,7 +216,7 @@
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_DAYS_TO_REDEEM, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_DAYS_TO_REDEEM, Value)
         End Set
     End Property
 
@@ -232,7 +232,7 @@
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidExpirationDate("")>
@@ -247,7 +247,7 @@
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_EXPIRATION_DATE, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
@@ -263,7 +263,7 @@
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_FROM_RENEWAL, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_FROM_RENEWAL, Value)
         End Set
     End Property
 
@@ -279,7 +279,7 @@
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_TO_RENEWAL, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_TO_RENEWAL, Value)
         End Set
     End Property
 
@@ -314,7 +314,7 @@
         End Sub
 
         Public Function AddNewRowToEmptyDV() As ProductRewardsSearchDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
             row(ProductRewardsSearchDV.COL_PRODUCT_REWARD_ID) = (New Guid()).ToByteArray
             row(ProductRewardsSearchDV.COL_PRODUCT_CODE_ID) = Guid.Empty.ToByteArray
@@ -338,15 +338,15 @@
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ProductRewardsDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -459,7 +459,7 @@
 
             If Not obj.ExpirationDate Is Nothing And Not obj.EffectiveDate Is Nothing Then
                 If Convert.ToDateTime(obj.EffectiveDate.Value) > Convert.ToDateTime(obj.ExpirationDate.Value) Then
-                    Me.Message = PRODUCT_EQUIPMENT_FORM001
+                    Message = PRODUCT_EQUIPMENT_FORM001
                     bValid = False
 
                 End If
@@ -485,7 +485,7 @@
 
             If Not obj.EffectiveDate Is Nothing Then
                 If obj.EffectiveDate <= DateTime.Now.Date Then
-                    Me.Message = PRODUCT_EQUIPMENT_FORM003
+                    Message = PRODUCT_EQUIPMENT_FORM003
                     bValid = False
 
                 End If
@@ -576,7 +576,7 @@
 
             If Not obj.FromRenewal Is Nothing And Not obj.ToRenewal Is Nothing Then
                 If obj.FromRenewal.Value > obj.ToRenewal.Value Then
-                    Me.Message = PRODUCT_REWARDS_FORM005
+                    Message = PRODUCT_REWARDS_FORM005
                     bValid = False
 
                 End If

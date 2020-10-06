@@ -18,7 +18,7 @@ Namespace Certificates
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -47,8 +47,8 @@ Namespace Certificates
             Public CertId As Guid
             Public PayInstrumentNo As String
             Public PaymentDate As String
-            Public Sub New(ByVal paymnetid As Guid, ByVal certid As Guid, payinstrumentno As String, paymentdate As String)
-                Me.PaymentId = paymnetid
+            Public Sub New(paymnetid As Guid, certid As Guid, payinstrumentno As String, paymentdate As String)
+                PaymentId = paymnetid
                 Me.PayInstrumentNo = payinstrumentno
                 Me.CertId = certid
                 Me.PaymentDate = paymentdate
@@ -69,19 +69,19 @@ Namespace Certificates
 
         Public Property IsEdit() As Boolean
             Get
-                Return Me.State._IsEdit
+                Return State._IsEdit
             End Get
-            Set(ByVal Value As Boolean)
-                Me.State._IsEdit = Value
+            Set(Value As Boolean)
+                State._IsEdit = Value
             End Set
         End Property
 
         Public Property moCertificate() As Certificate
             Get
-                Return Me.State._moCertificate
+                Return State._moCertificate
             End Get
-            Set(ByVal Value As Certificate)
-                Me.State._moCertificate = Value
+            Set(Value As Certificate)
+                State._moCertificate = Value
             End Set
         End Property
 
@@ -93,9 +93,9 @@ Namespace Certificates
             Public LastOperation As DetailPageCommand
             Public EditingBo As Certificate
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Certificate, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As Certificate, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
@@ -126,31 +126,31 @@ Namespace Certificates
 
         Protected Shadows ReadOnly Property State() As MyState
             Get
-                If Me.NavController.State Is Nothing Then
-                    Me.NavController.State = New MyState
+                If NavController.State Is Nothing Then
+                    NavController.State = New MyState
                     Me.State.MyBO = New CheckReject
-                    Me.State.SelectedPaymentId = CType(Me.NavController.ParametersPassed, Parameters).PaymentId
-                    Me.State.MyBO.CertId = CType(Me.NavController.ParametersPassed, Parameters).CertId
-                    moCertificate = (CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE), Certificate))
-                    If (CType(Me.NavController.ParametersPassed, Parameters).PayInstrumentNo.ToString <> String.Empty) Then
-                        Me.State.MyBO.SelectRejectCheck = CType(Me.NavController.ParametersPassed, Parameters).PayInstrumentNo.ToString
+                    Me.State.SelectedPaymentId = CType(NavController.ParametersPassed, Parameters).PaymentId
+                    Me.State.MyBO.CertId = CType(NavController.ParametersPassed, Parameters).CertId
+                    moCertificate = (CType(NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE), Certificate))
+                    If (CType(NavController.ParametersPassed, Parameters).PayInstrumentNo.ToString <> String.Empty) Then
+                        Me.State.MyBO.SelectRejectCheck = CType(NavController.ParametersPassed, Parameters).PayInstrumentNo.ToString
                     End If
-                    If Not Me.State.MyBO Is Nothing Then
+                    If Me.State.MyBO IsNot Nothing Then
                         Me.State.MyBO.BeginEdit()
                     End If
-                    Me.IsEdit = True
+                    IsEdit = True
                 End If
-                Return CType(Me.NavController.State, MyState)
+                Return CType(NavController.State, MyState)
             End Get
         End Property
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
-                    Me.State.boChanged = False
+                If CallingParameters IsNot Nothing Then
+                    State.boChanged = False
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -160,34 +160,34 @@ Namespace Certificates
 #Region "Page Events"
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(Me.PAGETITLE)
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
             End If
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.MasterPage.MessageController.Clear_Hide()
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            MasterPage.MessageController.Clear_Hide()
 
             Try
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(Me.PAGETAB)
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Me.PAGETITLE)
-                Me.UpdateBreadCrum()
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+                UpdateBreadCrum()
 
-                If Not Me.IsPostBack Then
-                    If Me.State.MyBO Is Nothing Then
-                        If Not Me.CallingParameters Is Nothing Then
-                            Me.State._moCertificate = New Certificate(Me.State.MyBO.CertId)
+                If Not IsPostBack Then
+                    If State.MyBO Is Nothing Then
+                        If CallingParameters IsNot Nothing Then
+                            State._moCertificate = New Certificate(State.MyBO.CertId)
                         End If
-                        Me.CreateNew()
+                        CreateNew()
                     End If
 
-                    Me.AddCalendar(Me.ImageButtonCheckRejectedDate, Me.txtCheckRejectedOn)
-                    Me.UserCertificateCtr.PopulateFormFromCertificateCtrl(Me.State._moCertificate)
-                    Me.PopulateFormFromBOs()
-                    Me.PopulateDropDowns()
-                    Me.EnableDisableFields()
+                    AddCalendar(ImageButtonCheckRejectedDate, txtCheckRejectedOn)
+                    UserCertificateCtr.PopulateFormFromCertificateCtrl(State._moCertificate)
+                    PopulateFormFromBOs()
+                    PopulateDropDowns()
+                    EnableDisableFields()
                 Else
                     ClearErrLabels()
                 End If
@@ -195,20 +195,20 @@ Namespace Certificates
                 BindBoPropertiesToLabels()
                 CheckIfComingFromSaveConfirm()
 
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(Me.State.MyBO)
+                If Not IsPostBack Then
+                    AddLabelDecorations(State.MyBO)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(lblCheckRejectedOn)
-            Me.ClearLabelErrSign(lblRejectReason)
+            ClearLabelErrSign(lblCheckRejectedOn)
+            ClearLabelErrSign(lblRejectReason)
         End Sub
 
 #End Region
@@ -217,13 +217,13 @@ Namespace Certificates
 
         Protected Sub EnableDisableFields()
             Try
-                Me.ChangeEnabledProperty(Me.txtCheckRejectedOn, True)
-                Me.ChangeEnabledProperty(Me.txtSltRejectedChk, True)
-                Me.ChangeEnabledProperty(Me.ddlRejectReason, True)
-                Me.ChangeEnabledProperty(Me.txtCheckComments, True)
-                Me.btnBack.Enabled = True
+                ChangeEnabledProperty(txtCheckRejectedOn, True)
+                ChangeEnabledProperty(txtSltRejectedChk, True)
+                ChangeEnabledProperty(ddlRejectReason, True)
+                ChangeEnabledProperty(txtCheckComments, True)
+                btnBack.Enabled = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -231,63 +231,63 @@ Namespace Certificates
             Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Try
                 'Me.ddlRejectReason.PopulateOld("PYMT_REJ_CODE", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.None, String.Empty, ListValueType.Description)
-                Me.ddlRejectReason.Populate(CommonConfigManager.Current.ListManager.GetList("PYMT_REJ_CODE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                ddlRejectReason.Populate(CommonConfigManager.Current.ListManager.GetList("PYMT_REJ_CODE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                  {
                    .ValueFunc = AddressOf .GetExtendedCode
                  })
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub BindBoPropertiesToLabels()
             Try
-                Me.ClearGridHeadersAndLabelsErrSign()
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "RejectDate", Me.lblCheckRejectedOn)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "SelectRejectCheck", Me.lblSltRejectedChk)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "RejectReasonXcd", Me.lblRejectReason)
-                Me.BindBOPropertyToLabel(Me.State.MyBO, "Comments", Me.lblCheckComments)
+                ClearGridHeadersAndLabelsErrSign()
+                BindBOPropertyToLabel(State.MyBO, "RejectDate", lblCheckRejectedOn)
+                BindBOPropertyToLabel(State.MyBO, "SelectRejectCheck", lblSltRejectedChk)
+                BindBOPropertyToLabel(State.MyBO, "RejectReasonXcd", lblRejectReason)
+                BindBOPropertyToLabel(State.MyBO, "Comments", lblCheckComments)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub PopulateFormFromBOs()
             Try
-                With Me.State.MyBO
-                    Me.PopulateControlFromBOProperty(Me.txtCheckRejectedOn, .RejectDate)
-                    Me.PopulateControlFromBOProperty(Me.txtSltRejectedChk, .SelectRejectCheck)
-                    Me.PopulateControlFromBOProperty(Me.txtCheckComments, .Comments)
+                With State.MyBO
+                    PopulateControlFromBOProperty(txtCheckRejectedOn, .RejectDate)
+                    PopulateControlFromBOProperty(txtSltRejectedChk, .SelectRejectCheck)
+                    PopulateControlFromBOProperty(txtCheckComments, .Comments)
                     BindSelectItem(.RejectReasonXcd, ddlRejectReason)
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub PopulateBOsFormFrom()
             Try
-                With Me.State.MyBO
-                    Me.PopulateBOProperty(Me.State.MyBO, "RejectDate", Me.txtCheckRejectedOn)
-                    Me.PopulateBOProperty(Me.State.MyBO, "SelectRejectCheck", Me.txtSltRejectedChk)
-                    Me.PopulateBOProperty(Me.State.MyBO, "RejectReasonXcd", Me.ddlRejectReason, False, True)
-                    Me.PopulateBOProperty(Me.State.MyBO, "Comments", Me.txtCheckComments)
+                With State.MyBO
+                    PopulateBOProperty(State.MyBO, "RejectDate", txtCheckRejectedOn)
+                    PopulateBOProperty(State.MyBO, "SelectRejectCheck", txtSltRejectedChk)
+                    PopulateBOProperty(State.MyBO, "RejectReasonXcd", ddlRejectReason, False, True)
+                    PopulateBOProperty(State.MyBO, "Comments", txtCheckComments)
                 End With
-                If Me.ErrCollection.Count > 0 Then
+                If ErrCollection.Count > 0 Then
                     Throw New PopulateBOErrorException
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CleanPopupInput()
             Try
-                If Not Me.State Is Nothing Then
+                If State IsNot Nothing Then
                     'Clean after consuming the action
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                    Me.HiddenSaveChangesPromptResponse.Value = ""
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                    HiddenSaveChangesPromptResponse.Value = ""
                 End If
             Catch ex As Exception
             End Try
@@ -295,15 +295,15 @@ Namespace Certificates
 
         Protected Sub CheckIfComingFromSaveConfirm()
             Try
-                Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-                Dim actionInProgress As ElitaPlusPage.DetailPageCommand = Me.State.ActionInProgress
+                Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+                Dim actionInProgress As ElitaPlusPage.DetailPageCommand = State.ActionInProgress
                 'Clean after consuming the action
                 CleanPopupInput()
-                If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+                If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
                     If actionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
                         Try
-                            Me.CreateNew()
-                            Me.PopulateBOsFormFrom()
+                            CreateNew()
+                            PopulateBOsFormFrom()
 
                             Dim rejectpayment_id As Guid = Guid.Empty
                             Dim Err_Code As Integer = 0
@@ -311,80 +311,80 @@ Namespace Certificates
 
                             Dim chkPay As CheckReject = New CheckReject()
 
-                            Me.State.MyBO.EndEdit()
+                            State.MyBO.EndEdit()
                             'need to write method
-                            chkPay.AddRejectPayment(Me.State.MyBO.RejectDate, Me.State.MyBO.Id, Me.State.MyBO.RejectReasonXcd, Me.State.MyBO.Comments, Err_Code, Err_Message)
+                            chkPay.AddRejectPayment(State.MyBO.RejectDate, State.MyBO.Id, State.MyBO.RejectReasonXcd, State.MyBO.Comments, Err_Code, Err_Message)
 
                             If Err_Code = 0 Then
-                                Me.MasterPage.MessageController.AddSuccess(Message.RECORD_ADDED_OK)
+                                MasterPage.MessageController.AddSuccess(Message.RECORD_ADDED_OK)
                                 btnAdd_WRITE.Enabled = False
-                                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
-                                Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
+                                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+                                NavController.Navigate(Me, FlowEvents.EVENT_BACK)
                             Else
-                                Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED + "<BR/>" + Err_Message)
+                                MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED + "<BR/>" + Err_Message)
                             End If
                         Catch ex As Threading.ThreadAbortException
                         Catch ex As Exception
-                            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                            HandleErrors(ex, MasterPage.MessageController)
                         End Try
                     Else
-                        Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
+                        NavController.Navigate(Me, FlowEvents.EVENT_BACK)
                     End If
-                ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
+                ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
                     Select Case actionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.State.MyBO.cancelEdit()
-                            Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
+                            State.MyBO.cancelEdit()
+                            NavController.Navigate(Me, FlowEvents.EVENT_BACK)
                         Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                            Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                            MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
                     End Select
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub CreateNew()
-            Me.MasterPage.MessageController.Clear_Hide()
-            Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-            Me.State.MyBO = Nothing '
+            MasterPage.MessageController.Clear_Hide()
+            State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+            State.MyBO = Nothing '
             ' Me.NavController.State = Nothing
-            Me.State.MyBO.BeginEdit()
+            State.MyBO.BeginEdit()
         End Sub
 
 #End Region
 
 #Region "Button Clicks"
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_ Then
-                    Me.State.MyBO.cancelEdit()
-                    Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
+                    State.MyBO.cancelEdit()
+                    NavController.Navigate(Me, FlowEvents.EVENT_BACK)
                 End If
 
-                If Me.State.MyBO.IsDirty AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                If State.MyBO.IsDirty AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.State.MyBO.cancelEdit()
-                    Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
+                    State.MyBO.cancelEdit()
+                    NavController.Navigate(Me, FlowEvents.EVENT_BACK)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+                HandleErrors(ex, MasterPage.MessageController)
+                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = MasterPage.MessageController.Text
             End Try
         End Sub
 
-        Private Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+        Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
             Try
                 'Me.CreateNew()
-                Me.PopulateBOsFormFrom()
-                Me.State.MyBO.Validate()
+                PopulateBOsFormFrom()
+                State.MyBO.Validate()
 
                 'Dim rejectpayment_id As Guid = Guid.Empty
                 Dim Err_Code As Integer = 0
@@ -392,7 +392,7 @@ Namespace Certificates
 
                 Dim Paydate As Date
                 Dim Rejectdate As Date
-                Paydate = CType(Me.NavController.ParametersPassed, Parameters).PaymentDate.ToString
+                Paydate = CType(NavController.ParametersPassed, Parameters).PaymentDate.ToString
                 Rejectdate = DateHelper.GetDateValue(txtCheckRejectedOn.Text)
 
                 If CDate(Paydate) >= CDate(Rejectdate) Or CDate(Rejectdate) > DateTime.Today Then
@@ -401,22 +401,22 @@ Namespace Certificates
                 End If
 
                 Dim chkPay As CheckReject = New CheckReject()
-                Me.State.MyBO.EndEdit()
-                chkPay.AddRejectPayment(Me.State.MyBO.RejectDate, Me.State.SelectedPaymentId, Me.State.MyBO.RejectReasonXcd, Me.State.MyBO.Comments, Err_Code, Err_Message)
+                State.MyBO.EndEdit()
+                chkPay.AddRejectPayment(State.MyBO.RejectDate, State.SelectedPaymentId, State.MyBO.RejectReasonXcd, State.MyBO.Comments, Err_Code, Err_Message)
 
                 If Err_Code = 0 Then
-                    Me.MasterPage.MessageController.AddSuccess(Message.RECORD_ADDED_OK)
+                    MasterPage.MessageController.AddSuccess(Message.RECORD_ADDED_OK)
                     btnAdd_WRITE.Enabled = False
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED + "<BR/>" + Err_Message)
+                    MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED + "<BR/>" + Err_Message)
                 End If
 
             Catch ex As BOValidationException
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 

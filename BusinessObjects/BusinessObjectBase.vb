@@ -51,7 +51,7 @@ Public MustInherit Class BusinessObjectBase
     End Sub
 
     Protected Sub New(ByVal isDSCreator As Boolean)
-        Me._isDSCreator = isDSCreator
+        _isDSCreator = isDSCreator
         UniqueId = (Guid.NewGuid).ToString
     End Sub
 
@@ -97,10 +97,10 @@ Public MustInherit Class BusinessObjectBase
 
     Friend Property Row() As DataRow
         Get
-            Return Me._row
+            Return _row
         End Get
         Set(ByVal Value As DataRow)
-            Me._row = Value
+            _row = Value
             'If Not _row Is Nothing Then
             '    AddSystemColumns()
             'End If
@@ -109,34 +109,34 @@ Public MustInherit Class BusinessObjectBase
 
     Friend Property Dataset() As DataSet
         Get
-            Return Me._ds
+            Return _ds
         End Get
         Set(ByVal Value As DataSet)
-            Me._ds = Value
+            _ds = Value
         End Set
     End Property
 
     Protected Sub CheckIsOld()
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException(Common.ErrorCodes.BO_CANNOT_BE_UPDATED)
         End If
     End Sub
 
     Protected Sub CheckDeleted()
-        If Me.IsDeleted Then
+        If IsDeleted Then
             Throw New BOInvalidOperationException(Common.ErrorCodes.BO_IS_DELETED)
         End If
     End Sub
 
     Protected Sub WriteOnceCheck()
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException(Common.ErrorCodes.WRITE_ONLY_ONCE)
         End If
     End Sub
 
     'this overloaded version is used after a FIND operation on a DataTable
     Protected Overloads Sub CheckDataNotFound()
-        If Me.Row Is Nothing Then
+        If Row Is Nothing Then
             Throw New DataNotFoundException
         End If
     End Sub
@@ -250,7 +250,7 @@ Public MustInherit Class BusinessObjectBase
     End Sub
 
     Protected Sub SetCreatedAuditInfo()
-        Me.Row(DALBase.COL_NAME_CREATED_BY) = ElitaPlusIdentity.Current.ActiveUser.NetworkId
+        Row(DALBase.COL_NAME_CREATED_BY) = ElitaPlusIdentity.Current.ActiveUser.NetworkId
         'note that we dont set any date audit columns because the Oracle triggers do it
         'Me.Row(Me.COL_ACTIVE_FLAG_YN) = "Y"
         'Me.Row(Me.COL_MAINT_BY_KEY) = Security.PASIdentity.Current.ResourceID
@@ -258,7 +258,7 @@ Public MustInherit Class BusinessObjectBase
     End Sub
 
     Protected Sub SetModifiedAuditInfo()
-        Me.Row(DALBase.COL_NAME_MODIFIED_BY) = ElitaPlusIdentity.Current.ActiveUser.NetworkId
+        Row(DALBase.COL_NAME_MODIFIED_BY) = ElitaPlusIdentity.Current.ActiveUser.NetworkId
         'TODO Change COL_LAST_ADMIN_CHANGE_DT if the user is in the Admin Role
         'If Security.PASIdentity.Current.ResourceID <> Row(Me.COL_MAINT_BY_KEY).ToString Then
         '    Row(Me.COL_MAINT_BY_KEY) = Security.PASIdentity.Current.ResourceID
@@ -296,7 +296,7 @@ Public MustInherit Class BusinessObjectBase
 
         'if the bo is new, you cannot access the targetVersion value of a column,
         'so we will just check to see if the current version of column has a value
-        If Me.IsNew AndAlso Not Me.IsBeingEdited Then
+        If IsNew AndAlso Not IsBeingEdited Then
             If Row.IsNull(col, DataRowVersion.Current) Then
                 Return False
             Else
@@ -592,13 +592,13 @@ Public MustInherit Class BusinessObjectBase
             'Me.CheckDeleted()
             'Return (Row.RowState = DataRowState.Modified) Or (Row.RowState = DataRowState.Added) Or (Row.RowState = DataRowState.Deleted)
 
-            If Me.Row.HasVersion(DataRowVersion.Proposed) Then
+            If Row.HasVersion(DataRowVersion.Proposed) Then
                 'The object is being edited so it will be different if it is different from the current version
                 'Which contains the values before calling the begin edit
                 Dim i As Integer = 0
                 For i = 0 To Row.Table.Columns.Count - 1
                     If Not Row.Table.Columns(i).ColumnName.StartsWith("_SYSTEM") Then
-                        If Me.CheckColumnChanged(Row.Table.Columns(i).ColumnName, DataRowVersion.Proposed) Then
+                        If CheckColumnChanged(Row.Table.Columns(i).ColumnName, DataRowVersion.Proposed) Then
                             Return True
                         End If
                     End If
@@ -613,7 +613,7 @@ Public MustInherit Class BusinessObjectBase
                     Case DataRowState.Deleted
                         Return True
                     Case DataRowState.Modified
-                        Return Me.AnyColumnHasChanged
+                        Return AnyColumnHasChanged
                     Case DataRowState.Detached
                         Throw New BOInvalidOperationException("Cannot call IsDirty on an object with a detached row")
                 End Select
@@ -629,7 +629,7 @@ Public MustInherit Class BusinessObjectBase
             For Each col In Row.Table.Columns
                 'Exclude Internal System added columns
                 If Not col.ColumnName.ToUpper.StartsWith("_SYSTEM") Then
-                    If Me.CheckColumnChanged(col.ColumnName) Then
+                    If CheckColumnChanged(col.ColumnName) Then
                         ht.Add(col.ColumnName.ToUpper, col)
                     End If
                 End If
@@ -641,7 +641,7 @@ Public MustInherit Class BusinessObjectBase
 
     Public Overridable ReadOnly Property IsChildrenDirty() As Boolean
         Get
-            Dim chidrenCollections As ArrayList = Me.GetChildrenCollections
+            Dim chidrenCollections As ArrayList = GetChildrenCollections
             Dim coll As BusinessObjectListBase
             For Each coll In chidrenCollections
                 If Not coll Is Nothing AndAlso coll.IsDirty Then Return True
@@ -652,7 +652,7 @@ Public MustInherit Class BusinessObjectBase
 
     Public Overridable ReadOnly Property IsFamilyDirty() As Boolean
         Get
-            Return Me.Dataset.HasChanges()
+            Return Dataset.HasChanges()
         End Get
     End Property
 
@@ -672,7 +672,7 @@ Public MustInherit Class BusinessObjectBase
 
     Public Overridable ReadOnly Property IsValid() As Boolean
         Get
-            Dim errors() As ValidationError = Me.FindValidationErrors()
+            Dim errors() As ValidationError = FindValidationErrors()
             If Not errors Is Nothing AndAlso errors.Length > 0 Then
                 Return False
             Else
@@ -683,7 +683,7 @@ Public MustInherit Class BusinessObjectBase
 
     Public ReadOnly Property ValidationErrors() As ValidationError()
         Get
-            Return Me.FindValidationErrors
+            Return FindValidationErrors
         End Get
     End Property
 
@@ -695,7 +695,7 @@ Public MustInherit Class BusinessObjectBase
             For Each col In Row.Table.Columns
                 'Exclude Internal System added columns
                 If Not col.ColumnName.ToUpper.StartsWith("_SYSTEM") Then
-                    If Me.CheckColumnChanged(col.ColumnName) Then
+                    If CheckColumnChanged(col.ColumnName) Then
                         Return True
                     End If
 
@@ -708,13 +708,13 @@ Public MustInherit Class BusinessObjectBase
 
     Public ReadOnly Property IsSaveNew() As Boolean
         Get
-            Return Me.CreatedById Is Nothing
+            Return CreatedById Is Nothing
         End Get
     End Property
 
     Public ReadOnly Property IsBeingEdited() As Boolean
         Get
-            Return Me.Row.HasVersion(DataRowVersion.Proposed)
+            Return Row.HasVersion(DataRowVersion.Proposed)
         End Get
     End Property
 
@@ -769,9 +769,9 @@ Public MustInherit Class BusinessObjectBase
 
     'collType must inherit from BusinessObjectListBase
     Public Sub AddChildrenCollection(ByVal collType As Type)
-        Dim columnName As String = Me.SYSTEM_CHILDREN_COLLECTION_COL_NAME & collType.Name
-        If Me.Row.Table.Columns.IndexOf(columnName) < 0 Then
-            Me.Row.Table.Columns.Add(columnName, GetType(String))
+        Dim columnName As String = SYSTEM_CHILDREN_COLLECTION_COL_NAME & collType.Name
+        If Row.Table.Columns.IndexOf(columnName) < 0 Then
+            Row.Table.Columns.Add(columnName, GetType(String))
         End If
         Dim assemblyName As String = collType.Assembly.FullName
         Dim typeName As String = collType.FullName
@@ -781,21 +781,21 @@ Public MustInherit Class BusinessObjectBase
     Public Function GetChildrenCollections() As ArrayList
         Dim result As New ArrayList
         Dim column As DataColumn
-        For Each column In Me.Row.Table.Columns
-            If column.ColumnName.ToUpper.StartsWith(Me.SYSTEM_CHILDREN_COLLECTION_COL_NAME) Then
-                result.Add(Me.GetChildrenCollection(column.ColumnName))
+        For Each column In Row.Table.Columns
+            If column.ColumnName.ToUpper.StartsWith(SYSTEM_CHILDREN_COLLECTION_COL_NAME) Then
+                result.Add(GetChildrenCollection(column.ColumnName))
             End If
         Next
         Return result
     End Function
 
     Public Function GetChildrenCollection(ByVal collType As Type) As BusinessObjectListBase
-        Return Me.GetChildrenCollection(Me.SYSTEM_CHILDREN_COLLECTION_COL_NAME & collType.Name)
+        Return GetChildrenCollection(SYSTEM_CHILDREN_COLLECTION_COL_NAME & collType.Name)
     End Function
 
     Public Function IsChildrenCollectionLoaded(ByVal collType As Type) As Boolean
-        Dim columnName As String = Me.SYSTEM_CHILDREN_COLLECTION_COL_NAME & collType.Name
-        If Me.Row.Table.Columns.IndexOf(columnName) >= 0 AndAlso Not Me.Row(columnName) Is DBNull.Value Then
+        Dim columnName As String = SYSTEM_CHILDREN_COLLECTION_COL_NAME & collType.Name
+        If Row.Table.Columns.IndexOf(columnName) >= 0 AndAlso Not Row(columnName) Is DBNull.Value Then
             Return True
         Else
             Return False
@@ -803,15 +803,15 @@ Public MustInherit Class BusinessObjectBase
     End Function
 
     Private Function GetChildrenCollection(ByVal columnName As String) As BusinessObjectListBase
-        If Me.Row.Table.Columns.IndexOf(columnName) < 0 OrElse Me.Row(columnName) Is DBNull.Value Then
+        If Row.Table.Columns.IndexOf(columnName) < 0 OrElse Row(columnName) Is DBNull.Value Then
             Return Nothing
         End If
-        Dim fieldParsedContents() As String = System.Text.RegularExpressions.Regex.Split(Me.Row(columnName), "\|")
+        Dim fieldParsedContents() As String = System.Text.RegularExpressions.Regex.Split(Row(columnName), "\|")
         Dim assemblyName As String = fieldParsedContents(0)
         Dim typeName As String = fieldParsedContents(1)
         Dim collAssembly As [Assembly] = System.Reflection.Assembly.Load(assemblyName)
         Dim collType As Type = collAssembly.GetType(typeName)
-        Dim list As BusinessObjectListBase = collType.GetConstructor(New Type() {Me.GetType}).Invoke(New Object() {Me})
+        Dim list As BusinessObjectListBase = collType.GetConstructor(New Type() {[GetType]}).Invoke(New Object() {Me})
         Return list
         'Dim objHandle As System.Runtime.Remoting.ObjectHandle = System.Activator.CreateInstance(assemblyName, typeName, New Object() {Me})
         'Return CType(objHandle.Unwrap, BusinessObjectListBase)
@@ -825,21 +825,21 @@ Public MustInherit Class BusinessObjectBase
 #Region "Public Methods"
     ' this method will make the BO dirty so the audit fields will be updated.
     Public Overridable Sub Touch()
-        Me.Row.Item(DALBase.COL_NAME_MODIFIED_DATE) = System.DateTime.Now
+        Row.Item(DALBase.COL_NAME_MODIFIED_DATE) = System.DateTime.Now
     End Sub
 
     Public Overridable Sub Delete()
-        Me.CheckDeleted()
+        CheckDeleted()
 
         'First Delete the Children
-        Me.DeleteChildren()
+        DeleteChildren()
 
         Row.Delete()
         'Me._isDeleted = True 'ARF commented out on 10/4/04
     End Sub
 
     Public Overridable Sub DeleteChildren()
-        Dim chidrenCollections As ArrayList = Me.GetChildrenCollections
+        Dim chidrenCollections As ArrayList = GetChildrenCollections
         Dim coll As BusinessObjectListBase
         For Each coll In chidrenCollections
             If Not coll Is Nothing Then
@@ -855,13 +855,13 @@ Public MustInherit Class BusinessObjectBase
         If Row.RowState = DataRowState.Detached Then
             Return 'Nothing to do. This is the case when something is added and delted before calling save
         End If
-        If Not Me.IsDeleted Then
-            Me.Validate()
+        If Not IsDeleted Then
+            Validate()
         End If
-        If Me.IsNew Then
-            Me.SetCreatedAuditInfo()
-        ElseIf Not Me.IsDeleted AndAlso Me.IsDirty Then
-            Me.SetModifiedAuditInfo()
+        If IsNew Then
+            SetCreatedAuditInfo()
+        ElseIf Not IsDeleted AndAlso IsDirty Then
+            SetModifiedAuditInfo()
         End If
     End Sub
 
@@ -917,7 +917,7 @@ Public MustInherit Class BusinessObjectBase
         Dim errors() As ValidationError = FindValidationErrors()
 
         If Not errors Is Nothing AndAlso errors.Length > 0 Then
-            Throw New BOValidationException(errors, Me.GetType.FullName, Me.UniqueId)
+            Throw New BOValidationException(errors, [GetType].FullName, UniqueId)
         End If
     End Sub
 
@@ -930,14 +930,14 @@ Public MustInherit Class BusinessObjectBase
     Public Sub VerifyConcurrency(ByVal sModifiedDate As String)
         Dim dtModifiedDate As DateType
 
-        If (Not sModifiedDate = String.Empty AndAlso (Not Me.ModifiedDate Is Nothing)) Then
+        If (Not sModifiedDate = String.Empty AndAlso (Not ModifiedDate Is Nothing)) Then
             dtModifiedDate = New DateType(CType(sModifiedDate, Date))
-            If Me.ModifiedDate.Value <> dtModifiedDate.Value Then
+            If ModifiedDate.Value <> dtModifiedDate.Value Then
                 ' Modified Dates are different
                 Throw New DALConcurrencyAccessException
             End If
         Else
-            If (Not Me.ModifiedDate Is Nothing) Then
+            If (Not ModifiedDate Is Nothing) Then
                 ' First Instance does not have modified date but Second Instance has a modified date
                 Throw New DALConcurrencyAccessException
             End If
@@ -948,7 +948,7 @@ Public MustInherit Class BusinessObjectBase
     'Properties named as "ID" are not copied either
     Public Sub CopyFrom(ByVal original As BusinessObjectBase, Optional ByVal includeParentProperties As Boolean = False)
         Dim fromType As Type = original.GetType
-        Dim toType As Type = Me.GetType
+        Dim toType As Type = [GetType]
         Dim fromProp As PropertyInfo
 
         For Each fromProp In fromType.GetProperties(BindingFlags.Public Or BindingFlags.Instance)
@@ -972,7 +972,7 @@ Public MustInherit Class BusinessObjectBase
     'Copy all the Public properties with the same name in both objects that are in the class of the original.     
     Public Sub Clone(ByVal original As BusinessObjectBase)
         Dim fromType As Type = original.GetType
-        Dim toType As Type = Me.GetType
+        Dim toType As Type = [GetType]
         Dim fromProp As PropertyInfo
 
         For Each fromProp In fromType.GetProperties(BindingFlags.Public Or BindingFlags.Instance)
@@ -1090,10 +1090,10 @@ Public MustInherit Class BusinessObjectBase
     Public Function SetPropertyByColumnName(ByVal ColumnName As String, ByVal Value As Object) As Boolean
 
         'If column doesn't exist, return false.  
-        If Me.Row.Table.Columns(ColumnName) Is Nothing Then Return False
+        If Row.Table.Columns(ColumnName) Is Nothing Then Return False
 
         Try
-            Me.SetValue(ColumnName, Value)
+            SetValue(ColumnName, Value)
             Return True
         Catch ex As Exception
             Throw ex

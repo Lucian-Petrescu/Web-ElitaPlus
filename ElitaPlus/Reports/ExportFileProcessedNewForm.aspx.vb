@@ -53,37 +53,37 @@ Namespace Reports
 
         Public Property ReportFileName As String
             Get
-                Return Me.State.ReportFileName
+                Return State.ReportFileName
             End Get
-            Set(ByVal value As String)
-                Me.State.ReportFileName = value
+            Set(value As String)
+                State.ReportFileName = value
             End Set
         End Property
 
         Public Property LoadStatus As String
             Get
-                Return Me.State.LoadStatus
+                Return State.LoadStatus
             End Get
-            Set(ByVal value As String)
-                Me.State.LoadStatus = value
+            Set(value As String)
+                State.LoadStatus = value
             End Set
         End Property
 
         Public Property FileProcessedId As Guid
             Get
-                Return Me.State.FileProcessedId
+                Return State.FileProcessedId
             End Get
-            Set(ByVal value As Guid)
-                Me.State.FileProcessedId = value
+            Set(value As Guid)
+                State.FileProcessedId = value
             End Set
         End Property
 
         Public Property ServiceCenterId As Guid
             Get
-                Return Me.State.ServiceCenterId
+                Return State.ServiceCenterId
             End Get
-            Set(ByVal value As Guid)
-                Me.State.ServiceCenterId = value
+            Set(value As Guid)
+                State.ServiceCenterId = value
             End Set
         End Property
 
@@ -103,7 +103,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -114,32 +114,32 @@ Namespace Reports
 #Region "Handlers-Init"
 
         Private Sub SetStateProperties()
-            Me.State.FileProcessedId = CType(CType(Me.CallingParameters, MyState).FileProcessedId, Guid)
-            Me.State.moFileTypeCode = CType(CType(Me.CallingParameters, MyState).moFileTypeCode, FileProcessedData.FileTypeCode)
-            Me.State.LoadStatus = CType(Me.CallingParameters, MyState).LoadStatus
-            Me.State.ReportFileName = CType(Me.CallingParameters, MyState).ReportFileName
-            Me.State.reportType = CType(Me.CallingParameters, MyState).reportType
-            Me.State.oReturnType = CType(Me.CallingParameters, MyState).oReturnType
-            Me.State.ServiceCenterId = CType(CType(Me.CallingParameters, MyState).ServiceCenterId, Guid)
+            State.FileProcessedId = CType(CType(CallingParameters, MyState).FileProcessedId, Guid)
+            State.moFileTypeCode = CType(CType(CallingParameters, MyState).moFileTypeCode, FileProcessedData.FileTypeCode)
+            State.LoadStatus = CType(CallingParameters, MyState).LoadStatus
+            State.ReportFileName = CType(CallingParameters, MyState).ReportFileName
+            State.reportType = CType(CallingParameters, MyState).reportType
+            State.oReturnType = CType(CallingParameters, MyState).oReturnType
+            State.ServiceCenterId = CType(CType(CallingParameters, MyState).ServiceCenterId, Guid)
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             Try
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 If Not IsPostBack Then
                     InitializeForm()
                 End If
-                Me.InstallDisplayNewReportProgressBar()
+                InstallDisplayNewReportProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
         Private Sub UpdateBreadCrum(TabName As String, Title As String)
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(TabName) & ":"
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(Title)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Title)
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(TabName) & ":"
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(Title)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Title)
 
         End Sub
 
@@ -147,29 +147,29 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.State.oReturnType.LastOperation = ElitaPlusPage.DetailPageCommand.Back
-                Me.ReturnToCallingPage(Me.State.oReturnType)
+                State.oReturnType.LastOperation = ElitaPlusPage.DetailPageCommand.Back
+                ReturnToCallingPage(State.oReturnType)
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
 #End Region
 
 #Region "Handlers-DroDown"
-        Protected Sub OnFromDrop_Changed(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Protected Sub OnFromDrop_Changed(sender As Object, e As System.EventArgs) _
                      Handles moReportCeInputControl.SelectedDestOptionChanged
 
             moReportCeInputControl.UpdateFileNameControlVisible(False)
@@ -184,15 +184,15 @@ Namespace Reports
 
         Private Sub InitializeForm()
             SetStateProperties()
-            Dim FileTypeCode As FileProcessedData.FileTypeCode = Me.State.moFileTypeCode
-            Me.lblEntireRecord.Visible = False
-            Me.moEntireRecordCheck.Visible = False
-            Me.lblIncludeBypassedRecords.Visible = False
-            Me.moInclBypassedRecCheck.Visible = False
+            Dim FileTypeCode As FileProcessedData.FileTypeCode = State.moFileTypeCode
+            lblEntireRecord.Visible = False
+            moEntireRecordCheck.Visible = False
+            lblIncludeBypassedRecords.Visible = False
+            moInclBypassedRecCheck.Visible = False
             TheReportExtractInputControl.SetExportOnly()
             TheReportExtractInputControl.DestinationVisible = False
 
-            If Me.State.reportType.Equals(PROCESSED_EXPORT) Then
+            If State.reportType.Equals(PROCESSED_EXPORT) Then
                 UpdateBreadCrum(TAB_NAME_PROCESSED_EXPORT, VENDINV_PAGETITLE)
             Else
                 UpdateBreadCrum(TAB_NAME_REJECT_REPORT, VENDINV_PAGETITLE)
@@ -206,14 +206,14 @@ Namespace Reports
         Private Sub GenerateReport()
 
             Dim sEntireRecordOnly As String = "N"
-            Dim FileTypeCode As FileProcessedData.FileTypeCode = Me.State.moFileTypeCode
+            Dim FileTypeCode As FileProcessedData.FileTypeCode = State.moFileTypeCode
             Dim sIncludeByPassRecs As String = "Y"
             Dim reportParams As New System.Text.StringBuilder
-            Me.State.MyBO = New ReportRequests
-            Me.State.ForEdit = True
+            State.MyBO = New ReportRequests
+            State.ForEdit = True
 
-            If Me.moInclBypassedRecCheck.Visible Then
-                If Not Me.moInclBypassedRecCheck.Checked Then
+            If moInclBypassedRecCheck.Visible Then
+                If Not moInclBypassedRecCheck.Checked Then
                     sIncludeByPassRecs = "N"
                 End If
             End If
@@ -223,42 +223,42 @@ Namespace Reports
                     reportParams.AppendFormat("V_FILE_PROCESSED_ID=> '{0}',", DALBase.GuidToSQLString(FileProcessedId))
                     reportParams.AppendFormat("V_SERVICE_CENTER_ID=> '{0}',", DALBase.GuidToSQLString(ServiceCenterId))
                     reportParams.AppendFormat("V_LANGUAGE_ID => '{0}',", DALBase.GuidToSQLString(Thread.CurrentPrincipal.GetLanguageId()))
-                    reportParams.AppendFormat("V_FILE_NAME => '{0}',", Me.State.ReportFileName)
-                    Select Case Me.State.reportType
+                    reportParams.AppendFormat("V_FILE_NAME => '{0}',", State.ReportFileName)
+                    Select Case State.reportType
                         Case REJECT_REPORT
                             reportParams.AppendFormat("V_INCLUDE_BYPASS => '{0}',", sIncludeByPassRecs)
                             reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "VENDOR_INVENTORY_REJECT_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "VENDOR_INVENTORY_REJECT_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "R_VENDOR_INVOICE_EXPORT.gen_reject_export")
+                            PopulateBOProperty(State.MyBO, "ReportType", "VENDOR_INVENTORY_REJECT_EXPORT")
+                            PopulateBOProperty(State.MyBO, "ReportProc", "R_VENDOR_INVOICE_EXPORT.gen_reject_export")
                         Case PROCESSED_EXPORT
                             'ProcessedPayments-Exp_EN
                             reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "VENDOR_INVENTORY_PROCESS_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "VENDOR_INVENTORY_PROCESS_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "R_VENDOR_INVOICE_EXPORT.gen_processed_export")
+                            PopulateBOProperty(State.MyBO, "ReportType", "VENDOR_INVENTORY_PROCESS_EXPORT")
+                            PopulateBOProperty(State.MyBO, "ReportProc", "R_VENDOR_INVOICE_EXPORT.gen_processed_export")
                     End Select
             End Select
 
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
-            Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+            PopulateBOProperty(State.MyBO, "ReportParameters", reportParams.ToString())
+            PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
             ScheduleReport()
         End Sub
 
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = TheReportExtractInputControl.GetSchedDate()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
+                    State.IsNew = False
+                    State.HasDataChanged = True
+                    State.MyBO.CreateJob(scheduleDate)
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region

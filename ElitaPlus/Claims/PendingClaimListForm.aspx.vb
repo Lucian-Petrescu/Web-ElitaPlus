@@ -20,7 +20,7 @@ Partial Class PendingClaimListForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -100,17 +100,17 @@ Partial Class PendingClaimListForm
     Protected Shadows ReadOnly Property State() As MyState
         Get
             'Return CType(MyBase.State, MyState)
-            If Me.NavController.State Is Nothing Then
-                Me.NavController.State = New MyState
+            If NavController.State Is Nothing Then
+                NavController.State = New MyState
             Else
-                If Me.NavController.IsFlowEnded Then
+                If NavController.IsFlowEnded Then
                     'restart flow
-                    Dim s As MyState = CType(Me.NavController.State, MyState)
-                    Me.StartNavControl()
-                    Me.NavController.State = s
+                    Dim s As MyState = CType(NavController.State, MyState)
+                    StartNavControl()
+                    NavController.State = s
                 End If
             End If
-            Return CType(Me.NavController.State, MyState)
+            Return CType(NavController.State, MyState)
         End Get
     End Property
 
@@ -119,59 +119,59 @@ Partial Class PendingClaimListForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
 
-        Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
-        Me.ErrControllerMaster.Clear_Hide()
+        Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
+        ErrControllerMaster.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 'This Code must be the first thing to execute
-                If Not Me.IsReturningFromChild Then
-                    Me.StartNavControl()
+                If Not IsReturningFromChild Then
+                    StartNavControl()
                 End If
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
-                Trace(Me, "Cert = " & Me.State.certificate & "@ Claim = " & Me.State.claimNumber)
-                Me.SetDefaultButton(Me.TextBoxSearchClaimNumber, btnSearch)
-                Me.SetDefaultButton(Me.TextBoxSearchCertificate, btnSearch)
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
+                Trace(Me, "Cert = " & State.certificate & "@ Claim = " & State.claimNumber)
+                SetDefaultButton(TextBoxSearchClaimNumber, btnSearch)
+                SetDefaultButton(TextBoxSearchCertificate, btnSearch)
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                Me.State.selectedSortById = LookupListNew.GetIdFromCode(LookupListNew.LK_PENDING_CLAIM_SEARCH_FIELDS, Codes.PENDING_CLAIM_SORT_COLUMN__CLAIM_NUMBER)
-                Me.PopulateDealerDropDown()
+                State.selectedSortById = LookupListNew.GetIdFromCode(LookupListNew.LK_PENDING_CLAIM_SEARCH_FIELDS, Codes.PENDING_CLAIM_SORT_COLUMN__CLAIM_NUMBER)
+                PopulateDealerDropDown()
                 PopulateSearchFieldsFromState()
-                Me.TranslateGridHeader(PendingGrid)
-                Me.TranslateGridControls(PendingGrid)
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = 10) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        Me.PendingGrid.PageSize = Me.State.selectedPageSize
+                TranslateGridHeader(PendingGrid)
+                TranslateGridControls(PendingGrid)
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = 10) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        PendingGrid.PageSize = State.selectedPageSize
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
-                Me.SetGridItemStyleColor(Me.PendingGrid)
-                SetFocus(Me.TextBoxSearchClaimNumber)
+                SetGridItemStyleColor(PendingGrid)
+                SetFocus(TextBoxSearchClaimNumber)
             End If
-            Me.DisplayProgressBarOnClick(Me.btnSearch, "Loading_Pending_Claims")
+            DisplayProgressBarOnClick(btnSearch, "Loading_Pending_Claims")
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 
     'Private Sub SetDefaultButton(ByVal txt As TextBox, ByVal defaultButton As Button)
     '    txt.Attributes.Add("onkeydown", "fnTrapKD(" + defaultButton.ClientID + ",event)")
     'End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
-            Dim retObj As ClaimForm.ReturnType = CType(Me.ReturnedValues, ClaimForm.ReturnType)
-            If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                Me.State.searchDV = Nothing
+            MenuEnabled = True
+            IsReturningFromChild = True
+            Dim retObj As ClaimForm.ReturnType = CType(ReturnedValues, ClaimForm.ReturnType)
+            If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                State.searchDV = Nothing
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -188,9 +188,9 @@ Partial Class PendingClaimListForm
                                                    .AddBlankItem = True
                                                    })
 
-            Me.SetSelectedItem(Me.cboSearchDealer, Me.State.selectedDealerId)
+            SetSelectedItem(cboSearchDealer, State.selectedDealerId)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -209,7 +209,7 @@ Partial Class PendingClaimListForm
             oListContext.CompanyId = UserCompanies(Index)
             Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
-                If Not oDealerList Is Nothing Then
+                If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
                 Else
                     oDealerList = oDealerListForCompany.Clone()
@@ -227,41 +227,41 @@ Partial Class PendingClaimListForm
         Try
             PopulateStateFromSearchFields()
 
-            If (Me.State.searchDV Is Nothing) Then
-                Dim sortBy As String = Me.GetSortByColumn
+            If (State.searchDV Is Nothing) Then
+                Dim sortBy As String = GetSortByColumn
 
-                Me.State.searchDV = Claim.GetPendingClaimList(Me.State.claimNumber, _
-                                                                  Me.State.certificate, _
-                                                                  Me.State.selectedDealer)
-                If (Me.State.SearchClicked) Then
-                    Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
-                    Me.State.SearchClicked = False
+                State.searchDV = Claim.GetPendingClaimList(State.claimNumber, _
+                                                                  State.certificate, _
+                                                                  State.selectedDealer)
+                If (State.SearchClicked) Then
+                    ValidSearchResultCount(State.searchDV.Count, True)
+                    State.SearchClicked = False
                 End If
             End If
 
-            Me.PendingGrid.AutoGenerateColumns = False
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedClaimId, Me.PendingGrid, Me.State.PageIndex)
-            Me.State.PageIndex = Me.PendingGrid.PageIndex
+            PendingGrid.AutoGenerateColumns = False
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedClaimId, PendingGrid, State.PageIndex)
+            State.PageIndex = PendingGrid.PageIndex
 
-            ControlMgr.SetVisibleControl(Me, PendingGrid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, PendingGrid, State.IsGridVisible)
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.PendingGrid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, PendingGrid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.State.searchDV.Count > 0 Then
-                If Me.PendingGrid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
+            If State.searchDV.Count > 0 Then
+                If PendingGrid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
                 End If
-                Me.State.bnoRow = False
-                Me.PendingGrid.DataSource = Me.State.searchDV
-                Me.PendingGrid.AllowSorting = False
-                Me.PendingGrid.DataBind()
+                State.bnoRow = False
+                PendingGrid.DataSource = State.searchDV
+                PendingGrid.AllowSorting = False
+                PendingGrid.DataBind()
             Else
-                If Me.PendingGrid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
+                If PendingGrid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
                 End If
-                Me.State.bnoRow = True
+                State.bnoRow = True
                 CreateHeaderForEmptyGrid(PendingGrid, " ASC")
             End If
 
@@ -271,7 +271,7 @@ Partial Class PendingClaimListForm
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
@@ -279,8 +279,8 @@ Partial Class PendingClaimListForm
     Function GetSortByColumn() As String
         Dim sortbyCode As String
         Try
-            If (Not (Me.State.selectedSortById.Equals(Guid.Empty))) Then
-                sortbyCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PENDING_CLAIM_SEARCH_FIELDS, Me.State.selectedSortById)
+            If (Not (State.selectedSortById.Equals(Guid.Empty))) Then
+                sortbyCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PENDING_CLAIM_SEARCH_FIELDS, State.selectedSortById)
             End If
             Select Case sortbyCode
                 Case Codes.PENDING_CLAIM_SORT_COLUMN__CERT_NUMBER
@@ -295,18 +295,18 @@ Partial Class PendingClaimListForm
                     Return Nothing
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Function
 
     Public Sub PopulateSearchFieldsFromState()
 
         Try
-            Me.TextBoxSearchCertificate.Text = Me.State.certificate
-            Me.TextBoxSearchClaimNumber.Text = Me.State.claimNumber
-            Me.SetSelectedItem(Me.cboSearchDealer, Me.State.selectedDealerId)
+            TextBoxSearchCertificate.Text = State.certificate
+            TextBoxSearchClaimNumber.Text = State.claimNumber
+            SetSelectedItem(cboSearchDealer, State.selectedDealerId)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
@@ -314,21 +314,21 @@ Partial Class PendingClaimListForm
     Public Sub PopulateStateFromSearchFields()
 
         Try
-            Me.State.claimNumber = Me.TextBoxSearchClaimNumber.Text
-            Me.State.certificate = Me.TextBoxSearchCertificate.Text
-            Me.State.selectedDealerId = Me.GetSelectedItem(Me.cboSearchDealer)
-            Me.State.selectedDealer = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, Me.State.selectedDealerId)
+            State.claimNumber = TextBoxSearchClaimNumber.Text
+            State.certificate = TextBoxSearchCertificate.Text
+            State.selectedDealerId = GetSelectedItem(cboSearchDealer)
+            State.selectedDealer = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, State.selectedDealerId)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 
     Public Sub ClearSearch()
-        Me.TextBoxSearchClaimNumber.Text = String.Empty
-        Me.TextBoxSearchCertificate.Text = String.Empty
-        Me.cboSearchDealer.SelectedIndex = 0
+        TextBoxSearchClaimNumber.Text = String.Empty
+        TextBoxSearchCertificate.Text = String.Empty
+        cboSearchDealer.SelectedIndex = 0
     End Sub
 
 #End Region
@@ -337,88 +337,88 @@ Partial Class PendingClaimListForm
 #Region " Datagrid Related "
 
     'The Binding LOgic is here
-    Private Sub Grid_ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles PendingGrid.RowDataBound
+    Private Sub Grid_ItemBound(source As Object, e As GridViewRowEventArgs) Handles PendingGrid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
         Try
-            If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+            If dvRow IsNot Nothing And Not State.bnoRow Then
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CLAIM_ID_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_CLAIM_ID))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CLAIM_NUMBER_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_CLAIM_NUMBER))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CERTIFICATE_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_CERTIFICATE_NUMBER))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_DATE_ADDED_IDX), GetLongDateFormattedString(CType(dvRow(Claim.PendingClaimSearchDV.COL_NAME_DATE_ADDED), Date)))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_ID_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_CLAIM_ID))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_NUMBER_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_CLAIM_NUMBER))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CERTIFICATE_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_CERTIFICATE_NUMBER))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DATE_ADDED_IDX), GetLongDateFormattedString(CType(dvRow(Claim.PendingClaimSearchDV.COL_NAME_DATE_ADDED), Date)))
                     'Me.PopulateControlFromBOProperty(e.Item.Cells(Me.GRID_COL_STATUS_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_STATUS_CODE))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_DEALER_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_DEALER_CODE))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_AUTHORIZED_AMOUNT_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_AUTHORIZED_AMOUNT))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_PRODUCT_CODE_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_PRODUCT_CODE))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DEALER_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_DEALER_CODE))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_AUTHORIZED_AMOUNT_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_AUTHORIZED_AMOUNT))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_PRODUCT_CODE_IDX), dvRow(Claim.PendingClaimSearchDV.COL_NAME_PRODUCT_CODE))
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             PendingGrid.PageIndex = NewCurrentPageIndex(PendingGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Int32)
-            Me.PopulateGrid()
+            State.selectedPageSize = CType(cboPageSize.SelectedValue, Int32)
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
 
-    Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
 
         Try
             Dim index As Integer = Nothing
-            If (Not e.CommandArgument Is Nothing) AndAlso (CType(e.CommandArgument, String)).Length > 0 Then
+            If (e.CommandArgument IsNot Nothing) AndAlso (CType(e.CommandArgument, String)).Length > 0 Then
                 index = Integer.Parse(CType(e.CommandArgument, String))
             End If
             If e.CommandName = "Select" Then
-                Dim row As GridViewRow = Me.PendingGrid.Rows(index)
-                Me.State.selectedClaimId = New Guid(row.Cells(Me.GRID_COL_CLAIM_ID_IDX).Text)
-                Dim claimBo As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(Me.State.selectedClaimId)
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = claimBo
-                Me.NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_SELECTED)
+                Dim row As GridViewRow = PendingGrid.Rows(index)
+                State.selectedClaimId = New Guid(row.Cells(GRID_COL_CLAIM_ID_IDX).Text)
+                Dim claimBo As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(State.selectedClaimId)
+                NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = claimBo
+                NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_SELECTED)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles PendingGrid.PageIndexChanging
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles PendingGrid.PageIndexChanging
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.selectedClaimId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.selectedClaimId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
         Try
             'Me.PopulateSearchFieldsFromState()
-            Me.State.SearchClicked = True
-            Me.State.PageIndex = 0
-            Me.State.selectedClaimId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.PopulateGrid()
+            State.SearchClicked = True
+            State.PageIndex = 0
+            State.selectedClaimId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -426,11 +426,11 @@ Partial Class PendingClaimListForm
     '    Me.callPage(ClaimForm.URL)
     'End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
         Try
-            Me.ClearSearch()
+            ClearSearch()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -443,21 +443,21 @@ Partial Class PendingClaimListForm
 
 
 #Region "Navigation Handling"
-    Public Sub Process(ByVal callingPage As Page, ByVal navCtrl As INavigationController) Implements IStateController.Process
+    Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
         Try
-            If Not Me.IsPostBack AndAlso navCtrl.CurrentFlow.Name = Me.FLOW_NAME AndAlso _
-                        Not navCtrl.PrevNavState Is Nothing Then
-                Me.IsReturningFromChild = True
+            If Not IsPostBack AndAlso navCtrl.CurrentFlow.Name = FLOW_NAME AndAlso _
+                        navCtrl.PrevNavState IsNot Nothing Then
+                IsReturningFromChild = True
                 If navCtrl.IsFlowEnded Then
-                    Me.State.searchDV = Nothing 'This will force a reload
+                    State.searchDV = Nothing 'This will force a reload
                     'restart the flow
                     Dim savedState As MyState = CType(navCtrl.State, MyState)
-                    Me.StartNavControl()
-                    Me.NavController.State = savedState
+                    StartNavControl()
+                    NavController.State = savedState
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region
@@ -466,12 +466,12 @@ Partial Class PendingClaimListForm
     Public Const FLOW_NAME As String = "AUTHORIZE_PENDING_CLAIM_FROM_PENDING_SEARCH"
     Sub StartNavControl()
         Dim nav As New ElitaPlusNavigation
-        Me.NavController = New NavControllerBase(nav.Flow(FLOW_NAME))
-        Me.NavController.State = New MyState
+        NavController = New NavControllerBase(nav.Flow(FLOW_NAME))
+        NavController.State = New MyState
     End Sub
 
     Function IsFlowStarted() As Boolean
-        Return Not Me.NavController Is Nothing AndAlso Me.NavController.CurrentFlow.Name = Me.FLOW_NAME
+        Return NavController IsNot Nothing AndAlso NavController.CurrentFlow.Name = FLOW_NAME
     End Function
 #End Region
 

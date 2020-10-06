@@ -16,7 +16,7 @@ Partial Class ChangeCompany
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         InitializeComponent()
     End Sub
 
@@ -72,41 +72,41 @@ Partial Class ChangeCompany
 
 #Region "Handlers-DropDown"
 
-    Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl) _
+    Private Sub OnFromDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl) _
                     Handles moGroupCompanyMultipleDrop.SelectedDropChanged
         Try
             PopulateUserControlAvailableSelectedCompanies()
         Catch ex As Exception
-            Me.HandleErrors(ex, moErrorController)
+            HandleErrors(ex, moErrorController)
         End Try
     End Sub
 
 #End Region
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
         moErrorController.Clear_Hide()
-        Me.ClearLabelsErrSign()
+        ClearLabelsErrSign()
         Try
             If Not Page.IsPostBack Then
-                Me.State.MyBO = ElitaPlusIdentity.Current.ActiveUser
+                State.MyBO = ElitaPlusIdentity.Current.ActiveUser
 
                 PopulateDropdown()
                 PopulateUserControlAvailableSelectedCompanies()
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, moErrorController)
+            HandleErrors(ex, moErrorController)
         End Try
-        Me.ShowMissingTranslations(moErrorController)
+        ShowMissingTranslations(moErrorController)
 
     End Sub
 
     Public Sub ClearLabelsErrSign()
         Try
-            Me.ClearLabelErrSign(GroupCompanyMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(GroupCompanyMultipleDrop.CaptionLabel)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.moErrorController)
+            HandleErrors(ex, moErrorController)
         End Try
     End Sub
 
@@ -115,7 +115,7 @@ Partial Class ChangeCompany
         Dim dv As DataView = LookupListNew.GetCompanyGroupLookupList()
         If Not ElitaPlusIdentity.Current.ActiveUser.IsIHQRole Then
             'filter out the company group by user company assigned
-            Dim dvAvailCompanyGrp As DataView = BusinessObjectsNew.User.GetAvailableCompanyGroup(Me.State.MyBO.Id)
+            Dim dvAvailCompanyGrp As DataView = BusinessObjectsNew.User.GetAvailableCompanyGroup(State.MyBO.Id)
             Dim blnAssigned As Boolean, guidTemp1 As Guid, guidTemp2 As Guid
             For i As Integer = (dv.Count - 1) To 0 Step -1
                 blnAssigned = False
@@ -136,11 +136,11 @@ Partial Class ChangeCompany
         GroupCompanyMultipleDrop.SelectedGuid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
             UpdateUserCompany()
         Catch ex As Exception
-            Me.HandleErrors(ex, moErrorController)
+            HandleErrors(ex, moErrorController)
         End Try
     End Sub
 
@@ -151,7 +151,7 @@ Partial Class ChangeCompany
 
 
         Dim userCompIdStr As String
-        For Each userCompIdStr In Me.UserControlAvailableSelectedCompanies.SelectedList
+        For Each userCompIdStr In UserControlAvailableSelectedCompanies.SelectedList
             nNewCompanyIDs.Add(New Guid(userCompIdStr))
         Next
 
@@ -160,12 +160,12 @@ Partial Class ChangeCompany
             Throw New GUIException(Message.MSG_COMPANY_GROUP_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_GROUP_MUST_BE_SELECTED_ERR)
         End If
 
-        If Me.UserControlAvailableSelectedCompanies.SelectedList.Count = 0 Then
+        If UserControlAvailableSelectedCompanies.SelectedList.Count = 0 Then
             'ElitaPlusPage.SetLabelError(UserControlAvailableSelectedCompanies.SelectedTitleLabel)
             Throw New GUIException(Message.MSG_COMPANY_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_REQUIRED)
         End If
-        Me.State.MyBO.UpdateUserCompanies(nNewCompanyIDs)
-        Me.State.MyBO.AccountingCompaniesClearCache()
+        State.MyBO.UpdateUserCompanies(nNewCompanyIDs)
+        State.MyBO.AccountingCompaniesClearCache()
 
         ReloadNavigationMenu()
 
@@ -173,20 +173,20 @@ Partial Class ChangeCompany
 
     Sub ReloadNavigationMenu()
 
-        Me.ReloadHeader()
+        ReloadHeader()
 
     End Sub
 
     Sub PopulateUserControlAvailableSelectedCompanies()
-        Dim oCompanyGroupID As Guid = Me.GroupCompanyMultipleDrop.SelectedGuid
-        Dim availableDv As DataView = Me.State.MyBO.GetAvailableCompanies(oCompanyGroupID, Me.State.MyBO.Id)
-        Dim selectedDv As DataView = Me.State.MyBO.GetSelectedCompanies(oCompanyGroupID, Me.State.MyBO.Id)
-        Me.UserControlAvailableSelectedCompanies.SelectedList.Clear()
-        Me.UserControlAvailableSelectedCompanies.AvailableList.Clear()
-        Me.UserControlAvailableSelectedCompanies.SetSelectedData(selectedDv, COL_DESCRIPTION_NAME, COL_ID_NAME)
-        Me.UserControlAvailableSelectedCompanies.SetAvailableData(availableDv, COL_DESCRIPTION_NAME, COL_ID_NAME)
-        Me.UserControlAvailableSelectedCompanies.AvailableDesc = TranslationBase.TranslateLabelOrMessage(AVAILABLE_COMPANIES)
-        Me.UserControlAvailableSelectedCompanies.SelectedDesc = TranslationBase.TranslateLabelOrMessage(SELECTED_COMPANIES)
+        Dim oCompanyGroupID As Guid = GroupCompanyMultipleDrop.SelectedGuid
+        Dim availableDv As DataView = State.MyBO.GetAvailableCompanies(oCompanyGroupID, State.MyBO.Id)
+        Dim selectedDv As DataView = State.MyBO.GetSelectedCompanies(oCompanyGroupID, State.MyBO.Id)
+        UserControlAvailableSelectedCompanies.SelectedList.Clear()
+        UserControlAvailableSelectedCompanies.AvailableList.Clear()
+        UserControlAvailableSelectedCompanies.SetSelectedData(selectedDv, COL_DESCRIPTION_NAME, COL_ID_NAME)
+        UserControlAvailableSelectedCompanies.SetAvailableData(availableDv, COL_DESCRIPTION_NAME, COL_ID_NAME)
+        UserControlAvailableSelectedCompanies.AvailableDesc = TranslationBase.TranslateLabelOrMessage(AVAILABLE_COMPANIES)
+        UserControlAvailableSelectedCompanies.SelectedDesc = TranslationBase.TranslateLabelOrMessage(SELECTED_COMPANIES)
     End Sub
 
 End Class

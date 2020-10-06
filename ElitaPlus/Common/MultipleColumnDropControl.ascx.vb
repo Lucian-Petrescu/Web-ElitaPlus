@@ -21,7 +21,7 @@ Namespace Common
         Private mnCodeFieldLength As Integer = 10
 
         Private mnStartDropIndex As Integer = 0
-        Public Event SelectedDropChanged(ByVal aSrc As MultipleColumnDropControl)
+        Public Event SelectedDropChanged(aSrc As MultipleColumnDropControl)
 
 #End Region
 
@@ -31,7 +31,7 @@ Namespace Common
             Get
                 Return msCaption
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 msCaption = Value
             End Set
         End Property
@@ -39,7 +39,7 @@ Namespace Common
             Get
                 Return msCodeColumnName
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 msCodeColumnName = Value
             End Set
         End Property
@@ -48,7 +48,7 @@ Namespace Common
             Get
                 Return msTextColumnName
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 msTextColumnName = Value
             End Set
         End Property
@@ -57,7 +57,7 @@ Namespace Common
             Get
                 Return msGuidValueColumnName
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 msGuidValueColumnName = Value
             End Set
         End Property
@@ -66,7 +66,7 @@ Namespace Common
             Get
                 Return mbAddNothingSelected
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 mbAddNothingSelected = Value
             End Set
         End Property
@@ -75,7 +75,7 @@ Namespace Common
             Get
                 Return mnCodeFieldLength
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 mnCodeFieldLength = Value
             End Set
         End Property
@@ -92,7 +92,7 @@ Namespace Common
             Get
                 Return mnStartDropIndex
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 mnStartDropIndex = Value
             End Set
         End Property
@@ -102,7 +102,7 @@ Namespace Common
                 Dim oGuid As Guid = ElitaPlusPage.GetSelectedItem(moMultipleColumnDrop)
                 Return oGuid
             End Get
-            Set(ByVal Value As Guid)
+            Set(Value As Guid)
                 ElitaPlusPage.BindSelectItem(Value.ToString, moMultipleColumnDrop)
             End Set
         End Property
@@ -139,7 +139,7 @@ Namespace Common
             Get
                 Return moMultipleColumnDrop.SelectedIndex
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 moMultipleColumnDrop.SelectedIndex = Value
             End Set
         End Property
@@ -148,7 +148,7 @@ Namespace Common
             Get
                 Return moMultipleColumnDrop.AutoPostBack
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 moMultipleColumnDrop.AutoPostBack = Value
             End Set
         End Property
@@ -157,7 +157,7 @@ Namespace Common
             Get
                 Return moMultipleColumnDrop.Enabled
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 moMultipleColumnDrop.Enabled = Value
             End Set
         End Property
@@ -166,7 +166,7 @@ Namespace Common
             Get
                 Return moMultipleColumnDrop.Width
             End Get
-            Set(ByVal Value As Unit)
+            Set(Value As Unit)
                 moMultipleColumnDrop.Width = Value
             End Set
         End Property
@@ -201,7 +201,7 @@ Namespace Common
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -211,15 +211,15 @@ Namespace Common
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             If Not Page.IsPostBack Then
-                If Not Me.Caption.Equals(String.Empty) Then
-                    Me.lb_DropDown.Text = Me.Caption + ":"
+                If Not Caption.Equals(String.Empty) Then
+                    lb_DropDown.Text = Caption + ":"
                 End If
-                If Not Me.moMultipleColumnDrop.SelectedValue.Equals(Nothing) Then
-                    Me.moMultipleColumnDropDesc.SelectedIndex = -1
-                    If Not Me.moMultipleColumnDropDesc.Items.Count.Equals(0) Then
-                        Me.moMultipleColumnDropDesc.Items.FindByValue(Me.moMultipleColumnDrop.SelectedValue).Selected = True
+                If Not moMultipleColumnDrop.SelectedValue.Equals(Nothing) Then
+                    moMultipleColumnDropDesc.SelectedIndex = -1
+                    If Not moMultipleColumnDropDesc.Items.Count.Equals(0) Then
+                        moMultipleColumnDropDesc.Items.FindByValue(moMultipleColumnDrop.SelectedValue).Selected = True
                     End If
                 End If
             End If
@@ -229,15 +229,15 @@ Namespace Common
 
 #Region "Handlers-DropDown"
 
-        Private Sub moMultipleColumnDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moMultipleColumnDrop.SelectedIndexChanged
-            Me.moMultipleColumnDropDesc.SelectedIndex = -1
-            Me.moMultipleColumnDropDesc.Items.FindByValue(moMultipleColumnDrop.SelectedValue).Selected = True
+        Private Sub moMultipleColumnDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moMultipleColumnDrop.SelectedIndexChanged
+            moMultipleColumnDropDesc.SelectedIndex = -1
+            moMultipleColumnDropDesc.Items.FindByValue(moMultipleColumnDrop.SelectedValue).Selected = True
             RaiseEvent SelectedDropChanged(Me)
         End Sub
 
-        Private Sub moMultipleColumnDropDesc_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moMultipleColumnDropDesc.SelectedIndexChanged
-            Me.moMultipleColumnDrop.SelectedIndex = -1
-            Me.moMultipleColumnDrop.Items.FindByValue(moMultipleColumnDropDesc.SelectedValue).Selected = True
+        Private Sub moMultipleColumnDropDesc_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moMultipleColumnDropDesc.SelectedIndexChanged
+            moMultipleColumnDrop.SelectedIndex = -1
+            moMultipleColumnDrop.Items.FindByValue(moMultipleColumnDropDesc.SelectedValue).Selected = True
             RaiseEvent SelectedDropChanged(Me)
         End Sub
 #End Region
@@ -246,7 +246,7 @@ Namespace Common
 
 #Region "Utilities"
 
-        Private Function setSpace(ByVal numberOfSpaces As Integer) As String
+        Private Function setSpace(numberOfSpaces As Integer) As String
 
             Dim Spaces As String
             Dim i As Integer
@@ -266,7 +266,7 @@ Namespace Common
 
 #Region "Creates a Multiple Column DropDown Based on DataView"
 
-        Private Sub BindCodeDescToList(ByVal lstControl As ListControl, ByVal Data As DataView, ByVal ColumnName As String)
+        Private Sub BindCodeDescToList(lstControl As ListControl, Data As DataView, ColumnName As String)
             Dim i As Integer
             Dim sCode, sDesc, sGuid, sListText As String
             Dim cFiller As Char = "_".Chars(0)
@@ -277,7 +277,7 @@ Namespace Common
             If NothingSelected Then
                 lstControl.Items.Add(New ListItem("", Guid.Empty.ToString))
             End If
-            If Not Data Is Nothing Then
+            If Data IsNot Nothing Then
                 For i = StartDropIndex To Data.Count - 1
 
                     sCode = Data(i)(CodeColumnName).ToString
@@ -293,7 +293,7 @@ Namespace Common
 
         End Sub
 
-        Public Sub BindData(ByVal oDataView As DataView)
+        Public Sub BindData(oDataView As DataView)
 
             oDataView.Sort = CodeColumnName
             ElitaPlusPage.BindListControlToDataView(moMultipleColumnDrop, oDataView, CodeColumnName, , mbAddNothingSelected)

@@ -81,27 +81,27 @@ Namespace Reports
 #End Region
 
 #Region "Page event handler"
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Me.ErrorCtrl.Clear_Hide()
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+            ErrorCtrl.Clear_Hide()
 
             If CompanyMultiDrop.Visible = False Then
                 HideHtmlElement("CompTRsprt")
             End If
 
-            Me.ScriptManager1.RegisterAsyncPostBackControl(Me.UserCompanyMultiDrop)
+            ScriptManager1.RegisterAsyncPostBackControl(UserCompanyMultiDrop)
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
         Private Sub InitializeForm()
@@ -110,15 +110,15 @@ Namespace Reports
             PopulateCompaniesDropdown()
             PopulateDealerDropDown()
             Dim t As Date = Date.Now.AddMonths(-1).AddDays(1)
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now)
-            Me.rdealer.Checked = True
+            moBeginDateText.Text = GetDateFormattedString(t)
+            moEndDateText.Text = GetDateFormattedString(Date.Now)
+            rdealer.Checked = True
         End Sub
 #End Region
 
 #Region "Helper functions"
         Sub PopulateDealerDropDown()
-            If CompanyMultiDrop.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX Then
+            If CompanyMultiDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                 Dim dv As DataView = LookupListNew.GetDealerLookupList(CompanyMultiDrop.SelectedGuid)
                 DealerMultipleDrop.NothingSelected = True
                 DealerMultipleDrop.SetControl(False, DealerMultipleDrop.MODES.NEW_MODE, True, dv, TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_DEALER), True, True, " document.forms[0].rdealer.checked = false;")
@@ -137,13 +137,13 @@ Namespace Reports
         End Sub
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(moEndDateLabel)
-            Me.ClearLabelErrSign(multipleDropControl.CaptionLabel)
-            If Me.rdealer.Checked Then multipleDropControl.SelectedIndex = -1
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(moEndDateLabel)
+            ClearLabelErrSign(multipleDropControl.CaptionLabel)
+            If rdealer.Checked Then multipleDropControl.SelectedIndex = -1
         End Sub
 
-        Function SetParameters(ByVal rptParams As ReportParams) As ReportCeBaseForm.Params
+        Function SetParameters(rptParams As ReportParams) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             moReportFormat = ReportCeBase.GetReportFormat(Me)
@@ -197,7 +197,7 @@ Namespace Reports
             endDate = ReportCeBase.FormatDate(moEndDateLabel, moEndDateText.Text)
             beginDate = ReportCeBase.FormatDate(moBeginDateLabel, moBeginDateText.Text)
 
-            If Me.RadiobuttonSold.Checked Then
+            If RadiobuttonSold.Checked Then
                 dateAddedSold = "S"
             Else
                 dateAddedSold = "A"
@@ -210,12 +210,12 @@ Namespace Reports
             reportParams.AppendFormat("pi_added_sold => '{0}'", dateAddedSold)
 
 
-            Me.State.MyBO = New ReportRequests
-            Me.State.ForEdit = True
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "NEW_CERTS_BY_SALES_PERSON")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "R_NewCertsBySalesPerson.Oralce_Export")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", ReportParams.ToString())
-            Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+            State.MyBO = New ReportRequests
+            State.ForEdit = True
+            PopulateBOProperty(State.MyBO, "ReportType", "NEW_CERTS_BY_SALES_PERSON")
+            PopulateBOProperty(State.MyBO, "ReportProc", "R_NewCertsBySalesPerson.Oralce_Export")
+            PopulateBOProperty(State.MyBO, "ReportParameters", ReportParams.ToString())
+            PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
 
             'ReportCeBase.EnableReportCe(Me, TheRptCeInputControl)
             'moReportFormat = ReportCeBase.GetReportFormat(Me)
@@ -232,17 +232,17 @@ Namespace Reports
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = TheRptCeInputControl.GetSchedDate()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
 
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                    State.IsNew = False
+                    State.HasDataChanged = True
+                    State.MyBO.CreateJob(scheduleDate)
 
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
 
                     btnGenRpt.Enabled = False
@@ -251,14 +251,14 @@ Namespace Reports
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
 
 
-        Function SetExpParameters(ByVal compcode As String, ByVal dealerCode As String, ByVal beginDate As String,
-                                  ByVal endDate As String, ByVal dateAddedSold As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(compcode As String, dealerCode As String, beginDate As String,
+                                  endDate As String, dateAddedSold As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim reportName As String = RPT_FILENAME
@@ -269,7 +269,7 @@ Namespace Reports
             'reportName = TheReportCeInputControl.getReportName(RPT_FILENAME, True)
             'culturecode = TheReportCeInputControl.getCultureValue(True)
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With oReportParams
                 .compcode = compcode
@@ -286,20 +286,20 @@ Namespace Reports
 
 #Region "Control Event Handlers"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub UserCompanyMultiDrop_SelectedDropChanged(ByVal aSrc As Common.MultipleColumnDDLabelControl) Handles UserCompanyMultiDrop.SelectedDropChanged
+        Private Sub UserCompanyMultiDrop_SelectedDropChanged(aSrc As Common.MultipleColumnDDLabelControl) Handles UserCompanyMultiDrop.SelectedDropChanged
             Try
                 PopulateDealerDropDown()
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 #End Region

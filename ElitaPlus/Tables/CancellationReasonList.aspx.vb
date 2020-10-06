@@ -12,7 +12,7 @@ Partial Class CancellationReasonListForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -66,10 +66,10 @@ Partial Class CancellationReasonListForm
                 Dim s As String
                 Dim i As Integer
                 Dim sortExp As String = ""
-                For i = 0 To Me.SortColumns.Length - 1
-                    If Not Me.SortColumns(i) Is Nothing Then
-                        sortExp &= Me.SortColumns(i)
-                        If Me.IsSortDesc(i) Then sortExp &= " DESC"
+                For i = 0 To SortColumns.Length - 1
+                    If SortColumns(i) IsNot Nothing Then
+                        sortExp &= SortColumns(i)
+                        If IsSortDesc(i) Then sortExp &= " DESC"
                         sortExp &= ","
                     End If
                 Next
@@ -77,7 +77,7 @@ Partial Class CancellationReasonListForm
             End Get
         End Property
 
-        Public Sub ToggleSort1(ByVal gridColIndex As Integer)
+        Public Sub ToggleSort1(gridColIndex As Integer)
             IsSortDesc(gridColIndex) = Not IsSortDesc(gridColIndex)
         End Sub
 
@@ -93,35 +93,35 @@ Partial Class CancellationReasonListForm
         End Get
     End Property
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
-            If Me.State.searchDV Is Nothing Then
-                Me.State.IsGridVisible = False
+            MenuEnabled = True
+            IsReturningFromChild = True
+            If State.searchDV Is Nothing Then
+                State.IsGridVisible = False
             Else
-                Me.State.IsGridVisible = True
+                State.IsGridVisible = True
             End If
             Dim retObj As CancellationReasonForm.ReturnType = CType(ReturnPar, CancellationReasonForm.ReturnType)
-            If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                Me.State.searchDV = Nothing
+            If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                State.searchDV = Nothing
             End If
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
+                    If retObj IsNot Nothing Then
                         If Not retObj.EditingBo.IsNew Then
-                            Me.State.CancellationReasonId = retObj.EditingBo.Id
+                            State.CancellationReasonId = retObj.EditingBo.Id
                         End If
                         'Me.State.IsGridVisible = True
                     End If
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                    AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
             End Select
-            Grid.PageIndex = Me.State.PageIndex
-            cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-            Grid.PageSize = Me.State.PageSize
+            Grid.PageIndex = State.PageIndex
+            cboPageSize.SelectedValue = CType(State.PageSize, String)
+            Grid.PageSize = State.PageSize
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -129,34 +129,34 @@ Partial Class CancellationReasonListForm
 #End Region
 
 #Region "Page_Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.MasterPage.MessageController.Clear_Hide()
-        Me.SetStateProperties()
+        MasterPage.MessageController.Clear_Hide()
+        SetStateProperties()
         Try
-            If Not Me.IsPostBack Then
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+            If Not IsPostBack Then
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                 UpdateBreadCrum()
 
-                Me.SortDirection = CancellationReason.CancellationReasonSearchDV.COL_DESCRIPTION
-                Me.SetDefaultButton(Me.SearchCodeTextBox, Me.moBtnSearch)
+                SortDirection = CancellationReason.CancellationReasonSearchDV.COL_DESCRIPTION
+                SetDefaultButton(SearchCodeTextBox, moBtnSearch)
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                Me.SetGridItemStyleColor(Grid)
-                Me.TranslateGridHeader(Me.Grid)
-                Me.TranslateGridControls(Me.Grid)
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.PageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.PageSize = Grid.PageSize) Then
-                        Grid.PageSize = Me.State.PageSize
+                SetGridItemStyleColor(Grid)
+                TranslateGridHeader(Grid)
+                TranslateGridControls(Grid)
+                If State.IsGridVisible Then
+                    If Not (State.PageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.PageSize = Grid.PageSize) Then
+                        Grid.PageSize = State.PageSize
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 #End Region
 
@@ -188,70 +188,70 @@ Partial Class CancellationReasonListForm
         Dim oDataView As DataView
 
         Try
-            If (Me.State.searchDV Is Nothing) Then
-                Me.State.searchDV = CancellationReason.getList(Me.State.DescriptionMask, Me.State.CodeMask)
+            If (State.searchDV Is Nothing) Then
+                State.searchDV = CancellationReason.getList(State.DescriptionMask, State.CodeMask)
 
             End If
 
-            If (Me.State.searchDV.Count = 0) Then
+            If (State.searchDV.Count = 0) Then
 
-                Me.State.bnoRow = True
-                CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
+                State.bnoRow = True
+                CreateHeaderForEmptyGrid(Grid, SortDirection)
             Else
-                Me.State.bnoRow = False
-                Me.Grid.Enabled = True
+                State.bnoRow = False
+                Grid.Enabled = True
             End If
 
-            Me.State.searchDV.Sort = Me.State.SortExpression
+            State.searchDV.Sort = State.SortExpression
             grid.AutoGenerateColumns = False
 
-            Grid.Columns(Me.GRID_COL_CODE_IDX).SortExpression = CancellationReason.CancellationReasonSearchDV.COL_CODE
-            Grid.Columns(Me.GRID_COL_DESCRIPTION_IDX).SortExpression = CancellationReason.CancellationReasonSearchDV.COL_DESCRIPTION
-            Grid.Columns(Me.GRID_COL_COMPANY_CODE_IDX).SortExpression = CancellationReason.CancellationReasonSearchDV.COL_COMPANY
+            Grid.Columns(GRID_COL_CODE_IDX).SortExpression = CancellationReason.CancellationReasonSearchDV.COL_CODE
+            Grid.Columns(GRID_COL_DESCRIPTION_IDX).SortExpression = CancellationReason.CancellationReasonSearchDV.COL_DESCRIPTION
+            Grid.Columns(GRID_COL_COMPANY_CODE_IDX).SortExpression = CancellationReason.CancellationReasonSearchDV.COL_COMPANY
 
-            HighLightSortColumn(grid, Me.State.SortExpression)
+            HighLightSortColumn(grid, State.SortExpression)
             ' BasePopulateGrid(Grid, Me.State.searchDV, Me.State.moProductCodeId, oAction)
 
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.CancellationReasonId, Me.Grid, Me.State.PageIndex)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.CancellationReasonId, Grid, State.PageIndex)
 
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.SortDirection)
-            Me.Grid.DataBind()
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, SortDirection)
+            Grid.DataBind()
 
             ControlMgr.SetVisibleControl(Me, trPageSize, grid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-            Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub SortAndBindGrid()
-        Me.State.PageIndex = Me.Grid.PageIndex
-        If (Me.State.searchDV.Count = 0) Then
+        State.PageIndex = Grid.PageIndex
+        If (State.searchDV.Count = 0) Then
 
-            Me.State.bnoRow = True
-            CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
+            State.bnoRow = True
+            CreateHeaderForEmptyGrid(Grid, SortDirection)
         Else
-            Me.State.bnoRow = False
-            Me.Grid.Enabled = True
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.SortDirection)
-            Me.Grid.DataBind()
+            State.bnoRow = False
+            Grid.Enabled = True
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, SortDirection)
+            Grid.DataBind()
         End If
         If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
-        Session("recCount") = Me.State.searchDV.Count
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
+        Session("recCount") = State.searchDV.Count
 
-        If Me.Grid.Visible Then
-            Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        If Grid.Visible Then
+            lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         End If
 
     End Sub
@@ -265,88 +265,88 @@ Partial Class CancellationReasonListForm
         Get
             Return ViewState("SortDirection").ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
     'The Binding Logic is here
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim btnEditItem As LinkButton
-        If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+        If dvRow IsNot Nothing And Not State.bnoRow Then
             If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                btnEditItem = CType(e.Row.Cells(Me.GRID_COL_EDIT_IDX).FindControl("SelectAction"), LinkButton)
+                btnEditItem = CType(e.Row.Cells(GRID_COL_EDIT_IDX).FindControl("SelectAction"), LinkButton)
                 btnEditItem.Text = dvRow(CancellationReason.CancellationReasonSearchDV.COL_CODE).ToString
-                e.Row.Cells(Me.GRID_COL_COMPANY_CODE_IDX).Text = dvRow(CancellationReason.CancellationReasonSearchDV.COL_COMPANY).ToString
+                e.Row.Cells(GRID_COL_COMPANY_CODE_IDX).Text = dvRow(CancellationReason.CancellationReasonSearchDV.COL_COMPANY).ToString
                 ' e.Row.Cells(Me.GRID_COL_CODE_IDX).Text = dvRow(CancellationReason.CancellationReasonSearchDV.COL_CODE).ToString
-                e.Row.Cells(Me.GRID_COL_DESCRIPTION_IDX).Text = dvRow(CancellationReason.CancellationReasonSearchDV.COL_DESCRIPTION).ToString
-                e.Row.Cells(Me.GRID_COL_CANCELLATIONREASON_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(CancellationReason.CancellationReasonSearchDV.COL_CANCELLATIONREASON_ID), Byte()))
+                e.Row.Cells(GRID_COL_DESCRIPTION_IDX).Text = dvRow(CancellationReason.CancellationReasonSearchDV.COL_DESCRIPTION).ToString
+                e.Row.Cells(GRID_COL_CANCELLATIONREASON_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(CancellationReason.CancellationReasonSearchDV.COL_CANCELLATIONREASON_ID), Byte()))
             End If
         End If
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
 
-            If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression + " DESC"
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression + " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression + " ASC"
+                SortDirection = e.SortExpression + " ASC"
             End If
 
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
 
         Try
             If e.CommandName = "SelectAction" Then
                 Dim index As Integer = CInt(e.CommandArgument)
-                Me.State.CancellationReasonId = New Guid(Me.Grid.Rows(index).Cells(Me.GRID_COL_CANCELLATIONREASON_IDX).Text)
-                Me.callPage(CancellationReasonForm.URL, Me.State.CancellationReasonId)
+                State.CancellationReasonId = New Guid(Grid.Rows(index).Cells(GRID_COL_CANCELLATIONREASON_IDX).Text)
+                callPage(CancellationReasonForm.URL, State.CancellationReasonId)
             ElseIf e.CommandName = "Sort" Then
                 Grid.DataMember = e.CommandArgument.ToString
-                Me.PopulateGrid()
+                PopulateGrid()
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.CancellationReasonId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.CancellationReasonId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.State.PageSize = Grid.PageSize
-            Me.PopulateGrid()
+            State.PageSize = Grid.PageSize
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
@@ -354,13 +354,13 @@ Partial Class CancellationReasonListForm
 #Region " Buttons Clicks "
     Private Sub SetStateProperties()
 
-        Me.State.DescriptionMask = SearchDescriptionTextBox.Text
-        Me.State.CodeMask = SearchCodeTextBox.Text
-        Me.State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
+        State.DescriptionMask = SearchDescriptionTextBox.Text
+        State.CodeMask = SearchCodeTextBox.Text
+        State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
 
     End Sub
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBtnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles moBtnSearch.Click
         Try
             If Not State.IsGridVisible Then
                 cboPageSize.SelectedValue = CType(State.PageSize, String)
@@ -368,40 +368,40 @@ Partial Class CancellationReasonListForm
                     cboPageSize.SelectedValue = CType(State.PageSize, String)
                     Grid.PageSize = State.PageSize
                 End If
-                Me.State.IsGridVisible = True
+                State.IsGridVisible = True
             End If
-            Me.State.PageIndex = 0
-            Me.State.CancellationReasonId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.searchBtnClicked = True
-            Me.PopulateGrid()
-            Me.State.searchBtnClicked = False
+            State.PageIndex = 0
+            State.CancellationReasonId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.searchBtnClicked = True
+            PopulateGrid()
+            State.searchBtnClicked = False
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+    Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
         Try
-            Me.callPage(CancellationReasonForm.URL)
+            callPage(CancellationReasonForm.URL)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click1(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBtnClear.Click
+    Private Sub btnClearSearch_Click1(sender As Object, e As System.EventArgs) Handles moBtnClear.Click
         Try
             ClearSearchCriteria()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("CancellationReason_List")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CancellationReason_List")
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("CancellationReason_List")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CancellationReason_List")
             End If
         End If
     End Sub
@@ -412,12 +412,12 @@ Partial Class CancellationReasonListForm
             SearchCodeTextBox.Text = String.Empty
 
             'Update Page State
-            With Me.State
+            With State
                 .DescriptionMask = SearchDescriptionTextBox.Text
                 .CodeMask = SearchCodeTextBox.Text
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub

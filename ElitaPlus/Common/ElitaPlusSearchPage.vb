@@ -54,7 +54,7 @@ Public Class ElitaPlusSearchPage
 
 #Region "Constructors For Page State"
 
-    Public Sub New(ByVal State As Object)
+    Public Sub New(State As Object)
         MyBase.New(State)
     End Sub
 
@@ -62,7 +62,7 @@ Public Class ElitaPlusSearchPage
         MyBase.New()
     End Sub
 
-    Public Sub New(ByVal useExistingState As Boolean)
+    Public Sub New(useExistingState As Boolean)
         MyBase.New(useExistingState)
     End Sub
 
@@ -70,8 +70,8 @@ Public Class ElitaPlusSearchPage
 
 #Region "Handlers"
 
-    Public Overloads Sub BaseItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
-        Dim newUi As Boolean = Me.IsNewUI
+    Public Overloads Sub BaseItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
+        Dim newUi As Boolean = IsNewUI
         '-------------------------------------
         'Name:ReasorbTranslation
         'Purpose:Translate any message tobe display
@@ -97,7 +97,7 @@ Public Class ElitaPlusSearchPage
 
 
 
-            If CType(sender, DataGrid).PagerStyle.CssClass = Me.INTERFACE_PAGER_CLASS Then
+            If CType(sender, DataGrid).PagerStyle.CssClass = INTERFACE_PAGER_CLASS Then
                 pager.Attributes.Add("style", "text-align:left;")
             Else
                 pager.Attributes.Add("style", "text-align:center;")
@@ -151,7 +151,7 @@ Public Class ElitaPlusSearchPage
                     End If
 
                     Dim oDataGrid As DataGrid = CType(sender, DataGrid)
-                    If oDataGrid.EditItemIndex = Me.NO_ITEM_SELECTED_INDEX Then
+                    If oDataGrid.EditItemIndex = NO_ITEM_SELECTED_INDEX Then
                         h.Enabled = True
                     Else
                         h.Enabled = False
@@ -168,7 +168,7 @@ Public Class ElitaPlusSearchPage
                 i += 1
             Next
         ElseIf (elemType = ListItemType.AlternatingItem Or elemType = ListItemType.Item Or elemType = ListItemType.SelectedItem) Then
-            If (Me.IsNewUI) Then
+            If (IsNewUI) Then
                 e.Item.Attributes.Add("onmouseover", "this.className='over'")
                 e.Item.Attributes.Add("onmouseout", "this.className='out'")
             End If
@@ -176,8 +176,8 @@ Public Class ElitaPlusSearchPage
     End Sub
 
 
-    Public Overloads Sub BaseItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
-        Dim newUi As Boolean = Me.IsNewUI
+    Public Overloads Sub BaseItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Dim newUi As Boolean = IsNewUI
         '-------------------------------------
         'Name:ReasorbTranslation
         'Purpose:Translate any message tobe display
@@ -201,7 +201,7 @@ Public Class ElitaPlusSearchPage
                 pager.CssClass = "GRD_PAGER"
             End If
 
-            If CType(sender, GridView).PagerStyle.CssClass = Me.INTERFACE_PAGER_CLASS Then
+            If CType(sender, GridView).PagerStyle.CssClass = INTERFACE_PAGER_CLASS Then
                 pager.Attributes.Add("style", "text-align:left;")
             Else
                 pager.Attributes.Add("style", "text-align:center;")
@@ -221,7 +221,7 @@ Public Class ElitaPlusSearchPage
             Dim bFound As Boolean = False
             Dim pagerTable As System.Web.UI.WebControls.Table = CType(pager.Controls(0), System.Web.UI.WebControls.Table)
 
-            If CType(sender, GridView).PagerStyle.CssClass <> Me.INTERFACE_PAGER_CLASS Then
+            If CType(sender, GridView).PagerStyle.CssClass <> INTERFACE_PAGER_CLASS Then
                 pagerTable.Attributes.Add("align", "center")
             End If
 
@@ -259,7 +259,7 @@ Public Class ElitaPlusSearchPage
                         End If
                     End If
                     Dim oDataGrid As GridView = CType(sender, GridView)
-                    If oDataGrid.EditIndex = Me.NO_ITEM_SELECTED_INDEX Then
+                    If oDataGrid.EditIndex = NO_ITEM_SELECTED_INDEX Then
                         h.Enabled = True
                     Else
                         h.Enabled = False
@@ -277,41 +277,41 @@ Public Class ElitaPlusSearchPage
 
             Next
         ElseIf (elemType = DataControlRowType.DataRow) Then
-            If (Me.IsNewUI) Then
+            If (IsNewUI) Then
                 e.Row.Attributes.Add("onmouseover", "this.className='over'")
                 e.Row.Attributes.Add("onmouseout", "this.className='out'")
             End If
         End If
     End Sub
 
-    Protected Overloads Sub BaseItemBound(ByVal source As Object, ByVal e As DataGridItemEventArgs)
+    Protected Overloads Sub BaseItemBound(source As Object, e As DataGridItemEventArgs)
 
         If (e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem OrElse _
             e.Item.ItemType = ListItemType.EditItem OrElse e.Item.ItemType = ListItemType.SelectedItem) Then
 
-            Dim del As ImageButton = CType(e.Item.Cells(Me.DELETE_COL).FindControl(Me.DELETE_CONTROL_NAME), ImageButton)
-            If (Not del Is Nothing) Then
-                Dim tlTip As String = TranslationBase.TranslateLabelOrMessage(Me.DELETE)
+            Dim del As ImageButton = CType(e.Item.Cells(DELETE_COL).FindControl(DELETE_CONTROL_NAME), ImageButton)
+            If (del IsNot Nothing) Then
+                Dim tlTip As String = TranslationBase.TranslateLabelOrMessage(DELETE)
                 del.ToolTip = tlTip
                 '   Me.AddConfirmation(del, Message.DELETE_RECORD_PROMPT)
-                Me.AddControlMsg(del, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, _
-                                                                    Me.MSG_TYPE_CONFIRM, True)
+                AddControlMsg(del, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, _
+                                                                    MSG_TYPE_CONFIRM, True)
             End If
         End If
 
         If (e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem OrElse _
             e.Item.ItemType = ListItemType.EditItem OrElse e.Item.ItemType = ListItemType.SelectedItem) Then
 
-            Dim edt As ImageButton = CType(e.Item.Cells(Me.EDIT_COL).FindControl(Me.EDIT_CONTROL_NAME), ImageButton)
+            Dim edt As ImageButton = CType(e.Item.Cells(EDIT_COL).FindControl(EDIT_CONTROL_NAME), ImageButton)
             If (Not (edt Is Nothing)) Then
-                Dim tlTip As String = TranslationBase.TranslateLabelOrMessage(Me.EDIT)
+                Dim tlTip As String = TranslationBase.TranslateLabelOrMessage(EDIT)
                 edt.ToolTip = tlTip
             End If
         End If
 
     End Sub
 
-    Protected Overloads Sub BaseItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs)
+    Protected Overloads Sub BaseItemBound(source As Object, e As GridViewRowEventArgs)
         If (e.Row.RowType = ListItemType.Item OrElse e.Row.RowType = ListItemType.AlternatingItem OrElse _
                     e.Row.RowType = ListItemType.EditItem OrElse e.Row.RowType = ListItemType.SelectedItem) AndAlso _
                     e.Row.RowType <> DataControlRowType.Pager Then
@@ -330,7 +330,7 @@ Public Class ElitaPlusSearchPage
                 Next
             End If
             If (Not (edt Is Nothing)) Then
-                Dim tlTip As String = TranslationBase.TranslateLabelOrMessage(Me.EDIT)
+                Dim tlTip As String = TranslationBase.TranslateLabelOrMessage(EDIT)
                 edt.ToolTip = tlTip
             End If
         End If
@@ -346,8 +346,8 @@ Public Class ElitaPlusSearchPage
                     End If
                 Next
             End If
-            If (Not del Is Nothing) Then
-                Dim tlTip As String = TranslationBase.TranslateLabelOrMessage(Me.DELETE)
+            If (del IsNot Nothing) Then
+                Dim tlTip As String = TranslationBase.TranslateLabelOrMessage(DELETE)
                 del.ToolTip = tlTip
                 '   Me.AddConfirmation(del, Message.DELETE_RECORD_PROMPT)
                 'Me.AddControlMsg(del, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, _
@@ -356,7 +356,7 @@ Public Class ElitaPlusSearchPage
         End If
     End Sub
 
-    Protected Overloads Sub BaseItemCreated(ByVal sender As Repeater, ByVal e As System.Web.UI.WebControls.RepeaterItemEventArgs, Optional ByVal pagerCellControlId As String = "moPagerCell")
+    Protected Overloads Sub BaseItemCreated(sender As Repeater, e As System.Web.UI.WebControls.RepeaterItemEventArgs, Optional ByVal pagerCellControlId As String = "moPagerCell")
         Dim oPagedDataSource As PagedDataSource = DirectCast(sender.DataSource, PagedDataSource)
         Dim moPagerCell As HtmlTableCell = DirectCast(e.Item.FindControl(pagerCellControlId), HtmlTableCell)
         Dim cell As HtmlTableCell
@@ -402,7 +402,7 @@ Public Class ElitaPlusSearchPage
 #Region "Navigation"
 
     'This method returns the row index of the selected guid
-    Public Function FindSelectedRowIndexFromGuid(ByVal dv As DataView, ByVal selectedGuid As Guid) As Integer
+    Public Function FindSelectedRowIndexFromGuid(dv As DataView, selectedGuid As Guid) As Integer
 
         Dim selectedRowIndex As Integer = NO_ITEM_SELECTED_INDEX
         If (Not (selectedGuid.Equals(Guid.Empty))) Then
@@ -420,7 +420,7 @@ Public Class ElitaPlusSearchPage
         Return (selectedRowIndex)
     End Function
 
-    Public Function FindSelectedRowIndexFromGuid(Of TType)(ByVal oDataSource As IList(Of TType), ByVal selectedItemCondition As Func(Of TType, Boolean)) As Integer
+    Public Function FindSelectedRowIndexFromGuid(Of TType)(oDataSource As IList(Of TType), selectedItemCondition As Func(Of TType, Boolean)) As Integer
 
         'Jump to the Right Page
         Dim i As Integer
@@ -435,7 +435,7 @@ Public Class ElitaPlusSearchPage
 
     'This method returns the row index of the selected guid
     'Unique Id must be assigned to BO for it to work
-    Public Function FindSelectedRowIndexFromGuid(ByVal oBusinessObjectList As BusinessObjectListBase, ByVal selectedGuid As Guid) As Integer
+    Public Function FindSelectedRowIndexFromGuid(oBusinessObjectList As BusinessObjectListBase, selectedGuid As Guid) As Integer
 
         Dim selectedRowIndex As Integer = NO_ITEM_SELECTED_INDEX
         If (Not (selectedGuid.Equals(Guid.Empty))) Then
@@ -452,12 +452,12 @@ Public Class ElitaPlusSearchPage
     End Function
 
     'This method sets the Page Index and the Selected Index on the DataGrid
-    Public Overloads Sub SetPageAndSelectedIndexFromGuid(ByVal oDataView As DataView, ByVal selectedGuid As Guid, ByVal oGrid As DataGrid, _
-                                               ByVal nLastSelectedPageIndex As Integer, Optional ByVal isEditing As Boolean = False)
+    Public Overloads Sub SetPageAndSelectedIndexFromGuid(oDataView As DataView, selectedGuid As Guid, oGrid As DataGrid, _
+                                               nLastSelectedPageIndex As Integer, Optional ByVal isEditing As Boolean = False)
         Dim nSelectedRow As Integer
         Dim nCurrentLastPageIndex As Integer = ((oDataView.Count - 1) \ oGrid.PageSize)
 
-        nSelectedRow = Me.FindSelectedRowIndexFromGuid(oDataView, selectedGuid)
+        nSelectedRow = FindSelectedRowIndexFromGuid(oDataView, selectedGuid)
         oGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
         oGrid.EditItemIndex = NO_ITEM_SELECTED_INDEX
         If (nSelectedRow > NO_ITEM_SELECTED_INDEX) Then
@@ -484,12 +484,12 @@ Public Class ElitaPlusSearchPage
         End If
     End Sub
 
-    Public Overloads Sub SetPageAndSelectedIndexFromGuid(Of TType)(ByVal oDataSource As IList(Of TType), ByVal selectedItemCondition As Func(Of TType, Boolean), ByVal oGrid As DataGrid, _
-                                               ByVal nLastSelectedPageIndex As Integer, Optional ByVal isEditing As Boolean = False)
+    Public Overloads Sub SetPageAndSelectedIndexFromGuid(Of TType)(oDataSource As IList(Of TType), selectedItemCondition As Func(Of TType, Boolean), oGrid As DataGrid, _
+                                               nLastSelectedPageIndex As Integer, Optional ByVal isEditing As Boolean = False)
         Dim nSelectedRow As Integer
         Dim nCurrentLastPageIndex As Integer = ((oDataSource.Count - 1) \ oGrid.PageSize)
 
-        nSelectedRow = Me.FindSelectedRowIndexFromGuid(oDataSource, selectedItemCondition)
+        nSelectedRow = FindSelectedRowIndexFromGuid(oDataSource, selectedItemCondition)
         oGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
         oGrid.EditItemIndex = NO_ITEM_SELECTED_INDEX
         If (nSelectedRow > NO_ITEM_SELECTED_INDEX) Then
@@ -516,12 +516,12 @@ Public Class ElitaPlusSearchPage
         End If
     End Sub
 
-    Public Overloads Sub SetPageAndSelectedIndexFromGuid(Of TType)(ByVal oDataSource As IList(Of TType), ByVal selectedItemCondition As Func(Of TType, Boolean), ByVal oGrid As GridView, _
-                                               ByVal nLastSelectedPageIndex As Integer, Optional ByVal isEditing As Boolean = False)
+    Public Overloads Sub SetPageAndSelectedIndexFromGuid(Of TType)(oDataSource As IList(Of TType), selectedItemCondition As Func(Of TType, Boolean), oGrid As GridView, _
+                                               nLastSelectedPageIndex As Integer, Optional ByVal isEditing As Boolean = False)
         Dim nSelectedRow As Integer
         Dim nCurrentLastPageIndex As Integer = ((oDataSource.Count - 1) \ oGrid.PageSize)
 
-        nSelectedRow = Me.FindSelectedRowIndexFromGuid(oDataSource, selectedItemCondition)
+        nSelectedRow = FindSelectedRowIndexFromGuid(oDataSource, selectedItemCondition)
         oGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
         oGrid.EditIndex = NO_ITEM_SELECTED_INDEX
         If (nSelectedRow > NO_ITEM_SELECTED_INDEX) Then
@@ -549,12 +549,12 @@ Public Class ElitaPlusSearchPage
     End Sub
 
     'This method sets the Page Index and the Selected Index on the DataGrid
-    Public Overloads Sub SetPageAndSelectedIndexFromGuid(ByVal oDataView As DataView, ByVal selectedGuid As Guid, ByVal oGrid As GridView, _
-                                               ByVal nLastSelectedPageIndex As Integer, Optional ByVal isEditing As Boolean = False)
+    Public Overloads Sub SetPageAndSelectedIndexFromGuid(oDataView As DataView, selectedGuid As Guid, oGrid As GridView, _
+                                               nLastSelectedPageIndex As Integer, Optional ByVal isEditing As Boolean = False)
         Dim nSelectedRow As Integer
         Dim nCurrentLastPageIndex As Integer = ((oDataView.Count - 1) \ oGrid.PageSize)
 
-        nSelectedRow = Me.FindSelectedRowIndexFromGuid(oDataView, selectedGuid)
+        nSelectedRow = FindSelectedRowIndexFromGuid(oDataView, selectedGuid)
         oGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
         oGrid.EditIndex = NO_ITEM_SELECTED_INDEX
         If (nSelectedRow > NO_ITEM_SELECTED_INDEX) Then
@@ -584,12 +584,12 @@ Public Class ElitaPlusSearchPage
 
     'This method sets the Page Index and the Selected Index on the GridView
     'Unique Id must be assigned to BO for it to work
-    Public Overloads Sub SetPageAndSelectedIndexFromGuid(ByVal oBusinessObjectList As BusinessObjectListBase, ByVal selectedGuid As Guid, ByVal oGrid As GridView, _
-                                               ByVal nLastSelectedPageIndex As Integer, Optional ByVal isEditing As Boolean = False)
+    Public Overloads Sub SetPageAndSelectedIndexFromGuid(oBusinessObjectList As BusinessObjectListBase, selectedGuid As Guid, oGrid As GridView, _
+                                               nLastSelectedPageIndex As Integer, Optional ByVal isEditing As Boolean = False)
         Dim nSelectedRow As Integer
         Dim nCurrentLastPageIndex As Integer = ((oBusinessObjectList.Count - 1) \ oGrid.PageSize)
 
-        nSelectedRow = Me.FindSelectedRowIndexFromGuid(oBusinessObjectList, selectedGuid)
+        nSelectedRow = FindSelectedRowIndexFromGuid(oBusinessObjectList, selectedGuid)
         oGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
         oGrid.EditIndex = NO_ITEM_SELECTED_INDEX
         If (nSelectedRow > NO_ITEM_SELECTED_INDEX) Then
@@ -623,7 +623,7 @@ Public Class ElitaPlusSearchPage
     'This method enables or disables the EDIT and DELETE buttons for all the rows on a DataGrid 
     'based on the flag passed into it.
 
-    Public Overloads Shared Sub SetGridControls(ByVal grid As DataGrid, ByVal enable As Boolean)
+    Public Overloads Shared Sub SetGridControls(grid As DataGrid, enable As Boolean)
         Dim i As Integer
         Dim edt As ImageButton
         Dim del As ImageButton
@@ -632,13 +632,13 @@ Public Class ElitaPlusSearchPage
         '  Enable or Disable all the EDIT and DELETE buttons on the DataGrid
         For i = 0 To (grid.Items.Count - 1)
             edt = CType(grid.Items(i).Cells(EDIT_COL).FindControl(EDIT_CONTROL_NAME), ImageButton)
-            If Not edt Is Nothing Then
+            If edt IsNot Nothing Then
                 edt.Enabled = enable
                 edt.Visible = enable
             End If
 
             del = CType(grid.Items(i).Cells(DELETE_COL).FindControl(DELETE_CONTROL_NAME), ImageButton)
-            If Not del Is Nothing Then
+            If del IsNot Nothing Then
                 del.Enabled = enable
                 del.Visible = enable
             End If
@@ -649,7 +649,7 @@ Public Class ElitaPlusSearchPage
     'This method enables or disables the EDIT and DELETE buttons for all the rows on a DataGrid 
     'based on the flag passed into it.
 
-    Public Overloads Shared Sub SetGridControls(ByVal grid As GridView, ByVal enable As Boolean)
+    Public Overloads Shared Sub SetGridControls(grid As GridView, enable As Boolean)
         Dim i As Integer
         Dim edt As ImageButton
         Dim del As ImageButton
@@ -658,13 +658,13 @@ Public Class ElitaPlusSearchPage
         '  Enable or Disable all the EDIT and DELETE buttons on the DataGrid
         For i = 0 To (grid.Rows.Count - 1)
             edt = CType(grid.Rows(i).Cells(EDIT_COL).FindControl(EDIT_CONTROL_NAME), ImageButton)
-            If Not edt Is Nothing Then
+            If edt IsNot Nothing Then
                 edt.Enabled = enable
                 edt.Visible = enable
             End If
 
             del = CType(grid.Rows(i).Cells(DELETE_COL).FindControl(DELETE_CONTROL_NAME), ImageButton)
-            If Not del Is Nothing Then
+            If del IsNot Nothing Then
                 del.Enabled = enable
                 del.Visible = enable
             End If
@@ -676,7 +676,7 @@ Public Class ElitaPlusSearchPage
 
 #Region "Cells Access"
 
-    Public Overloads Function GetGridText(ByVal oDataGrid As DataGrid, ByVal rowPosition As Integer, ByVal cellPosition As Integer) As String
+    Public Overloads Function GetGridText(oDataGrid As DataGrid, rowPosition As Integer, cellPosition As Integer) As String
         Dim oItem As DataGridItem = oDataGrid.Items(rowPosition)
         Dim oControl As Control
         Dim sText As String
@@ -700,7 +700,7 @@ Public Class ElitaPlusSearchPage
         Return sText
     End Function
 
-    Public Overloads Function GetGridText(ByVal oDataGrid As GridView, ByVal rowPosition As Integer, ByVal cellPosition As Integer) As String
+    Public Overloads Function GetGridText(oDataGrid As GridView, rowPosition As Integer, cellPosition As Integer) As String
         Dim oItem As GridViewRow = oDataGrid.Rows(rowPosition)
         Dim oControl As Control
         Dim sText As String
@@ -726,7 +726,7 @@ Public Class ElitaPlusSearchPage
         Return sText
     End Function
 
-    Public Overloads Sub SetGridText(ByVal oDataGrid As DataGrid, ByVal rowPosition As Integer, ByVal cellPosition As Integer, ByVal sText As String)
+    Public Overloads Sub SetGridText(oDataGrid As DataGrid, rowPosition As Integer, cellPosition As Integer, sText As String)
         Dim oItem As DataGridItem = oDataGrid.Items(rowPosition)
         Dim oControl As Control
 
@@ -747,7 +747,7 @@ Public Class ElitaPlusSearchPage
         End If
     End Sub
 
-    Public Overloads Sub SetGridText(ByVal oDataGrid As GridView, ByVal rowPosition As Integer, ByVal cellPosition As Integer, ByVal sText As String)
+    Public Overloads Sub SetGridText(oDataGrid As GridView, rowPosition As Integer, cellPosition As Integer, sText As String)
         Dim oItem As GridViewRow = oDataGrid.Rows(rowPosition)
         Dim oControl As Control
 
@@ -768,23 +768,23 @@ Public Class ElitaPlusSearchPage
         End If
     End Sub
 
-    Public Function GetSelectedGridText(ByVal oDataGrid As DataGrid, ByVal cellPosition As Integer) As String
+    Public Function GetSelectedGridText(oDataGrid As DataGrid, cellPosition As Integer) As String
         Return GetGridText(oDataGrid, oDataGrid.SelectedIndex, cellPosition)
     End Function
 
-    Public Function GetSelectedGridText(ByVal oDataGrid As GridView, ByVal cellPosition As Integer) As String
+    Public Function GetSelectedGridText(oDataGrid As GridView, cellPosition As Integer) As String
         Return GetGridText(oDataGrid, oDataGrid.SelectedIndex, cellPosition)
     End Function
 
-    Public Overloads Sub SetSelectedGridText(ByVal oDataGrid As DataGrid, ByVal cellPosition As Integer, ByVal sText As String)
+    Public Overloads Sub SetSelectedGridText(oDataGrid As DataGrid, cellPosition As Integer, sText As String)
         SetGridText(oDataGrid, oDataGrid.SelectedIndex, cellPosition, sText)
     End Sub
 
-    Public Overloads Sub SetSelectedGridText(ByVal oDataGrid As GridView, ByVal cellPosition As Integer, ByVal sText As String)
+    Public Overloads Sub SetSelectedGridText(oDataGrid As GridView, cellPosition As Integer, sText As String)
         SetGridText(oDataGrid, oDataGrid.SelectedIndex, cellPosition, sText)
     End Sub
 
-    Public Overloads Shared Function GetGridControl(ByVal oDataGrid As DataGrid, ByVal rowPosition As Integer, ByVal cellPosition As Integer, _
+    Public Overloads Shared Function GetGridControl(oDataGrid As DataGrid, rowPosition As Integer, cellPosition As Integer, _
     Optional ByVal nextTemplateControl As Boolean = False) As Control
         Dim oItem As DataGridItem = oDataGrid.Items(rowPosition)
         Dim oControl As Control
@@ -802,7 +802,7 @@ Public Class ElitaPlusSearchPage
         Return oControl
     End Function
 
-    Public Overloads Shared Function GetGridControl(ByVal oDataGrid As GridView, ByVal rowPosition As Integer, ByVal cellPosition As Integer, _
+    Public Overloads Shared Function GetGridControl(oDataGrid As GridView, rowPosition As Integer, cellPosition As Integer, _
     Optional ByVal nextTemplateControl As Boolean = False) As Control
         Dim oItem As GridViewRow = oDataGrid.Rows(rowPosition)
         Dim oControl As Control
@@ -820,24 +820,24 @@ Public Class ElitaPlusSearchPage
         Return oControl
     End Function
 
-    Public Overloads Function GetSelectedGridControl(ByVal oDataGrid As DataGrid, ByVal cellPosition As Integer) As Control
+    Public Overloads Function GetSelectedGridControl(oDataGrid As DataGrid, cellPosition As Integer) As Control
         Return GetGridControl(oDataGrid, oDataGrid.SelectedIndex, cellPosition)
     End Function
 
-    Public Overloads Function GetSelectedGridControl(ByVal oDataGrid As GridView, ByVal cellPosition As Integer) As Control
+    Public Overloads Function GetSelectedGridControl(oDataGrid As GridView, cellPosition As Integer) As Control
         Return GetGridControl(oDataGrid, oDataGrid.SelectedIndex, cellPosition)
     End Function
 
-    Public Overloads Function GetSelectedGridDropItem(ByVal oDataGrid As DataGrid, ByVal cellPosition As Integer) As Guid
-        Return Me.GetSelectedItem(CType(GetSelectedGridControl(oDataGrid, cellPosition), ListControl))
+    Public Overloads Function GetSelectedGridDropItem(oDataGrid As DataGrid, cellPosition As Integer) As Guid
+        Return GetSelectedItem(CType(GetSelectedGridControl(oDataGrid, cellPosition), ListControl))
     End Function
 
-    Public Overloads Function GetSelectedGridDropItem(ByVal oDataGrid As GridView, ByVal cellPosition As Integer) As Guid
-        Return Me.GetSelectedItem(CType(GetSelectedGridControl(oDataGrid, cellPosition), ListControl))
+    Public Overloads Function GetSelectedGridDropItem(oDataGrid As GridView, cellPosition As Integer) As Guid
+        Return GetSelectedItem(CType(GetSelectedGridControl(oDataGrid, cellPosition), ListControl))
     End Function
 
     ' Set Focus in the TextBox of a Cell in a DataGrid
-    Public Overloads Sub SetFocusInGrid(ByVal oDataGrid As DataGrid, ByVal rowPosition As Integer, ByVal cellPosition As Integer)
+    Public Overloads Sub SetFocusInGrid(oDataGrid As DataGrid, rowPosition As Integer, cellPosition As Integer)
         'Set focus on the Description TextBox for the EditItemIndex row
         Dim oItem As DataGridItem = oDataGrid.Items(rowPosition)
         Dim oText As TextBox
@@ -852,7 +852,7 @@ Public Class ElitaPlusSearchPage
     End Sub
 
     ' Set Focus in the TextBox of a Cell in a DataGrid
-    Public Overloads Sub SetFocusInGrid(ByVal oDataGrid As GridView, ByVal rowPosition As Integer, ByVal cellPosition As Integer)
+    Public Overloads Sub SetFocusInGrid(oDataGrid As GridView, rowPosition As Integer, cellPosition As Integer)
         'Set focus on the Description TextBox for the EditItemIndex row
         Dim oItem As GridViewRow = oDataGrid.Rows(rowPosition)
         Dim oText As TextBox
@@ -870,21 +870,21 @@ Public Class ElitaPlusSearchPage
 
 #Region "Style"
 
-    Public Overloads Sub SetGridItemStyleColor(ByVal oDataGrid As DataGrid)
+    Public Overloads Sub SetGridItemStyleColor(oDataGrid As DataGrid)
         oDataGrid.SelectedItemStyle.BackColor = Color.LightSteelBlue
         oDataGrid.EditItemStyle.BackColor = Color.LightSteelBlue
         'oDataGrid.SelectedItemStyle.ForeColor = Color.LimeGreen
         'oDataGrid.HeaderStyle.ForeColor = Color.Magenta
     End Sub
 
-    Public Overloads Sub SetGridItemStyleColor(ByVal oDataGrid As GridView)
+    Public Overloads Sub SetGridItemStyleColor(oDataGrid As GridView)
         oDataGrid.SelectedRowStyle.BackColor = Color.LightSteelBlue
         oDataGrid.EditRowStyle.BackColor = Color.LightSteelBlue
         'oDataGrid.SelectedItemStyle.ForeColor = Color.LimeGreen
         'oDataGrid.HeaderStyle.ForeColor = Color.Magenta
     End Sub
 
-    Public Overloads Shared Sub ClearGridHeaders(ByVal oDataGrid As DataGrid)
+    Public Overloads Shared Sub ClearGridHeaders(oDataGrid As DataGrid)
         Dim oGridCol As DataGridColumn
 
         For Each oGridCol In oDataGrid.Columns
@@ -892,7 +892,7 @@ Public Class ElitaPlusSearchPage
         Next
     End Sub
 
-    Public Overloads Shared Sub ClearGridHeaders(ByVal oDataGrid As GridView)
+    Public Overloads Shared Sub ClearGridHeaders(oDataGrid As GridView)
         Dim oGridCol As DataControlField
 
         For Each oGridCol In oDataGrid.Columns
@@ -903,7 +903,7 @@ Public Class ElitaPlusSearchPage
 
 #Region "Populate"
 
-    Public Sub GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid)
+    Public Sub GetNewDataViewRow(dv As DataView, id As Guid)
         Dim dt As DataTable
         Dim oColumns As DataColumnCollection
         Dim oRow As DataRow
@@ -929,60 +929,60 @@ Public Class ElitaPlusSearchPage
         dt.Rows.Add(oRow)
     End Sub
 
-    Public Overloads Sub BaseAddNewGridRow(ByVal oDataGrid As DataGrid, ByVal oDataView As DataView, ByVal oId As Guid)
+    Public Overloads Sub BaseAddNewGridRow(oDataGrid As DataGrid, oDataView As DataView, oId As Guid)
         Dim dv As DataView
 
         SetGridControls(oDataGrid, False)
         dv = oDataView
         GetNewDataViewRow(dv, oId)
         oDataGrid.DataSource = dv
-        Me.SetPageAndSelectedIndexFromGuid(dv, oId, oDataGrid, oDataGrid.CurrentPageIndex, True)
+        SetPageAndSelectedIndexFromGuid(dv, oId, oDataGrid, oDataGrid.CurrentPageIndex, True)
         oDataGrid.DataBind()
         '     Me.TranslateGridControls(oDataGrid)
     End Sub
 
-    Public Overloads Sub BaseAddNewGridRow(ByVal oDataGrid As GridView, ByVal oDataView As DataView, ByVal oId As Guid)
+    Public Overloads Sub BaseAddNewGridRow(oDataGrid As GridView, oDataView As DataView, oId As Guid)
         Dim dv As DataView
 
         SetGridControls(oDataGrid, False)
         dv = oDataView
         GetNewDataViewRow(dv, oId)
         oDataGrid.DataSource = dv
-        Me.SetPageAndSelectedIndexFromGuid(dv, oId, oDataGrid, oDataGrid.PageIndex, True)
+        SetPageAndSelectedIndexFromGuid(dv, oId, oDataGrid, oDataGrid.PageIndex, True)
         oDataGrid.DataBind()
         '     Me.TranslateGridControls(oDataGrid)
     End Sub
 
     ' The Form should override this routine in order to set the button state (enable/disable, visible/invisible, etc)
-    Public Overridable Sub BaseSetButtonsState(ByVal bIsEdit As Boolean)
+    Public Overridable Sub BaseSetButtonsState(bIsEdit As Boolean)
 
     End Sub
 
     ' The Form should overrides this routine in order to create a new Bo row in the datagrid
     ' and additional necessary logic
-    Public Overridable Sub AddNewBoRow(ByVal oDataView As DataView)
+    Public Overridable Sub AddNewBoRow(oDataView As DataView)
 
     End Sub
 
 
-    Public Overloads Sub BasePopulateGrid(ByVal oDataGrid As DataGrid, ByVal oDataView As DataView, ByVal oId As Guid, _
+    Public Overloads Sub BasePopulateGrid(oDataGrid As DataGrid, oDataView As DataView, oId As Guid, _
                                 Optional ByVal oAction As String = POPULATE_ACTION_NONE)
         Select Case oAction
             Case POPULATE_ACTION_NONE
-                Me.SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, oDataGrid, 0)
-                Me.BaseSetButtonsState(False)
+                SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, oDataGrid, 0)
+                BaseSetButtonsState(False)
             Case POPULATE_ACTION_SAVE
-                Me.SetPageAndSelectedIndexFromGuid(oDataView, oId, oDataGrid, oDataGrid.CurrentPageIndex)
-                Me.BaseSetButtonsState(False)
+                SetPageAndSelectedIndexFromGuid(oDataView, oId, oDataGrid, oDataGrid.CurrentPageIndex)
+                BaseSetButtonsState(False)
             Case POPULATE_ACTION_NO_EDIT
-                Me.SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, oDataGrid, oDataGrid.CurrentPageIndex)
-                Me.BaseSetButtonsState(False)
+                SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, oDataGrid, oDataGrid.CurrentPageIndex)
+                BaseSetButtonsState(False)
             Case POPULATE_ACTION_EDIT
-                Me.SetPageAndSelectedIndexFromGuid(oDataView, oId, oDataGrid, oDataGrid.CurrentPageIndex, True)
-                Me.BaseSetButtonsState(True)
+                SetPageAndSelectedIndexFromGuid(oDataView, oId, oDataGrid, oDataGrid.CurrentPageIndex, True)
+                BaseSetButtonsState(True)
             Case POPULATE_ACTION_NEW
                 AddNewBoRow(oDataView)
-                Me.BaseSetButtonsState(True)
+                BaseSetButtonsState(True)
         End Select
         If oAction <> POPULATE_ACTION_NEW Then
             oDataGrid.DataSource = oDataView
@@ -992,24 +992,24 @@ Public Class ElitaPlusSearchPage
 
     End Sub
 
-    Public Overloads Sub BasePopulateGrid(ByVal oDataGrid As GridView, ByVal oDataView As DataView, ByVal oId As Guid, _
+    Public Overloads Sub BasePopulateGrid(oDataGrid As GridView, oDataView As DataView, oId As Guid, _
                                 Optional ByVal oAction As String = POPULATE_ACTION_NONE)
         Select Case oAction
             Case POPULATE_ACTION_NONE
-                Me.SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, oDataGrid, 0)
-                Me.BaseSetButtonsState(False)
+                SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, oDataGrid, 0)
+                BaseSetButtonsState(False)
             Case POPULATE_ACTION_SAVE
-                Me.SetPageAndSelectedIndexFromGuid(oDataView, oId, oDataGrid, oDataGrid.PageIndex)
-                Me.BaseSetButtonsState(False)
+                SetPageAndSelectedIndexFromGuid(oDataView, oId, oDataGrid, oDataGrid.PageIndex)
+                BaseSetButtonsState(False)
             Case POPULATE_ACTION_NO_EDIT
-                Me.SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, oDataGrid, oDataGrid.PageIndex)
-                Me.BaseSetButtonsState(False)
+                SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, oDataGrid, oDataGrid.PageIndex)
+                BaseSetButtonsState(False)
             Case POPULATE_ACTION_EDIT
-                Me.SetPageAndSelectedIndexFromGuid(oDataView, oId, oDataGrid, oDataGrid.PageIndex, True)
-                Me.BaseSetButtonsState(True)
+                SetPageAndSelectedIndexFromGuid(oDataView, oId, oDataGrid, oDataGrid.PageIndex, True)
+                BaseSetButtonsState(True)
             Case POPULATE_ACTION_NEW
                 AddNewBoRow(oDataView)
-                Me.BaseSetButtonsState(True)
+                BaseSetButtonsState(True)
         End Select
         If oAction <> POPULATE_ACTION_NEW Then
             oDataGrid.DataSource = oDataView
@@ -1019,45 +1019,45 @@ Public Class ElitaPlusSearchPage
 
     End Sub
 
-    Protected Function ValidSearchResultCount(ByVal count As Int32, Optional ByVal checkForCount As Boolean = False, Optional ByVal msg As String = Message.MSG_NO_RECORDS_FOUND) As Boolean
+    Protected Function ValidSearchResultCount(count As Int32, Optional ByVal checkForCount As Boolean = False, Optional ByVal msg As String = Message.MSG_NO_RECORDS_FOUND) As Boolean
         If count >= 100 AndAlso checkForCount Then
             'Me.DisplayMessage("Only the first 100 records are shown. Please modify your search criteria.", "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-            Me.DisplayMessage(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+            DisplayMessage(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Return False
         ElseIf count = 0 Then
             'Me.DisplayMessage("No records were found.", "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-            Me.DisplayMessage(msg, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+            DisplayMessage(msg, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Return False
         Else
             Return True
         End If
     End Function
 
-    Protected Function ValidSearchResultCount(ByVal CurrentCount As Int32, ByVal MaxCount As Int32, Optional ByVal checkForCount As Boolean = False, Optional ByVal msg As String = Message.MSG_NO_RECORDS_FOUND) As Boolean
+    Protected Function ValidSearchResultCount(CurrentCount As Int32, MaxCount As Int32, Optional ByVal checkForCount As Boolean = False, Optional ByVal msg As String = Message.MSG_NO_RECORDS_FOUND) As Boolean
         If CurrentCount >= MaxCount AndAlso checkForCount Then
-            Me.DisplayMessage(Message.MSG_MAX_LIMIT_EXCEEDED_GENERIC, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+            DisplayMessage(Message.MSG_MAX_LIMIT_EXCEEDED_GENERIC, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Return False
         ElseIf CurrentCount = 0 Then
             'Me.DisplayMessage("No records were found.", "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-            Me.DisplayMessage(msg, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+            DisplayMessage(msg, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Return False
         Else
             Return True
         End If
     End Function
 
-    Protected Function ValidSearchResultCountNew(ByVal count As Int32, Optional ByVal checkForCount As Boolean = False, Optional ByVal msg As String = Message.MSG_NO_RECORDS_FOUND) As Boolean
+    Protected Function ValidSearchResultCountNew(count As Int32, Optional ByVal checkForCount As Boolean = False, Optional ByVal msg As String = Message.MSG_NO_RECORDS_FOUND) As Boolean
         If count >= 100 AndAlso checkForCount Then
-            If Me.IsNewUI Then
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA, True)
+            If IsNewUI Then
+                MasterPage.MessageController.AddInformation(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA, True)
             Else
-                Me.DisplayMessage(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
         ElseIf count = 0 Then
-            If Me.IsNewUI Then
-                Me.MasterPage.MessageController.AddInformation(msg, True)
+            If IsNewUI Then
+                MasterPage.MessageController.AddInformation(msg, True)
             Else
-                Me.DisplayMessage(msg, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(msg, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
         Else
             Return True
@@ -1066,7 +1066,7 @@ Public Class ElitaPlusSearchPage
 
     End Function
 
-    Protected Overloads Function NewCurrentPageIndex(ByVal dg As DataGrid, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer) As Integer
+    Protected Overloads Function NewCurrentPageIndex(dg As DataGrid, intRecordCount As Integer, intNewPageSize As Integer) As Integer
         Dim intOldPageSize As Integer    ' old page size    
         Dim intFirstRecordIndex As Integer        ' top record index on current page
         Dim intNewPageCount As Integer  ' new page count
@@ -1100,7 +1100,7 @@ Public Class ElitaPlusSearchPage
 
     End Function
 
-    Protected Overloads Function NewCurrentPageIndex(ByVal dg As GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer) As Integer
+    Protected Overloads Function NewCurrentPageIndex(dg As GridView, intRecordCount As Integer, intNewPageSize As Integer) As Integer
         Dim intOldPageSize As Integer    ' old page size    
         Dim intFirstRecordIndex As Integer        ' top record index on current page
         Dim intNewPageCount As Integer  ' new page count
@@ -1134,7 +1134,7 @@ Public Class ElitaPlusSearchPage
 
     End Function
 
-    Protected Overloads Function NewCurrentPageIndex(ByVal currentPageIndex As Integer, ByVal currentPageSize As Integer, ByVal newPageSize As Integer) As Integer
+    Protected Overloads Function NewCurrentPageIndex(currentPageIndex As Integer, currentPageSize As Integer, newPageSize As Integer) As Integer
         Return Convert.ToInt32(Math.Ceiling(((currentPageIndex * currentPageSize) + 1) / newPageSize) - 1)
     End Function
 #End Region
@@ -1152,9 +1152,9 @@ Public Class ElitaPlusSearchPage
     Public Const DOWN_ARROW_NEW_UI As String = "&nbsp;<img style=""border=""0"" src=""../App_Themes/Default/Images/sort_indicator_des.png"">"
 
 
-    Public Shared Sub HighLightGridViewSortColumn(ByVal grid As GridView, ByVal sortExp As String)
+    Public Shared Sub HighLightGridViewSortColumn(grid As GridView, sortExp As String)
 
-        If Not grid.HeaderRow Is Nothing Then
+        If grid.HeaderRow IsNot Nothing Then
             Dim img As New System.Web.UI.WebControls.Image()
             img.CssClass = "SORTARROW"
             If sortExp.ToUpper.EndsWith("DESC") Then
@@ -1166,7 +1166,7 @@ Public Class ElitaPlusSearchPage
             For Each tc As TableCell In grid.HeaderRow.Cells
                 If tc.HasControls Then
                     lnk = CType(tc.Controls(0), LinkButton)
-                    If Not lnk Is Nothing Then
+                    If lnk IsNot Nothing Then
                         If sortExp.ToUpper.EndsWith("DESC") OrElse sortExp.ToUpper.EndsWith("ASC") Then
                             If sortExp.ToUpper.StartsWith(lnk.CommandArgument.ToUpper & " ") Then
                                 tc.Controls.Add(img)
@@ -1183,7 +1183,7 @@ Public Class ElitaPlusSearchPage
         End If
     End Sub
 
-    Public Overloads Shared Sub HighLightSortColumn(ByVal grid As DataGrid, ByVal sortExp As String, Optional ByVal newUI As Boolean = False)
+    Public Overloads Shared Sub HighLightSortColumn(grid As DataGrid, sortExp As String, Optional ByVal newUI As Boolean = False)
         Dim column As DataGridColumn, SortExpColumn As String
         SortExpColumn = (sortExp.Replace(" DESC", "")).Replace(" ", "")
 
@@ -1224,7 +1224,7 @@ Public Class ElitaPlusSearchPage
 
     End Sub
 
-    Public Overloads Shared Sub HighLightSortColumn(ByVal repeaterHeader As LinkButton, ByVal sortExpresssion As String, ByVal sortColumnName As String)
+    Public Overloads Shared Sub HighLightSortColumn(repeaterHeader As LinkButton, sortExpresssion As String, sortColumnName As String)
         With repeaterHeader
             .Text = TranslationBase.TranslateLabelOrMessage(.Text)
             .CommandName = SORT_COMMAND_NAME
@@ -1241,7 +1241,7 @@ Public Class ElitaPlusSearchPage
         End With
     End Sub
 
-    Public Overloads Shared Sub HighLightSortColumn(ByVal grid As GridView, ByVal sortExp As String, Optional ByVal newUI As Boolean = False)
+    Public Overloads Shared Sub HighLightSortColumn(grid As GridView, sortExp As String, Optional ByVal newUI As Boolean = False)
         Dim column As DataControlField, SortExpColumn As String
         If sortExp.EndsWith(" ASC") Then
             SortExpColumn = (sortExp.Replace(" ASC", "")).Replace(" ", "")
@@ -1291,7 +1291,7 @@ Public Class ElitaPlusSearchPage
     End Sub
 
 
-    Public Overloads Sub CreateHeaderForEmptyGrid(ByVal Grid As GridView, ByVal SortDirection As String)
+    Public Overloads Sub CreateHeaderForEmptyGrid(Grid As GridView, SortDirection As String)
 
         Dim dt As DataTable = New DataTable()
         Dim dv As New DataView(dt)

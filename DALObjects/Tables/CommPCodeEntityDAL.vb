@@ -36,30 +36,30 @@ Public Class CommPCodeEntityDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("comm_p_code_entity_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function FindRecord(ByVal id As Guid) As Boolean
+    Public Function FindRecord(id As Guid) As Boolean
         Dim found As Boolean = False
         Dim oCounter As Integer
         Dim oDataSet As DataSet
         Dim oRow As DataRow
-        Dim selectStmt As String = Me.Config("/SQL/FIND")
+        Dim selectStmt As String = Config("/SQL/FIND")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("comm_p_code_entity_id", id.ToByteArray)}
         Try
             oDataSet = New DataSet
-            DBHelper.Fetch(oDataSet, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(oDataSet, selectStmt, TABLE_NAME, parameters)
             oRow = oDataSet.Tables(CommPCodeEntityDAL.TABLE_NAME).Rows(0)
             oCounter = CType(oRow("entityRecords"), Integer)
             If oCounter > 0 Then
@@ -75,17 +75,17 @@ Public Class CommPCodeEntityDAL
         Return found
     End Function
 
-    Public Sub LoadList(ByVal commPCodeId As Guid, ByVal familyDataset As DataSet)
+    Public Sub LoadList(commPCodeId As Guid, familyDataset As DataSet)
         ' Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BY_PERIOD_ID")
+        Dim selectStmt As String = Config("/SQL/LOAD_BY_PERIOD_ID")
         '   parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_COMMISSION_PERIOD_ID, commissionPeriodId.ToByteArray)}
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
             {New DBHelper.DBHelperParameter(COL_NAME_COMM_P_CODE_ID, commPCodeId.ToByteArray)}
-        DBHelper.Fetch(familyDataset, selectStmt, Me.TABLE_NAME, parameters)
+        DBHelper.Fetch(familyDataset, selectStmt, TABLE_NAME, parameters)
     End Sub
 
-    Public Function LoadList(ByVal commPCodeId As Guid, ByVal oLanguageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(commPCodeId As Guid, oLanguageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
             {New DBHelper.DBHelperParameter(COL_NAME_COMM_P_CODE_ID, commPCodeId.ToByteArray), _
              New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, oLanguageId.ToByteArray), _
@@ -93,26 +93,26 @@ Public Class CommPCodeEntityDAL
         ', _
         'New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, oLanguageId.ToByteArray)}
         Dim ds As New DataSet
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
-    Public Function LoadEntities(ByVal oDataSet As DataSet, ByVal commPCodeId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_ENTITIES")
+    Public Function LoadEntities(oDataSet As DataSet, commPCodeId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_ENTITIES")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
             {New DBHelper.DBHelperParameter(COL_NAME_COMM_P_CODE_ID, commPCodeId.ToByteArray)}
         '  Dim ds As New DataSet
-        Return DBHelper.Fetch(oDataSet, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(oDataSet, selectStmt, TABLE_NAME, parameters)
     End Function
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

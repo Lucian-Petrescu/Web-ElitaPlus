@@ -83,7 +83,7 @@ Namespace Tables
             Public ProductCode As String = Nothing
             Public DealerProductCode As String = Nothing
 
-            Public Sub New(ByVal ProductCodeConvId As Guid, ByVal DealerId As Guid, ByVal ProductCodeId As Guid, ByVal ProductCode As String, ByVal DealerProductCode As String)
+            Public Sub New(ProductCodeConvId As Guid, DealerId As Guid, ProductCodeId As Guid, ProductCode As String, DealerProductCode As String)
                 Me.ProductCodeConvId = ProductCodeConvId
                 Me.DealerId = DealerId
                 Me.ProductCodeId = ProductCodeId
@@ -124,14 +124,14 @@ Namespace Tables
 
         Private Property ProductCodeConversionId() As String
             Get
-                If Grid.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX Then
-                    moProductCodeConversionId = Me.GetSelectedGridText(Grid, GRID_COL_PRODUCT_CODE_CONVERSION_ID)
+                If Grid.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                    moProductCodeConversionId = GetSelectedGridText(Grid, GRID_COL_PRODUCT_CODE_CONVERSION_ID)
                 End If
                 Return moProductCodeConversionId
             End Get
-            Set(ByVal Value As String)
-                If Grid.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX Then
-                    Me.SetSelectedGridText(Grid, GRID_COL_PRODUCT_CODE_CONVERSION_ID, Value)
+            Set(Value As String)
+                If Grid.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                    SetSelectedGridText(Grid, GRID_COL_PRODUCT_CODE_CONVERSION_ID, Value)
                 End If
                 moProductCodeConversionId = Value
             End Set
@@ -139,10 +139,10 @@ Namespace Tables
 
         Private Property IsNewProductConversion() As Boolean
             Get
-                Return Me.State.IsNew
+                Return State.IsNew
             End Get
-            Set(ByVal Value As Boolean)
-                Me.State.IsNew = Value
+            Set(Value As Boolean)
+                State.IsNew = Value
             End Set
         End Property
 
@@ -164,7 +164,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -176,50 +176,50 @@ Namespace Tables
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
 
             Try
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 If Not Page.IsPostBack Then
 
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                     UpdateBreadCrum()
 
                     TranslateGridHeader(Grid)
 
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SortDirection = Me.State.SortExpression
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
+                    SortDirection = State.SortExpression
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
                     PopulateDropdown()
 
-                    If Me.State.IsGridVisible Then
-                        If Not (Me.State.PageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.PageSize = Grid.PageSize) Then
-                            Grid.PageSize = Me.State.PageSize
+                    If State.IsGridVisible Then
+                        If Not (State.PageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.PageSize = Grid.PageSize) Then
+                            Grid.PageSize = State.PageSize
                         End If
-                        Me.PopulateProductConversionGrid()
+                        PopulateProductConversionGrid()
                     End If
-                    Me.SetGridItemStyleColor(Me.Grid)
+                    SetGridItemStyleColor(Grid)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
 #End Region
 
 #Region "Handlers-Dropdowns"
 
-        Private Sub DealerDropChanged(ByVal DealerMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New) Handles DealerMultipleDrop.SelectedDropChanged
+        Private Sub DealerDropChanged(DealerMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New) Handles DealerMultipleDrop.SelectedDropChanged
             Try
                 PopulateProductCode()
-                Me.PopulateProductConversionGrid(, False)
+                PopulateProductConversionGrid(, False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -227,7 +227,7 @@ Namespace Tables
 
 #Region "Handlers-Buttons"
 
-        Private Sub SearchButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnSearch.Click
+        Private Sub SearchButton_Click(sender As System.Object, e As System.EventArgs) Handles moBtnSearch.Click
             Try
                 ' Dim oState As TheState
                 If Not State.IsGridVisible Then
@@ -236,39 +236,39 @@ Namespace Tables
                         cboPageSize.SelectedValue = CType(State.PageSize, String)
                         Grid.PageSize = State.PageSize
                     End If
-                    Me.State.IsGridVisible = True
+                    State.IsGridVisible = True
                 End If
-                Grid.PageIndex = Me.NO_PAGE_INDEX
+                Grid.PageIndex = NO_PAGE_INDEX
                 Grid.DataMember = Nothing
-                Me.State.searchDV = Nothing
+                State.searchDV = Nothing
                 SetSession()
-                Grid.PageIndex = Me.NO_PAGE_INDEX
+                Grid.PageIndex = NO_PAGE_INDEX
                 Grid.DataMember = Nothing
-                Me.State.searchDV = Nothing
-                Me.PopulateProductConversionGrid()
+                State.searchDV = Nothing
+                PopulateProductConversionGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub ClearButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnClear.Click
+        Private Sub ClearButton_Click(sender As System.Object, e As System.EventArgs) Handles moBtnClear.Click
             ClearSearchCriteria()
 
         End Sub
 
-        Private Sub NewButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub NewButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
 
-                Me.State.moProductCodeConversionId = Guid.Empty
-                Me.State.IsProductCodeConvNew = True
+                State.moProductCodeConversionId = Guid.Empty
+                State.IsProductCodeConvNew = True
                 SetSession()
                 '     Response.Redirect(PRODUCTCODE_DETAIL_PAGE)
                 '  Me.callPage(ProductConversionExtendedForm.URL, Me.State.moProductCodeConversionId)
 
-                Me.callPage(ProductConversionExtendedForm.URL, New ProductConversionExtendedForm.Parameters(Me.State.moProductCodeConversionId, Me.State.DealerId, Me.State.ProductcodeId, Me.State.Productcode, Me.State.ExternalProductcode))
+                callPage(ProductConversionExtendedForm.URL, New ProductConversionExtendedForm.Parameters(State.moProductCodeConversionId, State.DealerId, State.ProductcodeId, State.Productcode, State.ExternalProductcode))
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -329,89 +329,89 @@ Namespace Tables
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.PageIndex = Grid.PageSize
+                State.PageIndex = Grid.PageSize
                 PopulateProductConversionGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Me.State.DealerId = Guid.Empty
+                State.PageIndex = e.NewPageIndex
+                State.DealerId = Guid.Empty
                 PopulateProductConversionGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
-                Me.State.SortExpression = Me.SortDirection
-                Me.State.PageIndex = 0
+                State.SortExpression = SortDirection
+                State.PageIndex = 0
                 PopulateProductConversionGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
-                If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+                If dvRow IsNot Nothing And Not State.bnoRow Then
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                        btnEditItem = CType(e.Row.Cells(Me.GRID_COL_EDIT_IDX).FindControl("SelectAction"), LinkButton)
+                        btnEditItem = CType(e.Row.Cells(GRID_COL_EDIT_IDX).FindControl("SelectAction"), LinkButton)
                         btnEditItem.Text = dvRow(COL_DEALER_NAME).ToString
                         '    e.Row.Cells(Me.GRID_COL_DEALER_NAME).Text = dvRow(COL_DEALER_NAME).ToString
-                        e.Row.Cells(Me.GRID_COL_PRODUCT_CODE).Text = dvRow(COL_PRODUCT_CODE).ToString
-                        e.Row.Cells(Me.GRID_COL_EXTERNAL_PRODUCT_CODE).Text = dvRow(COL_EXT_PRODUCT_CODE).ToString
-                        e.Row.Cells(Me.GRID_COL_PRODUCT_CODE_CONVERSION_ID).Text = GetGuidStringFromByteArray(CType(dvRow(COL_ProductConversion_ID), Byte()))
-                        e.Row.Cells(Me.GRID_COL_EFFECTIVE_DATE).Text = dvRow(COL_EFFECTIVE_DATE).ToString
-                        e.Row.Cells(Me.GRID_COL_EXPIRATION_DATE).Text = dvRow(COL_EXPIRATION_DATE).ToString
+                        e.Row.Cells(GRID_COL_PRODUCT_CODE).Text = dvRow(COL_PRODUCT_CODE).ToString
+                        e.Row.Cells(GRID_COL_EXTERNAL_PRODUCT_CODE).Text = dvRow(COL_EXT_PRODUCT_CODE).ToString
+                        e.Row.Cells(GRID_COL_PRODUCT_CODE_CONVERSION_ID).Text = GetGuidStringFromByteArray(CType(dvRow(COL_ProductConversion_ID), Byte()))
+                        e.Row.Cells(GRID_COL_EFFECTIVE_DATE).Text = dvRow(COL_EFFECTIVE_DATE).ToString
+                        e.Row.Cells(GRID_COL_EXPIRATION_DATE).Text = dvRow(COL_EXPIRATION_DATE).ToString
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
             Try
                 If e.CommandName = "SelectAction" Then
                     Dim index As Integer = CInt(e.CommandArgument)
-                    Me.State.moProductCodeConversionId = New Guid(Me.Grid.Rows(index).Cells(Me.GRID_COL_PRODUCT_CODE_CONVERSION_ID).Text)
+                    State.moProductCodeConversionId = New Guid(Grid.Rows(index).Cells(GRID_COL_PRODUCT_CODE_CONVERSION_ID).Text)
                     ' Me.callPage(ProductConversionExtendedForm.URL, Me.State.moProductCodeConversionId)
-                    Me.callPage(ProductConversionExtendedForm.URL, New ProductConversionExtendedForm.Parameters(Me.State.moProductCodeConversionId, Me.State.DealerId, Me.State.ProductcodeId, Me.State.Productcode, Me.State.ExternalProductcode))
+                    callPage(ProductConversionExtendedForm.URL, New ProductConversionExtendedForm.Parameters(State.moProductCodeConversionId, State.DealerId, State.ProductcodeId, State.Productcode, State.ExternalProductcode))
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -462,50 +462,50 @@ Namespace Tables
             Try
                 If refresh = True Then
 
-                    If (Me.State.searchDV Is Nothing) Then
-                        Me.State.searchDV = GetDV()
+                    If (State.searchDV Is Nothing) Then
+                        State.searchDV = GetDV()
                     End If
                 End If
 
-                If Not Me.State.searchDV Is Nothing Then
+                If State.searchDV IsNot Nothing Then
 
-                    If (Me.State.searchDV.Count = 0) Then
+                    If (State.searchDV.Count = 0) Then
 
-                        Me.State.bnoRow = True
-                        CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
+                        State.bnoRow = True
+                        CreateHeaderForEmptyGrid(Grid, SortDirection)
                     Else
-                        Me.State.bnoRow = False
-                        Me.Grid.Enabled = True
+                        State.bnoRow = False
+                        Grid.Enabled = True
                     End If
 
-                    Me.State.searchDV.Sort = Me.State.SortExpression
+                    State.searchDV.Sort = State.SortExpression
                     Grid.AutoGenerateColumns = False
 
-                    Grid.Columns(Me.GRID_COL_DEALER_NAME).SortExpression = COL_DEALER_NAME
-                    Grid.Columns(Me.GRID_COL_PRODUCT_CODE).SortExpression = COL_PRODUCT_CODE
-                    Grid.Columns(Me.GRID_COL_EXTERNAL_PRODUCT_CODE).SortExpression = COL_EXT_PRODUCT_CODE
-                    Grid.Columns(Me.GRID_COL_EFFECTIVE_DATE).SortExpression = COL_EFFECTIVE_DATE
-                    Grid.Columns(Me.GRID_COL_EXPIRATION_DATE).SortExpression = COL_EXPIRATION_DATE
-                    HighLightSortColumn(Grid, Me.State.SortExpression)
+                    Grid.Columns(GRID_COL_DEALER_NAME).SortExpression = COL_DEALER_NAME
+                    Grid.Columns(GRID_COL_PRODUCT_CODE).SortExpression = COL_PRODUCT_CODE
+                    Grid.Columns(GRID_COL_EXTERNAL_PRODUCT_CODE).SortExpression = COL_EXT_PRODUCT_CODE
+                    Grid.Columns(GRID_COL_EFFECTIVE_DATE).SortExpression = COL_EFFECTIVE_DATE
+                    Grid.Columns(GRID_COL_EXPIRATION_DATE).SortExpression = COL_EXPIRATION_DATE
+                    HighLightSortColumn(Grid, State.SortExpression)
                     ' BasePopulateGrid(Grid, Me.State.searchDV, Me.State.moProductCodeId, oAction)
 
-                    SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.DealerId, Me.Grid, Me.State.PageIndex)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.DealerId, Grid, State.PageIndex)
 
-                    Me.Grid.DataSource = Me.State.searchDV
-                    HighLightSortColumn(Grid, Me.SortDirection)
-                    Me.Grid.DataBind()
+                    Grid.DataSource = State.searchDV
+                    HighLightSortColumn(Grid, SortDirection)
+                    Grid.DataBind()
 
                     ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-                    Session("recCount") = Me.State.searchDV.Count
+                    Session("recCount") = State.searchDV.Count
 
                     If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -521,12 +521,12 @@ Namespace Tables
                 DealerMultipleDrop.BindData(dv)
                 DealerMultipleDrop.AutoPostBackDD = True
                 DealerMultipleDrop.NothingSelected = True
-                DealerMultipleDrop.SelectedGuid = Me.State.DealerId
+                DealerMultipleDrop.SelectedGuid = State.DealerId
                 PopulateProductCode()
 
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
         End Sub
 
@@ -547,21 +547,21 @@ Namespace Tables
                 .TextFunc = AddressOf .GetCode,
                 .SortFunc = AddressOf .GetCode
                 })
-                    BindSelectItem(Me.State.ProductcodeId.ToString, dpAssurantProdCode)
+                    BindSelectItem(State.ProductcodeId.ToString, dpAssurantProdCode)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub PopulateExternalProductCode()
             Try
-                PopulateControlFromBOProperty(Me.txtExternalProductCode, Me.State.ExternalProductcode)
+                PopulateControlFromBOProperty(txtExternalProductCode, State.ExternalProductcode)
                 ' Me.SetSelectedGridText(Grid, GRID_COL_EXTERNAL_PRODUCT_CODE, TheProductCodeConversion.ExternalProdCode)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -587,16 +587,16 @@ Namespace Tables
                 dpAssurantProdCode.SelectedIndex = -1
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("PRODUCT_CONVERSION")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("PRODUCT_CONVERSION")
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("PRODUCT_CONVERSION")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("PRODUCT_CONVERSION")
                 End If
             End If
         End Sub
@@ -629,13 +629,13 @@ Namespace Tables
 
             With State.searchData
                 .companyIds = ElitaPlusIdentity.Current.ActiveUser.Companies
-                If DealerMultipleDrop.SelectedIndex > Me.BLANK_ITEM_SELECTED Then
+                If DealerMultipleDrop.SelectedIndex > BLANK_ITEM_SELECTED Then
                     .dealerId = DealerMultipleDrop.SelectedGuid
                 Else
                     .dealerId = Guid.Empty
                 End If
-                If dpAssurantProdCode.SelectedIndex > Me.BLANK_ITEM_SELECTED Then
-                    .productCodeId = Me.GetSelectedItem(dpAssurantProdCode)
+                If dpAssurantProdCode.SelectedIndex > BLANK_ITEM_SELECTED Then
+                    .productCodeId = GetSelectedItem(dpAssurantProdCode)
                 Else
                     .productCodeId = Guid.Empty
                 End If
@@ -647,15 +647,15 @@ Namespace Tables
             Return oDataView
         End Function
 
-        Private Sub PopulateBOFromForm(ByVal oProductCodeConversion As ProductCodeConversion)
+        Private Sub PopulateBOFromForm(oProductCodeConversion As ProductCodeConversion)
             Try
                 With oProductCodeConversion
-                    .DealerId = Me.GetSelectedGridDropItem(Grid, GRID_COL_DEALER_NAME)
-                    .ExternalProdCode = Me.GetSelectedGridText(Grid, GRID_COL_PRODUCT_CODE).ToUpper
-                    .ProductCodeId = Me.GetSelectedGridDropItem(Grid, GRID_COL_EXTERNAL_PRODUCT_CODE)
+                    .DealerId = GetSelectedGridDropItem(Grid, GRID_COL_DEALER_NAME)
+                    .ExternalProdCode = GetSelectedGridText(Grid, GRID_COL_PRODUCT_CODE).ToUpper
+                    .ProductCodeId = GetSelectedGridDropItem(Grid, GRID_COL_EXTERNAL_PRODUCT_CODE)
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -665,15 +665,15 @@ Namespace Tables
 #Region "State-Management"
 
         Private Sub SetSession()
-            With Me.State
+            With State
                 .Productcode = dpAssurantProdCode.SelectedValue
-                .ProductcodeId = Me.GetSelectedItem(dpAssurantProdCode)
+                .ProductcodeId = GetSelectedItem(dpAssurantProdCode)
                 .DealerId = DealerMultipleDrop.SelectedGuid
                 .ExternalProductcode = txtExternalProductCode.Text.ToString
                 .PageIndex = Grid.PageIndex
                 .PageSize = grid.PageSize
-                .PageSort = Me.State.SortExpression
-                .searchDV = Me.State.searchDV
+                .PageSort = State.SortExpression
+                .searchDV = State.searchDV
             End With
         End Sub
 
@@ -683,38 +683,38 @@ Namespace Tables
 #Region "Page Return"
 
         Private IsReturningFromChild As Boolean = False
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles Me.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles Me.PageReturn
             Try
-                Me.IsReturningFromChild = True
+                IsReturningFromChild = True
                 Dim retObj As ProductConversionForm.ReturnType = CType(ReturnPar, ProductConversionForm.ReturnType)
                 'Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.State.moProductCodeConversionId = retObj.ProductCodeConversionId
-                            Me.State.IsGridVisible = True
+                            State.moProductCodeConversionId = retObj.ProductCodeConversionId
+                            State.IsGridVisible = True
                         Case ElitaPlusPage.DetailPageCommand.Delete
-                            Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
-                            Me.State.moProductCodeConversionId = Guid.Empty
+                            AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                            State.moProductCodeConversionId = Guid.Empty
                         Case Else
-                            Me.State.moProductCodeConversionId = Guid.Empty
+                            State.moProductCodeConversionId = Guid.Empty
                     End Select
-                    Grid.PageIndex = Me.State.PageIndex
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                    Grid.PageSize = Me.State.PageSize
+                    Grid.PageIndex = State.PageIndex
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
+                    Grid.PageSize = State.PageSize
                     ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
-                    Me.State.DealerId = retObj.DealerIdSearchParam
-                    Me.State.ProductcodeId = retObj.ProductCodeIdSearchParam
-                    Me.State.Productcode = retObj.ProductCodeSearchParam
-                    Me.State.ExternalProductcode = retObj.DealerProductCodeSearchParam
+                    State.DealerId = retObj.DealerIdSearchParam
+                    State.ProductcodeId = retObj.ProductCodeIdSearchParam
+                    State.Productcode = retObj.ProductCodeSearchParam
+                    State.ExternalProductcode = retObj.DealerProductCodeSearchParam
 
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -728,15 +728,15 @@ Namespace Tables
             Public DealerProductCodeSearchParam As String
             Public BoChanged As Boolean = False
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal ProductCodeConversionId As Guid, ByVal SearchParam As ProductConversionExtendedForm.Parameters, Optional ByVal boChanged As Boolean = False)
-                Me.LastOperation = LastOp
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, ProductCodeConversionId As Guid, SearchParam As ProductConversionExtendedForm.Parameters, Optional ByVal boChanged As Boolean = False)
+                LastOperation = LastOp
                 Me.ProductCodeConversionId = ProductCodeConversionId
                 Me.BoChanged = boChanged
-                If Not SearchParam Is Nothing Then
-                    Me.DealerIdSearchParam = SearchParam.DealerId
-                    Me.ProductCodeIdSearchParam = SearchParam.ProductCodeId
-                    Me.ProductCodeSearchParam = SearchParam.Productcode
-                    Me.DealerProductCodeSearchParam = SearchParam.ExternalProductcode
+                If SearchParam IsNot Nothing Then
+                    DealerIdSearchParam = SearchParam.DealerId
+                    ProductCodeIdSearchParam = SearchParam.ProductCodeId
+                    ProductCodeSearchParam = SearchParam.Productcode
+                    DealerProductCodeSearchParam = SearchParam.ExternalProductcode
                 End If
             End Sub
 

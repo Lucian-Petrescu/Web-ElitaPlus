@@ -149,23 +149,23 @@ Public Class ClaimInvoiceDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_invoice_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
     'Public Function LoadList(ByVal compId As Guid, ByVal invoiceNumber As String, ByVal payee As String, _
@@ -211,25 +211,25 @@ Public Class ClaimInvoiceDAL
 
     'End Function
 
-    Public Function LoadList(ByVal compIds As ArrayList, ByVal invoiceNumber As String, ByVal payee As String, _
-                             ByVal claimNumber As String, ByVal createdDate As String, ByVal invoiceAmount As String, ByVal sortBy As String) As DataSet
+    Public Function LoadList(compIds As ArrayList, invoiceNumber As String, payee As String, _
+                             claimNumber As String, createdDate As String, invoiceAmount As String, sortBy As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_DYNAMIC")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_DYNAMIC")
 
         'since in our SQL we already have where clause..
         selectStmt &= Environment.NewLine & " and "
         'selectStmt &= Environment.NewLine & "inv.company_id = '" & Me.GuidToSQLString(compIds) & "'"
-        selectStmt &= Environment.NewLine & MiscUtil.BuildListForSql("inv." & Me.COL_NAME_COMPANY_ID, compIds, False)
+        selectStmt &= Environment.NewLine & MiscUtil.BuildListForSql("inv." & COL_NAME_COMPANY_ID, compIds, False)
 
-        If ((Not (invoiceNumber Is Nothing)) AndAlso (Me.FormatSearchMask(invoiceNumber))) Then
+        If ((Not (invoiceNumber Is Nothing)) AndAlso (FormatSearchMask(invoiceNumber))) Then
             selectStmt &= Environment.NewLine & "AND UPPER(inv.svc_control_number)" & invoiceNumber.ToUpper
         End If
 
-        If ((Not (payee Is Nothing)) AndAlso (Me.FormatSearchMask(payee))) Then
+        If ((Not (payee Is Nothing)) AndAlso (FormatSearchMask(payee))) Then
             selectStmt &= Environment.NewLine & "AND UPPER(dis.payee)" & payee.ToUpper
         End If
 
-        If ((Not (claimNumber Is Nothing)) AndAlso (Me.FormatSearchMask(claimNumber))) Then
+        If ((Not (claimNumber Is Nothing)) AndAlso (FormatSearchMask(claimNumber))) Then
             selectStmt &= Environment.NewLine & "AND inv.claim_number" & claimNumber
         End If
 
@@ -237,30 +237,30 @@ Public Class ClaimInvoiceDAL
         '    selectStmt &= Environment.NewLine & "AND to_char(inv.created_date,'mmddyyyy')" & createdDate
         'End If
 
-        If ((Not (createdDate Is Nothing)) AndAlso (Me.FormatSearchMask(createdDate))) Then
+        If ((Not (createdDate Is Nothing)) AndAlso (FormatSearchMask(createdDate))) Then
             selectStmt &= Environment.NewLine & "AND " & GetOracleDate("inv.created_date") & createdDate
         End If
 
-        If ((Not (invoiceAmount Is Nothing)) AndAlso (Me.FormatSearchMask(invoiceAmount))) Then
+        If ((Not (invoiceAmount Is Nothing)) AndAlso (FormatSearchMask(invoiceAmount))) Then
             selectStmt &= Environment.NewLine & "AND inv.amount" & invoiceAmount
         End If
 
-        selectStmt &= Environment.NewLine & "AND ROWNUM < " & Me.MAX_NUMBER_OF_ROWS
+        selectStmt &= Environment.NewLine & "AND ROWNUM < " & MAX_NUMBER_OF_ROWS
         selectStmt &= Environment.NewLine & "ORDER BY " & sortBy
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function GetClaimSumOfDeductibles(ByVal companyId As Guid, ByVal claimID As Guid) As DecimalType
-        Dim selectStmt As String = Me.Config("/SQL/GET_SUM_OF_INVOICES")
+    Public Function GetClaimSumOfDeductibles(companyId As Guid, claimID As Guid) As DecimalType
+        Dim selectStmt As String = Config("/SQL/GET_SUM_OF_INVOICES")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, claimID.ToByteArray), New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, companyId.ToByteArray)}
         Dim ds As DataSet = New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             If ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
                 If ds.Tables(0).Rows(0)(2) Is DBNull.Value Then
                     Return New DecimalType(0D)
@@ -276,12 +276,12 @@ Public Class ClaimInvoiceDAL
 
     End Function
 
-    Public Function GetClaimSumOfInvoices(ByVal companyId As Guid, ByVal claimID As Guid) As DecimalType
-        Dim selectStmt As String = Me.Config("/SQL/GET_SUM_OF_INVOICES")
+    Public Function GetClaimSumOfInvoices(companyId As Guid, claimID As Guid) As DecimalType
+        Dim selectStmt As String = Config("/SQL/GET_SUM_OF_INVOICES")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, claimID.ToByteArray), New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, companyId.ToByteArray)}
         Dim ds As DataSet = New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             If ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
                 If ds.Tables(0).Rows(0)(0) Is DBNull.Value Then
                     Return New DecimalType(0D)
@@ -296,11 +296,11 @@ Public Class ClaimInvoiceDAL
         End Try
 
     End Function
-    Public Sub GetReplacementTaxType(ByVal ServiceCenterID As Guid, ByVal RiskTypeID As Guid, _
-                                     ByVal EffectiveDate As Date, ByVal ProductPrice As Decimal, _
+    Public Sub GetReplacementTaxType(ServiceCenterID As Guid, RiskTypeID As Guid, _
+                                     EffectiveDate As Date, ProductPrice As Decimal, _
                                      ByRef ReplacementTaxTypeID As Guid)
         Try
-            Dim selectStmt As String = Me.Config("/SQL/GET_REPLACEMENT_TAX_TYPE")
+            Dim selectStmt As String = Config("/SQL/GET_REPLACEMENT_TAX_TYPE")
             Dim inputParameters(3) As DBHelperParameter
             Dim outputParameter(1) As DBHelperParameter
 
@@ -310,10 +310,10 @@ Public Class ClaimInvoiceDAL
             inputParameters(3) = New DBHelperParameter("V_ProductPrice", ProductPrice)
 
             outputParameter(0) = New DBHelperParameter("p_ReplacementTaxType", ReplacementTaxTypeID.ToByteArray.GetType)
-            outputParameter(1) = New DBHelperParameter(Me.COL_NAME_P_RETURN, GetType(Integer))
+            outputParameter(1) = New DBHelperParameter(COL_NAME_P_RETURN, GetType(Integer))
 
             DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
-            If outputParameter(Me.P_RETURN).Value <> 0 Then
+            If outputParameter(P_RETURN).Value <> 0 Then
                 ReplacementTaxTypeID = Guid.Empty
                 Throw New StoredProcedureGeneratedException("Data Base Generated Error: ", ErrorCodes.INVALID_TAXRATE_EXCEPTION)
             Else
@@ -324,27 +324,27 @@ Public Class ClaimInvoiceDAL
         End Try
     End Sub
     'REQ 1150 Added dealer_id
-    Public Function GetTaxRate(ByVal oTaxRateData As TaxRateData) As TaxRateData
-        Dim selectStmt As String = Me.Config("/SQL/GET_TAX_RATE")
-        Dim inputParameters(Me.TOTAL_INPUT_PARAM_CANCEL) As DBHelperParameter
-        Dim outputParameter(Me.TOTAL_OUTPUT_PARAM_CANCEL) As DBHelperParameter
+    Public Function GetTaxRate(oTaxRateData As TaxRateData) As TaxRateData
+        Dim selectStmt As String = Config("/SQL/GET_TAX_RATE")
+        Dim inputParameters(TOTAL_INPUT_PARAM_CANCEL) As DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_CANCEL) As DBHelperParameter
 
         With oTaxRateData
-            inputParameters(Me.P_COUNTRY_ID) = New DBHelperParameter(Me.COL_NAME_P_COUNTRY_ID, .countryID.ToByteArray)
-            inputParameters(Me.P_TAXTYPE_ID) = New DBHelperParameter(Me.COL_NAME_P_TAXTYPE_ID, .taxtypeID.ToByteArray)
-            inputParameters(Me.P_REGION_ID) = New DBHelperParameter(Me.COL_NAME_P_REGION_ID, .regionID.ToByteArray)
-            inputParameters(Me.P_SALES_DATE) = New DBHelperParameter(Me.COL_NAME_P_SALES_DATE, .salesDate)
+            inputParameters(P_COUNTRY_ID) = New DBHelperParameter(COL_NAME_P_COUNTRY_ID, .countryID.ToByteArray)
+            inputParameters(P_TAXTYPE_ID) = New DBHelperParameter(COL_NAME_P_TAXTYPE_ID, .taxtypeID.ToByteArray)
+            inputParameters(P_REGION_ID) = New DBHelperParameter(COL_NAME_P_REGION_ID, .regionID.ToByteArray)
+            inputParameters(P_SALES_DATE) = New DBHelperParameter(COL_NAME_P_SALES_DATE, .salesDate)
             'REQ 1150 Added dealer_id
-            inputParameters(Me.P_DEALER_ID) = New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, .dealerID.ToByteArray)
+            inputParameters(P_DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, .dealerID.ToByteArray)
 
-            outputParameter(Me.P_SALES_TAX_RATE) = New DBHelperParameter(Me.COL_NAME_P_SALES_TAX_RATE, GetType(Decimal))
-            outputParameter(Me.P_RETURN) = New DBHelperParameter(Me.COL_NAME_P_RETURN, GetType(Integer))
+            outputParameter(P_SALES_TAX_RATE) = New DBHelperParameter(COL_NAME_P_SALES_TAX_RATE, GetType(Decimal))
+            outputParameter(P_RETURN) = New DBHelperParameter(COL_NAME_P_RETURN, GetType(Integer))
 
         End With
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
-        If outputParameter(Me.P_RETURN).Value <> 0 Then
+        If outputParameter(P_RETURN).Value <> 0 Then
             '''Dim ex As ApplicationException
             '''If outputParameter(Me.P_RETURN).Value = 100 Then
             '''    ex = New ApplicationException(ErrorCodes.INVALID_TAXRATE_BO_ERR)
@@ -354,7 +354,7 @@ Public Class ClaimInvoiceDAL
 
             '''Throw ex
             Dim strErrorMsg As String
-            If outputParameter(Me.P_RETURN).Value = 100 Then
+            If outputParameter(P_RETURN).Value = 100 Then
                 strErrorMsg = ErrorCodes.INVALID_TAXRATE_BO_ERR
             Else
                 strErrorMsg = ErrorCodes.INVALID_TAXRATE_EXCEPTION
@@ -365,7 +365,7 @@ Public Class ClaimInvoiceDAL
         Else
 
             With oTaxRateData
-                .taxRate = outputParameter(Me.P_SALES_TAX_RATE).Value
+                .taxRate = outputParameter(P_SALES_TAX_RATE).Value
             End With
         End If
 
@@ -373,35 +373,35 @@ Public Class ClaimInvoiceDAL
 
     End Function
 
-    Public Function GetClaimTaxRates(ByVal oClaimTaxRatesData As ClaimTaxRatesData) As ClaimTaxRatesData
+    Public Function GetClaimTaxRates(oClaimTaxRatesData As ClaimTaxRatesData) As ClaimTaxRatesData
 
         With oClaimTaxRatesData
-            Dim selectStmt As String = Me.Config("/SQL/GET_CLAIM_TAX_RATES")
+            Dim selectStmt As String = Config("/SQL/GET_CLAIM_TAX_RATES")
 
 
             Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                        New DBHelper.DBHelperParameter(Me.COL_NAME_P_COUNTRY_ID, .countryID.ToByteArray),
-                        New DBHelper.DBHelperParameter(Me.COL_NAME_P_REGION_ID, .regionID.ToByteArray),
-                        New DBHelper.DBHelperParameter(Me.COL_NAME_P_SALES_DATE, .salesDate),
-                        New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, .dealerID.ToByteArray),
-                        New DBHelper.DBHelperParameter(Me.COL_NAME_P_CLAIM_TYPE, .claim_type)}
+                        New DBHelper.DBHelperParameter(COL_NAME_P_COUNTRY_ID, .countryID.ToByteArray),
+                        New DBHelper.DBHelperParameter(COL_NAME_P_REGION_ID, .regionID.ToByteArray),
+                        New DBHelper.DBHelperParameter(COL_NAME_P_SALES_DATE, .salesDate),
+                        New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, .dealerID.ToByteArray),
+                        New DBHelper.DBHelperParameter(COL_NAME_P_CLAIM_TYPE, .claim_type)}
 
             Dim outputParameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                        New DBHelper.DBHelperParameter(Me.COL_NAME_P_RETURN, GetType(Integer)),
-                        New DBHelper.DBHelperParameter(Me.COL_NAME_V_CLAIM_TAX_RATES, GetType(DataSet))}
+                        New DBHelper.DBHelperParameter(COL_NAME_P_RETURN, GetType(Integer)),
+                        New DBHelper.DBHelperParameter(COL_NAME_V_CLAIM_TAX_RATES, GetType(DataSet))}
 
 
 
             Dim ds As New DataSet
-            Dim tbl As String = Me.TABLE_NAME_CLAIM_TAX_RATES
+            Dim tbl As String = TABLE_NAME_CLAIM_TAX_RATES
 
             ' Call DBHelper Store Procedure
             DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, ds, tbl)
 
-            If outputParameter(Me.P_RETURN - 1).Value <> 0 Then
+            If outputParameter(P_RETURN - 1).Value <> 0 Then
 
                 Dim strErrorMsg As String
-                If outputParameter(Me.P_RETURN - 1).Value = 100 Then
+                If outputParameter(P_RETURN - 1).Value = 100 Then
                     strErrorMsg = ErrorCodes.INVALID_TAXRATE_BO_ERR
                 Else
                     strErrorMsg = ErrorCodes.INVALID_TAXRATE_EXCEPTION
@@ -489,20 +489,20 @@ Public Class ClaimInvoiceDAL
         End Try
 
     End Function
-    Public Function GetInvoiceTaxType(ByVal oTaxRateData As TaxRateData) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/GET_MANUAL_TAX")
+    Public Function GetInvoiceTaxType(oTaxRateData As TaxRateData) As Boolean
+        Dim selectStmt As String = Config("/SQL/GET_MANUAL_TAX")
         'Dim Parameters(Me.TOTAL_INPUT_PARAM_CANCEL) As DBHelperParameter
         Dim parameters() As DBHelper.DBHelperParameter
         Dim ds As DataSet = New DataSet
         With oTaxRateData
-            parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_P_COUNTRY_ID, .countryID.ToByteArray), _
-                                                                                               New DBHelper.DBHelperParameter(Me.COL_NAME_P_TAXTYPE_ID, .taxtypeID.ToByteArray), _
-                                                                                               New DBHelper.DBHelperParameter(Me.COL_NAME_P_SALES_DATE, .salesDate), _
-                                                                                               New DBHelper.DBHelperParameter(Me.COL_NAME_P_DEALER_ID, .dealerID)}
+            parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_P_COUNTRY_ID, .countryID.ToByteArray), _
+                                                                                               New DBHelper.DBHelperParameter(COL_NAME_P_TAXTYPE_ID, .taxtypeID.ToByteArray), _
+                                                                                               New DBHelper.DBHelperParameter(COL_NAME_P_SALES_DATE, .salesDate), _
+                                                                                               New DBHelper.DBHelperParameter(COL_NAME_P_DEALER_ID, .dealerID)}
         End With
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             If ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
                 Return True
             Else
@@ -514,9 +514,9 @@ Public Class ClaimInvoiceDAL
 
     End Function
 
-    Public Function LoadPaymentsList(ByVal companyId As Guid, ByVal claimNumber As String) As DataSet
+    Public Function LoadPaymentsList(companyId As Guid, claimNumber As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PAYMENTS_LIST_DYNAMIC")
+        Dim selectStmt As String = Config("/SQL/LOAD_PAYMENTS_LIST_DYNAMIC")
 
         'since in our SQL we already have where clause..
 
@@ -530,7 +530,7 @@ Public Class ClaimInvoiceDAL
                                                 companyId.ToByteArray)
 
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
 
         Catch ex As Exception
@@ -539,12 +539,12 @@ Public Class ClaimInvoiceDAL
 
     End Function
 
-    Public Function LoadByClaimAuthId(ByVal familyDS As DataSet, ByVal claimId As Guid, ByVal claimAuthId As Guid) As DataRow
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BY_CLAIM_AUTH_ID")
+    Public Function LoadByClaimAuthId(familyDS As DataSet, claimId As Guid, claimAuthId As Guid) As DataRow
+        Dim selectStmt As String = Config("/SQL/LOAD_BY_CLAIM_AUTH_ID")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_id", claimId.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("claim_authorization_id", claimAuthId.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -560,7 +560,7 @@ Public Class ClaimInvoiceDAL
     'End Sub
 
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, ByVal oCancelCertificateData As CertCancellationData, Optional ByVal isPaymentAdjustmentOrReversal As Boolean = False, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, oCancelCertificateData As CertCancellationData, Optional ByVal isPaymentAdjustmentOrReversal As Boolean = False, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim oDisbursementDAL As New DisbursementDAL
         Dim oCommentDAL As New CommentDAL
         Dim oclaimtaxDAL As New ClaimTaxDAL
@@ -575,7 +575,7 @@ Public Class ClaimInvoiceDAL
             oDisbursementDAL.Update(familyDataset, tr, DataRowState.Deleted)
             oclaimtaxDAL.Update(familyDataset, tr, DataRowState.Deleted)
             'no changes for claim DAL
-            Me.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
             'comment if payment adjustment.
             If isPaymentAdjustmentOrReversal Then
@@ -583,7 +583,7 @@ Public Class ClaimInvoiceDAL
             End If
 
             'Second Pass updates additions and changes
-            Me.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             oDisbursementDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             oclaimtaxDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
@@ -635,7 +635,7 @@ Public Class ClaimInvoiceDAL
 #Region "StoreProcedures Control"
 
     ' Execute Store Procedure
-    Public Function ExecuteSP(ByVal docType As String, ByVal IdentificationNumber As String) As String
+    Public Function ExecuteSP(docType As String, IdentificationNumber As String) As String
         Dim dal As New CertificateDAL
         Return dal.ExecuteSP(docType, IdentificationNumber)
     End Function

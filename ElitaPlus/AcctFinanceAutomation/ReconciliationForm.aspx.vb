@@ -68,11 +68,11 @@ Public Class ReconciliationForm
 
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & _
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & _
                     TranslationBase.TranslateLabelOrMessage("BILLING_RECONCILIATION")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("BILLING_RECONCILIATION")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("BILLING_RECONCILIATION")
             End If
         End If
     End Sub
@@ -86,27 +86,27 @@ Public Class ReconciliationForm
     '    End If
     'End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.MasterPage.MessageController.Clear()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        MasterPage.MessageController.Clear()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("FINANCE_AUTOMATION")
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("FINANCE_AUTOMATION")
                 UpdateBreadCrum()
                 TranslateGridHeader(Grid)
                 TranslateGridHeader(GridViewMHP)
                 TranslateGridHeader(GridViewBLGS)
                 BtnOverRideRecon.Enabled = False
                 divDataContainer.Visible = False
-                cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
+                cboPageSize.SelectedValue = CType(State.PageSize, String)
                 'cboResPageSize.SelectedValue = CType(Me.State.PageSize, String)
                 PopulateDropdowns()
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
@@ -157,7 +157,7 @@ Public Class ReconciliationForm
             oListContext.CompanyId = UserCompanies(Index)
             Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
-                If Not oDealerList Is Nothing Then
+                If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
                 Else
                     oDealerList = oDealerListForCompany.Clone()
@@ -170,20 +170,20 @@ Public Class ReconciliationForm
 
     End Function
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
         Try
             'Me.State.SearchClicked = True
-            If Me.GetSelectedItem(ddlDealer) = Guid.Empty Then
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_DEALER_REQUIRED)
+            If GetSelectedItem(ddlDealer) = Guid.Empty Then
+                MasterPage.MessageController.AddInformation(Message.MSG_DEALER_REQUIRED)
                 Exit Sub
             End If
-            Me.State.SearchClicked = True
-            Me.State.PageIndex = 0
-            Me.State.IsGridVisible = True
-            Me.State.searchActiveDV = Nothing
-            Me.PopulateGrid()
+            State.SearchClicked = True
+            State.PageIndex = 0
+            State.IsGridVisible = True
+            State.searchActiveDV = Nothing
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -193,14 +193,14 @@ Public Class ReconciliationForm
 
             divDataContainer.Visible = True
 
-            If Me.State.DealerObjInSearch.Dealer = "TPHP" Then
+            If State.DealerObjInSearch.Dealer = "TPHP" Then
                 ' First Grid
-                If (Me.State.searchActiveDV Is Nothing) Then
-                    Me.State.searchActiveDV = Reconciliation.GetPHPReconData(Me.State.DealerIdInSearch, _
-                                                Me.State.firstDayOfMonth, Me.State.lastDayOfMonth, Me.State.IsShowDiscrepChecked)
-                    If Me.State.SearchClicked Then
-                        Me.ValidSearchResultCountNew(Me.State.searchActiveDV.Count, True)
-                        Me.State.SearchClicked = False
+                If (State.searchActiveDV Is Nothing) Then
+                    State.searchActiveDV = Reconciliation.GetPHPReconData(State.DealerIdInSearch, _
+                                                State.firstDayOfMonth, State.lastDayOfMonth, State.IsShowDiscrepChecked)
+                    If State.SearchClicked Then
+                        ValidSearchResultCountNew(State.searchActiveDV.Count, True)
+                        State.SearchClicked = False
                     End If
                 End If
 
@@ -210,37 +210,37 @@ Public Class ReconciliationForm
                     BtnOverRideRecon.Enabled = False
                     ControlMgr.SetVisibleControl(Me, Grid, False)
                 Else
-                    Me.Grid.DataSource = Me.State.searchActiveDV
+                    Grid.DataSource = State.searchActiveDV
                     ControlMgr.SetVisibleControl(Me, Grid, True)
                     BtnOverRideRecon.Enabled = True
                 End If
 
-                Me.State.PageIndex = Me.Grid.PageIndex
+                State.PageIndex = Grid.PageIndex
 
-                If (Not Me.State.PHPGridSortExpression.Equals(String.Empty)) Then
-                    Me.State.searchActiveDV.Sort = Me.State.PHPGridSortExpression
+                If (Not State.PHPGridSortExpression.Equals(String.Empty)) Then
+                    State.searchActiveDV.Sort = State.PHPGridSortExpression
                 End If
-                HighLightSortColumn(Grid, Me.State.PHPGridSortExpression, True)
+                HighLightSortColumn(Grid, State.PHPGridSortExpression, True)
 
-                Me.Grid.DataBind()
+                Grid.DataBind()
 
                 ControlMgr.SetVisibleControl(Me, GridViewMHP, False) ' Make sure that MHP grid is not visible when populating PHP Grid
                 ControlMgr.SetVisibleControl(Me, GridViewBLGS, False) ' Make sure that BLGS grid is not visible when populating PHP Grid
-                Session("recCount") = Me.State.searchActiveDV.Count
+                Session("recCount") = State.searchActiveDV.Count
 
                 'If Me.Grid.Visible Then 'DEF-25086
-                Me.lblActiveSearchResults.Visible = True
-                Me.lblActiveSearchResults.Text = Me.State.searchActiveDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblActiveSearchResults.Visible = True
+                lblActiveSearchResults.Text = State.searchActiveDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 'End If
 
-            ElseIf Me.State.DealerObjInSearch.Dealer = "TMHP" Then
+            ElseIf State.DealerObjInSearch.Dealer = "TMHP" Then
                 ' Second Grid
-                If (Me.State.searchActiveDV Is Nothing) Then
-                    Me.State.searchActiveDV = Reconciliation.GetMHPReconData(Me.State.DealerIdInSearch, _
-                                                Me.State.firstDayOfMonth, Me.State.lastDayOfMonth, Me.State.IsShowDiscrepChecked)
-                    If Me.State.SearchClicked Then
-                        Me.ValidSearchResultCountNew(Me.State.searchActiveDV.Count, True)
-                        Me.State.SearchClicked = False
+                If (State.searchActiveDV Is Nothing) Then
+                    State.searchActiveDV = Reconciliation.GetMHPReconData(State.DealerIdInSearch, _
+                                                State.firstDayOfMonth, State.lastDayOfMonth, State.IsShowDiscrepChecked)
+                    If State.SearchClicked Then
+                        ValidSearchResultCountNew(State.searchActiveDV.Count, True)
+                        State.SearchClicked = False
                     End If
                 End If
 
@@ -250,12 +250,12 @@ Public Class ReconciliationForm
                     BtnOverRideRecon.Enabled = False
                     ControlMgr.SetVisibleControl(Me, GridViewMHP, False)
                 Else
-                    Me.GridViewMHP.DataSource = Me.State.searchActiveDV
+                    GridViewMHP.DataSource = State.searchActiveDV
                     ControlMgr.SetVisibleControl(Me, GridViewMHP, True)
                     BtnOverRideRecon.Enabled = True
                 End If
 
-                Me.State.PageIndex = Me.GridViewMHP.PageIndex
+                State.PageIndex = GridViewMHP.PageIndex
 
                 'Disabled the Sorting on MHP Grid as it has only a small number of records and in certain sequence
                 'If (Not Me.State.MHPGridSortExpression.Equals(String.Empty)) Then
@@ -263,25 +263,25 @@ Public Class ReconciliationForm
                 'End If
                 'HighLightSortColumn(GridViewMHP, Me.State.MHPGridSortExpression, True)
 
-                Me.GridViewMHP.DataBind()
+                GridViewMHP.DataBind()
 
                 ControlMgr.SetVisibleControl(Me, Grid, False) ' Make sure that PHP grid is not visible when populating MHP Grid
                 ControlMgr.SetVisibleControl(Me, GridViewBLGS, False) ' Make sure that BLGS grid is not visible when populating MHP Grid
-                Session("recCount") = Me.State.searchActiveDV.Count
+                Session("recCount") = State.searchActiveDV.Count
 
 
                 'If Me.GridViewMHP.Visible Then 'DEF-25086
-                Me.lblActiveSearchResults.Visible = True
-                Me.lblActiveSearchResults.Text = Me.State.searchActiveDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblActiveSearchResults.Visible = True
+                lblActiveSearchResults.Text = State.searchActiveDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 'End If
-            ElseIf Me.State.DealerObjInSearch.Dealer = "BLGS" Then
+            ElseIf State.DealerObjInSearch.Dealer = "BLGS" Then
                 ' Third Grid
-                If (Me.State.searchActiveDV Is Nothing) Then
-                    Me.State.searchActiveDV = Reconciliation.GetPHPReconData(Me.State.DealerIdInSearch, _
-                                                Me.State.firstDayOfMonth, Me.State.lastDayOfMonth, Me.State.IsShowDiscrepChecked)
-                    If Me.State.SearchClicked Then
-                        Me.ValidSearchResultCountNew(Me.State.searchActiveDV.Count, True)
-                        Me.State.SearchClicked = False
+                If (State.searchActiveDV Is Nothing) Then
+                    State.searchActiveDV = Reconciliation.GetPHPReconData(State.DealerIdInSearch, _
+                                                State.firstDayOfMonth, State.lastDayOfMonth, State.IsShowDiscrepChecked)
+                    If State.SearchClicked Then
+                        ValidSearchResultCountNew(State.searchActiveDV.Count, True)
+                        State.SearchClicked = False
                     End If
                 End If
 
@@ -291,30 +291,30 @@ Public Class ReconciliationForm
                     BtnOverRideRecon.Enabled = False
                     ControlMgr.SetVisibleControl(Me, GridViewBLGS, False)
                 Else
-                    Me.GridViewBLGS.DataSource = Me.State.searchActiveDV
+                    GridViewBLGS.DataSource = State.searchActiveDV
                     ControlMgr.SetVisibleControl(Me, GridViewBLGS, True)
                     BtnOverRideRecon.Enabled = True
                 End If
 
-                Me.State.PageIndex = Me.GridViewBLGS.PageIndex
+                State.PageIndex = GridViewBLGS.PageIndex
 
                 'Disabled the Sorting on BLGS Grid as it has only a small number of records
 
-                Me.GridViewBLGS.DataBind()
+                GridViewBLGS.DataBind()
 
                 ControlMgr.SetVisibleControl(Me, Grid, False) ' Make sure that PHP grid is not visible when populating BLGS Grid
                 ControlMgr.SetVisibleControl(Me, GridViewMHP, False) ' Make sure that MHP grid is not visible when populating BLGS Grid
-                Session("recCount") = Me.State.searchActiveDV.Count
+                Session("recCount") = State.searchActiveDV.Count
 
 
                 'If Me.GridViewBLGS.Visible Then 'DEF-25086
-                Me.lblActiveSearchResults.Visible = True
-                Me.lblActiveSearchResults.Text = Me.State.searchActiveDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblActiveSearchResults.Visible = True
+                lblActiveSearchResults.Text = State.searchActiveDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 'End If
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -322,13 +322,13 @@ Public Class ReconciliationForm
         Dim iMonth As Integer
         Dim iYear As Integer
         Try
-            If Not Me.State.DealerIdInSearch = Guid.Empty Then
-                Me.State.DealerIdInSearch = Me.GetSelectedItem(ddlDealer)
-                Me.State.DealerObjInSearch = New Dealer(Me.State.DealerIdInSearch)
+            If Not State.DealerIdInSearch = Guid.Empty Then
+                State.DealerIdInSearch = GetSelectedItem(ddlDealer)
+                State.DealerObjInSearch = New Dealer(State.DealerIdInSearch)
                 Integer.TryParse(GetSelectedValue(ddlAcctPeriodMonth), iMonth)
                 Integer.TryParse(GetSelectedValue(ddlAcctPeriodYear), iYear)
-                Me.State.firstDayOfMonth = GetFirstDayOfMonth(iMonth, iYear).ToString(DALObjects.DALBase.DOTNET_QUERY_DATEFORMAT)
-                Me.State.lastDayOfMonth = GetLastDayOfMonth(iMonth, iYear).ToString(DALObjects.DALBase.DOTNET_QUERY_DATEFORMAT)
+                State.firstDayOfMonth = GetFirstDayOfMonth(iMonth, iYear).ToString(DALObjects.DALBase.DOTNET_QUERY_DATEFORMAT)
+                State.lastDayOfMonth = GetLastDayOfMonth(iMonth, iYear).ToString(DALObjects.DALBase.DOTNET_QUERY_DATEFORMAT)
 
                 Return True
             Else
@@ -340,47 +340,47 @@ Public Class ReconciliationForm
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Function
 
 
-    Private Sub ddlDealer_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlDealer.SelectedIndexChanged
+    Private Sub ddlDealer_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddlDealer.SelectedIndexChanged
         Try
             ClearReconciliationResults()
-            Me.State.DealerIdInSearch = Me.GetSelectedItem(ddlDealer)
-            Me.State.DealerObjInSearch = New Dealer(Me.State.DealerIdInSearch)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.State.searchActiveDV = Nothing
-            Me.chkDiscrepOnly.Checked = False
-            Me.State.IsShowDiscrepChecked = False
-            Me.PopulateGrid()
+            State.DealerIdInSearch = GetSelectedItem(ddlDealer)
+            State.DealerObjInSearch = New Dealer(State.DealerIdInSearch)
+            Grid.PageIndex = State.PageIndex
+            State.searchActiveDV = Nothing
+            chkDiscrepOnly.Checked = False
+            State.IsShowDiscrepChecked = False
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub chkDiscrepOnly_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkDiscrepOnly.CheckedChanged
+    Private Sub chkDiscrepOnly_CheckedChanged(sender As Object, e As System.EventArgs) Handles chkDiscrepOnly.CheckedChanged
         Try
             'State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             'Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchActiveDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.State.searchActiveDV = Nothing
+            Grid.PageIndex = State.PageIndex
+            State.searchActiveDV = Nothing
             If chkDiscrepOnly.Checked Then
-                Me.State.IsShowDiscrepChecked = True
+                State.IsShowDiscrepChecked = True
             Else
-                Me.State.IsShowDiscrepChecked = False
+                State.IsShowDiscrepChecked = False
             End If
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 #Region "Date Functions"
 
 
-    Private Function GetFirstDayOfMonth(ByVal iMonth As Int32, ByVal iYear As Int32) As DateTime
+    Private Function GetFirstDayOfMonth(iMonth As Int32, iYear As Int32) As DateTime
         'set return value to the last day of the month for any date passed in to the method
         'create a datetime variable set to the passed in date
         Dim dtFrom As New DateTime(iYear, iMonth, 1)
@@ -390,7 +390,7 @@ Public Class ReconciliationForm
         Return dtFrom
     End Function
 
-    Private Function GetLastDayOfMonth(ByVal iMonth As Int32, ByVal iYear As Int32) As DateTime
+    Private Function GetLastDayOfMonth(iMonth As Int32, iYear As Int32) As DateTime
         'set return value to the last day of the month for any date passed in to the method
         'create a datetime variable set to the passed in date
         Dim dtTo As New DateTime(iYear, iMonth, 1)
@@ -415,7 +415,7 @@ Public Class ReconciliationForm
     '    End If
     'End Sub
 
-    Public Sub GridRowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Public Sub GridRowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
             'If Not Me.State.DealerObjInSearch Is Nothing Then
@@ -425,20 +425,20 @@ Public Class ReconciliationForm
             '    End If
             'End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim discrepancy As String
 
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
             If (e.Row.RowType = DataControlRowType.Header) Then
-                If Me.State.DealerObjInSearch.Dealer = "BLGS" Then
-                    Grid.Columns(Me.GRID_COL_NAME_BILLABLE_COUNT).HeaderText = "ePrism Count"
-                    Grid.Columns(Me.GRID_COL_NAME_CARRIER_COUNT).HeaderText = "BI Count"
+                If State.DealerObjInSearch.Dealer = "BLGS" Then
+                    Grid.Columns(GRID_COL_NAME_BILLABLE_COUNT).HeaderText = "ePrism Count"
+                    Grid.Columns(GRID_COL_NAME_CARRIER_COUNT).HeaderText = "BI Count"
                 End If
             End If
 
@@ -446,51 +446,51 @@ Public Class ReconciliationForm
 
                 discrepancy = dvRow(Reconciliation.ReconciliationDV.COL_NAME_DISCREPANCY).ToString
                 If discrepancy = "Y" Then
-                    e.Row.Cells(Me.GRID_COL_NAME_BILLABLE_COUNT).CssClass = "StatInactive"
-                    e.Row.Cells(Me.GRID_COL_NAME_CARRIER_COUNT).CssClass = "StatInactive"
+                    e.Row.Cells(GRID_COL_NAME_BILLABLE_COUNT).CssClass = "StatInactive"
+                    e.Row.Cells(GRID_COL_NAME_CARRIER_COUNT).CssClass = "StatInactive"
                 End If
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
             'Me.State.selectedPaymentGroupId = Guid.Empty
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            If Me.State.PHPGridSortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.PHPGridSortExpression.EndsWith(" DESC") Then
-                    Me.State.PHPGridSortExpression = e.SortExpression
+            If State.PHPGridSortExpression.StartsWith(e.SortExpression) Then
+                If State.PHPGridSortExpression.EndsWith(" DESC") Then
+                    State.PHPGridSortExpression = e.SortExpression
                 Else
-                    Me.State.PHPGridSortExpression &= " DESC"
+                    State.PHPGridSortExpression &= " DESC"
                 End If
             Else
-                Me.State.PHPGridSortExpression = e.SortExpression
+                State.PHPGridSortExpression = e.SortExpression
             End If
 
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -498,15 +498,15 @@ Public Class ReconciliationForm
 
 
 #Region "MHP Grid related"
-    Public Sub GridViewMHPRowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridViewMHP.RowCreated
+    Public Sub GridViewMHPRowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridViewMHP.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridViewMHP_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridViewMHP.RowDataBound
+    Private Sub GridViewMHP_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridViewMHP.RowDataBound
         Dim TotalRows As String
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -521,41 +521,41 @@ Public Class ReconciliationForm
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridViewMHP_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewMHP.PageIndexChanged
+    Private Sub GridViewMHP_PageIndexChanged(sender As Object, e As System.EventArgs) Handles GridViewMHP.PageIndexChanged
         Try
-            Me.State.PageIndex = GridViewMHP.PageIndex
+            State.PageIndex = GridViewMHP.PageIndex
             'Me.State.selectedPaymentGroupId = Guid.Empty
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridViewMHP_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridViewMHP.PageIndexChanging
+    Private Sub GridViewMHP_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridViewMHP.PageIndexChanging
         Try
             GridViewMHP.PageIndex = e.NewPageIndex
             State.PageIndex = GridViewMHP.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 #End Region
 
 #Region "BLGS Grid related"
-    Public Sub GridViewBLGSRowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridViewBLGS.RowCreated
+    Public Sub GridViewBLGSRowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridViewBLGS.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridViewBLGS_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridViewBLGS.RowDataBound
+    Private Sub GridViewBLGS_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridViewBLGS.RowDataBound
         Dim discrepancy As String
 
         Try
@@ -565,32 +565,32 @@ Public Class ReconciliationForm
 
                 discrepancy = dvRow(Reconciliation.ReconciliationDV.COL_NAME_DISCREPANCY).ToString
                 If discrepancy = "Y" Then
-                    e.Row.Cells(Me.GRID_COL_NAME_EPRISM_COUNT).CssClass = "StatInactive"
-                    e.Row.Cells(Me.GRID_COL_NAME_BI_COUNT).CssClass = "StatInactive"
+                    e.Row.Cells(GRID_COL_NAME_EPRISM_COUNT).CssClass = "StatInactive"
+                    e.Row.Cells(GRID_COL_NAME_BI_COUNT).CssClass = "StatInactive"
                 End If
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridViewBLGS_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewBLGS.PageIndexChanged
+    Private Sub GridViewBLGS_PageIndexChanged(sender As Object, e As System.EventArgs) Handles GridViewBLGS.PageIndexChanged
         Try
-            Me.State.PageIndex = GridViewBLGS.PageIndex
+            State.PageIndex = GridViewBLGS.PageIndex
             'Me.State.selectedPaymentGroupId = Guid.Empty
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridViewBLGS_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridViewBLGS.PageIndexChanging
+    Private Sub GridViewBLGS_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridViewBLGS.PageIndexChanging
         Try
             GridViewBLGS.PageIndex = e.NewPageIndex
             State.PageIndex = GridViewBLGS.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -598,48 +598,48 @@ Public Class ReconciliationForm
 
 
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            If Me.State.DealerObjInSearch.Dealer = "TPHP" Then
-                Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchActiveDV.Count, State.PageSize)
-                Me.Grid.PageIndex = Me.State.PageIndex
-            ElseIf Me.State.DealerObjInSearch.Dealer = "TMHP" Then
-                Me.State.PageIndex = NewCurrentPageIndex(GridViewMHP, State.searchActiveDV.Count, State.PageSize)
-                Me.GridViewMHP.PageIndex = Me.State.PageIndex
-            ElseIf Me.State.DealerObjInSearch.Dealer = "BLGS" Then
-                Me.State.PageIndex = NewCurrentPageIndex(GridViewBLGS, State.searchActiveDV.Count, State.PageSize)
-                Me.GridViewBLGS.PageIndex = Me.State.PageIndex
+            If State.DealerObjInSearch.Dealer = "TPHP" Then
+                State.PageIndex = NewCurrentPageIndex(Grid, State.searchActiveDV.Count, State.PageSize)
+                Grid.PageIndex = State.PageIndex
+            ElseIf State.DealerObjInSearch.Dealer = "TMHP" Then
+                State.PageIndex = NewCurrentPageIndex(GridViewMHP, State.searchActiveDV.Count, State.PageSize)
+                GridViewMHP.PageIndex = State.PageIndex
+            ElseIf State.DealerObjInSearch.Dealer = "BLGS" Then
+                State.PageIndex = NewCurrentPageIndex(GridViewBLGS, State.searchActiveDV.Count, State.PageSize)
+                GridViewBLGS.PageIndex = State.PageIndex
             End If
 
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub BtnOverRideRecon_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnOverRideRecon.Click
+    Private Sub BtnOverRideRecon_Click(sender As Object, e As System.EventArgs) Handles BtnOverRideRecon.Click
         Dim Result As Boolean
         Try
-            Result = Reconciliation.OverRideReconciliation(Me.State.DealerIdInSearch, Me.State.firstDayOfMonth,
-                                                           Me.State.lastDayOfMonth, ElitaPlusIdentity.Current.ActiveUser.UserName)
+            Result = Reconciliation.OverRideReconciliation(State.DealerIdInSearch, State.firstDayOfMonth,
+                                                           State.lastDayOfMonth, ElitaPlusIdentity.Current.ActiveUser.UserName)
 
             If Result Then
-                Me.MasterPage.MessageController.AddSuccess(Message.MSG_RECON_OVERRIDEN_SUCCESSFULLY, True)
+                MasterPage.MessageController.AddSuccess(Message.MSG_RECON_OVERRIDEN_SUCCESSFULLY, True)
             Else
-                Me.MasterPage.MessageController.AddErrorAndShow(Message.MSG_COULD_NOT_OVERRIDE_RECON, True)
+                MasterPage.MessageController.AddErrorAndShow(Message.MSG_COULD_NOT_OVERRIDE_RECON, True)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
-        ddlDealer.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
+    Private Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
+        ddlDealer.SelectedIndex = NO_ROW_SELECTED_INDEX
         'Me.ddlAcctPeriodMonth.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
         'Me.ddlAcctPeriodYear.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
-        Grid.EditIndex = Me.NO_ITEM_SELECTED_INDEX
+        Grid.EditIndex = NO_ITEM_SELECTED_INDEX
 
         ClearReconciliationResults()
     End Sub
@@ -653,12 +653,12 @@ Public Class ReconciliationForm
                 .lastDayOfMonth = String.Empty
                 .IsShowDiscrepChecked = False
             End With
-            Me.State.searchActiveDV = Nothing
-            Me.chkDiscrepOnly.Checked = False
-            Me.State.IsShowDiscrepChecked = False
-            Me.PopulateGrid()
+            State.searchActiveDV = Nothing
+            chkDiscrepOnly.Checked = False
+            State.IsShowDiscrepChecked = False
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 

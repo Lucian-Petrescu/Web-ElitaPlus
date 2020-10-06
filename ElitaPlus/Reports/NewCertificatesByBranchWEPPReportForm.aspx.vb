@@ -95,7 +95,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -105,27 +105,27 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             If CompanyMultiDrop.Visible = False Then
                 HideHtmlElement("trsep")
             End If
-            Me.ScriptManager1.RegisterAsyncPostBackControl(Me.UserCompanyMultiDrop)
+            ScriptManager1.RegisterAsyncPostBackControl(UserCompanyMultiDrop)
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
 
         End Sub
 
@@ -133,12 +133,12 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -149,22 +149,22 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(moEndDateLabel)
-            Me.ClearLabelErrSign(CompanyMultiDrop.CaptionLabel)
-            Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(moEndDateLabel)
+            ClearLabelErrSign(CompanyMultiDrop.CaptionLabel)
+            ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
         End Sub
 
 #End Region
 
 #Region "Handlers-DropDown"
 
-        Protected Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Protected Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
              Handles UserCompanyMultiDrop.SelectedDropChanged
             Try
                 PopulateDealerDropDown()
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -206,7 +206,7 @@ Namespace Reports
             'CompanyMultipleDrop.CaptionLabel
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("trsep")
-                CompanyMultiDrop.SelectedIndex = Me.ONE_ITEM
+                CompanyMultiDrop.SelectedIndex = ONE_ITEM
                 CompanyMultiDrop.Visible = False
             End If
 
@@ -220,9 +220,9 @@ Namespace Reports
             PopulateCompaniesDropdown()
             PopulateDealerDropDown()
             Dim t As Date = Date.Today.AddDays(-14)
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Today)
-            Me.RadiobuttonTotalsOnly.Checked = True
+            moBeginDateText.Text = GetDateFormattedString(t)
+            moEndDateText.Text = GetDateFormattedString(Date.Today)
+            RadiobuttonTotalsOnly.Checked = True
             TheRptCeInputControl.populateReportLanguages(RPT_FILENAME)
 
         End Sub
@@ -231,8 +231,8 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal compcode As String, ByVal compdesc As String, ByVal dealerCode As String, ByVal dealerName As String, ByVal beginDate As String,
-                                  ByVal endDate As String, ByVal detailCode As String, ByVal langCode As String, ByVal dateAddedSold As String, ByVal bybranch As String) As ReportCeBaseForm.Params
+        Function SetParameters(compcode As String, compdesc As String, dealerCode As String, dealerName As String, beginDate As String,
+                                  endDate As String, detailCode As String, langCode As String, dateAddedSold As String, bybranch As String) As ReportCeBaseForm.Params
 
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
@@ -244,7 +244,7 @@ Namespace Reports
             reportName = TheRptCeInputControl.getReportName(RPT_FILENAME, False)
             culturecode = TheRptCeInputControl.getCultureValue(False)
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With oReportParams
                 .compcode = compcode
@@ -295,19 +295,19 @@ Namespace Reports
             endDate = ReportCeBase.FormatDate(moEndDateLabel, moEndDateText.Text)
             beginDate = ReportCeBase.FormatDate(moBeginDateLabel, moBeginDateText.Text)
 
-            If Me.RadiobuttonTotalsOnly.Checked Then
+            If RadiobuttonTotalsOnly.Checked Then
                 detailCode = NO
             Else
                 detailCode = YES
             End If
 
-            If Me.RadiobuttonSold.Checked Then
+            If RadiobuttonSold.Checked Then
                 dateAddedSold = DATE_SOLD
             Else
                 dateAddedSold = DATE_ADDED
             End If
 
-            If Me.rbyBranch.Checked Then
+            If rbyBranch.Checked Then
                 bybranch = YES
             Else
                 bybranch = NO
@@ -342,8 +342,8 @@ Namespace Reports
 
         End Sub
 
-        Sub SetReportParams(ByVal oReportParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                                    ByVal reportName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(oReportParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                                    reportName As String, startIndex As Integer)
             With oReportParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_COMP_CODE", .compcode, reportName)
                 repParams(startIndex + 1) = New ReportCeBaseForm.RptParam("V_COMP_DESC", .compdesc, reportName)
@@ -361,8 +361,8 @@ Namespace Reports
         End Sub
 
 
-        Function SetExpParameters(ByVal compcode As String, ByVal compdesc As String, ByVal dealerCode As String, ByVal dealerName As String, ByVal beginDate As String,
-                                  ByVal endDate As String, ByVal detailCode As String, ByVal langCode As String, ByVal dateAddedSold As String, ByVal bybranch As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(compcode As String, compdesc As String, dealerCode As String, dealerName As String, beginDate As String,
+                                  endDate As String, detailCode As String, langCode As String, dateAddedSold As String, bybranch As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim reportName As String = RPT_FILENAME_EXPORT
@@ -372,7 +372,7 @@ Namespace Reports
             reportName = TheRptCeInputControl.getReportName(RPT_FILENAME_EXPORT, True)
             culturecode = TheRptCeInputControl.getCultureValue(True)
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With oReportParams
                 .compcode = compcode

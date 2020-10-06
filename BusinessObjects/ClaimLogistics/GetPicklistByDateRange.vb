@@ -38,8 +38,8 @@ Public Class GetPicklistByDateRange
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -50,10 +50,10 @@ Public Class GetPicklistByDateRange
     Private Sub Load(ByVal ds As GetPicklistByDateRangeDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -70,8 +70,8 @@ Public Class GetPicklistByDateRange
         Try
             If ds.GetPicklistByDateRange.Count = 0 Then Exit Sub
             With ds.GetPicklistByDateRange.Item(0)
-                Me.StartDate = ds.GetPicklistByDateRange.Item(0).START_DATE
-                Me.EndDate = ds.GetPicklistByDateRange.Item(0).END_DATE
+                StartDate = ds.GetPicklistByDateRange.Item(0).START_DATE
+                EndDate = ds.GetPicklistByDateRange.Item(0).END_DATE
             End With
 
         Catch ex As BOValidationException
@@ -99,7 +99,7 @@ Public Class GetPicklistByDateRange
         End Get
         Set(ByVal Value As Date)
             CheckDeleted()
-            Me.SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE, Value)
+            SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_START_DATE, Value)
         End Set
     End Property
 
@@ -114,7 +114,7 @@ Public Class GetPicklistByDateRange
         End Get
         Set(ByVal Value As Date)
             CheckDeleted()
-            Me.SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE, Value)
+            SetValue(DALObjects.PickupListHeaderDAL.COL_NAME_END_DATE, Value)
         End Set
     End Property
 
@@ -124,10 +124,10 @@ Public Class GetPicklistByDateRange
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
-            Dim dsPicklist As DataSet = PickupListHeader.GetPicklistByDateRange(Me.StartDate, Me.EndDate)
+            Validate()
+            Dim dsPicklist As DataSet = PickupListHeader.GetPicklistByDateRange(StartDate, EndDate)
 
-            dsPicklist.DataSetName = Me.DATASET_NAME
+            dsPicklist.DataSetName = DATASET_NAME
 
             Return XMLHelper.FromDatasetToXML(dsPicklist, Nothing, True)
 

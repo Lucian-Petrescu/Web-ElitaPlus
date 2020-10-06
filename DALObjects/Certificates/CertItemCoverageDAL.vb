@@ -101,23 +101,23 @@ Public Class CertItemCoverageDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_item_coverage_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
     'Public Function LoadPremiumTotals(ByVal certId As Guid) As DataSet
@@ -134,56 +134,56 @@ Public Class CertItemCoverageDAL
     '    DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {certParam})
     'End Sub
 
-    Public Function LoadList(ByVal certificateId As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadList(certificateId As Guid, languageId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         parameters = New OracleParameter() _
                                     {New OracleParameter(COL_NAME_CERT_ID, certificateId.ToByteArray), _
                                      New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
-    Public Function LoadCovListWithProdSplitWarr(ByVal certificateId As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadCovListWithProdSplitWarr(certificateId As Guid, languageId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_COV_PRD_SPLIT_WARR")
+        Dim selectStmt As String = Config("/SQL/LOAD_COV_PRD_SPLIT_WARR")
         parameters = New OracleParameter() _
                                     {New OracleParameter(COL_NAME_CERT_ID, certificateId.ToByteArray), _
                                      New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
-    Public Function LoadEligibleCoverages(ByVal certificateId As Guid, ByVal languageId As Guid, ByVal dateOfLoss As Date) As DataSet
+    Public Function LoadEligibleCoverages(certificateId As Guid, languageId As Guid, dateOfLoss As Date) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_ELIGIBLE_COVERAGES")
+        Dim selectStmt As String = Config("/SQL/LOAD_ELIGIBLE_COVERAGES")
         parameters = New OracleParameter() _
                                     {New OracleParameter(COL_NAME_CERT_ID, certificateId.ToByteArray), _
                                      New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray), _
                                      New OracleParameter(COL_NAME_LOSS_DATE, dateOfLoss)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
-    Public Function LoadListMainItem(ByVal certificateId As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadListMainItem(certificateId As Guid, languageId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_MAIN_ITEM")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_MAIN_ITEM")
         parameters = New OracleParameter() _
                                     {New OracleParameter(COL_NAME_CERT_ID, certificateId.ToByteArray), _
                                      New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
-    Public Function LoadClaimCoverageType(ByVal certificateId As Guid, ByVal languageId As Guid, _
-        ByVal certItemCoverageId As Guid, ByVal lossDate As Date, ByVal claimStatus As String, _
-        ByVal invoiceProcessDate As Date) As DataSet
+    Public Function LoadClaimCoverageType(certificateId As Guid, languageId As Guid, _
+        certItemCoverageId As Guid, lossDate As Date, claimStatus As String, _
+        invoiceProcessDate As Date) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_CLAIM_COVERAGE_TYPE")
+        Dim selectStmt As String = Config("/SQL/LOAD_CLAIM_COVERAGE_TYPE")
         Dim invProcessDate As String = "Not Null"
         If invoiceProcessDate = Nothing Then invProcessDate = "Null"
 
@@ -195,82 +195,82 @@ Public Class CertItemCoverageDAL
                                      New OracleParameter(COL_NAME_CLAIM_STATUS, claimStatus), _
                                      New OracleParameter(COL_NAME_INVOICE_PROCESS_DATE, invProcessDate)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
 
-    Public Function LoadItemCoverages(ByVal certId As Guid) As DataSet
+    Public Function LoadItemCoverages(certId As Guid) As DataSet
         Dim ds As DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_TOTALS")
+        Dim selectStmt As String = Config("/SQL/GET_TOTALS")
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ITEM_ID, certId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_PREMIUM_TOTALS, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_PREMIUM_TOTALS, parameters)
     End Function
 
-    Public Function LoadClaims(ByVal certItemCoverageId As Guid) As DataSet
+    Public Function LoadClaims(certItemCoverageId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/CLAIMS")
+        Dim selectStmt As String = Config("/SQL/CLAIMS")
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_CLAIMS, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_CLAIMS, parameters)
     End Function
 
-    Public Function LoadAllClaims(ByVal certItemCoverageId As Guid) As DataSet
+    Public Function LoadAllClaims(certItemCoverageId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/ALL_CLAIMS")
+        Dim selectStmt As String = Config("/SQL/ALL_CLAIMS")
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_CLAIMS, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_CLAIMS, parameters)
     End Function
 
-    Public Sub LoadAllItemCoveragesForCertificate(ByVal certId As Guid, ByVal familyDataset As DataSet)
+    Public Sub LoadAllItemCoveragesForCertificate(certId As Guid, familyDataset As DataSet)
         Dim ds As DataSet = familyDataset
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_CERTIFICATE")
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CERT_ID, certId.ToByteArray)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOR_CERTIFICATE")
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ID, certId.ToByteArray)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Sub
 
-    Public Sub LoadAllItemCoveragesWithChildOrParentForCertificate(ByVal certId As Guid, ByVal familyDataset As DataSet)
+    Public Sub LoadAllItemCoveragesWithChildOrParentForCertificate(certId As Guid, familyDataset As DataSet)
         Dim ds As DataSet = familyDataset
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_CERTIFICATE_WCP")
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CERT_ID, certId.ToByteArray),
-                                            New OracleParameter(Me.COL_NAME_CERT_ID_1, certId.ToByteArray)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOR_CERTIFICATE_WCP")
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ID, certId.ToByteArray),
+                                            New OracleParameter(COL_NAME_CERT_ID_1, certId.ToByteArray)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Sub
 
-    Public Function LoadAllItemCoveragesForGalaxyCertificate(ByVal certId As Guid, ByVal compId As Guid) As DataSet
+    Public Function LoadAllItemCoveragesForGalaxyCertificate(certId As Guid, compId As Guid) As DataSet
         Dim ds As DataSet = New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_GALAXY_CERTIFICATE")
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CERT_ID, certId.ToByteArray), _
-                                            New OracleParameter(Me.COL_NAME_COMPANY_ID, compId.ToByteArray)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOR_GALAXY_CERTIFICATE")
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ID, certId.ToByteArray), _
+                                            New OracleParameter(COL_NAME_COMPANY_ID, compId.ToByteArray)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Return ds
     End Function
 
-    Public Function LoadAllItemCoveragesForGalaxyClaim(ByVal certId As Guid, ByVal compId As Guid) As DataSet
+    Public Function LoadAllItemCoveragesForGalaxyClaim(certId As Guid, compId As Guid) As DataSet
         Dim ds As DataSet = New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_GALAXY_CLAIM")
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CERT_ID, certId.ToByteArray), _
-                                            New OracleParameter(Me.COL_NAME_COMPANY_ID, compId.ToByteArray)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOR_GALAXY_CLAIM")
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ID, certId.ToByteArray), _
+                                            New OracleParameter(COL_NAME_COMPANY_ID, compId.ToByteArray)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Return ds
     End Function
 
-    Public Function LoadAllItemCoveragesForGalaxyClaimUpdate(ByVal masterClaimNumber As String, ByVal compId As Guid) As DataSet
+    Public Function LoadAllItemCoveragesForGalaxyClaimUpdate(masterClaimNumber As String, compId As Guid) As DataSet
         Dim ds As DataSet = New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_GALAXY_CLAIM_UPDATE")
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_MASTER_CLAIM_NUMBER, masterClaimNumber), _
-                                            New OracleParameter(Me.COL_NAME_COMPANY_ID, compId.ToByteArray)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOR_GALAXY_CLAIM_UPDATE")
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_MASTER_CLAIM_NUMBER, masterClaimNumber), _
+                                            New OracleParameter(COL_NAME_COMPANY_ID, compId.ToByteArray)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Return ds
     End Function
 
-    Public Function LoadCurrentProductCodeCoverage(ByVal certificateId As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadCurrentProductCodeCoverage(certificateId As Guid, languageId As Guid) As DataSet
         'Dim ds As New DataSet
         'Dim parameters() As OracleParameter
         'Dim selectStmt As String = Me.Config("/SQL/LOAD_COVERAGE_CURRENT_PRODUCT_CODE")
@@ -280,7 +280,7 @@ Public Class CertItemCoverageDAL
 
         'Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_COVERAGE_CURRENT_PRODUCT_CODE")
+        Dim selectStmt As String = Config("/SQL/LOAD_COVERAGE_CURRENT_PRODUCT_CODE")
 
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                                 New DBHelper.DBHelperParameter("pi_cert_id", certificateId.ToByteArray),
@@ -292,7 +292,7 @@ Public Class CertItemCoverageDAL
         Dim ds As New DataSet
 
         Try
-            DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, TABLE_NAME)
 
             Return ds
         Catch ex As Exception
@@ -304,17 +304,17 @@ Public Class CertItemCoverageDAL
 
     End Function
 
-    Public Function GetClaimWaitingPeriod(ByVal certItemCoverageId As Guid, ByRef ignoreWaitingPeriodID As Guid) As Integer
+    Public Function GetClaimWaitingPeriod(certItemCoverageId As Guid, ByRef ignoreWaitingPeriodID As Guid) As Integer
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_CLAIM_WAITING_PERIOD")
+        Dim selectStmt As String = Config("/SQL/GET_CLAIM_WAITING_PERIOD")
 
-        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray)}
+        Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(PAR_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray)}
 
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIM_WAITING_PERIOD, GetType(Integer)), _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_IGNORE_WAITING_PERIOD, GetType(Byte()),16), _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)), _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String), 100)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_WAITING_PERIOD, GetType(Integer)), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_IGNORE_WAITING_PERIOD, GetType(Byte()),16), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 100)}
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
@@ -334,8 +334,8 @@ Public Class CertItemCoverageDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
     End Sub
 #End Region
 

@@ -14,7 +14,7 @@ Partial Class ClaimReimbursementForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -39,18 +39,18 @@ Partial Class ClaimReimbursementForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'StartNavControl()
-                Dim params As Parameters = CType(Me.CallingParameters, Parameters)
+                Dim params As Parameters = CType(CallingParameters, Parameters)
                 If Not params.ClaimIssueID.Equals(Guid.Empty) Then
-                    Me.State.claimIssueBO = New ClaimIssue(params.ClaimIssueID)
+                    State.claimIssueBO = New ClaimIssue(params.ClaimIssueID)
                 End If
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -68,32 +68,32 @@ Partial Class ClaimReimbursementForm
 #Region "Page Parameters"
     Public Class Parameters
         Public ClaimIssueID As Guid
-        Public Sub New(ByVal claimIssueID As Guid)
+        Public Sub New(claimIssueID As Guid)
             Me.ClaimIssueID = claimIssueID
             Me.ClaimIssueID = New Guid(GuidControl.HexToByteArray("5D16DE71C40841B0E053E505640ADE35"))
         End Sub
 
     End Class
 #End Region
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.MasterPage.MessageController.Clear_Hide()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        MasterPage.MessageController.Clear_Hide()
 
         If (Not Page.IsPostBack) Then
             UpdateBreadCrum()
 
-            Me.State.EntityIssueId = New Guid(GuidControl.HexToByteArray("5D16DE71C40841B0E053E505640ADE35"))
-            State.claimIssueBO = New ClaimIssue(Me.State.EntityIssueId)
+            State.EntityIssueId = New Guid(GuidControl.HexToByteArray("5D16DE71C40841B0E053E505640ADE35"))
+            State.claimIssueBO = New ClaimIssue(State.EntityIssueId)
             populateDropdowns()
             EnableDisableFields()
         End If
     End Sub
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                     TranslationBase.TranslateLabelOrMessage("CLAIM") & " " & TranslationBase.TranslateLabelOrMessage("PAYMENT_INSTRUMENT")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("PAYMENT_INSTRUMENT")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("PAYMENT_INSTRUMENT")
             End If
         End If
     End Sub
@@ -122,7 +122,7 @@ Partial Class ClaimReimbursementForm
                                                 .AddBlankItem = True
                                                })
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -132,11 +132,11 @@ Partial Class ClaimReimbursementForm
             If (ddlPaymentList.SelectedIndex > 0) Then
                 If (ddlPaymentList.SelectedItem.Text.ToUpper() = "BANK TRANSFER") Then
                     moBankInfoController.Visible = True
-                    Me.State.BankInfoBO = New BankInfo()
-                    moBankInfoController.State.myBankInfoBo = Me.State.BankInfoBO
-                    moBankInfoController.Bind(Me.State.BankInfoBO)
+                    State.BankInfoBO = New BankInfo()
+                    moBankInfoController.State.myBankInfoBo = State.BankInfoBO
+                    moBankInfoController.Bind(State.BankInfoBO)
                     moBankInfoController.State.myBankInfoBo.SepaEUBankTransfer = True
-                    moBankInfoController.SetCountryValue(Me.State.claimIssueBO.Claim.Certificate.CountryPurchaseId)
+                    moBankInfoController.SetCountryValue(State.claimIssueBO.Claim.Certificate.CountryPurchaseId)
 
                     moBankInfoController.EnableDisableRequiredControls()
                     ControlMgr.SetVisibleControl(Me, btnSave_WRITE, True)
@@ -170,7 +170,7 @@ Partial Class ClaimReimbursementForm
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -182,7 +182,7 @@ Partial Class ClaimReimbursementForm
 
         If (Not bankInfoId.Equals(Guid.Empty)) Then
             'Get the Answer Data based on the Answer code 
-            If (Me.State.claimIssueBO.IssueCode = "CFI_PYMINSSEL") Then
+            If (State.claimIssueBO.IssueCode = "CFI_PYMINSSEL") Then
                 strAnswerCode = "FI_PYMINS_BT"
             ElseIf (State.claimIssueBO.IssueCode = "CFI_LFLDEVNA") Then
                 strAnswerCode = "FI_CR_BT"
@@ -197,7 +197,7 @@ Partial Class ClaimReimbursementForm
         'Get the Answer Data based on the Answer code 
         Dim strAnswerCode As String = String.Empty
 
-        If (Me.State.claimIssueBO.IssueCode = "CFI_PYMINSSEL") Then
+        If (State.claimIssueBO.IssueCode = "CFI_PYMINSSEL") Then
             strAnswerCode = "FI_PYMINS_GC"
         ElseIf (State.claimIssueBO.IssueCode = "CFI_LFLDEVNA") Then
             strAnswerCode = "FI_CR_GC"
@@ -218,11 +218,11 @@ Partial Class ClaimReimbursementForm
         Dim dsAnswerData As DataSet
         dsAnswerData = Answer.GetAnswerDataByCode(answerCode)
 
-        If (Not dsAnswerData Is Nothing AndAlso dsAnswerData.Tables.Count > 0 AndAlso dsAnswerData.Tables(0).Rows.Count > 0) Then
+        If (dsAnswerData IsNot Nothing AndAlso dsAnswerData.Tables.Count > 0 AndAlso dsAnswerData.Tables(0).Rows.Count > 0) Then
             Dim dtTemp As DataTable = dsAnswerData.Tables(0)
 
             Dim claimIssResp As ClaimIssueResponse = New ClaimIssueResponse()
-            claimIssResp.ClaimIssueId = Me.State.claimIssueBO.ClaimIssueId
+            claimIssResp.ClaimIssueId = State.claimIssueBO.ClaimIssueId
             claimIssResp.AnswerId = GuidControl.ByteArrayToGuid(dtTemp.Rows(0)("answer_id"))
             claimIssResp.SupportsClaimId = GuidControl.ByteArrayToGuid(dtTemp.Rows(0)("supports_claim_id"))
             claimIssResp.AnswerDescription = dtTemp.Rows(0)("description")
@@ -235,7 +235,7 @@ Partial Class ClaimReimbursementForm
 
     Private Sub SaveClaimIssueResponseData(cir As ClaimIssueResponse)
         Try
-            If (Not cir Is Nothing) Then
+            If (cir IsNot Nothing) Then
                 cir.Save()
             End If
         Catch ex As Exception

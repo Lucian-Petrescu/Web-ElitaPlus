@@ -95,7 +95,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -103,24 +103,24 @@ Namespace Reports
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     TheRptCeInputControl.populateReportLanguages(RPT_DEALERFILENAME)
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
         Sub PopulateDealerDropDown()
@@ -131,7 +131,7 @@ Namespace Reports
                 oListContext.CompanyId = company_id
                 Dim dealerListForCompany As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If dealerListForCompany.Count > 0 Then
-                    If Not dealerist Is Nothing Then
+                    If dealerist IsNot Nothing Then
                         dealerist.AddRange(dealerListForCompany)
                     Else
                         dealerist = dealerListForCompany.Clone()
@@ -143,7 +143,7 @@ Namespace Reports
                                                                                Return li.ExtendedCode + " - " + li.Translation
                                                                            End Function
 
-            Me.cbodealer.Populate(dealerist.ToArray(), New PopulateOptions() With
+            cbodealer.Populate(dealerist.ToArray(), New PopulateOptions() With
                 {
                     .AddBlankItem = True,
                     .TextFunc = dealerTextFunc,
@@ -158,13 +158,13 @@ Namespace Reports
             oListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
             Dim dealerGroupListForCompanyGroup As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerGroupByCompanyGroup", context:=oListContext)
 
-            Me.cboDealerGrp.Populate(dealerGroupListForCompanyGroup.ToArray(), New PopulateOptions() With
+            cboDealerGrp.Populate(dealerGroupListForCompanyGroup.ToArray(), New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
             'Me.BindListControlToDataView(Me.cboDealerGrp, LookupListNew.GetDealerGroupLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id))
 
-            Me.cboadealergrp.Populate(dealerGroupListForCompanyGroup.ToArray(), New PopulateOptions() With
+            cboadealergrp.Populate(dealerGroupListForCompanyGroup.ToArray(), New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -175,25 +175,25 @@ Namespace Reports
             PopulateDealerDropDown()
             PopulateDealerGroupDropDown()
             Dim t As Date = Date.Now.AddDays(-1)
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now)
-            Me.RadiobuttonTotalsOnly.Checked = True
-            Me.rsinglepremium.Checked = True
-            Me.rdealer.Checked = True
-            Me.rComm.Checked = True
+            moBeginDateText.Text = GetDateFormattedString(t)
+            moEndDateText.Text = GetDateFormattedString(Date.Now)
+            RadiobuttonTotalsOnly.Checked = True
+            rsinglepremium.Checked = True
+            rdealer.Checked = True
+            rComm.Checked = True
         End Sub
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(moEndDateLabel)
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(moEndDateLabel)
         End Sub
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -208,18 +208,18 @@ Namespace Reports
             beginDate = ReportCeBase.FormatDate(moBeginDateLabel, moBeginDateText.Text)
 
 
-            Dim dealerID As Guid = Me.GetSelectedItem(Me.cbodealer)
+            Dim dealerID As Guid = GetSelectedItem(cbodealer)
             Dim dv As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
             Dim dealerCode As String '= LookupListNew.GetCodeFromId(dv, dealerID)
             Dim selectedDealer As String = LookupListNew.GetDescriptionFromId(dv, dealerID)
 
-            Dim dealergrpID As Guid = Me.GetSelectedItem(Me.cboDealerGrp)
+            Dim dealergrpID As Guid = GetSelectedItem(cboDealerGrp)
             Dim dvdealergrp As DataView = LookupListNew.GetDealerGroupLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
             Dim dealergrpCode As String '= LookupListNew.GetCodeFromId(dv, dealergrpID)
             Dim selectedDealerGrp As String = LookupListNew.GetDescriptionFromId(dv, dealergrpID)
             'dealergrpCode = ALL
 
-            Dim alldealergrpId As Guid = Me.GetSelectedItem(Me.cboadealergrp)
+            Dim alldealergrpId As Guid = GetSelectedItem(cboadealergrp)
             Dim AlldealergrpCode As String '= LookupListNew.GetCodeFromId(dv, alldealergrpId)
             Dim selectedAllDealerGrp As String = LookupListNew.GetDescriptionFromId(dv, alldealergrpId)
 
@@ -228,42 +228,42 @@ Namespace Reports
             Dim selection_type As String
             'Dim customerRefunds As String = YES
 
-            If Me.RadiobuttonTotalsOnly.Checked Then
+            If RadiobuttonTotalsOnly.Checked Then
                 detailCode = NO
             Else
                 detailCode = YES
             End If
 
-            Select Case Me.rdReportSortOrder.SelectedValue()
+            Select Case rdReportSortOrder.SelectedValue()
                 Case DEALER_CODE
                     sortOrder = "C"
                 Case DEALER_NAME
                     sortOrder = "N"
             End Select
 
-            If Me.rsinglepremium.Checked Then
+            If rsinglepremium.Checked Then
                 payment_type = SINGLE_PREMIUM
             Else
                 payment_type = DD_PREMIUM
             End If
 
-            If Me.rComm.Checked Then
+            If rComm.Checked Then
                 selection_type = REGULAR
-            ElseIf Me.rBranch.Checked Then
+            ElseIf rBranch.Checked Then
                 selection_type = BRANCH
             ElseIf selection_type = SALES_REP Then
             Else
                 selection_type = DEALER_GRP
             End If
 
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             ElseIf Not dealerID.Equals(Guid.Empty) Then
                 dealerCode = LookupListNew.GetCodeFromId(dv, dealerID)
             ElseIf Not dealergrpID.Equals(Guid.Empty) Then
                 dealergrpCode = LookupListNew.GetCodeFromId(dvdealergrp, dealergrpID)
                 'AlldealergrpCode = LookupListNew.GetCodeFromId(dvdealergrp, dealergrpID)
-            ElseIf Me.rdealergrp.Checked = True Then
+            ElseIf rdealergrp.Checked = True Then
                 AlldealergrpCode = ALL
             ElseIf Not alldealergrpId.Equals(Guid.Empty) Then
                 AlldealergrpCode = LookupListNew.GetCodeFromId(dvdealergrp, alldealergrpId)
@@ -282,8 +282,8 @@ Namespace Reports
             End If
         End Sub
 
-        Function SetParameters(ByVal UserId As String, ByVal dealerCode As String, ByVal dealergrpCode As String, ByVal begindate As String, ByVal enddate As String, ByVal isSummary As String,
-                               ByVal paymenttype As String, ByVal sortorder As String, ByVal selectiontype As String, ByVal isdealer As Boolean) As ReportCeBaseForm.Params
+        Function SetParameters(UserId As String, dealerCode As String, dealergrpCode As String, begindate As String, enddate As String, isSummary As String,
+                               paymenttype As String, sortorder As String, selectiontype As String, isdealer As Boolean) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             ' Dim reportName As String = RPT_DEALERFILENAME
@@ -327,7 +327,7 @@ Namespace Reports
             End If
 
             ' Dim isSummary As String = YES
-            If isdealer = True And Not dealergrpCode Is Nothing Then
+            If isdealer = True And dealergrpCode IsNot Nothing Then
                 isdealer = False
             End If
 
@@ -365,7 +365,7 @@ Namespace Reports
 
             End If
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With params
                 .msRptName = reportName

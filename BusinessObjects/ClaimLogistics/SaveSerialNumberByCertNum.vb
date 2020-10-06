@@ -45,8 +45,8 @@ Public Class SaveSerialNumberByCertNum
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -57,10 +57,10 @@ Public Class SaveSerialNumberByCertNum
     Private Sub Load(ByVal ds As SaveSerialNumberByCertNumDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -77,9 +77,9 @@ Public Class SaveSerialNumberByCertNum
         Try
             If ds.SaveSerialNumberByCertNum.Count = 0 Then Exit Sub
             With ds.SaveSerialNumberByCertNum.Item(0)
-                Me.CertNumber = .CERT_NUMBER
-                Me.DealerCode = .DEALER_CODE
-                Me.SerialNumber = .SERIAL_NUMBER
+                CertNumber = .CERT_NUMBER
+                DealerCode = .DEALER_CODE
+                SerialNumber = .SERIAL_NUMBER
             End With
 
         Catch ex As BOValidationException
@@ -98,43 +98,43 @@ Public Class SaveSerialNumberByCertNum
 
     Public Property CertNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_CERT_NUMBER), String))
+                Return (CType(Row(DATA_COL_NAME_CERT_NUMBER), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CERT_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
     Public Property DealerCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_DEALER_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_DEALER_CODE), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER_CODE, Value)
+            SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
     Public Property SerialNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_SERIAL_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SERIAL_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_SERIAL_NUMBER), String))
+                Return (CType(Row(DATA_COL_NAME_SERIAL_NUMBER), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_SERIAL_NUMBER, Value)
+            SetValue(DATA_COL_NAME_SERIAL_NUMBER, Value)
         End Set
     End Property
 #End Region
@@ -143,12 +143,12 @@ Public Class SaveSerialNumberByCertNum
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
 
             Dim objSerialNumber As New SerialNumber
-            objSerialNumber.DealerId = Me.DealerId
-            objSerialNumber.SerialNumber = Me.SerialNumber
-            objSerialNumber.CertNumber = Me.CertNumber
+            objSerialNumber.DealerId = DealerId
+            objSerialNumber.SerialNumber = SerialNumber
+            objSerialNumber.CertNumber = CertNumber
 
             objSerialNumber.Validate()
 
@@ -177,20 +177,20 @@ Public Class SaveSerialNumberByCertNum
 
     Private ReadOnly Property DealerId() As Guid
         Get
-            If Me._dealerId.Equals(Guid.Empty) Then
+            If _dealerId.Equals(Guid.Empty) Then
 
                 Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
                 If list Is Nothing Then
                     Throw New BOValidationException("SaveSerialNumberByCertNum Error: ", Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE)
                 End If
-                Me._dealerId = LookupListNew.GetIdFromCode(list, Me.DealerCode)
+                _dealerId = LookupListNew.GetIdFromCode(list, DealerCode)
                 If _dealerId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("SaveSerialNumberByCertNum Error: ", Common.ErrorCodes.WS_DEALER_NOT_FOUND)
                 End If
                 list = Nothing
             End If
 
-            Return Me._dealerId
+            Return _dealerId
         End Get
     End Property
 

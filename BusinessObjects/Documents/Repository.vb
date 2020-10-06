@@ -18,17 +18,17 @@ Namespace Documents
         'New BO attaching to a BO family
         Friend Sub New(ByVal pDataTable As DataTable)
             MyBase.New(False)
-            Me.Dataset = pDataTable.DataSet
+            Dataset = pDataTable.DataSet
             Dim newRow As DataRow = pDataTable.NewRow
             pDataTable.Rows.Add(newRow)
-            Me.Row = newRow
+            Row = newRow
             SetValue(RepositoryDAL.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         End Sub
 
         Friend Sub New(ByVal row As DataRow)
             MyBase.New(False)
-            Me.Dataset = row.Table.DataSet
+            Dataset = row.Table.DataSet
             Me.Row = row
         End Sub
 
@@ -46,7 +46,7 @@ Namespace Documents
         End Function
 
         Public Sub Upload(ByVal pDocument As Document)
-            pDocument.RepositoryCode = Me.Code
+            pDocument.RepositoryCode = Code
             If (Not pDocument.FileName Is Nothing) AndAlso (pDocument.FileType.Length > 0) Then
                 pDocument.FileType = pDocument.FileName.Split(New Char() {"."}).Last().ToUpper()
             End If
@@ -76,7 +76,7 @@ Namespace Documents
             End If
 
             Dim cloudBlobClient As CloudBlobClient = storageAccount.CreateCloudBlobClient()
-            Dim cloudBlobContainer As CloudBlobContainer = cloudBlobClient.GetContainerReference(Me.StoragePath)
+            Dim cloudBlobContainer As CloudBlobContainer = cloudBlobClient.GetContainerReference(StoragePath)
             Dim cloudBlockBlob As CloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(pDocument.Id.ToString() + ".file")
             cloudBlockBlob.UploadFromByteArray(pDocument.Data, 0, pDocument.Data.Length)
         End Sub
@@ -117,7 +117,7 @@ Namespace Documents
             End Get
             Set(ByVal Value As String)
                 CheckDeleted()
-                Me.SetValue(RepositoryDAL.COL_NAME_CODE, Value)
+                SetValue(RepositoryDAL.COL_NAME_CODE, Value)
             End Set
         End Property
 
@@ -134,7 +134,7 @@ Namespace Documents
             End Get
             Set(ByVal Value As String)
                 CheckDeleted()
-                Me.SetValue(RepositoryDAL.COL_NAME_DESCRIPTION, Value)
+                SetValue(RepositoryDAL.COL_NAME_DESCRIPTION, Value)
             End Set
         End Property
 
@@ -152,7 +152,7 @@ Namespace Documents
             End Get
             Set(ByVal Value As String)
                 CheckDeleted()
-                Me.SetValue(RepositoryDAL.COL_NAME_STORAGE_PATH, Value)
+                SetValue(RepositoryDAL.COL_NAME_STORAGE_PATH, Value)
             End Set
         End Property
 
@@ -168,7 +168,7 @@ Namespace Documents
             End Get
             Set(ByVal Value As String)
                 CheckDeleted()
-                Me.SetValue(RepositoryDAL.COL_NAME_REPOSITORY_TYPE_XCD, Value)
+                SetValue(RepositoryDAL.COL_NAME_REPOSITORY_TYPE_XCD, Value)
             End Set
         End Property
 
@@ -179,14 +179,14 @@ Namespace Documents
         Public Overrides Sub Save()
             Try
                 MyBase.Save()
-                If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+                If IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                     Dim dal As New RepositoryDAL
-                    dal.Update(Me.Row)
+                    dal.Update(Row)
                     'Reload the Data from the DB
-                    If Me.Row.RowState <> DataRowState.Detached Then
-                        Dim objId As Guid = Me.Id
-                        Me.Dataset = New DataSet
-                        Me.Row = Nothing
+                    If Row.RowState <> DataRowState.Detached Then
+                        Dim objId As Guid = Id
+                        Dataset = New DataSet
+                        Row = Nothing
                     End If
                 End If
             Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

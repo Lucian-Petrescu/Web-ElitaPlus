@@ -10,7 +10,7 @@ Namespace AppServices.SA.SNMPortal.Faults
         <DataMember(IsRequired:=True, Name:="FaultMessage")>
         Public Property FaultMessage As String
 
-        Public Sub New(ByVal faultCode As String, faultMsg As string)            
+        Public Sub New(faultCode As String, faultMsg As string)            
             Me.FaultCode = faultCode
             FaultMessage = faultMsg         
         End Sub       

@@ -57,7 +57,7 @@ Namespace Reports
         End Sub
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -65,37 +65,37 @@ Namespace Reports
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
-            Me.ClearLabelsErrSign()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            MasterPage.MessageController.Clear_Hide()
+            ClearLabelsErrSign()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    MasterPage.UsePageTabTitleInBreadCrum = False
                     UpdateBreadCrum()
 
                     InitializeForm()
-                    Me.AddCalendar(Me.BtnBeginDate, Me.txtBeginDate)
-                    Me.AddCalendar(Me.BtnEndDate, Me.txtEndDate)
+                    AddCalendar(BtnBeginDate, txtBeginDate)
+                    AddCalendar(BtnEndDate, txtEndDate)
                     JavascriptCalls()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(lblMonth)
-                Me.ClearLabelErrSign(lblYear)
-                Me.ClearLabelErrSign(lblEndDate)
-                Me.ClearLabelErrSign(lblBeginDate)
+                ClearLabelErrSign(lblMonth)
+                ClearLabelErrSign(lblYear)
+                ClearLabelErrSign(lblEndDate)
+                ClearLabelErrSign(lblBeginDate)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -118,12 +118,12 @@ Namespace Reports
             Dim listcontext As ListContext = New ListContext()
             listcontext.CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
             Dim YearListLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ClosingYearsByCompany", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.moYearList.Populate(YearListLkl, New PopulateOptions() With
+            moYearList.Populate(YearListLkl, New PopulateOptions() With
              {
             .AddBlankItem = True,
             .ValueFunc = AddressOf PopulateOptions.GetCode
                   })
-            Dim oDescrip As String = Me.GetSelectedDescription(Me.moYearList)
+            Dim oDescrip As String = GetSelectedDescription(moYearList)
         End Sub
 
         Private Sub PopulateMonthsDropdown()
@@ -131,7 +131,7 @@ Namespace Reports
             'dv.Sort = "CODE"
             'Me.BindListControlToDataView(Me.moMonthList, dv, , , True, False)
             Dim monthLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("MONTH", Thread.CurrentPrincipal.GetLanguageCode())
-            Me.moMonthList.Populate(monthLkl, New PopulateOptions() With
+            moMonthList.Populate(monthLkl, New PopulateOptions() With
            {
               .AddBlankItem = True
            })
@@ -143,16 +143,16 @@ Namespace Reports
             TheReportCeInputControl.populateReportLanguages(RPT_FILENAME)
         End Sub
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("Billing_Register")
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Billing_Register")
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("Billing_Register")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Billing_Register")
         End Sub
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -163,10 +163,10 @@ Namespace Reports
             Dim oCompanyGrpId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
             Dim endDate As String
             Dim beginDate As String
-            Dim reportBasedOn As String = Me.rdReportBasedOn.SelectedValue()
+            Dim reportBasedOn As String = rdReportBasedOn.SelectedValue()
 
-            Dim selectedYear As String = Me.GetSelectedDescription(Me.moYearList)
-            Dim selectedMonthID As Guid = Me.GetSelectedItem(Me.moMonthList)
+            Dim selectedYear As String = GetSelectedDescription(moYearList)
+            Dim selectedMonthID As Guid = GetSelectedItem(moMonthList)
             Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
             Dim selectedYearMonth As String = selectedYear & selectedMonth
 
@@ -214,9 +214,9 @@ Namespace Reports
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
         End Sub
 
-        Function SetParameters(ByVal companyCode As String, ByVal companyDesc As String,
-                               ByVal selectedYearMonth As String, ByVal BeginDate As String, ByVal EndDate As String,
-                               ByVal reportBasedOn As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, companyDesc As String,
+                               selectedYearMonth As String, BeginDate As String, EndDate As String,
+                               reportBasedOn As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim culturecode As String = TheReportCeInputControl.getCultureValue(False)

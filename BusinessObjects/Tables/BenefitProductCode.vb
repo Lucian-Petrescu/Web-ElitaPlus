@@ -7,38 +7,38 @@ Public Class BenefitProductCode
 
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     Public Sub New(ByVal dealerId As Guid, ByVal productCode As String, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(dealerId, productCode)
+        Dataset = familyDS
+        Load(dealerId, productCode)
     End Sub
     Protected Sub Load()
         Try
             Dim dal As New BenefitProductCodeDAL
-            If Me.Dataset.Tables.IndexOf(BenefitProductCodeDAL.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(BenefitProductCodeDAL.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(BenefitProductCodeDAL.TABLE_NAME).NewRow
-            Me.Dataset.Tables(BenefitProductCodeDAL.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(BenefitProductCodeDAL.TABLE_NAME).NewRow
+            Dataset.Tables(BenefitProductCodeDAL.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(BenefitProductCodeDAL.TABLE_KEY_NAME, Guid.NewGuid)
             SetValue(BenefitProductCodeDAL.COL_NAME_EFFECTIVE_DATE, Date.Today)
             SetValue(BenefitProductCodeDAL.COL_NAME_EXPIRATION_DATE, Date.Today)
@@ -52,20 +52,20 @@ Public Class BenefitProductCode
         Try
             Dim dal As New BenefitProductCodeDAL
 
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(Id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(Id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.LoadByDealerProduct(Me.Dataset, dealerId, productCode)
-                Me.Row = Me.FindRow(dealerId, dal.COL_NAME_DEALER_ID, productCode, dal.COL_NAME_BEN_PRODUCT_CODE, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.LoadByDealerProduct(Dataset, dealerId, productCode)
+                Row = FindRow(dealerId, dal.COL_NAME_DEALER_ID, productCode, dal.COL_NAME_BEN_PRODUCT_CODE, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
 
@@ -81,25 +81,25 @@ Public Class BenefitProductCode
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New BenefitProductCodeDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(BenefitProductCodeDAL.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(BenefitProductCodeDAL.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(BenefitProductCodeDAL.TABLE_NAME) >= 0 Then
-                Me.Row = FindRow(id, BenefitProductCodeDAL.TABLE_KEY_NAME, Me.Dataset.Tables(BenefitProductCodeDAL.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(BenefitProductCodeDAL.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, BenefitProductCodeDAL.TABLE_KEY_NAME, Dataset.Tables(BenefitProductCodeDAL.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = FindRow(id, BenefitProductCodeDAL.TABLE_KEY_NAME, Me.Dataset.Tables(BenefitProductCodeDAL.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, BenefitProductCodeDAL.TABLE_KEY_NAME, Dataset.Tables(BenefitProductCodeDAL.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
 
-            Me._originalEffectiveDate = Me.EffectiveDate
-            Me._originalExpirationDate = Me.ExpirationDate
+            _originalEffectiveDate = EffectiveDate
+            _originalExpirationDate = ExpirationDate
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -140,7 +140,7 @@ Public Class BenefitProductCode
     Public ReadOnly Property AttributeValues As AttributeValueList(Of IAttributable) Implements IAttributable.AttributeValues
         Get
             If (_AttributeValueList Is Nothing) Then
-                _AttributeValueList = New AttributeValueList(Of IAttributable)(Me.Dataset, Me)
+                _AttributeValueList = New AttributeValueList(Of IAttributable)(Dataset, Me)
             End If
             Return _AttributeValueList
         End Get
@@ -171,7 +171,7 @@ Public Class BenefitProductCode
 
         Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(BenefitProductCodeDAL.COL_NAME_DEALER_ID, value)
+            SetValue(BenefitProductCodeDAL.COL_NAME_DEALER_ID, value)
         End Set
     End Property
 
@@ -188,7 +188,7 @@ Public Class BenefitProductCode
 
         Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(BenefitProductCodeDAL.COL_NAME_VENDOR_ID, value)
+            SetValue(BenefitProductCodeDAL.COL_NAME_VENDOR_ID, value)
         End Set
     End Property
 
@@ -206,7 +206,7 @@ Public Class BenefitProductCode
 
         Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(BenefitProductCodeDAL.COL_NAME_BEN_PRODUCT_CODE, value)
+            SetValue(BenefitProductCodeDAL.COL_NAME_BEN_PRODUCT_CODE, value)
         End Set
     End Property
 
@@ -224,7 +224,7 @@ Public Class BenefitProductCode
 
         Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(BenefitProductCodeSearchDV.COL_DESCRIPTION, value)
+            SetValue(BenefitProductCodeSearchDV.COL_DESCRIPTION, value)
         End Set
     End Property
 
@@ -241,7 +241,7 @@ Public Class BenefitProductCode
 
         Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(BenefitProductCodeDAL.COL_NAME_CURRENCY_ISO_CODE, value)
+            SetValue(BenefitProductCodeDAL.COL_NAME_CURRENCY_ISO_CODE, value)
         End Set
     End Property
 
@@ -259,7 +259,7 @@ Public Class BenefitProductCode
 
         Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(BenefitProductCodeDAL.COL_NAME_PRICE_UOM, value)
+            SetValue(BenefitProductCodeDAL.COL_NAME_PRICE_UOM, value)
         End Set
     End Property
 
@@ -276,7 +276,7 @@ Public Class BenefitProductCode
 
         Set(ByVal value As DecimalType)
             CheckDeleted()
-            Me.SetValue(BenefitProductCodeDAL.COL_NAME_NET_PRICE, value)
+            SetValue(BenefitProductCodeDAL.COL_NAME_NET_PRICE, value)
         End Set
     End Property
 
@@ -294,7 +294,7 @@ Public Class BenefitProductCode
 
         Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(BenefitProductCodeDAL.COL_NAME_TAX_TYPE_XCD, value)
+            SetValue(BenefitProductCodeDAL.COL_NAME_TAX_TYPE_XCD, value)
         End Set
     End Property
 
@@ -312,7 +312,7 @@ Public Class BenefitProductCode
 
         Set(ByVal value As LongType)
             CheckDeleted()
-            Me.SetValue(BenefitProductCodeDAL.COL_NAME_DURATIONINMONTH, value)
+            SetValue(BenefitProductCodeDAL.COL_NAME_DURATIONINMONTH, value)
         End Set
     End Property
 
@@ -330,7 +330,7 @@ Public Class BenefitProductCode
 
         Set(ByVal value As DateType)
             CheckDeleted()
-            Me.SetValue(BenefitProductCodeDAL.COL_NAME_EFFECTIVE_DATE, value)
+            SetValue(BenefitProductCodeDAL.COL_NAME_EFFECTIVE_DATE, value)
         End Set
     End Property
 
@@ -347,7 +347,7 @@ Public Class BenefitProductCode
 
         Set(ByVal value As DateType)
             CheckDeleted()
-            Me.SetValue(BenefitProductCodeDAL.COL_NAME_EXPIRATION_DATE, value)
+            SetValue(BenefitProductCodeDAL.COL_NAME_EXPIRATION_DATE, value)
         End Set
     End Property
 
@@ -365,7 +365,7 @@ Public Class BenefitProductCode
 
         Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(BenefitProductCodeDAL.COL_NAME_VENDOR_BILLABLE_PART_NUM, value)
+            SetValue(BenefitProductCodeDAL.COL_NAME_VENDOR_BILLABLE_PART_NUM, value)
         End Set
     End Property
 
@@ -382,7 +382,7 @@ Public Class BenefitProductCode
 
         Set(ByVal value As LongType)
             CheckDeleted()
-            Me.SetValue(BenefitProductCodeDAL.COL_NAME_DAYSTOEXPIREAFTERENDDAY, value)
+            SetValue(BenefitProductCodeDAL.COL_NAME_DAYSTOEXPIREAFTERENDDAY, value)
         End Set
     End Property
 
@@ -402,40 +402,40 @@ Public Class BenefitProductCode
         Try
             Dim refreshId As Guid
             MyBase.Save()
-            If Me._isDSCreator AndAlso (Me.IsDirty OrElse Me.IsFamilyDirty) AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso (IsDirty OrElse IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New BenefitProductCodeDAL
-                Dim createLogRecord As Boolean = Not (Me.IsNew Or Me._originalEffectiveDate Is Nothing Or Me._originalExpirationDate Is Nothing)
+                Dim createLogRecord As Boolean = Not (IsNew Or _originalEffectiveDate Is Nothing Or _originalExpirationDate Is Nothing)
 
                 If createLogRecord Then
                     ' the record is current
-                    If Not (Me._originalEffectiveDate.Value <= DateTime.Today AndAlso Me._originalExpirationDate.Value >= DateTime.Today) Then
+                    If Not (_originalEffectiveDate.Value <= DateTime.Today AndAlso _originalExpirationDate.Value >= DateTime.Today) Then
                         createLogRecord = False
                     End If
                 End If
 
                 If Not createLogRecord Then
-                    dal.UpdateFamily(Me.Dataset)
-                    refreshId = Me.Id
+                    dal.UpdateFamily(Dataset)
+                    refreshId = Id
                 Else
 
-                    Dim currentObj As New BenefitProductCode(Me.Id)
-                    currentObj.ExpirationDate = Me.EffectiveDate.Value.AddDays(-1)
+                    Dim currentObj As New BenefitProductCode(Id)
+                    currentObj.ExpirationDate = EffectiveDate.Value.AddDays(-1)
 
                     Dim newObj As New BenefitProductCode()
                     With newObj
-                        .DealerId = Me.DealerId
-                        .Description = Me.Description
-                        .BenefitProductCode = Me.BenefitProductCode
-                        .VendorId = Me.VendorId
-                        .CurrencyIsoCode = Me.CurrencyIsoCode
-                        .UnitOfMeasureXcd = Me.UnitOfMeasureXcd
-                        .DurationInMonth = Me.DurationInMonth
-                        .DaysToExpireAfterEndDay = Me.DaysToExpireAfterEndDay
-                        .EffectiveDate = Me.EffectiveDate
-                        .ExpirationDate = Me.ExpirationDate
-                        .NetPrice = Me.NetPrice
-                        .TaxTypeXCD = Me.TaxTypeXCD
-                        .VendorBillablePartNum = Me.VendorBillablePartNum
+                        .DealerId = DealerId
+                        .Description = Description
+                        .BenefitProductCode = BenefitProductCode
+                        .VendorId = VendorId
+                        .CurrencyIsoCode = CurrencyIsoCode
+                        .UnitOfMeasureXcd = UnitOfMeasureXcd
+                        .DurationInMonth = DurationInMonth
+                        .DaysToExpireAfterEndDay = DaysToExpireAfterEndDay
+                        .EffectiveDate = EffectiveDate
+                        .ExpirationDate = ExpirationDate
+                        .NetPrice = NetPrice
+                        .TaxTypeXCD = TaxTypeXCD
+                        .VendorBillablePartNum = VendorBillablePartNum
                     End With
 
                     dal.UpdateFamily(currentObj.Dataset, newObj.Dataset)
@@ -446,11 +446,11 @@ Public Class BenefitProductCode
                 End If
 
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached AndAlso Me.Row.RowState <> DataRowState.Deleted Then
+                If Row.RowState <> DataRowState.Detached AndAlso Row.RowState <> DataRowState.Deleted Then
                     Dim objId As Guid = refreshId
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -460,16 +460,16 @@ Public Class BenefitProductCode
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso (Me.IsDirty OrElse Me.IsFamilyDirty) AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso (IsDirty OrElse IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New BenefitProductCodeDAL
                 'dal.Update(Me.Row) 'Original code generated replced by the code below
-                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+                dal.UpdateFamily(Dataset) 'New Code Added Manually
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached AndAlso Me.Row.RowState <> DataRowState.Deleted Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached AndAlso Row.RowState <> DataRowState.Deleted Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -479,7 +479,7 @@ Public Class BenefitProductCode
 
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 
@@ -571,10 +571,10 @@ Public Class BenefitProductCode
 
             If Not obj.ExpirationDate Is Nothing And Not obj.EffectiveDate Is Nothing Then
                 If Convert.ToDateTime(obj.EffectiveDate.Value) > Convert.ToDateTime(obj.ExpirationDate.Value) Then
-                    Me.Message = BENEFIT_PRODUCT_CODE_FORM001
+                    Message = BENEFIT_PRODUCT_CODE_FORM001
                     bValid = False
                 ElseIf ValidateExpirationRange(obj.EffectiveDate, obj.ExpirationDate, obj) = False Then
-                    Me.Message = BENEFIT_PRODUCT_CODE_FORM002
+                    Message = BENEFIT_PRODUCT_CODE_FORM002
                     bValid = False
                 End If
             End If

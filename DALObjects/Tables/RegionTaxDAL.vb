@@ -37,37 +37,37 @@ Public Class RegionTaxDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("region_tax_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal RegionId As Guid, ByVal TaxTypeID As Guid, ByVal oProductTaxTypeId As Guid, ByVal DealerId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(RegionId As Guid, TaxTypeID As Guid, oProductTaxTypeId As Guid, DealerId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
         Dim DealerIds As New ArrayList()
         DealerIds.Add(DealerId)
 
         Dim whereClauseConditions As String = ""
         If Not DealerId = Guid.Empty Then
-            whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(Me.COL_NAME_DEALER_ID, DealerIds, False)
+            whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(COL_NAME_DEALER_ID, DealerIds, False)
         Else
-            whereClauseConditions &= Environment.NewLine & " AND " & Me.COL_NAME_DEALER_ID & " IS NULL"
+            whereClauseConditions &= Environment.NewLine & " AND " & COL_NAME_DEALER_ID & " IS NULL"
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim parameters As DBHelper.DBHelperParameter()
@@ -80,7 +80,7 @@ Public Class RegionTaxDAL
         Dim ds As New DataSet
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -88,26 +88,26 @@ Public Class RegionTaxDAL
     End Function
 
     Public Sub LoadMinEffDateMaxExpDate(ByRef MinEffDate As Date, ByRef MaxExpDate As Date, ByRef RcdCount As Integer, _
-                                            ByVal RegionId As Guid, ByVal TaxTypeId As Guid, ByVal oProductTaxTypeId As Guid, ByVal oDealerId As Guid)
+                                            RegionId As Guid, TaxTypeId As Guid, oProductTaxTypeId As Guid, oDealerId As Guid)
         RcdCount = 0
 
         Dim selectStmt As String
-        selectStmt = Me.Config("/SQL/LOAD_MINEFFECTIVE_MAXEXPIRATION_DATES")
+        selectStmt = Config("/SQL/LOAD_MINEFFECTIVE_MAXEXPIRATION_DATES")
 
         Dim DealerIds As New ArrayList()
         DealerIds.Add(oDealerId)
 
         Dim whereClauseConditions As String = ""
         If Not oDealerId = Guid.Empty Then
-            whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(Me.COL_NAME_DEALER_ID, DealerIds, False)
+            whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(COL_NAME_DEALER_ID, DealerIds, False)
         Else
-            whereClauseConditions &= Environment.NewLine & " AND " & Me.COL_NAME_DEALER_ID & " IS NULL"
+            whereClauseConditions &= Environment.NewLine & " AND " & COL_NAME_DEALER_ID & " IS NULL"
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim parameters As DBHelper.DBHelperParameter()
@@ -146,16 +146,16 @@ Public Class RegionTaxDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         'Dim addressDAL As New addressDAL
         Dim regionTaxDetailDAL As New RegionTaxDetailDAL
@@ -167,10 +167,10 @@ Public Class RegionTaxDAL
         Try
             'First Pass updates Deletions, delete children first then the parent
             regionTaxDetailDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             regionTaxDetailDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 
             If Transaction Is Nothing Then

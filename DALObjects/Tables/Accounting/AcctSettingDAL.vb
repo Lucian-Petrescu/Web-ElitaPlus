@@ -100,26 +100,26 @@ Public Class AcctSettingDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("acct_settings_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub LoadByServiceCenter(ByVal familyDS As DataSet, ByVal ServiceCenterId As Guid, ByVal AcctCompanyId As Guid)
+    Public Sub LoadByServiceCenter(familyDS As DataSet, ServiceCenterId As Guid, AcctCompanyId As Guid)
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                                                                                      New DBHelper.DBHelperParameter(Me.COL_NAME_ACCT_COMPANY_ID, AcctCompanyId.ToByteArray),
-                                                                                      New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, 1)}
+                                                                                      New DBHelper.DBHelperParameter(COL_NAME_ACCT_COMPANY_ID, AcctCompanyId.ToByteArray),
+                                                                                      New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, 1)}
         Dim whereClauseConditions As String = ""
 
         Try
@@ -127,12 +127,12 @@ Public Class AcctSettingDAL
             whereClauseConditions = " service_center_id = " + Common.GuidControl.GuidToHexString(ServiceCenterId)
 
             If Not whereClauseConditions = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             End If
 
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -141,11 +141,11 @@ Public Class AcctSettingDAL
 
     End Sub
 
-    Public Function LoadByVendor(ByVal Code As String, ByVal AcctCompanyId As Guid, ByVal VendType As VendorType, ByVal AcctType As String, Optional ByVal BranchCode As String = "") As Guid
+    Public Function LoadByVendor(Code As String, AcctCompanyId As Guid, VendType As VendorType, AcctType As String, Optional ByVal BranchCode As String = "") As Guid
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_VENDOR_BY_CODE")
+        Dim selectStmt As String = Config("/SQL/GET_VENDOR_BY_CODE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                                                                                      New DBHelper.DBHelperParameter(Me.COL_NAME_ACCT_COMPANY_ID, AcctCompanyId.ToByteArray)}
+                                                                                      New DBHelper.DBHelperParameter(COL_NAME_ACCT_COMPANY_ID, AcctCompanyId.ToByteArray)}
         Dim whereClauseConditions As String = ""
         Dim ret As Object
 
@@ -180,9 +180,9 @@ Public Class AcctSettingDAL
             whereClauseConditions += " AND ELP_ACCT_SETTINGS.ACCOUNT_TYPE = '" + AcctType + "' "
 
             If Not whereClauseConditions = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             End If
 
             ret = DBHelper.ExecuteScalar(selectStmt)
@@ -200,12 +200,12 @@ Public Class AcctSettingDAL
 
     End Function
 
-    Public Sub LoadByDealer(ByVal familyDS As DataSet, ByVal DealerId As Guid, ByVal AcctCompanyId As Guid)
+    Public Sub LoadByDealer(familyDS As DataSet, DealerId As Guid, AcctCompanyId As Guid)
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                                                                                       New DBHelper.DBHelperParameter(Me.COL_NAME_ACCT_COMPANY_ID, AcctCompanyId.ToByteArray),
-                                                                                       New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, 1)}
+                                                                                       New DBHelper.DBHelperParameter(COL_NAME_ACCT_COMPANY_ID, AcctCompanyId.ToByteArray),
+                                                                                       New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, 1)}
         Dim whereClauseConditions As String = ""
 
         Try
@@ -213,12 +213,12 @@ Public Class AcctSettingDAL
             whereClauseConditions = " dealer_id = " + Common.GuidControl.GuidToHexString(DealerId)
 
             If Not whereClauseConditions = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             End If
 
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -226,11 +226,11 @@ Public Class AcctSettingDAL
 
     End Sub
 
-    Public Function LoadDealers(ByVal strDealerName As String, ByVal strDealerCode As String, ByVal oCompanyIds As ArrayList, Optional ByVal HasAccountingInformation As Boolean = True) As DataSet
+    Public Function LoadDealers(strDealerName As String, strDealerCode As String, oCompanyIds As ArrayList, Optional ByVal HasAccountingInformation As Boolean = True) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_DEALER_SETTINGS")
+        Dim selectStmt As String = Config("/SQL/LOAD_DEALER_SETTINGS")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                                                                  New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)}
+                                                                  New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)}
         Dim ds As New DataSet
         Dim whereClauseConditions As String = ""
         Try
@@ -246,14 +246,14 @@ Public Class AcctSettingDAL
             End If
 
             If Not whereClauseConditions = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             End If
 
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY upper(elp_dealer." & DealerDAL.COL_NAME_DEALER_NAME & ")")
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY upper(elp_dealer." & DealerDAL.COL_NAME_DEALER_NAME & ")")
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
 
         Catch ex As Exception
@@ -262,18 +262,18 @@ Public Class AcctSettingDAL
 
     End Function
 
-    Public Function GetDealersForAcctSetting(ByVal oCompanyIds As ArrayList) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALER_ACCT_SETTINGS")
+    Public Function GetDealersForAcctSetting(oCompanyIds As ArrayList) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_DEALER_ACCT_SETTINGS")
         Dim whereClauseConditions As String = ""
         Dim inCausecondition As String = ""
         Dim bIsLikeClause As Boolean = False
         whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("elp_dealer." & DealerDAL.COL_NAME_COMPANY_ID, oCompanyIds, False)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY upper(elp_dealer." & DealerDAL.COL_NAME_DEALER_NAME & ")")
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY upper(elp_dealer." & DealerDAL.COL_NAME_DEALER_NAME & ")")
 
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -281,27 +281,27 @@ Public Class AcctSettingDAL
 
 
 
-    Public Function GetServiceCentersForAcctSetting(ByVal oCountryIds As ArrayList) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_SERVICE_CENTER_ACCT_SETTINGS")
+    Public Function GetServiceCentersForAcctSetting(oCountryIds As ArrayList) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_SERVICE_CENTER_ACCT_SETTINGS")
         Dim whereClauseConditions As String = ""
         Dim inCausecondition As String = ""
         Dim bIsLikeClause As Boolean = False
         whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("elp_service_center." & ServiceCenterDAL.COL_NAME_COUNTRY_ID, oCountryIds, False)
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY upper(elp_service_center." & ServiceCenterDAL.COL_NAME_DESCRIPTION & ")")
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY upper(elp_service_center." & ServiceCenterDAL.COL_NAME_DESCRIPTION & ")")
 
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadServiceCenters(ByVal strSCName As String, ByVal strSCCode As String, ByVal oCountryIds As ArrayList, Optional ByVal HasAccountingInformation As Boolean = True) As DataSet
+    Public Function LoadServiceCenters(strSCName As String, strSCCode As String, oCountryIds As ArrayList, Optional ByVal HasAccountingInformation As Boolean = True) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_SERVICE_CENTER_SETTINGS")
+        Dim selectStmt As String = Config("/SQL/LOAD_SERVICE_CENTER_SETTINGS")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                                                                                       New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)}
+                                                                                       New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)}
         Dim ds As New DataSet
         Dim whereClauseConditions As String = ""
 
@@ -319,13 +319,13 @@ Public Class AcctSettingDAL
             End If
 
             If Not whereClauseConditions = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             End If
 
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY upper(elp_service_center." & ServiceCenterDAL.COL_NAME_DESCRIPTION & ")")
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY upper(elp_service_center." & ServiceCenterDAL.COL_NAME_DESCRIPTION & ")")
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
 
         Catch ex As Exception
@@ -333,8 +333,8 @@ Public Class AcctSettingDAL
         End Try
     End Function
 
-    Public Function LoadCounterPartById(ByVal AcctSettingsId As Guid) As Guid
-        Dim selectStmt As String = Me.Config("/SQL/GET_COUNTERPART_BY_ID")
+    Public Function LoadCounterPartById(AcctSettingsId As Guid) As Guid
+        Dim selectStmt As String = Config("/SQL/GET_COUNTERPART_BY_ID")
 
         'Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
         '                            New DBHelper.DBHelperParameter(Me.COL_NAME_ACCT_SETTINGS_ID, AcctSettingsId.ToByteArray)}
@@ -353,11 +353,11 @@ Public Class AcctSettingDAL
         End Try
     End Function
 
-    Public Function GetServiceCentersByAcctCompanies(ByVal oAcctCompanyIds As ArrayList, Optional ByVal oSVCIDs As Generic.List(Of Guid) = Nothing) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_SERVICE_CENTERS_BY_ACCOUNTING_COMPANIES")
+    Public Function GetServiceCentersByAcctCompanies(oAcctCompanyIds As ArrayList, Optional ByVal oSVCIDs As Generic.List(Of Guid) = Nothing) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_SERVICE_CENTERS_BY_ACCOUNTING_COMPANIES")
         Dim whereClauseConditions As String = "", ds As DataSet = New DataSet
 
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(Me.COL_NAME_ACCT_COMPANY_ID, oAcctCompanyIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(COL_NAME_ACCT_COMPANY_ID, oAcctCompanyIds, False)
 
         Dim strSVCIDs As String, sbBuilder As System.Text.StringBuilder, blnStartPos As Boolean = True
         Dim I As Integer, BATCH_SIZE As Integer = 50, SVCId As Guid, intBatch As Integer = 1
@@ -375,7 +375,7 @@ Public Class AcctSettingDAL
                 sbBuilder.Append("'")
                 I += 1
                 If I Mod BATCH_SIZE = 0 Then
-                    strSVCIDs = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions & Environment.NewLine & String.Format(" AND service_center_ID in ({0})", sbBuilder.ToString()))
+                    strSVCIDs = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions & Environment.NewLine & String.Format(" AND service_center_ID in ({0})", sbBuilder.ToString()))
                     Try
                         DBHelper.Fetch(ds, strSVCIDs, "SVCList" & intBatch.ToString, New DBHelper.DBHelperParameter() {})
                     Catch ex As Exception
@@ -389,7 +389,7 @@ Public Class AcctSettingDAL
             Next
 
             If sbBuilder.Length > 0 Then
-                strSVCIDs = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions & Environment.NewLine & String.Format(" AND service_center_ID in ({0})", sbBuilder.ToString()))
+                strSVCIDs = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions & Environment.NewLine & String.Format(" AND service_center_ID in ({0})", sbBuilder.ToString()))
                 Try
                     DBHelper.Fetch(ds, strSVCIDs, "SVCList" & intBatch.ToString, New DBHelper.DBHelperParameter() {})
                 Catch ex As Exception
@@ -397,7 +397,7 @@ Public Class AcctSettingDAL
                 End Try
             End If
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
             Try
                 ds = DBHelper.Fetch(selectStmt, "ServiceCenters")
@@ -410,12 +410,12 @@ Public Class AcctSettingDAL
 
     End Function
 
-    Public Function GetServiceCentersByCountries(ByVal oCountryIds As ArrayList) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_SERVICE_CENTERS_BY_Countries")
+    Public Function GetServiceCentersByCountries(oCountryIds As ArrayList) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_SERVICE_CENTERS_BY_Countries")
         Dim whereClauseConditions As String = ""
         whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("s.Country_id", oCountryIds, False)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Dim ds As DataSet
         Try
@@ -426,12 +426,12 @@ Public Class AcctSettingDAL
         End Try
     End Function
 #Region "Dealer Group"
-    Public Function LoadDealerGroups(ByVal strDealerGroupName As String, ByVal strDealerGroupCode As String, ByVal oCompanyGroupId As Guid) As DataSet
+    Public Function LoadDealerGroups(strDealerGroupName As String, strDealerGroupCode As String, oCompanyGroupId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_DEALER_GROUP_SETTINGS")
+        Dim selectStmt As String = Config("/SQL/LOAD_DEALER_GROUP_SETTINGS")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                                                                   New DBHelper.DBHelperParameter("company_group_id", oCompanyGroupId.ToByteArray), _
-                                                                  New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)}
+                                                                  New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)}
         Dim ds As New DataSet
         Dim whereClauseConditions As String = ""
         Try
@@ -442,11 +442,11 @@ Public Class AcctSettingDAL
                 whereClauseConditions &= " and upper(elp_dealer_group." & DealerGroupDAL.COL_NAME_CODE & ") like '" + strDealerGroupCode.ToUpper.Replace("*", "%") + "'"
             End If
 
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY upper(elp_dealer_group." & DealerGroupDAL.COL_NAME_DESCRIPTION & ")")
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY upper(elp_dealer_group." & DealerGroupDAL.COL_NAME_DESCRIPTION & ")")
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
 
         Catch ex As Exception
@@ -455,13 +455,13 @@ Public Class AcctSettingDAL
 
     End Function
 
-    Public Function GetDealerGroupForAcctSetting(ByVal oCompanyGroupId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALER_GROUP_ACCT_SETTINGS")
+    Public Function GetDealerGroupForAcctSetting(oCompanyGroupId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_DEALER_GROUP_ACCT_SETTINGS")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                     New DBHelper.DBHelperParameter("company_group_id", oCompanyGroupId.ToByteArray)}
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -471,11 +471,11 @@ Public Class AcctSettingDAL
 
 #Region "Branch"
 
-    Public Function LoadBranches(ByVal strBranchName As String, ByVal strBranchCode As String, ByVal oCompanyIds As ArrayList) As DataSet
+    Public Function LoadBranches(strBranchName As String, strBranchCode As String, oCompanyIds As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BRANCH_SETTINGS")
+        Dim selectStmt As String = Config("/SQL/LOAD_BRANCH_SETTINGS")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                                                                  New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)}
+                                                                  New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)}
         Dim ds As New DataSet
         Dim whereClauseConditions As String = ""
         Try
@@ -491,17 +491,17 @@ Public Class AcctSettingDAL
             End If
 
             If Not whereClauseConditions = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             End If
 
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
                 "ORDER BY upper(elp_dealer." & DealerDAL.COL_NAME_DEALER_NAME & _
                         "), upper(elp_branch." & BranchDAL.COL_NAME_BRANCH_NAME & _
                         "), elp_branch." & BranchDAL.COL_NAME_BRANCH_CODE)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
 
         Catch ex As Exception
@@ -510,31 +510,31 @@ Public Class AcctSettingDAL
 
     End Function
 
-    Public Function GetDealersForBranch(ByVal oCompanyIds As ArrayList) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALER_BRANCH")
+    Public Function GetDealersForBranch(oCompanyIds As ArrayList) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_DEALER_BRANCH")
         Dim whereClauseConditions As String = ""
         Dim inCausecondition As String = ""
         Dim bIsLikeClause As Boolean = False
         whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("elp_dealer." & DealerDAL.COL_NAME_COMPANY_ID, oCompanyIds, False)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY upper(elp_dealer." & DealerDAL.COL_NAME_DEALER_NAME & ")")
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY upper(elp_dealer." & DealerDAL.COL_NAME_DEALER_NAME & ")")
 
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetBranchesForAcctSetting(ByVal oDealerId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_BRANCH_ACCT_SETTINGS")
+    Public Function GetBranchesForAcctSetting(oDealerId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_BRANCH_ACCT_SETTINGS")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                        New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, oDealerId.ToByteArray), _
-                        New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, oDealerId.ToByteArray)}
+                        New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, oDealerId.ToByteArray), _
+                        New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, oDealerId.ToByteArray)}
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -544,12 +544,12 @@ Public Class AcctSettingDAL
 
 #End Region
 #Region "Load Commission entity"
-    Public Function LoadCommissionEntities(ByVal strCommissionEntityName As String, ByVal oCompanyGroupId As Guid) As DataSet
+    Public Function LoadCommissionEntities(strCommissionEntityName As String, oCompanyGroupId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_COMMISSION_ENTITY_SETTINGS")
+        Dim selectStmt As String = Config("/SQL/LOAD_COMMISSION_ENTITY_SETTINGS")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                                                                   New DBHelper.DBHelperParameter("company_group_id", oCompanyGroupId.ToByteArray), _
-                                                                  New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)}
+                                                                  New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)}
         Dim ds As New DataSet
         Dim whereClauseConditions As String = ""
         Try
@@ -557,11 +557,11 @@ Public Class AcctSettingDAL
                 whereClauseConditions &= " and upper(c." & CommissionEntityDAL.COL_NAME_ENTITY_NAME & ") like '" + strCommissionEntityName.ToUpper.Replace("*", "%") + "'"
             End If
 
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY upper(c." & CommissionEntityDAL.COL_NAME_ENTITY_NAME & ")")
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "ORDER BY upper(c." & CommissionEntityDAL.COL_NAME_ENTITY_NAME & ")")
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
 
         Catch ex As Exception
@@ -570,13 +570,13 @@ Public Class AcctSettingDAL
 
     End Function
 
-    Public Function GetCommissionEntityListForAcctSetting(ByVal oCompanyGroupId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_COMMISION_ENTITY_FOR_ACCT_SETTINGS")
+    Public Function GetCommissionEntityListForAcctSetting(oCompanyGroupId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_COMMISION_ENTITY_FOR_ACCT_SETTINGS")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                     New DBHelper.DBHelperParameter("company_group_id", oCompanyGroupId.ToByteArray)}
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -584,7 +584,7 @@ Public Class AcctSettingDAL
     End Function
 
     Public Function IsIDXAcctSettingAndCode(accountCompanyId As Guid, accountCode As String) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/GET_COUNT_BY_ACCOUNTING_COMPANY_AND_CODE")
+        Dim selectStmt As String = Config("/SQL/GET_COUNT_BY_ACCOUNTING_COMPANY_AND_CODE")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("acct_company_id", accountCompanyId.ToByteArray),
                                                                                            New DBHelper.DBHelperParameter("account_code", accountCode)}
@@ -605,12 +605,12 @@ Public Class AcctSettingDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
 
     End Sub

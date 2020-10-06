@@ -10,7 +10,7 @@ Public NotInheritable Class DateHelper
     Private Const DATE_TIME_FORMAT As String = "dd-MMM-yyyy HH:mm:ss"
     Private Const DATE_TIME_FORMAT_12 As String = "dd-MMM-yyyy hh:mm:ss tt"
 
-    Public Shared Function GetDateValue(ByVal inputDate As String) As DateTime
+    Public Shared Function GetDateValue(inputDate As String) As DateTime
         Dim strChkDateFormat As String = String.Empty
         Dim dt As DateTime
         Try
@@ -53,7 +53,7 @@ Public NotInheritable Class DateHelper
         Return txtDate
     End Function
 
-    Public Shared Function GetDateInMonddyyyy(ByVal inputDate As String) As DateTime
+    Public Shared Function GetDateInMonddyyyy(inputDate As String) As DateTime
         Dim strChkDateFormat As String = String.Empty
         Dim dt As DateTime
         Try
@@ -65,7 +65,7 @@ Public NotInheritable Class DateHelper
         Return dt
     End Function
 
-    Public Shared Function GetFormattedDate(ByVal inputDate As String, ByVal strChkDateFormat As String) As DateTime
+    Public Shared Function GetFormattedDate(inputDate As String, strChkDateFormat As String) As DateTime
         Dim dt As DateTime
         Try
             dt = Date.Parse(inputDate)
@@ -75,7 +75,7 @@ Public NotInheritable Class DateHelper
         Return dt
     End Function
 
-    Public Shared Function GetEnglishDate(ByVal dt As Date) As String
+    Public Shared Function GetEnglishDate(dt As Date) As String
         Dim strDay As String
         Dim strMonth As String
         Dim strYear As String
@@ -122,7 +122,7 @@ Public NotInheritable Class DateHelper
         End If
     End Function
 
-    Public Shared Function IsDate(ByVal objVal As Object) As Boolean
+    Public Shared Function IsDate(objVal As Object) As Boolean
         Dim blnDt As Boolean
         Dim strVal As String = String.Empty
 

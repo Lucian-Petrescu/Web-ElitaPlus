@@ -6,56 +6,56 @@ Public Class ClaimAuthDetail
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid, Optional ByVal blnLoadByClaimID As Boolean = False)
+    Public Sub New(id As Guid, Optional ByVal blnLoadByClaimID As Boolean = False)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id, blnLoadByClaimID)
+        Dataset = New DataSet
+        Load(id, blnLoadByClaimID)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
-        Me.Initialize()
+        Dataset = New DataSet
+        Load()
+        Initialize()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, Optional ByVal blnLoadByClaimID As Boolean = False, Optional ByVal blnMustReload As Boolean = False)
+    Public Sub New(id As Guid, familyDS As DataSet, Optional ByVal blnLoadByClaimID As Boolean = False, Optional ByVal blnMustReload As Boolean = False)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id, blnLoadByClaimID, blnMustReload)
+        Dataset = familyDS
+        Load(id, blnLoadByClaimID, blnMustReload)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet, Optional ByVal blnMustReload As Boolean = False)
+    Public Sub New(familyDS As DataSet, Optional ByVal blnMustReload As Boolean = False)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(blnMustReload)
-        Me.Initialize()
+        Dataset = familyDS
+        Load(blnMustReload)
+        Initialize()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load(Optional ByVal blnMustReload As Boolean = False)
         Try
             Dim dal As New ClaimAuthDetailDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Me.Row = Nothing
-            If blnMustReload AndAlso Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+            Row = Nothing
+            If blnMustReload AndAlso Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
                 Dim keyColName As String = dal.TABLE_KEY_NAME
-                Me.Row = Me.FindRow(Id, keyColName, Me.Dataset.Tables(dal.TABLE_NAME))
-                Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+                Row = FindRow(Id, keyColName, Dataset.Tables(dal.TABLE_NAME))
+                Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -63,32 +63,32 @@ Public Class ClaimAuthDetail
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid, ByVal blnLoadByClaimID As Boolean, Optional ByVal blnMustReload As Boolean = False)
+    Protected Sub Load(id As Guid, blnLoadByClaimID As Boolean, Optional ByVal blnMustReload As Boolean = False)
         Try
             Dim dal As New ClaimAuthDetailDAL
             Dim keyColName As String = dal.TABLE_KEY_NAME
 
             If blnLoadByClaimID Then keyColName = dal.COL_NAME_CLAIM_ID
 
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
 
-            Me.Row = Nothing
-            If blnMustReload AndAlso Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, keyColName, Me.Dataset.Tables(dal.TABLE_NAME))
-                Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
-                Me.Row = Me.FindRow(id, keyColName, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If blnMustReload AndAlso Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, keyColName, Dataset.Tables(dal.TABLE_NAME))
+                Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
+                Row = FindRow(id, keyColName, Dataset.Tables(dal.TABLE_NAME))
             End If
 
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id, blnLoadByClaimID)
-                Me.Row = Me.FindRow(id, keyColName, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id, blnLoadByClaimID)
+                Row = FindRow(id, keyColName, Dataset.Tables(dal.TABLE_NAME))
             End If
 
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -137,9 +137,9 @@ Public Class ClaimAuthDetail
                 Return New Guid(CType(row(ClaimAuthDetailDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(ClaimAuthDetailDAL.COL_NAME_CLAIM_ID, Value)
+            SetValue(ClaimAuthDetailDAL.COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
@@ -154,9 +154,9 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_LABOR_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimAuthDetailDAL.COL_NAME_LABOR_AMOUNT, Value)
+            SetValue(ClaimAuthDetailDAL.COL_NAME_LABOR_AMOUNT, Value)
         End Set
     End Property
 
@@ -171,9 +171,9 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_PART_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimAuthDetailDAL.COL_NAME_PART_AMOUNT, Value)
+            SetValue(ClaimAuthDetailDAL.COL_NAME_PART_AMOUNT, Value)
         End Set
     End Property
 
@@ -188,9 +188,9 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_SERVICE_CHARGE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimAuthDetailDAL.COL_NAME_SERVICE_CHARGE, Value)
+            SetValue(ClaimAuthDetailDAL.COL_NAME_SERVICE_CHARGE, Value)
         End Set
     End Property
 
@@ -205,9 +205,9 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_TRIP_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimAuthDetailDAL.COL_NAME_TRIP_AMOUNT, Value)
+            SetValue(ClaimAuthDetailDAL.COL_NAME_TRIP_AMOUNT, Value)
         End Set
     End Property
 
@@ -221,9 +221,9 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_SHIPPING_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimAuthDetailDAL.COL_NAME_SHIPPING_AMOUNT, Value)
+            SetValue(ClaimAuthDetailDAL.COL_NAME_SHIPPING_AMOUNT, Value)
         End Set
     End Property
 
@@ -237,9 +237,9 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_OTHER_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimAuthDetailDAL.COL_NAME_OTHER_AMOUNT, Value)
+            SetValue(ClaimAuthDetailDAL.COL_NAME_OTHER_AMOUNT, Value)
         End Set
     End Property
 
@@ -254,9 +254,9 @@ Public Class ClaimAuthDetail
                 Return CType(row(ClaimAuthDetailDAL.COL_NAME_OTHER_EXPLANATION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(ClaimAuthDetailDAL.COL_NAME_OTHER_EXPLANATION, Value)
+            SetValue(ClaimAuthDetailDAL.COL_NAME_OTHER_EXPLANATION, Value)
         End Set
     End Property
 
@@ -264,7 +264,7 @@ Public Class ClaimAuthDetail
         Get
             Return _ClaimId
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             _ClaimId = Value
         End Set
     End Property
@@ -278,9 +278,9 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_DISPOSITION_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimAuthDetailDAL.COL_NAME_DISPOSITION_AMOUNT, Value)
+            SetValue(ClaimAuthDetailDAL.COL_NAME_DISPOSITION_AMOUNT, Value)
         End Set
     End Property
 
@@ -294,9 +294,9 @@ Public Class ClaimAuthDetail
                 Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_DIAGNOSTICS_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimAuthDetailDAL.COL_NAME_DIAGNOSTICS_AMOUNT, Value)
+            SetValue(ClaimAuthDetailDAL.COL_NAME_DIAGNOSTICS_AMOUNT, Value)
         End Set
     End Property
 
@@ -305,14 +305,14 @@ Public Class ClaimAuthDetail
             CheckDeleted()
 
             If Row(ClaimAuthDetailDAL.COL_NAME_TOTAL_TAX_AMOUNT) Is DBNull.Value Then
-                Me.SetValue(ClaimAuthDetailDAL.COL_NAME_TOTAL_TAX_AMOUNT, New DecimalType(0D))
+                SetValue(ClaimAuthDetailDAL.COL_NAME_TOTAL_TAX_AMOUNT, New DecimalType(0D))
             End If
             Return New DecimalType(CType(Row(ClaimAuthDetailDAL.COL_NAME_TOTAL_TAX_AMOUNT), Decimal))
 
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(ClaimAuthDetailDAL.COL_NAME_TOTAL_TAX_AMOUNT, Value)
+            SetValue(ClaimAuthDetailDAL.COL_NAME_TOTAL_TAX_AMOUNT, Value)
         End Set
     End Property
 
@@ -328,12 +328,12 @@ Public Class ClaimAuthDetail
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            Me.UpdateClaimAuthorizationAmount()
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            UpdateClaimAuthorizationAmount()
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimAuthDetailDAL
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
                 ' Trigger extended status
-                Dim claim As ClaimBase = AddClaim(Me.ClaimId)
+                Dim claim As ClaimBase = AddClaim(ClaimId)
                 If ((Not claim.LatestClaimStatus Is Nothing) AndAlso (claim.ClaimStatusesCount > 0)) Then
                     If claim.LatestClaimStatus.ClaimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(Codes.CLAIM_EXTENDED_STATUS__BUDGET_APPROVED) Then
                         With claim
@@ -344,7 +344,7 @@ Public Class ClaimAuthDetail
                                                    productCode:=.Certificate.ProductCode, _
                                                    coverageTypeId:=.CertificateItemCoverage.CoverageTypeId, _
                                                    sender:="Claim Auth Details", _
-                                                   arguments:="ClaimId:" & DALBase.GuidToSQLString(Me.ClaimId), _
+                                                   arguments:="ClaimId:" & DALBase.GuidToSQLString(ClaimId), _
                                                    eventDate:=DateTime.UtcNow, _
                                                    eventTypeId:=LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP__ALL_ISSUES_RESOLVED_BUDGET_APPROVED), _
                                                    eventArgumentId:=Nothing)
@@ -352,11 +352,11 @@ Public Class ClaimAuthDetail
                     End If
                 End If
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId, False)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId, False)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -364,13 +364,13 @@ Public Class ClaimAuthDetail
         End Try
     End Sub
 
-    Public Function AddTransactionLogHeader(ByVal tranLogHeaderId As Guid) As TransactionLogHeader
+    Public Function AddTransactionLogHeader(tranLogHeaderId As Guid) As TransactionLogHeader
         Dim objTranLogHeader As TransactionLogHeader
 
         If Not tranLogHeaderId.Equals(Guid.Empty) Then
-            objTranLogHeader = New TransactionLogHeader(tranLogHeaderId, Me.Dataset)
+            objTranLogHeader = New TransactionLogHeader(tranLogHeaderId, Dataset)
         Else
-            objTranLogHeader = New TransactionLogHeader(Me.Dataset)
+            objTranLogHeader = New TransactionLogHeader(Dataset)
         End If
 
         Return objTranLogHeader
@@ -404,8 +404,8 @@ Public Class ClaimAuthDetail
         Dim oCompany As Company = Nothing
 
 
-        If Not Me.IsDeleted Then
-            objClaim = Me.AddClaim(Me.ClaimId)
+        If Not IsDeleted Then
+            objClaim = AddClaim(ClaimId)
             If Not LaborAmount Is Nothing Then subTotal += LaborAmount.Value
             If Not PartAmount Is Nothing Then subTotal += PartAmount.Value
             If Not ServiceCharge Is Nothing Then subTotal += ServiceCharge.Value
@@ -416,7 +416,7 @@ Public Class ClaimAuthDetail
             If Not DiagnosticsAmount Is Nothing Then subTotal += DiagnosticsAmount.Value
             If Not TotalTaxAmount Is Nothing Then tax += TotalTaxAmount.Value
         Else
-            objClaim = Me.AddClaim(Me.TempClaimId)
+            objClaim = AddClaim(TempClaimId)
         End If
 
         oCompany = New Company(objClaim.CompanyId)
@@ -433,27 +433,27 @@ Public Class ClaimAuthDetail
 #End Region
 
 #Region "Children"
-    Public Function AddPartsInfo(ByVal partInfoID As Guid) As PartsInfo
+    Public Function AddPartsInfo(partInfoID As Guid) As PartsInfo
         If partInfoID.Equals(Guid.Empty) Then
-            Dim objPartsInfo As New PartsInfo(Me.Dataset)
+            Dim objPartsInfo As New PartsInfo(Dataset)
             Return objPartsInfo
         Else
-            Dim objPartsInfo As New PartsInfo(partInfoID, Me.Dataset)
+            Dim objPartsInfo As New PartsInfo(partInfoID, Dataset)
             Return objPartsInfo
         End If
     End Function
 
-    Public Function AddClaimStatus(ByVal claimStatusID As Guid) As ClaimStatus
+    Public Function AddClaimStatus(claimStatusID As Guid) As ClaimStatus
         If claimStatusID.Equals(Guid.Empty) Then
-            Dim objClaimStatus As New ClaimStatus(Me.Dataset)
+            Dim objClaimStatus As New ClaimStatus(Dataset)
             Return objClaimStatus
         Else
-            Dim objClaimStatus As New ClaimStatus(claimStatusID, Me.Dataset)
+            Dim objClaimStatus As New ClaimStatus(claimStatusID, Dataset)
             Return objClaimStatus
         End If
     End Function
-    Private Function AddClaim(ByVal claimID As Guid) As ClaimBase
-        Dim objClaim As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(claimID, Me.Dataset)
+    Private Function AddClaim(claimID As Guid) As ClaimBase
+        Dim objClaim As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(claimID, Dataset)
         Return objClaim
     End Function
 #End Region
@@ -464,11 +464,11 @@ Public Class ClaimAuthDetail
         Public NotInheritable Class ValueMandatoryConditionally
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.AT_LEAST_ONE_AMOUNT_IS_REQUIRED)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimAuthDetail = CType(objectToValidate, ClaimAuthDetail)
             Dim oClaim As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(obj.ClaimId, obj.Dataset)
             If (oClaim.Company.AuthDetailRqrdId <> LookupListNew.GetIdFromCode(LookupListNew.LK_AUTH_DTL, Codes.AUTHORIZATION_DETAIL__REQUIRED)) Then

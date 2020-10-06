@@ -12,7 +12,7 @@ Friend Class DeviceRule
 
     End Sub
 
-    Friend Overrides Sub Execute(ByVal pClaim As Claim, pCertItemCoverage As CertificateItemCoverage)
+    Friend Overrides Sub Execute(pClaim As Claim, pCertItemCoverage As CertificateItemCoverage)
         Dim coverageTypeCode As String = pCertItemCoverage.CoverageTypeId.ToCode(CommonManager, ListCodes.CoverageType)
 
         If (coverageTypeCode <> CoverageTypeCodes.Accidental) Then

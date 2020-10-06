@@ -29,7 +29,7 @@ Public Class ElitaHarvesterService
 
     End Sub
 
-    Protected Overrides Sub OnStart(ByVal args() As String)
+    Protected Overrides Sub OnStart(args() As String)
         Try
             'Debugger.Launch()
             'Logger.Initialize("ElitaHarvesterService")
@@ -53,7 +53,7 @@ Public Class ElitaHarvesterService
         Logger.AddInfo("Stopping service")
     End Sub
 
-    Public Sub Start(ByVal args() As String)
+    Public Sub Start(args() As String)
         Logger.AddDebugLogEnter()
         OnStart(args)
         Logger.AddDebugLogExit()

@@ -41,7 +41,7 @@ Partial Public Class FormCategoryAssignForm
 
     Public ReadOnly Property IsGridInEditMode() As Boolean
         Get
-            Return Me.Grid.EditIndex > Me.NO_ITEM_SELECTED_INDEX
+            Return Grid.EditIndex > NO_ITEM_SELECTED_INDEX
         End Get
     End Property
 
@@ -90,58 +90,58 @@ Partial Public Class FormCategoryAssignForm
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
-        Me.Form.DefaultButton = btnSearch.UniqueID
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
+        Form.DefaultButton = btnSearch.UniqueID
         Try
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
                 populateSearchControls()
                 TranslateGridHeader(Grid)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 
-    Private Sub FormCategoryForm_LoadComplete(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LoadComplete
+    Private Sub FormCategoryForm_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
         SetControlState()
         If ErrControllerMaster.Visible Then
             If Grid.Visible And Grid.Rows.Count < 10 Then
                 Dim fillerHight As Integer = 200
                 fillerHight = fillerHight - Grid.Rows.Count * 20
-                Me.spanFiller.Text = "<tr><td colspan=""2"" style=""height:" & fillerHight & "px"">&nbsp;</td></tr>"
+                spanFiller.Text = "<tr><td colspan=""2"" style=""height:" & fillerHight & "px"">&nbsp;</td></tr>"
             End If
         Else
-            Me.spanFiller.Text = ""
+            spanFiller.Text = ""
         End If
     End Sub
 #End Region
 
 #Region "Grid Handler"
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
-            Me.State.FormCategoryID = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = Grid.PageIndex
+            State.FormCategoryID = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             'ignore other commands
             If e.CommandName = "SelectAction" Then
@@ -158,19 +158,19 @@ Partial Public Class FormCategoryAssignForm
                 PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -181,14 +181,14 @@ Partial Public Class FormCategoryAssignForm
                     If .RowIndex = Grid.EditIndex Then
                         State.FormID = New Guid(CType(dvRow("form_id"), Byte()))
 
-                        If Not dvRow("form_category_id") Is DBNull.Value Then
+                        If dvRow("form_category_id") IsNot DBNull.Value Then
                             State.FormCategoryID = New Guid(CType(dvRow("form_category_id"), Byte()))
                         Else
                             State.FormCategoryID = Guid.Empty
                         End If
 
                         ddl = CType(e.Row.FindControl(GRID_CTRL_NAME_FORM_CATEGORY_ID), DropDownList)
-                        If Not ddl Is Nothing Then
+                        If ddl IsNot Nothing Then
                             Try
                                 Dim oFormCategory As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="FormCategory")
                                 Dim filteredFormCategory As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = (From fc In oFormCategory
@@ -204,7 +204,7 @@ Partial Public Class FormCategoryAssignForm
                                 'dv.Sort = "Description"
                                 'Me.BindListControlToDataView(ddl, dv, "Description", "Form_Category_id", True)
 
-                                Me.SetSelectedItem(ddl, State.FormCategoryID)
+                                SetSelectedItem(ddl, State.FormCategoryID)
                             Catch ex As Exception
                             End Try
                         End If
@@ -214,11 +214,11 @@ Partial Public Class FormCategoryAssignForm
             End If
             BaseItemBound(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_Sorting(sender As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
             Dim strSort As String = e.SortExpression
             With State
@@ -231,18 +231,18 @@ Partial Public Class FormCategoryAssignForm
             End With
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region
@@ -253,7 +253,7 @@ Partial Public Class FormCategoryAssignForm
             Dim oListContext As New ListContext
             oListContext.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
             Dim oTabList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="GetTabList", context:=oListContext)
-            Me.ddlTab.Populate(oTabList.ToArray(), New PopulateOptions() With
+            ddlTab.Populate(oTabList.ToArray(), New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
                                     })
@@ -263,7 +263,7 @@ Partial Public Class FormCategoryAssignForm
             'BindListControlToDataView(Me.ddlTab, dv, "Tab_DESC", "Tab_id", True)
 
             Dim oFormCategory As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="FormCategory", context:=oListContext)
-            Me.ddlFormCategory.Populate(oFormCategory.ToArray(), New PopulateOptions() With
+            ddlFormCategory.Populate(oFormCategory.ToArray(), New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
                                     })
@@ -273,7 +273,7 @@ Partial Public Class FormCategoryAssignForm
             'dv.Sort = FormCategory.FormCategorySearchDV.COL_DESCRIPTION
             'BindListControlToDataView(Me.ddlFormCategory, dv, FormCategory.FormCategorySearchDV.COL_DESCRIPTION, FormCategory.FormCategorySearchDV.COL_FORM_CATEGORY_ID, True)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -289,22 +289,22 @@ Partial Public Class FormCategoryAssignForm
             Grid.PageSize = State.PageSize
             If State.searchDV.Count = 0 Then
                 Dim dv As FormCategory.FormSearchDV = State.searchDV.AddNewRowToEmptyDV()
-                SetPageAndSelectedIndexFromGuid(dv, Me.State.FormID, Me.Grid, Me.State.PageIndex, Me.IsGridInEditMode)
-                Me.Grid.DataSource = dv
+                SetPageAndSelectedIndexFromGuid(dv, State.FormID, Grid, State.PageIndex, IsGridInEditMode)
+                Grid.DataSource = dv
             Else
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.FormID, Me.Grid, Me.State.PageIndex, Me.IsGridInEditMode)
-                Me.Grid.DataSource = Me.State.searchDV
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.FormID, Grid, State.PageIndex, IsGridInEditMode)
+                Grid.DataSource = State.searchDV
             End If
 
-            Me.State.PageIndex = Me.Grid.PageIndex
-            Me.Grid.DataBind()
+            State.PageIndex = Grid.PageIndex
+            Grid.DataBind()
 
             HighLightGridViewSortColumn(Grid, State.SortExpression)
             ControlMgr.SetVisibleControl(Me, Grid, True)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
@@ -315,19 +315,19 @@ Partial Public Class FormCategoryAssignForm
                 Next
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
     Private Sub SetControlState()
-        If (Me.IsGridInEditMode) Then
+        If (IsGridInEditMode) Then
             ControlMgr.SetVisibleControl(Me, btnCancel, True)
             ControlMgr.SetVisibleControl(Me, btnSave, True)
             ControlMgr.SetVisibleControl(Me, btnBack, False)
             ControlMgr.SetEnableControl(Me, btnSearch, False)
             ControlMgr.SetEnableControl(Me, btnClearSearch, False)
-            Me.MenuEnabled = False
-            If (Me.cboPageSize.Enabled) Then
+            MenuEnabled = False
+            If (cboPageSize.Enabled) Then
                 ControlMgr.SetEnableControl(Me, cboPageSize, False)
             End If
         Else
@@ -336,9 +336,9 @@ Partial Public Class FormCategoryAssignForm
             ControlMgr.SetVisibleControl(Me, btnBack, True)
             ControlMgr.SetEnableControl(Me, btnSearch, True)
             ControlMgr.SetEnableControl(Me, btnClearSearch, True)
-            Me.MenuEnabled = True
-            If Not (Me.cboPageSize.Enabled) Then
-                ControlMgr.SetEnableControl(Me, Me.cboPageSize, True)
+            MenuEnabled = True
+            If Not (cboPageSize.Enabled) Then
+                ControlMgr.SetEnableControl(Me, cboPageSize, True)
             End If
         End If
         cboPageSize.Visible = Grid.Visible
@@ -349,7 +349,7 @@ Partial Public Class FormCategoryAssignForm
         Dim blnSuccess As Boolean = True, guidTemp As Guid
         State.IsValueChanged = False
         Dim ind As Integer = Grid.EditIndex, strTemp As String
-        With Me.State
+        With State
             'Dim lblCtrl As Label = CType(Grid.Rows(ind).Cells(GRID_COL_FORM_ID_IDX).FindControl(GRID_CTRL_NAME_FORM_ID), Label)
             'guidTemp = New Guid(lblCtrl.Text)
             'If guidTemp <> .FormID Then
@@ -371,34 +371,34 @@ Partial Public Class FormCategoryAssignForm
 #End Region
 
 #Region "Button click handlers"
-    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
+    Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Try
             Dim ErrMsg As New Collections.Generic.List(Of String)
             If PopulateBOFromForm(ErrMsg) Then
                 With State
                     If (.IsValueChanged) Then
                         FormCategory.AssignFormCategory(State.FormID, State.FormCategoryID)
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                         State.FormID = Guid.Empty
                         State.FormCategoryID = Guid.Empty
                         State.searchDV = Nothing
                     Else
-                        Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+                        AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
                     End If
-                    Grid.EditIndex = Me.NO_ITEM_SELECTED_INDEX
+                    Grid.EditIndex = NO_ITEM_SELECTED_INDEX
                     'Disable all Edit and Delete icon buttons on the Grid
-                    SetGridControls(Me.Grid, True)
+                    SetGridControls(Grid, True)
                 End With
             Else
-                Me.ErrControllerMaster.AddErrorAndShow(ErrMsg.ToArray, False)
+                ErrControllerMaster.AddErrorAndShow(ErrMsg.ToArray, False)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.PopulateGrid()
+        PopulateGrid()
     End Sub
 
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         Try
             With State
                 .FormCategoryID = Guid.Empty
@@ -407,28 +407,28 @@ Partial Public Class FormCategoryAssignForm
             Grid.EditIndex = NO_ITEM_SELECTED_INDEX
             PopulateGrid()
             'enable all Edit and Delete icon buttons on the Grid
-            If State.searchDV.Count > 0 Then SetGridControls(Me.Grid, True)
+            If State.searchDV.Count > 0 Then SetGridControls(Grid, True)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+    Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
-            Me.txtFormDesc.Text = String.Empty
-            Me.ddlFormCategory.SelectedIndex = NO_ITEM_SELECTED_INDEX
-            Me.ddlTab.SelectedIndex = NO_ITEM_SELECTED_INDEX
+            txtFormDesc.Text = String.Empty
+            ddlFormCategory.SelectedIndex = NO_ITEM_SELECTED_INDEX
+            ddlTab.SelectedIndex = NO_ITEM_SELECTED_INDEX
 
-            Grid.EditIndex = Me.NO_ITEM_SELECTED_INDEX
+            Grid.EditIndex = NO_ITEM_SELECTED_INDEX
             With State
                 .FormID = Guid.Empty
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             With State
                 .PageIndex = 0
@@ -439,18 +439,18 @@ Partial Public Class FormCategoryAssignForm
                 .searchFormDesc = txtFormDesc.Text.Trim.Trim
                 .searchTab = New Guid(ddlTab.SelectedValue)
             End With
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+    Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
             ReturnToCallingPage()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region

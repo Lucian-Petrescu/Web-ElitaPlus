@@ -9,40 +9,40 @@ Public Class Equipment
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New EquipmentDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             Dim noGuid As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, "N")
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             SetValue(dal.COL_NAME_IS_MASTER_EQUIPMENT, noGuid)
@@ -58,20 +58,20 @@ Public Class Equipment
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New EquipmentDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -93,7 +93,7 @@ Public Class Equipment
     Public ReadOnly Property AttributeValues As AttributeValueList(Of IAttributable) Implements IAttributable.AttributeValues
         Get
             If (_AttributeValueList Is Nothing) Then
-                _AttributeValueList = New AttributeValueList(Of IAttributable)(Me.Dataset, Me)
+                _AttributeValueList = New AttributeValueList(Of IAttributable)(Dataset, Me)
             End If
             Return _AttributeValueList
         End Get
@@ -122,7 +122,7 @@ Public Class Equipment
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(EquipmentDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -138,7 +138,7 @@ Public Class Equipment
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentDAL.COL_NAME_MODEL, Value)
+            SetValue(EquipmentDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 
@@ -153,7 +153,7 @@ Public Class Equipment
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(EquipmentDAL.COL_NAME_MASTER_EQUIPMENT_ID, Value)
+            SetValue(EquipmentDAL.COL_NAME_MASTER_EQUIPMENT_ID, Value)
         End Set
     End Property
 
@@ -169,7 +169,7 @@ Public Class Equipment
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(EquipmentDAL.COL_NAME_REPAIRABLE_ID, Value)
+            SetValue(EquipmentDAL.COL_NAME_REPAIRABLE_ID, Value)
         End Set
     End Property
 
@@ -179,7 +179,7 @@ Public Class Equipment
             CheckDeleted()
             If (Not Row.Table.DataSet.Tables.Contains(MfgCoverageDAL.TABLE_NAME)) Then
                 Try
-                    manufacurerCoverage = New MfgCoverage(Row.Table.DataSet, Me.Id)
+                    manufacurerCoverage = New MfgCoverage(Row.Table.DataSet, Id)
                 Catch ex As DataNotFoundException
                     manufacurerCoverage = New MfgCoverage(Row.Table.DataSet)
                     manufacurerCoverage.Delete()
@@ -210,11 +210,11 @@ Public Class Equipment
             If (Not value Is Nothing) Then
                 manufacurerCoverage.BeginEdit()
                 manufacurerCoverage.MfgWarranty = CInt(value.Value)
-                manufacurerCoverage.EquipmentTypeId = Me.EquipmentTypeId
-                manufacurerCoverage.EquipmentId = Me.Id
-                manufacurerCoverage.Model = Me.Model
+                manufacurerCoverage.EquipmentTypeId = EquipmentTypeId
+                manufacurerCoverage.EquipmentId = Id
+                manufacurerCoverage.Model = Model
                 manufacurerCoverage.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                manufacurerCoverage.ManufacturerId = Me.ManufacturerId
+                manufacurerCoverage.ManufacturerId = ManufacturerId
                 manufacurerCoverage.MfgWarranty = CInt(value.Value)
                 manufacurerCoverage.EndEdit()
             End If
@@ -233,7 +233,7 @@ Public Class Equipment
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(EquipmentDAL.COL_NAME_MANUFACTURER_ID, Value)
+            SetValue(EquipmentDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
     End Property
 
@@ -249,7 +249,7 @@ Public Class Equipment
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(EquipmentDAL.COL_NAME_EQUIPMENT_CLASS_ID, Value)
+            SetValue(EquipmentDAL.COL_NAME_EQUIPMENT_CLASS_ID, Value)
         End Set
     End Property
 
@@ -265,7 +265,7 @@ Public Class Equipment
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(EquipmentDAL.COL_NAME_EQUIPMENT_TYPE_ID, Value)
+            SetValue(EquipmentDAL.COL_NAME_EQUIPMENT_TYPE_ID, Value)
         End Set
     End Property
 
@@ -280,7 +280,7 @@ Public Class Equipment
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(EquipmentDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(EquipmentDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
@@ -295,7 +295,7 @@ Public Class Equipment
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(EquipmentDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(EquipmentDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
@@ -311,7 +311,7 @@ Public Class Equipment
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(EquipmentDAL.COL_NAME_IS_MASTER_EQUIPMENT, Value)
+            SetValue(EquipmentDAL.COL_NAME_IS_MASTER_EQUIPMENT, Value)
         End Set
     End Property
 
@@ -333,7 +333,7 @@ Public Class Equipment
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(EquipmentDAL.COL_NAME_COLOR_XCD_ID, Value)
+            SetValue(EquipmentDAL.COL_NAME_COLOR_XCD_ID, Value)
         End Set
     End Property
 
@@ -348,7 +348,7 @@ Public Class Equipment
         End Get
         Set(ByVal Value As String)
             CheckDeleted()            
-            Me.SetValue(EquipmentDAL.COL_NAME_MEMORY_XCD_ID, Value)
+            SetValue(EquipmentDAL.COL_NAME_MEMORY_XCD_ID, Value)
         End Set
      End Property
     
@@ -363,7 +363,7 @@ Public Class Equipment
             End Get
             Set(ByVal Value As String)
                 CheckDeleted()
-                Me.SetValue(EquipmentDAL.COL_NAME_CARRIER_XCD_ID, Value)
+                SetValue(EquipmentDAL.COL_NAME_CARRIER_XCD_ID, Value)
             End Set
     
         End Property
@@ -383,16 +383,16 @@ Public Class Equipment
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso (Me.IsDirty OrElse Me.IsFamilyDirty) AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso (IsDirty OrElse IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New EquipmentDAL
                 'dal.Update(Me.Row) 'Original code generated replced by the code below
-                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+                dal.UpdateFamily(Dataset) 'New Code Added Manually
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached AndAlso Me.Row.RowState <> DataRowState.Deleted Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached AndAlso Row.RowState <> DataRowState.Deleted Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -403,38 +403,38 @@ Public Class Equipment
     'Added manually to the code
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 
     Public Sub Copy(ByVal original As Equipment)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Equipment")
         End If
         MyBase.CopyFrom(original)
         'copy the childrens        
         For Each detail As EquipmentComment In original.EquipmentCommentChildren
-            Dim newDetail As EquipmentComment = Me.EquipmentCommentChildren.GetNewChild
+            Dim newDetail As EquipmentComment = EquipmentCommentChildren.GetNewChild
             newDetail.Copy(detail)
-            newDetail.EquipmentId = Me.Id
+            newDetail.EquipmentId = Id
             newDetail.Save()
         Next
         For Each detail As AttributeValue In original.AttributeValues
-            Dim newDetail As AttributeValue = Me.AttributeValues.GetNewAttributeChild()
+            Dim newDetail As AttributeValue = AttributeValues.GetNewAttributeChild()
             newDetail.Copy(detail)
-            newDetail.ReferenceId = Me.Id
+            newDetail.ReferenceId = Id
             newDetail.Save()
         Next
         For Each detail As EquipmentImage In original.EquipmentImageChildren
-            Dim newDetail As EquipmentImage = Me.EquipmentImageChildren.GetNewChild
+            Dim newDetail As EquipmentImage = EquipmentImageChildren.GetNewChild
             newDetail.Copy(detail)
-            newDetail.EquipmentId = Me.Id
+            newDetail.EquipmentId = Id
             newDetail.Save()
         Next
         For Each detail As RelatedEquipment In original.RelatedEquipmentChildren
-            Dim newDetail As RelatedEquipment = Me.RelatedEquipmentChildren.GetNewChild
+            Dim newDetail As RelatedEquipment = RelatedEquipmentChildren.GetNewChild
             newDetail.Copy(detail)
-            newDetail.EquipmentId = Me.Id
+            newDetail.EquipmentId = Id
             newDetail.Save()
         Next
     End Sub
@@ -612,7 +612,7 @@ Public Class Equipment
         Dim t As DataTable = EquipmentImageSelectionView.CreateTable
         Dim detail As EquipmentImage
 
-        For Each detail In Me.EquipmentImageChildren
+        For Each detail In EquipmentImageChildren
             Dim row As DataRow = t.NewRow
             row(EquipmentImageSelectionView.COL_NAME_EQUIPMENT_COMMENT_ID) = detail.Id.ToByteArray()
             row(EquipmentImageSelectionView.COL_NAME_CODE) = detail.Code
@@ -648,12 +648,12 @@ Public Class Equipment
     End Class
 
     Public Function GetImageChild(ByVal childId As Guid) As EquipmentImage
-        Return CType(Me.EquipmentImageChildren.GetChild(childId), EquipmentImage)
+        Return CType(EquipmentImageChildren.GetChild(childId), EquipmentImage)
     End Function
 
     Public Function GetNewImageChild() As EquipmentImage
-        Dim newEquipmentImage As EquipmentImage = CType(Me.EquipmentImageChildren.GetNewChild, EquipmentImage)
-        newEquipmentImage.EquipmentId = Me.Id
+        Dim newEquipmentImage As EquipmentImage = CType(EquipmentImageChildren.GetNewChild, EquipmentImage)
+        newEquipmentImage.EquipmentId = Id
         Return newEquipmentImage
     End Function
 #End Region
@@ -669,7 +669,7 @@ Public Class Equipment
         Dim t As DataTable = EquipmentCommentSelectionView.CreateTable
         Dim detail As EquipmentComment
 
-        For Each detail In Me.EquipmentCommentChildren
+        For Each detail In EquipmentCommentChildren
             Dim row As DataRow = t.NewRow
             row(EquipmentCommentSelectionView.COL_NAME_EQUIPMENT_COMMENT_ID) = detail.Id.ToByteArray()
             row(EquipmentCommentSelectionView.COL_NAME_COMMENT) = detail.Comment
@@ -696,12 +696,12 @@ Public Class Equipment
     End Class
 
     Public Function GetCommentChild(ByVal childId As Guid) As EquipmentComment
-        Return CType(Me.EquipmentCommentChildren.GetChild(childId), EquipmentComment)
+        Return CType(EquipmentCommentChildren.GetChild(childId), EquipmentComment)
     End Function
 
     Public Function GetNewCommentChild() As EquipmentComment
-        Dim newEquipmentComment As EquipmentComment = CType(Me.EquipmentCommentChildren.GetNewChild, EquipmentComment)
-        newEquipmentComment.EquipmentId = Me.Id
+        Dim newEquipmentComment As EquipmentComment = CType(EquipmentCommentChildren.GetNewChild, EquipmentComment)
+        newEquipmentComment.EquipmentId = Id
         Return newEquipmentComment
     End Function
 #End Region
@@ -718,7 +718,7 @@ Public Class Equipment
         Dim t As DataTable = RelatedEquipmentSelectionView.CreateTable
         Dim detail As RelatedEquipment
 
-        For Each detail In Me.RelatedEquipmentChildren
+        For Each detail In RelatedEquipmentChildren
             Dim row As DataRow = t.NewRow
             row(RelatedEquipmentSelectionView.COL_NAME_RELATED_EQUIPMENT_ID) = detail.Id.ToByteArray()
             row(RelatedEquipmentSelectionView.COL_NAME_CHILD_EQUIPMENT_ID) = detail.ChildEquipmentId.ToByteArray()
@@ -771,12 +771,12 @@ Public Class Equipment
     End Class
 
     Public Function GetRelatedEquipmentChild(ByVal childId As Guid) As RelatedEquipment
-        Return CType(Me.RelatedEquipmentChildren.GetChild(childId), RelatedEquipment)
+        Return CType(RelatedEquipmentChildren.GetChild(childId), RelatedEquipment)
     End Function
 
     Public Function GetNewRelatedEquipmentChild() As RelatedEquipment
-        Dim newRelatedEquipment As RelatedEquipment = CType(Me.RelatedEquipmentChildren.GetNewChild, RelatedEquipment)
-        newRelatedEquipment.EquipmentId = Me.Id
+        Dim newRelatedEquipment As RelatedEquipment = CType(RelatedEquipmentChildren.GetNewChild, RelatedEquipment)
+        newRelatedEquipment.EquipmentId = Id
         Return newRelatedEquipment
     End Function
 
@@ -802,7 +802,7 @@ Public Class Equipment
 #Region "Public Methods"
 
     Public Function GetManufacturerCoverages() As MfgCoverage.MfgCoverageSearchDV
-        Return New MfgCoverage.MfgCoverageSearchDV(Me.Dataset.Tables(MfgCoverageDAL.TABLE_NAME))
+        Return New MfgCoverage.MfgCoverageSearchDV(Dataset.Tables(MfgCoverageDAL.TABLE_NAME))
     End Function
 
     Public Function ExecuteEquipmentListFilter(ByVal makeid As Guid, ByVal equipmentClass As Guid, ByVal equipmentType As Guid, ByVal Model As String, ByVal Description As String, ByVal parentEquipmenttype As Guid) As DataView
@@ -869,18 +869,18 @@ Public Class Equipment
     Protected Function CheckDuplicateMakeModel() As Boolean
         Dim eqptDal As New EquipmentDAL
         Dim manufacturerName As String
-        If (LookupListNew.GetCodeFromId(LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.IsMasterEquipment) = "Y") Then
+        If (LookupListNew.GetCodeFromId(LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), IsMasterEquipment) = "Y") Then
             Return False
         End If
-        manufacturerName = LookupListNew.GetDescriptionFromId(LookupListNew.GetManufacturerLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id), Me.ManufacturerId)
+        manufacturerName = LookupListNew.GetDescriptionFromId(LookupListNew.GetManufacturerLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id), ManufacturerId)
         Dim oCompanyGroupIds As ArrayList
         oCompanyGroupIds = New ArrayList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-        Dim dv As Equipment.EquipmentSearchDV = New Equipment.EquipmentSearchDV(eqptDal.LoadList(String.Empty, Me.Model, manufacturerName, String.Empty, String.Empty, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId, String.Empty).Tables(0))
+        Dim dv As Equipment.EquipmentSearchDV = New Equipment.EquipmentSearchDV(eqptDal.LoadList(String.Empty, Model, manufacturerName, String.Empty, String.Empty, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId, String.Empty).Tables(0))
 
         For Each dr As DataRow In dv.Table.Rows
-            If (Not New Guid(CType(dr(EquipmentDAL.COL_NAME_EQUIPMENT_ID), Byte())).Equals(Me.Id)) Then
+            If (Not New Guid(CType(dr(EquipmentDAL.COL_NAME_EQUIPMENT_ID), Byte())).Equals(Id)) Then
                 Return True
             End If
         Next

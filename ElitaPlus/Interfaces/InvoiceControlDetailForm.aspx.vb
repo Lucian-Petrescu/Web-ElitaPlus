@@ -25,29 +25,29 @@ Public Partial Class InvoiceControlDetailForm
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
                 populatePageFromBO()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                State.InvoiceID = CType(Me.CallingParameters, Guid)
-                Me.State.MyBO = New AcctPremInvoice(State.InvoiceID)
+                State.InvoiceID = CType(CallingParameters, Guid)
+                State.MyBO = New AcctPremInvoice(State.InvoiceID)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -56,50 +56,50 @@ Public Partial Class InvoiceControlDetailForm
 #Region "Helper functions"
     Sub populatePageFromBO()
         With State.MyBO
-            Me.txtCompany.Text = (New Company(.CompanyId)).Description
-            Me.txtDealer.Text = (New Dealer(.DealerId)).DealerName
-            If .BranchId <> Guid.Empty Then Me.txtBranch.Text = (New Branch(.BranchId)).BranchName
-            Me.txtInvDate.Text = .CreatedDate.Value.ToString("dd-MMM-yyyy") & " " & .CreatedDate.Value.ToLongTimeString()
-            If Not .PreviousInvoiceDate Is Nothing Then Me.txtPreInvDate.Text = .PreviousInvoiceDate.Value.ToString("dd-MMM-yyyy") & " " & .PreviousInvoiceDate.Value.ToLongTimeString()
-            Me.txtInvNum.Text = .InvoiceNumber.ToString
-            If Not .CreditNoteNumber Is Nothing Then Me.txtCreditNoteNum.Text = .CreditNoteNumber.ToString
+            txtCompany.Text = (New Company(.CompanyId)).Description
+            txtDealer.Text = (New Dealer(.DealerId)).DealerName
+            If .BranchId <> Guid.Empty Then txtBranch.Text = (New Branch(.BranchId)).BranchName
+            txtInvDate.Text = .CreatedDate.Value.ToString("dd-MMM-yyyy") & " " & .CreatedDate.Value.ToLongTimeString()
+            If .PreviousInvoiceDate IsNot Nothing Then txtPreInvDate.Text = .PreviousInvoiceDate.Value.ToString("dd-MMM-yyyy") & " " & .PreviousInvoiceDate.Value.ToLongTimeString()
+            txtInvNum.Text = .InvoiceNumber.ToString
+            If .CreditNoteNumber IsNot Nothing Then txtCreditNoteNum.Text = .CreditNoteNumber.ToString
 
             'New cert data
-            Me.txtNewTotalCert.Text = .NewTotalCert.Value.ToString("#,0")
-            Me.txtNewGWP.Text = .NewGrossAmtRecvd.Value.ToString("#,0.00")
-            Me.txtNewWP.Text = .NewPremiumWritten.Value.ToString("#,0.00")
-            Me.txtNewCommission.Text = .NewCommission.Value.ToString("#,0.00")
-            Me.txtNewTax1.Text = .NewTax1.Value.ToString("#,0.00")
-            Me.txtNewTax2.Text = .NewTax2.Value.ToString("#,0.00")
-            Me.txtNewTax3.Text = .NewTax3.Value.ToString("#,0.00")
-            Me.txtNewTax4.Text = .NewTax4.Value.ToString("#,0.00")
-            Me.txtNewTax5.Text = .NewTax5.Value.ToString("#,0.00")
-            Me.txtNewTax6.Text = .NewTax6.Value.ToString("#,0.00")
-            Me.txtNewTotalAmt.Text = .NewPremiumTotal.Value.ToString("#,0.00")
+            txtNewTotalCert.Text = .NewTotalCert.Value.ToString("#,0")
+            txtNewGWP.Text = .NewGrossAmtRecvd.Value.ToString("#,0.00")
+            txtNewWP.Text = .NewPremiumWritten.Value.ToString("#,0.00")
+            txtNewCommission.Text = .NewCommission.Value.ToString("#,0.00")
+            txtNewTax1.Text = .NewTax1.Value.ToString("#,0.00")
+            txtNewTax2.Text = .NewTax2.Value.ToString("#,0.00")
+            txtNewTax3.Text = .NewTax3.Value.ToString("#,0.00")
+            txtNewTax4.Text = .NewTax4.Value.ToString("#,0.00")
+            txtNewTax5.Text = .NewTax5.Value.ToString("#,0.00")
+            txtNewTax6.Text = .NewTax6.Value.ToString("#,0.00")
+            txtNewTotalAmt.Text = .NewPremiumTotal.Value.ToString("#,0.00")
 
             'Cancelled cert data
-            Me.txtCanclTotalCert.Text = .CancelTotalCert.Value.ToString("#,0")
-            Me.txtCanclGWP.Text = .CancelGrossAmtRecvd.Value.ToString("#,0.00")
-            Me.txtCanclWP.Text = .CancelPremiumWritten.Value.ToString("#,0.00")
-            Me.txtCanclCommission.Text = .CancelCommission.Value.ToString("#,0.00")
-            Me.txtCanclTax1.Text = .CancelTax1.Value.ToString("#,0.00")
-            Me.txtCanclTax2.Text = .CancelTax2.Value.ToString("#,0.00")
-            Me.txtCanclTax3.Text = .CancelTax3.Value.ToString("#,0.00")
-            Me.txtCanclTax4.Text = .CancelTax4.Value.ToString("#,0.00")
-            Me.txtCanclTax5.Text = .CancelTax5.Value.ToString("#,0.00")
-            Me.txtCanclTax6.Text = .CancelTax6.Value.ToString("#,0.00")
-            Me.txtCanclTotalAmt.Text = .CancelPremiumTotal.Value.ToString("#,0.00")
+            txtCanclTotalCert.Text = .CancelTotalCert.Value.ToString("#,0")
+            txtCanclGWP.Text = .CancelGrossAmtRecvd.Value.ToString("#,0.00")
+            txtCanclWP.Text = .CancelPremiumWritten.Value.ToString("#,0.00")
+            txtCanclCommission.Text = .CancelCommission.Value.ToString("#,0.00")
+            txtCanclTax1.Text = .CancelTax1.Value.ToString("#,0.00")
+            txtCanclTax2.Text = .CancelTax2.Value.ToString("#,0.00")
+            txtCanclTax3.Text = .CancelTax3.Value.ToString("#,0.00")
+            txtCanclTax4.Text = .CancelTax4.Value.ToString("#,0.00")
+            txtCanclTax5.Text = .CancelTax5.Value.ToString("#,0.00")
+            txtCanclTax6.Text = .CancelTax6.Value.ToString("#,0.00")
+            txtCanclTotalAmt.Text = .CancelPremiumTotal.Value.ToString("#,0.00")
         End With
     End Sub
 #End Region
 
 #Region "Button click Handler"
-    Protected Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Protected Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.ReturnToCallingPage()
+            ReturnToCallingPage()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region

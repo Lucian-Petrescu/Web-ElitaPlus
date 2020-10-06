@@ -69,53 +69,53 @@ Public Class CommissionPeriodDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("commission_period_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
 
-    Public Function LoadList(ByVal oCommissionPeriodData As CommissionPeriodData) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(oCommissionPeriodData As CommissionPeriodData) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters(TOTAL_PARAM) As DBHelper.DBHelperParameter
         Dim inCausecondition As String
 
         With oCommissionPeriodData
-            inCausecondition &= MiscUtil.BuildListForSql("AND D." & Me.COL_NAME_COMPANY_ID, oCommissionPeriodData.companyIds, True)
+            inCausecondition &= MiscUtil.BuildListForSql("AND D." & COL_NAME_COMPANY_ID, oCommissionPeriodData.companyIds, True)
 
             If .dealerId.Equals(Guid.Empty) Then
                 parameters(DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, GenericConstants.WILDCARD)
             Else
                 parameters(DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, .dealerId.ToByteArray)
             End If
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
         End With
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadListCommPrd(ByVal oCommPrdData As CommPrdData) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_COMMPRD_LIST")
+    Public Function LoadListCommPrd(oCommPrdData As CommPrdData) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_COMMPRD_LIST")
         Dim parameters(TOTAL_PARAM_A) As DBHelper.DBHelperParameter
         Dim inCausecondition As String
 
         With oCommPrdData
-            inCausecondition &= MiscUtil.BuildListForSql("AND D." & Me.COL_NAME_COMPANY_ID, oCommPrdData.companyIds, True)
+            inCausecondition &= MiscUtil.BuildListForSql("AND D." & COL_NAME_COMPANY_ID, oCommPrdData.companyIds, True)
             If .dealerId.Equals(Guid.Empty) Then
                 parameters(DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, GenericConstants.WILDCARD)
             Else
@@ -126,20 +126,20 @@ Public Class CommissionPeriodDAL
             Else
                 parameters(PRODUCT_ID) = New DBHelper.DBHelperParameter(COL_NAME_PRODUCT_CODE_ID, .ProductCodeId.ToByteArray)
             End If
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
         End With
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadExpiration(ByVal oCommissionPeriodData As CommissionPeriodData) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/MAX_EXPIRATION")
+    Public Function LoadExpiration(oCommissionPeriodData As CommissionPeriodData) As DataSet
+        Dim selectStmt As String = Config("/SQL/MAX_EXPIRATION")
         Dim parameters(TOTAL_PARAM_A) As DBHelper.DBHelperParameter
 
         With oCommissionPeriodData
@@ -149,7 +149,7 @@ Public Class CommissionPeriodDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -161,7 +161,7 @@ Public Class CommissionPeriodDAL
 
 #Region "Overloaded Methods"
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         'Dim addressDAL As New addressDAL
         Dim commPeriodEntityDAL As New CommissionPeriodEntityDAL
@@ -177,11 +177,11 @@ Public Class CommissionPeriodDAL
             commPeriodEntityDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
             assocCommDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
             commToleranceDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
             'addressDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             commPeriodEntityDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             commToleranceDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             assocCommDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)

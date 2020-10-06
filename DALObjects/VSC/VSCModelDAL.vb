@@ -48,45 +48,45 @@ Public Class VSCModelDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("model_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Sub Load(ByVal familyDS As DataSet, _
-                    ByVal make As String, _
-                    ByVal model As String, _
-                    ByVal trim As String, _
-                    ByVal year As Integer)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BY_MDY")
+    Public Sub Load(familyDS As DataSet, _
+                    make As String, _
+                    model As String, _
+                    trim As String, _
+                    year As Integer)
+        Dim selectStmt As String = Config("/SQL/LOAD_BY_MDY")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_MANUFACTURER_ID, make), _
                                                                                            New DBHelper.DBHelperParameter(COL_NAME_MODEL, model), _
                                                                                            New DBHelper.DBHelperParameter(COL_NAME_MODEL_ID, trim), _
                                                                                            New DBHelper.DBHelperParameter(COL_NAME_MODEL_YEAR, year)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal companyGroupId As Guid, ByVal make As String, _
-                    ByVal model As String, _
-                    ByVal trim As String, _
-                    ByVal year As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(companyGroupId As Guid, make As String, _
+                    model As String, _
+                    trim As String, _
+                    year As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
         Dim dynamic_where_clause As String
 
-        dynamic_where_clause &= Environment.NewLine & "AND MANF." & Me.COL_NAME_COMPANY_GROUP_ID & " =  '" & Me.GuidToSQLString(companyGroupId) & "'"
+        dynamic_where_clause &= Environment.NewLine & "AND MANF." & COL_NAME_COMPANY_GROUP_ID & " =  '" & GuidToSQLString(companyGroupId) & "'"
 
         If Not make Is Nothing AndAlso Not make.Equals(String.Empty) Then
             dynamic_where_clause &= Environment.NewLine & "And M." & COL_NAME_MANUFACTURER_ID & " ='" & make & "'"
@@ -103,34 +103,34 @@ Public Class VSCModelDAL
             dynamic_where_clause &= Environment.NewLine & "And M." & COL_NAME_MODEL_YEAR & " =" & year
         End If
 
-        dynamic_where_clause &= Environment.NewLine & "AND CL." & Me.COL_NAME_COMPANY_GROUP_ID & " =  '" & Me.GuidToSQLString(companyGroupId) & "'"
+        dynamic_where_clause &= Environment.NewLine & "AND CL." & COL_NAME_COMPANY_GROUP_ID & " =  '" & GuidToSQLString(companyGroupId) & "'"
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, dynamic_where_clause)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, dynamic_where_clause)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
-                                            Environment.NewLine & "ORDER BY " & Environment.NewLine & Me.COL_NAME_MANUFACTURER_ID & ", " & Me.COL_NAME_MODEL & ", " & COL_NAME_MODEL_YEAR)
+        selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
+                                            Environment.NewLine & "ORDER BY " & Environment.NewLine & COL_NAME_MANUFACTURER_ID & ", " & COL_NAME_MODEL & ", " & COL_NAME_MODEL_YEAR)
 
         Try
-            Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            Return DBHelper.Fetch(selectStmt, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadDistinctList(ByVal companyGroupId As Guid, ByVal make As String, _
-                ByVal model As String, _
-                ByVal trim As String, _
-                ByVal year As String, _
-                ByVal requestedfield As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_DISTINCTLIST")
+    Public Function LoadDistinctList(companyGroupId As Guid, make As String, _
+                model As String, _
+                trim As String, _
+                year As String, _
+                requestedfield As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_DISTINCTLIST")
 
         Dim dynamic_field_selector As String
         Dim dynamic_where_clause As String
 
         dynamic_field_selector = requestedfield
 
-        dynamic_where_clause &= Environment.NewLine & "AND MANF." & Me.COL_NAME_COMPANY_GROUP_ID & " =  '" & Me.GuidToSQLString(companyGroupId) & "'"
+        dynamic_where_clause &= Environment.NewLine & "AND MANF." & COL_NAME_COMPANY_GROUP_ID & " =  '" & GuidToSQLString(companyGroupId) & "'"
 
         If Not make Is Nothing AndAlso Not make.Equals(String.Empty) Then
             dynamic_where_clause &= Environment.NewLine & "And M." & COL_NAME_MANUFACTURER_ID & " ='" & make & "'"
@@ -147,29 +147,29 @@ Public Class VSCModelDAL
             dynamic_where_clause &= Environment.NewLine & "And M." & COL_NAME_MODEL_YEAR & " =" & year
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_FIELD_SELECTOR_PLACE_HOLDER, dynamic_field_selector)
+        selectStmt = selectStmt.Replace(DYNAMIC_FIELD_SELECTOR_PLACE_HOLDER, dynamic_field_selector)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, dynamic_where_clause)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, dynamic_where_clause)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
-                                            Environment.NewLine & "ORDER BY " & Environment.NewLine & Me.COL_NAME_MANUFACTURER_ID & ", " & Me.COL_NAME_MODEL & ", " & COL_NAME_MODEL_YEAR)
+        selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
+                                            Environment.NewLine & "ORDER BY " & Environment.NewLine & COL_NAME_MANUFACTURER_ID & ", " & COL_NAME_MODEL & ", " & COL_NAME_MODEL_YEAR)
 
         Try
-            Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            Return DBHelper.Fetch(selectStmt, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
-    Public Function LoadVSCModels(ByVal companyGroupId As Guid, ByVal make As String) As DataSet
+    Public Function LoadVSCModels(companyGroupId As Guid, make As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_VSC_MODELS")
+        Dim selectStmt As String = Config("/SQL/LOAD_VSC_MODELS")
 
         Dim parameters() As OracleParameter = New OracleParameter() _
                                      {New OracleParameter(COL_NAME_COMPANY_GROUP_ID, companyGroupId.ToByteArray), _
                                       New OracleParameter(COL_NAME_DESCRIPTION, make.ToUpper)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -177,9 +177,9 @@ Public Class VSCModelDAL
 
     End Function
 
-    Public Function LoadExternalCardCode(ByVal companyGroupId As Guid, ByVal externalCarCode As String, ByVal manufacturerId As Guid, ByVal model As String, ByVal version As String) As DataSet
+    Public Function LoadExternalCardCode(companyGroupId As Guid, externalCarCode As String, manufacturerId As Guid, model As String, version As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_VSC_EXTERNALCARCODE")
+        Dim selectStmt As String = Config("/SQL/LOAD_VSC_EXTERNALCARCODE")
 
         Dim parameters() As OracleParameter = New OracleParameter() _
                                      {New OracleParameter(COL_NAME_COMPANY_GROUP_ID, companyGroupId.ToByteArray), _
@@ -188,32 +188,32 @@ Public Class VSCModelDAL
                                       New OracleParameter(COL_NAME_ENGINE_VERSION, version.ToUpper), _
                                       New OracleParameter(COL_NAME_EXTERNAL_CAR_CODE, externalCarCode.ToUpper)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
-    Public Function LoadVSCEngineVersions(ByVal companyGroupId As Guid, ByVal make As String, ByVal model As String) As DataSet
+    Public Function LoadVSCEngineVersions(companyGroupId As Guid, make As String, model As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_VSC_ENGINE_VERSIONS")
+        Dim selectStmt As String = Config("/SQL/LOAD_VSC_ENGINE_VERSIONS")
 
         Dim parameters() As OracleParameter = New OracleParameter() _
                                      {New OracleParameter(COL_NAME_COMPANY_GROUP_ID, companyGroupId.ToByteArray), _
                                       New OracleParameter(COL_NAME_DESCRIPTION, make.ToUpper), _
                                       New OracleParameter(COL_NAME_MODEL, model.ToUpper)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
-    Public Function LoadVSCYears(ByVal companyGroupId As Guid, ByVal make As String, ByVal model As String, ByVal engineVersion As String) As DataSet
+    Public Function LoadVSCYears(companyGroupId As Guid, make As String, model As String, engineVersion As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_VSC_YEARS")
+        Dim selectStmt As String = Config("/SQL/LOAD_VSC_YEARS")
 
         Dim parameters() As OracleParameter = New OracleParameter() _
                                      {New OracleParameter(COL_NAME_COMPANY_GROUP_ID, companyGroupId.ToByteArray), _
@@ -221,7 +221,7 @@ Public Class VSCModelDAL
                                       New OracleParameter(COL_NAME_MODEL, model.ToUpper), _
                                       New OracleParameter(COL_NAME_ENGINE_VERSION, engineVersion.ToUpper)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -232,12 +232,12 @@ Public Class VSCModelDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

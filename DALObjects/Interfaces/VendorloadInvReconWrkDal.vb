@@ -56,11 +56,11 @@ Public Class VendorloadInvReconWrkDal
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDs As DataSet, ByVal id As Guid)
+    Public Sub Load(familyDs As DataSet, id As Guid)
         Try
             Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(TableKeyName, OracleDbType.Raw, id.ToByteArray())
@@ -111,9 +111,9 @@ Public Class VendorloadInvReconWrkDal
     '        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
     '    End Try
     'End Function
-    Public Function LoadList(ByVal fileProcessedId As Guid, ByVal languageId As Guid, ByVal recMode As Integer,
-                             ByVal recordType As String, ByVal rejectCode As String, ByVal rejectReason As String,
-                             ByVal pageindex As Integer, ByVal pagesize As Integer, ByVal sortExpression As String) As DataSet
+    Public Function LoadList(fileProcessedId As Guid, languageId As Guid, recMode As Integer,
+                             recordType As String, rejectCode As String, rejectReason As String,
+                             pageindex As Integer, pagesize As Integer, sortExpression As String) As DataSet
         Try
             rejectReason = FormatWildCard(rejectReason)
             Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD_LIST"))
@@ -138,7 +138,7 @@ Public Class VendorloadInvReconWrkDal
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal transaction As OracleTransaction = Nothing, Optional ByVal changesFilter As DataRowState = SupportChangesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal transaction As OracleTransaction = Nothing, Optional ByVal changesFilter As DataRowState = SupportChangesFilter)
         If ds Is Nothing Then
             Return
         End If
@@ -194,7 +194,7 @@ Public Class VendorloadInvReconWrkDal
 #End Region
 #Region "Vendor Inventory Recon Work"
 
-    Public Sub ValidateFile(ByVal fileProcessedId As Guid, ByVal interfaceStatusId As Guid)
+    Public Sub ValidateFile(fileProcessedId As Guid, interfaceStatusId As Guid)
         Dim sqlStmt As String = Config("/SQL/VALIDATE_FILE")
         Dim dal As New FileProcessedDAL
         Try
@@ -204,7 +204,7 @@ Public Class VendorloadInvReconWrkDal
         End Try
     End Sub
 
-    Public Sub ProcessFile(ByVal fileProcessedId As Guid, ByVal interfaceStatusId As Guid)
+    Public Sub ProcessFile(fileProcessedId As Guid, interfaceStatusId As Guid)
         Dim sqlStmt As String = Config("/SQL/PROCESS_FILE")
         Dim dal As New FileProcessedDAL
         Try
@@ -214,7 +214,7 @@ Public Class VendorloadInvReconWrkDal
         End Try
     End Sub
 
-    Public Sub DeleteFile(ByVal fileProcessedId As Guid, ByVal interfaceStatusId As Guid)
+    Public Sub DeleteFile(fileProcessedId As Guid, interfaceStatusId As Guid)
         Dim sqlStmt As String = Config("/SQL/DELETE_FILE")
         Dim dal As New FileProcessedDAL
         Try

@@ -16,7 +16,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -44,7 +44,7 @@ Namespace Tables
 
 #Region "Page Return"
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
                 MenuEnabled = True
                 IsReturningFromChild = True
@@ -52,7 +52,7 @@ Namespace Tables
                 State.HasDataChanged = retObj.HasDataChanged
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
                                 State.SelectedEXDNId = retObj.EditingBo.Id
                             End If
@@ -60,7 +60,7 @@ Namespace Tables
                         End If
                 End Select
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Public Class ReturnType
@@ -68,9 +68,9 @@ Namespace Tables
             Public moVSCModelId As Guid
             Public BoChanged As Boolean = False
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal oVSCModelId As Guid, Optional ByVal boChanged As Boolean = False)
-                Me.LastOperation = LastOp
-                Me.moVSCModelId = oVSCModelId
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, oVSCModelId As Guid, Optional ByVal boChanged As Boolean = False)
+                LastOperation = LastOp
+                moVSCModelId = oVSCModelId
                 Me.BoChanged = boChanged
             End Sub
         End Class
@@ -78,16 +78,16 @@ Namespace Tables
 
 #Region " Page Events"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
             'ErrorCtrl.Clear_Hide()
-            Me.MasterPage.MessageController.Clear()
+            MasterPage.MessageController.Clear()
             Try
                 If Not IsPostBack Then
                     ' Set Master Page Header
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                     UpdateBreadCrum()
 
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
@@ -104,28 +104,28 @@ Namespace Tables
                     SaveGuiState()
                 End If
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
 
         End Sub
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("VSC_MODEL")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("VSC_MODEL")
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("VSC_MODEL")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("VSC_MODEL")
                 End If
             End If
         End Sub
 
-        Private Sub moBtnClear_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBtnClear.Click
+        Private Sub moBtnClear_Click(sender As Object, e As System.EventArgs) Handles moBtnClear.Click
 
             MakeModelCtrl.Reset()
 
         End Sub
 
-        Private Sub moBtnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBtnSearch.Click
+        Private Sub moBtnSearch_Click(sender As Object, e As System.EventArgs) Handles moBtnSearch.Click
 
             ''''If (Not MakeModelCtrl.Make Is Nothing) AndAlso MakeModelCtrl.Make.Trim.Length > 0 Then
             '''Grid.CurrentPageIndex = NO_PAGE_INDEX
@@ -136,21 +136,21 @@ Namespace Tables
             ''''End If
 
             Try
-                Me.State.PageIndex = 0
-                Me.State.SelectedEXDNId = Guid.Empty
+                State.PageIndex = 0
+                State.SelectedEXDNId = Guid.Empty
                 If Not State.IsGridVisible Then
                     If Not (Grid.PageSize = DEFAULT_NEW_UI_PAGE_SIZE) Then
                         cboPageSize.SelectedValue = CType(State.PageSize, String)
                         Grid.PageSize = State.PageSize
                     End If
-                    Me.State.IsGridVisible = True
+                    State.IsGridVisible = True
                 End If
-                Me.State.searchDV = Nothing
-                Me.State.HasDataChanged = False
-                Me.PopulateGrid()
+                State.searchDV = Nothing
+                State.HasDataChanged = False
+                PopulateGrid()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -195,7 +195,7 @@ Namespace Tables
                 Get
                     Return moManufacturerId.ToString
                 End Get
-                Set(ByVal Value As String)
+                Set(Value As String)
                     moManufacturerId = New Guid(Value)
 
                 End Set
@@ -214,7 +214,7 @@ Namespace Tables
                 Get
                     Return moModel
                 End Get
-                Set(ByVal Value As String)
+                Set(Value As String)
                     moModel = Value
                 End Set
             End Property
@@ -232,7 +232,7 @@ Namespace Tables
                 Get
                     Return moModelYear.ToString
                 End Get
-                Set(ByVal Value As String)
+                Set(Value As String)
                     moModelYear = Convert.ToInt16(Value)
                 End Set
             End Property
@@ -250,7 +250,7 @@ Namespace Tables
                 Get
                     Return moDescription
                 End Get
-                Set(ByVal Value As String)
+                Set(Value As String)
                     moDescription = Value
                 End Set
             End Property
@@ -259,7 +259,7 @@ Namespace Tables
                 Get
                     Return mnPageIndex
                 End Get
-                Set(ByVal Value As Integer)
+                Set(Value As Integer)
                     mnPageIndex = Value
                 End Set
             End Property
@@ -268,7 +268,7 @@ Namespace Tables
                 Get
                     Return mnPageSize
                 End Get
-                Set(ByVal Value As Integer)
+                Set(Value As Integer)
                     mnPageSize = Value
                 End Set
             End Property
@@ -277,7 +277,7 @@ Namespace Tables
                 Get
                     Return msPageSort
                 End Get
-                Set(ByVal Value As String)
+                Set(Value As String)
                     msPageSort = Value
                 End Set
             End Property
@@ -286,7 +286,7 @@ Namespace Tables
                 Get
                     Return moSearchDataView
                 End Get
-                Set(ByVal Value As DataView)
+                Set(Value As DataView)
                     moSearchDataView = Value
                 End Set
             End Property
@@ -313,29 +313,29 @@ Namespace Tables
             'Me.State.Year = MakeModelCtrl.Year
 
             'user control
-            Me.MakeModelCtrl.State.makeState = MakeModelCtrl.Make
-            Me.MakeModelCtrl.State.ModelState = MakeModelCtrl.Model
-            Me.MakeModelCtrl.State.EngineVersionState = MakeModelCtrl.EngineVersion
-            Me.MakeModelCtrl.State.YearState = MakeModelCtrl.Year
-            Me.MakeModelCtrl.State.coverageSupportState = VSCModel.VAL_BOTH
-            If rbShowNew.Checked Then Me.MakeModelCtrl.State.coverageSupportState = VSCModel.VAL_NEW
-            If rbShowUsed.Checked Then Me.MakeModelCtrl.State.coverageSupportState = VSCModel.VAL_USED
+            MakeModelCtrl.State.makeState = MakeModelCtrl.Make
+            MakeModelCtrl.State.ModelState = MakeModelCtrl.Model
+            MakeModelCtrl.State.EngineVersionState = MakeModelCtrl.EngineVersion
+            MakeModelCtrl.State.YearState = MakeModelCtrl.Year
+            MakeModelCtrl.State.coverageSupportState = VSCModel.VAL_BOTH
+            If rbShowNew.Checked Then MakeModelCtrl.State.coverageSupportState = VSCModel.VAL_NEW
+            If rbShowUsed.Checked Then MakeModelCtrl.State.coverageSupportState = VSCModel.VAL_USED
 
         End Sub
 
         Private Sub RestoreGuiState()
-            Me.rbShowBoth.Checked = True
+            rbShowBoth.Checked = True
             rbShowNew.Checked = False
             rbShowUsed.Checked = False
-            If Me.MakeModelCtrl.State.coverageSupportState = VSCModel.VAL_NEW Then
+            If MakeModelCtrl.State.coverageSupportState = VSCModel.VAL_NEW Then
                 rbShowNew.Checked = True
-                Me.rbShowBoth.Checked = False
+                rbShowBoth.Checked = False
                 rbShowUsed.Checked = False
             End If
 
-            If Me.MakeModelCtrl.State.coverageSupportState = VSCModel.VAL_USED Then
+            If MakeModelCtrl.State.coverageSupportState = VSCModel.VAL_USED Then
                 rbShowUsed.Checked = True
-                Me.rbShowBoth.Checked = False
+                rbShowBoth.Checked = False
                 rbShowNew.Checked = False
             End If
 
@@ -348,11 +348,11 @@ Namespace Tables
 #End Region
 
 #Region " Button Clicks "
-        Private Sub BtnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNew_WRITE.Click
+        Private Sub BtnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnNew_WRITE.Click
             Try
-                Me.callPage(vscModelForm.URL)
+                callPage(vscModelForm.URL)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -360,7 +360,7 @@ Namespace Tables
 #Region " Private Methods"
         
 
-        Private Sub BindGrid(ByVal dw As DataView)
+        Private Sub BindGrid(dw As DataView)
 
             Grid.DataSource = dw
             Grid.DataBind()
@@ -413,7 +413,7 @@ Namespace Tables
 
             End If
 
-            Me.State.searchDV.Sort = Me.State.SortExpression
+            State.searchDV.Sort = State.SortExpression
             Grid.AutoGenerateColumns = False
             Grid.Columns(GRID_COL_MAKE).SortExpression = VSCModel.COL_MAKE
             Grid.Columns(GRID_COL_MODEL_YEAR).SortExpression = VSCModel.COL_YEAR
@@ -421,8 +421,8 @@ Namespace Tables
             'Grid.Columns(GRID_COL_TRIM).SortExpression = VSCModel.COL_ENGINE_VERSION
 
 
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.SelectedEXDNId, Me.Grid, Me.State.PageIndex)
-            Me.SortAndBindGrid()
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.SelectedEXDNId, Grid, State.PageIndex)
+            SortAndBindGrid()
 
 
 
@@ -446,32 +446,32 @@ Namespace Tables
 
         End Sub
 
-        Private Function isEmpty(ByVal val As String) As Boolean
+        Private Function isEmpty(val As String) As Boolean
 
             Return (val Is Nothing) OrElse val.Trim.Length = 0
 
         End Function
 
         Private Sub SortAndBindGrid()
-            Me.State.PageIndex = Me.Grid.CurrentPageIndex
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.State.SortExpression)
-            Me.Grid.DataBind()
+            State.PageIndex = Grid.CurrentPageIndex
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, State.SortExpression)
+            Grid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.State.searchDV.Count > 0 Then
+            If State.searchDV.Count > 0 Then
 
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             Else
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
         End Sub
@@ -480,33 +480,33 @@ Namespace Tables
 #Region " Datagrid Related "
 
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
 
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Me.State.SelectedEXDNId = Guid.Empty
-                Me.PopulateGrid()
+                State.PageIndex = e.NewPageIndex
+                State.SelectedEXDNId = Guid.Empty
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemCreated
+        Private Sub Grid_ItemCreated(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
             If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
                 Dim active_New As String = e.Item.Cells(GRID_COL_ACTIVE_NEW).Text
                 Dim active_Used As String = e.Item.Cells(GRID_COL_ACTIVE_USED).Text
-                e.Item.Cells(Me.GRID_COL_MODEL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(VSCModel.VSCModelSearchDV.COL_NAME_MODEL_ID), Byte()))
+                e.Item.Cells(GRID_COL_MODEL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(VSCModel.VSCModelSearchDV.COL_NAME_MODEL_ID), Byte()))
                 If active_New = NO Then
                     e.Item.Cells(GRID_COL_NEW_CLASS_CODE).Enabled = False
                 End If
@@ -521,43 +521,43 @@ Namespace Tables
         End Sub
 
 
-        Private Sub Grid_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles Grid.ItemCommand
+        Private Sub Grid_ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles Grid.ItemCommand
             Try
                 If e.CommandName = "SelectAction" Then
-                    Me.State.SelectedEXDNId = New Guid(e.Item.Cells(Me.GRID_COL_MODEL_IDX).Text)
-                    Me.callPage(vscModelForm.URL, Me.State.SelectedEXDNId)
+                    State.SelectedEXDNId = New Guid(e.Item.Cells(GRID_COL_MODEL_IDX).Text)
+                    callPage(vscModelForm.URL, State.SelectedEXDNId)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
                 State.PageSize = Grid.PageSize
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -565,15 +565,15 @@ Namespace Tables
 #Region "State-Management"
 
         Private Sub SetSession()
-            With Me.State
+            With State
                 .MakeId = MakeModelCtrl.Make
                 .Model = MakeModelCtrl.Model
                 .EngineVersion = MakeModelCtrl.EngineVersion
                 .Year = MakeModelCtrl.Year
                 .PageIndex = Grid.CurrentPageIndex
                 .PageSize = Grid.PageSize
-                .PageSort = Me.State.SortExpression
-                .SearchDataView = Me.State.searchDV
+                .PageSort = State.SortExpression
+                .SearchDataView = State.searchDV
             End With
         End Sub
 

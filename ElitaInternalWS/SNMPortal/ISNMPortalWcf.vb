@@ -11,24 +11,24 @@ Namespace SNMPortal
     Public Interface ISNMPortalWcf
 
         <OperationContract()> _
-        Function Hello(ByVal name As String) As String
+        Function Hello(name As String) As String
 
         <OperationContract()> _
         Function Login() As String
 
         <OperationContract()> _
-        Function LoginBody(ByVal networkID As String, ByVal password As String, ByVal group As String) As String
+        Function LoginBody(networkID As String, password As String, group As String) As String
 
         <OperationContract()> _
-        Function ProcessRequest(ByVal token As String, _
-                                               ByVal functionToProcess As String, _
-                                               ByVal xmlStringDataIn As String) As String
+        Function ProcessRequest(token As String, _
+                                               functionToProcess As String, _
+                                               xmlStringDataIn As String) As String
 
         <OperationContract(Name:="GetPreInvoice"), FaultContract(GetType(SNMPortalFaultDC))> _
-        Function GetPreInvoice(ByVal PreInvoice As PreInvoiceSearchDC) As List(Of PreInvoiceDC)
+        Function GetPreInvoice(PreInvoice As PreInvoiceSearchDC) As List(Of PreInvoiceDC)
 
         <OperationContract(Name:="GetPriceList"), FaultContract(GetType(SNMPortalFaultDC))> _
-        Function GetPriceList(ByVal PriceList As PriceListSearchDC) As List(Of PriceListDC)
+        Function GetPriceList(PriceList As PriceListSearchDC) As List(Of PriceListDC)
 
     End Interface
 

@@ -9,7 +9,7 @@ Public Class CertificateContext
 
     Private Sub CheckDBConnection()
         If Me.Database.Connection.State = ConnectionState.Closed Then
-            Me.Database.Connection.Open()
+            Database.Connection.Open()
         End If
     End Sub
 
@@ -21,7 +21,7 @@ Public Class CertificateContext
                                  ByVal pIdentificationNumber As String,
                                  ByVal pServiceLineNumber As String) As DataSet
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
 
         dbCommand.CommandText = "elp_ws_getCertificate.Search_Certificate"
@@ -50,7 +50,7 @@ Public Class CertificateContext
                                  ByVal numberOfRecords As Integer,
                                  ByRef totalRecordFound As Long) As DataSet
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
 
         dbCommand.CommandText = "elp_ws_getCertificate.Search_CertByTaxId_GWPIL"
@@ -85,7 +85,7 @@ Public Class CertificateContext
     Friend Function GWSearchCertificateByCertNumber(ByVal pDealerCode As String,
                                  ByVal pCertNumber As String) As DataSet
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
 
         dbCommand.CommandText = "elp_ws_getCertificate.Search_CertByCertNbr_GWPIL"
@@ -111,7 +111,7 @@ Public Class CertificateContext
                                  ByRef poGWP As Decimal,
                                  ByRef poSalexTax As Decimal)
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
         dbCommand.CommandText = "elita.ELP_UTL_RATES.get_GWP_by_Cert_id"
 
@@ -143,7 +143,7 @@ Public Class CertificateContext
                                  ByRef poEndorseEffectiveDate As String,
                                  ByRef poEndorseExpirationDate As String)
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
         dbCommand.CommandText = "elita.elp_ws_getCertificate.get_first_cert_endorse_dates"
 
@@ -177,7 +177,7 @@ Public Class CertificateContext
     Friend Sub GetPremiumFromProduct(ByVal pCertId As Guid,
                                     ByRef pCurrencyCode As String,
                                     ByRef pGrossAmt As Decimal)
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
 
         dbCommand.CommandType = CommandType.StoredProcedure
         dbCommand.CommandText = "elp_ws_getcertificate.get_coverage_rate_details "
@@ -199,7 +199,7 @@ Public Class CertificateContext
 
         pCurrencyCode = paramCurrencyCode.Value.ToString()
         pGrossAmt = Convert.ToDecimal(paramGrossAmt.Value.ToString())
-        Me.Database.Connection.Close()
+        Database.Connection.Close()
 
     End Sub
 
@@ -207,7 +207,7 @@ Public Class CertificateContext
     Friend Function SearchCertificateBYCustomerInfo(ByVal pCompanyCode As String, ByVal pDealerCode As String, ByVal pDealerGrp As String, ByVal pCustomerFirstName As String, ByVal pCustomerLastName As String,
                                                 ByVal pWorkPhone As String, ByVal pEmail As String, ByVal pPostalCode As String, ByVal pIdentificationNumber As String) As DataSet
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
 
         dbCommand.CommandText = "elp_ws_getCertificate.SearchPolicyByCustomerInfo"

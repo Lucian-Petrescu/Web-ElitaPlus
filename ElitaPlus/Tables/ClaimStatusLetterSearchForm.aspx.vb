@@ -64,7 +64,7 @@ Namespace Tables
                 Get
                     Return moDealerId
                 End Get
-                Set(ByVal Value As Guid)
+                Set(Value As Guid)
                     moDealerId = Value
                 End Set
             End Property
@@ -73,7 +73,7 @@ Namespace Tables
                 Get
                     Return moClaimStatusByGroupId
                 End Get
-                Set(ByVal Value As Guid)
+                Set(Value As Guid)
                     moClaimStatusByGroupId = Value
                 End Set
             End Property
@@ -95,29 +95,29 @@ Namespace Tables
 
 
 #Region "Page Return"
-        Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.IsReturningFromChild = True
+                IsReturningFromChild = True
                 Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.State.moStatusLetterId = retObj.moStatusLetterId
+                            State.moStatusLetterId = retObj.moStatusLetterId
                         Case Else
-                            Me.State.moStatusLetterId = Guid.Empty
+                            State.moStatusLetterId = Guid.Empty
                     End Select
-                    Me.Grid.PageIndex = Me.State.PageIndex
-                    Me.Grid.PageSize = Me.State.PageSize
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                    Me.Grid.PageSize = Me.State.PageSize
-                    ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+                    Grid.PageIndex = State.PageIndex
+                    Grid.PageSize = State.PageSize
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
+                    Grid.PageSize = State.PageSize
+                    ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
                     PopulateDealer()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -126,9 +126,9 @@ Namespace Tables
             Public moStatusLetterId As Guid
             Public BoChanged As Boolean = False
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal oStatusLetterId As Guid, Optional ByVal boChanged As Boolean = False)
-                Me.LastOperation = LastOp
-                Me.moStatusLetterId = oStatusLetterId
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, oStatusLetterId As Guid, Optional ByVal boChanged As Boolean = False)
+                LastOperation = LastOp
+                moStatusLetterId = oStatusLetterId
                 Me.BoChanged = boChanged
             End Sub
         End Class
@@ -140,76 +140,76 @@ Namespace Tables
 #Region "Handlers"
 
 #Region "Hanlers-Init"
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Me.ErrControllerMaster.Clear_Hide()
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+            ErrControllerMaster.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
 
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.TranslateGridHeader(Grid)
-                    Me.TranslateGridControls(Grid)
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    TranslateGridHeader(Grid)
+                    TranslateGridControls(Grid)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
 
-                    Me.SetGridItemStyleColor(Me.Grid)
-                    If Not Me.IsReturningFromChild Then
+                    SetGridItemStyleColor(Grid)
+                    If Not IsReturningFromChild Then
                         ControlMgr.SetVisibleControl(Me, trPageSize, False)
                         PopulateDealer()
                         PopulateExtendedClaimStatus()
                     Else
-                        Me.PopulateGrid(Me.POPULATE_ACTION_SAVE)
+                        PopulateGrid(POPULATE_ACTION_SAVE)
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
 
 #Region "Handlers-Grid"
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
-                Me.Grid.PageIndex = NewCurrentPageIndex(Me.Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.PageSize = Me.Grid.PageSize
+                Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+                State.PageSize = Grid.PageSize
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
             Try
-                Me.State.PageIndex = Grid.PageIndex
                 State.PageIndex = Grid.PageIndex
-                Me.State.moStatusLetterId = Guid.Empty
+                State.PageIndex = Grid.PageIndex
+                State.moStatusLetterId = Guid.Empty
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanging(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
-                Me.Grid.PageIndex = e.NewPageIndex
+                Grid.PageIndex = e.NewPageIndex
                 State.PageIndex = Grid.PageIndex
                 'PopulateGrid(POPULATE_ACTION_NO_EDIT)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+        Private Sub Grid_ItemCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+        Private Sub Grid_ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
 
             Try
                 If e.CommandName = "SelectUser" Then
@@ -217,31 +217,31 @@ Namespace Tables
                     Dim row As GridViewRow = CType(CType(e.CommandSource, Control).Parent.Parent, GridViewRow)
                     Dim RowInd As Integer = row.RowIndex
                     lblCtrl = CType(Grid.Rows(RowInd).Cells(GRID_COL_STATUS_LETTER_ID).FindControl("moStatusLetterId"), Label)
-                    Me.State.moStatusLetterId = New Guid(lblCtrl.Text)
-                    Me.callPage(ClaimStatusLetterForm.URL, Me.State.moStatusLetterId)
+                    State.moStatusLetterId = New Guid(lblCtrl.Text)
+                    callPage(ClaimStatusLetterForm.URL, State.moStatusLetterId)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.Grid.PageIndex = 0
-                Me.Grid.SelectedIndex = -1
-                Me.PopulateGrid()
+                Grid.PageIndex = 0
+                Grid.SelectedIndex = -1
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -249,33 +249,33 @@ Namespace Tables
 
 #Region "Handlers-Buttons"
 
-        Protected Sub moBtnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles moBtnSearch.Click
+        Protected Sub moBtnSearch_Click(sender As Object, e As EventArgs) Handles moBtnSearch.Click
             Try
-                Me.Grid.PageIndex = Me.NO_PAGE_INDEX
-                Me.Grid.DataMember = Nothing
-                Me.State.searchDV = Nothing
-                Me.PopulateGrid()
+                Grid.PageIndex = NO_PAGE_INDEX
+                Grid.DataMember = Nothing
+                State.searchDV = Nothing
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub moBtnClear_Click(ByVal sender As Object, ByVal e As EventArgs) Handles moBtnClear.Click
+        Protected Sub moBtnClear_Click(sender As Object, e As EventArgs) Handles moBtnClear.Click
             Try
                 ClearSearch()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
 
-        Protected Sub btnNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew.Click
+        Protected Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
             Try
-                Me.State.moStatusLetterId = Guid.Empty
+                State.moStatusLetterId = Guid.Empty
                 SetSession()
-                Me.callPage(ClaimStatusLetterForm.URL, Me.State.moStatusLetterId)
+                callPage(ClaimStatusLetterForm.URL, State.moStatusLetterId)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -293,10 +293,10 @@ Namespace Tables
                 TheDealerControl.BindData(oDataView)
                 TheDealerControl.AutoPostBackDD = False
                 TheDealerControl.NothingSelected = True
-                TheDealerControl.SelectedGuid = Me.State.DealerId
+                TheDealerControl.SelectedGuid = State.DealerId
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -307,7 +307,7 @@ Namespace Tables
                 listcontext.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
 
                 Dim ClaimStatusList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ClaimStatusByCompanyGroup", context:=listcontext)
-                Me.ExtendedClaimStatusDropdownList.Populate(ClaimStatusList, New PopulateOptions() With
+                ExtendedClaimStatusDropdownList.Populate(ClaimStatusList, New PopulateOptions() With
                 {
                    .AddBlankItem = True
                 })
@@ -315,7 +315,7 @@ Namespace Tables
                 'Dim dvClaimStatus As DataView = New DataView(ClaimStatusByGroup.LoadListByCompanyGroup(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id).Tables(0))
                 'Me.BindListControlToDataView(Me.ExtendedClaimStatusDropdownList, dvClaimStatus, "description", "claim_status_by_group_id", True)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -323,31 +323,31 @@ Namespace Tables
             Try
                 Dim oDataView As DataView
                 Dim sortBy As String = "DEALER_CODE"
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = ClaimStatusLetter.getList(TheDealerControl.SelectedGuid, Me.GetSelectedItem(Me.ExtendedClaimStatusDropdownList))
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = ClaimStatusLetter.getList(TheDealerControl.SelectedGuid, GetSelectedItem(ExtendedClaimStatusDropdownList))
                 End If
 
                 Grid.PageSize = State.PageSize
                 If State.searchDV.Count = 0 Then
                     Dim dv As ClaimStatusLetter.ClaimStatusLetterSearchDV = State.searchDV.AddNewRowToEmptyDV
-                    SetPageAndSelectedIndexFromGuid(dv, Me.State.moStatusLetterId, Me.Grid, Me.State.PageIndex)
-                    Me.Grid.DataSource = dv
+                    SetPageAndSelectedIndexFromGuid(dv, State.moStatusLetterId, Grid, State.PageIndex)
+                    Grid.DataSource = dv
                 Else
-                    SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.moStatusLetterId, Me.Grid, Me.State.PageIndex)
-                    Me.Grid.DataSource = Me.State.searchDV
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.moStatusLetterId, Grid, State.PageIndex)
+                    Grid.DataSource = State.searchDV
                 End If
 
-                Me.State.PageIndex = Me.Grid.PageIndex
-                Me.Grid.AllowSorting = False
-                Me.Grid.DataBind()
+                State.PageIndex = Grid.PageIndex
+                Grid.AllowSorting = False
+                Grid.DataBind()
 
                 HighLightGridViewSortColumn(Grid, sortBy)
                 ControlMgr.SetVisibleControl(Me, Grid, True)
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
-                Session("recCount") = Me.State.searchDV.Count
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
+                Session("recCount") = State.searchDV.Count
 
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
                 If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
@@ -359,14 +359,14 @@ Namespace Tables
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
         Private Sub ClearSearch()
             TheDealerControl.SelectedIndex = 0
-            Me.State.moStatusLetterId = Guid.Empty
+            State.moStatusLetterId = Guid.Empty
             ExtendedClaimStatusDropdownList.SelectedIndex = 0
         End Sub
 
@@ -375,13 +375,13 @@ Namespace Tables
 #Region "State-Management"
 
         Private Sub SetSession()
-            With Me.State
+            With State
                 .DealerId = TheDealerControl.SelectedGuid
-                .PageIndex = Me.Grid.PageIndex
-                .PageSize = Me.Grid.PageSize
-                .PageSort = Me.State.SortExpression
-                .SearchDataView = Me.State.searchDV
-                .ClaimStatusByGroupId = Me.GetSelectedItem(Me.ExtendedClaimStatusDropdownList)
+                .PageIndex = Grid.PageIndex
+                .PageSize = Grid.PageSize
+                .PageSort = State.SortExpression
+                .SearchDataView = State.searchDV
+                .ClaimStatusByGroupId = GetSelectedItem(ExtendedClaimStatusDropdownList)
             End With
         End Sub
 

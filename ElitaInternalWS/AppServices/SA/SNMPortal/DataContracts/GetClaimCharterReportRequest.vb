@@ -48,7 +48,7 @@ Namespace AppServices.SA.SNMPortal.DataContracts
     
     public Module ClaimExentedStatusTypeExtensions
         <Extension()>
-        Function GetCodeString(ByVal status As ClaimExentedStatusType) As string
+        Function GetCodeString(status As ClaimExentedStatusType) As string
             select case status
                 Case ClaimExentedStatusType.Repaired
                     return "REPRD"

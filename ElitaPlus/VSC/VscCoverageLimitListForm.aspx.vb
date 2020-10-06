@@ -23,7 +23,7 @@ Namespace VSC
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -108,7 +108,7 @@ Namespace VSC
 
         Public ReadOnly Property IsEditing() As Boolean
             Get
-                IsEditing = (Me.moDataGrid.EditItemIndex > NO_ROW_SELECTED_INDEX)
+                IsEditing = (moDataGrid.EditItemIndex > NO_ROW_SELECTED_INDEX)
             End Get
         End Property
 
@@ -116,28 +116,28 @@ Namespace VSC
 
 #Region "Page_Events"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
             Try
                 moErrorController.Clear_Hide()
                 If Not Page.IsPostBack Then
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SetDefaultButton(Me.moLimitCodeTx, Me.SearchButton)
-                    Me.SetDefaultButton(Me.moMonthTx, Me.SearchButton)
-                    Me.SetDefaultButton(Me.moKmTx, Me.SearchButton)
-                    Me.SetGridItemStyleColor(Me.moDataGrid)
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New VSCCoverageLimit
+                    SetDefaultButton(moLimitCodeTx, SearchButton)
+                    SetDefaultButton(moMonthTx, SearchButton)
+                    SetDefaultButton(moKmTx, SearchButton)
+                    SetGridItemStyleColor(moDataGrid)
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New VSCCoverageLimit
                     End If
-                    Me.PopulateFormFromBOs()
-                    Me.State.PageIndex = 0
+                    PopulateFormFromBOs()
+                    State.PageIndex = 0
                     SetButtonsState()
                 End If
                 BindBoPropertiesToGridHeaders()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
-            Me.ShowMissingTranslations(moErrorController)
+            ShowMissingTranslations(moErrorController)
 
         End Sub
 
@@ -145,28 +145,28 @@ Namespace VSC
 
             moDataGrid.EditItemIndex = NO_ROW_SELECTED_INDEX
 
-            If Me.moDataGrid.PageCount = 0 Then
+            If moDataGrid.PageCount = 0 Then
                 'if returning to the "1st time in" screen
                 ControlMgr.SetVisibleControl(Me, moDataGrid, False)
             Else
                 ControlMgr.SetVisibleControl(Me, moDataGrid, True)
             End If
             SetGridControls(moDataGrid, True)
-            Me.State.IsEditMode = False
-            Me.PopulateGrid()
-            Me.State.PageIndex = moDataGrid.CurrentPageIndex
+            State.IsEditMode = False
+            PopulateGrid()
+            State.PageIndex = moDataGrid.CurrentPageIndex
             SetButtonsState()
 
         End Sub
         Private Sub SetButtonsState()
-            If (Me.State.IsEditMode) Then
+            If (State.IsEditMode) Then
                 ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, True)
                 ControlMgr.SetVisibleControl(Me, CancelButton, True)
                 ControlMgr.SetEnableControl(Me, SearchButton, False)
                 ControlMgr.SetEnableControl(Me, ClearButton, False)
-                Me.EnableDisableControls(moPanel, True)
-                Me.MenuEnabled = False
-                If (Me.cboPageSize.Visible) Then
+                EnableDisableControls(moPanel, True)
+                MenuEnabled = False
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, False)
                 End If
             Else
@@ -174,9 +174,9 @@ Namespace VSC
                 ControlMgr.SetVisibleControl(Me, CancelButton, False)
                 ControlMgr.SetEnableControl(Me, SearchButton, True)
                 ControlMgr.SetEnableControl(Me, ClearButton, True)
-                Me.EnableDisableControls(moPanel, False)
-                Me.MenuEnabled = True
-                If (Me.cboPageSize.Visible) Then
+                EnableDisableControls(moPanel, False)
+                MenuEnabled = True
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, True)
                 End If
             End If
@@ -187,7 +187,7 @@ Namespace VSC
 #End Region
 
 #Region " Datagrid Related "
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
@@ -196,98 +196,98 @@ Namespace VSC
                     itemType = ListItemType.AlternatingItem OrElse
                     itemType = ListItemType.SelectedItem) Then
 
-                    e.Item.Cells(Me.GRID_COL_COVERAGE_LIMIT_ID).Text = GetGuidStringFromByteArray(CType(dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_VSC_COVERAGE_LIMIT_ID), Byte()))
-                    e.Item.Cells(Me.GRID_COL_COVERAGE_CODE).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_LIMIT_CODE).ToString
-                    e.Item.Cells(Me.GRID_COL_COVERAGE_TYPE_ID).Text = GetGuidStringFromByteArray(CType(dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_VSC_COVERAGE_TYPE_ID), Byte()))
-                    e.Item.Cells(Me.GRID_COL_DESCRIPTION).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_TYPE_DESC).ToString
-                    e.Item.Cells(Me.GRID_COL_MONTHS).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_MONTHS).ToString
-                    e.Item.Cells(Me.GRID_COL_KM).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_KM_MI).ToString
+                    e.Item.Cells(GRID_COL_COVERAGE_LIMIT_ID).Text = GetGuidStringFromByteArray(CType(dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_VSC_COVERAGE_LIMIT_ID), Byte()))
+                    e.Item.Cells(GRID_COL_COVERAGE_CODE).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_LIMIT_CODE).ToString
+                    e.Item.Cells(GRID_COL_COVERAGE_TYPE_ID).Text = GetGuidStringFromByteArray(CType(dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_VSC_COVERAGE_TYPE_ID), Byte()))
+                    e.Item.Cells(GRID_COL_DESCRIPTION).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_TYPE_DESC).ToString
+                    e.Item.Cells(GRID_COL_MONTHS).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_MONTHS).ToString
+                    e.Item.Cells(GRID_COL_KM).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_KM_MI).ToString
 
                 ElseIf (itemType = ListItemType.EditItem) Then
-                    e.Item.Cells(Me.GRID_COL_COVERAGE_LIMIT_ID).Text = GetGuidStringFromByteArray(CType(dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_VSC_COVERAGE_LIMIT_ID), Byte()))
-                    e.Item.Cells(Me.GRID_COL_COVERAGE_TYPE_ID).Text = GetGuidStringFromByteArray(CType(dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_TYPE_ID), Byte()))
+                    e.Item.Cells(GRID_COL_COVERAGE_LIMIT_ID).Text = GetGuidStringFromByteArray(CType(dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_VSC_COVERAGE_LIMIT_ID), Byte()))
+                    e.Item.Cells(GRID_COL_COVERAGE_TYPE_ID).Text = GetGuidStringFromByteArray(CType(dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_TYPE_ID), Byte()))
                     'CType(e.Item.Cells(Me.GRID_COL_DESCRIPTION).FindControl(GRID_NAME_COVERAGETYPE), TextBox).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_TYPE_DESC).ToString
-                    e.Item.Cells(Me.GRID_COL_COVERAGE_CODE).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_LIMIT_CODE).ToString
-                    e.Item.Cells(Me.GRID_COL_DESCRIPTION).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_TYPE_DESC).ToString
+                    e.Item.Cells(GRID_COL_COVERAGE_CODE).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_LIMIT_CODE).ToString
+                    e.Item.Cells(GRID_COL_DESCRIPTION).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_TYPE_DESC).ToString
 
-                    CType(e.Item.Cells(Me.GRID_COL_MONTHS).FindControl(GRID_NAME_MONTHS), TextBox).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_MONTHS).ToString
-                    CType(e.Item.Cells(Me.GRID_COL_KM).FindControl(GRID_NAME_KM), TextBox).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_KM_MI).ToString
+                    CType(e.Item.Cells(GRID_COL_MONTHS).FindControl(GRID_NAME_MONTHS), TextBox).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_MONTHS).ToString
+                    CType(e.Item.Cells(GRID_COL_KM).FindControl(GRID_NAME_KM), TextBox).Text = dvRow(VSCCoverageLimit.CoverageLimitSearchDV.COL_NAME_COVERAGE_KM_MI).ToString
 
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
 
             Try
-                If (Not (Me.State.IsEditMode)) Then
-                    Me.State.PageIndex = e.NewPageIndex
-                    Me.moDataGrid.CurrentPageIndex = Me.State.PageIndex
-                    Me.PopulateGrid()
-                    Me.moDataGrid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                If (Not (State.IsEditMode)) Then
+                    State.PageIndex = e.NewPageIndex
+                    moDataGrid.CurrentPageIndex = State.PageIndex
+                    PopulateGrid()
+                    moDataGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
-        Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
 
             Try
                 Dim index As Integer = e.Item.ItemIndex
 
-                If (e.CommandName = Me.EDIT_COMMAND) Then
+                If (e.CommandName = EDIT_COMMAND) Then
                     'Edit Mode
-                    Me.State.IsEditMode = True
+                    State.IsEditMode = True
 
-                    Me.State.CoverageLimitId = New Guid(Me.moDataGrid.Items(e.Item.ItemIndex).Cells(Me.GRID_COL_COVERAGE_LIMIT_ID).Text)
+                    State.CoverageLimitId = New Guid(moDataGrid.Items(e.Item.ItemIndex).Cells(GRID_COL_COVERAGE_LIMIT_ID).Text)
 
-                    Me.State.MyBO = New VSCCoverageLimit(Me.State.CoverageLimitId)
+                    State.MyBO = New VSCCoverageLimit(State.CoverageLimitId)
 
-                    Me.PopulateGrid()
+                    PopulateGrid()
 
-                    Me.State.PageIndex = moDataGrid.CurrentPageIndex
+                    State.PageIndex = moDataGrid.CurrentPageIndex
 
                     'Disable all Edit and Delete icon buttons on the Grid
-                    SetGridControls(Me.moDataGrid, False)
+                    SetGridControls(moDataGrid, False)
 
                     'Set focus on the Dealer dropdown list for the EditItemIndex row
-                    Me.SetFocusOnEditableFieldInGrid(Me.moDataGrid, Me.GRID_COL_COVERAGE_LIMIT_ID, index)
+                    SetFocusOnEditableFieldInGrid(moDataGrid, GRID_COL_COVERAGE_LIMIT_ID, index)
 
-                    Me.SetButtonsState()
+                    SetButtonsState()
 
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
-        Protected Sub ItemBound(ByVal source As Object, ByVal e As DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
+        Protected Sub ItemBound(source As Object, e As DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
             BaseItemBound(source, e)
         End Sub
 
-        Protected Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Protected Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 moDataGrid.CurrentPageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-                Me.PopulateGrid()
+                State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moDataGrid.SortCommand
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moDataGrid.SortCommand
 
             'Try
             '    If Me.State.SortExpression.StartsWith(e.SortExpression) Then
@@ -313,15 +313,15 @@ Namespace VSC
 
         Protected Sub BindBoPropertiesToGridHeaders()
 
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "CoverageKmMi", Me.moDataGrid.Columns(Me.GRID_COL_KM))
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "CoverageMonths", Me.moDataGrid.Columns(Me.GRID_COL_MONTHS))
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "CoverageTypeId", Me.moDataGrid.Columns(Me.GRID_COL_COVERAGE_TYPE_ID))
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "CoverageLimitCode", Me.moDataGrid.Columns(Me.GRID_COL_COVERAGE_CODE))
+            BindBOPropertyToGridHeader(State.MyBO, "CoverageKmMi", moDataGrid.Columns(GRID_COL_KM))
+            BindBOPropertyToGridHeader(State.MyBO, "CoverageMonths", moDataGrid.Columns(GRID_COL_MONTHS))
+            BindBOPropertyToGridHeader(State.MyBO, "CoverageTypeId", moDataGrid.Columns(GRID_COL_COVERAGE_TYPE_ID))
+            BindBOPropertyToGridHeader(State.MyBO, "CoverageLimitCode", moDataGrid.Columns(GRID_COL_COVERAGE_CODE))
 
-            Me.ClearGridHeadersAndLabelsErrSign()
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As DataGrid, ByVal cellPosition As Integer, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As DataGrid, cellPosition As Integer, itemIndex As Integer)
 
             ''Set focus on the specified control on the EditItemIndex row for the grid
             '  Dim ctrlKm As TextBox = CType(grid.Items(itemIndex).Cells(Me.GRID_COL_MONTHS).FindControl(GRID_NAME_MONTHS), TextBox)
@@ -358,7 +358,7 @@ Namespace VSC
                                                                       .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                                                                     })
 
-                Me.moCoverageTypeDrop.Populate(CoverageTypes.ToArray(),
+                moCoverageTypeDrop.Populate(CoverageTypes.ToArray(),
                                         New PopulateOptions() With
                                         {
                                             .AddBlankItem = True
@@ -373,7 +373,7 @@ Namespace VSC
                 ' End If
                 'PopulateRestCoverage()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
@@ -381,49 +381,49 @@ Namespace VSC
         Public Sub PopulateGrid()
 
             Try
-                If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-                    Me.State.searchDV = VSCCoverageLimit.getList(Me.moLimitCodeTx.Text, Me.GetSelectedItem(moCoverageTypeDrop), Me.moMonthTx.Text, Me.moKmTx.Text)
+                If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+                    State.searchDV = VSCCoverageLimit.getList(moLimitCodeTx.Text, GetSelectedItem(moCoverageTypeDrop), moMonthTx.Text, moKmTx.Text)
                 End If
                 'Me.State.searchDV.Sort = Me.State.SortExpression
-                Me.moDataGrid.AutoGenerateColumns = False
+                moDataGrid.AutoGenerateColumns = False
                 'Me.Grid.Columns(Me.GRID_COL_POLICE_STATION_CODE_IDX).SortExpression = PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_CODE
                 'Me.Grid.Columns(Me.GRID_COL_POLICE_STATION_NAME_IDX).SortExpression = PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_NAME
 
-                If (Me.State.IsEditMode) Then
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.CoverageLimitId, Me.moDataGrid, Me.State.PageIndex, Me.State.IsEditMode)
+                If (State.IsEditMode) Then
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.CoverageLimitId, moDataGrid, State.PageIndex, State.IsEditMode)
                 Else
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.CoverageLimitId, Me.moDataGrid, Me.State.PageIndex)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.CoverageLimitId, moDataGrid, State.PageIndex)
                 End If
 
-                Me.SortAndBindGrid()
+                SortAndBindGrid()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
         Private Sub SortAndBindGrid()
 
-            Me.TranslateGridControls(moDataGrid)
-            Me.State.PageIndex = Me.moDataGrid.CurrentPageIndex
-            Me.moDataGrid.DataSource = Me.State.searchDV
+            TranslateGridControls(moDataGrid)
+            State.PageIndex = moDataGrid.CurrentPageIndex
+            moDataGrid.DataSource = State.searchDV
             '    HighLightSortColumn(moDataGrid, Me.State.SortExpression)
-            Me.moDataGrid.DataBind()
+            moDataGrid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, moDataGrid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.moDataGrid.Visible)
+            ControlMgr.SetVisibleControl(Me, moDataGrid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, moDataGrid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.State.searchDV.Count > 0 Then
+            If State.searchDV.Count > 0 Then
 
-                If Me.moDataGrid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If moDataGrid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             Else
-                If Me.moDataGrid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If moDataGrid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
 
@@ -434,13 +434,13 @@ Namespace VSC
 
         Private Sub PopulateBOFromForm()
 
-            With Me.State.MyBO
+            With State.MyBO
 
-                Me.PopulateBOProperty(Me.State.MyBO, "CoverageKmMi", CType(Me.GetSelectedGridControl(moDataGrid, GRID_COL_KM), TextBox))
-                Me.PopulateBOProperty(Me.State.MyBO, "CoverageMonths", CType(Me.GetSelectedGridControl(moDataGrid, GRID_COL_MONTHS), TextBox))
+                PopulateBOProperty(State.MyBO, "CoverageKmMi", CType(GetSelectedGridControl(moDataGrid, GRID_COL_KM), TextBox))
+                PopulateBOProperty(State.MyBO, "CoverageMonths", CType(GetSelectedGridControl(moDataGrid, GRID_COL_MONTHS), TextBox))
 
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
 
@@ -451,15 +451,15 @@ Namespace VSC
 
 #Region "Button Click Handlers"
 
-        Private Sub ClearButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearButton.Click
+        Private Sub ClearButton_Click(sender As System.Object, e As System.EventArgs) Handles ClearButton.Click
 
             Try
                 moLimitCodeTx.Text = String.Empty
                 moMonthTx.Text = String.Empty
                 moKmTx.Text = String.Empty
-                Me.moCoverageTypeDrop.SelectedIndex = 0
+                moCoverageTypeDrop.SelectedIndex = 0
 
-                With Me.State
+                With State
                     .SearchLimitMask = moLimitCodeTx.Text
                     .SearchCoverageTypeId = Guid.Empty
                     .SearchMonthsMask = moMonthTx.Text
@@ -467,55 +467,55 @@ Namespace VSC
 
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub SearchButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SearchButton.Click
+        Private Sub SearchButton_Click(sender As System.Object, e As System.EventArgs) Handles SearchButton.Click
 
             Try
-                Me.State.PageIndex = 0
-                Me.State.CoverageLimitId = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.searchDV = Nothing
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                State.CoverageLimitId = Guid.Empty
+                State.IsGridVisible = True
+                State.searchDV = Nothing
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
 
             End Try
 
         End Sub
-        Private Sub CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CancelButton.Click
+        Private Sub CancelButton_Click(sender As System.Object, e As System.EventArgs) Handles CancelButton.Click
             Try
-                Me.moDataGrid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
-                Me.State.Canceling = True
+                moDataGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                State.Canceling = True
 
                 ReturnFromEditing()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
 
 
-        Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+        Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
 
             Try
                 PopulateBOFromForm()
-                If (Me.State.MyBO.IsDirty) Then
-                    Me.State.MyBO.Save()
-                    Me.State.IsAfterSave = True
-                    Me.AddInfoMsg(Me.MSG_RECORD_SAVED_OK)
-                    Me.State.searchDV = Nothing
-                    Me.ReturnFromEditing()
+                If (State.MyBO.IsDirty) Then
+                    State.MyBO.Save()
+                    State.IsAfterSave = True
+                    AddInfoMsg(MSG_RECORD_SAVED_OK)
+                    State.searchDV = Nothing
+                    ReturnFromEditing()
                 Else
-                    Me.AddInfoMsg(Me.MSG_RECORD_NOT_SAVED)
-                    Me.ReturnFromEditing()
+                    AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                    ReturnFromEditing()
                 End If
             Catch ex As Exception
 
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
 
             End Try
 

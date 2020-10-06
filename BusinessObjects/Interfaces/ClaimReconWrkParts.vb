@@ -18,27 +18,27 @@
     'New BO
     Public Sub New(ByVal dealerProcessedID As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(dealerProcessedID)
+        Dataset = New DataSet
+        Load(dealerProcessedID)
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal oRow As DataRow, ByVal ds As DataSet)
         MyBase.New()
-        Me.Dataset = ds
-        Me.Row = oRow
+        Dataset = ds
+        Row = oRow
     End Sub
 
 
     Protected Sub Load(ByVal dealerFileProcessedID As Guid)
         Try
             Dim dal As New ClaimReconWrkPartsDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset, dealerFileProcessedID)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset, dealerFileProcessedID)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -68,7 +68,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_PART_NUMBER, Value)
+            SetValue(COL_PART_NUMBER, Value)
         End Set
     End Property
 
@@ -84,7 +84,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_PART_SKU, Value)
+            SetValue(COL_PART_SKU, Value)
         End Set
     End Property
 
@@ -100,7 +100,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(COL_PART_DESCRIPTION, Value)
+            SetValue(COL_PART_DESCRIPTION, Value)
         End Set
     End Property
     

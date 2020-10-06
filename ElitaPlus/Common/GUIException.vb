@@ -3,23 +3,23 @@ Imports System.Runtime.Serialization
     <Serializable()> Public Class GUIException
         Inherits ElitaPlusException
 
-    Public Sub New(ByVal message As String, ByVal Code As String, Optional ByVal innerException As Exception = Nothing)
+    Public Sub New(message As String, Code As String, Optional ByVal innerException As Exception = Nothing)
         MyBase.New(message, Code, innerException)
-        Me.Type = ErrorTypes.ERROR_GUI
+        Type = ErrorTypes.ERROR_GUI
     End Sub
 
-    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+    Protected Sub New(info As SerializationInfo, context As StreamingContext)
         MyBase.New(info, context)
     End Sub
 
 #Region "Validation"
 
-    Public Shared Sub ValidateDate(ByVal lbl As Label, ByVal sDate As String, Optional ByVal Err_Mess As String = Nothing)
+    Public Shared Sub ValidateDate(lbl As Label, sDate As String, Optional ByVal Err_Mess As String = Nothing)
         Dim dt As Date
         dt = DateHelper.GetDateValue(sDate)
         ' If Not Microsoft.VisualBasic.IsDate(DateHelper.GetDateValue(sDate)) Then
         If (dt = Date.MinValue) Then
-            If Not lbl Is Nothing Then
+            If lbl IsNot Nothing Then
                 ElitaPlusPage.SetLabelError(lbl)
             End If
             If Err_Mess Is Nothing Then

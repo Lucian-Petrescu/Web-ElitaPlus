@@ -47,8 +47,8 @@ Public Class InvMgmtFileLoad
 #End Region
 
     Protected Overrides Function CreateFileLoadHeader(ByVal fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
-        Me.ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
-        Return Me.ClaimLoadFileProcessed
+        ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
+        Return ClaimLoadFileProcessed
     End Function
 
     Protected Overrides Function CreateFileLoadDetail(ByVal fileLoadDetailId As System.Guid, ByVal headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk

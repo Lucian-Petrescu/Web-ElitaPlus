@@ -3,7 +3,6 @@ Imports Assurant.ElitaPlus.Security
 Imports System.Threading
 Imports Assurant.ElitaPlus.DataEntities
 Imports Microsoft.Practices.Unity
-Imports Assurant.ElitaPlus.Business
 
 Public Class CacheFacade
     Implements ICacheFacade
@@ -27,7 +26,7 @@ Public Class CacheFacade
         m_cache = New MemoryCache(CacheName)
     End Sub
 
-    Friend Function GetList(ByVal pListCode As String) As ElitaListItem() Implements ICacheFacade.GetList
+    Friend Function GetList(pListCode As String) As ElitaListItem() Implements ICacheFacade.GetList
         Dim languageCode As String = Thread.CurrentPrincipal.GetLanguageCode()
         languageCode = "CH"
 
@@ -35,8 +34,8 @@ Public Class CacheFacade
 
     End Function
 
-    Friend Function GetList(ByVal pListCode As String, ByVal pLanguageCode As String) As ElitaListItem() Implements ICacheFacade.GetList
-        Return GetCacheItem(Of ElitaListItem(), ListCacheManager)(
+    Friend Function GetList(pListCode As String, pLanguageCode As String) As ElitaListItem() Implements ICacheFacade.GetList
+        Return GetCacheItem(
             ApplicationContext.Current.Container.Resolve(Of ListCacheManager)(),
             Function(cm) cm.CacheKey(pListCode, pLanguageCode),
             Function(cm) cm.BuildCache(pListCode, pLanguageCode))
@@ -44,7 +43,7 @@ Public Class CacheFacade
 
     Public Function GetDealer(pDealerCode As String) As Dealer Implements ICacheFacade.GetDealer
         Try
-            Return GetCacheItem(Of Dealer, DealerCacheManager)(
+            Return GetCacheItem(
                               ApplicationContext.Current.Container.Resolve(Of DealerCacheManager)(),
                                   Function(cm) cm.CacheKey(pDealerCode),
                                   Function(cm) cm.BuildCache(pDealerCode))
@@ -56,7 +55,7 @@ Public Class CacheFacade
     End Function
 
     Public Function GetDealer(pDealerId As Guid) As Dealer Implements ICacheFacade.GetDealerById
-        Return GetCacheItem(Of Dealer, DealerCacheManager)(
+        Return GetCacheItem(
                    ApplicationContext.Current.Container.Resolve(Of DealerCacheManager)(),
                        Function(cm) cm.CacheKey(pDealerId),
                        Function(cm) cm.BuildCache(pDealerId))
@@ -64,9 +63,9 @@ Public Class CacheFacade
     End Function
 
     Private Function GetCacheItem(Of TReturnType, TCacheManager As ICacheManager)(
-                                                                                  ByVal pCacheManager As TCacheManager,
-                                                                                  ByVal pCacheKeyFunction As Func(Of TCacheManager, String),
-                                                                                  ByVal pBuildFunction As Func(Of TCacheManager, TReturnType)) As TReturnType
+                                                                                  pCacheManager As TCacheManager,
+                                                                                  pCacheKeyFunction As Func(Of TCacheManager, String),
+                                                                                  pBuildFunction As Func(Of TCacheManager, TReturnType)) As TReturnType
         Dim cacheItemObject As CacheItem
         Dim cacheKey As String = pCacheKeyFunction(pCacheManager)
         cacheItemObject = Cache.GetCacheItem(cacheKey)
@@ -84,21 +83,21 @@ Public Class CacheFacade
     End Function
 
     Public Function GetProduct(pDealerCode As String, pProductCode As String) As Product Implements ICacheFacade.GetProduct
-        Return GetCacheItem(Of Product, DealerCacheManager)(
+        Return GetCacheItem(
         ApplicationContext.Current.Container.Resolve(Of DealerCacheManager)(),
             Function(cm) cm.CacheKey(pDealerCode, pProductCode),
             Function(cm) cm.BuildCache(pDealerCode, pProductCode))
     End Function
 
     Public Function GetContract(pDealerCode As String, pCertificateWSD As Date) As Contract Implements ICacheFacade.GetContract
-        Return GetCacheItem(Of Contract, DealerCacheManager)(
+        Return GetCacheItem(
         ApplicationContext.Current.Container.Resolve(Of DealerCacheManager)(),
             Function(cm) cm.CacheKey(pDealerCode, pCertificateWSD),
             Function(cm) cm.BuildCache(pDealerCode, pCertificateWSD))
     End Function
 
     Public Function GetCompany(pCompanyId As Guid) As Company Implements ICacheFacade.GetCompany
-        Return GetCacheItem(Of Company, CompanyCacheManager)(
+        Return GetCacheItem(
         ApplicationContext.Current.Container.Resolve(Of CompanyCacheManager)(),
             Function(cm) cm.CacheKey(pCompanyId),
             Function(cm) cm.BuildCache(pCompanyId))
@@ -106,7 +105,7 @@ Public Class CacheFacade
 
     Public Function GetCompany(pCompanyCode As String) As Company Implements ICacheFacade.GetCompany
         Try
-            Return GetCacheItem(Of Company, CompanyCacheManager)(
+            Return GetCacheItem(
                     ApplicationContext.Current.Container.Resolve(Of CompanyCacheManager)(),
                         Function(cm) cm.CacheKey(pCompanyCode),
                         Function(cm) cm.BuildCache(pCompanyCode))
@@ -118,36 +117,36 @@ Public Class CacheFacade
 
 
     Public Function GetCountry(pcountryId As Guid) As Country Implements ICacheFacade.GetCountry
-        Return GetCacheItem(Of Country, CountryCacheManager)(
+        Return GetCacheItem(
         ApplicationContext.Current.Container.Resolve(Of CountryCacheManager)(),
             Function(cm) cm.CacheKey(pcountryId),
             Function(cm) cm.BuildCache(pcountryId))
     End Function
 
     Public Function GetCountryByCode(pcountryCode As String) As Country Implements ICacheFacade.GetCountryByCode
-        Return GetCacheItem(Of Country, CountryCacheManager)(
+        Return GetCacheItem(
         ApplicationContext.Current.Container.Resolve(Of CountryCacheManager)(),
             Function(cm) cm.CacheKey(pcountryCode),
             Function(cm) cm.BuildCache(pcountryCode))
     End Function
 
     Public Function GetRegion(pCountryId As Guid, pRegionId As Guid) As Region Implements ICacheFacade.GetRegion
-        Return GetCacheItem(Of Region, CountryCacheManager)(
+        Return GetCacheItem(
         ApplicationContext.Current.Container.Resolve(Of CountryCacheManager)(),
             Function(cm) cm.CacheKey(pCountryId, pRegionId),
             Function(cm) cm.BuildCache(pCountryId, pRegionId))
     End Function
 
-    Function GetServiceCenterById(ByVal pCountryId As Guid, pSvcCenterId As Guid) As ServiceCenter Implements ICacheFacade.GetServiceCenterById
-        Return GetCacheItem(Of ServiceCenter, CountryCacheManager)(
+    Function GetServiceCenterById(pCountryId As Guid, pSvcCenterId As Guid) As ServiceCenter Implements ICacheFacade.GetServiceCenterById
+        Return GetCacheItem(
         ApplicationContext.Current.Container.Resolve(Of CountryCacheManager)(),
             Function(cm) cm.CacheKeySvcCenterById(pCountryId, pSvcCenterId),
             Function(cm) cm.BuildCacheSvcCenterById(pCountryId, pSvcCenterId))
     End Function
 
-    Function GetServiceCenterByCode(ByVal pCountryId As Guid, pSvcCenterCode As String) As ServiceCenter Implements ICacheFacade.GetServiceCenterByCode
+    Function GetServiceCenterByCode(pCountryId As Guid, pSvcCenterCode As String) As ServiceCenter Implements ICacheFacade.GetServiceCenterByCode
         Try
-            Return GetCacheItem(Of ServiceCenter, CountryCacheManager)(
+            Return GetCacheItem(
         ApplicationContext.Current.Container.Resolve(Of CountryCacheManager)(),
             Function(cm) cm.CacheKeySvcCenterByCode(pCountryId, pSvcCenterCode),
             Function(cm) cm.BuildCacheSvcCenterByCode(pCountryId, pSvcCenterCode))
@@ -156,21 +155,21 @@ Public Class CacheFacade
         End Try
     End Function
     Public Function GetAddress(pAddressId As Guid) As Address Implements ICacheFacade.GetAddress
-        Return GetCacheItem(Of Address, AddressCacheManager)(
+        Return GetCacheItem(
         ApplicationContext.Current.Container.Resolve(Of AddressCacheManager)(),
             Function(cm) cm.CacheKey(pAddressId),
             Function(cm) cm.BuildCache(pAddressId))
     End Function
 
     Public Function GetCurrency(pCurrencyId As Guid) As Currency Implements ICacheFacade.GetCurrency
-        Return GetCacheItem(Of Currency, CurrencyCacheManager)(
+        Return GetCacheItem(
         ApplicationContext.Current.Container.Resolve(Of CurrencyCacheManager)(),
             Function(cm) cm.CacheKey(pCurrencyId),
             Function(cm) cm.BuildCache(pCurrencyId))
     End Function
 
     Public Function GetCompanyGroup(pCompanyGroupId As Guid) As CompanyGroup Implements ICacheFacade.GetCompanyGroup
-        Return GetCacheItem(Of CompanyGroup, CompanyGroupCacheManager)(
+        Return GetCacheItem(
         ApplicationContext.Current.Container.Resolve(Of CompanyGroupCacheManager)(),
             Function(cm) cm.CacheKey(pCompanyGroupId),
             Function(cm) cm.BuildCache(pCompanyGroupId))
@@ -184,7 +183,7 @@ Public Class CacheFacade
     'End Function
 
     Public Function GetEquipment(pEquipmentId As Guid) As Equipment Implements ICacheFacade.GetEquipment
-        Return GetCacheItem(Of Equipment, EquipmentCacheManager)(
+        Return GetCacheItem(
         ApplicationContext.Current.Container.Resolve(Of EquipmentCacheManager)(),
             Function(cm) cm.CacheKey(pEquipmentId),
             Function(cm) cm.BuildCache(pEquipmentId))
@@ -197,28 +196,28 @@ Public Class CacheFacade
     End Function
 
     Public Function GetLabelTranslation(pUiCode As String, pLanguageCode As String) As IEnumerable(Of LabelTranslation) Implements ICacheFacade.GetLabelTranslation
-        Return GetCacheItem(Of IEnumerable(Of LabelTranslation), ListCacheManager)(
+        Return GetCacheItem(
            ApplicationContext.Current.Container.Resolve(Of ListCacheManager)(),
            Function(cm) cm.CacheKeyForLabelTranslations(pUiCode, pLanguageCode),
            Function(cm) cm.BuildCacheForLabelTranslations(pUiCode, pLanguageCode))
     End Function
 
     Public Function GetExpression(pExpressionId As Guid) As Expression Implements ICacheFacade.GetExpression
-        Return GetCacheItem(Of Expression, ExpressionCacheManager)(
+        Return GetCacheItem(
             ApplicationContext.Current.Container.Resolve(Of ExpressionCacheManager)(),
             Function(cm) cm.CacheKeyForExpression(pExpressionId),
             Function(cm) cm.BuildCacheForExpression(pExpressionId))
     End Function
 
-    Function GetBankInfoById(ByVal pCountryId As Guid, pBankInfoID As Guid) As BankInfo Implements ICacheFacade.GetBankInfoById
-        Return GetCacheItem(Of BankInfo, CountryCacheManager)(
+    Function GetBankInfoById(pCountryId As Guid, pBankInfoID As Guid) As BankInfo Implements ICacheFacade.GetBankInfoById
+        Return GetCacheItem(
         ApplicationContext.Current.Container.Resolve(Of CountryCacheManager)(),
             Function(cm) cm.CacheKeyBankInfoById(pCountryId, pBankInfoID),
             Function(cm) cm.BuildCacheBankInfoById(pCountryId, pBankInfoID))
     End Function
 
-    Public Function GetBranch(ByVal pDealerId As Guid, pBranchCode As String) As Branch Implements ICacheFacade.GetBranch
-        Return GetCacheItem(Of Branch, DealerCacheManager)(
+    Public Function GetBranch(pDealerId As Guid, pBranchCode As String) As Branch Implements ICacheFacade.GetBranch
+        Return GetCacheItem(
         ApplicationContext.Current.Container.Resolve(Of DealerCacheManager)(),
             Function(cm) cm.CacheKey(pDealerId, pBranchCode, "Branch"),
             Function(cm) cm.BuildBranchCache(pDealerId, pBranchCode))

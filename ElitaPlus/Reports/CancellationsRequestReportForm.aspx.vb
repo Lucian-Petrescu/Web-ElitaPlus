@@ -10,26 +10,26 @@ Namespace Reports
             SetStateProperties()
         End Sub
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            ErrControllerMaster.Clear_Hide()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
 
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     'JavascriptCalls()
                     TheReportCeInputControl.SetExportOnly()
                     TheReportCeInputControl.populateReportLanguages(RPT_FILENAME_EXPORT)
                     InitializeForm()
 
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
 
 
         End Sub
@@ -106,12 +106,12 @@ Namespace Reports
         Private Sub SetStateProperties()
             Dim oExpState As Assurant.ElitaPlus.ElitaPlusWebApp.CancellationRequestExceptionForm.MyState
             'DirectCast(DirectCast(Me.CallingParameters, System.Object), Assurant.ElitaPlus.ElitaPlusWebApp.TransExceptionManagementForm.MyState)
-            Me.State.TRANSACTION_TYPE = CType(Me.CallingParameters, CancellationRequestExceptionForm.MyState).searchTransactionType.ToString
-            Me.State.MOBILE_NUMBER = CType(Me.CallingParameters, CancellationRequestExceptionForm.MyState).searchMobileNumber.ToString
-            Me.State.TRANS_DATE_FROM = CType(Me.CallingParameters, CancellationRequestExceptionForm.MyState).searchFrom.ToString
-            Me.State.TRANS_DATE_TO = CType(Me.CallingParameters, CancellationRequestExceptionForm.MyState).searchTo.ToString
-            Me.State.ERROR_CODE = CType(Me.CallingParameters, CancellationRequestExceptionForm.MyState).searchErrorCode.ToString
-            Me.State.Page_Index = CType(Me.CallingParameters, CancellationRequestExceptionForm.MyState).PageIndex
+            State.TRANSACTION_TYPE = CType(CallingParameters, CancellationRequestExceptionForm.MyState).searchTransactionType.ToString
+            State.MOBILE_NUMBER = CType(CallingParameters, CancellationRequestExceptionForm.MyState).searchMobileNumber.ToString
+            State.TRANS_DATE_FROM = CType(CallingParameters, CancellationRequestExceptionForm.MyState).searchFrom.ToString
+            State.TRANS_DATE_TO = CType(CallingParameters, CancellationRequestExceptionForm.MyState).searchTo.ToString
+            State.ERROR_CODE = CType(CallingParameters, CancellationRequestExceptionForm.MyState).searchErrorCode.ToString
+            State.Page_Index = CType(CallingParameters, CancellationRequestExceptionForm.MyState).PageIndex
         End Sub
 
 #End Region
@@ -135,7 +135,7 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Private Sub btnGenRpt_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 Dim oparamdate As ParameterData
                 ReportCeBase.EnableReportCe(Me, TheReportCeInputControl)
@@ -144,7 +144,7 @@ Namespace Reports
                 Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -155,22 +155,22 @@ Namespace Reports
             Dim odate As Date
 
             With ParamData
-                If Not Me.State.TRANSACTION_TYPE = EMPTY_GUID Then
+                If Not State.TRANSACTION_TYPE = EMPTY_GUID Then
                     Dim gID As Guid
-                    gID = New Guid(Me.State.TRANSACTION_TYPE)
+                    gID = New Guid(State.TRANSACTION_TYPE)
                     .TRANSACTION_TYPE = GuidToSQLString(gID)
                 Else
                     .TRANSACTION_TYPE = String.Empty.ToString()
                 End If
-                .MOBILE_NUMBER = Me.State.MOBILE_NUMBER
-                If Not Me.State.TRANS_DATE_FROM = String.Empty Then
-                    odate = DateHelper.GetDateValue(Me.State.TRANS_DATE_FROM)
+                .MOBILE_NUMBER = State.MOBILE_NUMBER
+                If Not State.TRANS_DATE_FROM = String.Empty Then
+                    odate = DateHelper.GetDateValue(State.TRANS_DATE_FROM)
                     .TRANS_DATE_FROM = odate.ToString(SP_DATE_FORMAT)
                 Else
                     .TRANS_DATE_FROM = String.Empty
                 End If
-                If Not Me.State.TRANS_DATE_TO = String.Empty Then
-                    odate = DateHelper.GetDateValue(Me.State.TRANS_DATE_TO)
+                If Not State.TRANS_DATE_TO = String.Empty Then
+                    odate = DateHelper.GetDateValue(State.TRANS_DATE_TO)
                     .TRANS_DATE_TO = odate.ToString(SP_DATE_FORMAT)
                 Else
                     .TRANS_DATE_TO = String.Empty
@@ -182,7 +182,7 @@ Namespace Reports
 
         End Function
 
-        Function SetParameters(ByVal data As ParameterData) As ReportCeBaseForm.Params
+        Function SetParameters(data As ParameterData) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim culturevalue As String = TheReportCeInputControl.getCultureValue(True)
@@ -221,7 +221,7 @@ Namespace Reports
 
         End Function
 
-        Public Shared Function GuidToSQLString(ByVal Value As Guid) As String
+        Public Shared Function GuidToSQLString(Value As Guid) As String
             Dim byteArray As Byte() = Value.ToByteArray
             Dim i As Integer
             Dim result As New StringBuilder("")
@@ -237,10 +237,10 @@ Namespace Reports
 
 #End Region
 
-        Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+        Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             '  Dim otrans As New TransExceptionManagementForm            
-            Dim retType As New CancellationRequestExceptionForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State)
-            Me.ReturnToCallingPage(retType)
+            Dim retType As New CancellationRequestExceptionForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State)
+            ReturnToCallingPage(retType)
         End Sub
     End Class
 End Namespace

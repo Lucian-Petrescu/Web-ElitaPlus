@@ -45,17 +45,17 @@ Public Class SendCancelRequestTMX
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
     Private Sub Load(ByVal ds As SendCancelRequestTMXDs)
         Try
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -91,53 +91,53 @@ Public Class SendCancelRequestTMX
 #Region "Properties"
     Public Property MobileNum() As String
         Get
-            If Row(Me.DATA_COL_NAME_MOBILE_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MOBILE_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_MOBILE_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_MOBILE_NUMBER), String)
             End If
         End Get
         Set(ByVal Value As String)
-            Me.SetValue(Me.DATA_COL_NAME_MOBILE_NUMBER, Value)
+            SetValue(DATA_COL_NAME_MOBILE_NUMBER, Value)
         End Set
     End Property
 
     Public Property SupplementaryServiceCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_SUPL_SERVICE_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SUPL_SERVICE_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_SUPL_SERVICE_CODE), String)
+                Return CType(Row(DATA_COL_NAME_SUPL_SERVICE_CODE), String)
             End If
         End Get
         Set(ByVal Value As String)
-            Me.SetValue(Me.DATA_COL_NAME_SUPL_SERVICE_CODE, Value)
+            SetValue(DATA_COL_NAME_SUPL_SERVICE_CODE, Value)
         End Set
     End Property
 
     Public Property CommercialServiceCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_COMM_SERVICE_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COMM_SERVICE_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_COMM_SERVICE_CODE), String)
+                Return CType(Row(DATA_COL_NAME_COMM_SERVICE_CODE), String)
             End If
         End Get
         Set(ByVal Value As String)
-            Me.SetValue(Me.DATA_COL_NAME_COMM_SERVICE_CODE, Value)
+            SetValue(DATA_COL_NAME_COMM_SERVICE_CODE, Value)
         End Set
     End Property
 
     Public Property UserName() As String
         Get
-            If Row(Me.DATA_COL_NAME_USER_NAME) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_USER_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_USER_NAME), String)
+                Return CType(Row(DATA_COL_NAME_USER_NAME), String)
             End If
         End Get
         Set(ByVal Value As String)
-            Me.SetValue(Me.DATA_COL_NAME_USER_NAME, Value)
+            SetValue(DATA_COL_NAME_USER_NAME, Value)
         End Set
     End Property
 #End Region
@@ -155,13 +155,13 @@ Public Class SendCancelRequestTMX
         sb.Append("<idTranCliente>0</idTranCliente>")
         sb.Append("<Parametros>")
         sb.Append("<Par><Nom>EN_num_celular</Nom><Val>")
-        sb.Append(Me.MobileNum)
+        sb.Append(MobileNum)
         sb.Append("</Val></Par><Par><Nom>EV_servsupl</Nom><Val>|")
-        sb.Append(Me.SupplementaryServiceCode)
+        sb.Append(SupplementaryServiceCode)
         sb.Append("|</Val></Par><Par><Nom>EV_cadena_servicio</Nom><Val>|")
-        sb.Append(Me.CommercialServiceCode)
+        sb.Append(CommercialServiceCode)
         sb.Append("|</Val></Par><Par><Nom>EV_usuario</Nom><Val>")
-        sb.Append(Me.UserName)
+        sb.Append(UserName)
         sb.Append("</Val></Par></Parametros></Peticion>")
 
         Dim data As String = sb.ToString

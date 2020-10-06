@@ -38,22 +38,22 @@ Public Class ItemInfo
 
     End Sub
 
-    Friend Sub New(ByVal pCertItem As CertItem)
+    Friend Sub New(pCertItem As CertItem)
 
-        Me.ItemNumber = pCertItem.ItemNumber
+        ItemNumber = pCertItem.ItemNumber
         If (pCertItem.ManufacturerId <> Guid.Empty) Then
             Dim oManufacturerDv As DataView = LookupListNew.GetManufacturerLookupList(pCertItem.Cert.Company.CompanyGroupId)
-            Me.Manufacturer = LookupListNew.GetDescriptionFromId(oManufacturerDv, pCertItem.ManufacturerId)
+            Manufacturer = LookupListNew.GetDescriptionFromId(oManufacturerDv, pCertItem.ManufacturerId)
         End If
-        Me.Model = pCertItem.Model
-        Me.BeginDate = pCertItem.EffectiveDate
-        Me.EndDate = pCertItem.ExpirationDate
-        Me.SerialNumber = pCertItem.SerialNumber
-        Me.SKUNumber = pCertItem.SkuNumber
+        Model = pCertItem.Model
+        BeginDate = pCertItem.EffectiveDate
+        EndDate = pCertItem.ExpirationDate
+        SerialNumber = pCertItem.SerialNumber
+        SKUNumber = pCertItem.SkuNumber
         If Not pCertItem.OriginalRetailPrice Is Nothing Then
-            Me.OriginalRetailPrice = pCertItem.OriginalRetailPrice
+            OriginalRetailPrice = pCertItem.OriginalRetailPrice
         Else
-            Me.OriginalRetailPrice = Nothing
+            OriginalRetailPrice = Nothing
         End If
     End Sub
 

@@ -79,14 +79,14 @@ Partial Public Class SuspendedReasonsForm
 
     Public ReadOnly Property IsGridInEditMode() As Boolean
         Get
-            Return Me.Grid.EditIndex > Me.NO_ITEM_SELECTED_INDEX
+            Return Grid.EditIndex > NO_ITEM_SELECTED_INDEX
         End Get
     End Property
 #End Region
 
 #Region "Bread Crum"
     Private Sub UpdateBreadCrum()
-        With Me.MasterPage
+        With MasterPage
             .PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
             .PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
             .UsePageTabTitleInBreadCrum = False
@@ -96,13 +96,13 @@ Partial Public Class SuspendedReasonsForm
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
-        Me.MasterPage.MessageController.Clear()
-        Me.Form.DefaultButton = btnSearch.UniqueID
+        MasterPage.MessageController.Clear()
+        Form.DefaultButton = btnSearch.UniqueID
 
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 UpdateBreadCrum()
 
                 '** Load LOV List
@@ -112,42 +112,42 @@ Partial Public Class SuspendedReasonsForm
                 Dim dealerTextFunc As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
                                                                                    Return li.ExtendedCode + " - " + li.Translation + " " + "(" + li.Code + ")"
                                                                                End Function
-                Me.SearchDealerDD.Populate(oDealerList, New PopulateOptions() With
+                SearchDealerDD.Populate(oDealerList, New PopulateOptions() With
                                            {
                                             .TextFunc = dealerTextFunc,
                                             .AddBlankItem = True
                                            })
                 'Me.BindListTextToDataView(Me.SearchClaimAllowDD, LookupListNew.DropdownLookupList("YESNO", ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), , "Code")
-                Me.SearchClaimAllowDD.Populate(CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                SearchClaimAllowDD.Populate(CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                {
                 .AddBlankItem = True,
                 .ValueFunc = AddressOf .GetCode
                })
-                Me.SortDirection = SuspendedReasons.COL_NAME_CODE
+                SortDirection = SuspendedReasons.COL_NAME_CODE
 
                 ControlMgr.SetVisibleControl(Me, moSearchResults, False)
 
                 EnableControlState(True)
 
-                Me.State.PageIndex = 0
-                Me.TranslateGridHeader(Grid)
-                Me.TranslateGridControls(Grid)
+                State.PageIndex = 0
+                TranslateGridHeader(Grid)
+                TranslateGridControls(Grid)
             Else
                 '** Connect the Properties from the BO to the Columns on the Grid for the Error MSG.
-                Me.BindBOPropertyToGridHeader(Me.State.MyBO, "DealerID", Me.Grid.Columns(Me.GRID_COL_DEALER_IDX))
-                Me.BindBOPropertyToGridHeader(Me.State.MyBO, "Code", Me.Grid.Columns(Me.GRID_COL_CODE_IDX))
-                Me.BindBOPropertyToGridHeader(Me.State.MyBO, "Description", Me.Grid.Columns(Me.GRID_COL_DESCRIPTION_IDX))
-                Me.BindBOPropertyToGridHeader(Me.State.MyBO, "Claim_Allowed", Me.Grid.Columns(Me.GRID_COL_CLAIM_ALLOWDE_IDX))
+                BindBOPropertyToGridHeader(State.MyBO, "DealerID", Grid.Columns(GRID_COL_DEALER_IDX))
+                BindBOPropertyToGridHeader(State.MyBO, "Code", Grid.Columns(GRID_COL_CODE_IDX))
+                BindBOPropertyToGridHeader(State.MyBO, "Description", Grid.Columns(GRID_COL_DESCRIPTION_IDX))
+                BindBOPropertyToGridHeader(State.MyBO, "Claim_Allowed", Grid.Columns(GRID_COL_CLAIM_ALLOWDE_IDX))
 
-                Me.ClearGridViewHeadersAndLabelsErrSign()
+                ClearGridViewHeadersAndLabelsErrSign()
             End If
 
-            Me.DisplayNewProgressBarOnClick(Me.btnSearch, "Loading")
+            DisplayNewProgressBarOnClick(btnSearch, "Loading")
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
     Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
         Dim Index As Integer
@@ -162,7 +162,7 @@ Partial Public Class SuspendedReasonsForm
             oListContext.CompanyId = UserCompanies(Index)
             Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
-                If Not oDealerList Is Nothing Then
+                If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
                 Else
                     oDealerList = oDealerListForCompany.Clone()
@@ -177,9 +177,9 @@ Partial Public Class SuspendedReasonsForm
 #End Region
 
 #Region "Button click Handler"
-    Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
-            With Me.State
+            With State
                 .PageIndex = 0
                 .SuspendedReasonsID = Guid.Empty
                 .searchDV = Nothing
@@ -193,11 +193,11 @@ Partial Public Class SuspendedReasonsForm
             PopulateGrid()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+    Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             With Me
                 .SearchDealerDD.SelectedIndex = 0
@@ -213,14 +213,14 @@ Partial Public Class SuspendedReasonsForm
                 .State.SuspendedReasonsID = Guid.Empty
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew.Click
+    Protected Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
 
         Try
-            With Me.State
+            With State
                 .IsGridAddNew = True
                 .IsEditMode = True
                 .IsGridVisible = True
@@ -232,89 +232,89 @@ Partial Public Class SuspendedReasonsForm
 
                 PopulateGrid(True, True)
 
-                SetGridControls(Me.Grid, False)
+                SetGridControls(Grid, False)
 
                 EnableControlState(False)
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnSave_Click(sender As Object, e As EventArgs)
         Dim tempDropDown As DropDownList
 
         Try
 
-            With Me.State.MyBO
+            With State.MyBO
                 ' ** Edit Not Allow for this fields only New.
-                If Me.State.IsGridAddNew Then
-                    tempDropDown = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(1).FindControl("moDealerDDL"), DropDownList)
+                If State.IsGridAddNew Then
+                    tempDropDown = CType(Grid.Rows((Grid.EditIndex)).Cells(1).FindControl("moDealerDDL"), DropDownList)
                     .DealerId = GetSelectedItem(tempDropDown)
                     .Dealer_Name = GetSelectedDescription(tempDropDown)
 
-                    .Code = CType(Grid.Rows(Me.Grid.EditIndex).Cells(2).FindControl("moCodeText"), TextBox).Text.Trim.ToUpper
+                    .Code = CType(Grid.Rows(Grid.EditIndex).Cells(2).FindControl("moCodeText"), TextBox).Text.Trim.ToUpper
                 End If
 
-                .Description = CType(Grid.Rows(Me.Grid.EditIndex).Cells(3).FindControl("moDescriptionText"), TextBox).Text.Trim
+                .Description = CType(Grid.Rows(Grid.EditIndex).Cells(3).FindControl("moDescriptionText"), TextBox).Text.Trim
 
-                tempDropDown = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(4).FindControl("moClaimAllowedDDL"), DropDownList)
+                tempDropDown = CType(Grid.Rows((Grid.EditIndex)).Cells(4).FindControl("moClaimAllowedDDL"), DropDownList)
 
                 .Claim_Allowed = GetSelectedValue(tempDropDown)
                 .Claim_Allowed_Str = GetSelectedDescription(tempDropDown)
             End With
 
 
-            If (Me.State.MyBO.IsDirty) Then
-                Me.State.MyBO.Save(ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.State.IsGridAddNew)
+            If (State.MyBO.IsDirty) Then
+                State.MyBO.Save(ElitaPlusIdentity.Current.ActiveUser.LanguageId, State.IsGridAddNew)
 
-                Me.State.IsGridAddNew = False
+                State.IsGridAddNew = False
 
-                Me.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_SAVED_OK, True)
+                MasterPage.MessageController.AddSuccess(MSG_RECORD_SAVED_OK, True)
 
-                For Each drv As DataRowView In CType(Me.State.searchDV, DataView)
+                For Each drv As DataRowView In CType(State.searchDV, DataView)
                     Dim cguid As Guid = New Guid(CType(drv.Item(SuspendedReasons.COL_NAME_ID), Byte()))
 
-                    If cguid = Me.State.MyBO.Suspended_Reasons_Id Then
-                        drv.Item(SuspendedReasons.COL_NAME_DEALER_ID) = Me.State.MyBO.DealerId.ToByteArray
-                        drv.Item(SuspendedReasons.COL_NAME_DEALER_NAME) = Me.State.MyBO.Dealer_Name
-                        drv.Item(SuspendedReasons.COL_NAME_CODE) = Me.State.MyBO.Code
-                        drv.Item(SuspendedReasons.COL_NAME_DESCRIPTION) = Me.State.MyBO.Description
-                        drv.Item(SuspendedReasons.COL_NAME_CLAIM_ALLOWED) = Me.State.MyBO.Claim_Allowed
-                        drv.Item(SuspendedReasons.COL_NAME_CLAIM_ALLOWED_STR) = Me.State.MyBO.Claim_Allowed_Str
+                    If cguid = State.MyBO.Suspended_Reasons_Id Then
+                        drv.Item(SuspendedReasons.COL_NAME_DEALER_ID) = State.MyBO.DealerId.ToByteArray
+                        drv.Item(SuspendedReasons.COL_NAME_DEALER_NAME) = State.MyBO.Dealer_Name
+                        drv.Item(SuspendedReasons.COL_NAME_CODE) = State.MyBO.Code
+                        drv.Item(SuspendedReasons.COL_NAME_DESCRIPTION) = State.MyBO.Description
+                        drv.Item(SuspendedReasons.COL_NAME_CLAIM_ALLOWED) = State.MyBO.Claim_Allowed
+                        drv.Item(SuspendedReasons.COL_NAME_CLAIM_ALLOWED_STR) = State.MyBO.Claim_Allowed_Str
                         drv.Row.AcceptChanges()
                         Exit For
                     End If
                 Next
             Else
-                Me.MasterPage.MessageController.AddWarning(Me.MSG_RECORD_NOT_SAVED, True)
+                MasterPage.MessageController.AddWarning(MSG_RECORD_NOT_SAVED, True)
             End If
 
             Grid.EditIndex = NO_ROW_SELECTED_INDEX
 
-            ControlMgr.SetVisibleControl(Me, Grid, (Me.Grid.PageCount <> 0))
+            ControlMgr.SetVisibleControl(Me, Grid, (Grid.PageCount <> 0))
 
-            Me.State.IsEditMode = False
-            Me.State.SuspendedReasonsID = State.MyBO.Suspended_Reasons_Id
+            State.IsEditMode = False
+            State.SuspendedReasonsID = State.MyBO.Suspended_Reasons_Id
 
             PopulateGrid(True, False)
 
-            Me.State.PageIndex = Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
 
             EnableControlState(True)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs)
         Try
             If State.IsGridAddNew Then
                 '** This Removes New Row From SearchDV **
-                If Not State.searchDV Is Nothing Then
+                If State.searchDV IsNot Nothing Then
                     Dim rowind As Integer = FindSelectedRowIndexFromGuid(State.searchDV, State.SuspendedReasonsID)
 
                     If rowind <> NO_ITEM_SELECTED_INDEX Then State.searchDV.Delete(rowind)
@@ -334,47 +334,47 @@ Partial Public Class SuspendedReasonsForm
             EnableControlState(True)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Grid Handler"
-    Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
 
         Try
             Dim index As Integer
-            If (e.CommandName = Me.EDIT_COMMAND) Then
+            If (e.CommandName = EDIT_COMMAND) Then
                 index = CInt(e.CommandArgument)
 
-                Me.State.IsEditMode = True
+                State.IsEditMode = True
 
                 ' *** Get Row ID ****
-                Dim IdLabel As Label = CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_ID_IDX).FindControl(Me.GRID_CTRL_NAME_ID), Label)
-                Me.State.SuspendedReasonsID = New Guid(IdLabel.Text)
+                Dim IdLabel As Label = CType(Grid.Rows(index).Cells(GRID_COL_ID_IDX).FindControl(GRID_CTRL_NAME_ID), Label)
+                State.SuspendedReasonsID = New Guid(IdLabel.Text)
 
                 '' *** Load Row to be edited into MyBO ****
-                Me.State.MyBO = New SuspendedReasons(Me.State.SuspendedReasonsID, Me.State.searchDV.Table.DataSet)
+                State.MyBO = New SuspendedReasons(State.SuspendedReasonsID, State.searchDV.Table.DataSet)
 
-                Me.PopulateGrid(True, True)
+                PopulateGrid(True, True)
 
                 EnableControlState(False)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim strClaimAllowed As String
@@ -450,12 +450,12 @@ Partial Public Class SuspendedReasonsForm
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
             If (Not (State.IsEditMode)) Then
                 State.PageIndex = Grid.PageIndex
@@ -464,54 +464,54 @@ Partial Public Class SuspendedReasonsForm
                 PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub Grid_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_Sorting(sender As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
 
-            If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression + " DESC"
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression + " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression + " ASC"
+                SortDirection = e.SortExpression + " ASC"
             End If
 
-            Me.State.PageIndex = 0
-            Me.State.SuspendedReasonsID = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            State.SuspendedReasonsID = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.State.SuspendedReasonsID = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.PageIndex = State.PageIndex
+            State.SuspendedReasonsID = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As GridView, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+    Private Sub SetFocusOnEditableFieldInGrid(grid As GridView, cellPosition As Integer, controlName As String, itemIndex As Integer)
         'Set focus on the Description TextBox for the EditItemIndex row
         Dim desc As TextBox = CType(grid.Rows(itemIndex).Cells(cellPosition).FindControl(controlName), TextBox)
         SetFocus(desc)
@@ -523,7 +523,7 @@ Partial Public Class SuspendedReasonsForm
 
     Private Sub SaveStateFromControls()
 
-        With Me.State.SearchValues
+        With State.SearchValues
             .Code = SearchCodeTxt.Text.Trim
             .Description = SearchDescriptionTxt.Text.Trim.Trim
             .Dealer = GetSelectedItem(SearchDealerDD)
@@ -542,7 +542,7 @@ Partial Public Class SuspendedReasonsForm
         Get
             Return ViewState("SortDirection").ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
@@ -553,7 +553,7 @@ Partial Public Class SuspendedReasonsForm
 
         Dim rowCount As Integer = 0
 
-        Dim SetToRowId As System.Guid = Me.State.SuspendedReasonsID
+        Dim SetToRowId As System.Guid = State.SuspendedReasonsID
 
         Try
             If (State.searchDV Is Nothing) Then
@@ -562,84 +562,84 @@ Partial Public Class SuspendedReasonsForm
             End If
 
             rowCount = State.searchDV.Count
-            State.searchDV.Sort = Me.SortDirection
+            State.searchDV.Sort = SortDirection
 
             If (rowCount = 0) Then
-                Me.State.searchDV = Nothing
-                Me.Grid.DataSource = Nothing
-                Me.Grid.DataBind()
+                State.searchDV = Nothing
+                Grid.DataSource = Nothing
+                Grid.DataBind()
 
-                Me.State.IsGridVisible = False
+                State.IsGridVisible = False
 
                 If DisplayNoDataFoundMsg Then
-                    Me.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
+                    MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
                 End If
             Else
-                Me.TranslateGridControls(Grid)
+                TranslateGridControls(Grid)
 
-                Me.SetPageAndSelectedIndexFromGuid(State.searchDV, SetToRowId, Me.Grid, State.PageIndex, SetGridEditMode)
+                SetPageAndSelectedIndexFromGuid(State.searchDV, SetToRowId, Grid, State.PageIndex, SetGridEditMode)
 
-                Me.State.IsGridVisible = True
+                State.IsGridVisible = True
 
-                With Me.Grid
+                With Grid
                     .Enabled = True
-                    .PageSize = Me.State.PageSize
-                    .DataSource = Me.State.searchDV
+                    .PageSize = State.PageSize
+                    .DataSource = State.searchDV
 
                     .AutoGenerateColumns = False
-                    .Columns(Me.GRID_COL_DEALER_IDX).SortExpression = SuspendedReasons.COL_NAME_DEALER_NAME
-                    .Columns(Me.GRID_COL_CODE_IDX).SortExpression = SuspendedReasons.COL_NAME_CODE
-                    .Columns(Me.GRID_COL_DESCRIPTION_IDX).SortExpression = SuspendedReasons.COL_NAME_DESCRIPTION
+                    .Columns(GRID_COL_DEALER_IDX).SortExpression = SuspendedReasons.COL_NAME_DEALER_NAME
+                    .Columns(GRID_COL_CODE_IDX).SortExpression = SuspendedReasons.COL_NAME_CODE
+                    .Columns(GRID_COL_DESCRIPTION_IDX).SortExpression = SuspendedReasons.COL_NAME_DESCRIPTION
 
-                    HighLightSortColumn(Grid, Me.SortDirection)
+                    HighLightSortColumn(Grid, SortDirection)
 
                     .DataBind()
                 End With
 
-                If (Me.State.IsGridAddNew) Then
+                If (State.IsGridAddNew) Then
                     rowCount = rowCount - 1
                 End If
 
-                Me.lblRecordCount.Text = rowCount & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblRecordCount.Text = rowCount & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
                 ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
 
                 If rowCount >= 100 Then
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA, True)
+                    MasterPage.MessageController.AddInformation(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA, True)
                 End If
             End If
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, moSearchResults, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, moSearchResults, State.IsGridVisible)
 
             Session("recCount") = rowCount
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub EnableControlState(ByVal EnableControls As Boolean)
+    Private Sub EnableControlState(EnableControls As Boolean)
 
         If EnableControls Then
             ControlMgr.SetVisibleControl(Me, btnNew, True)
             ControlMgr.SetEnableControl(Me, btnSearch, True)
             ControlMgr.SetEnableControl(Me, btnClearSearch, True)
 
-            Me.MenuEnabled = True
+            MenuEnabled = True
 
-            If Not (Me.cboPageSize.Enabled) Then
-                ControlMgr.SetEnableControl(Me, Me.cboPageSize, True)
+            If Not (cboPageSize.Enabled) Then
+                ControlMgr.SetEnableControl(Me, cboPageSize, True)
             End If
         Else
             ControlMgr.SetVisibleControl(Me, btnNew, False)
             ControlMgr.SetEnableControl(Me, btnSearch, False)
             ControlMgr.SetEnableControl(Me, btnClearSearch, False)
 
-            Me.MenuEnabled = False
+            MenuEnabled = False
 
-            If (Me.cboPageSize.Enabled) Then
+            If (cboPageSize.Enabled) Then
                 ControlMgr.SetEnableControl(Me, cboPageSize, False)
             End If
 

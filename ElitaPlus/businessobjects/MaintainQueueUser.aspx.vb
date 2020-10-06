@@ -20,9 +20,9 @@ Namespace business
             Public LastOperation As DetailPageCommand
             Public EditingBo As Assurant.ElitaPlus.BusinessObjectsNew.User
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Assurant.ElitaPlus.BusinessObjectsNew.User, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As Assurant.ElitaPlus.BusinessObjectsNew.User, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
@@ -48,14 +48,14 @@ Namespace business
             End Get
         End Property
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Me.State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.User(CType(Me.CallingParameters, Guid))
+                    State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.User(CType(CallingParameters, Guid))
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -80,7 +80,7 @@ Namespace business
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -91,45 +91,45 @@ Namespace business
 #Region "Handlers-Init"
 
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.MasterPage.MessageController.Clear()
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            MasterPage.MessageController.Clear()
             Try
-                If Not Me.IsPostBack Then
-                    Me.PopulateFormFromBOs()
+                If Not IsPostBack Then
+                    PopulateFormFromBOs()
                     UpdateBreadCrum()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        Private Sub btnCancel_Click(sender As System.Object, e As System.EventArgs) Handles btnCancel.Click
             Try
-                Me.ReturnToCallingPage(New business.MaintainUser.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New business.MaintainUser.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
-            Me.State.HasDataChanged = False
+        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+            State.HasDataChanged = False
             Try
-                Me.State.MyBO.SaveWorkQueueUser(UC_AvaSel_Rule.SelectedList)
-                If Me.State.MyBO.IsChildrenDirty Then
-                    Me.State.MyBO.UpdateWorkQueueUserAssign()
-                    Me.State.HasDataChanged = True
-                    Me.ReturnToCallingPage(New business.MaintainUser.ReturnType(ElitaPlusPage.DetailPageCommand.Save, Me.State.MyBO, Me.State.HasDataChanged))
+                State.MyBO.SaveWorkQueueUser(UC_AvaSel_Rule.SelectedList)
+                If State.MyBO.IsChildrenDirty Then
+                    State.MyBO.UpdateWorkQueueUserAssign()
+                    State.HasDataChanged = True
+                    ReturnToCallingPage(New business.MaintainUser.ReturnType(ElitaPlusPage.DetailPageCommand.Save, State.MyBO, State.HasDataChanged))
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -138,13 +138,13 @@ Namespace business
 
 #Region "Handlers-DropDowns"
 
-        Private Sub ddlCompanyList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlCompanyList.SelectedIndexChanged
+        Private Sub ddlCompanyList_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddlCompanyList.SelectedIndexChanged
             Try
                 If Not New Guid(ddlCompanyList.SelectedValue) = Guid.Empty Then
                     LoadUserControl()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -182,7 +182,7 @@ Namespace business
                                                             Where ElitaPlusIdentity.Current.ActiveUser.Companies.Contains(Company.ListItemId)
                                                             Select Company).ToArray()
 
-            Me.ddlCompanyList.Populate(UserCompanies.ToArray(),
+            ddlCompanyList.Populate(UserCompanies.ToArray(),
                                     New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
@@ -191,7 +191,7 @@ Namespace business
         End Sub
 
         Private Sub LoadUserSummaryInfo()
-            With Me.State.MyBO
+            With State.MyBO
                 lblNewrokId.Text = .NetworkId
                 lblUsername.Text = .UserName
                 lblUserStatus.Text = LookupListNew.GetDescriptionFromCode(LookupListNew.LK_YESNO, .Active.Trim)
@@ -200,11 +200,11 @@ Namespace business
         End Sub
 
         Private Sub LoadUserControl()
-            Me.State.MyBO.SelectedCompanyId = New Guid(ddlCompanyList.SelectedValue)
-            Dim AvailableList As User.WorkQueueAssignSelectionView = Me.State.MyBO.GetAvailableWorkQueueAssign(Me.State.MyBO.SelectedCompanyId)
+            State.MyBO.SelectedCompanyId = New Guid(ddlCompanyList.SelectedValue)
+            Dim AvailableList As User.WorkQueueAssignSelectionView = State.MyBO.GetAvailableWorkQueueAssign(State.MyBO.SelectedCompanyId)
             UC_AvaSel_Rule.SetAvailableData(AvailableList, "DESCRIPTION", "WORKQUEUE_ID")
 
-            Dim SelectedList As User.WorkQueueAssignSelectionView = Me.State.MyBO.GetWQAssignSelectionView(Me.State.MyBO.SelectedCompanyId)
+            Dim SelectedList As User.WorkQueueAssignSelectionView = State.MyBO.GetWQAssignSelectionView(State.MyBO.SelectedCompanyId)
             UC_AvaSel_Rule.SetSelectedData(SelectedList, "DESCRIPTION", "WORKQUEUE_ID")
             UC_AvaSel_Rule.RemoveSelectedFromAvailable()
         End Sub
@@ -212,11 +212,11 @@ Namespace business
 #End Region
 #Region "Bread Crum"
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Admin")
-            Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("TABLES") & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("WORK_QUEUE")
-            Me.MasterPage.BreadCrum = Me.MasterPage.BreadCrum & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("QUEUE_USER")
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("QUEUE_USER")
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Admin")
+            MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("TABLES") & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("WORK_QUEUE")
+            MasterPage.BreadCrum = MasterPage.BreadCrum & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("QUEUE_USER")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("QUEUE_USER")
+            MasterPage.UsePageTabTitleInBreadCrum = False
         End Sub
 #End Region
 

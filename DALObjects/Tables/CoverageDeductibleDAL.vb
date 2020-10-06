@@ -23,39 +23,39 @@
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_COVERAGE_DED_ID, id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal coverageId As Guid, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(coverageId As Guid, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As New DataSet
-        Dim covergeParam As New DBHelper.DBHelperParameter(Me.COL_NAME_COVERAGE_ID, coverageId.ToByteArray)
-        Dim languageParam As New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, languageId)
+        Dim covergeParam As New DBHelper.DBHelperParameter(COL_NAME_COVERAGE_ID, coverageId.ToByteArray)
+        Dim languageParam As New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId)
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {languageParam, languageParam, covergeParam})
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {languageParam, languageParam, covergeParam})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadList(ByVal familyDs As DataSet, ByVal coverageId As Guid, ByVal languageId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Dim covergeParam As New DBHelper.DBHelperParameter(Me.COL_NAME_COVERAGE_ID, coverageId)
-        Dim languageParam As New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, languageId)
+    Public Function LoadList(familyDs As DataSet, coverageId As Guid, languageId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Dim covergeParam As New DBHelper.DBHelperParameter(COL_NAME_COVERAGE_ID, coverageId)
+        Dim languageParam As New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId)
         Try
-            DBHelper.Fetch(familyDs, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {covergeParam, languageParam})
+            DBHelper.Fetch(familyDs, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {covergeParam, languageParam})
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -64,12 +64,12 @@
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

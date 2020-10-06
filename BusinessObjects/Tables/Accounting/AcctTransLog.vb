@@ -8,46 +8,46 @@ Public Class AcctTransLog
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New AcctTransLogDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -58,20 +58,20 @@ Public Class AcctTransLog
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New AcctTransLogDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -124,7 +124,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
@@ -139,7 +139,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -154,7 +154,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_SERVICE_CENTER_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
     End Property
 
@@ -169,7 +169,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_COMMISSION_ENTITY_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_COMMISSION_ENTITY_ID, Value)
         End Set
     End Property
 
@@ -184,7 +184,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ACCT_EVENT_TYPE_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ACCT_EVENT_TYPE_ID, Value)
         End Set
     End Property
 
@@ -201,7 +201,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ACCT_EVENT_FIELD_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ACCT_EVENT_FIELD_ID, Value)
         End Set
     End Property
 
@@ -218,7 +218,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ACCT_COMPANY_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ACCT_COMPANY_ID, Value)
         End Set
     End Property
 
@@ -235,7 +235,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_COUNTRY, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_COUNTRY, Value)
         End Set
     End Property
 
@@ -252,7 +252,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_REGION, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_REGION, Value)
         End Set
     End Property
 
@@ -269,7 +269,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_REGION_DESCRIPTION, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_REGION_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -286,7 +286,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_TAX_ID_CODE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_TAX_ID_CODE, Value)
         End Set
     End Property
 
@@ -303,7 +303,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_CURRENCY, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_CURRENCY, Value)
         End Set
     End Property
 
@@ -320,7 +320,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_ID, Value)
         End Set
     End Property
 
@@ -337,7 +337,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_ACCOUNT_NUMBER, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
@@ -354,7 +354,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_CERTIFICATE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_CERTIFICATE, Value)
         End Set
     End Property
 
@@ -371,7 +371,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_PAYEE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_PAYEE, Value)
         End Set
     End Property
 
@@ -388,7 +388,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ADDRESS1, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ADDRESS1, Value)
         End Set
     End Property
 
@@ -405,7 +405,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ADDRESS2, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ADDRESS2, Value)
         End Set
     End Property
 
@@ -422,7 +422,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_CITY, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_CITY, Value)
         End Set
     End Property
 
@@ -439,7 +439,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ZIP, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ZIP, Value)
         End Set
     End Property
 
@@ -456,7 +456,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
@@ -473,7 +473,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT, Value)
         End Set
     End Property
 
@@ -490,7 +490,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT_REV, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT_REV, Value)
         End Set
     End Property
 
@@ -507,7 +507,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_DATE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_DATE, Value)
         End Set
     End Property
 
@@ -524,7 +524,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ACCT_PERIOD, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ACCT_PERIOD, Value)
         End Set
     End Property
 
@@ -541,7 +541,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_COVERAGE_TYPE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_COVERAGE_TYPE, Value)
         End Set
     End Property
 
@@ -558,7 +558,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -575,7 +575,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_NETWORK_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_NETWORK_ID, Value)
         End Set
     End Property
 
@@ -592,7 +592,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_NUMBER, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_NUMBER, Value)
         End Set
     End Property
 
@@ -609,7 +609,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_TRANSACTION_ID_NUMBER, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_TRANSACTION_ID_NUMBER, Value)
         End Set
     End Property
 
@@ -624,7 +624,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_PROCESS_DATE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_PROCESS_DATE, Value)
         End Set
     End Property
 
@@ -639,7 +639,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ACCT_TRANSMISSION_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ACCT_TRANSMISSION_ID, Value)
         End Set
     End Property
 
@@ -655,7 +655,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_VENDOR_UPDATE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_VENDOR_UPDATE, Value)
         End Set
     End Property
 
@@ -671,7 +671,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_TO_CUSTOMER, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_TO_CUSTOMER, Value)
         End Set
     End Property
 
@@ -687,7 +687,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_SORTCODE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_SORTCODE, Value)
         End Set
     End Property
 
@@ -703,7 +703,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_1, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_1, Value)
         End Set
     End Property
 
@@ -719,7 +719,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_2, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_2, Value)
         End Set
     End Property
 
@@ -735,7 +735,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_3, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_3, Value)
         End Set
     End Property
 
@@ -751,7 +751,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_4, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_4, Value)
         End Set
     End Property
 
@@ -767,7 +767,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_NAME_1, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_NAME_1, Value)
         End Set
     End Property
 
@@ -783,7 +783,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_NAME_2, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_NAME_2, Value)
         End Set
     End Property
 
@@ -799,7 +799,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_IBAN, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_IBAN, Value)
         End Set
     End Property
 
@@ -815,7 +815,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_BRANCH, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_BRANCH, Value)
         End Set
     End Property
 
@@ -831,7 +831,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_WARR_SALES_DATE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_WARR_SALES_DATE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
@@ -846,7 +846,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_CONTRACT_INCEPTION_DATE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_CONTRACT_INCEPTION_DATE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=15)>
@@ -861,7 +861,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ACCOUNT_NUMBER, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
@@ -876,7 +876,7 @@ Public Class AcctTransLog
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_POLICY_NUMBER, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_POLICY_NUMBER, Value)
         End Set
     End Property
 
@@ -886,15 +886,15 @@ Public Class AcctTransLog
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New AcctTransLogDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

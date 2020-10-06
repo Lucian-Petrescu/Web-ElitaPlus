@@ -4,7 +4,7 @@ Imports System.ServiceModel
 
 Friend Module ClaimServiceHelper
 
-    Friend Function GetClaim(ByVal claimLookupRequest As ClaimLookup) As ClaimBase
+    Friend Function GetClaim(claimLookupRequest As ClaimLookup) As ClaimBase
         Dim oClaim As ClaimBase = Nothing
 
         Try

@@ -37,16 +37,16 @@ Public Class CertInstallmentDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid, Optional ByVal useCertId As Boolean = False)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid, Optional ByVal useCertId As Boolean = False)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter
 
         If useCertId Then
-            selectStmt = Me.Config("/SQL/LOAD_BY_CERT_ID")
+            selectStmt = Config("/SQL/LOAD_BY_CERT_ID")
             parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_id", id.ToByteArray)}
         Else
             parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_installment_id", id.ToByteArray)}
@@ -54,41 +54,41 @@ Public Class CertInstallmentDAL
 
         'Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_installment_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
 
-    Public Sub LoadByCertId(ByVal familyDS As DataSet, ByVal certId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BY_CERT_ID")
+    Public Sub LoadByCertId(familyDS As DataSet, certId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_BY_CERT_ID")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_id", certId.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         Dim tr As IDbTransaction = Transaction
 
@@ -97,7 +97,7 @@ Public Class CertInstallmentDAL
         End If
         Try
             'First Pass updates Deletions
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             If Not familyDataset.Tables(CreditCardInfoDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(CreditCardInfoDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim cciDal As New CreditCardInfoDAL
@@ -110,7 +110,7 @@ Public Class CertInstallmentDAL
             End If
 
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection

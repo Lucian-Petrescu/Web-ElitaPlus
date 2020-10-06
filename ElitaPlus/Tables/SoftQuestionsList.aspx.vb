@@ -40,7 +40,7 @@ Partial Class SoftQuestionsList
     Private designerPlaceholderDeclaration As System.Object
     Private displaySoftQForm As String = "display:'none'"
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -61,7 +61,7 @@ Partial Class SoftQuestionsList
 
     Public ReadOnly Property GetCompanyCode() As String
         Get
-            Dim companyBO As Company = New Company(Me.State.CertificateCompanyID)
+            Dim companyBO As Company = New Company(State.CertificateCompanyID)
 
             Return companyBO.Code
         End Get
@@ -76,7 +76,7 @@ Partial Class SoftQuestionsList
         Public CertificateID As Guid
         Public CertificateCompanyId As Guid
         Public ShowAcceptButton As Boolean = True
-        Public Sub New(ByVal RiskTypeId As Guid, ByVal CertificateID As Guid, ByVal CertificateCompanyId As Guid)
+        Public Sub New(RiskTypeId As Guid, CertificateID As Guid, CertificateCompanyId As Guid)
             Me.RiskTypeId = RiskTypeId
             Me.CertificateID = CertificateID
             Me.CertificateCompanyId = CertificateCompanyId
@@ -103,11 +103,11 @@ Partial Class SoftQuestionsList
 
     Protected Shadows ReadOnly Property State() As MyState
         Get
-            If Not Me.NavController Is Nothing Then
-                If Me.NavController.State Is Nothing Then
-                    Me.NavController.State = New MyState
-                    If Not Me.NavController.ParametersPassed Is Nothing Then
-                        Dim pageParameters As Parameters = CType(Me.NavController.ParametersPassed, Parameters)
+            If NavController IsNot Nothing Then
+                If NavController.State Is Nothing Then
+                    NavController.State = New MyState
+                    If NavController.ParametersPassed IsNot Nothing Then
+                        Dim pageParameters As Parameters = CType(NavController.ParametersPassed, Parameters)
                         Me.State.RiskTypeID = pageParameters.RiskTypeId
                         Me.State.CertificateID = pageParameters.CertificateID
                         Me.State.CertificateCompanyID = pageParameters.CertificateCompanyId
@@ -117,25 +117,25 @@ Partial Class SoftQuestionsList
                         Me.State.CertificateCompanyID = Guid.Empty
                     End If
                 End If
-                Return CType(Me.NavController.State, MyState)
+                Return CType(NavController.State, MyState)
             Else
                 Return CType(MyBase.State, MyState)
             End If
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Dim pageParameters As Parameters = CType(Me.CallingParameters, Parameters)
-                Me.State.RiskTypeID = pageParameters.RiskTypeId
-                Me.State.CertificateID = pageParameters.CertificateID
+            If CallingParameters IsNot Nothing Then
+                Dim pageParameters As Parameters = CType(CallingParameters, Parameters)
+                State.RiskTypeID = pageParameters.RiskTypeId
+                State.CertificateID = pageParameters.CertificateID
             Else
-                Me.State.RiskTypeID = Guid.Empty
-                Me.State.CertificateID = Guid.Empty
+                State.RiskTypeID = Guid.Empty
+                State.CertificateID = Guid.Empty
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -145,8 +145,8 @@ Partial Class SoftQuestionsList
 #Region "PageEvents"
 
     Function isNavStateSet() As Boolean
-        If Not Me.NavController Is Nothing Then
-            If Not Me.NavController.State Is Nothing Then
+        If NavController IsNot Nothing Then
+            If NavController.State IsNot Nothing Then
                 If NavController.State.GetType.FullName.Contains("SoftQuestionsList") = True Then
                     Return True
                 End If
@@ -155,7 +155,7 @@ Partial Class SoftQuestionsList
         Return False
     End Function
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
             ControlMgr.SetVisibleControl(Me, moCertificateInfoController, False)
@@ -166,23 +166,23 @@ Partial Class SoftQuestionsList
             btnNew_WRITE.Attributes.Add("onclick", "javascript:return setAction('E');")
             btnModify_WRITE.Attributes.Add("onclick", "javascript:return setAction('E');")
 
-            Me.MenuEnabled = Not (isSoftQuestionFormVisible.Value = "E")
+            MenuEnabled = Not (isSoftQuestionFormVisible.Value = "E")
 
             If Not Page.IsPostBack Then 'fist time calling
                 'AGL
                 If Request.QueryString.Count > 0 Then
                     If isNavStateSet() = False Then
                         Dim localState As New MyState
-                        localState.OriginalState = Me.NavController.State
-                        Me.NavController.State = localState
+                        localState.OriginalState = NavController.State
+                        NavController.State = localState
                     End If
                     Dim pageParameters As Parameters = New Parameters(New Guid(Request.QueryString("RiskTypeID").ToString()), New Guid(Request.QueryString("CertificateID").ToString()), New Guid(Request.QueryString("CertificateCompanyID").ToString()))
-                    Me.State.RiskTypeID = pageParameters.RiskTypeId
-                    Me.State.CertificateID = pageParameters.CertificateID
-                    Me.State.CertificateCompanyID = pageParameters.CertificateCompanyId
+                    State.RiskTypeID = pageParameters.RiskTypeId
+                    State.CertificateID = pageParameters.CertificateID
+                    State.CertificateCompanyID = pageParameters.CertificateCompanyId
                 End If
-                Me.AddConfirmation(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
-                Me.btnPanel.Enabled = False
+                AddConfirmation(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
+                btnPanel.Enabled = False
                 'Session("NodeID") = "0"
                 PopulateTree()
             Else
@@ -191,26 +191,26 @@ Partial Class SoftQuestionsList
                     NextAction.Value = ""
                 End If
             End If
-            If Not Me.State.CertificateID.Equals(Guid.Empty) Then
+            If Not State.CertificateID.Equals(Guid.Empty) Then
                 ControlMgr.SetVisibleControl(Me, CertRow, True)
                 ControlMgr.SetVisibleControl(Me, moCertificateInfoController, True)
-                moCertificateInfoController = Me.UserCertificateCtr
-                moCertificateInfoController.InitController(Me.State.CertificateID, , GetCompanyCode)
+                moCertificateInfoController = UserCertificateCtr
+                moCertificateInfoController.InitController(State.CertificateID, , GetCompanyCode)
             End If
             isSoftQuestionFormVisible.Value = ""
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 #End Region
 
 #Region "Button Handlers"
 
-    Private Sub GetGroupNode(ByVal SelectedNode As SysWebUICtls.TreeNode, ByRef blnIsRoot As Boolean, ByRef GroupNode As SysWebUICtls.TreeNode)
+    Private Sub GetGroupNode(SelectedNode As SysWebUICtls.TreeNode, ByRef blnIsRoot As Boolean, ByRef GroupNode As SysWebUICtls.TreeNode)
         Dim rootNode As SysWebUICtls.TreeNode = tvQuestion.Nodes(0)
         If SelectedNode.Value = rootNode.Value Then
             blnIsRoot = True
@@ -239,9 +239,9 @@ Partial Class SoftQuestionsList
         ControlMgr.SetEnableControl(Me, cboSoftQuestionGroup, True)
     End Sub
 
-    Private Function FindSelectedNode(ByVal objStart As SysWebUICtls.TreeNode, ByRef objSelectedNode As SysWebUICtls.TreeNode) As Boolean
+    Private Function FindSelectedNode(objStart As SysWebUICtls.TreeNode, ByRef objSelectedNode As SysWebUICtls.TreeNode) As Boolean
         Dim objNode As SysWebUICtls.TreeNode, blnFound As Boolean = False
-        If Not State.SoftQuestionBO Is Nothing Then
+        If State.SoftQuestionBO IsNot Nothing Then
             For Each objNode In objStart.ChildNodes
                 If objNode.Value = State.SelectedNodeValue Then
                     blnFound = True
@@ -253,7 +253,7 @@ Partial Class SoftQuestionsList
         End If
         Return blnFound
     End Function
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
             Dim parentNode As SysWebUICtls.TreeNode = tvQuestion.SelectedNode
             Dim groupNode As SysWebUICtls.TreeNode, blnIsRoot As Boolean
@@ -277,18 +277,18 @@ Partial Class SoftQuestionsList
                 State.SoftQuestionBO.ParentId = parentID
             End If
             ControlMgr.SetEnableControl(Me, tvQuestion, False)
-            Me.softQuestionTreePanel.Enabled = False
-            Me.PanelSoftQEdit.Visible = True
-            Me.btnPanel.Visible = False
-            Me.MenuEnabled = False
+            softQuestionTreePanel.Enabled = False
+            PanelSoftQEdit.Visible = True
+            btnPanel.Visible = False
+            MenuEnabled = False
             State.softQuestionAction = ACTION_NEW
             State.SelectedNodeValue = parentNode.Value
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnModify_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnModify_WRITE.Click
+    Private Sub btnModify_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnModify_WRITE.Click
         Try
             cboSoftQuestionGroup.Items.Clear()
             ControlMgr.SetEnableControl(Me, cboSoftQuestionGroup, False)
@@ -308,7 +308,7 @@ Partial Class SoftQuestionsList
                     cboSoftQuestionGroup.Items.Add(New System.Web.UI.WebControls.ListItem(groupNode.Text, groupid.ToString()))
                 End If
                 State.SoftQuestionBO = New SoftQuestion(New Guid(objNode.Value.Split("|"c)(0)))
-                State.SoftQuestionId = Me.State.SoftQuestionBO.Id
+                State.SoftQuestionId = State.SoftQuestionBO.Id
                 txtSoftQuestion.Text = objNode.Text
                 ControlMgr.SetEnableControl(Me, txtSoftQuestion, True)
                 ControlMgr.SetEnableControl(Me, btnSave, True)
@@ -316,20 +316,20 @@ Partial Class SoftQuestionsList
                 txtSoftQuestion.Text = ""
                 ControlMgr.SetEnableControl(Me, txtSoftQuestion, False)
                 ControlMgr.SetEnableControl(Me, btnSave, False)
-                Me.DisplayMessage(Message.MSG_CANNOTMODIFY_SOFTQUESTION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                DisplayMessage(Message.MSG_CANNOTMODIFY_SOFTQUESTION, "", MSG_BTN_OK, MSG_TYPE_ALERT)
             End If
 
-            Me.softQuestionTreePanel.Enabled = False
-            Me.PanelSoftQEdit.Visible = True
-            Me.btnPanel.Visible = False
+            softQuestionTreePanel.Enabled = False
+            PanelSoftQEdit.Visible = True
+            btnPanel.Visible = False
             State.softQuestionAction = ACTION_EDIT
             State.SelectedNodeValue = objNode.Value
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+    Private Sub btnSave_Click(sender As System.Object, e As System.EventArgs) Handles btnSave.Click
         Try
             Dim objNode As SysWebUICtls.TreeNode
             Dim strSoftQuestion As String = txtSoftQuestion.Text.Trim
@@ -346,12 +346,12 @@ Partial Class SoftQuestionsList
             If State.softQuestionAction = ACTION_EDIT Then
                 State.SoftQuestionBO.Save()
                 FindSelectedNode(tvQuestion.Nodes(0), objNode)
-                If Not objNode Is Nothing Then
+                If objNode IsNot Nothing Then
                     objNode.Text = strSoftQuestion
                     objNode.Selected = True
                 End If
             ElseIf State.softQuestionAction = ACTION_NEW Then
-                Me.PopulateBOProperty(State.SoftQuestionBO, "SoftQuestionGroupId", cboSoftQuestionGroup)
+                PopulateBOProperty(State.SoftQuestionBO, "SoftQuestionGroupId", cboSoftQuestionGroup)
                 Dim childOrder As Long = 0
                 Dim guidParent As Guid = New Guid(State.SelectedNodeValue.Split("|"c)(0))
                 If guidParent <> Guid.Empty Then childOrder = SoftQuestion.getMaxChildOrder(guidParent) + 1
@@ -378,32 +378,32 @@ Partial Class SoftQuestionsList
                     End If
                 End If
             End If
-            Me.PanelSoftQEdit.Visible = False
-            Me.btnPanel.Visible = True
-            Me.btnPanel.Enabled = True
-            Me.softQuestionTreePanel.Enabled = True
+            PanelSoftQEdit.Visible = False
+            btnPanel.Visible = True
+            btnPanel.Enabled = True
+            softQuestionTreePanel.Enabled = True
             ControlMgr.SetEnableControl(Me, tvQuestion, True)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(sender As System.Object, e As System.EventArgs) Handles btnCancel.Click
         Try
-            Me.PanelSoftQEdit.Visible = False
-            Me.btnPanel.Visible = True
-            Me.btnPanel.Enabled = True
-            Me.softQuestionTreePanel.Enabled = True
+            PanelSoftQEdit.Visible = False
+            btnPanel.Visible = True
+            btnPanel.Enabled = True
+            softQuestionTreePanel.Enabled = True
             ControlMgr.SetEnableControl(Me, tvQuestion, True)
             ControlMgr.SetEnableControl(Me, txtSoftQuestion, True)
             ControlMgr.SetEnableControl(Me, btnSave, True)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
             Dim objNode As SysWebUICtls.TreeNode = tvQuestion.SelectedNode
             If objNode.Value <> tvQuestion.Nodes(0).Value Then
@@ -426,34 +426,34 @@ Partial Class SoftQuestionsList
                         End If
                     End If
                 Else
-                    DisplayMessage(Message.MSG_CANNOTDELETE_SOFTQUESTION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                    DisplayMessage(Message.MSG_CANNOTDELETE_SOFTQUESTION, "", MSG_BTN_OK, MSG_TYPE_ALERT)
                 End If
             Else
-                DisplayMessage(Message.MSG_CANNOTDELETE_SOFTQUESTION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                DisplayMessage(Message.MSG_CANNOTDELETE_SOFTQUESTION, "", MSG_BTN_OK, MSG_TYPE_ALERT)
             End If
         Catch ex As Exception
             ControlMgr.SetVisibleControl(Me, ErrorRow, True)
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
+    Private Sub btnClose_Click(sender As System.Object, e As System.EventArgs) Handles btnClose.Click
         Try
-            If Me.State.OriginalState Is Nothing Then
-                If Not Me.NavController Is Nothing Then
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_SOFTQUESTION_CERT_ID) = Me.State.CertificateID
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_SOFTQUESTION_COMMENTADDED) = ""
-                    Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK, New StateControllerYesNoPrompt.Parameters(Message.MSG_PROMPT_FOR_SOFTQUESTION_COMMENT))
+            If State.OriginalState Is Nothing Then
+                If NavController IsNot Nothing Then
+                    NavController.FlowSession(FlowSessionKeys.SESSION_SOFTQUESTION_CERT_ID) = State.CertificateID
+                    NavController.FlowSession(FlowSessionKeys.SESSION_SOFTQUESTION_COMMENTADDED) = ""
+                    NavController.Navigate(Me, FlowEvents.EVENT_BACK, New StateControllerYesNoPrompt.Parameters(Message.MSG_PROMPT_FOR_SOFTQUESTION_COMMENT))
                 Else
-                    Me.ReturnToCallingPage()
+                    ReturnToCallingPage()
                 End If
             Else
-                Me.NavController.State = Me.State.OriginalState
+                NavController.State = State.OriginalState
                 Dim sJavaScript As String = "<script type=""text/javascript""> window.parent.document.getElementById('divSoftQuestions').style.display = 'none'; </script>"
-                Page.ClientScript.RegisterClientScriptBlock(Me.GetType(), "CloseSoftQuestions", sJavaScript)
+                Page.ClientScript.RegisterClientScriptBlock([GetType](), "CloseSoftQuestions", sJavaScript)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -464,10 +464,10 @@ Partial Class SoftQuestionsList
         Dim rootNode As SysWebUICtls.TreeNode = New SysWebUICtls.TreeNode(TranslationBase.TranslateLabelOrMessage("Soft Questions"), Guid.Empty.ToString)
 
         Dim softQuestDV As SoftQuestion.SoftQuestionDV, blnFromCert As Boolean = False
-        If Me.State.RiskTypeID.Equals(Guid.Empty) Then
+        If State.RiskTypeID.Equals(Guid.Empty) Then
             softQuestDV = SoftQuestion.getSoftQuestionGroups(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
         Else
-            softQuestDV = SoftQuestion.getSoftQuestionGroupForRiskType(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, Me.State.RiskTypeID)
+            softQuestDV = SoftQuestion.getSoftQuestionGroupForRiskType(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, State.RiskTypeID)
             blnFromCert = True
         End If
 
@@ -498,10 +498,10 @@ Partial Class SoftQuestionsList
             rootNode.SelectAction = TreeNodeSelectAction.Select
             rootNode.Selected = True
         End If
-        Me.tvQuestion.Nodes.Add(rootNode)
+        tvQuestion.Nodes.Add(rootNode)
     End Sub
 
-    Private Sub tvQuestion_TreeNodePopulate(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.TreeNodeEventArgs) Handles tvQuestion.TreeNodePopulate
+    Private Sub tvQuestion_TreeNodePopulate(sender As Object, e As System.Web.UI.WebControls.TreeNodeEventArgs) Handles tvQuestion.TreeNodePopulate
         Dim guidParent As Guid = New Guid(e.Node.Value.Split("|"c)(0))
         Dim softQuestDV As SoftQuestion.SoftQuestionDV = SoftQuestion.getChildren(guidParent)
         Dim intChildCnt As Integer, blnFromCert As Boolean = False
@@ -535,7 +535,7 @@ Partial Class SoftQuestionsList
     End Sub
 
     Private Sub EnableDisableButtons()
-        If Me.State.RiskTypeID.Equals(Guid.Empty) Then
+        If State.RiskTypeID.Equals(Guid.Empty) Then
             ControlMgr.SetVisibleControl(Me, btnDelete_WRITE, True)
             ControlMgr.SetVisibleControl(Me, btnModify_WRITE, True)
             ControlMgr.SetVisibleControl(Me, btnNew_WRITE, True)
@@ -561,11 +561,11 @@ Partial Class SoftQuestionsList
         Private NavController As INavigationController
         Private CallingPage As ElitaPlusPage
 
-        Public Sub Process(ByVal callingPage As System.Web.UI.Page, ByVal navCtrl As INavigationController) Implements IStateController.Process
-            Me.NavController = navCtrl
+        Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+            NavController = navCtrl
             Me.CallingPage = CType(callingPage, ElitaPlusPage)
 
-            Dim certID As Guid = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_SOFTQUESTION_CERT_ID), Guid)
+            Dim certID As Guid = CType(NavController.FlowSession(FlowSessionKeys.SESSION_SOFTQUESTION_CERT_ID), Guid)
             Dim certBO As Certificate = New Certificate(certID)
 
             Dim commentBO As Comment = New Comment
@@ -581,8 +581,8 @@ Partial Class SoftQuestionsList
 
             commentBO.Comments = ""
 
-            Me.NavController.FlowSession(FlowSessionKeys.SESSION_SOFTQUESTION_CERT_ID) = Nothing
-            Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_COMMENTS, New CommentForm.Parameters(commentBO))
+            NavController.FlowSession(FlowSessionKeys.SESSION_SOFTQUESTION_CERT_ID) = Nothing
+            NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_COMMENTS, New CommentForm.Parameters(commentBO))
         End Sub
     End Class
 #End Region

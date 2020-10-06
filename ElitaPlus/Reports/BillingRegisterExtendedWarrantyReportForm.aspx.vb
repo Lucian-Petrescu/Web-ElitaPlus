@@ -76,13 +76,13 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
             Handles moUserCompanyMultipleDrop.SelectedDropChanged
             Try
                 rdealer.Checked = True
                 PopulateDealerDropDown()
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -103,7 +103,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -111,23 +111,23 @@ Namespace Reports
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
         Private Sub PopulateCompaniesDropdown()
@@ -136,7 +136,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, ALL + " " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
             End If
         End Sub
@@ -146,12 +146,12 @@ Namespace Reports
             listcontext.CompanyId = New Guid(UserCompanyMultipleDrop.SelectedGuid.ToString)
 
             Dim DealerList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=listcontext)
-            Me.cboDealer.Populate(DealerList, New PopulateOptions() With
+            cboDealer.Populate(DealerList, New PopulateOptions() With
                 {
                    .AddBlankItem = True
                 })
 
-            Me.cboDealerCode.Populate(DealerList, New PopulateOptions() With
+            cboDealerCode.Populate(DealerList, New PopulateOptions() With
                 {
                    .AddBlankItem = True,
                    .TextFunc = AddressOf .GetCode,
@@ -168,22 +168,22 @@ Namespace Reports
             PopulateCompaniesDropdown()
             PopulateDealerDropDown()
             Dim t As Date = Date.Now.AddDays(-1)
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now)
-            Me.RadiobuttonTotalsOnly.Checked = True
+            moBeginDateText.Text = GetDateFormattedString(t)
+            moEndDateText.Text = GetDateFormattedString(Date.Now)
+            RadiobuttonTotalsOnly.Checked = True
         End Sub
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(moEndDateLabel)
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(moEndDateLabel)
         End Sub
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -209,20 +209,20 @@ Namespace Reports
             beginDate = ReportCeBase.FormatDate(moBeginDateLabel, moBeginDateText.Text)
 
 
-            Dim dealerID As Guid = Me.GetSelectedItem(Me.cboDealer)
+            Dim dealerID As Guid = GetSelectedItem(cboDealer)
             Dim dv As DataView = LookupListNew.GetDealerLookupList(oCompanyId)
             Dim dealerCode As String = LookupListNew.GetCodeFromId(dv, dealerID)
             Dim selectedDealer As String = LookupListNew.GetDescriptionFromId(dv, dealerID)
             Dim detailCode As String
             'Dim customerRefunds As String = YES
 
-            If Me.RadiobuttonTotalsOnly.Checked Then
+            If RadiobuttonTotalsOnly.Checked Then
                 detailCode = YES
             Else
                 detailCode = NO
             End If
 
-            Select Case Me.rdReportSortOrder.SelectedValue()
+            Select Case rdReportSortOrder.SelectedValue()
                 Case DEALER_CODE
                     sortOrder = "C"
                 Case DEALER_NAME
@@ -233,7 +233,7 @@ Namespace Reports
             '    Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_YEARMONTH_MUST_BE_SELECTED_ERR)
             'End If
 
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             Else
                 If selectedDealer.Equals(Guid.Empty) Then
@@ -248,7 +248,7 @@ Namespace Reports
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
         End Sub
 
-        Function SetParameters(ByVal companyCode As String, ByVal dealerCode As String, ByVal begindate As String, ByVal enddate As String, ByVal isSummary As String, ByVal sortorder As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, dealerCode As String, begindate As String, enddate As String, isSummary As String, sortorder As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String = RPT_FILENAME

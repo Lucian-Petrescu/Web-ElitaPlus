@@ -1,6 +1,5 @@
-﻿Imports Assurant.ElitaPlus.Business
+﻿
 Imports Assurant.ElitaPlus.DataEntities
-Imports Assurant.ElitaPlus.Security
 Imports Assurant.ElitaPlus.DataAccessInterface
 
 Public Class EquipmentManager
@@ -11,8 +10,8 @@ Public Class EquipmentManager
     Private Property ManufacturerRepository As ICompanyGroupRepository(Of Manufacturer)
     Private ReadOnly m_DealerManager As IDealerManager
 
-    Public Sub New(ByVal pCacheFacade As ICacheFacade,
-                   ByVal pDealerManager As IDealerManager)
+    Public Sub New(pCacheFacade As ICacheFacade,
+                   pDealerManager As IDealerManager)
         m_CacheFacade = pCacheFacade
         m_DealerManager = pDealerManager
     End Sub
@@ -36,8 +35,9 @@ Public Class EquipmentManager
         Return oEquipment
     End Function
 
-    Public Function GetEquipmentIdByEquipmentList(pci As CertificateItem) As Nullable(Of Guid) Implements IEquipmentManager.GetEquipmentIdByEquipmentList
-        Dim oEquipmentId As Nullable(Of Guid)
+    Public Function GetEquipmentIdByEquipmentList(pci As CertificateItem) As Guid? Implements IEquipmentManager.GetEquipmentIdByEquipmentList
+        Dim oEquipmentId As Guid?
+
         Try
             oEquipmentId =
             EquipmentRepository.Get(Function(e) e.ManufacturerId = pci.ManufacturerId AndAlso e.Model = pci.Model AndAlso e.IsEffective()).SelectMany(Of EquipmentListDetail)(Function(elds) elds.EquipmentListDetails.Where(Function(eld) eld.IsEffective).Select(Of EquipmentList)(Function(els) els.EquipmentList.Code = pci.Certificate.GetDealer(DealerManager).EquipmentListCode)).First.EquipmentId

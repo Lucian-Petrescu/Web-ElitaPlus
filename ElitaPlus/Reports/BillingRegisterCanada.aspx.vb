@@ -127,7 +127,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -138,46 +138,46 @@ Namespace Reports
 
         Private Sub InitializeForm()
             Dim t As Date = Date.Now.AddDays(-1)
-            Me.BeginDateText.Text = GetDateFormattedString(t)
-            Me.EndDateText.Text = GetDateFormattedString(Date.Now)
+            BeginDateText.Text = GetDateFormattedString(t)
+            EndDateText.Text = GetDateFormattedString(Date.Now)
             PopulateCompaniesDropdown()
             PopulateDealerDropDown()
             PopulateDealerGroupDropDown()
-            Me.RadiobuttonTotalsOnly.Checked = True
+            RadiobuttonTotalsOnly.Checked = True
             TheReportCeInputControl.populateReportLanguages(RPT_FILENAME)
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            ErrControllerMaster.Clear_Hide()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     ' JavascriptCalls()
                     InitializeForm()
-                    Me.AddCalendar(Me.BtnBeginDate, Me.BeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.EndDateText)
+                    AddCalendar(BtnBeginDate, BeginDateText)
+                    AddCalendar(BtnEndDate, EndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -186,13 +186,13 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Protected Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Protected Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
      Handles CompanyDropControl.SelectedDropChanged
             Try
                 PopulateDealerDropDown()
                 PopulateDealerGroupDropDown()
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -201,10 +201,10 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(BeginDateLabel)
-            Me.ClearLabelErrSign(EndDateLabel)
-            Me.ClearLabelErrSign(CompanyMultipleDrop.CaptionLabel)
-            Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(BeginDateLabel)
+            ClearLabelErrSign(EndDateLabel)
+            ClearLabelErrSign(CompanyMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
             DealerMultipleDrop.NothingSelected = True
             DealerGrpMultipleDrop.NothingSelected = True
         End Sub
@@ -254,7 +254,7 @@ Namespace Reports
                 ControlMgr.SetVisibleControl(Me, pnlComp, False)
                 'ControlMgr.SetVisibleControl(Me, trcomp, False)
                 'HideHtmlElement(trcomp.ClientID)
-                CompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                CompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 CompanyMultipleDrop.Visible = False
             End If
 
@@ -264,9 +264,9 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal companyCode As String, ByVal dealerCode As String, ByVal dealergrpCode As String,
-                               ByVal begindate As String, ByVal enddate As String, ByVal isSummary As String,
-                               ByVal sortorder As String, ByVal isdealer As Boolean) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, dealerCode As String, dealergrpCode As String,
+                               begindate As String, enddate As String, isSummary As String,
+                               sortorder As String, isdealer As Boolean) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim repParams(TOTAL_PARAMS) As ReportCeBaseForm.RptParam
@@ -306,9 +306,9 @@ Namespace Reports
             End With
             Return params
         End Function
-        Function SetExpParameters(ByVal companyCode As String, ByVal dealerCode As String, ByVal dealergrpCode As String,
-                              ByVal begindate As String, ByVal enddate As String, ByVal isSummary As String,
-                              ByVal sortorder As String, ByVal isdealer As Boolean) As ReportCeBaseForm.Params
+        Function SetExpParameters(companyCode As String, dealerCode As String, dealergrpCode As String,
+                              begindate As String, enddate As String, isSummary As String,
+                              sortorder As String, isdealer As Boolean) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim repParams(TOTAL_EXP_PARAMS) As ReportCeBaseForm.RptParam
@@ -344,8 +344,8 @@ Namespace Reports
             Return params
         End Function
 
-        Sub SetReportParams(ByVal rptParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                          ByVal rptName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(rptParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                          rptName As String, startIndex As Integer)
 
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_COMPANY", .companyCode, rptName)
@@ -392,13 +392,13 @@ Namespace Reports
             Dim params As ReportCeBaseForm.Params
             ' Dim reportFormat As ReportCeBaseForm.RptFormat
 
-            If Me.RadiobuttonTotalsOnly.Checked Then
+            If RadiobuttonTotalsOnly.Checked Then
                 detailCode = NO
             Else
                 detailCode = YES
             End If
 
-            Select Case Me.rdReportSortOrder.SelectedValue()
+            Select Case rdReportSortOrder.SelectedValue()
                 Case DEALER_CODE
                     sortOrder = "C"
                 Case DEALER_NAME

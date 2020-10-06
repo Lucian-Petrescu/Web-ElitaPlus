@@ -8,40 +8,40 @@ Public Class Country
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CountryDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -52,20 +52,20 @@ Public Class Country
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New CountryDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -74,7 +74,7 @@ Public Class Country
     End Sub
 
     Protected Sub LoadChildren(ByVal reloadData As Boolean)
-        CountryPostalCodeFormat.LoadList(Me.Dataset, Me.Id, reloadData)
+        CountryPostalCodeFormat.LoadList(Dataset, Id, reloadData)
     End Sub
 #End Region
 
@@ -115,7 +115,7 @@ Public Class Country
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(CountryDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -132,7 +132,7 @@ Public Class Country
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_CODE, Value)
+            SetValue(CountryDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
@@ -149,7 +149,7 @@ Public Class Country
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_LANGUAGE_ID, Value)
+            SetValue(CountryDAL.COL_NAME_LANGUAGE_ID, Value)
         End Set
     End Property
 
@@ -166,7 +166,7 @@ Public Class Country
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_PRIMARY_CURRENCY_ID, Value)
+            SetValue(CountryDAL.COL_NAME_PRIMARY_CURRENCY_ID, Value)
         End Set
     End Property
 
@@ -183,7 +183,7 @@ Public Class Country
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_SECONDARY_CURRENCY_ID, Value)
+            SetValue(CountryDAL.COL_NAME_SECONDARY_CURRENCY_ID, Value)
         End Set
     End Property
 
@@ -200,7 +200,7 @@ Public Class Country
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_MAIL_ADDR_FORMAT, Value)
+            SetValue(CountryDAL.COL_NAME_MAIL_ADDR_FORMAT, Value)
         End Set
     End Property
 
@@ -216,7 +216,7 @@ Public Class Country
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_BANK_ID_LENGTH, Value)
+            SetValue(CountryDAL.COL_NAME_BANK_ID_LENGTH, Value)
         End Set
     End Property
 
@@ -232,7 +232,7 @@ Public Class Country
         End Get
         Set(ByVal Value As Integer)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_BANK_ACCT_LENGTH, Value)
+            SetValue(CountryDAL.COL_NAME_BANK_ACCT_LENGTH, Value)
         End Set
     End Property
 
@@ -248,7 +248,7 @@ Public Class Country
         End Get
         Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_EUROPEAN_COUNTRY_ID, value)
+            SetValue(CountryDAL.COL_NAME_EUROPEAN_COUNTRY_ID, value)
         End Set
     End Property
 
@@ -263,7 +263,7 @@ Public Class Country
         End Get
         Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_VALIDATE_BANK_INFO_ID, value)
+            SetValue(CountryDAL.COL_NAME_VALIDATE_BANK_INFO_ID, value)
         End Set
     End Property
 
@@ -279,7 +279,7 @@ Public Class Country
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_TAX_BY_PRODUCT_TYPE_ID, Value)
+            SetValue(CountryDAL.COL_NAME_TAX_BY_PRODUCT_TYPE_ID, Value)
         End Set
     End Property
 
@@ -295,7 +295,7 @@ Public Class Country
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_REQUIRE_BYTE_CONV_ID, Value)
+            SetValue(CountryDAL.COL_NAME_REQUIRE_BYTE_CONV_ID, Value)
         End Set
     End Property
 
@@ -310,7 +310,7 @@ Public Class Country
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_DEFAULT_SC_FOR_DENIED_CLAIMS, Value)
+            SetValue(CountryDAL.COL_NAME_DEFAULT_SC_FOR_DENIED_CLAIMS, Value)
         End Set
     End Property
 
@@ -325,7 +325,7 @@ Public Class Country
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_DEFAULT_SC_ID, Value)
+            SetValue(CountryDAL.COL_NAME_DEFAULT_SC_ID, Value)
         End Set
     End Property
 
@@ -341,7 +341,7 @@ Public Class Country
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_CONTACT_INFO_REQ_FIELDS, Value)
+            SetValue(CountryDAL.COL_NAME_CONTACT_INFO_REQ_FIELDS, Value)
         End Set
     End Property
 
@@ -357,7 +357,7 @@ Public Class Country
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_ADDRESS_INFO_REQ_FIELDS, Value)
+            SetValue(CountryDAL.COL_NAME_ADDRESS_INFO_REQ_FIELDS, Value)
         End Set
     End Property
 
@@ -373,7 +373,7 @@ Public Class Country
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_USE_BANK_LIST_ID, Value)
+            SetValue(CountryDAL.COL_NAME_USE_BANK_LIST_ID, Value)
         End Set
     End Property
 
@@ -388,7 +388,7 @@ Public Class Country
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_LAST_REGULATORY_EXTRACT_DATE, Value)
+            SetValue(CountryDAL.COL_NAME_LAST_REGULATORY_EXTRACT_DATE, Value)
         End Set
     End Property
 
@@ -404,7 +404,7 @@ Public Class Country
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_CREDIT_SCORING_PCT, Value)
+            SetValue(CountryDAL.COL_NAME_CREDIT_SCORING_PCT, Value)
         End Set
     End Property
 
@@ -420,7 +420,7 @@ Public Class Country
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_ABNORMAL_CLM_FRQ_NO, Value)
+            SetValue(CountryDAL.COL_NAME_ABNORMAL_CLM_FRQ_NO, Value)
         End Set
     End Property
 
@@ -436,7 +436,7 @@ Public Class Country
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_CERT_COUNT_SUSP_OP, Value)
+            SetValue(CountryDAL.COL_NAME_CERT_COUNT_SUSP_OP, Value)
         End Set
     End Property
 
@@ -451,7 +451,7 @@ Public Class Country
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_REGULATORY_REPORTING_ID, Value)
+            SetValue(CountryDAL.COL_NAME_REGULATORY_REPORTING_ID, Value)
         End Set
     End Property
 
@@ -467,7 +467,7 @@ Public Class Country
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_NOTIFY_GROUP_EMAIL, Value)
+            SetValue(CountryDAL.COL_NAME_NOTIFY_GROUP_EMAIL, Value)
         End Set
     End Property
     <ValueMandatory("")>
@@ -482,7 +482,7 @@ Public Class Country
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_USE_ADDRESS_VALIDATION_XCD, Value)
+            SetValue(CountryDAL.COL_NAME_USE_ADDRESS_VALIDATION_XCD, Value)
         End Set
     End Property
 
@@ -498,7 +498,7 @@ Public Class Country
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_ALLOW_FORCE_ADDRESS_XCD, Value)
+            SetValue(CountryDAL.COL_NAME_ALLOW_FORCE_ADDRESS_XCD, Value)
         End Set
     End Property
 
@@ -513,7 +513,7 @@ Public Class Country
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_ALLOW_FORGOTTEN, Value)
+            SetValue(CountryDAL.COL_NAME_ALLOW_FORGOTTEN, Value)
         End Set
     End Property
     Public Property PriceListApprovalNeeded() As String
@@ -527,7 +527,7 @@ Public Class Country
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_NEEDED, Value)
+            SetValue(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_NEEDED, Value)
         End Set
     End Property
     <RequiredConditionallyAddressConfidenceThreshold(""), ValidNumericRange("", Min:=1, Max:=100)>
@@ -542,7 +542,7 @@ Public Class Country
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_ADDRESS_CONFIDENCE_THRESHOLD, Value)
+            SetValue(CountryDAL.COL_NAME_ADDRESS_CONFIDENCE_THRESHOLD, Value)
         End Set
     End Property
 
@@ -558,7 +558,7 @@ Public Class Country
         End Get
         Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_ISO_CODE, value)
+            SetValue(CountryDAL.COL_NAME_ISO_CODE, value)
         End Set
     End Property
 
@@ -574,7 +574,7 @@ Public Class Country
         End Get
         Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_EMAIL, value)
+            SetValue(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_EMAIL, value)
         End Set
     End Property
     <ValueMandatory("")>
@@ -589,7 +589,7 @@ Public Class Country
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryDAL.COL_NAME_FULL_NAME_FORMAT, Value)
+            SetValue(CountryDAL.COL_NAME_FULL_NAME_FORMAT, Value)
         End Set
     End Property
 #End Region
@@ -604,14 +604,14 @@ Public Class Country
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CountryDAL
                 'dal.Update(Me.Row)
-                dal.UpdateFamily(Me.Dataset) ' changed to take care of join table                
+                dal.UpdateFamily(Dataset) ' changed to take care of join table                
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Me.Load(Me.Id)
-                    Me.LoadChildren(True)
+                If Row.RowState <> DataRowState.Detached Then
+                    Load(Id)
+                    LoadChildren(True)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -620,17 +620,17 @@ Public Class Country
     End Sub
 
     Public Sub AttachPostalCodeFormat(ByVal postalCodeGuidStr() As String)
-        Me.LoadChildren(False)
+        LoadChildren(False)
         If Not postalCodeGuidStr Is Nothing AndAlso postalCodeGuidStr.Length > 0 Then
             Dim i As Integer
             For i = 0 To postalCodeGuidStr.Length - 1
                 Dim PosCodeFormatId As Guid = New Guid(postalCodeGuidStr(i))
                 'Dim couPosCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Me.Dataset, Me.Id, New Guid(postalCodeGuidStr(i)))
-                Dim couPosCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Me.Dataset, Me.Id, PosCodeFormatId)
+                Dim couPosCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Dataset, Id, PosCodeFormatId)
                 If couPosCode Is Nothing Then
-                    couPosCode = New CountryPostalCodeFormat(Me.Dataset)
+                    couPosCode = New CountryPostalCodeFormat(Dataset)
                     couPosCode.PostalCodeFormatId = PosCodeFormatId
-                    couPosCode.CountryId = Me.Id
+                    couPosCode.CountryId = Id
                     couPosCode.Save()
                 End If
             Next
@@ -638,37 +638,37 @@ Public Class Country
     End Sub
 
     Public Sub AttachPostalCodeFormat(ByVal postalCodeGuidStr As String)
-        Me.LoadChildren(False)
+        LoadChildren(False)
         If Not postalCodeGuidStr Is Nothing AndAlso postalCodeGuidStr.Length > 0 Then
             Dim i As Integer
             Dim PosCodeFormatId As Guid = New Guid(postalCodeGuidStr)
             'Dim couPosCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Me.Dataset, Me.Id, New Guid(postalCodeGuidStr))
-            Dim couPosCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Me.Dataset, Me.Id, PosCodeFormatId)
+            Dim couPosCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Dataset, Id, PosCodeFormatId)
             If couPosCode Is Nothing Then
-                couPosCode = New CountryPostalCodeFormat(Me.Dataset)
+                couPosCode = New CountryPostalCodeFormat(Dataset)
                 couPosCode.PostalCodeFormatId = PosCodeFormatId
-                couPosCode.CountryId = Me.Id
+                couPosCode.CountryId = Id
                 couPosCode.Save()
             End If
         End If
     End Sub
 
     Public Sub DetachPostalCodeFormat(ByVal postalCodeGuidStr() As String)
-        Me.LoadChildren(False)
+        LoadChildren(False)
         If Not postalCodeGuidStr Is Nothing AndAlso postalCodeGuidStr.Length > 0 Then
             Dim i As Integer
             For i = 0 To postalCodeGuidStr.Length - 1
-                Dim couPosCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Me.Dataset, Me.Id, New Guid(postalCodeGuidStr(i)))
+                Dim couPosCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Dataset, Id, New Guid(postalCodeGuidStr(i)))
                 couPosCode.Delete()
                 couPosCode.Save()
             Next
         End If
     End Sub
     Public Sub DetachPostalCodeFormat(ByVal postalCodeGuidStr As String)
-        Me.LoadChildren(False)
+        LoadChildren(False)
         If Not postalCodeGuidStr Is Nothing AndAlso postalCodeGuidStr.Length > 0 Then
             Dim i As Integer
-            Dim couPosCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Me.Dataset, Me.Id, New Guid(postalCodeGuidStr))
+            Dim couPosCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Dataset, Id, New Guid(postalCodeGuidStr))
             couPosCode.Delete()
             couPosCode.Save()
         End If
@@ -687,23 +687,23 @@ Public Class Country
     'End Function
 
     Public Function GetAvailablePostalCode() As DataView
-        Me.LoadChildren(False)
+        LoadChildren(False)
         'Dim pCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Me.Dataset, Me.Id)
         'If pCode Is Nothing Then
         '    'Return all
         '    Return LookupListNew.GetPostalCodeFormatLookupList()
         'Else
-        Return CountryPostalCodeFormat.GetAvailablePostalCodeFormat(Me.Dataset, Me.Id)
+        Return CountryPostalCodeFormat.GetAvailablePostalCodeFormat(Dataset, Id)
         'End If
     End Function
 
     Public Function GetSelectedPostalCode() As DataView
-        Me.LoadChildren(False)
+        LoadChildren(False)
         'Dim pCode As CountryPostalCodeFormat = CountryPostalCodeFormat.Find(Me.Dataset, Me.Id)
         'If pCode Is Nothing Then
         '    Return Nothing
         'Else
-        Return CountryPostalCodeFormat.GetSelectedPostalCodeFormat(Me.Dataset, Me.Id)
+        Return CountryPostalCodeFormat.GetSelectedPostalCodeFormat(Dataset, Id)
         'End If
     End Function
 

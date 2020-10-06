@@ -11,48 +11,48 @@ Public Class Rewards
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New RewardsDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -60,23 +60,23 @@ Public Class Rewards
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RewardsDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -95,7 +95,7 @@ Public Class Rewards
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(RewardsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -106,7 +106,7 @@ Public Class Rewards
     End Property
 
 
-    Public Property ReferenceId() As Guid
+    Public Property ReferenceId As Guid
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_REFERENCE_ID) Is DBNull.Value Then
@@ -115,14 +115,14 @@ Public Class Rewards
                 Return New Guid(CType(Row(RewardsDAL.COL_NAME_REFERENCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(RewardsDAL.COL_NAME_REFERENCE_ID, Value)
+            SetValue(RewardsDAL.COL_NAME_REFERENCE_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)>
-    Public Property RewardTypeXcd() As String
+    Public Property RewardTypeXcd As String
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_REWARD_TYPE_XCD) Is DBNull.Value Then
@@ -131,15 +131,15 @@ Public Class Rewards
                 Return CType(Row(RewardsDAL.COL_NAME_REWARD_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RewardsDAL.COL_NAME_REWARD_TYPE_XCD, Value)
+            SetValue(RewardsDAL.COL_NAME_REWARD_TYPE_XCD, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property RewardStatusXcd() As String
+    Public Property RewardStatusXcd As String
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_REWARD_STATUS_XCD) Is DBNull.Value Then
@@ -148,15 +148,15 @@ Public Class Rewards
                 Return CType(Row(RewardsDAL.COL_NAME_REWARD_STATUS_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RewardsDAL.COL_NAME_REWARD_STATUS_XCD, Value)
+            SetValue(RewardsDAL.COL_NAME_REWARD_STATUS_XCD, Value)
         End Set
     End Property
 
 
      <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)> 
-    Public Property RewardAmount() As DecimalType
+    Public Property RewardAmount As DecimalType
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_REWARD_AMOUNT) Is DBNull.Value Then
@@ -165,15 +165,15 @@ Public Class Rewards
                 Return New DecimalType(CType(Row(RewardsDAL.COL_NAME_REWARD_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(RewardsDAL.COL_NAME_REWARD_AMOUNT, Value)
+            SetValue(RewardsDAL.COL_NAME_REWARD_AMOUNT, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property RewardPymtModeXcd() As String
+    Public Property RewardPymtModeXcd As String
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_REWARD_PYMT_MODE_XCD) Is DBNull.Value Then
@@ -182,14 +182,14 @@ Public Class Rewards
                 Return CType(Row(RewardsDAL.COL_NAME_REWARD_PYMT_MODE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RewardsDAL.COL_NAME_REWARD_PYMT_MODE_XCD, Value)
+            SetValue(RewardsDAL.COL_NAME_REWARD_PYMT_MODE_XCD, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property FormSignedXcd() As String
+    Public Property FormSignedXcd As String
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_FORM_SIGNED_XCD) Is DBNull.Value Then
@@ -198,15 +198,15 @@ Public Class Rewards
                 Return CType(Row(RewardsDAL.COL_NAME_FORM_SIGNED_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RewardsDAL.COL_NAME_FORM_SIGNED_XCD, Value)
+            SetValue(RewardsDAL.COL_NAME_FORM_SIGNED_XCD, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50)>
-    Public Property SubscriptionFormSignedXcd() As String
+    Public Property SubscriptionFormSignedXcd As String
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_SUBSCRIPTION_FORM_SIGNED_XCD) Is DBNull.Value Then
@@ -215,15 +215,15 @@ Public Class Rewards
                 Return CType(Row(RewardsDAL.COL_NAME_SUBSCRIPTION_FORM_SIGNED_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RewardsDAL.COL_NAME_SUBSCRIPTION_FORM_SIGNED_XCD, Value)
+            SetValue(RewardsDAL.COL_NAME_SUBSCRIPTION_FORM_SIGNED_XCD, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50)>
-    Public Property InvoiceSignedXcd() As String
+    Public Property InvoiceSignedXcd As String
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_INVOICE_SIGNED_XCD) Is DBNull.Value Then
@@ -232,15 +232,15 @@ Public Class Rewards
                 Return CType(Row(RewardsDAL.COL_NAME_INVOICE_SIGNED_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RewardsDAL.COL_NAME_INVOICE_SIGNED_XCD, Value)
+            SetValue(RewardsDAL.COL_NAME_INVOICE_SIGNED_XCD, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50)>
-    Public Property RibSignedXcd() As String
+    Public Property RibSignedXcd As String
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_RIB_SIGNED_XCD) Is DBNull.Value Then
@@ -249,9 +249,9 @@ Public Class Rewards
                 Return CType(Row(RewardsDAL.COL_NAME_RIB_SIGNED_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RewardsDAL.COL_NAME_RIB_SIGNED_XCD, Value)
+            SetValue(RewardsDAL.COL_NAME_RIB_SIGNED_XCD, Value)
         End Set
     End Property
 
@@ -274,7 +274,7 @@ Public Class Rewards
 
 
     <ValidStringLength("", Max:=20)>
-    Public Property SequenceNumber() As String
+    Public Property SequenceNumber As String
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_SEQUENCE_NUMBER) Is DBNull.Value Then
@@ -283,15 +283,15 @@ Public Class Rewards
                 Return CType(Row(RewardsDAL.COL_NAME_SEQUENCE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RewardsDAL.COL_NAME_SEQUENCE_NUMBER, Value)
+            SetValue(RewardsDAL.COL_NAME_SEQUENCE_NUMBER, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=20)>
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_CERT_NUMBER) Is DBNull.Value Then
@@ -300,14 +300,14 @@ Public Class Rewards
                 Return CType(Row(RewardsDAL.COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RewardsDAL.COL_NAME_CERT_NUMBER, Value)
+            SetValue(RewardsDAL.COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=80)>
-    Public ReadOnly Property IbanNumber() As String
+    Public ReadOnly Property IbanNumber As String
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_IBAN_NUMBER) Is DBNull.Value Then
@@ -319,7 +319,7 @@ Public Class Rewards
     End Property
 
     <ValidStringLength("", Max:=80)>
-    Public ReadOnly Property SwiftCode() As String
+    Public ReadOnly Property SwiftCode As String
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_SWIFT_CODE) Is DBNull.Value Then
@@ -330,7 +330,7 @@ Public Class Rewards
         End Get
     End Property
 
-    Public Property GiftCardRequestId() As Guid
+    Public Property GiftCardRequestId As Guid
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_GIFT_CARD_REQUEST_ID) Is DBNull.Value Then
@@ -339,14 +339,14 @@ Public Class Rewards
                 Return New Guid(CType(Row(RewardsDAL.COL_NAME_GIFT_CARD_REQUEST_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(RewardsDAL.COL_NAME_GIFT_CARD_REQUEST_ID, Value)
+            SetValue(RewardsDAL.COL_NAME_GIFT_CARD_REQUEST_ID, Value)
         End Set
     End Property
 
         <ValidStringLength("", Max:=5)>
-    Public ReadOnly Property Dealer() As String
+    Public ReadOnly Property Dealer As String
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_DEALER) Is DBNull.Value Then
@@ -358,7 +358,7 @@ Public Class Rewards
     End Property
 
         <ValidStringLength("", Max:=5)>
-    Public ReadOnly Property Company() As String
+    Public ReadOnly Property Company As String
         Get
             CheckDeleted()
             If Row(RewardsDAL.COL_NAME_COMPANY) Is DBNull.Value Then
@@ -375,15 +375,15 @@ Public Class Rewards
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New RewardsDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -394,7 +394,7 @@ Public Class Rewards
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getRewardList(ByVal CompanyId As Guid, ByVal DealerId As Guid, ByVal CertificateNumber As String, ByVal RewardStatus As String) As RewardSearchDV
+    Public Shared Function getRewardList(CompanyId As Guid, DealerId As Guid, CertificateNumber As String, RewardStatus As String) As RewardSearchDV
         Try
             Dim dal As New RewardsDAL
             Dim fromdate As Date?
@@ -427,7 +427,7 @@ Public Class Rewards
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

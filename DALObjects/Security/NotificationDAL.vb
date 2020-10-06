@@ -39,37 +39,37 @@ Public Class NotificationDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("notification_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal languageId As Guid, _
-                             ByVal NotificationNameMask As String, _
-                             ByVal NotificationDetailMask As String, _
-                             ByVal NotificationTypeId As Guid, _
-                             ByVal AudianceTypeId As Guid, _
-                             ByVal BeginDate As String, _
-                             ByVal EndDate As String, _
-                             ByVal BeginDateOutage As String, _
-                             ByVal EndDateOutage As String, _
-                             ByVal IncludeDisabled As Boolean, _
-                             ByVal ExternalUser As String, _
-                             ByVal AudianceTypeExternalId As Guid, ByVal AudianceTypeInternalId As Guid, ByVal AudianceTypeAllId As Guid, _
-                             ByVal LimitResultset As Integer, ByVal sortOrder As String, ByVal sortBy As String,
-                             ByVal userType As String) As DataSet
+    Public Function LoadList(languageId As Guid, _
+                             NotificationNameMask As String, _
+                             NotificationDetailMask As String, _
+                             NotificationTypeId As Guid, _
+                             AudianceTypeId As Guid, _
+                             BeginDate As String, _
+                             EndDate As String, _
+                             BeginDateOutage As String, _
+                             EndDateOutage As String, _
+                             IncludeDisabled As Boolean, _
+                             ExternalUser As String, _
+                             AudianceTypeExternalId As Guid, AudianceTypeInternalId As Guid, AudianceTypeAllId As Guid, _
+                             LimitResultset As Integer, sortOrder As String, sortBy As String,
+                             userType As String) As DataSet
 
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
         Dim languageId1Param As DBHelper.DBHelperParameter
         Dim languageId2Param As DBHelper.DBHelperParameter
@@ -77,27 +77,27 @@ Public Class NotificationDAL
         Dim DateParam As Date
         Dim DateParam1 As Date
 
-        If ((Not (NotificationNameMask Is Nothing)) AndAlso (Me.FormatSearchMask(NotificationNameMask))) Then
+        If ((Not (NotificationNameMask Is Nothing)) AndAlso (FormatSearchMask(NotificationNameMask))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(note.notification_name)" & NotificationNameMask.ToUpper
         End If
 
-        If ((Not (NotificationDetailMask Is Nothing)) AndAlso (Me.FormatSearchMask(NotificationDetailMask))) Then
+        If ((Not (NotificationDetailMask Is Nothing)) AndAlso (FormatSearchMask(NotificationDetailMask))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(note.notification_details)" & NotificationDetailMask.ToUpper
         End If
 
         If NotificationTypeId <> Guid.Empty Then
-            whereClauseConditions &= Environment.NewLine & " AND note.notification_type_id = " & "hextoraw( '" & Me.GuidToSQLString(NotificationTypeId) & "')"
+            whereClauseConditions &= Environment.NewLine & " AND note.notification_type_id = " & "hextoraw( '" & GuidToSQLString(NotificationTypeId) & "')"
         End If
 
         If AudianceTypeId <> Guid.Empty Then
-            whereClauseConditions &= Environment.NewLine & " AND note.audiance_type_id = " & "hextoraw( '" & Me.GuidToSQLString(AudianceTypeId) & "')"
+            whereClauseConditions &= Environment.NewLine & " AND note.audiance_type_id = " & "hextoraw( '" & GuidToSQLString(AudianceTypeId) & "')"
         End If
 
         If userType.ToUpper.Equals("NON_ADMIN") Then
             If ExternalUser.Equals("Y") Then
-                whereClauseConditions &= " AND (note.AUDIANCE_TYPE_ID = " & "hextoraw( '" & Me.GuidToSQLString(AudianceTypeExternalId) & "') OR note.AUDIANCE_TYPE_ID = " & "hextoraw( '" & Me.GuidToSQLString(AudianceTypeAllId) & "'))"
+                whereClauseConditions &= " AND (note.AUDIANCE_TYPE_ID = " & "hextoraw( '" & GuidToSQLString(AudianceTypeExternalId) & "') OR note.AUDIANCE_TYPE_ID = " & "hextoraw( '" & GuidToSQLString(AudianceTypeAllId) & "'))"
             Else
-                whereClauseConditions &= " AND (note.AUDIANCE_TYPE_ID = " & "hextoraw( '" & Me.GuidToSQLString(AudianceTypeInternalId) & "') OR note.AUDIANCE_TYPE_ID = " & "hextoraw( '" & Me.GuidToSQLString(AudianceTypeAllId) & "'))"
+                whereClauseConditions &= " AND (note.AUDIANCE_TYPE_ID = " & "hextoraw( '" & GuidToSQLString(AudianceTypeInternalId) & "') OR note.AUDIANCE_TYPE_ID = " & "hextoraw( '" & GuidToSQLString(AudianceTypeAllId) & "'))"
             End If
         End If
 
@@ -188,9 +188,9 @@ Public Class NotificationDAL
 
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
 
@@ -207,19 +207,19 @@ Public Class NotificationDAL
                     sortByColumnName = "OUTAGE_BEGIN_DATE"
             End Select
 
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
                                             Environment.NewLine & "ORDER BY " & Environment.NewLine & sortByColumnName & "  " & sortOrder)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
-            languageId1Param = New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
-            languageId2Param = New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
+            languageId1Param = New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
+            languageId2Param = New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
 
-            rowNumParam = New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, LimitResultset)
+            rowNumParam = New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, LimitResultset)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, _
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, _
                             New DBHelper.DBHelperParameter() {languageId1Param, languageId2Param, rowNumParam})
             Return ds
         Catch ex As Exception
@@ -228,13 +228,13 @@ Public Class NotificationDAL
 
     End Function
 
-    Public Function LoadListForUser(ByVal userId As Guid, ByVal languageId As Guid, ExternalUser As String, _
-                                    ByVal AudianceTypeExternalId As Guid, ByVal AudianceTypeInternalId As Guid, ByVal AudianceTypeAllId As Guid, _
-                                    ByVal LimitResultset As Integer, ByVal sortOrder As String, ByVal sortBy As String) As DataSet
+    Public Function LoadListForUser(userId As Guid, languageId As Guid, ExternalUser As String, _
+                                    AudianceTypeExternalId As Guid, AudianceTypeInternalId As Guid, AudianceTypeAllId As Guid, _
+                                    LimitResultset As Integer, sortOrder As String, sortBy As String) As DataSet
 
 
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_USER")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOR_USER")
         Dim whereClauseConditions As String = ""
         Dim languageId1Param As DBHelper.DBHelperParameter
         Dim languageId2Param As DBHelper.DBHelperParameter
@@ -243,26 +243,26 @@ Public Class NotificationDAL
         Dim DateParam As Date
 
         If ExternalUser.Equals("Y") Then
-            whereClauseConditions &= " AND (N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & Me.GuidToSQLString(AudianceTypeExternalId) & "') OR N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & Me.GuidToSQLString(AudianceTypeAllId) & "'))"
+            whereClauseConditions &= " AND (N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & GuidToSQLString(AudianceTypeExternalId) & "') OR N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & GuidToSQLString(AudianceTypeAllId) & "'))"
         Else
-            whereClauseConditions &= " AND (N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & Me.GuidToSQLString(AudianceTypeInternalId) & "') OR N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & Me.GuidToSQLString(AudianceTypeAllId) & "'))"
+            whereClauseConditions &= " AND (N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & GuidToSQLString(AudianceTypeInternalId) & "') OR N.AUDIANCE_TYPE_ID = " & "hextoraw( '" & GuidToSQLString(AudianceTypeAllId) & "'))"
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
 
         Try
-            languageId1Param = New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
-            languageId2Param = New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
-            userParam = New DBHelper.DBHelperParameter(Me.COL_NAME_USER_ID, userId.ToByteArray())
+            languageId1Param = New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
+            languageId2Param = New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
+            userParam = New DBHelper.DBHelperParameter(COL_NAME_USER_ID, userId.ToByteArray())
 
-            rowNumParam = New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, LimitResultset)
+            rowNumParam = New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, LimitResultset)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, _
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, _
                             New DBHelper.DBHelperParameter() {languageId1Param, languageId2Param, userParam, rowNumParam})
             Return ds
         Catch ex As Exception
@@ -276,12 +276,12 @@ Public Class NotificationDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

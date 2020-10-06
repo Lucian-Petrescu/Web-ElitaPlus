@@ -72,13 +72,13 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
             Handles moUserCompanyMultipleDrop.SelectedDropChanged
             Try
                 rdealer.Checked = True
                 PopulateDealerDropDown()
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -109,7 +109,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -119,36 +119,36 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 Else
                     ClearErrLabels()
-                    If Not ViewState("dtLatestAccountingCloseDate") Is System.DBNull.Value Then
+                    If ViewState("dtLatestAccountingCloseDate") IsNot System.DBNull.Value Then
                         dtLatestAccountingCloseDate = CType(ViewState("dtLatestAccountingCloseDate"), Date)
                     End If
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -159,9 +159,9 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(MonthYearLabel)
-            Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
-            If Me.rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
+            ClearLabelErrSign(MonthYearLabel)
+            ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+            If rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
         End Sub
 
 #End Region
@@ -175,7 +175,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, ALL + " " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
 
             End If
@@ -221,7 +221,7 @@ Namespace Reports
             PopulateYearsDropdown()
             PopulateMonthsDropdown()
             PopulateDealerDropDown()
-            Me.rdealer.Checked = True
+            rdealer.Checked = True
             'load Accounting Close Date
             dtLatestAccountingCloseDate = AccountingCloseInfo.GetAccountingCloseDate(ElitaPlusIdentity.Current.ActiveUser.CompanyId, Date.Today)
             ViewState("dtLatestAccountingCloseDate") = dtLatestAccountingCloseDate
@@ -231,7 +231,7 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal companyCode As String, ByVal dealerCode As String, ByVal selectedYearAndMonth As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, dealerCode As String, selectedYearAndMonth As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String = RPT_FILENAME
@@ -269,8 +269,8 @@ Namespace Reports
             Dim compCode As String = LookupListNew.GetCodeFromId("COMPANIES", oCompanyId)
             Dim oCompanyGrpId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
 
-            Dim selectedYear As String = Me.GetSelectedDescription(Me.YearDropDownList)
-            Dim selectedMonthID As Guid = Me.GetSelectedItem(Me.MonthDropDownList)
+            Dim selectedYear As String = GetSelectedDescription(YearDropDownList)
+            Dim selectedMonthID As Guid = GetSelectedItem(MonthDropDownList)
             Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
 
             'Validating the Company selection
@@ -286,7 +286,7 @@ Namespace Reports
 
             Dim selectedDate As String = GetPreciseDate(selectedYear & "/" & selectedMonth & "/01")
             Dim beginDate As Date = Date.Parse(selectedDate, System.Globalization.CultureInfo.InvariantCulture)
-            Me.ValidateAccountingCloseDate(beginDate, MonthYearLabel)
+            ValidateAccountingCloseDate(beginDate, MonthYearLabel)
             Dim selectedDateString As String = selectedYear & selectedMonth & "01"
 
             Dim selectedDealerId As Guid = DealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(Me.cboDealerDec)
@@ -295,7 +295,7 @@ Namespace Reports
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Dim langCode As String = LookupListNew.GetCodeFromId("LANGUAGES", langId)
 
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             Else
                 If selectedDealerId.Equals(Guid.Empty) Then
@@ -312,13 +312,13 @@ Namespace Reports
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
 
         End Sub
-        Private Sub ValidateAccountingCloseDate(ByVal dtDateToCompare As Date, ByVal lbl As Label)
+        Private Sub ValidateAccountingCloseDate(dtDateToCompare As Date, lbl As Label)
             If dtDateToCompare > dtLatestAccountingCloseDate Then
                 ElitaPlusPage.SetLabelError(lbl)
                 Throw New GUIException(Message.MSG_ACCOUNTING_MONTH_NOT_YET_COMPLETED_IS_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ACCOUNTING_MONTH_NOT_YET_COMPLETED_IS_NOT_ALLOWED)
             End If
         End Sub
-        Private Function GetPreciseDate(ByVal strInquiringDate As String) As String
+        Private Function GetPreciseDate(strInquiringDate As String) As String
             Dim dtInquiringDate As Date = Date.Parse((strInquiringDate), System.Globalization.CultureInfo.InvariantCulture)
             Dim dtInqAccountingCloseDate As Date = AccountingCloseInfo.GetAccountingCloseDate(ElitaPlusIdentity.Current.ActiveUser.CompanyId, dtInquiringDate)
             dtInqAccountingCloseDate = dtInqAccountingCloseDate.AddDays(1)

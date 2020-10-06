@@ -41,8 +41,8 @@
 
 #Region "Load Methods"
 
-    Public Function LoadPaymentHistList(ByVal certId As Guid, ByVal Sortby As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PAYMENT_HISTORY")
+    Public Function LoadPaymentHistList(certId As Guid, Sortby As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_PAYMENT_HISTORY")
 
         Try
             selectStmt = OracleDbHelper.ReplaceParameter(selectStmt, COL_NAME_CERT_ID.ToUpper, certId)
@@ -57,14 +57,14 @@
 
             selectStmt &= " order by " & Sortby
 
-            Return OracleDbHelper.Fetch(selectStmt, Me.PAYMENT_TABLE_NAME)
+            Return OracleDbHelper.Fetch(selectStmt, PAYMENT_TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadCollectedHistList(ByVal certId As Guid, ByVal Sortby As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_COLLECTED_HISTORY")
+    Public Function LoadCollectedHistList(certId As Guid, Sortby As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_COLLECTED_HISTORY")
 
         Try
             selectStmt = OracleDbHelper.ReplaceParameter(selectStmt, COL_NAME_CERT_ID.ToUpper, certId)
@@ -79,15 +79,15 @@
 
             selectStmt &= " order by " & Sortby
 
-            Return OracleDbHelper.Fetch(selectStmt, Me.COLLECTED_TABLE_NAME)
+            Return OracleDbHelper.Fetch(selectStmt, COLLECTED_TABLE_NAME)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadPaymentTotals(ByVal certId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/PAYMENT_SUM_AND_COUNT")
+    Public Function LoadPaymentTotals(certId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/PAYMENT_SUM_AND_COUNT")
         'Dim parameters() As DBHelper.DBHelperParameter
 
         'parameters = New DBHelper.DBHelperParameter() _
@@ -97,7 +97,7 @@
         Try
             selectStmt = OracleDbHelper.ReplaceParameter(selectStmt, COL_NAME_CERT_ID.ToUpper, certId)
 
-            Return OracleDbHelper.Fetch(selectStmt, Me.PAYMENT_TABLE_NAME)
+            Return OracleDbHelper.Fetch(selectStmt, PAYMENT_TABLE_NAME)
 
             'DBHelper.Fetch(ds, selectStmt, Me.PAYMENT_TABLE_NAME, parameters)
             'Return ds
@@ -107,8 +107,8 @@
 
     End Function
 
-    Public Function LoadCollectedTotals(ByVal certId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/COLLECTED_SUM_AND_COUNT")
+    Public Function LoadCollectedTotals(certId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/COLLECTED_SUM_AND_COUNT")
         'Dim parameters() As DBHelper.DBHelperParameter
 
         'parameters = New DBHelper.DBHelperParameter() _
@@ -118,7 +118,7 @@
         Try
             selectStmt = OracleDbHelper.ReplaceParameter(selectStmt, COL_NAME_CERT_ID.ToUpper, certId)
 
-            Return OracleDbHelper.Fetch(selectStmt, Me.COLLECTED_TABLE_NAME)
+            Return OracleDbHelper.Fetch(selectStmt, COLLECTED_TABLE_NAME)
 
             'DBHelper.Fetch(ds, selectStmt, Me.COLLECTED_TABLE_NAME, parameters)
             'Return ds

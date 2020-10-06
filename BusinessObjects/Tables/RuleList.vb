@@ -8,46 +8,46 @@ Public Class RuleList
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New RuleListDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -58,20 +58,20 @@ Public Class RuleList
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New RuleListDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -83,8 +83,8 @@ Public Class RuleList
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        Me.Effective = Date.Now
-        Me.Expiration = New Date(2499, 12, 31, 23, 59, 59)
+        Effective = Date.Now
+        Expiration = New Date(2499, 12, 31, 23, 59, 59)
     End Sub
 #End Region
 
@@ -114,7 +114,7 @@ Public Class RuleList
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(RuleListDAL.COL_NAME_CODE, Value)
+            SetValue(RuleListDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
@@ -131,7 +131,7 @@ Public Class RuleList
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(RuleListDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(RuleListDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -148,7 +148,7 @@ Public Class RuleList
         End Get
         Set(ByVal Value As DateTimeType)
             CheckDeleted()
-            Me.SetValue(RuleListDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(RuleListDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
@@ -165,7 +165,7 @@ Public Class RuleList
         End Get
         Set(ByVal Value As DateTimeType)
             CheckDeleted()
-            Me.SetValue(RuleListDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(RuleListDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
@@ -190,15 +190,15 @@ Public Class RuleList
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New RuleListDAL
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -216,20 +216,20 @@ Public Class RuleList
     End Function
 
     Public Sub Copy(ByVal original As RuleList)
-        If Not Me.IsNew Then
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Question")
         End If
         MyBase.CopyFrom(original)
-        Me.Effective = Date.Now
-        Me.Expiration = New Date(2499, 12, 31, 23, 59, 59)
+        Effective = Date.Now
+        Expiration = New Date(2499, 12, 31, 23, 59, 59)
         ''copy the childrens     
         
         For Each detail As RuleListDetail In original.RuleChildren
-            Dim newDetail As RuleListDetail = Me.RuleChildren.GetNewChild
+            Dim newDetail As RuleListDetail = RuleChildren.GetNewChild
             newDetail.Copy(detail)
-            newDetail.RuleListId = Me.Id
-            newDetail.Effective = Me.Effective
-            newDetail.Expiration = Me.Expiration
+            newDetail.RuleListId = Id
+            newDetail.Effective = Effective
+            newDetail.Expiration = Expiration
             newDetail.Save()
         Next
 
@@ -273,7 +273,7 @@ Public Class RuleList
     'Added manually to the code
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 #End Region
@@ -342,7 +342,7 @@ Public Class RuleList
     Public Function GetRuleListSelectionView() As RuleListDetailSelectionView
         Dim t As DataTable = RuleListDetailSelectionView.CreateTable
 
-        For Each detail As RuleListDetail In Me.RuleChildren
+        For Each detail As RuleListDetail In RuleChildren
             Dim row As DataRow = t.NewRow
             row(RuleListDetailSelectionView.COL_NAME_RULE_ID) = detail.RuleId.ToByteArray
             row(RuleListDetailSelectionView.COL_NAME_RULE_LIST_DETAIL_ID) = detail.Id.ToByteArray
@@ -382,15 +382,15 @@ Public Class RuleList
     End Class
 
     Public Function GetRuleListDetailChild(ByVal childId As Guid) As RuleListDetail
-        Return CType(Me.RuleChildren.GetChild(childId), RuleListDetail)
+        Return CType(RuleChildren.GetChild(childId), RuleListDetail)
     End Function
 
     Public Function GetNewRRuleListDetailChild() As RuleListDetail
-        Dim newRuleListDetail As RuleListDetail = CType(Me.RuleChildren.GetNewChild, RuleListDetail)
+        Dim newRuleListDetail As RuleListDetail = CType(RuleChildren.GetNewChild, RuleListDetail)
         With newRuleListDetail
-            .RuleListId = Me.Id
+            .RuleListId = Id
             .Effective = DateTime.Now
-            .Expiration = Me.Expiration
+            .Expiration = Expiration
         End With
         Return newRuleListDetail
     End Function
@@ -399,7 +399,7 @@ Public Class RuleList
         Try
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
-            For Each dealerrule As DealerRuleList In Me.DealerRuleChildren
+            For Each dealerrule As DealerRuleList In DealerRuleChildren
                 Dim dFound As Boolean = False
                 For Each Str As String In dealerlist
                     Dim dealer_id As Guid = New Guid(Str)
@@ -418,14 +418,14 @@ Public Class RuleList
             'next now add those items which are there in user control but we don't have it
             For Each Str As String In dealerlist
                 Dim dFound As Boolean = False
-                For Each dealerrule As DealerRuleList In Me.DealerRuleChildren
+                For Each dealerrule As DealerRuleList In DealerRuleChildren
                     Dim dealer_id As Guid = New Guid(Str)
                     If dealerrule.DealerId = dealer_id Then
                         dFound = True : Exit For
                     End If
                 Next
                 If Not dFound Then
-                    Dim newDealerrule As DealerRuleList = Me.GetNewRDealerRuleListChild()
+                    Dim newDealerrule As DealerRuleList = GetNewRDealerRuleListChild()
                     newDealerrule.BeginEdit()
                     newDealerrule.DealerId = New Guid(Str)
                     newDealerrule.EndEdit()
@@ -442,7 +442,7 @@ Public Class RuleList
         Try
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
-            For Each companyrule As CompanyRuleList In Me.CompanyRuleChildren
+            For Each companyrule As CompanyRuleList In CompanyRuleChildren
                 Dim dFound As Boolean = False
                 For Each Str As String In companylist
                     Dim company_id As Guid = New Guid(Str)
@@ -461,14 +461,14 @@ Public Class RuleList
             'next now add those items which are there in user control but we don't have it
             For Each Str As String In companylist
                 Dim dFound As Boolean = False
-                For Each companyrule As CompanyRuleList In Me.CompanyRuleChildren
+                For Each companyrule As CompanyRuleList In CompanyRuleChildren
                     Dim company_id As Guid = New Guid(Str)
                     If companyrule.CompanyId = company_id Then
                         dFound = True : Exit For
                     End If
                 Next
                 If Not dFound Then
-                    Dim newCompanyrule As CompanyRuleList = Me.GetNewRCompanyRuleListChild()
+                    Dim newCompanyrule As CompanyRuleList = GetNewRCompanyRuleListChild()
                     newCompanyrule.BeginEdit()
                     newCompanyrule.CompanyId = New Guid(Str)
                     newCompanyrule.EndEdit()
@@ -490,7 +490,7 @@ Public Class RuleList
     End Property
     Public Function GetDealerRuleListSelectionView() As DealerRuleListDetailSelectionView
         Dim t As DataTable = DealerRuleListDetailSelectionView.CreateTable
-        For Each detail As DealerRuleList In Me.DealerRuleChildren
+        For Each detail As DealerRuleList In DealerRuleChildren
             Dim row As DataRow = t.NewRow
             row(DealerRuleListDetailSelectionView.COL_NAME_DEALER_ID) = detail.DealerId.ToByteArray
             row(DealerRuleListDetailSelectionView.COL_NAME_DEALER_RULE_LIST_ID) = detail.Id.ToByteArray
@@ -529,15 +529,15 @@ Public Class RuleList
     End Class
 
     Public Function GetDealerRuleListChild(ByVal childId As Guid) As DealerRuleList
-        Return CType(Me.RuleChildren.GetChild(childId), DealerRuleList)
+        Return CType(RuleChildren.GetChild(childId), DealerRuleList)
     End Function
 
     Public Function GetNewRDealerRuleListChild() As DealerRuleList
-        Dim newDealerRuleList As DealerRuleList = CType(Me.DealerRuleChildren.GetNewChild, DealerRuleList)
+        Dim newDealerRuleList As DealerRuleList = CType(DealerRuleChildren.GetNewChild, DealerRuleList)
         With newDealerRuleList
-            .RuleListId = Me.Id
+            .RuleListId = Id
             .Effective = DateTime.Now
-            .Expiration = Me.Expiration
+            .Expiration = Expiration
         End With
         Return newDealerRuleList
     End Function
@@ -546,7 +546,7 @@ Public Class RuleList
         Try
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
-            For Each dealerrule As RuleListDetail In Me.RuleChildren
+            For Each dealerrule As RuleListDetail In RuleChildren
                 Dim dFound As Boolean = False
                 For Each Str As String In RuleDetail
                     Dim dealer_id As Guid = New Guid(Str)
@@ -564,14 +564,14 @@ Public Class RuleList
             'next now add those items which are there in user control but we don't have it
             For Each Str As String In RuleDetail
                 Dim dFound As Boolean = False
-                For Each dealerrule As RuleListDetail In Me.RuleChildren
+                For Each dealerrule As RuleListDetail In RuleChildren
                     Dim dealer_id As Guid = New Guid(Str)
                     If dealerrule.RuleId = dealer_id Then
                         dFound = True : Exit For
                     End If
                 Next
                 If Not dFound Then
-                    Dim newDealerrule As RuleListDetail = Me.GetNewRRuleListDetailChild()
+                    Dim newDealerrule As RuleListDetail = GetNewRRuleListDetailChild()
                     newDealerrule.BeginEdit()
                     newDealerrule.RuleId = New Guid(Str)
                     newDealerrule.EndEdit()
@@ -592,7 +592,7 @@ Public Class RuleList
     End Property
     Public Function GetCompanyRuleListSelectionView() As CompanyRuleListDetailSelectionView
         Dim t As DataTable = CompanyRuleListDetailSelectionView.CreateTable
-        For Each detail As CompanyRuleList In Me.CompanyRuleChildren
+        For Each detail As CompanyRuleList In CompanyRuleChildren
             Dim row As DataRow = t.NewRow
             row(CompanyRuleListDetailSelectionView.COL_NAME_COMPANY_ID) = detail.CompanyId.ToByteArray
             row(CompanyRuleListDetailSelectionView.COL_NAME_COMPANY_RULE_LIST_ID) = detail.Id.ToByteArray
@@ -631,15 +631,15 @@ Public Class RuleList
     End Class
 
     Public Function GetCompanyRuleListChild(ByVal childId As Guid) As CompanyRuleList
-        Return CType(Me.RuleChildren.GetChild(childId), CompanyRuleList)
+        Return CType(RuleChildren.GetChild(childId), CompanyRuleList)
     End Function
 
     Public Function GetNewRCompanyRuleListChild() As CompanyRuleList
-        Dim newCompanyRuleList As CompanyRuleList = CType(Me.CompanyRuleChildren.GetNewChild, CompanyRuleList)
+        Dim newCompanyRuleList As CompanyRuleList = CType(CompanyRuleChildren.GetNewChild, CompanyRuleList)
         With newCompanyRuleList
-            .RuleListId = Me.Id
+            .RuleListId = Id
             .Effective = DateTime.Now
-            .Expiration = Me.Expiration
+            .Expiration = Expiration
         End With
         Return newCompanyRuleList
     End Function
@@ -658,15 +658,15 @@ Public Class RuleList
         Try
             Dim overlap As New OverlapValidationVisitorDAL
             Dim ds As New DataSet
-            ds = overlap.LoadList(Me.Id, Me.GetType.Name, Me.Code, Me.Effective, Me.Expiration, Guid.Empty)
+            ds = overlap.LoadList(Id, [GetType].Name, Code, Effective, Expiration, Guid.Empty)
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dtrow As DataRow In ds.Tables(0).Rows
                     Dim qId As Guid = New Guid(CType(dtrow(RuleListDAL.TABLE_KEY_NAME), Byte()))
-                    Dim ExpRuleList As New RuleList(qId, Me.Dataset)
+                    Dim ExpRuleList As New RuleList(qId, Dataset)
 
-                    If Me.Effective.Value < ExpRuleList.Expiration.Value Then
+                    If Effective.Value < ExpRuleList.Expiration.Value Then
                         'Expire overlapping question 1 second before current question
-                        ExpRuleList.Accept(New ExpirationVisitor(Me.Effective))
+                        ExpRuleList.Accept(New ExpirationVisitor(Effective))
                     End If
 
                 Next
@@ -679,7 +679,7 @@ Public Class RuleList
     End Function
 
     Function CheckIfListIsAssignedToDealer() As Boolean
-        If Me.DealerRuleChildren.Count > 0 Then
+        If DealerRuleChildren.Count > 0 Then
             Return True
         End If
         Return False

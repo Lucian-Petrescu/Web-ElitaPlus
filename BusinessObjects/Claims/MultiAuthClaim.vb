@@ -11,26 +11,26 @@ Public NotInheritable Class MultiAuthClaim
     End Sub
 
     'New BO attaching to a BO family
-    Friend Sub New(ByVal familyDS As DataSet)
+    Friend Sub New(familyDS As DataSet)
         MyBase.New(familyDS)
     End Sub
 
 
     'Existing BO
-    Friend Sub New(ByVal id As Guid)
+    Friend Sub New(id As Guid)
         MyBase.New(id)
     End Sub
 
     'Existing BO attaching to a BO family
-    Friend Sub New(ByVal id As Guid, ByVal familyDS As DataSet, Optional ByVal blnMustReload As Boolean = False)
+    Friend Sub New(id As Guid, familyDS As DataSet, Optional ByVal blnMustReload As Boolean = False)
         MyBase.New(id, familyDS, blnMustReload)
     End Sub
 
-    Friend Sub New(ByVal row As DataRow)
+    Friend Sub New(row As DataRow)
         MyBase.New(row)
     End Sub
 
-    Friend Sub New(ByVal claimNumber As String, ByVal companyId As Guid)
+    Friend Sub New(claimNumber As String, companyId As Guid)
         MyBase.New(claimNumber, companyId)
     End Sub
 
@@ -52,11 +52,11 @@ Public NotInheritable Class MultiAuthClaim
 #Region "Claim Issues"
     Public Overrides Function CanIssuesReopen() As Boolean
         Dim flag As Boolean = False
-        If (Me.ClaimAuthorizationChildren.Count = 0) Then Return True
+        If (ClaimAuthorizationChildren.Count = 0) Then Return True
 
-        If (Me.HasActiveAuthorizations) Then
+        If (HasActiveAuthorizations) Then
             Dim claimNumber As String = If(Me.ClaimNumber = String.Empty, "0", Me.ClaimNumber)
-            If (ClaimInvoice.getPaymentsList(Me.CompanyId, claimNumber).Count = 0) Then
+            If (ClaimInvoice.getPaymentsList(CompanyId, claimNumber).Count = 0) Then
                 If (Me.Status = BasicClaimStatus.Active Or Me.Status = BasicClaimStatus.Pending Or Me.Status = BasicClaimStatus.Denied) Then
                     flag = True
                 End If
@@ -85,9 +85,9 @@ Public NotInheritable Class MultiAuthClaim
     Public Overrides ReadOnly Property IsDaysLimitExceeded() As Boolean
         Get
             Dim flag = False
-            If (Not Me.IsNew) Then
-                For Each auth As ClaimAuthorization In Me.ClaimAuthorizationChildren
-                    If Not Me.ClaimActivityCode Is Nothing AndAlso Me.ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK AndAlso Not auth.RepairDate Is Nothing AndAlso Not auth.ServiceCenter Is Nothing Then
+            If (Not IsNew) Then
+                For Each auth As ClaimAuthorization In ClaimAuthorizationChildren
+                    If Not ClaimActivityCode Is Nothing AndAlso ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK AndAlso Not auth.RepairDate Is Nothing AndAlso Not auth.ServiceCenter Is Nothing Then
                         Dim elpasedDaysSinceRepaired As Long
                         If Not auth.PickUpDate Is Nothing Then
                             elpasedDaysSinceRepaired = Date.Now.Subtract(auth.PickUpDate.Value).Days
@@ -111,7 +111,7 @@ Public NotInheritable Class MultiAuthClaim
             Dim result As Boolean = False
             Dim claimdal As New ClaimDAL
 
-            Dim maxNoOfSvcWrntyAllowed As Integer = Me.Certificate.Product.AttributeValues.Where(Function(av) av.Attribute.UiProgCode = "").FirstOrDefault().Value.ToString()
+            Dim maxNoOfSvcWrntyAllowed As Integer = Certificate.Product.AttributeValues.Where(Function(av) av.Attribute.UiProgCode = "").FirstOrDefault().Value.ToString()
             Dim totalSvcWrntyForCert As Integer = claimdal.GetTotalSvcWarrantyByCert(Certificate.Id, Dealer.Id)
 
             If (totalSvcWrntyForCert >= maxNoOfSvcWrntyAllowed) Then
@@ -154,14 +154,14 @@ Public NotInheritable Class MultiAuthClaim
 
     Public ReadOnly Property HasMultipleServiceCenters() As Boolean
         Get
-            Return Not Me.EvaluateForSingleServiceCenter()
+            Return Not EvaluateForSingleServiceCenter()
         End Get
     End Property
 
     Public ReadOnly Property ReserveAmount() As DecimalType
         Get
             Dim dal As New ClaimDAL
-            Return dal.GetClaimReserveAmount(Me.Id)
+            Return dal.GetClaimReserveAmount(Id)
         End Get
     End Property
 #End Region
@@ -187,40 +187,40 @@ Public NotInheritable Class MultiAuthClaim
         MyBase.PickUpDate = GetPickUpDate()
 
         'Updating the amount in case some one changed deductible on Claim
-        Me.UpdateDeductibleAmountOnLineItems()
+        UpdateDeductibleAmountOnLineItems()
 
         MyBase.Save(Transaction)
 
     End Sub
-    Public Function AddClaimAuthorization(ByVal serviceCenterId As Guid) As ClaimAuthorization
+    Public Function AddClaimAuthorization(serviceCenterId As Guid) As ClaimAuthorization
         Dim newClaimAuth As ClaimAuthorization
         Try
-            newClaimAuth = CType(Me.ClaimAuthorizationChildren.GetNewChild(), BusinessObjectsNew.ClaimAuthorization)
-            newClaimAuth.Prepopulate(serviceCenterId, Me.Id)
-            Me.CalculateAuthAmount()
-            If Me.DeductibleType.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT Then
-                Me.PrepopulateDeductible()
+            newClaimAuth = CType(ClaimAuthorizationChildren.GetNewChild(), BusinessObjectsNew.ClaimAuthorization)
+            newClaimAuth.Prepopulate(serviceCenterId, Id)
+            CalculateAuthAmount()
+            If DeductibleType.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT Then
+                PrepopulateDeductible()
             End If
-            If Me.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) And
+            If Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) And
                 newClaimAuth.ContainsDeductible Then
                 newClaimAuth.AddDeductibleLineItem()
             End If
             newClaimAuth.Save()
             Return newClaimAuth
         Catch ex As DataBaseAccessException
-            Me.ClaimAuthorizationChildren.GetChild(newClaimAuth.Id).Delete()
+            ClaimAuthorizationChildren.GetChild(newClaimAuth.Id).Delete()
             Throw ex
         End Try
     End Function
 
-    Private Function AddClaimAuthorization(ByVal serviceCenterId As Guid, ByVal dv As PriceListDetail.PriceListResultsDV, Optional ByVal specialInstructions As String = Nothing) As ClaimAuthorization
+    Private Function AddClaimAuthorization(serviceCenterId As Guid, dv As PriceListDetail.PriceListResultsDV, Optional ByVal specialInstructions As String = Nothing) As ClaimAuthorization
         Dim newClaimAuth As ClaimAuthorization
 
-        newClaimAuth = CType(Me.ClaimAuthorizationChildren.GetNewChild(), BusinessObjectsNew.ClaimAuthorization)
-        newClaimAuth.Prepopulate(serviceCenterId, Me.Id, dv)
+        newClaimAuth = CType(ClaimAuthorizationChildren.GetNewChild(), BusinessObjectsNew.ClaimAuthorization)
+        newClaimAuth.Prepopulate(serviceCenterId, Id, dv)
         newClaimAuth.Save()
-        Me.CalculateAuthAmount()
-        Me.PrepopulateDeductible()
+        CalculateAuthAmount()
+        PrepopulateDeductible()
         If Not specialInstructions Is Nothing Then newClaimAuth.SpecialInstruction = specialInstructions
 
         Return newClaimAuth
@@ -228,7 +228,7 @@ Public NotInheritable Class MultiAuthClaim
 
     Private Function CalculateAuthAmount() As Decimal
         Dim amount As Decimal = New Decimal(0)
-        For Each auth As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
+        For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
             amount = amount + auth.AuthorizedAmount
         Next
         Return amount
@@ -237,7 +237,7 @@ Public NotInheritable Class MultiAuthClaim
     Private Function GetRepairDate() As DateType
         Dim repairDate As DateType = Nothing
         Dim createdOrModifiedDate As DateType = Nothing
-        For Each auth As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
+        For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
             If (Not auth.RepairDate Is Nothing) Then
                 If (createdOrModifiedDate Is Nothing) Then
                     createdOrModifiedDate = If(auth.ModifiedDate Is Nothing, auth.CreatedDate, auth.ModifiedDate)
@@ -255,7 +255,7 @@ Public NotInheritable Class MultiAuthClaim
     Private Function GetPickUpDate() As DateType
         Dim pickUpDate As DateType = Nothing
         Dim createdOrModifiedDate As DateType = Nothing
-        For Each auth As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
+        For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
             If (Not auth.RepairDate Is Nothing) Then
                 If (createdOrModifiedDate Is Nothing) Then
                     createdOrModifiedDate = If(auth.ModifiedDate Is Nothing, auth.CreatedDate, auth.ModifiedDate)
@@ -275,7 +275,7 @@ Public NotInheritable Class MultiAuthClaim
 
     Public Function HasActiveAuthorizations() As Boolean
         Dim flag As Boolean = True
-        For Each auth As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
+        For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
             If (auth.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled _
                 Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid _
                 Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Void) Then
@@ -288,7 +288,7 @@ Public NotInheritable Class MultiAuthClaim
 
     Public Function HasNoReconsiledAuthorizations() As Boolean
         Dim flag As Boolean = True
-        For Each auth As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
+        For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
             If (auth.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled _
                 Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid _
                 Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Void) Then
@@ -303,33 +303,33 @@ Public NotInheritable Class MultiAuthClaim
         Return HasActiveAuthorizations() AndAlso (Me.Status = BasicClaimStatus.Active)
     End Function
 
-    Public Sub ChangeCoverageType(ByVal certItemCoverageTypeId As Guid, ByVal causeOfLossId As Guid)
+    Public Sub ChangeCoverageType(certItemCoverageTypeId As Guid, causeOfLossId As Guid)
 
         If (Not CanChangeCoverage()) Then
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, "COVERAGE_NOT_IN_EFFECT")
         End If
 
         Dim searchDV As CertItemCoverage.CertItemCoverageSearchDV = Nothing
-        searchDV = CertItemCoverage.GetClaimCoverageType(Me.CertificateId, Me.CertItemCoverageId, Me.LossDate, Me.StatusCode, Nothing)
+        searchDV = CertItemCoverage.GetClaimCoverageType(CertificateId, CertItemCoverageId, LossDate, StatusCode, Nothing)
         If (searchDV.Count > 0) Then
 
-            Me.CertItemCoverageId = certItemCoverageTypeId
-            Me.CalculateFollowUpDate()
+            CertItemCoverageId = certItemCoverageTypeId
+            CalculateFollowUpDate()
             Me.CauseOfLossId = causeOfLossId
 
-            Me.CheckForRules()
+            CheckForRules()
 
             If (Not Me.Status = BasicClaimStatus.Pending Or Not Me.Status = BasicClaimStatus.Denied) Then
-                For Each auth As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
+                For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
                     If (Not auth.IsNew) Then
                         auth.Void()
                         'Create New Authorization on basis of new method of Repair
-                        Me.AddClaimAuthorization(auth.ServiceCenterId)
+                        AddClaimAuthorization(auth.ServiceCenterId)
                     End If
                 Next
             End If
 
-            Me.Save()
+            Save()
 
         End If
 
@@ -340,7 +340,7 @@ Public NotInheritable Class MultiAuthClaim
         'Assumption : MultiAuthClaim will be only having one service center
         Dim serviceCenterId As Guid = Nothing
 
-        For Each auth As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
+        For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
             If (auth.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Pending) Then
                 serviceCenterId = auth.ServiceCenterId
                 Exit For
@@ -350,19 +350,19 @@ Public NotInheritable Class MultiAuthClaim
     End Function
 
     Public Sub VoidAuthorizations()
-        For Each auth As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
+        For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
             auth.Void()
         Next
     End Sub
 
-    Public Sub CreateReplacementFromRepair(ByVal newServiceCenterId As Guid)
+    Public Sub CreateReplacementFromRepair(newServiceCenterId As Guid)
 
         If newServiceCenterId.Equals(Guid.Empty) Then
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, "NO_SERVICE_CENTER")
         End If
         Dim isNewServiceCenter As Boolean = True
 
-        For Each auth As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
+        For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
             'Commented for DEF-17541
             'If (Not auth.IsNew) Then
 
@@ -373,7 +373,7 @@ Public NotInheritable Class MultiAuthClaim
             Dim dvReplacementPrice As PriceListDetail.PriceListResultsDV
 
             'Check first if Price List is configured for estimate price..
-            dvEstimatePrice = Me.GetPricesForServiceType(auth.ServiceCenter.Code, Codes.SERVICE_CLASS__REPAIR, Codes.SERVICE_TYPE__ESTIMATE_PRICE, serviceLevelCode)
+            dvEstimatePrice = GetPricesForServiceType(auth.ServiceCenter.Code, Codes.SERVICE_CLASS__REPAIR, Codes.SERVICE_TYPE__ESTIMATE_PRICE, serviceLevelCode)
 
             If (dvEstimatePrice Is Nothing OrElse dvEstimatePrice.Count = 0) Then
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, Messages.PRICE_LIST_NOT_FOUND)
@@ -381,31 +381,31 @@ Public NotInheritable Class MultiAuthClaim
 
             Dim repairEstimate As Decimal = CType(dvEstimatePrice(0)(PriceListDetail.PriceListResultsDV.COL_NAME_PRICE), Decimal)
 
-            Dim servCenter As ServiceCenter = New ServiceCenter(newServiceCenterId, Me.Dataset)
+            Dim servCenter As ServiceCenter = New ServiceCenter(newServiceCenterId, Dataset)
 
             'Check first if Price List is configured for replacement price..
-            dvReplacementPrice = Me.GetPricesForServiceType(servCenter.Code, Codes.SERVICE_CLASS__REPLACEMENT, Codes.SERVICE_TYPE__REPLACEMENT_PRICE, serviceLevelCode)
+            dvReplacementPrice = GetPricesForServiceType(servCenter.Code, Codes.SERVICE_CLASS__REPLACEMENT, Codes.SERVICE_TYPE__REPLACEMENT_PRICE, serviceLevelCode)
 
             If (dvReplacementPrice Is Nothing OrElse dvReplacementPrice.Count = 0) Then
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, Messages.PRICE_LIST_NOT_FOUND)
             End If
 
 
-            Me.CalculateFollowUpDate()
-            Me.ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT)
-            Me.MethodOfRepairId = LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)
-            Me.ReasonClosedId = Guid.Empty
-            Me.ClaimClosedDate = Nothing
+            CalculateFollowUpDate()
+            ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT)
+            MethodOfRepairId = LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__REPLACEMENT)
+            ReasonClosedId = Guid.Empty
+            ClaimClosedDate = Nothing
 
             auth.Void()
 
             If (auth.ServiceCenterId = newServiceCenterId) Then
                 isNewServiceCenter = False
-                Dim claimAuth As ClaimAuthorization = Me.AddClaimAuthorization(newServiceCenterId)
+                Dim claimAuth As ClaimAuthorization = AddClaimAuthorization(newServiceCenterId)
 
                 If (Not repairEstimate.Equals(New Decimal(0D))) Then claimAuth.PopulateClaimAuthItems(dvEstimatePrice)
             Else
-                If (Not repairEstimate.Equals(New Decimal(0D))) Then Me.AddClaimAuthorization(auth.ServiceCenterId, dvEstimatePrice)
+                If (Not repairEstimate.Equals(New Decimal(0D))) Then AddClaimAuthorization(auth.ServiceCenterId, dvEstimatePrice)
 
             End If
             'Commented for DEF-17541
@@ -413,19 +413,19 @@ Public NotInheritable Class MultiAuthClaim
 
         Next
 
-        If isNewServiceCenter Then Me.AddClaimAuthorization(newServiceCenterId)
-        Me.AddNewComment()
+        If isNewServiceCenter Then AddClaimAuthorization(newServiceCenterId)
+        AddNewComment()
 
-        Me.Save()
+        Save()
     End Sub
 
-    Public Function GetPricesForServiceType(ByVal serviceCenterCode As String, ByVal serviceClassCode As String, ByVal serviceTypeCode As String, ByVal serviceLeveCode As String) As DataView
+    Public Function GetPricesForServiceType(serviceCenterCode As String, serviceClassCode As String, serviceTypeCode As String, serviceLeveCode As String) As DataView
 
         Dim equipmentId As Guid, equipmentclassId As Guid, conditionId As Guid
-        If (Me.Dealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
-            If (Not Me.ClaimedEquipment Is Nothing) Then
-                equipmentId = Me.ClaimedEquipment.EquipmentId
-                equipmentclassId = Me.ClaimedEquipment.EquipmentBO.EquipmentClassId
+        If (Dealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
+            If (Not ClaimedEquipment Is Nothing) Then
+                equipmentId = ClaimedEquipment.EquipmentId
+                equipmentclassId = ClaimedEquipment.EquipmentBO.EquipmentClassId
                 conditionId = LookupListNew.GetIdFromCode(LookupListNew.LK_CONDITION, Codes.EQUIPMENT_COND__NEW)
             Else
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, "NO_CLAIMED_EQUIPMENT_FOUND")
@@ -434,12 +434,12 @@ Public NotInheritable Class MultiAuthClaim
 
 
 
-        Dim dv As PriceListDetail.PriceListResultsDV = PriceListDetail.GetPricesForServiceType(Me.CompanyId, serviceCenterCode,
-                                                                                                       Me.RiskTypeId, Me.LossDate,
-                                                                                                       Me.Certificate.SalesPrice,
+        Dim dv As PriceListDetail.PriceListResultsDV = PriceListDetail.GetPricesForServiceType(CompanyId, serviceCenterCode,
+                                                                                                       RiskTypeId, LossDate,
+                                                                                                       Certificate.SalesPrice,
                                                                                                        LookupListNew.GetIdFromCode(Codes.SERVICE_CLASS, serviceClassCode),
                                                                                                        LookupListNew.GetIdFromCode(Codes.SERVICE_CLASS_TYPE, serviceTypeCode),
-                                                                                                       equipmentclassId, equipmentId, conditionId, Me.Dealer.Id, serviceLeveCode)
+                                                                                                       equipmentclassId, equipmentId, conditionId, Dealer.Id, serviceLeveCode)
         Return dv
     End Function
 
@@ -447,7 +447,7 @@ Public NotInheritable Class MultiAuthClaim
     Private Function EvaluateForSingleServiceCenter() As Boolean
         Dim flag As Boolean = True
         Dim serviceCenterId As Guid = Nothing
-        For Each Auth As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
+        For Each Auth As ClaimAuthorization In NonVoidClaimAuthorizationList
             If (Not Auth.ClaimAuthStatus = ClaimAuthorizationStatus.Void) Then
                 If (serviceCenterId.Equals(Guid.Empty)) Then
                     serviceCenterId = Auth.ServiceCenterId
@@ -465,7 +465,7 @@ Public NotInheritable Class MultiAuthClaim
         Dim serviceCenter As ServiceCenter = Nothing
         Dim specialInstructions As String = String.Empty
 
-        For Each auth As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
+        For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
             If auth.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled Or
                 auth.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid Then
 
@@ -480,7 +480,7 @@ Public NotInheritable Class MultiAuthClaim
         Next
 
 
-        Dim dv As PriceListDetail.PriceListResultsDV = Me.GetPricesForServiceType(serviceCenter.Code, Codes.SERVICE_CLASS__REPAIR,
+        Dim dv As PriceListDetail.PriceListResultsDV = GetPricesForServiceType(serviceCenter.Code, Codes.SERVICE_CLASS__REPAIR,
                                                                                   Codes.SERVICE_TYPE__SERVICE_WARRANTY, String.Empty)
 
 
@@ -493,22 +493,22 @@ Public NotInheritable Class MultiAuthClaim
             row(PriceListDetail.PriceListResultsDV.COL_NAME_PRICE) = New Decimal(0D)
         Next
 
-        Me.AddClaimAuthorization(serviceCenter.Id, dv, specialInstructions)
-        Me.ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__REWORK)
-        Me.ReasonClosedId = Guid.Empty
-        Me.ClaimClosedDate = Nothing
-        If Me.Status <> BasicClaimStatus.Active Then Me.Status = BasicClaimStatus.Active
-        Me.Save()
+        AddClaimAuthorization(serviceCenter.Id, dv, specialInstructions)
+        ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__REWORK)
+        ReasonClosedId = Guid.Empty
+        ClaimClosedDate = Nothing
+        If Status <> BasicClaimStatus.Active Then Status = BasicClaimStatus.Active
+        Save()
     End Sub
 
     Private Sub UpdateDeductibleAmountOnLineItems()
 
-        If Me.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) Then
+        If Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) Then
 
-            For Each item As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
+            For Each item As ClaimAuthorization In NonVoidClaimAuthorizationList
                 If item.ContainsDeductible Then
                     For Each lineItem As ClaimAuthItem In item.ClaimAuthorizationItemChildren.Where(Function(i) i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE)
-                        lineItem.Amount = Me.Deductible
+                        lineItem.Amount = Deductible
                     Next
                 End If
                 item.Save()
@@ -524,22 +524,22 @@ Public NotInheritable Class MultiAuthClaim
     Public Overrides Sub ReopenClaim()
         Dim claimClosedDate As Date = Me.ClaimClosedDate.Value
         MyBase.ReopenClaim()
-        Me.ReopenClaimAuthorizations(claimClosedDate)
+        ReopenClaimAuthorizations(claimClosedDate)
 
     End Sub
 
-    Public Sub ReopenClaimAuthorizations(ByVal claimClosedDate As Date)
+    Public Sub ReopenClaimAuthorizations(claimClosedDate As Date)
 
         'If Claim has atleast one non void Authorizations, it was not closed abruptly
-        If Me.NonVoidClaimAuthorizationList.Count > 1 Then Return
+        If NonVoidClaimAuthorizationList.Count > 1 Then Return
 
         'Find the Claim Closed DateTime
-        Dim claimClosedDateTime As DateTime = Me.ClaimHistoryChildren.OrderByDescending(Function(item) item.CreatedDateTime).Where(Function(item) item.CreatedDate.Value.Date = claimClosedDate.Date AndAlso
+        Dim claimClosedDateTime As DateTime = ClaimHistoryChildren.OrderByDescending(Function(item) item.CreatedDateTime).Where(Function(item) item.CreatedDate.Value.Date = claimClosedDate.Date AndAlso
                                                                             item.StatusCodeOld <> item.StatusCodeNew AndAlso
                                                                             item.StatusCodeNew = Codes.CLAIM_STATUS__CLOSED).FirstOrDefault().CreatedDateTime
 
         'Find all authorizations which were modified within 1 sec of claim Closed DateTime
-        For Each auth As ClaimAuthorization In Me.ClaimAuthorizationChildren.Where(Function(item) _
+        For Each auth As ClaimAuthorization In ClaimAuthorizationChildren.Where(Function(item) _
                                                    (item.ModifiedDate.Value.Ticks > claimClosedDateTime.AddSeconds(-1).Ticks And
                                                     item.ModifiedDate.Value.Ticks < claimClosedDateTime.AddSeconds(1).Ticks))
 
@@ -557,23 +557,23 @@ Public NotInheritable Class MultiAuthClaim
         Next
     End Sub
 
-    Public Function AddClaimAuthForDeductibleRefund(ByVal serviceCenterId As Guid, ByVal refundAmount As Decimal, ByVal refundMethod As String) As ClaimAuthorization
+    Public Function AddClaimAuthForDeductibleRefund(serviceCenterId As Guid, refundAmount As Decimal, refundMethod As String) As ClaimAuthorization
         Dim newClaimAuth As ClaimAuthorization
         Try
-            newClaimAuth = CType(Me.ClaimAuthorizationChildren.GetNewChild(), BusinessObjectsNew.ClaimAuthorization)
-            newClaimAuth.PrepopulateClaimAuthForDeductibleRefund(serviceCenterId, Me.Id, Me.CertificateId, refundMethod)
+            newClaimAuth = CType(ClaimAuthorizationChildren.GetNewChild(), BusinessObjectsNew.ClaimAuthorization)
+            newClaimAuth.PrepopulateClaimAuthForDeductibleRefund(serviceCenterId, Id, CertificateId, refundMethod)
             newClaimAuth.AddDeductibleRefundLineItem(refundAmount)
             newClaimAuth.Save()
             Return newClaimAuth
         Catch ex As DataBaseAccessException
-            Me.ClaimAuthorizationChildren.GetChild(newClaimAuth.Id).Delete()
+            ClaimAuthorizationChildren.GetChild(newClaimAuth.Id).Delete()
             Throw ex
         End Try
     End Function
 
     Public Function IsDeductibleRefundAllowed() As Boolean
         Dim flag As Boolean = False
-        For Each auth As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
+        For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
             If (auth.ClaimAuthStatus = ClaimAuthorizationStatus.Collected And auth.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_SALES_ORDER) Then
 
                 Dim authItem = auth.ClaimAuthorizationItemChildren.Where(Function(i) i.ServiceTypeCode = Codes.SERVICE_TYPE__DEDUCTIBLE).ToList()
@@ -589,7 +589,7 @@ Public NotInheritable Class MultiAuthClaim
 
     Public Function IsDeductibleRefundExist() As Boolean
         Dim flag As Boolean = False
-        Dim auth = Me.NonVoidClaimAuthorizationList.Where(Function(c) c.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE And c.PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER And
+        Dim auth = NonVoidClaimAuthorizationList.Where(Function(c) c.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE And c.PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER And
                                                                     (c.ClaimAuthStatus = ClaimAuthorizationStatus.Pending Or c.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized)).ToList()
         If auth.Count > 0 Then
             flag = True
@@ -603,11 +603,11 @@ Public NotInheritable Class MultiAuthClaim
     Public NotInheritable Class ValidateContainsDeductible
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.CLAIM_CANNOT_HAVE_TWO_AUTHORIZATIONS_CONTAINING_DEDUCTIBLE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As MultiAuthClaim = CType(objectToValidate, MultiAuthClaim)
 
             Dim flag As Boolean = obj.NonVoidClaimAuthorizationList.Where(Function(i) i.ContainsDeductible).Count > 1

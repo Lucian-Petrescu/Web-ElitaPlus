@@ -45,7 +45,7 @@
 
 #Region "Public Methods"
 
-    Public Function Load(ByVal ds As DataSet, ByVal vendorCode As String , ByVal poNumber As string,companyGroupId As Guid) As DataSet
+    Public Function Load(ds As DataSet, vendorCode As String , poNumber As string,companyGroupId As Guid) As DataSet
 
         Dim selectStmt As String = Config("/SQL/LOAD")'"elita.elp_ap_po_update.search"
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(PI_VENDOR, vendorCode), _ 
@@ -59,13 +59,13 @@
 
     End Function
 
-    Public Function LoadSchema(ByVal ds As DataSet) As DataSet
+    Public Function LoadSchema(ds As DataSet) As DataSet
 
-        Return (Me.Load(ds, String.Empty,String.Empty,Guid.Empty))
+        Return (Load(ds, String.Empty,String.Empty,Guid.Empty))
 
     End Function
 
-    Public Function UpdateApLine(ByVal poNumber As string, ByVal poLineId As Guid, ByVal companyId As Guid, ByVal  poLineQuantity As Decimal,ByVal modifiedBy As string) As Integer
+    Public Function UpdateApLine(poNumber As string, poLineId As Guid, companyId As Guid, poLineQuantity As Decimal,modifiedBy As string) As Integer
         Dim selectStmt As String = Config("/SQL/UPDATE") '"elita.elp_ap_po_update.update_ap_po_line"
         Dim inputParameters(TOTAL_PARAM_PO_UPDATE) As DBHelper.DBHelperParameter
         Dim outputParameter(0) As DBHelper.DBHelperParameter

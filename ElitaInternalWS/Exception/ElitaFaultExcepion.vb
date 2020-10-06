@@ -152,12 +152,12 @@ Public Class ElitaFault
         End Set
     End Property
 
-    Public Sub New(ByVal faultType As EnumFaultType)
+    Public Sub New(faultType As EnumFaultType)
 
         Dim fi As FaultInfo
         If (ExceptionMessages.TryGetValue(faultType, fi)) Then
-            Me.FaultCode = fi.FaultCode
-            Me.FaultMessage = fi.FaultMessage
+            FaultCode = fi.FaultCode
+            FaultMessage = fi.FaultMessage
         End If
     End Sub
 

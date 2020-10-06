@@ -76,56 +76,56 @@ Public Class BillingDetailDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid, Optional ByVal useCertId As Boolean = False)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid, Optional ByVal useCertId As Boolean = False)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter
 
         If useCertId Then
-            selectStmt = Me.Config("/SQL/LOAD_BY_CERT_ID")
+            selectStmt = Config("/SQL/LOAD_BY_CERT_ID")
             parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_id", id.ToByteArray)}
         Else
             parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("billing_detail_id", id.ToByteArray)}
         End If
 
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal BillingHeaderId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(BillingHeaderId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("billing_header_id", BillingHeaderId.ToByteArray)}
         Try
             Dim ds = New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadListForNonBillingByDealer(ByVal BillingHeaderId As Guid, ByVal language_id As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_NON_BILLING_BY_DEALER")
+    Public Function LoadListForNonBillingByDealer(BillingHeaderId As Guid, language_id As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOR_NON_BILLING_BY_DEALER")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("language_id1", language_id.ToByteArray), _
                             New DBHelper.DBHelperParameter("language_id2", language_id.ToByteArray), _
                             New DBHelper.DBHelperParameter("billing_header_id", BillingHeaderId.ToByteArray)}
         Try
             Dim ds = New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadBillHistList(ByVal langId As Guid, ByVal certId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_HISTORY")
+    Public Function LoadBillHistList(langId As Guid, certId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_HISTORY")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                  {New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, langId.ToByteArray), _
                   New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, langId.ToByteArray), _
@@ -134,40 +134,40 @@ Public Class BillingDetailDAL
                   New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray)}
         Try
             Dim ds = New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetMaxActiveInstNoForCert(ByVal certId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_MAX_ACTIVEINSTNO_FORCERT")
+    Public Function GetMaxActiveInstNoForCert(certId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_MAX_ACTIVEINSTNO_FORCERT")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
             {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray)}
         Try
             Dim ds = New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetLatestRejInstNoForCert(ByVal certId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_LATEST_REJ_INSTNO_FORCERT")
+    Public Function GetLatestRejInstNoForCert(certId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_LATEST_REJ_INSTNO_FORCERT")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
             {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray)}
         Try
             Dim ds = New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function GetAllRejInstNoForCert(ByVal certId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_ALL_REJ_INSTNO_FORCERT")
+    Public Function GetAllRejInstNoForCert(certId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_ALL_REJ_INSTNO_FORCERT")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
             {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray)}
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("V_RejInsNo", GetType(DataSet))}
@@ -183,17 +183,17 @@ Public Class BillingDetailDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Function LoadBillingTotals(ByVal certId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/BILLING_SUM_AND_COUNT")
+    Public Function LoadBillingTotals(certId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/BILLING_SUM_AND_COUNT")
         Dim parameters() As DBHelper.DBHelperParameter
 
         parameters = New DBHelper.DBHelperParameter() _
@@ -201,7 +201,7 @@ Public Class BillingDetailDAL
 
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -209,14 +209,14 @@ Public Class BillingDetailDAL
 
     End Function
 
-    Public Function LoadBillingTotalsNew(ByVal certId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/BILLING_SUM_AND_COUNT_NEW")
+    Public Function LoadBillingTotalsNew(certId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/BILLING_SUM_AND_COUNT_NEW")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                  {New DBHelper.DBHelperParameter(PARAM_CERT_ID, certId.ToByteArray)}
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
         Try
             Dim ds = New DataSet
-            DBHelper.FetchSp(selectStmt, parameters, outParameters, ds, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, parameters, outParameters, ds, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -224,8 +224,8 @@ Public Class BillingDetailDAL
 
     End Function
 
-    Public Function LoadLaterBillingRow(ByVal certId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_LATER_BILLING_ROW")
+    Public Function LoadLaterBillingRow(certId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_LATER_BILLING_ROW")
         Dim parameters() As DBHelper.DBHelperParameter
 
         parameters = New DBHelper.DBHelperParameter() _
@@ -233,7 +233,7 @@ Public Class BillingDetailDAL
 
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -246,10 +246,10 @@ Public Class BillingDetailDAL
 #Region "StoreProcedures Control"
 
     ' Execute Store Procedure
-    Public Function ExecuteSP(ByVal statusId As Guid, ByVal certId As Guid) As String
+    Public Function ExecuteSP(statusId As Guid, certId As Guid) As String
         Dim inputParameters(TOTAL_PARAM_IN) As DBHelper.DBHelperParameter
         Dim outputParameter(TOTAL_PARAM_OUT) As DBHelper.DBHelperParameter
-        Dim selectStmt As String = Me.Config("/SQL/BILLING_STATUS_CHANGE")
+        Dim selectStmt As String = Config("/SQL/BILLING_STATUS_CHANGE")
 
 
         inputParameters(IN_STATUS_ID) = New DBHelper.DBHelperParameter(PARAM_NAME_STATUS, statusId)
@@ -272,10 +272,10 @@ Public Class BillingDetailDAL
 
     End Function
 
-    Public Function CreateBillingHistForRejOrAct(ByVal NewStatusId As Guid, ByVal certId As Guid, ByVal InstalNo As Integer, ByVal RejectCodeId As Guid, ByVal BillHistId As Guid) As Integer
+    Public Function CreateBillingHistForRejOrAct(NewStatusId As Guid, certId As Guid, InstalNo As Integer, RejectCodeId As Guid, BillHistId As Guid) As Integer
         Dim inputParameters(6) As DBHelper.DBHelperParameter
         Dim outputParameter(1) As DBHelper.DBHelperParameter
-        Dim selectStmt As String = Me.Config("/SQL/CREATE_BILLING_HIST")
+        Dim selectStmt As String = Config("/SQL/CREATE_BILLING_HIST")
 
 
         inputParameters(IN_STATUS_ID) = New DBHelper.DBHelperParameter(PARAM_NAME_STATUS, NewStatusId)

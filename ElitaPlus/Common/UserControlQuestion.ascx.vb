@@ -35,10 +35,10 @@ Public Class UserControlQuestion
     End Class
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         Dim parentControl = Parent
 
-        Debug.WriteLine($"Loading UserControlQuestion ID: {Me.ID}")
+        Debug.WriteLine($"Loading UserControlQuestion ID: {ID}")
         While (Not TypeOf parentControl Is ElitaPlusPage And parentControl IsNot Nothing)
             parentControl = parentControl.Parent
         End While
@@ -46,7 +46,7 @@ Public Class UserControlQuestion
     End Sub
 
     Private Sub UserControlQuestion_Unload(sender As Object, e As EventArgs) Handles Me.Unload
-        Debug.WriteLine($"Unloading UserControlQuestion ID: {Me.ID}")
+        Debug.WriteLine($"Unloading UserControlQuestion ID: {ID}")
     End Sub
 #Region "Properties"
 
@@ -203,10 +203,10 @@ Public Class UserControlQuestion
     End Sub
 #End Region
 #Region "CallPageEvent"
-    Public Delegate Sub CallPageHandler(ByVal url As String, ByVal guidId As Guid)
+    Public Delegate Sub CallPageHandler(url As String, guidId As Guid)
 
     Public Event CallPageEvent As CallPageHandler
-    Protected Sub OnCallPageEvent(ByVal url As String, ByVal guidId As Guid)
+    Protected Sub OnCallPageEvent(url As String, guidId As Guid)
         RaiseEvent CallPageEvent(url, guidId)
     End Sub
 #End Region
@@ -263,7 +263,7 @@ Public Class UserControlQuestion
 #End Region
 
 #Region "User Control Methods"
-    Public Sub SetQuestionTitle(ByVal text As String)
+    Public Sub SetQuestionTitle(text As String)
         lblQuestions.Text = text
     End Sub
     Public Sub QuestionDataBind()
@@ -317,9 +317,9 @@ Public Class UserControlQuestion
                     End If
                     ElitaPlusPage.BindListControlToArray(rbl, listItems.ToArray(), False)
 
-                    If (Not source Is Nothing) Then
+                    If (source IsNot Nothing) Then
                         Dim da As ChoiceAnswer = CType(source.First(Function(f) f.Code = DirectCast(e.Row.DataItem, Question).Code).Answer, ChoiceAnswer)
-                        If (Not da Is Nothing AndAlso Not da.Answer Is Nothing AndAlso da.Answer.Text <> Nothing) Then
+                        If (da IsNot Nothing AndAlso da.Answer IsNot Nothing AndAlso da.Answer.Text <> Nothing) Then
                             rbl.SelectedValue = da.Answer.Code.ToString()
                         End If
                     End If
@@ -339,9 +339,9 @@ Public Class UserControlQuestion
                     End If
                     ElitaPlusPage.BindListControlToArray(ddl, listItems.ToArray(), True)
 
-                    If (Not source Is Nothing) Then
+                    If (source IsNot Nothing) Then
                         Dim da As ListOfValuesAnswer = CType(source.First(Function(f) f.Code = DirectCast(e.Row.DataItem, Question).Code).Answer, ListOfValuesAnswer)
-                        If (Not da Is Nothing AndAlso Not da.Answer Is Nothing AndAlso da.Answer.Text <> Nothing) Then
+                        If (da IsNot Nothing AndAlso da.Answer IsNot Nothing AndAlso da.Answer.Text <> Nothing) Then
                             ddl.SelectedValue = da.Answer.Code.ToString()
                         End If
                     End If
@@ -355,10 +355,10 @@ Public Class UserControlQuestion
                     End If
                     If (oAnswerType.Trim().ToUpper = AnswerTypes.NumberAnswer) Then
 
-                        If (Not source Is Nothing) Then
+                        If (source IsNot Nothing) Then
                             Dim da As NumberAnswer = CType(source.First(Function(f) f.Code = DirectCast(e.Row.DataItem, Question).Code).Answer, NumberAnswer)
 
-                            If (Not da Is Nothing AndAlso Not da.Answer Is Nothing AndAlso da.Answer.HasValue) Then
+                            If (da IsNot Nothing AndAlso da.Answer IsNot Nothing AndAlso da.Answer.HasValue) Then
                                 txt.Text = da.Answer.Value.ToString()
                             End If
                         End If
@@ -368,10 +368,10 @@ Public Class UserControlQuestion
                             txt.MaxLength = length.Value
                         End If
 
-                        If (Not source Is Nothing) Then
+                        If (source IsNot Nothing) Then
                             Dim da As TextAnswer = CType(source.First(Function(f) f.Code = DirectCast(e.Row.DataItem, Question).Code).Answer, TextAnswer)
 
-                            If (Not da Is Nothing AndAlso Not String.IsNullOrEmpty(da.Answer)) Then
+                            If (da IsNot Nothing AndAlso Not String.IsNullOrEmpty(da.Answer)) Then
                                 txt.Text = da.Answer.ToString()
                             End If
                         End If
@@ -386,10 +386,10 @@ Public Class UserControlQuestion
                     If isReEvaulateOnChange Then
                         textBoxDate.AutoPostBack = isReEvaulateOnChange
                     End If
-                    If (Not source Is Nothing) Then
+                    If (source IsNot Nothing) Then
                         Dim da As DateAnswer = CType(source.First(Function(f) f.Code = DirectCast(e.Row.DataItem, Question).Code).Answer, DateAnswer)
 
-                        If (Not da Is Nothing AndAlso Not da.Answer Is Nothing AndAlso da.Answer.HasValue) Then
+                        If (da IsNot Nothing AndAlso da.Answer IsNot Nothing AndAlso da.Answer.HasValue) Then
                             textBoxDate.Text = ElitaPlusPage.GetDateFormattedString(da.Answer.Value)
                         End If
                     End If
@@ -399,18 +399,18 @@ Public Class UserControlQuestion
                     tCheckBox.Visible = True
                     If (oAnswerType.Trim().ToUpper = AnswerTypes.BooleanAnswer) Then
 
-                        If (Not source Is Nothing) Then
+                        If (source IsNot Nothing) Then
                             Dim da As BooleanAnswer = CType(source.First(Function(f) f.Code = DirectCast(e.Row.DataItem, Question).Code).Answer, BooleanAnswer)
 
-                            If (Not da Is Nothing AndAlso Not da.Answer Is Nothing AndAlso da.Answer.HasValue) Then
+                            If (da IsNot Nothing AndAlso da.Answer IsNot Nothing AndAlso da.Answer.HasValue) Then
                                 tCheckBox.Checked = da.Answer.Value
                             End If
                         End If
                     Else
-                        If (Not source Is Nothing) Then
+                        If (source IsNot Nothing) Then
                             Dim da As LegalConsentAnswer = CType(source.First(Function(f) f.Code = DirectCast(e.Row.DataItem, Question).Code).Answer, LegalConsentAnswer)
 
-                            If (Not da Is Nothing AndAlso Not da.Answer Is Nothing AndAlso da.Answer.HasValue) Then
+                            If (da IsNot Nothing AndAlso da.Answer IsNot Nothing AndAlso da.Answer.HasValue) Then
                                 tCheckBox.Checked = da.Answer.Value
                             End If
                         End If
@@ -520,7 +520,7 @@ Public Class UserControlQuestion
                 questionSubmitobj.Questions = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, Question())(
                                                                             GetClient(),
                                                                             New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                                            Function(ByVal c As ClaimRecordingServiceClient)
+                                                                            Function(c As ClaimRecordingServiceClient)
                                                                                 Return c.ReEvaluateQuestions(questionSubmitobj.Questions, questionSubmitobj.Parameters)
                                                                             End Function)
 
@@ -675,7 +675,7 @@ Public Class UserControlQuestion
                         ' do nothing skip
                 End Select
                 'Run any validation attached to question
-                If Not questionObject.Validations is Nothing then
+                If questionObject.Validations IsNot Nothing then
                     For each validation as BaseValidation  in questionObject.Validations
                         If Not validation.Validate(questionObject) then
                             If validation.GetType() is GetType(ComparisonValidation)
@@ -1056,7 +1056,7 @@ Public Class UserControlQuestion
 #End Region
 
 #Region "Forward to Host Post"
-    Private Sub LocalHandleErrors(ByVal exc As Exception, ByVal ErrorCtrl As ErrorController)
+    Private Sub LocalHandleErrors(exc As Exception, ErrorCtrl As ErrorController)
 
     End Sub
     Private Sub LocalThrowWsFaultExceptions(fex As FaultException)

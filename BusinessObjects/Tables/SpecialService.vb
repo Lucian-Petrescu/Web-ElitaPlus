@@ -9,46 +9,46 @@ Public Class SpecialService
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New SpecialServiceDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -59,20 +59,20 @@ Public Class SpecialService
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New SpecialServiceDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -119,7 +119,7 @@ Public Class SpecialService
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_CODE, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
@@ -136,7 +136,7 @@ Public Class SpecialService
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -153,7 +153,7 @@ Public Class SpecialService
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_COVERAGE_LOSS_ID, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_COVERAGE_LOSS_ID, Value)
         End Set
     End Property
 
@@ -170,7 +170,7 @@ Public Class SpecialService
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -187,7 +187,7 @@ Public Class SpecialService
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_AVAILABLE_FOR_SERV_CENTER_ID, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_AVAILABLE_FOR_SERV_CENTER_ID, Value)
         End Set
     End Property
 
@@ -204,7 +204,7 @@ Public Class SpecialService
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_ADD_ITEM_ALLOWED, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_ADD_ITEM_ALLOWED, Value)
         End Set
     End Property
 
@@ -221,7 +221,7 @@ Public Class SpecialService
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_ADD_ITEM_AFTER_EXPIRED, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_ADD_ITEM_AFTER_EXPIRED, Value)
         End Set
     End Property
 
@@ -238,7 +238,7 @@ Public Class SpecialService
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_PRICE_GROUP_FIELD_ID, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_PRICE_GROUP_FIELD_ID, Value)
         End Set
     End Property
 
@@ -255,7 +255,7 @@ Public Class SpecialService
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_ALLOWED_OCCURRENCES_ID, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_ALLOWED_OCCURRENCES_ID, Value)
         End Set
     End Property
 
@@ -272,7 +272,7 @@ Public Class SpecialService
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_COMBINED_WITH_REPAIR, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_COMBINED_WITH_REPAIR, Value)
         End Set
     End Property
 
@@ -288,7 +288,7 @@ Public Class SpecialService
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.DB_COL_NAME_SERVICE_CLASS_ID, Value)
+            SetValue(SpecialServiceDAL.DB_COL_NAME_SERVICE_CLASS_ID, Value)
         End Set
     End Property
 
@@ -304,7 +304,7 @@ Public Class SpecialService
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.DB_COL_NAME_SERVICE_TYPE_ID, Value)
+            SetValue(SpecialServiceDAL.DB_COL_NAME_SERVICE_TYPE_ID, Value)
         End Set
     End Property
 #End Region
@@ -313,17 +313,17 @@ Public Class SpecialService
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New SpecialServiceDAL
                 'dal.Update(Me.Row)
-                MyBase.UpdateFamily(Me.Dataset)
-                dal.UpdateFamily(Me.Dataset)
+                MyBase.UpdateFamily(Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -335,7 +335,7 @@ Public Class SpecialService
         Get
             Dim bDirty As Boolean
 
-            bDirty = MyBase.IsDirty OrElse Me.IsChildrenDirty
+            bDirty = MyBase.IsDirty OrElse IsChildrenDirty
 
             Return bDirty
         End Get
@@ -470,11 +470,11 @@ Public Class SpecialService
 
     Public Sub UpdateProductCodes(ByVal selectedProductCodeGuidStrCollection As Hashtable)
         If selectedProductCodeGuidStrCollection.Count = 0 Then
-            If Not Me.IsDeleted Then Me.Delete()
+            If Not IsDeleted Then Delete()
         Else
             'first Pass
             Dim bo As ProductSpecialService
-            For Each bo In Me.ProductSpecialServiceChildren
+            For Each bo In ProductSpecialServiceChildren
                 If Not selectedProductCodeGuidStrCollection.Contains(bo.ProductCodeId.ToString) Then
                     'delete
                     bo.Delete()
@@ -484,11 +484,11 @@ Public Class SpecialService
             'Second Pass
             Dim entry As DictionaryEntry
             For Each entry In selectedProductCodeGuidStrCollection
-                If Me.ProductSpecialServiceChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
+                If ProductSpecialServiceChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
                     'add
                     Dim PSplSvcBO As ProductSpecialService = ProductSpecialServiceChildren.GetNewChild()
                     PSplSvcBO.ProductCodeId = New Guid(entry.Key.ToString)
-                    PSplSvcBO.SpecialServiceId = Me.Id
+                    PSplSvcBO.SpecialServiceId = Id
                     PSplSvcBO.Save()
                 End If
             Next
@@ -497,9 +497,9 @@ Public Class SpecialService
     Public Sub AttachProductCodes(ByVal selectedProductCodeGuidStrCollection As ArrayList)
         Dim PSplSvcIdStr As String
         For Each PSplSvcIdStr In selectedProductCodeGuidStrCollection
-            Dim PSplSvcBO As ProductSpecialService = Me.ProductSpecialServiceChildren.GetNewChild
+            Dim PSplSvcBO As ProductSpecialService = ProductSpecialServiceChildren.GetNewChild
             PSplSvcBO.ProductCodeId = New Guid(PSplSvcIdStr)
-            PSplSvcBO.SpecialServiceId = Me.Id
+            PSplSvcBO.SpecialServiceId = Id
             PSplSvcBO.Save()
         Next
     End Sub
@@ -507,7 +507,7 @@ Public Class SpecialService
     Public Sub DetachProductCodes(ByVal selectedProductCodeGuidStrCollection As ArrayList)
         Dim PSplSvcIdStr As String
         For Each PSplSvcIdStr In selectedProductCodeGuidStrCollection
-            Dim PSplSvcBO As ProductSpecialService = Me.ProductSpecialServiceChildren.Find(New Guid(PSplSvcIdStr))
+            Dim PSplSvcBO As ProductSpecialService = ProductSpecialServiceChildren.Find(New Guid(PSplSvcIdStr))
             PSplSvcBO.Delete()
             PSplSvcBO.Save()
         Next
@@ -556,7 +556,7 @@ Public Class SpecialService
 
         Dim PSplSvcBO As ProductSpecialService
         Dim inClause As String = "(-1"
-        For Each PSplSvcBO In Me.ProductSpecialServiceChildren
+        For Each PSplSvcBO In ProductSpecialServiceChildren
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, PSplSvcBO.ProductCodeId)
         Next
         inClause &= ")"

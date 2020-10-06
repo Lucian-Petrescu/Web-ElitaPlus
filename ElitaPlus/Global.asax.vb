@@ -35,11 +35,11 @@ Public Class [Global]
 
 #End Region
 
-    Public Function RemoteCertificateValidationCallback(ByVal sender As Object, ByVal certificate As System.Security.Cryptography.X509Certificates.X509Certificate, ByVal chain As System.Security.Cryptography.X509Certificates.X509Chain, ByVal sslPolicyErrors As System.Net.Security.SslPolicyErrors) As Boolean
+    Public Function RemoteCertificateValidationCallback(sender As Object, certificate As System.Security.Cryptography.X509Certificates.X509Certificate, chain As System.Security.Cryptography.X509Certificates.X509Chain, sslPolicyErrors As System.Net.Security.SslPolicyErrors) As Boolean
         Return True
     End Function
 
-    Sub Application_Start(ByVal sender As Object, ByVal e As EventArgs)
+    Sub Application_Start(sender As Object, e As EventArgs)
         ' Fires when the application is started        
 
 #If DEBUG Then
@@ -59,7 +59,7 @@ Public Class [Global]
     ''' <returns> returns Instance of <cref="TimezoneInfo"></returns>
 
     Private Function GetTimeZoneInfo() As TimeZoneInfo
-        If (Not applicationTimeZoneInfo Is Nothing) Then
+        If (applicationTimeZoneInfo IsNot Nothing) Then
             Return applicationTimeZoneInfo
         End If
 
@@ -86,9 +86,9 @@ Public Class [Global]
     End Function
 
 
-    Sub Session_OnStart(ByVal sender As Object, ByVal e As EventArgs)
+    Sub Session_OnStart(sender As Object, e As EventArgs)
 
-        Dim cookie As HttpCookie = Me.Request.Cookies.Item(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE & "-" & Session.SessionID)
+        Dim cookie As HttpCookie = Request.Cookies.Item(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE & "-" & Session.SessionID)
         Dim connCookie As HttpCookie
         '   Dim connType As String = ELPWebConstants.CONNECTION_TYPE_DEFAULT
 
@@ -97,7 +97,7 @@ Public Class [Global]
             cookie = New HttpCookie(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE & "-" & Session.SessionID)
             cookie.Expires = DateTime.Now.AddDays(1.0)
             cookie.Value = "0"
-            Me.Response.Cookies.Add(cookie)
+            Response.Cookies.Add(cookie)
 
             'If Not Request.QueryString("Conn") Is Nothing Then
             '    connType = Request.QueryString("Conn").ToUpper
@@ -107,7 +107,7 @@ Public Class [Global]
             'Me.Response.Cookies.Add(connCookie)
         Else
             cookie.Value = "1"
-            Me.Response.Cookies.Set(cookie)
+            Response.Cookies.Set(cookie)
         End If
         ' Fires when the session is started
 
@@ -175,7 +175,7 @@ Public Class [Global]
 
     'End Function
 
-    Sub Application_BeginRequest(ByVal sender As Object, ByVal e As EventArgs)
+    Sub Application_BeginRequest(sender As Object, e As EventArgs)
         ' Fires at the beginning of each request
 
         'set the localization based on the client's requests
@@ -185,16 +185,16 @@ Public Class [Global]
         'LocalizationMgr.SetCurrentCulture(Request)
     End Sub
 
-    Sub Application_AuthenticateRequest(ByVal sender As Object, ByVal e As EventArgs)
+    Sub Application_AuthenticateRequest(sender As Object, e As EventArgs)
         ' Fires upon attempting to authenticate the use
     End Sub
 
-    Sub Application_Error(ByVal sender As Object, ByVal e As EventArgs)
+    Sub Application_Error(sender As Object, e As EventArgs)
         ' Fires when an error occurs
         '  Response.Redirect(ErrorForm.PAGE_NAME)
     End Sub
 
-    Sub Session_OnEnd(ByVal sender As Object, ByVal e As EventArgs)
+    Sub Session_OnEnd(sender As Object, e As EventArgs)
         ' Fires when the session ends
         'logout the user.
 
@@ -214,7 +214,7 @@ Public Class [Global]
         Response.Redirect(url & "LogOutForm.aspx")
     End Sub
 
-    Sub Application_End(ByVal sender As Object, ByVal e As EventArgs)
+    Sub Application_End(sender As Object, e As EventArgs)
         ' Fires when the application ends
     End Sub
 
@@ -268,13 +268,13 @@ Public Class [Global]
     End Function
 
 
-    Private Sub Global_AcquireRequestState(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.AcquireRequestState
+    Private Sub Global_AcquireRequestState(sender As Object, e As System.EventArgs) Handles MyBase.AcquireRequestState
         'here we are not allowing ajax nor asmx(web service) to be processed by this code
-        If Me.Request.Url.AbsolutePath.ToLower().IndexOf(".axd") < 0 AndAlso
-            Me.Request.Url.AbsolutePath.ToLower().IndexOf(".asmx") < 0 Then
-            If Me.Request.Url.AbsolutePath.ToLower().IndexOf("errorform.aspx") >= 0 Then
-                Dim cookie As HttpCookie = Me.Request.Cookies.Item(ELPWebConstants.ELITA_PLUS_ERROR_COOKIE & "-" & Session.SessionID)
-                If Not cookie Is Nothing Then Session(ErrorForm.MESSAGE_KEY_NAME) = cookie.Value
+        If Request.Url.AbsolutePath.ToLower().IndexOf(".axd") < 0 AndAlso
+            Request.Url.AbsolutePath.ToLower().IndexOf(".asmx") < 0 Then
+            If Request.Url.AbsolutePath.ToLower().IndexOf("errorform.aspx") >= 0 Then
+                Dim cookie As HttpCookie = Request.Cookies.Item(ELPWebConstants.ELITA_PLUS_ERROR_COOKIE & "-" & Session.SessionID)
+                If cookie IsNot Nothing Then Session(ErrorForm.MESSAGE_KEY_NAME) = cookie.Value
                 Return
             End If
             System.Threading.Thread.CurrentPrincipal = DirectCast(Session(ElitaPlusPage.PRINCIPAL_SESSION_KEY), ElitaPlusPrincipal)
@@ -288,18 +288,18 @@ Public Class [Global]
             '    System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(cultureName)
             'End If
             Authentication.SetCulture()
-            If Me.Request.Url.AbsolutePath.ToLower().IndexOf("default.aspx") < 0 AndAlso
-               Me.Request.Url.AbsolutePath.ToLower().IndexOf("logoutform.aspx") < 0 AndAlso
+            If Request.Url.AbsolutePath.ToLower().IndexOf("default.aspx") < 0 AndAlso
+               Request.Url.AbsolutePath.ToLower().IndexOf("logoutform.aspx") < 0 AndAlso
                Session("AppInitialized") Is Nothing Then
 
-                If Me.Request.Url.AbsolutePath.ToLower().IndexOf("downloadreportdata.aspx") > 0 Then
-                    Session("RedirectUrl") = Me.Request.Url.AbsoluteUri
+                If Request.Url.AbsolutePath.ToLower().IndexOf("downloadreportdata.aspx") > 0 Then
+                    Session("RedirectUrl") = Request.Url.AbsoluteUri
                 End If
 
-                Dim cookie As HttpCookie = Me.Response.Cookies.Item(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE & "-" & Session.SessionID)
+                Dim cookie As HttpCookie = Response.Cookies.Item(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE & "-" & Session.SessionID)
 
-                If Not cookie Is Nothing AndAlso cookie.Value = "1" Then
-                    Me.Logout()
+                If cookie IsNot Nothing AndAlso cookie.Value = "1" Then
+                    Logout()
                 Else
                     Dim url As String = GetHttpUrl() & "/"
                     Response.Redirect(url & "default.aspx", True)
@@ -308,7 +308,7 @@ Public Class [Global]
         End If
     End Sub
 
-    Private Sub Global_Error(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Error
+    Private Sub Global_Error(sender As Object, e As System.EventArgs) Handles MyBase.Error
         Dim oStArray As Array
         Dim sFrom, sFirstStack, sMessage As String
         Dim nPos As Integer
@@ -324,7 +324,7 @@ Public Class [Global]
             logEx = CType(Ex, ElitaPlusException)
         End If
         AppConfig.Log(CType(logEx, Exception))
-        If Not CType(System.Threading.Thread.CurrentPrincipal, Object).GetType Is GetType(ElitaPlusPrincipal) Then
+        If CType(System.Threading.Thread.CurrentPrincipal, Object).GetType IsNot GetType(ElitaPlusPrincipal) Then
             If (EnvironmentContext.Current.Environment <> Environments.Development) Then ' For Non Local
                 'HttpContext.Current.GetOwinContext().Authentication.Challenge(New AuthenticationProperties With {
                 '    .RedirectUri = ELPWebConstants.APPLICATION_PATH & "/Navigation/MainPage.aspx"
@@ -350,16 +350,16 @@ Public Class [Global]
             sMessage &= Environment.NewLine & logEx.ToString
         Else
             ' Test, Model or Production
-            Dim cookie As HttpCookie = Me.Request.Cookies.Item(ELPWebConstants.ELITA_PLUS_ERROR_COOKIE & "-" & Session.SessionID)
+            Dim cookie As HttpCookie = Request.Cookies.Item(ELPWebConstants.ELITA_PLUS_ERROR_COOKIE & "-" & Session.SessionID)
 
             If cookie Is Nothing Then
                 cookie = New HttpCookie(ELPWebConstants.ELITA_PLUS_ERROR_COOKIE & "-" & Session.SessionID)
                 cookie.Expires = DateTime.Now.AddDays(1.0)
                 cookie.Value = sMessage
-                Me.Response.Cookies.Add(cookie)
+                Response.Cookies.Add(cookie)
             Else
                 cookie.Value = sMessage
-                Me.Response.Cookies.Set(cookie)
+                Response.Cookies.Set(cookie)
             End If
             Session(ErrorForm.MESSAGE_KEY_NAME) = sMessage
             Response.Redirect(ErrorForm.PAGE_NAME)
@@ -368,7 +368,7 @@ Public Class [Global]
     End Sub
 
 #Region "Translation"
-    Public Function TranslateLabelOrMessage(ByVal UIProgCode As String, ByVal LangId As Guid) As String
+    Public Function TranslateLabelOrMessage(UIProgCode As String, LangId As Guid) As String
         Dim TransProcObj As New TranslationProcess
         Dim oTranslationItem As New TranslationItem
         Dim Coll As New TranslationItemArray

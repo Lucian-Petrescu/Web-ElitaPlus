@@ -21,7 +21,7 @@ Partial Class RepairAndLogisticsListForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -113,21 +113,21 @@ Partial Class RepairAndLogisticsListForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
-        Me.MasterPage.MessageController.Clear()
+        MasterPage.MessageController.Clear()
         'Put user code to initialize the page here
-        Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
+        Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
         Try
-            If Not Me.IsPostBack Then
-                Me.SetDefaultButton(Me.TextBoxSearchClaimNumber, btnSearch)
-                Me.SetDefaultButton(Me.TextBoxSearchVerificationNumber, btnSearch)
-                Me.SetDefaultButton(Me.TextBoxSearchAuthNumber, btnSearch)
-                Me.SetDefaultButton(Me.TextBoxSearchCustomerName, btnSearch)
-                Me.SetDefaultButton(Me.TextBoxSerialNumber, btnSearch)
-                Me.SetDefaultButton(Me.TextBoxTaxId, btnSearch)
-                Me.SetDefaultButton(Me.TextBoxSearchCellPhone, btnSearch)
-                Me.SetDefaultButton(Me.cboSortBy, btnSearch)
+            If Not IsPostBack Then
+                SetDefaultButton(TextBoxSearchClaimNumber, btnSearch)
+                SetDefaultButton(TextBoxSearchVerificationNumber, btnSearch)
+                SetDefaultButton(TextBoxSearchAuthNumber, btnSearch)
+                SetDefaultButton(TextBoxSearchCustomerName, btnSearch)
+                SetDefaultButton(TextBoxSerialNumber, btnSearch)
+                SetDefaultButton(TextBoxTaxId, btnSearch)
+                SetDefaultButton(TextBoxSearchCellPhone, btnSearch)
+                SetDefaultButton(cboSortBy, btnSearch)
                 UpdateBreadCrum()
 
                 TranslateGridHeader(Grid)
@@ -135,44 +135,44 @@ Partial Class RepairAndLogisticsListForm
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
                 PopulateSortByDropDown()
                 PopulateSearchFieldsFromState()
-                If Me.IsReturningFromChild Then
+                If IsReturningFromChild Then
                     ' It is returning from detail
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
 
                 'Me.SetGridItemStyleColor(Me.Grid)
-                cboPageSize.SelectedValue = Me.State.PageSize.ToString()
+                cboPageSize.SelectedValue = State.PageSize.ToString()
 
-                SetFocus(Me.TextBoxSearchClaimNumber)
+                SetFocus(TextBoxSearchClaimNumber)
             End If
-            Me.DisplayNewProgressBarOnClick(Me.btnSearch, "Loading_Claims")
+            DisplayNewProgressBarOnClick(btnSearch, "Loading_Claims")
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                     TranslationBase.TranslateLabelOrMessage("REPAIR_AND_LOGISTICS_SEARCH")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("REPAIR_AND_LOGISTICS_SEARCH")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("REPAIR_AND_LOGISTICS_SEARCH")
             End If
         End If
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
-            Dim retObj As ClaimForm.ReturnType = CType(Me.ReturnedValues, ClaimForm.ReturnType)
-            If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                Me.State.searchDV = Nothing
+            MenuEnabled = True
+            IsReturningFromChild = True
+            Dim retObj As ClaimForm.ReturnType = CType(ReturnedValues, ClaimForm.ReturnType)
+            If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                State.searchDV = Nothing
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -192,25 +192,25 @@ Partial Class RepairAndLogisticsListForm
 
             Dim defaultSelectedCodeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_REPAIR_LOGISTICS_SEARCH_FIELDS, Codes.DEFAULT_SORT_FOR_CLAIMS)
 
-            If (Me.State.selectedSortById.Equals(Guid.Empty)) Then
-                Me.SetSelectedItem(Me.cboSortBy, defaultSelectedCodeId)
-                Me.State.selectedSortById = defaultSelectedCodeId
+            If (State.selectedSortById.Equals(Guid.Empty)) Then
+                SetSelectedItem(cboSortBy, defaultSelectedCodeId)
+                State.selectedSortById = defaultSelectedCodeId
             Else
-                Me.SetSelectedItem(Me.cboSortBy, Me.State.selectedSortById)
+                SetSelectedItem(cboSortBy, State.selectedSortById)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Public Sub PutInvisibleSvcColumns(ByVal oGrid As GridView)
+    Public Sub PutInvisibleSvcColumns(oGrid As GridView)
         Try
             If ElitaPlusIdentity.Current.ActiveUser.IsServiceCenter Then
                 oGrid.Columns(GRID_COL_SERVICE_CENTER_IDX).Visible = False
                 oGrid.Columns(GRID_COL_VERIFICATION_NUMBER_IDX).Visible = False
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -220,55 +220,55 @@ Partial Class RepairAndLogisticsListForm
             Dim sortBy As String
             If Not PopulateStateFromSearchFields() Then Exit Sub
 
-            If (Me.State.searchDV Is Nothing) Then
-                If (Not (Me.State.selectedSortById.Equals(Guid.Empty))) Then
-                    sortBy = LookupListNew.GetCodeFromId(LookupListNew.LK_REPAIR_LOGISTICS_SEARCH_FIELDS, Me.State.selectedSortById)
+            If (State.searchDV Is Nothing) Then
+                If (Not (State.selectedSortById.Equals(Guid.Empty))) Then
+                    sortBy = LookupListNew.GetCodeFromId(LookupListNew.LK_REPAIR_LOGISTICS_SEARCH_FIELDS, State.selectedSortById)
                 End If
-                If Not (Me.State.ServiceCenterId = Guid.Empty) Then
-                    ServiceCenterIDs.Add(Me.State.ServiceCenterId)
+                If Not (State.ServiceCenterId = Guid.Empty) Then
+                    ServiceCenterIDs.Add(State.ServiceCenterId)
                 End If
-                Me.State.searchDV = RepairAndLogistics.getListFromArray(Me.State.claimNumber,
-                                                                        Me.State.serialNumber,
-                                                                      Me.State.customerName,
-                                                                      Me.State.taxId,
-                                                                      Me.State.verificationNumber,
-                                                                      Me.State.cellphoneNumber,
+                State.searchDV = RepairAndLogistics.getListFromArray(State.claimNumber,
+                                                                        State.serialNumber,
+                                                                      State.customerName,
+                                                                      State.taxId,
+                                                                      State.verificationNumber,
+                                                                      State.cellphoneNumber,
                                                                       ServiceCenterIDs,
-                                                                      Me.State.claimAuthorizationNumber,
+                                                                      State.claimAuthorizationNumber,
                                                                       sortBy)
-                If (Me.State.SearchClicked) Then
-                    Me.ValidSearchResultCountNew(Me.State.searchDV.Count, True)
-                    Me.State.SearchClicked = False
+                If (State.SearchClicked) Then
+                    ValidSearchResultCountNew(State.searchDV.Count, True)
+                    State.SearchClicked = False
                 End If
             End If
 
             Grid.PageSize = State.PageSize
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedClaimId, Me.Grid, Me.State.PageIndex)
-            Me.Grid.DataSource = Me.State.searchDV
-            Me.State.PageIndex = Me.Grid.PageIndex
-            PutInvisibleSvcColumns(Me.Grid)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedClaimId, Grid, State.PageIndex)
+            Grid.DataSource = State.searchDV
+            State.PageIndex = Grid.PageIndex
+            PutInvisibleSvcColumns(Grid)
 
-            If (Not Me.State.SortExpression.Equals(String.Empty)) Then
-                Me.State.searchDV.Sort = Me.State.SortExpression
+            If (Not State.SortExpression.Equals(String.Empty)) Then
+                State.searchDV.Sort = State.SortExpression
             Else
-                Me.State.SortExpression = sortBy
+                State.SortExpression = sortBy
             End If
 
-            HighLightSortColumn(Me.Grid, Me.State.SortExpression, Me.IsNewUI)
+            HighLightSortColumn(Grid, State.SortExpression, IsNewUI)
 
-            Me.Grid.DataBind()
+            Grid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_AUTHORIZATION_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_AUTHORIZATION_FOUND)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -276,22 +276,22 @@ Partial Class RepairAndLogisticsListForm
         Try
 
 
-            Me.TextBoxSearchClaimNumber.Text = Me.State.claimNumber
-            Me.TextBoxSerialNumber.Text = Me.State.serialNumber
-            Me.TextBoxSearchCustomerName.Text = Me.State.customerName
-            Me.TextBoxTaxId.Text = Me.State.taxId
-            Me.TextBoxSearchVerificationNumber.Text = Me.State.verificationNumber
-            Me.TextBoxSearchAuthNumber.Text = Me.State.claimAuthorizationNumber
-            Me.TextBoxSearchCellPhone.Text = Me.State.cellphoneNumber
+            TextBoxSearchClaimNumber.Text = State.claimNumber
+            TextBoxSerialNumber.Text = State.serialNumber
+            TextBoxSearchCustomerName.Text = State.customerName
+            TextBoxTaxId.Text = State.taxId
+            TextBoxSearchVerificationNumber.Text = State.verificationNumber
+            TextBoxSearchAuthNumber.Text = State.claimAuthorizationNumber
+            TextBoxSearchCellPhone.Text = State.cellphoneNumber
 
-            inpServiceCenterId.Value = Me.State.ServiceCenterId.ToString
+            inpServiceCenterId.Value = State.ServiceCenterId.ToString
 
-            inpServiceCenterDesc.Value = LookupListNew.GetDescriptionFromId(LookupListNew.LK_SERVICE_CENTERS, Me.State.ServiceCenterId)
-            Me.TextBoxServiceCenter.Text = inpServiceCenterDesc.Value
-            Me.SetSelectedItem(Me.cboSortBy, Me.State.selectedSortById)
+            inpServiceCenterDesc.Value = LookupListNew.GetDescriptionFromId(LookupListNew.LK_SERVICE_CENTERS, State.ServiceCenterId)
+            TextBoxServiceCenter.Text = inpServiceCenterDesc.Value
+            SetSelectedItem(cboSortBy, State.selectedSortById)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -299,62 +299,62 @@ Partial Class RepairAndLogisticsListForm
         Dim dblAmount As Double
 
         Try
-            Me.State.claimNumber = Me.TextBoxSearchClaimNumber.Text
-            Me.State.customerName = Me.TextBoxSearchCustomerName.Text
-            Me.State.serialNumber = Me.TextBoxSerialNumber.Text
-            Me.State.taxId = Me.TextBoxTaxId.Text
-            Me.State.cellphoneNumber = Me.TextBoxSearchCellPhone.Text
-            Me.State.verificationNumber = Me.TextBoxSearchVerificationNumber.Text
-            Me.State.claimAuthorizationNumber = Me.TextBoxSearchAuthNumber.Text
-            Me.State.selectedSortById = Me.GetSelectedItem(Me.cboSortBy)
+            State.claimNumber = TextBoxSearchClaimNumber.Text
+            State.customerName = TextBoxSearchCustomerName.Text
+            State.serialNumber = TextBoxSerialNumber.Text
+            State.taxId = TextBoxTaxId.Text
+            State.cellphoneNumber = TextBoxSearchCellPhone.Text
+            State.verificationNumber = TextBoxSearchVerificationNumber.Text
+            State.claimAuthorizationNumber = TextBoxSearchAuthNumber.Text
+            State.selectedSortById = GetSelectedItem(cboSortBy)
             If AjaxController.IsAutoCompleteEmpty(TextBoxServiceCenter, inpServiceCenterDesc) = True Then
                 inpServiceCenterId.Value = Guid.Empty.ToString
             End If
 
-            Me.State.ServiceCenterId = New Guid(inpServiceCenterId.Value.ToString)
+            State.ServiceCenterId = New Guid(inpServiceCenterId.Value.ToString)
 
 
             Return True
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Function
 
     'This method will change the Page Index and the Selected Index
-    Public Function FindDVSelectedRowIndex(ByVal dv As RepairAndLogistics.RepairLogisticsSearchDV) As Integer
+    Public Function FindDVSelectedRowIndex(dv As RepairAndLogistics.RepairLogisticsSearchDV) As Integer
         Try
-            If Me.State.selectedClaimId.Equals(Guid.Empty) Then
+            If State.selectedClaimId.Equals(Guid.Empty) Then
                 Return -1
             Else
                 'Jump to the Right Page
                 Dim i As Integer
                 For i = 0 To dv.Count - 1
-                    If New Guid(CType(dv(i)(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_CLAIM_ID), Byte())).Equals(Me.State.selectedClaimId) Then
+                    If New Guid(CType(dv(i)(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_CLAIM_ID), Byte())).Equals(State.selectedClaimId) Then
                         Return i
                     End If
                 Next
             End If
             Return -1
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Function
 
     Public Sub ClearSearch()
         Try
-            Me.TextBoxSearchClaimNumber.Text = String.Empty
-            Me.TextBoxSearchCustomerName.Text = String.Empty
-            Me.TextBoxSerialNumber.Text = String.Empty
-            Me.TextBoxTaxId.Text = String.Empty
-            Me.TextBoxSearchCellPhone.Text = String.Empty
-            Me.TextBoxServiceCenter.Text = String.Empty
-            Me.TextBoxSearchVerificationNumber.Text = String.Empty
-            Me.TextBoxSearchAuthNumber.Text = String.Empty
+            TextBoxSearchClaimNumber.Text = String.Empty
+            TextBoxSearchCustomerName.Text = String.Empty
+            TextBoxSerialNumber.Text = String.Empty
+            TextBoxTaxId.Text = String.Empty
+            TextBoxSearchCellPhone.Text = String.Empty
+            TextBoxServiceCenter.Text = String.Empty
+            TextBoxSearchVerificationNumber.Text = String.Empty
+            TextBoxSearchAuthNumber.Text = String.Empty
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -363,36 +363,36 @@ Partial Class RepairAndLogisticsListForm
 
 #Region " Datagrid Related "
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     'The Binding LOgic is here
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim btnEditClaimItem As LinkButton
         Dim btnEditAuthorizationItem As LinkButton
@@ -404,63 +404,63 @@ Partial Class RepairAndLogisticsListForm
 
                 isClaimAuthorization = (Not IsDBNull(dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_AUTHORIZATION_ID)))
 
-                If (Not e.Row.Cells(Me.GRID_COL_CLAIM_ID_IDX).FindControl(GRID_COL_CLAIM_NUMBER_CTRL) Is Nothing) Then
-                    btnEditClaimItem = CType(e.Row.Cells(Me.GRID_COL_CLAIM_ID_IDX).FindControl(GRID_COL_CLAIM_NUMBER_CTRL), LinkButton)
+                If (e.Row.Cells(GRID_COL_CLAIM_ID_IDX).FindControl(GRID_COL_CLAIM_NUMBER_CTRL) IsNot Nothing) Then
+                    btnEditClaimItem = CType(e.Row.Cells(GRID_COL_CLAIM_ID_IDX).FindControl(GRID_COL_CLAIM_NUMBER_CTRL), LinkButton)
                     btnEditClaimItem.CommandArgument = e.Row.RowIndex.ToString
                     btnEditClaimItem.CommandName = SELECT_ACTION_CLAIM_COMMAND
                     btnEditClaimItem.Text = dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_CLAIM_NUMBER).ToString
                     btnEditClaimItem.Enabled = (Not isClaimAuthorization)
                 End If
-                e.Row.Cells(Me.GRID_COL_CLAIM_STATUS_IDX).Text = LookupListNew.GetDescriptionFromCode("CLSTAT", dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_CLAIM_STATUS).ToString)
+                e.Row.Cells(GRID_COL_CLAIM_STATUS_IDX).Text = LookupListNew.GetDescriptionFromCode("CLSTAT", dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_CLAIM_STATUS).ToString)
                 If (dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_CLAIM_STATUS).ToString = Codes.CLAIM_STATUS__ACTIVE) Then
-                    e.Row.Cells(Me.GRID_COL_CLAIM_STATUS_IDX).CssClass = "StatActive"
+                    e.Row.Cells(GRID_COL_CLAIM_STATUS_IDX).CssClass = "StatActive"
                 Else
-                    e.Row.Cells(Me.GRID_COL_CLAIM_STATUS_IDX).CssClass = "StatInactive"
+                    e.Row.Cells(GRID_COL_CLAIM_STATUS_IDX).CssClass = "StatInactive"
                 End If
 
-                If ((Not e.Row.Cells(Me.GRID_COL_AUTHORIZATION_ID_IDX).FindControl(GRID_COL_AUTHORIZATION_NUMBER_CTRL) Is Nothing) And isClaimAuthorization) Then
-                    btnEditAuthorizationItem = CType(e.Row.Cells(Me.GRID_COL_AUTHORIZATION_ID_IDX).FindControl(GRID_COL_AUTHORIZATION_NUMBER_CTRL), LinkButton)
+                If ((e.Row.Cells(GRID_COL_AUTHORIZATION_ID_IDX).FindControl(GRID_COL_AUTHORIZATION_NUMBER_CTRL) IsNot Nothing) And isClaimAuthorization) Then
+                    btnEditAuthorizationItem = CType(e.Row.Cells(GRID_COL_AUTHORIZATION_ID_IDX).FindControl(GRID_COL_AUTHORIZATION_NUMBER_CTRL), LinkButton)
                     btnEditAuthorizationItem.CommandArgument = e.Row.RowIndex.ToString
                     btnEditAuthorizationItem.CommandName = SELECT_ACTION_AUTHORIZATION_COMMAND
                     btnEditAuthorizationItem.Text = dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_AUTHORIZATION_NUMBER).ToString
                 End If
                 If (isClaimAuthorization) Then
-                    e.Row.Cells(Me.GRID_COL_AUTHORIZATION_STATUS_IDX).Text = LookupListNew.GetDescriptionFromId("CLM_AUTH_STAT", New Guid(GetGuidStringFromByteArray(CType(dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_AUTHORIZATION_STATUS_ID), Byte()))))
+                    e.Row.Cells(GRID_COL_AUTHORIZATION_STATUS_IDX).Text = LookupListNew.GetDescriptionFromId("CLM_AUTH_STAT", New Guid(GetGuidStringFromByteArray(CType(dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_AUTHORIZATION_STATUS_ID), Byte()))))
                     If (LookupListNew.GetCodeFromId("CLM_AUTH_STAT", New Guid(GetGuidStringFromByteArray(CType(dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_AUTHORIZATION_STATUS_ID), Byte())))) = Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED) Then
-                        e.Row.Cells(Me.GRID_COL_AUTHORIZATION_STATUS_IDX).CssClass = "StatActive"
+                        e.Row.Cells(GRID_COL_AUTHORIZATION_STATUS_IDX).CssClass = "StatActive"
                     Else
-                        e.Row.Cells(Me.GRID_COL_AUTHORIZATION_STATUS_IDX).CssClass = "StatInactive"
+                        e.Row.Cells(GRID_COL_AUTHORIZATION_STATUS_IDX).CssClass = "StatInactive"
                     End If
 
                 End If
-                Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CUSTOMER_NAME_IDX), dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_CUSTOMER_NAME))
-                Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_TAX_ID_IDX), dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_TAX_ID))
-                Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CELL_PHONE_IDX), dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_CELL_PHONE_NUMBER))
-                Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_SERIAL_NUMBER_IDX), dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_SERIAL_NUMBER))
-                Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_SERVICE_CENTER_IDX), dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_SERVICE_CENTER))
-                Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_VERIFICATION_NUMBER_IDX), dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_VERIFICATION_NUMBER))
-                Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_HIDDEN_CLAIM_ID_IDX), GetGuidStringFromByteArray(CType(dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_CLAIM_ID), Byte())))
+                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CUSTOMER_NAME_IDX), dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_CUSTOMER_NAME))
+                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_TAX_ID_IDX), dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_TAX_ID))
+                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CELL_PHONE_IDX), dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_CELL_PHONE_NUMBER))
+                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SERIAL_NUMBER_IDX), dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_SERIAL_NUMBER))
+                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SERVICE_CENTER_IDX), dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_SERVICE_CENTER))
+                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_VERIFICATION_NUMBER_IDX), dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_VERIFICATION_NUMBER))
+                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_HIDDEN_CLAIM_ID_IDX), GetGuidStringFromByteArray(CType(dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_CLAIM_ID), Byte())))
                 If (isClaimAuthorization) Then
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_HIDDEN_AUTHORIZATION_ID_IDX), GetGuidStringFromByteArray(CType(dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_AUTHORIZATION_ID), Byte())))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_HIDDEN_AUTHORIZATION_ID_IDX), GetGuidStringFromByteArray(CType(dvRow(RepairAndLogistics.RepairLogisticsSearchDV.COL_NAME_AUTHORIZATION_ID), Byte())))
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Dim param As RepairAndLogisticsForm.Parameters = New RepairAndLogisticsForm.Parameters()
         Dim rowIndex As Integer = 0
         Dim claimid As String = String.Empty
@@ -468,50 +468,50 @@ Partial Class RepairAndLogisticsListForm
         Try
             If (Not e.CommandArgument.ToString().Equals(String.Empty)) And (e.CommandName = SELECT_ACTION_CLAIM_COMMAND Or e.CommandName = SELECT_ACTION_AUTHORIZATION_COMMAND) Then
                 rowIndex = CInt(e.CommandArgument)
-                claimid = Grid.Rows(rowIndex).Cells(Me.GRID_COL_HIDDEN_CLAIM_ID_IDX).Text
-                Me.State.selectedClaimId = New Guid(claimid)
+                claimid = Grid.Rows(rowIndex).Cells(GRID_COL_HIDDEN_CLAIM_ID_IDX).Text
+                State.selectedClaimId = New Guid(claimid)
 
                 If e.CommandName = SELECT_ACTION_CLAIM_COMMAND Then
 
-                    param.ClaimId = Me.State.selectedClaimId
+                    param.ClaimId = State.selectedClaimId
                     param.selectedLvl = RepairAndLogisticsForm.SelectedLevel.Claim
 
                 ElseIf e.CommandName = SELECT_ACTION_AUTHORIZATION_COMMAND Then
-                    Authorizationid = Grid.Rows(rowIndex).Cells(Me.GRID_COL_HIDDEN_AUTHORIZATION_ID_IDX).Text
-                    Me.State.selectedAuthorizationId = New Guid(Authorizationid)
+                    Authorizationid = Grid.Rows(rowIndex).Cells(GRID_COL_HIDDEN_AUTHORIZATION_ID_IDX).Text
+                    State.selectedAuthorizationId = New Guid(Authorizationid)
 
-                    param.AuthorizationId = Me.State.selectedAuthorizationId
-                    param.ClaimId = Me.State.selectedClaimId
+                    param.AuthorizationId = State.selectedAuthorizationId
+                    param.ClaimId = State.selectedClaimId
 
 
                     param.selectedLvl = RepairAndLogisticsForm.SelectedLevel.Authorization
                 End If
-                Me.callPage(RepairAndLogisticsForm.URL, param)
+                callPage(RepairAndLogisticsForm.URL, param)
 
             End If
 
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
-            Me.State.selectedClaimId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = Grid.PageIndex
+            State.selectedClaimId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -519,28 +519,28 @@ Partial Class RepairAndLogisticsListForm
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
         Try
             'Me.PopulateSearchFieldsFromState()
-            Me.State.SearchClicked = True
-            Me.State.PageIndex = 0
-            Me.State.selectedClaimId = Guid.Empty
-            Me.State.searchDV = Nothing
-            Me.State.selectedSortById = New Guid(Me.cboSortBy.SelectedValue)
-            Me.State.SortExpression = String.Empty
-            Me.PopulateGrid()
+            State.SearchClicked = True
+            State.PageIndex = 0
+            State.selectedClaimId = Guid.Empty
+            State.searchDV = Nothing
+            State.selectedSortById = New Guid(cboSortBy.SelectedValue)
+            State.SortExpression = String.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 
 
-    Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
         Try
-            Me.ClearSearch()
+            ClearSearch()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -550,7 +550,7 @@ Partial Class RepairAndLogisticsListForm
 
     <System.Web.Services.WebMethod()>
     <Script.Services.ScriptMethod()>
-    Public Shared Function PopulateServiceCenterDrop(ByVal prefixText As String, ByVal count As Integer) As String()
+    Public Shared Function PopulateServiceCenterDrop(prefixText As String, count As Integer) As String()
         Dim dv As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
         Return AjaxController.BindAutoComplete(prefixText, dv)
     End Function

@@ -10,7 +10,7 @@ Public Class VendorAuthorizationFileLoadTask
 #End Region
 
 #Region "Constructors"
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 #End Region
@@ -20,7 +20,7 @@ Public Class VendorAuthorizationFileLoadTask
         Get
             Return _claimLoadFileProcessedId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _claimLoadFileProcessedId = value
         End Set
     End Property
@@ -29,7 +29,7 @@ Public Class VendorAuthorizationFileLoadTask
         Get
             Return _claimAuthorizationFileLoad
         End Get
-        Set(ByVal value As VendorAuthorizationFileLoad)
+        Set(value As VendorAuthorizationFileLoad)
             _claimAuthorizationFileLoad = value
         End Set
     End Property
@@ -42,14 +42,14 @@ Public Class VendorAuthorizationFileLoadTask
             Dim claimLoadFileProcessedId As Guid
             If (String.IsNullOrEmpty(MyBase.PublishedTask(PublishedTask.CLAIMLOAD_FILE_PROCESSED_ID))) Then
                 Logger.AddError("Argument Claim Load File Processed ID is not supplied in Argument")
-                Me.FailReason = "Argument Claim Load File Processed ID is not supplied in Argument"
+                FailReason = "Argument Claim Load File Processed ID is not supplied in Argument"
                 Throw New ArgumentException("Argument Claim Load File Processed ID is not supplied in Argument")
             Else
                 claimLoadFileProcessedId = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(MyBase.PublishedTask(PublishedTask.CLAIMLOAD_FILE_PROCESSED_ID)))
             End If
             Me.ClaimLoadFileProcessedId = claimLoadFileProcessedId
-            Me.ClaimAuthorizationFileLoad = New VendorAuthorizationFileLoad()
-            Me.ClaimAuthorizationFileLoad.Process(Me.ClaimLoadFileProcessedId)
+            ClaimAuthorizationFileLoad = New VendorAuthorizationFileLoad()
+            ClaimAuthorizationFileLoad.Process(Me.ClaimLoadFileProcessedId)
         Catch ex As Exception
             Logger.AddError(ex)
             Throw

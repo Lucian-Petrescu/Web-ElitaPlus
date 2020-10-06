@@ -68,60 +68,60 @@ Namespace Reports
 
         Private Sub InitializeForm()
             Dim t As Date = Date.Now.AddDays(-6)
-            Me.BeginDateText.Text = GetDateFormattedString(t)
-            Me.EndDateText.Text = GetDateFormattedString(Date.Now)
-            Me.RadiobuttonByReportingPeriod.Checked = True
-            Me.RadiobuttonByInvoiceNumber.Checked = False
+            BeginDateText.Text = GetDateFormattedString(t)
+            EndDateText.Text = GetDateFormattedString(Date.Now)
+            RadiobuttonByReportingPeriod.Checked = True
+            RadiobuttonByInvoiceNumber.Checked = False
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.ErrorCtrl.Clear_Hide()
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     TheRptCeInputControl.populateReportLanguages(RPT_FILENAME)
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.BeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.EndDateText)
+                    AddCalendar(BtnBeginDate, BeginDateText)
+                    AddCalendar(BtnEndDate, EndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
-        Private Sub ClaimsPaidReportForm_LoadComplete(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LoadComplete
+        Private Sub ClaimsPaidReportForm_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
             Dim messageContent As String
-            If Me.RadiobuttonByInvoiceNumber.Checked Then
+            If RadiobuttonByInvoiceNumber.Checked Then
                 messageContent = ("<script language=JavaScript> toggleOptionSelection('I') </script>")
             Else
                 messageContent = ("<script language=JavaScript> toggleOptionSelection('D') </script>")
             End If
-            Me.Page.RegisterStartupScript("ShowReportByCtls", messageContent)
+            Page.RegisterStartupScript("ShowReportByCtls", messageContent)
         End Sub
 
 #End Region
 
 #Region "Events Handlers"
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 #End Region
 
 #Region "Helper functions"
-        Sub BindPayee(ByVal invoiceNumber As String)
+        Sub BindPayee(invoiceNumber As String)
             Try
-                If Not invoiceNumber Is Nothing AndAlso invoiceNumber.Trim.Length > 0 Then
-                    Me.PayeeLabel.Visible = True
-                    Me.cboPayee.Visible = True
+                If invoiceNumber IsNot Nothing AndAlso invoiceNumber.Trim.Length > 0 Then
+                    PayeeLabel.Visible = True
+                    cboPayee.Visible = True
 
                     Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
                     Dim payeeList As New Collections.Generic.List(Of Assurant.Elita.CommonConfiguration.DataElements.ListItem)
@@ -130,7 +130,7 @@ Namespace Reports
                         oListContext.InvoiceNumber = invoiceNumber
                         Dim oPayeeListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="PayeeListByInvoiceNumberAndCompany", context:=oListContext)
                         If oPayeeListForCompany.Count > 0 Then
-                            If Not payeeList Is Nothing Then
+                            If payeeList IsNot Nothing Then
                                 payeeList.AddRange(oPayeeListForCompany)
                             Else
                                 payeeList = oPayeeListForCompany.Clone()
@@ -138,7 +138,7 @@ Namespace Reports
                         End If
                     Next
 
-                    Me.cboPayee.Populate(payeeList.ToArray(), New PopulateOptions() With
+                    cboPayee.Populate(payeeList.ToArray(), New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = False
                                                    })
@@ -162,33 +162,33 @@ Namespace Reports
                 Else
                     'set flag false
                     showPayeeRowFlag = False
-                    Me.cboPayee.SelectedIndex = 0
+                    cboPayee.SelectedIndex = 0
                     'HidePayeeRow()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub InvoiceNumberTextbox_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles InvoiceNumberTextbox.TextChanged
-            Me.BindPayee(Me.InvoiceNumberTextbox.Text)
+        Private Sub InvoiceNumberTextbox_TextChanged(sender As Object, e As System.EventArgs) Handles InvoiceNumberTextbox.TextChanged
+            BindPayee(InvoiceNumberTextbox.Text)
         End Sub
 
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(BeginDateLabel)
-            Me.ClearLabelErrSign(EndDateLabel)
-            Me.ClearLabelErrSign(InvoiceNumberLabel)
-            Me.ClearLabelErrSign(PayeeLabel)
+            ClearLabelErrSign(BeginDateLabel)
+            ClearLabelErrSign(EndDateLabel)
+            ClearLabelErrSign(InvoiceNumberLabel)
+            ClearLabelErrSign(PayeeLabel)
         End Sub
 
 #End Region
 
 #Region "Crystal Enterprise"
 
-        Sub SetReportParams(ByVal rptParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                        ByVal rptName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(rptParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                        rptName As String, startIndex As Integer)
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_USER_KEY", .userId, rptName)
                 repParams(startIndex + 1) = New ReportCeBaseForm.RptParam("V_SVC_CONTROL_NUMBER", .invoiceNumber, rptName)
@@ -201,9 +201,9 @@ Namespace Reports
 
         End Sub
 
-        Function SetParameters(ByVal userId As String, ByVal invoiceNumber As String, ByVal payee As String,
-                               ByVal beginDate As String, ByVal endDate As String, ByVal selectionType As String,
-                               ByVal culturecode As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, invoiceNumber As String, payee As String,
+                               beginDate As String, endDate As String, selectionType As String,
+                               culturecode As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params
@@ -234,9 +234,9 @@ Namespace Reports
             Return params
         End Function
 
-        Function SetExpParameters(ByVal userId As String, ByVal invoiceNumber As String, ByVal payee As String,
-                                  ByVal beginDate As String, ByVal endDate As String, ByVal selectionType As String,
-                                  ByVal culturecode As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(userId As String, invoiceNumber As String, payee As String,
+                                  beginDate As String, endDate As String, selectionType As String,
+                                  culturecode As String) As ReportCeBaseForm.Params
 
             Dim reportName As String
             Dim params As New ReportCeBaseForm.Params
@@ -286,9 +286,9 @@ Namespace Reports
                 culturecode = TheRptCeInputControl.getCultureValue(True)
             End If
 
-            Me.rptWindowTitle.Text = TheRptCeInputControl.getReportWindowTitle(RPT_FILENAME_WINDOW)
+            rptWindowTitle.Text = TheRptCeInputControl.getReportWindowTitle(RPT_FILENAME_WINDOW)
 
-            If (Me.RadiobuttonByReportingPeriod.Checked) Then
+            If (RadiobuttonByReportingPeriod.Checked) Then
                 selectionType = BY_REPORTING_PERIOD
             Else
                 selectionType = BY_INVOICE_NUMBER

@@ -83,20 +83,20 @@
 
 #Region "Handlers-Init"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
         'Put user code to initialize the page here
-        Me.ErrControllerMaster.Clear_Hide()
+        ErrControllerMaster.Clear_Hide()
         
         Try
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
-                Me.SetGridItemStyleColor(Me.moListItemGrid)
-                If Me.State.IsGridVisible Then
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
+                SetGridItemStyleColor(moListItemGrid)
+                If State.IsGridVisible Then
                     'If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                    moListItemGrid.PageSize = Me.State.PageSize
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
+                    moListItemGrid.PageSize = State.PageSize
                     'End If
                 End If
                 PopulateDropdowns()
@@ -106,7 +106,7 @@
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
@@ -116,78 +116,78 @@
 #Region "Event Handlers"
 
 
-    Private Sub moListItemDropDown_SelectedIndexChanged(ByVal moUserCompanyMultipleDrop As Common.MultipleColumnDDLabelControl) Handles moMultipleColumnDDListItem.SelectedDropChanged
+    Private Sub moListItemDropDown_SelectedIndexChanged(moUserCompanyMultipleDrop As Common.MultipleColumnDDLabelControl) Handles moMultipleColumnDDListItem.SelectedDropChanged
 
 
         Try
-            Me.State.searchDV = Nothing
-            Me.State.IsGridVisible = True
-            Me.State.companyId = Me.UserCompanyMultipleDrop.SelectedGuid
+            State.searchDV = Nothing
+            State.IsGridVisible = True
+            State.companyId = UserCompanyMultipleDrop.SelectedGuid
 
             ValidatedDropdownSelections()
 
-            Me.State.listId = Me.moMultipleColumnDDListItem.SelectedGuid
-            Me.State.PageIndex = moListItemGrid.CurrentPageIndex
+            State.listId = moMultipleColumnDDListItem.SelectedGuid
+            State.PageIndex = moListItemGrid.CurrentPageIndex
             PopulateListItemGrid()
             EnableDisableButtons(True)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
 
-    Private Sub moBtnCancel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBtnCancel.Click
-        Me.PopulateListItemGrid()
+    Private Sub moBtnCancel_Click(sender As Object, e As System.EventArgs) Handles moBtnCancel.Click
+        PopulateListItemGrid()
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
             If IsDataGPageDirty() Then
-                Me.SavePage()
-                If Me.State.MyBO.IsFamilyDirty() Then
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                SavePage()
+                If State.MyBO.IsFamilyDirty() Then
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ReturnToCallingPage()
+                    ReturnToCallingPage()
                 End If
             End If
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, ErrControllerMaster)
-            Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            HandleErrors(ex, ErrControllerMaster)
+            DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
         End Try
 
-        Me.ReturnToTabHomePage()
+        ReturnToTabHomePage()
     End Sub
 
 
-    Private Sub moBtnSave_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBtnSave_WRITE.Click
+    Private Sub moBtnSave_WRITE_Click(sender As Object, e As System.EventArgs) Handles moBtnSave_WRITE.Click
         Try
             If IsDataGPageDirty() Then
                 SavePage()
-                If (Me.State.MyBO.IsFamilyDirty) Then
-                    Me.State.MyBO.Save()
-                    ShowInfoMsgBox(Me.MSG_RECORD_SAVED_OK)
-                    Me.State.searchDV = Nothing
+                If (State.MyBO.IsFamilyDirty) Then
+                    State.MyBO.Save()
+                    ShowInfoMsgBox(MSG_RECORD_SAVED_OK)
+                    State.searchDV = Nothing
                     PopulateListItemGrid()
                     ControlMgr.SetVisibleControl(Me, moListItemGrid, True)
                 Else
-                    ShowInfoMsgBox(Me.MSG_RECORD_NOT_SAVED)
+                    ShowInfoMsgBox(MSG_RECORD_NOT_SAVED)
                     PopulateListItemGrid()
-                    Me.ReturnFromEditing()
+                    ReturnFromEditing()
                 End If
             Else
-                ShowInfoMsgBox(Me.MSG_RECORD_NOT_SAVED)
+                ShowInfoMsgBox(MSG_RECORD_NOT_SAVED)
                 PopulateListItemGrid()
-                Me.ReturnFromEditing()
+                ReturnFromEditing()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
-            Me.ReturnFromEditing(True)
-            Me.State.searchDV = Nothing
+            HandleErrors(ex, ErrControllerMaster)
+            ReturnFromEditing(True)
+            State.searchDV = Nothing
             PopulateListItemGrid()
 
         End Try
@@ -207,8 +207,8 @@
             UserCompanyMultipleDrop.NothingSelected = True
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, CompanyDV, UserCompanyMultipleDrop.NO_CAPTION, True)
             If CompanyDV.Count.Equals(ONE_ITEM) Then
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
-                Me.State.companyId = Me.UserCompanyMultipleDrop.SelectedGuid
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
+                State.companyId = UserCompanyMultipleDrop.SelectedGuid
                 UserCompanyMultipleDrop.ChangeEnabledControlProperty(False)
             End If
 
@@ -217,7 +217,7 @@
 
 
         Catch ex As Exception
-            Me.ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
+            ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
         End Try
 
 
@@ -232,40 +232,40 @@
     Private Sub PopulateListItemGrid()
         Dim dv As DataView
         Try
-            If (Me.State.searchDV Is Nothing) Then
+            If (State.searchDV Is Nothing) Then
                 'Me.SetStateProperties()
-                Me.State.searchDV = GetListItemsGridDataView()
+                State.searchDV = GetListItemsGridDataView()
             End If
 
-            Me.State.searchDV.Sort = Me.State.SortExpression
+            State.searchDV.Sort = State.SortExpression
 
-            Me.moListItemGrid.AutoGenerateColumns = False
-            Me.moListItemGrid.Columns(Me.GRID_COL_CODE_ALIAS).SortExpression = Me.State.MyBO.ListItemSearchDV.GRID_COL_CODE
-            Me.moListItemGrid.Columns(Me.GRID_COL_DESCRIPTION_ALIAS).SortExpression = Me.State.MyBO.ListItemSearchDV.GRID_COL_DESCRIPTION
-            Me.moListItemGrid.Columns(Me.GRID_COL_NEW_DESCRIPTION_ALIAS).SortExpression = Me.State.MyBO.ListItemSearchDV.GRID_COL_NEW_DESCRIPTION
+            moListItemGrid.AutoGenerateColumns = False
+            moListItemGrid.Columns(GRID_COL_CODE_ALIAS).SortExpression = State.MyBO.ListItemSearchDV.GRID_COL_CODE
+            moListItemGrid.Columns(GRID_COL_DESCRIPTION_ALIAS).SortExpression = State.MyBO.ListItemSearchDV.GRID_COL_DESCRIPTION
+            moListItemGrid.Columns(GRID_COL_NEW_DESCRIPTION_ALIAS).SortExpression = State.MyBO.ListItemSearchDV.GRID_COL_NEW_DESCRIPTION
             'DEF-1444: Errors on Code Mapping Screen. 
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedGuid, Me.moListItemGrid, Me.State.PageIndex)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedGuid, moListItemGrid, State.PageIndex)
             'End of DEF-1444
             ' SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.DictItemId, Me.moListItemGrid, Me.State.PageIndex)
             SortAndBindGrid()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
     Private Sub SortAndBindGrid()
-        Me.State.PageIndex = Me.moListItemGrid.CurrentPageIndex
-        Me.TranslateGridControls(moListItemGrid)
-        moListItemGrid.DataSource = Me.State.searchDV
-        HighLightSortColumn(moListItemGrid, Me.State.SortExpression)
-        Me.moListItemGrid.DataBind()
+        State.PageIndex = moListItemGrid.CurrentPageIndex
+        TranslateGridControls(moListItemGrid)
+        moListItemGrid.DataSource = State.searchDV
+        HighLightSortColumn(moListItemGrid, State.SortExpression)
+        moListItemGrid.DataBind()
 
-        ControlMgr.SetVisibleControl(Me, moListItemGrid, Me.State.IsGridVisible)
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.moListItemGrid.Visible)
-        Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        ControlMgr.SetVisibleControl(Me, moListItemGrid, State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, moListItemGrid.Visible)
+        lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
         ' ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, moListItemGrid)
     End Sub
@@ -273,56 +273,56 @@
     Private Function GetListItemsGridDataView() As DataView
         Dim bo As CodeMapping = New CodeMapping
 
-        Me.State.searchDV = bo.AdminLoadListItems(ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.State.listId, Me.State.companyId)
+        State.searchDV = bo.AdminLoadListItems(ElitaPlusIdentity.Current.ActiveUser.LanguageId, State.listId, State.companyId)
 
-        Me.State.searchDV.Sort = moListItemGrid.DataMember()
-        moListItemGrid.DataSource = Me.State.searchDV
+        State.searchDV.Sort = moListItemGrid.DataMember()
+        moListItemGrid.DataSource = State.searchDV
 
-        Return (Me.State.searchDV)
+        Return (State.searchDV)
     End Function
 
-    Private Sub moDictionaryGrid_PageIndexChanged(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moListItemGrid.PageIndexChanged
+    Private Sub moDictionaryGrid_PageIndexChanged(source As System.Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moListItemGrid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.moListItemGrid.CurrentPageIndex = Me.State.PageIndex
-            Me.PopulateListItemGrid()
-            Me.moListItemGrid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+            State.PageIndex = e.NewPageIndex
+            moListItemGrid.CurrentPageIndex = State.PageIndex
+            PopulateListItemGrid()
+            moListItemGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
-            Me.State.PageSize = CType(cboPageSize.SelectedValue, Integer)
+            State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             moListItemGrid.CurrentPageIndex = NewCurrentPageIndex(moListItemGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.PopulateListItemGrid()
+            PopulateListItemGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moListItemGrid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moListItemGrid.ItemDataBound
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
         Dim oTextBox As TextBox
 
         If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
             With e.Item
-                Me.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_LIST_ITEM_ID), dvRow(CodeMapping.ListItemSearchDV.GRID_COL_LIST_ITEM_ID))
+                PopulateControlFromBOProperty(.Cells(GRID_COL_LIST_ITEM_ID), dvRow(CodeMapping.ListItemSearchDV.GRID_COL_LIST_ITEM_ID))
                 'Me.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_CODE_MAPPING_ID), dvRow(CodeMapping.ListItemSearchDV.GRID_COL_CODE_MAPPING_ID))
 
 
-                oTextBox = CType(e.Item.Cells(Me.GRID_COL_NEW_DESCRIPTION_ALIAS).FindControl(NEW_DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox)
+                oTextBox = CType(e.Item.Cells(GRID_COL_NEW_DESCRIPTION_ALIAS).FindControl(NEW_DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox)
                 oTextBox.Attributes.Add("onchange", "setDirty()")
                 'If e.Item.ItemIndex() = 0 Then
                 '    SetFocus(oTextBox)
                 'End If
-                Me.PopulateControlFromBOProperty(oTextBox, dvRow(CodeMapping.ListItemSearchDV.GRID_COL_NEW_DESCRIPTION))
-                Me.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_CODE_ALIAS), dvRow(CodeMapping.ListItemSearchDV.GRID_COL_CODE))
-                Me.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_DESCRIPTION_ALIAS), dvRow(CodeMapping.ListItemSearchDV.GRID_COL_DESCRIPTION))
-                Me.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_CODE_MAPPING_ID), dvRow(CodeMapping.ListItemSearchDV.GRID_COL_CODE_MAPPING_ID))
+                PopulateControlFromBOProperty(oTextBox, dvRow(CodeMapping.ListItemSearchDV.GRID_COL_NEW_DESCRIPTION))
+                PopulateControlFromBOProperty(.Cells(GRID_COL_CODE_ALIAS), dvRow(CodeMapping.ListItemSearchDV.GRID_COL_CODE))
+                PopulateControlFromBOProperty(.Cells(GRID_COL_DESCRIPTION_ALIAS), dvRow(CodeMapping.ListItemSearchDV.GRID_COL_DESCRIPTION))
+                PopulateControlFromBOProperty(.Cells(GRID_COL_CODE_MAPPING_ID), dvRow(CodeMapping.ListItemSearchDV.GRID_COL_CODE_MAPPING_ID))
 
             End With
         End If
@@ -331,34 +331,34 @@
     End Sub
 
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moListItemGrid.SortCommand
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moListItemGrid.SortCommand
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
             'To handle the requirement of always going to the FIRST page on the Grid whenever the user switches the sorting criterion
             'Set the Me.State.selectedClaimId = Guid.Empty and set Me.State.PageIndex = 0
             'Me.State.listId = Guid.Empty
             'Me.State.PageIndex = 0
 
-            Me.PopulateListItemGrid()
+            PopulateListItemGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 
-    Public Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles moListItemGrid.ItemCommand
+    Public Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles moListItemGrid.ItemCommand
        
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
@@ -371,13 +371,13 @@
     Private Sub ReturnFromEditing(Optional ByVal isSaveWithErrors As Boolean = False)
 
         If Not isSaveWithErrors Then
-            If (Me.moListItemGrid.PageCount = 0) Then
+            If (moListItemGrid.PageCount = 0) Then
                 ControlMgr.SetVisibleControl(Me, moListItemGrid, False)
             Else
                 ControlMgr.SetVisibleControl(Me, moListItemGrid, True)
             End If
 
-            Me.State.PageIndex = moListItemGrid.CurrentPageIndex
+            State.PageIndex = moListItemGrid.CurrentPageIndex
         End If
     End Sub
 
@@ -390,61 +390,61 @@
         Dim isFirstCodeMap As Boolean
         isFirstCodeMap = False
         'DEF-1444. End
-        For i As Integer = 0 To Me.moListItemGrid.Items.Count - 1
+        For i As Integer = 0 To moListItemGrid.Items.Count - 1
             moListItemGrid.SelectedIndex = i
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "NewDescription", Me.moListItemGrid.Columns(Me.GRID_COL_NEW_DESCRIPTION_ALIAS))
-            Me.ClearGridHeadersAndLabelsErrSign()
-            If moListItemGrid.Items(i).Cells(Me.GRID_COL_CODE_MAPPING_ID).Text = "" Then
+            BindBOPropertyToGridHeader(State.MyBO, "NewDescription", moListItemGrid.Columns(GRID_COL_NEW_DESCRIPTION_ALIAS))
+            ClearGridHeadersAndLabelsErrSign()
+            If moListItemGrid.Items(i).Cells(GRID_COL_CODE_MAPPING_ID).Text = "" Then
                 CodeMappId = Guid.Empty
             Else
-                CodeMappId = New Guid(moListItemGrid.Items(i).Cells(Me.GRID_COL_CODE_MAPPING_ID).Text)
+                CodeMappId = New Guid(moListItemGrid.Items(i).Cells(GRID_COL_CODE_MAPPING_ID).Text)
             End If
-            newCode = CType(Me.moListItemGrid.Items(Me.moListItemGrid.SelectedIndex).Cells(Me.GRID_COL_NEW_DESCRIPTION_ALIAS).FindControl(Me.NEW_DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text()
+            newCode = CType(moListItemGrid.Items(moListItemGrid.SelectedIndex).Cells(GRID_COL_NEW_DESCRIPTION_ALIAS).FindControl(NEW_DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text()
             'DEF-1444. Start
-            If Me.State.searchDV.Item(i)(Me.GRID_COL_NEW_DESCRIPTION_ALIAS).ToString() <> newCode Then
-                Me.State.selectedGuid = New Guid(moListItemGrid.Items(i).Cells(Me.GRID_COL_LIST_ITEM_ID).Text)
+            If State.searchDV.Item(i)(GRID_COL_NEW_DESCRIPTION_ALIAS).ToString() <> newCode Then
+                State.selectedGuid = New Guid(moListItemGrid.Items(i).Cells(GRID_COL_LIST_ITEM_ID).Text)
             End If
             'DEF-1444. End
             If Not newCode = "" Then
                 If CodeMappId.Equals(Guid.Empty) Then
                     'DEF-1444. Start
-                    If i = 0 Or Me.State.MyBO Is Nothing Or Not isFirstCodeMap Then
-                        Me.State.MyBO = New CodeMapping
-                        Me.PopulateBOProperty(Me.State.MyBO, "CompanyId", Me.State.companyId)
-                        Me.PopulateBOProperty(Me.State.MyBO, "ListItemId", New Guid(moListItemGrid.Items(i).Cells(Me.GRID_COL_LIST_ITEM_ID).Text))
-                        Me.PopulateBOProperty(Me.State.MyBO, "NewDescription", CType(Me.moListItemGrid.Items(Me.moListItemGrid.SelectedIndex).Cells(Me.GRID_COL_NEW_DESCRIPTION_ALIAS).FindControl(Me.NEW_DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text)
+                    If i = 0 Or State.MyBO Is Nothing Or Not isFirstCodeMap Then
+                        State.MyBO = New CodeMapping
+                        PopulateBOProperty(State.MyBO, "CompanyId", State.companyId)
+                        PopulateBOProperty(State.MyBO, "ListItemId", New Guid(moListItemGrid.Items(i).Cells(GRID_COL_LIST_ITEM_ID).Text))
+                        PopulateBOProperty(State.MyBO, "NewDescription", CType(moListItemGrid.Items(moListItemGrid.SelectedIndex).Cells(GRID_COL_NEW_DESCRIPTION_ALIAS).FindControl(NEW_DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text)
                         isFirstCodeMap = True
                         'DEF-1444. End
                     Else
-                        otherBOs = New CodeMapping(Me.State.MyBO.MyDataset)
-                        Me.PopulateBOProperty(otherBOs, "CompanyId", Me.State.companyId)
-                        Me.PopulateBOProperty(otherBOs, "ListItemId", New Guid(moListItemGrid.Items(i).Cells(Me.GRID_COL_LIST_ITEM_ID).Text))
-                        Me.PopulateBOProperty(otherBOs, "NewDescription", CType(Me.moListItemGrid.Items(Me.moListItemGrid.SelectedIndex).Cells(Me.GRID_COL_NEW_DESCRIPTION_ALIAS).FindControl(Me.NEW_DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text)
+                        otherBOs = New CodeMapping(State.MyBO.MyDataset)
+                        PopulateBOProperty(otherBOs, "CompanyId", State.companyId)
+                        PopulateBOProperty(otherBOs, "ListItemId", New Guid(moListItemGrid.Items(i).Cells(GRID_COL_LIST_ITEM_ID).Text))
+                        PopulateBOProperty(otherBOs, "NewDescription", CType(moListItemGrid.Items(moListItemGrid.SelectedIndex).Cells(GRID_COL_NEW_DESCRIPTION_ALIAS).FindControl(NEW_DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text)
                         otherBOs.Save()
                     End If
                 Else
                     'DEF-1444. Start
-                    If i = 0 Or Me.State.MyBO Is Nothing Or Not isFirstCodeMap Then
-                        Me.State.MyBO = New CodeMapping(CodeMappId)
-                        Me.PopulateBOProperty(Me.State.MyBO, "NewDescription", CType(Me.moListItemGrid.Items(Me.moListItemGrid.SelectedIndex).Cells(Me.GRID_COL_NEW_DESCRIPTION_ALIAS).FindControl(Me.NEW_DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text)
+                    If i = 0 Or State.MyBO Is Nothing Or Not isFirstCodeMap Then
+                        State.MyBO = New CodeMapping(CodeMappId)
+                        PopulateBOProperty(State.MyBO, "NewDescription", CType(moListItemGrid.Items(moListItemGrid.SelectedIndex).Cells(GRID_COL_NEW_DESCRIPTION_ALIAS).FindControl(NEW_DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text)
                         isFirstCodeMap = True
                         'DEF-1444. End
                     Else
-                        otherBOs = New CodeMapping(CodeMappId, Me.State.MyBO.MyDataset)
-                        Me.PopulateBOProperty(otherBOs, "NewDescription", CType(Me.moListItemGrid.Items(Me.moListItemGrid.SelectedIndex).Cells(Me.GRID_COL_NEW_DESCRIPTION_ALIAS).FindControl(Me.NEW_DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text)
+                        otherBOs = New CodeMapping(CodeMappId, State.MyBO.MyDataset)
+                        PopulateBOProperty(otherBOs, "NewDescription", CType(moListItemGrid.Items(moListItemGrid.SelectedIndex).Cells(GRID_COL_NEW_DESCRIPTION_ALIAS).FindControl(NEW_DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text)
                         otherBOs.Save()
                     End If
                 End If
             ElseIf newCode = "" Then
                 If Not CodeMappId.Equals(Guid.Empty) Then
                     'DEF-1444. Start
-                    If i = 0 Or Me.State.MyBO Is Nothing Or Not isFirstCodeMap Then
-                        Me.State.MyBO = New CodeMapping(CodeMappId)
-                        Me.State.MyBO.Delete()
+                    If i = 0 Or State.MyBO Is Nothing Or Not isFirstCodeMap Then
+                        State.MyBO = New CodeMapping(CodeMappId)
+                        State.MyBO.Delete()
                         isFirstCodeMap = True
                         'DEF-1444. End
                     Else
-                        otherBOs = New CodeMapping(CodeMappId, Me.State.MyBO.MyDataset)
+                        otherBOs = New CodeMapping(CodeMappId, State.MyBO.MyDataset)
                         otherBOs.Delete()
                         otherBOs.Save()
                     End If
@@ -454,7 +454,7 @@
 
     End Sub
 
-    Private Sub CreateBoFromGrid(ByVal index As Integer)
+    Private Sub CreateBoFromGrid(index As Integer)
         
     End Sub
 
@@ -462,11 +462,11 @@
 
         Dim result As Boolean = True
 
-        If Me.UserCompanyMultipleDrop.SelectedIndex = 0 Then
+        If UserCompanyMultipleDrop.SelectedIndex = 0 Then
             Throw New GUIException(Message.MSG_COMPANY_IS_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_REQUIRED)
         End If
 
-        If Me.moMultipleColumnDDListItem.SelectedIndex = 0 Then
+        If moMultipleColumnDDListItem.SelectedIndex = 0 Then
             Throw New GUIException(Message.MSG_LIST_ITEM_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_LIST_ITEM_TYPE_IS_REQUIRED)
         End If
 
@@ -475,25 +475,25 @@
 
     Protected Sub CheckIfComingFromSaveConfirm()
 
-        Dim confResponse As String = Me.HiddenSavePagePromptResponse.Value
+        Dim confResponse As String = HiddenSavePagePromptResponse.Value
 
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
                 SavePage()
-                If (Me.State.MyBO.IsFamilyDirty) Then
-                    Me.State.MyBO.Save()
+                If (State.MyBO.IsFamilyDirty) Then
+                    State.MyBO.Save()
                 End If
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage()
+                    ReturnToCallingPage()
                 Case ElitaPlusPage.DetailPageCommand.New_
                     'Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage()
+                    ReturnToCallingPage()
                 Case ElitaPlusPage.DetailPageCommand.New_
                     'Me.State.isNew = True
                     'Me.PopulateGrid()
@@ -514,19 +514,19 @@
         End If
 
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSavePagePromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSavePagePromptResponse.Value = ""
 
     End Sub
 
 
     Function IsDataGPageDirty() As Boolean
-        Dim Result As String = Me.HiddenIsPageDirty.Value
+        Dim Result As String = HiddenIsPageDirty.Value
 
         Return Result.Equals("YES")
     End Function
 
-    Private Sub EnableDisableButtons(ByVal isAnable As Boolean)
+    Private Sub EnableDisableButtons(isAnable As Boolean)
 
         ControlMgr.SetEnableControl(Me, moBtnCancel, isAnable)
         ControlMgr.SetEnableControl(Me, moBtnSave_WRITE, isAnable)
@@ -535,14 +535,14 @@
     End Sub
 
 #End Region
-    Private Sub ShowInfoMsgBox(ByVal strMsg As String, Optional ByVal Translate As Boolean = True)
+    Private Sub ShowInfoMsgBox(strMsg As String, Optional ByVal Translate As Boolean = True)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
         Dim sJavaScript As String
         sJavaScript = "<SCRIPT>" & Environment.NewLine
-        sJavaScript &= "setTimeout(""showMessage('" & translatedMsg & "', '" & "AlertWindow" & "', '" & Me.MSG_BTN_OK & "', '" & Me.MSG_TYPE_INFO & "', '" & "null" & "')"", 0);" & Environment.NewLine
+        sJavaScript &= "setTimeout(""showMessage('" & translatedMsg & "', '" & "AlertWindow" & "', '" & MSG_BTN_OK & "', '" & MSG_TYPE_INFO & "', '" & "null" & "')"", 0);" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+        RegisterStartupScript("ShowConfirmation", sJavaScript)
     End Sub
 
 End Class

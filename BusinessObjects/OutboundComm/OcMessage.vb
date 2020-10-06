@@ -8,46 +8,46 @@ Public Class OcMessage
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New OcMessageDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -58,20 +58,20 @@ Public Class OcMessage
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New OcMessageDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -111,7 +111,7 @@ Public Class OcMessage
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_OC_TEMPLATE_ID, Value)
+            SetValue(OcMessageDAL.COL_NAME_OC_TEMPLATE_ID, Value)
         End Set
     End Property
 
@@ -126,7 +126,7 @@ Public Class OcMessage
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_TEMPLATE_CODE, Value)
+            SetValue(OcMessageDAL.COL_NAME_TEMPLATE_CODE, Value)
         End Set
     End Property
 
@@ -141,7 +141,7 @@ Public Class OcMessage
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_TEMPLATE_DESCRIPTION, Value)
+            SetValue(OcMessageDAL.COL_NAME_TEMPLATE_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -156,7 +156,7 @@ Public Class OcMessage
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_SENDER_REASON, Value)
+            SetValue(OcMessageDAL.COL_NAME_SENDER_REASON, Value)
         End Set
     End Property
 
@@ -171,7 +171,7 @@ Public Class OcMessage
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_RECIPIENT_ADDRESS, Value)
+            SetValue(OcMessageDAL.COL_NAME_RECIPIENT_ADDRESS, Value)
         End Set
     End Property
 
@@ -186,7 +186,7 @@ Public Class OcMessage
         End Get
         Set(ByVal Value As DateTime)
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_ON, Value)
+            SetValue(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_ON, Value)
         End Set
     End Property
 
@@ -201,7 +201,7 @@ Public Class OcMessage
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_STATUS, Value)
+            SetValue(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_STATUS, Value)
         End Set
     End Property
 
@@ -216,7 +216,7 @@ Public Class OcMessage
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_CERT_NUMBER, Value)
+            SetValue(OcMessageDAL.COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
@@ -231,7 +231,7 @@ Public Class OcMessage
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_CLAIM_NUMBER, Value)
+            SetValue(OcMessageDAL.COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
@@ -246,7 +246,7 @@ Public Class OcMessage
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_CASE_NUMBER, Value)
+            SetValue(OcMessageDAL.COL_NAME_CASE_NUMBER, Value)
         End Set
     End Property
 
@@ -269,22 +269,22 @@ Public Class OcMessage
 #Region "Public Members"
 
     Public Function GetParameterChild(ByVal childId As Guid) As OcMessageParams
-        Return Me.MessageParametersList.Find(childId)
+        Return MessageParametersList.Find(childId)
     End Function
 
     Public Function GetNewParameterChild() As OcMessageParams
-        Dim child As OcMessageParams = Me.MessageParametersList.GetNewChild
-        child.OcMessageId = Me.Id
+        Dim child As OcMessageParams = MessageParametersList.GetNewChild
+        child.OcMessageId = Id
         Return child
     End Function
 
     Public Function GetMessageAttemptChild(ByVal childId As Guid) As OcMessageAttempts
-        Return Me.MessageAttemptsList.Find(childId)
+        Return MessageAttemptsList.Find(childId)
     End Function
 
     Public Function GetNewMessageAttemptChild() As OcMessageAttempts
-        Dim child As OcMessageAttempts = Me.MessageAttemptsList.GetNewChild
-        child.OcMessageId = Me.Id
+        Dim child As OcMessageAttempts = MessageAttemptsList.GetNewChild
+        child.OcMessageId = Id
         Return child
     End Function
 
@@ -404,7 +404,7 @@ Public Class OcMessage
         End Sub
 
         Public Function AddNewRowToEmptyDV() As MessageDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
             row(MessageDV.COL_MESSAGE_ID) = (New Guid()).ToByteArray
             row(MessageDV.COL_TEMPLATE_ID) = Guid.Empty.ToByteArray

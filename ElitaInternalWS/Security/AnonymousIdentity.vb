@@ -4,11 +4,11 @@ Namespace Security
     Public Class AnonymousIdentity
         Inherits GenericIdentity
 
-        Sub New(ByVal name As String)
+        Sub New(name As String)
             MyBase.New(name)
         End Sub
 
-        Sub New(ByVal name As String, ByVal type As String)
+        Sub New(name As String, type As String)
             MyBase.New(name, type)
         End Sub
 

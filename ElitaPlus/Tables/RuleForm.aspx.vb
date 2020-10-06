@@ -16,7 +16,7 @@ Namespace Tables
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -33,9 +33,9 @@ Namespace Tables
             Public LastOperation As DetailPageCommand
             Public EditingBo As Assurant.ElitaPlus.BusinessObjectsNew.Rule
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Assurant.ElitaPlus.BusinessObjectsNew.Rule, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As Assurant.ElitaPlus.BusinessObjectsNew.Rule, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
@@ -94,148 +94,148 @@ Namespace Tables
             End Get
         End Property
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
-                    Me.State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.Rule(CType(Me.CallingParameters, Guid))
-                    Me.State.IsEditMode = True
+                If CallingParameters IsNot Nothing Then
+                    State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.Rule(CType(CallingParameters, Guid))
+                    State.IsEditMode = True
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
+                MenuEnabled = True
+                IsReturningFromChild = True
                 Dim retObj As RuleForm.ReturnType = CType(ReturnPar, RuleForm.ReturnType)
-                Me.State.HasDataChanged = retObj.HasDataChanged
+                State.HasDataChanged = retObj.HasDataChanged
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
-                                Me.State.RuleId = retObj.EditingBo.Id
+                                State.RuleId = retObj.EditingBo.Id
                             End If
                         End If
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                        DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
         Private Sub SaveGuiState()
-            Me.State.Code = Me.moCodeText.Text
-            Me.State.Description = Me.moDescriptionText.Text
-            If Not Me.moEffectiveDateText.Text Is String.Empty Then
-                Me.State.EffectiveDate = DateHelper.GetDateValue(Me.moEffectiveDateText.Text)
+            State.Code = moCodeText.Text
+            State.Description = moDescriptionText.Text
+            If moEffectiveDateText.Text IsNot String.Empty Then
+                State.EffectiveDate = DateHelper.GetDateValue(moEffectiveDateText.Text)
             End If
-            If Not Me.moExpirationDateText.Text Is String.Empty Then
-                Me.State.ExpirationDate = DateHelper.GetDateValue(Me.moExpirationDateText.Text)
+            If moExpirationDateText.Text IsNot String.Empty Then
+                State.ExpirationDate = DateHelper.GetDateValue(moExpirationDateText.Text)
             End If
         End Sub
 
         Private Sub RestoreGuiState()
-            Me.moCodeText.Text = Me.State.MyBO.Code
-            Me.moDescriptionText.Text = Me.State.MyBO.Description
-            If Not Me.State.MyBO.Effective Is Nothing Then
-                Me.moEffectiveDateText.Text = ElitaPlusPage.GetLongDate12FormattedString(CDate(Me.State.MyBO.Effective))
+            moCodeText.Text = State.MyBO.Code
+            moDescriptionText.Text = State.MyBO.Description
+            If State.MyBO.Effective IsNot Nothing Then
+                moEffectiveDateText.Text = ElitaPlusPage.GetLongDate12FormattedString(CDate(State.MyBO.Effective))
             Else
-                Me.moEffectiveDateText.Text = String.Empty
+                moEffectiveDateText.Text = String.Empty
             End If
-            If Not Me.State.MyBO.Expiration Is Nothing Then
-                Me.moExpirationDateText.Text = ElitaPlusPage.GetLongDate12FormattedString(CDate(Me.State.MyBO.Expiration))
+            If State.MyBO.Expiration IsNot Nothing Then
+                moExpirationDateText.Text = ElitaPlusPage.GetLongDate12FormattedString(CDate(State.MyBO.Expiration))
             Else
-                Me.moExpirationDateText.Text = String.Empty
+                moExpirationDateText.Text = String.Empty
             End If
         End Sub
 
 #End Region
 
 #Region "Page_Events"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.ErrorCtrl.Clear_Hide()
-                Me.MenuEnabled = False
+                ErrorCtrl.Clear_Hide()
+                MenuEnabled = False
                 'Me.ValidateDates()
 
-                If Not Me.IsPostBack Then
-                    Me.AddCalendarwithTime(Me.imgEffectiveDate, Me.moEffectiveDateText)
-                    Me.AddCalendarwithTime(Me.imgExpirationDate, Me.moExpirationDateText)
+                If Not IsPostBack Then
+                    AddCalendarwithTime(imgEffectiveDate, moEffectiveDateText)
+                    AddCalendarwithTime(imgExpirationDate, moExpirationDateText)
 
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.Rule
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.Rule
                     Else
-                        Me.EnableHeaderControls(False)
+                        EnableHeaderControls(False)
                     End If
 
-                    Me.ErrorCtrl.Clear_Hide()
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.Rule
+                    ErrorCtrl.Clear_Hide()
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, True)
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.Rule
                     End If
 
                     PopulateDropdowns()
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
 
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
                 End If
 
-                Me.CheckIfComingFromSaveConfirm()
-                Me.BindBoPropertiesToLabels()
-                Me.AddLabelDecorations(Me.State.MyBO)
+                CheckIfComingFromSaveConfirm()
+                BindBoPropertiesToLabels()
+                AddLabelDecorations(State.MyBO)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
         Private Function CheckRuleOverlap() As Boolean
-            Return Me.State.MyBO.Accept(New OverlapValidationVisitor)
+            Return State.MyBO.Accept(New OverlapValidationVisitor)
         End Function
 
         Private Function CheckExistingFutureRuleOverlap() As Boolean
-            Return Me.State.MyBO.Accept(New FutureOverlapValidationVisitor)
+            Return State.MyBO.Accept(New FutureOverlapValidationVisitor)
         End Function
 
 
 #End Region
 
 #Region "Button Clicks"
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.PopulateBOsFormFrom()
-                If Me.State.MyBO.IsDirty Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                PopulateBOsFormFrom()
+                If State.MyBO.IsDirty Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
-                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.ErrorCtrl.Text
+                HandleErrors(ex, ErrorCtrl)
+                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = ErrorCtrl.Text
             End Try
         End Sub
 
-        Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
-                Me.PopulateBOsFormFrom()
-                Me.ClearGridHeadersAndLabelsErrSign()
-                Me.State.MyBO.Validate()
-                If Me.CheckRuleOverlap() Then
-                    If Me.CheckExistingFutureRuleOverlap() Then
+                PopulateBOsFormFrom()
+                ClearGridHeadersAndLabelsErrSign()
+                State.MyBO.Validate()
+                If CheckRuleOverlap() Then
+                    If CheckExistingFutureRuleOverlap() Then
                         Throw New GUIException(Message.MSG_GUI_OVERLAPPING_RULES, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_LIST_CODE_OVERLAPPED)
                     End If
-                    Me.DisplayMessage(Message.MSG_GUI_OVERLAPPING_RULES, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = DetailPageCommand.Accept
-                    Me.State.OverlapExists = True
+                    DisplayMessage(Message.MSG_GUI_OVERLAPPING_RULES, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = DetailPageCommand.Accept
+                    State.OverlapExists = True
                     Exit Sub
                 End If
 
@@ -257,91 +257,91 @@ Namespace Tables
                 '    Me.State.OverlapExists = False
                 'End If
 
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = False
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
-                    Me.ClearGridHeadersAndLabelsErrSign()
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
+                    State.HasDataChanged = False
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
+                    ClearGridHeadersAndLabelsErrSign()
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+        Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
             Try
-                If Not Me.State.MyBO.IsNew Then
+                If Not State.MyBO.IsNew Then
                     'Reload from the DB
-                    Me.State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.Rule(Me.State.MyBO.Id)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                    State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.Rule(State.MyBO.Id)
+                ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                     'It was a new with copy
-                    Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                    State.MyBO.Clone(State.ScreenSnapShotBO)
                 Else
-                    Me.State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.Rule
+                    State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.Rule
                 End If
-                Me.State.IsRuleEditing = False
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                State.IsRuleEditing = False
+                PopulateFormFromBOs()
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
-                If Me.State.MyBO.IsIssueAssignedtoRule Then
+                If State.MyBO.IsIssueAssignedtoRule Then
                     Throw New GUIException(Message.MSG_GUI_ISSUE_ASSIGNED_TO_RULE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_LIST_CODE_ERR)
                 Else
-                    If Me.State.MyBO.Effective.Value > DateTime.Now Then
+                    If State.MyBO.Effective.Value > DateTime.Now Then
                         'for future effective date delete the Rule
-                        Me.State.MyBO.Delete()
-                        Me.State.MyBO.Save()
+                        State.MyBO.Delete()
+                        State.MyBO.Save()
                     Else
                         'for current Rule - expire it by setting the expiry date
-                        Me.State.MyBO.Accept(New ExpirationVisitor)
-                        Me.State.MyBO.Save()
+                        State.MyBO.Accept(New ExpirationVisitor)
+                        State.MyBO.Save()
                     End If
-                    Me.State.HasDataChanged = True
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+                    State.HasDataChanged = True
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
                 End If
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 'undo the delete
-                Me.State.MyBO.RejectChanges()
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                State.MyBO.RejectChanges()
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.PopulateBOsFormFrom()
-                If Me.State.MyBO.IsDirty Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                PopulateBOsFormFrom()
+                If State.MyBO.IsDirty Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
-                    Me.CreateNew()
+                    CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
-                Me.PopulateBOsFormFrom()
-                If Me.State.MyBO.IsDirty Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                PopulateBOsFormFrom()
+                If State.MyBO.IsDirty Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -349,8 +349,8 @@ Namespace Tables
 
 #Region "Controlling Logic"
 
-        Protected Function IsListCodeDuplicate(ByVal code As String, ByVal effective As String,
-                                        ByVal id As Guid) As Boolean
+        Protected Function IsListCodeDuplicate(code As String, effective As String,
+                                        id As Guid) As Boolean
 
             If (QuestionList.CheckDuplicateQuestionListCode(code, CDate(effective).ToString(ElitaPlusPage.DATE_TIME_FORMAT, System.Globalization.CultureInfo.CreateSpecificCulture("en-US")), id)) Then
                 Return True
@@ -358,8 +358,8 @@ Namespace Tables
             Return False
         End Function
 
-        Protected Function IsListCodeOverlapped(ByVal code As String, ByVal effective As DateType,
-                                        ByVal expiration As DateType, ByVal id As Guid) As Boolean
+        Protected Function IsListCodeOverlapped(code As String, effective As DateType,
+                                        expiration As DateType, id As Guid) As Boolean
 
             If (QuestionList.CheckListCodeForOverlap(code, effective, expiration, id)) Then
                 Return True
@@ -367,8 +367,8 @@ Namespace Tables
             Return False
         End Function
 
-        Protected Function IsListCodeDurationOverlapped(ByVal code As String, ByVal effective As DateType,
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+        Protected Function IsListCodeDurationOverlapped(code As String, effective As DateType,
+                                        expiration As DateType, listId As Guid) As Boolean
 
             If (QuestionList.CheckListCodeDurationOverlap(code, effective, expiration, listId)) Then
                 Return True
@@ -376,8 +376,8 @@ Namespace Tables
             Return False
         End Function
 
-        Protected Function ExpirePreviousList(ByVal code As String, ByVal effective As DateType,
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+        Protected Function ExpirePreviousList(code As String, effective As DateType,
+                                        expiration As DateType, listId As Guid) As Boolean
 
             If (QuestionList.ExpirePreviousList(code, effective, expiration, listId)) Then
                 Return True
@@ -385,7 +385,7 @@ Namespace Tables
             Return False
         End Function
 
-        Protected Sub EnableUserControl(ByVal bVisible As Boolean)
+        Protected Sub EnableUserControl(bVisible As Boolean)
             'Not neede for this form. REQ-860 
 
             'UserControlQuestionsAvailable.ShowCancelButton = True
@@ -394,7 +394,7 @@ Namespace Tables
             'UserControlDealerAvailable.ShowCancelButton = True
             'Dim qstn As New QuestionList
             'UserControlQuestionsAvailable.dvSelectedQuestions = qstn.GetSelectedQuestionList(Me.State.MyBO.Id)
-            If Not String.IsNullOrEmpty(Me.State.MyBO.Code) Then
+            If Not String.IsNullOrEmpty(State.MyBO.Code) Then
                 'UserControlDealerAvailable.dvSelectedDealer = qstn.GetSelectedDealertList(Me.State.MyBO.Code)
             End If
         End Sub
@@ -402,16 +402,16 @@ Namespace Tables
         Public Sub ValidateDates()
             Dim tempDate As DateTime = New DateTime
 
-            If Not moEffectiveDateText.Text Is String.Empty Then
+            If moEffectiveDateText.Text IsNot String.Empty Then
                 If (DateHelper.IsDate(moEffectiveDateText.Text.ToString()) = False) Then
-                    ElitaPlusPage.SetLabelError(Me.moEffectiveDateLabel)
+                    ElitaPlusPage.SetLabelError(moEffectiveDateLabel)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Message.MSG_INVALID_DATE)
                 End If
             End If
 
-            If Not moExpirationDateText.Text Is String.Empty Then
+            If moExpirationDateText.Text IsNot String.Empty Then
                 If (DateHelper.IsDate(moExpirationDateText.Text.ToString()) = False) Then
-                    ElitaPlusPage.SetLabelError(Me.moEffectiveDateLabel)
+                    ElitaPlusPage.SetLabelError(moEffectiveDateLabel)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Message.MSG_INVALID_DATE)
                 End If
             End If
@@ -419,13 +419,13 @@ Namespace Tables
         End Sub
 
         Protected Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Code", Me.moCodeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "RuleType", Me.moRuleTypeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Description", Me.moDescriptionLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Effective", Me.moEffectiveDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "RuleCategory", Me.moRuleCategoryLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Expiration", Me.moExpirationDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "RuleExecutionPoint", Me.moRuleExecutionPointLabel)
+            BindBOPropertyToLabel(State.MyBO, "Code", moCodeLabel)
+            BindBOPropertyToLabel(State.MyBO, "RuleType", moRuleTypeLabel)
+            BindBOPropertyToLabel(State.MyBO, "Description", moDescriptionLabel)
+            BindBOPropertyToLabel(State.MyBO, "Effective", moEffectiveDateLabel)
+            BindBOPropertyToLabel(State.MyBO, "RuleCategory", moRuleCategoryLabel)
+            BindBOPropertyToLabel(State.MyBO, "Expiration", moExpirationDateLabel)
+            BindBOPropertyToLabel(State.MyBO, "RuleExecutionPoint", moRuleExecutionPointLabel)
         End Sub
 
         Protected Sub PopulateDropdowns()
@@ -446,40 +446,40 @@ Namespace Tables
                                                                })
 
 
-            Me.AddCalendarwithTime(imgEffectiveDate, moEffectiveDateText, , moEffectiveDateText.Text)
-            Me.AddCalendarwithTime(imgExpirationDate, moExpirationDateText, , moExpirationDateText.Text)
+            AddCalendarwithTime(imgEffectiveDate, moEffectiveDateText, , moEffectiveDateText.Text)
+            AddCalendarwithTime(imgExpirationDate, moExpirationDateText, , moExpirationDateText.Text)
         End Sub
 
         Protected Sub PopulateBOsFormFrom()
-            With Me.State.MyBO
-                Me.PopulateBOProperty(Me.State.MyBO, "Code", Me.moCodeText)
-                Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.moDescriptionText)
-                Me.PopulateBOProperty(Me.State.MyBO, "Effective", Me.moEffectiveDateText)
-                Me.PopulateBOProperty(Me.State.MyBO, "Expiration", Me.moExpirationDateText)
-                Me.PopulateBOProperty(Me.State.MyBO, "RuleTypeId", Me.ddlRuleType)
-                Me.PopulateBOProperty(Me.State.MyBO, "RuleCategoryId", Me.ddlRuleCategory)
-                Me.PopulateBOProperty(Me.State.MyBO, "RuleExecutionPoint", Me.moRuleExecutionPointText)
+            With State.MyBO
+                PopulateBOProperty(State.MyBO, "Code", moCodeText)
+                PopulateBOProperty(State.MyBO, "Description", moDescriptionText)
+                PopulateBOProperty(State.MyBO, "Effective", moEffectiveDateText)
+                PopulateBOProperty(State.MyBO, "Expiration", moExpirationDateText)
+                PopulateBOProperty(State.MyBO, "RuleTypeId", ddlRuleType)
+                PopulateBOProperty(State.MyBO, "RuleCategoryId", ddlRuleCategory)
+                PopulateBOProperty(State.MyBO, "RuleExecutionPoint", moRuleExecutionPointText)
             End With
 
-            Me.State.MyBO.PopulateIssueList(IssueAvailableSelected.SelectedList)
-            Me.State.MyBO.PopulateProcessList(ProcessAvailableSelected.SelectedList)
+            State.MyBO.PopulateIssueList(IssueAvailableSelected.SelectedList)
+            State.MyBO.PopulateProcessList(ProcessAvailableSelected.SelectedList)
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
         Protected Sub PopulateUserControls()
             'User Control Issues REQ-860
-            IssueAvailableSelected.SetAvailableData(Me.State.MyBO.GetAvailableIssues(), "Description", "ISSUE_ID")
-            IssueAvailableSelected.SetSelectedData(Me.State.MyBO.GetIssueRuleSelectionView(), "Description", "ISSUE_ID")
+            IssueAvailableSelected.SetAvailableData(State.MyBO.GetAvailableIssues(), "Description", "ISSUE_ID")
+            IssueAvailableSelected.SetSelectedData(State.MyBO.GetIssueRuleSelectionView(), "Description", "ISSUE_ID")
             IssueAvailableSelected.BackColor = "#d5d6e4"
             IssueAvailableSelected.RemoveSelectedFromAvailable()
 
 
             'User Control Processes REQ-860
-            ProcessAvailableSelected.SetAvailableData(Me.State.MyBO.GetAvailableProcesses(), "Description", "PROCESS_ID")
-            ProcessAvailableSelected.SetSelectedData(Me.State.MyBO.GetProcessRuleSelectionView(), "Description", "PROCESS_ID")
+            ProcessAvailableSelected.SetAvailableData(State.MyBO.GetAvailableProcesses(), "Description", "PROCESS_ID")
+            ProcessAvailableSelected.SetSelectedData(State.MyBO.GetProcessRuleSelectionView(), "Description", "PROCESS_ID")
             ProcessAvailableSelected.BackColor = "#d5d6e4"
             ProcessAvailableSelected.RemoveSelectedFromAvailable()
 
@@ -487,14 +487,14 @@ Namespace Tables
 
 
         Protected Sub PopulateFormFromBOs()
-            With Me.State.MyBO
-                Me.PopulateControlFromBOProperty(Me.moCodeText, .Code)
-                Me.PopulateControlFromBOProperty(Me.moDescriptionText, .Description)
-                Me.PopulateControlFromBOProperty(ddlRuleCategory, .RuleCategoryId)
-                Me.PopulateControlFromBOProperty(ddlRuleType, .RuleTypeId)
-                Me.PopulateControlFromBOProperty(moEffectiveDateText, .Effective)
-                Me.PopulateControlFromBOProperty(moExpirationDateText, .Expiration)
-                Me.PopulateControlFromBOProperty(moRuleExecutionPointText, .RuleExecutionPoint)
+            With State.MyBO
+                PopulateControlFromBOProperty(moCodeText, .Code)
+                PopulateControlFromBOProperty(moDescriptionText, .Description)
+                PopulateControlFromBOProperty(ddlRuleCategory, .RuleCategoryId)
+                PopulateControlFromBOProperty(ddlRuleType, .RuleTypeId)
+                PopulateControlFromBOProperty(moEffectiveDateText, .Effective)
+                PopulateControlFromBOProperty(moExpirationDateText, .Expiration)
+                PopulateControlFromBOProperty(moRuleExecutionPointText, .RuleExecutionPoint)
 
                 If .IsNew AndAlso Not .Effective.Value.Date < DateTime.Now.Date Then
                     ControlMgr.SetEnableControl(Me, moEffectiveDateText, True)
@@ -510,7 +510,7 @@ Namespace Tables
 
         End Sub
 
-        Sub EnableHeaderControls(ByVal enableToggle As Boolean)
+        Sub EnableHeaderControls(enableToggle As Boolean)
             ControlMgr.SetEnableControl(Me, moCodeText, enableToggle)
             ControlMgr.SetEnableControl(Me, moDescriptionText, enableToggle)
             ControlMgr.SetEnableControl(Me, moEffectiveDateText, enableToggle)
@@ -518,29 +518,29 @@ Namespace Tables
             ControlMgr.SetEnableControl(Me, moEffectiveDateText, Not (enableToggle))
         End Sub
 
-        Sub EnableDisableParentControls(ByVal enableToggle As Boolean)
+        Sub EnableDisableParentControls(enableToggle As Boolean)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, enableToggle)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enableToggle)
             ControlMgr.SetEnableControl(Me, btnSave_WRITE, enableToggle)
             ControlMgr.SetEnableControl(Me, btnUndo_Write, enableToggle)
         End Sub
 
-        Sub EnableDisableUserControlButtons(ByVal panel As WebControl, ByVal enableToggle As Boolean)
+        Sub EnableDisableUserControlButtons(panel As WebControl, enableToggle As Boolean)
             ControlMgr.SetEnableControl(Me, panel, enableToggle)
         End Sub
 
         Protected Sub EnableDisableFields()
             'REQ-860
-            If Me.State.IsRuleEditing Then
-                Me.EnableDisableParentControls(False)
+            If State.IsRuleEditing Then
+                EnableDisableParentControls(False)
             Else
-                Me.EnableDisableParentControls(True)
+                EnableDisableParentControls(True)
             End If
 
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, True)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
-            If Me.State.MyBO.IsNew Then
+            If State.MyBO.IsNew Then
                 ControlMgr.SetEnableControl(Me, moCodeText, True)
                 ControlMgr.SetEnableControl(Me, moDescriptionText, True)
                 ControlMgr.SetEnableControl(Me, moEffectiveDateText, True)
@@ -552,50 +552,50 @@ Namespace Tables
         End Sub
 
         Protected Sub CreateNew()
-            Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+            State.ScreenSnapShotBO = Nothing 'Reset the backup copy
 
-            Me.State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.Rule
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
-            Me.State.IsEditMode = False
+            State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.Rule
+            PopulateFormFromBOs()
+            EnableDisableFields()
+            State.IsEditMode = False
         End Sub
 
         Protected Sub CreateNewWithCopy()
 
-            Me.State.IsACopy = True
+            State.IsACopy = True
             Dim newObj As New Assurant.ElitaPlus.BusinessObjectsNew.Rule
-            newObj.Copy(Me.State.MyBO)
-            Me.State.MyBO = newObj
+            newObj.Copy(State.MyBO)
+            State.MyBO = newObj
 
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
 
-            Me.State.IsRuleEditing = False
+            State.IsRuleEditing = False
 
-            Me.State.ScreenSnapShotBO = New Assurant.ElitaPlus.BusinessObjectsNew.Rule
-            Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
-            Me.State.IsACopy = False
-            Me.State.IsEditMode = False
+            State.ScreenSnapShotBO = New Assurant.ElitaPlus.BusinessObjectsNew.Rule
+            State.ScreenSnapShotBO.Clone(State.MyBO)
+            State.IsACopy = False
+            State.IsEditMode = False
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-                If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
-                    Me.BindBoPropertiesToLabels()
-                    Me.State.MyBO.Save()
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+                If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
+                    BindBoPropertiesToLabels()
+                    State.MyBO.Save()
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                        Me.CreateNew()
+                        DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                        Me.CreateNewWithCopy()
+                        DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.Accept
                         'If Me.State.MyBO.IsDirty Then
                         '    Me.State.MyBO.Save()
@@ -606,44 +606,44 @@ Namespace Tables
                         '    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
                         'End If
 
-                        If Me.State.OverlapExists Then
-                            If Me.State.MyBO.IsDirty Then
-                                If Me.State.MyBO.ExpireOverLappingRules() Then
+                        If State.OverlapExists Then
+                            If State.MyBO.IsDirty Then
+                                If State.MyBO.ExpireOverLappingRules() Then
                                     'Me.State.MyChildBO.Save()
                                     'Me.State.MyChildProcessBO.Save()
-                                    Me.State.MyBO.Save()
-                                    Me.State.HasDataChanged = False
-                                    Me.PopulateFormFromBOs()
-                                    Me.EnableDisableFields()
+                                    State.MyBO.Save()
+                                    State.HasDataChanged = False
+                                    PopulateFormFromBOs()
+                                    EnableDisableFields()
 
-                                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                                 End If
                             Else
-                                Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                                DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                             End If
-                            Me.State.OverlapExists = False
+                            State.OverlapExists = False
                         Else
-                            Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                            DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                         End If
-                        Me.EnableDisableFields()
+                        EnableDisableFields()
                         ''
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.CreateNew()
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.CreateNewWithCopy()
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
+                        ErrorCtrl.AddErrorAndShow(State.LastErrMsg)
                     Case ElitaPlusPage.DetailPageCommand.Accept
-                        Me.EnableDisableFields()
+                        EnableDisableFields()
                 End Select
             End If
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = ""
         End Sub
 
 #End Region

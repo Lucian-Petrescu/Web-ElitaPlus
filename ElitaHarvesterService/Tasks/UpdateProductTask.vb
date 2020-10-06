@@ -7,7 +7,7 @@ Public NotInheritable Class UpdateProductTask
     Inherits AntivirusProductTaskBase
 #Region "Constructors"
 
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 
@@ -58,7 +58,7 @@ Public NotInheritable Class UpdateProductTask
                 updateProductResponse = oUpdateProductClient.UpdateProduct(updateProductRequest)
                 UpdatePhoneNumber()
             Else
-                Throw New Exception(Me.FailReason)
+                Throw New Exception(FailReason)
             End If
             Logger.AddDebugLogExit()
         Catch ex As Exception
@@ -75,8 +75,8 @@ Public NotInheritable Class UpdateProductTask
         Dim oWebPasswd As WebPasswd
         oWebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__UPDATE_AV_PRODUCT), True)
         updateProductClient = New Antivirus.UpdateProduct.UpdateProductClient("CustomBinding_IUpdateProduct", oWebPasswd.Url)
-        Me.UserName = oWebPasswd.UserId
-        Me.Password = oWebPasswd.Password
+        UserName = oWebPasswd.UserId
+        Password = oWebPasswd.Password
         Return updateProductClient
     End Function
 
@@ -122,8 +122,8 @@ Public NotInheritable Class UpdateProductTask
 
     Private Function GetUserAuthorization() As UpdateProductRequestUserAuthorization
         Dim upUserAuth As UpdateProductRequestUserAuthorization = New UpdateProductRequestUserAuthorization()
-        upUserAuth.UserId = Me.UserName
-        upUserAuth.Password = Me.Password
+        upUserAuth.UserId = UserName
+        upUserAuth.Password = Password
 
         Return upUserAuth
     End Function
@@ -172,7 +172,7 @@ Public NotInheritable Class UpdateProductTask
                     flag = False
                     sb.Append(String.Format("Order Reference Number (Subscriber ID) is missing for Customer Registration Id {0}", GuidControl.GuidToHexString(CustRegistration.Id)))
                     Logger.AddError(sb.ToString())
-                    Me.FailReason = sb.ToString()
+                    FailReason = sb.ToString()
                 End If
             Case DEVICE_TYPE__TABLET
                 flag = False
@@ -180,7 +180,7 @@ Public NotInheritable Class UpdateProductTask
         End Select
         If (Not flag) Then
             Logger.AddError(sb.ToString())
-            Me.FailReason = sb.ToString()
+            FailReason = sb.ToString()
         End If
 
         Return flag

@@ -34,7 +34,7 @@ Partial Class TestRegionTax
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -42,7 +42,7 @@ Partial Class TestRegionTax
 
 #End Region
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
 
         If Not IsPostBack Then
@@ -63,7 +63,7 @@ Partial Class TestRegionTax
 
     End Sub
 
-    Private Sub dgrResults_ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles dgrResults.ItemCommand
+    Private Sub dgrResults_ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles dgrResults.ItemCommand
 
 
         If e.CommandName = ACTION_SELECT Then
@@ -73,7 +73,7 @@ Partial Class TestRegionTax
 
     End Sub
 
-    Private Sub dgrResults_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgrResults.ItemCreated
+    Private Sub dgrResults_ItemCreated(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgrResults.ItemCreated
         '-------------------------------------
         'Name:ItemCreated
         'Purpose:Add navigation symbols to datagrid page
@@ -128,7 +128,7 @@ Partial Class TestRegionTax
         End If
     End Sub
 
-    Private Sub dgrResults_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles dgrResults.SelectedIndexChanged
+    Private Sub dgrResults_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles dgrResults.SelectedIndexChanged
 
     End Sub
 End Class

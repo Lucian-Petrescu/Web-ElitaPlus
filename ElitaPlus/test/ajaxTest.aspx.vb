@@ -12,7 +12,7 @@ Partial Class ajaxTest
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -20,9 +20,9 @@ Partial Class ajaxTest
 
 #End Region
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
      
-        Me.ErrControllerMaster.Clear_Hide()
+        ErrControllerMaster.Clear_Hide()
 
     End Sub
 
@@ -33,7 +33,7 @@ Partial Class ajaxTest
 
     <System.Web.Services.WebMethod()> _
 <Script.Services.ScriptMethod()> _
-Public Shared Function GetCompletionList(ByVal prefixText As String, ByVal count As Integer) As String()
+Public Shared Function GetCompletionList(prefixText As String, count As Integer) As String()
 
         Dim dv As DataView = LookupListNew.GetDealerLookupList(CType(ElitaPlusIdentity.Current.ActiveUser.Companies.Item(0), Guid))
         Dim arrDealers As New ArrayList
@@ -55,7 +55,7 @@ Public Shared Function GetCompletionList(ByVal prefixText As String, ByVal count
 
     <System.Web.Services.WebMethod()> _
 <Script.Services.ScriptMethod()> _
-Public Shared Function FillMakes(ByVal knownCategoryValues As String, ByVal category As String) As AjaxControlToolkit.CascadingDropDownNameValue()
+Public Shared Function FillMakes(knownCategoryValues As String, category As String) As AjaxControlToolkit.CascadingDropDownNameValue()
 
 
         Dim dw As DataView
@@ -77,7 +77,7 @@ Public Shared Function FillMakes(ByVal knownCategoryValues As String, ByVal cate
 
     <System.Web.Services.WebMethod()> _
 <Script.Services.ScriptMethod()> _
-Public Shared Function getModels(ByVal knownCategoryValues As String, ByVal category As String) As AjaxControlToolkit.CascadingDropDownNameValue()
+Public Shared Function getModels(knownCategoryValues As String, category As String) As AjaxControlToolkit.CascadingDropDownNameValue()
 
         Dim dw As DataView
         Dim kv As System.Collections.Specialized.StringDictionary = AjaxControlToolkit.CascadingDropDown.ParseKnownCategoryValuesString(knownCategoryValues)
@@ -99,7 +99,7 @@ Public Shared Function getModels(ByVal knownCategoryValues As String, ByVal cate
 
     <System.Web.Services.WebMethod()> _
 <Script.Services.ScriptMethod()> _
-Public Shared Function getTrims(ByVal knownCategoryValues As String, ByVal category As String) As AjaxControlToolkit.CascadingDropDownNameValue()
+Public Shared Function getTrims(knownCategoryValues As String, category As String) As AjaxControlToolkit.CascadingDropDownNameValue()
 
         Dim dw As DataView
         Dim kv As System.Collections.Specialized.StringDictionary = AjaxControlToolkit.CascadingDropDown.ParseKnownCategoryValuesString(knownCategoryValues)
@@ -120,7 +120,7 @@ Public Shared Function getTrims(ByVal knownCategoryValues As String, ByVal categ
 
     <System.Web.Services.WebMethod()> _
 <Script.Services.ScriptMethod()> _
-Public Shared Function getYears(ByVal knownCategoryValues As String, ByVal category As String) As AjaxControlToolkit.CascadingDropDownNameValue()
+Public Shared Function getYears(knownCategoryValues As String, category As String) As AjaxControlToolkit.CascadingDropDownNameValue()
 
         Dim dw As DataView
         Dim kv As System.Collections.Specialized.StringDictionary = AjaxControlToolkit.CascadingDropDown.ParseKnownCategoryValuesString(knownCategoryValues)
@@ -142,33 +142,33 @@ Public Shared Function getYears(ByVal knownCategoryValues As String, ByVal categ
 #End Region
 #End Region
 
-    Private Sub btnAdd200_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAdd200.Click
+    Private Sub btnAdd200_Click(sender As Object, e As System.EventArgs) Handles btnAdd200.Click
 
-        Dim i As Integer = Me.ddlDummy.Items.Count
-        Dim j As Integer = Me.ddlDummy.Items.Count + 199
+        Dim i As Integer = ddlDummy.Items.Count
+        Dim j As Integer = ddlDummy.Items.Count + 199
 
         For x As Integer = i To j
-            Me.ddlDummy.Items.Add("Dummy Item " + x.ToString)
+            ddlDummy.Items.Add("Dummy Item " + x.ToString)
         Next
     End Sub
 
-    Private Sub btnAdd1000_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAdd1000.Click
+    Private Sub btnAdd1000_Click(sender As Object, e As System.EventArgs) Handles btnAdd1000.Click
 
-        Dim i As Integer = Me.ddlDummy.Items.Count
-        Dim j As Integer = Me.ddlDummy.Items.Count + 999
+        Dim i As Integer = ddlDummy.Items.Count
+        Dim j As Integer = ddlDummy.Items.Count + 999
 
         For x As Integer = i To j
-            Me.ddlDummy.Items.Add("Dummy Item " + x.ToString)
+            ddlDummy.Items.Add("Dummy Item " + x.ToString)
         Next
     End Sub
 
-    Private Sub btnAdd10000_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAdd10000.Click
+    Private Sub btnAdd10000_Click(sender As Object, e As System.EventArgs) Handles btnAdd10000.Click
 
-        Dim i As Integer = Me.ddlDummy.Items.Count
-        Dim j As Integer = Me.ddlDummy.Items.Count + 9999
+        Dim i As Integer = ddlDummy.Items.Count
+        Dim j As Integer = ddlDummy.Items.Count + 9999
 
         For x As Integer = i To j
-            Me.ddlDummy.Items.Add("Dummy Item " + x.ToString)
+            ddlDummy.Items.Add("Dummy Item " + x.ToString)
         Next
     End Sub
 End Class

@@ -22,44 +22,44 @@ Public Class Address
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal userObj As IAddressUser)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
-        Me._userObj = userObj
+        Dataset = familyDS
+        Load(id)
+        _userObj = userObj
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal userObj As IAddressUser, ByVal Flg As Boolean)
         MyBase.New(Flg)
-        Me.Dataset = familyDS
-        Me.Load(id)
-        Me._userObj = userObj
+        Dataset = familyDS
+        Load(id)
+        _userObj = userObj
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet, ByVal userObj As IAddressUser)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
-        Me._userObj = userObj
+        Dataset = familyDS
+        Load()
+        _userObj = userObj
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
@@ -67,8 +67,8 @@ Public Class Address
         ' TODO: Complete member initialization 
         '_dataSet = dataSet
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Sub New(ByVal addressid As Guid, ByVal dataset As Data.DataSet)
@@ -76,7 +76,7 @@ Public Class Address
 
         MyBase.New(False)
         Me.Dataset = dataset
-        Me.Load(addressid)
+        Load(addressid)
 
 
         _addressID = addressid
@@ -86,12 +86,12 @@ Public Class Address
     Protected Sub Load()
         Try
             Dim dal As New AddressDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             'Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -102,20 +102,20 @@ Public Class Address
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New AddressDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -134,9 +134,9 @@ Public Class Address
 
     Public ReadOnly Property countryBO() As Country
         Get
-            If Me._countryBO Is Nothing Then
-                If Not Me.CountryId.Equals(Guid.Empty) Then
-                    _countryBO = New Country(Me.CountryId)
+            If _countryBO Is Nothing Then
+                If Not CountryId.Equals(Guid.Empty) Then
+                    _countryBO = New Country(CountryId)
                 Else
                     _countryBO = ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID)
                 End If
@@ -152,16 +152,16 @@ Public Class Address
         Dim mailAddrFormat As String = countryBO.MailAddrFormat
 
         mailAddrLabel = mailAddrFormat
-        mailAddrLabel = mailAddrLabel.Replace("[ADR1]", Me.Address1)
-        mailAddrLabel = mailAddrLabel.Replace("[ADR2]", Me.Address2)
-        mailAddrLabel = mailAddrLabel.Replace("[ADR3]", Me.Address3)
-        mailAddrLabel = mailAddrLabel.Replace("[CITY]", Me.City)
+        mailAddrLabel = mailAddrLabel.Replace("[ADR1]", Address1)
+        mailAddrLabel = mailAddrLabel.Replace("[ADR2]", Address2)
+        mailAddrLabel = mailAddrLabel.Replace("[ADR3]", Address3)
+        mailAddrLabel = mailAddrLabel.Replace("[CITY]", City)
         mailAddrLabel = mailAddrLabel.Replace("[COU]", countryBO.Description)
-        mailAddrLabel = mailAddrLabel.Replace("[ZIP]", Me.PostalCode)
+        mailAddrLabel = mailAddrLabel.Replace("[ZIP]", PostalCode)
         mailAddrLabel = mailAddrLabel.Replace("[Space]", " ")
 
-        If Not Me.RegionId.Equals(Guid.Empty) Then
-            Dim regionBO As Region = New Region(Me.RegionId)
+        If Not RegionId.Equals(Guid.Empty) Then
+            Dim regionBO As Region = New Region(RegionId)
             mailAddrLabel = mailAddrLabel.Replace("[RGNAME]", regionBO.Description)
             mailAddrLabel = mailAddrLabel.Replace("[RGCODE]", regionBO.ShortDesc)
         Else
@@ -217,7 +217,7 @@ Public Class Address
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_ADDRESS1, Value)
+            SetValue(AddressDAL.COL_NAME_ADDRESS1, Value)
         End Set
     End Property
 
@@ -234,7 +234,7 @@ Public Class Address
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_ADDRESS2, Value)
+            SetValue(AddressDAL.COL_NAME_ADDRESS2, Value)
         End Set
     End Property
 
@@ -250,7 +250,7 @@ Public Class Address
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_ADDRESS3, Value)
+            SetValue(AddressDAL.COL_NAME_ADDRESS3, Value)
         End Set
     End Property
 
@@ -267,7 +267,7 @@ Public Class Address
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_CITY, Value)
+            SetValue(AddressDAL.COL_NAME_CITY, Value)
         End Set
     End Property
     <MandatoryForVscAttribute(""), MandatoryCountryAddressFormatAttribute("RegionId"), RequiredFieldBySetting("", Nothing, "[REGION]")> _
@@ -282,7 +282,7 @@ Public Class Address
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_REGION_ID, Value)
+            SetValue(AddressDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 
@@ -299,7 +299,7 @@ Public Class Address
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_POSTAL_CODE, MiscUtil.ConvertToUpper(Value))
+            SetValue(AddressDAL.COL_NAME_POSTAL_CODE, MiscUtil.ConvertToUpper(Value))
         End Set
     End Property
 
@@ -315,7 +315,7 @@ Public Class Address
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(AddressDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
@@ -332,7 +332,7 @@ Public Class Address
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_ZIP_LOCATOR, Value)
+            SetValue(AddressDAL.COL_NAME_ZIP_LOCATOR, Value)
         End Set
     End Property
 
@@ -351,7 +351,7 @@ Public Class Address
 
     Public Property AddressIsRequire() As Boolean
         Get
-            Return Me._AddressIsRequire
+            Return _AddressIsRequire
         End Get
         Set(ByVal Value As Boolean)
             _AddressIsRequire = Value
@@ -359,7 +359,7 @@ Public Class Address
     End Property
     Public Property AddressRequiredServCenter() As Boolean
         Get
-            Return Me._AddressRequiredServCenter
+            Return _AddressRequiredServCenter
         End Get
         Set(ByVal Value As Boolean)
             _AddressRequiredServCenter = Value
@@ -406,7 +406,7 @@ Public Class Address
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_SOURCE, Value)
+            SetValue(AddressDAL.COL_NAME_SOURCE, Value)
         End Set
     End Property
 
@@ -421,7 +421,7 @@ Public Class Address
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_SOURCE_ID, Value)
+            SetValue(AddressDAL.COL_NAME_SOURCE_ID, Value)
         End Set
     End Property
 
@@ -430,25 +430,25 @@ Public Class Address
 #Region "Public Members"
     Public Overrides Sub Save()
         Try
-            If Me.IsDirty Then
+            If IsDirty Then
                 'Me.SetPostalCodeLocator()
-                If Not Me._userObj Is Nothing Then
-                    If Me.IsNew And Me.IsEmpty Then
-                        Me._userObj.AddressId = Guid.Empty
-                        Me.Delete()
+                If Not _userObj Is Nothing Then
+                    If IsNew And IsEmpty Then
+                        _userObj.AddressId = Guid.Empty
+                        Delete()
                     End If
                 End If
             End If
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New AddressDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -476,9 +476,9 @@ Public Class Address
 
     Public ReadOnly Property IsEmpty() As Boolean
         Get
-            If (Not IsEmptyString(Me.Address1)) OrElse (Not IsEmptyString(Me.Address2)) OrElse (Not IsEmptyString(Me.Address3)) OrElse _
-            (Not IsEmptyString(Me.City)) OrElse (Not IsEmptyString(Me.PostalCode)) OrElse _
-            (Not Me.RegionId.Equals(Guid.Empty)) Then
+            If (Not IsEmptyString(Address1)) OrElse (Not IsEmptyString(Address2)) OrElse (Not IsEmptyString(Address3)) OrElse _
+            (Not IsEmptyString(City)) OrElse (Not IsEmptyString(PostalCode)) OrElse _
+            (Not RegionId.Equals(Guid.Empty)) Then
                 Return False
             End If
             Return True
@@ -577,14 +577,14 @@ Public NotInheritable Class MandatoryForServCenterAttribute
 
                 'zip required
                 'If PropName_Zip.ToUpper = Me.DisplayName.ToUpper AndAlso strAddFmt.IndexOf("[ZIP]") > -1 Then
-                If PropName_Zip.ToUpper = Me.DisplayName.ToUpper AndAlso IsAddressComponentRequired(strAddFmt, "ZIP") Then
+                If PropName_Zip.ToUpper = DisplayName.ToUpper AndAlso IsAddressComponentRequired(strAddFmt, "ZIP") Then
                     If obj.PostalCode Is Nothing OrElse obj.PostalCode.Trim = String.Empty Then
                         Return False
                     End If
                 End If
                 'region required
                 'If PropName_Region.ToUpper = Me.DisplayName.ToUpper AndAlso (strAddFmt.IndexOf("[RGCODE]") > -1 OrElse strAddFmt.IndexOf("[RGNAME]") > -1) Then
-                If PropName_Region.ToUpper = Me.DisplayName.ToUpper AndAlso (IsAddressComponentRequired(strAddFmt, "RGCODE") OrElse IsAddressComponentRequired(strAddFmt, "RGNAME")) Then
+                If PropName_Region.ToUpper = DisplayName.ToUpper AndAlso (IsAddressComponentRequired(strAddFmt, "RGCODE") OrElse IsAddressComponentRequired(strAddFmt, "RGNAME")) Then
                     If obj.RegionId = Guid.Empty Then
                         Return False
                     End If

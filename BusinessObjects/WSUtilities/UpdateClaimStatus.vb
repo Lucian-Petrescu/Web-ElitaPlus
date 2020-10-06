@@ -37,11 +37,11 @@ Public Class UpdateClaimStatus
         Try
 
             With ds.UpdateClaimStatus.Item(0)
-                Me.CertificateNumber = .CERTIFICATE_NUMBER
-                Me.DealerCode = .DEALER_CODE
-                Me.Comments = .COMMENTS
-                Me.ClaimNumber = .CLAIM_NUMBER
-                Me.StatusCode = .STATUS_CODE
+                CertificateNumber = .CERTIFICATE_NUMBER
+                DealerCode = .DEALER_CODE
+                Comments = .COMMENTS
+                ClaimNumber = .CLAIM_NUMBER
+                StatusCode = .STATUS_CODE
             End With
 
         Catch ex As BOValidationException
@@ -64,18 +64,18 @@ Public Class UpdateClaimStatus
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
     Private Sub Load(ByVal ds As UpdateClaimStatusDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -112,7 +112,7 @@ Public Class UpdateClaimStatus
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CERTIFICATE_NUMBER, Value)
+            SetValue(SOURCE_COL_CERTIFICATE_NUMBER, Value)
         End Set
     End Property
 
@@ -127,7 +127,7 @@ Public Class UpdateClaimStatus
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_DEALER_CODE, Value)
+            SetValue(SOURCE_COL_DEALER_CODE, Value)
         End Set
     End Property
 
@@ -142,7 +142,7 @@ Public Class UpdateClaimStatus
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_CLAIM_NUMBER, Value)
+            SetValue(SOURCE_COL_CLAIM_NUMBER, Value)
         End Set
     End Property
 
@@ -157,7 +157,7 @@ Public Class UpdateClaimStatus
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_STATUS_CODE, Value)
+            SetValue(SOURCE_COL_STATUS_CODE, Value)
         End Set
     End Property
 
@@ -172,7 +172,7 @@ Public Class UpdateClaimStatus
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_COMMENTS, Value)
+            SetValue(SOURCE_COL_COMMENTS, Value)
         End Set
     End Property
 
@@ -183,7 +183,7 @@ Public Class UpdateClaimStatus
         Dim row As DataRow
 
         Try
-            Me.Validate()
+            Validate()
 
         Catch ex As BOValidationException
             Throw ex

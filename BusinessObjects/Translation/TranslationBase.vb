@@ -286,7 +286,7 @@ Public Class TranslationBase
         Next
 
         '  Return Me.GetCurrentMissingTranslations
-        Return Me.TranslationMissingList()
+        Return TranslationMissingList()
 
     End Function
 
@@ -327,7 +327,7 @@ Public Class TranslationBase
         Next
 
         '  Return Me.GetCurrentMissingTranslations
-        Return Me.TranslationMissingList
+        Return TranslationMissingList
 
     End Function
 

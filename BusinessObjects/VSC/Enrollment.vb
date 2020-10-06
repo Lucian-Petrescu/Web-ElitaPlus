@@ -1320,10 +1320,10 @@ Public Class Enrollment
 
             Validate()
 
-            If Me.IsNew AndAlso Not CreditCardNumber Is Nothing Then
+            If IsNew AndAlso Not CreditCardNumber Is Nothing Then
                 Try
                     ' secure the credit card number
-                    Me.Secure()
+                    Secure()
 
                 Catch ex As Exception
                     'If ex.InnerException.GetType() Is GetType(FaultException) Then
@@ -1347,7 +1347,7 @@ Public Class Enrollment
                 If (CollectionMethodCode.ToUpper.Equals(Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH) AndAlso PaymentInstrumentCode.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD)) Then
                     dal.Certificate(enrollmentId, CollectionMethodCode, PaymentInstrumentCode)
                 Else
-                    Dim t As Thread = New Thread(AddressOf Me.Certificate)
+                    Dim t As Thread = New Thread(AddressOf Certificate)
                     t.Start()
                 End If
 

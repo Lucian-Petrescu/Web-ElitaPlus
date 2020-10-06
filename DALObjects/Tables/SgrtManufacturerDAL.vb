@@ -27,34 +27,34 @@ Public Class SgRtManufacturerDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("sgrt_manufacturer_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     'This Method's body was added manually
-    Public Sub LoadList(ByVal ds As DataSet, ByVal servGrouRiskTypeId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Sub LoadList(ds As DataSet, servGrouRiskTypeId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim servGrpRiskTypeParam As New DBHelper.DBHelperParameter("service_group_risk_type_id", servGrouRiskTypeId.ToByteArray)
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {servGrpRiskTypeParam})
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {servGrpRiskTypeParam})
     End Sub
 
 
 #End Region
 
 #Region "CRUD METHODS"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables.IndexOf(Me.TABLE_NAME) < 0 Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables.IndexOf(TABLE_NAME) < 0 Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

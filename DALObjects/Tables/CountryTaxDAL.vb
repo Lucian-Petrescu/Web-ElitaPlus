@@ -79,30 +79,30 @@ Public Class CountryTaxDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("country_tax_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal oCountryIds As ArrayList, ByVal oCompanyIds As ArrayList, ByVal LanguageID As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(oCountryIds As ArrayList, oCompanyIds As ArrayList, LanguageID As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
         Dim inClauseCondition As String = ""
 
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("ct." & Me.COL_NAME_COUNTRY_ID, oCountryIds, False)
-        inClauseCondition &= Environment.NewLine & MiscUtil.BuildListForSql(Me.COL_NAME_COMPANY_ID, oCompanyIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("ct." & COL_NAME_COUNTRY_ID, oCountryIds, False)
+        inClauseCondition &= Environment.NewLine & MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, oCompanyIds, False)
         
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
 
         Dim parameters As DBHelper.DBHelperParameter()
 
@@ -112,7 +112,7 @@ Public Class CountryTaxDAL
         Dim ds As New DataSet
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -120,27 +120,27 @@ Public Class CountryTaxDAL
 
     End Function
 
-    Public Function LoadMaxExpirationDate(ByVal Countryid As Guid, ByVal Tax_Type_id As Guid, _
-                                        ByVal Company_Type_id As Guid, ByVal UseCurrentDate As Boolean, _
-                                        ByVal oProductTaxTypeId As Guid, _
-                                        ByVal oDealerId As Guid) As Date
+    Public Function LoadMaxExpirationDate(Countryid As Guid, Tax_Type_id As Guid, _
+                                        Company_Type_id As Guid, UseCurrentDate As Boolean, _
+                                        oProductTaxTypeId As Guid, _
+                                        oDealerId As Guid) As Date
         Dim selectStmt As String
-        selectStmt = Me.Config("/SQL/MAX_EXPIRATION_DATE")
+        selectStmt = Config("/SQL/MAX_EXPIRATION_DATE")
 
         Dim DealerIds As New ArrayList()
         DealerIds.Add(oDealerId)
 
         Dim whereClauseConditions As String = ""
         If Not oDealerId = Guid.Empty Then
-            whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(Me.COL_NAME_DEALER_ID, DealerIds, False)
+            whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(COL_NAME_DEALER_ID, DealerIds, False)
         Else
-            whereClauseConditions &= Environment.NewLine & " AND " & Me.COL_NAME_DEALER_ID & " IS NULL"
+            whereClauseConditions &= Environment.NewLine & " AND " & COL_NAME_DEALER_ID & " IS NULL"
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim parameters As DBHelper.DBHelperParameter()
@@ -178,27 +178,27 @@ Public Class CountryTaxDAL
     End Function
 
     Public Sub LoadMinEffDateMaxExpDate(ByRef MinEffDate As Date, ByRef MaxExpDate As Date, ByRef RcdCount As Integer, _
-                                        ByVal Countryid As Guid, ByVal Tax_Type_id As Guid, _
-                                        ByVal Company_Type_id As Guid, ByVal oProductTaxTypeId As Guid, ByVal oDealerId As Guid)
+                                        Countryid As Guid, Tax_Type_id As Guid, _
+                                        Company_Type_id As Guid, oProductTaxTypeId As Guid, oDealerId As Guid)
         RcdCount = 0
 
         Dim selectStmt As String
-        selectStmt = Me.Config("/SQL/MINEFFDATE_MAXEXPDATE")
+        selectStmt = Config("/SQL/MINEFFDATE_MAXEXPDATE")
 
         Dim DealerIds As New ArrayList()
         DealerIds.Add(oDealerId)
 
         Dim whereClauseConditions As String = ""
         If Not oDealerId = Guid.Empty Then
-            whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(Me.COL_NAME_DEALER_ID, DealerIds, False)
+            whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(COL_NAME_DEALER_ID, DealerIds, False)
         Else
-            whereClauseConditions &= Environment.NewLine & " AND " & Me.COL_NAME_DEALER_ID & " IS NULL"
+            whereClauseConditions &= Environment.NewLine & " AND " & COL_NAME_DEALER_ID & " IS NULL"
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim parameters As DBHelper.DBHelperParameter()
@@ -234,28 +234,28 @@ Public Class CountryTaxDAL
 
     End Sub
 
-    Public Function LoadTaxRate(ByVal guidcountryID As Guid, ByVal guidTaxTypeID As Guid, ByVal guidRegionID As Guid, ByVal dtEffectiveDate As Date, ByVal guiddealerID As Guid) As Decimal
-        Dim selectStmt As String = Me.Config("/SQL/GET_TAX_RATE")
+    Public Function LoadTaxRate(guidcountryID As Guid, guidTaxTypeID As Guid, guidRegionID As Guid, dtEffectiveDate As Date, guiddealerID As Guid) As Decimal
+        Dim selectStmt As String = Config("/SQL/GET_TAX_RATE")
         Dim inputParameters(4) As DBHelper.DBHelperParameter
         Dim outputParameter(1) As DBHelper.DBHelperParameter
         Dim dTaxRate As Decimal = 0D
 
-        inputParameters(Me.P_COUNTRY_ID) = New DBHelper.DBHelperParameter(Me.COL_NAME_P_COUNTRY_ID, guidcountryID.ToByteArray)
-        inputParameters(Me.P_TAXTYPE_ID) = New DBHelper.DBHelperParameter(Me.COL_NAME_P_TAXTYPE_ID, guidTaxTypeID.ToByteArray)
-        inputParameters(Me.P_REGION_ID) = New DBHelper.DBHelperParameter(Me.COL_NAME_P_REGION_ID, guidRegionID.ToByteArray)
-        inputParameters(Me.P_SALES_DATE) = New DBHelper.DBHelperParameter(Me.COL_NAME_P_SALES_DATE, dtEffectiveDate)
-        inputParameters(Me.P_DEALER_ID) = New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, guiddealerID)
+        inputParameters(P_COUNTRY_ID) = New DBHelper.DBHelperParameter(COL_NAME_P_COUNTRY_ID, guidcountryID.ToByteArray)
+        inputParameters(P_TAXTYPE_ID) = New DBHelper.DBHelperParameter(COL_NAME_P_TAXTYPE_ID, guidTaxTypeID.ToByteArray)
+        inputParameters(P_REGION_ID) = New DBHelper.DBHelperParameter(COL_NAME_P_REGION_ID, guidRegionID.ToByteArray)
+        inputParameters(P_SALES_DATE) = New DBHelper.DBHelperParameter(COL_NAME_P_SALES_DATE, dtEffectiveDate)
+        inputParameters(P_DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, guiddealerID)
 
-        outputParameter(Me.P_SALES_TAX_RATE) = New DBHelper.DBHelperParameter(Me.COL_NAME_P_SALES_TAX_RATE, GetType(Decimal))
-        outputParameter(Me.P_RETURN) = New DBHelper.DBHelperParameter(Me.COL_NAME_P_RETURN, GetType(Integer))
+        outputParameter(P_SALES_TAX_RATE) = New DBHelper.DBHelperParameter(COL_NAME_P_SALES_TAX_RATE, GetType(Decimal))
+        outputParameter(P_RETURN) = New DBHelper.DBHelperParameter(COL_NAME_P_RETURN, GetType(Integer))
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
-        If outputParameter(Me.P_RETURN).Value <> 0 Then
+        If outputParameter(P_RETURN).Value <> 0 Then
 
             '''Throw ex
             Dim strErrorMsg As String
-            If outputParameter(Me.P_RETURN).Value = 100 Then
+            If outputParameter(P_RETURN).Value = 100 Then
                 strErrorMsg = ErrorCodes.INVALID_TAXRATE_BO_ERR
             Else
                 strErrorMsg = ErrorCodes.INVALID_TAXRATE_EXCEPTION
@@ -264,29 +264,29 @@ Public Class CountryTaxDAL
             Throw New StoredProcedureGeneratedException("Data Base Generated Error: ", strErrorMsg)
 
         Else
-            dTaxRate = outputParameter(Me.P_SALES_TAX_RATE).Value / 100
+            dTaxRate = outputParameter(P_SALES_TAX_RATE).Value / 100
         End If
 
         Return dTaxRate
     End Function
 
-    Public Function LoadManualTaxes(ByVal guidcountryID As Guid, ByVal guidTaxTypeCode As String, ByVal dtEffectiveDate As Date, ByVal guiddealerID As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_MANUAL_TAXES_BY_TAX_TYPE")
+    Public Function LoadManualTaxes(guidcountryID As Guid, guidTaxTypeCode As String, dtEffectiveDate As Date, guiddealerID As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_MANUAL_TAXES_BY_TAX_TYPE")
 
         Dim DealerIds As New ArrayList()
         DealerIds.Add(guiddealerID)
 
         Dim whereClauseConditions As String = ""
         If Not guiddealerID = Guid.Empty Then
-            whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(Me.COL_NAME_DEALER_ID, DealerIds, False)
+            whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(COL_NAME_DEALER_ID, DealerIds, False)
         Else
-            whereClauseConditions &= Environment.NewLine & " AND " & Me.COL_NAME_DEALER_ID & " IS NULL"
+            whereClauseConditions &= Environment.NewLine & " AND " & COL_NAME_DEALER_ID & " IS NULL"
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim parameters As DBHelper.DBHelperParameter()
@@ -297,7 +297,7 @@ Public Class CountryTaxDAL
             New DBHelper.DBHelperParameter("TAX_TYPE_CODE", guidTaxTypeCode)}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -306,20 +306,20 @@ Public Class CountryTaxDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
     'Added for Def - 809
 #Region "Region Tax Methods"
-    Public Function GetRegionTaxCount(ByVal guidcountryID As Guid, ByVal guidtaxtypeID As Guid, ByVal guidproducttaxtypeID As Guid, ByVal guiddealerID As Guid) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/GET_REGION_TAX_FROM_COUNTRY_TAX")
+    Public Function GetRegionTaxCount(guidcountryID As Guid, guidtaxtypeID As Guid, guidproducttaxtypeID As Guid, guiddealerID As Guid) As Integer
+        Dim selectStmt As String = Config("/SQL/GET_REGION_TAX_FROM_COUNTRY_TAX")
 
         Dim parameters As DBHelper.DBHelperParameter()
         parameters = New DBHelper.DBHelperParameter() { _
@@ -329,7 +329,7 @@ Public Class CountryTaxDAL
             New DBHelper.DBHelperParameter("DEALER_ID", guiddealerID.ToByteArray)}
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             If Not ds Is Nothing And ds.Tables(0).Rows.Count > 0 Then
                 Return ds.Tables(0).Rows(0).Item(COL_NAME_RECORDCOUNT)
             Else

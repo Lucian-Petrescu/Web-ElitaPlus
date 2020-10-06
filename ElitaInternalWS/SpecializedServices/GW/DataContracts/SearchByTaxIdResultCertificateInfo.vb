@@ -80,14 +80,14 @@ Namespace SpecializedServices.GW
         Public Property Items As IEnumerable(Of SearchByTaxIdResultCertItem)
 
 
-        Public Sub New(ByVal pCertResult As DBSearchResultCertRecord,
+        Public Sub New(pCertResult As DBSearchResultCertRecord,
                        ByRef pCertManager As ICertificateManager,
                        ByRef pCompanyGroupManager As ICompanyGroupManager,
                        ByRef pCommonManager As CommonManager,
                        ByRef pdealerManager As DealerManager,
                        ByRef paddressManager As AddressManager,
                        ByRef pcountryManager As CountryManager,
-                       ByVal pLanguage As String)
+                       pLanguage As String)
             ' Copy properties from Certificate to current instance
             Dim companyGroup As CompanyGroup = pCompanyGroupManager.GetCompanyGroup(pCertResult.CompanyGroupId)
             Dim wcertNumber As String = pCertManager.GetCertNumber(pCertResult.CertId)
@@ -141,17 +141,17 @@ Namespace SpecializedServices.GW
                 End If
             End If
 
-            Me.Contract = New ContractInfo(certContract, pCommonManager, pLanguage, pcountryManager, contractProducer, producerAddress)
+            Contract = New ContractInfo(certContract, pCommonManager, pLanguage, pcountryManager, contractProducer, producerAddress)
             Dim dGWP As Decimal, dSalesTax As Decimal
             pCertManager.GetCertificateCoverageRate(wCert.CertificateId, Today.Date, dGWP, dSalesTax)
-            Me.CoverageRate = dGWP
-            Me.CoverageRateNetOfTax = dGWP - dSalesTax
-            Me.SalesTax = dSalesTax
+            CoverageRate = dGWP
+            CoverageRateNetOfTax = dGWP - dSalesTax
+            SalesTax = dSalesTax
 
-            Me.Items = New List(Of SearchByTaxIdResultCertItem)()
+            Items = New List(Of SearchByTaxIdResultCertItem)()
 
             For Each ci As CertificateItem In wCert.Item
-                DirectCast(Me.Items, IList(Of SearchByTaxIdResultCertItem)).Add(New SearchByTaxIdResultCertItem(ci, pCommonManager, companyGroup, pLanguage))
+                DirectCast(Items, IList(Of SearchByTaxIdResultCertItem)).Add(New SearchByTaxIdResultCertItem(ci, pCommonManager, companyGroup, pLanguage))
             Next
 
         End Sub
@@ -186,7 +186,7 @@ Namespace SpecializedServices.GW
         <DataMember(Name:="Coverages")>
         Public Property Coverages As IEnumerable(Of SearchByTaxIdResultCertItemCoverage)
 
-        Public Sub New(ByVal pCertificateItem As CertificateItem, pCommonManager As CommonManager, pcompanyGroup As CompanyGroup, pLanguage As String)
+        Public Sub New(pCertificateItem As CertificateItem, pCommonManager As CommonManager, pcompanyGroup As CompanyGroup, pLanguage As String)
             ' Copy properties from Certificate Item to current instance
             With Me
                 .ItemNumber = pCertificateItem.ItemNumber
@@ -200,10 +200,10 @@ Namespace SpecializedServices.GW
                 .ExpirationDate = pCertificateItem.ExpirationDate
             End With
 
-            Me.Coverages = New List(Of SearchByTaxIdResultCertItemCoverage)
+            Coverages = New List(Of SearchByTaxIdResultCertItemCoverage)
 
             For Each cic As CertificateItemCoverage In pCertificateItem.ItemCoverages
-                DirectCast(Me.Coverages, IList(Of SearchByTaxIdResultCertItemCoverage)).Add(New SearchByTaxIdResultCertItemCoverage(cic, pCommonManager, pLanguage))
+                DirectCast(Coverages, IList(Of SearchByTaxIdResultCertItemCoverage)).Add(New SearchByTaxIdResultCertItemCoverage(cic, pCommonManager, pLanguage))
             Next
 
         End Sub
@@ -223,9 +223,9 @@ Namespace SpecializedServices.GW
         <DataMember(IsRequired:=True, Name:="CoverageTypeCode")>
         Public Property CoverageTypeCode As String
 
-        Public Sub New(ByVal pCertficateItemCoverage As CertificateItemCoverage,
-                       ByVal pCommonManager As CommonManager,
-                       ByVal pLangauge As String)
+        Public Sub New(pCertficateItemCoverage As CertificateItemCoverage,
+                       pCommonManager As CommonManager,
+                       pLangauge As String)
             With Me
                 .CoverageName = pCertficateItemCoverage.CoverageTypeId.ToDescription(pCommonManager, ListCodes.CoverageType, pLangauge)
                 .CoverageTypeCode = pCertficateItemCoverage.CoverageTypeId.ToCode(pCommonManager, ListCodes.CoverageType, pLangauge)

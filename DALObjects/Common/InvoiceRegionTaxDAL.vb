@@ -37,31 +37,31 @@
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_INVOICE_REGION_TAX")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_NAME_INVOICE_TRANS_ID, id.ToByteArray)}
-        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_NAME_REF_CURSOR, GetType(DataSet))}
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_INVOICE_REGION_TAX")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(PAR_NAME_INVOICE_TRANS_ID, id.ToByteArray)}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(PAR_NAME_REF_CURSOR, GetType(DataSet))}
         Try
-            DBHelper.FetchSp(selectStmt, parameters, outParameters, familyDS, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, parameters, outParameters, familyDS, TABLE_NAME)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadInvoiceRegionTax(ByVal id As Guid) As DataSet
+    Public Function LoadInvoiceRegionTax(id As Guid) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/LOAD_INVOICE_REGION_TAX")
+            Dim selectStmt As String = Config("/SQL/LOAD_INVOICE_REGION_TAX")
 
-            Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_NAME_INVOICE_TRANS_ID, id.ToByteArray)}
-            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_NAME_REF_CURSOR, GetType(DataSet))}
+            Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(PAR_NAME_INVOICE_TRANS_ID, id.ToByteArray)}
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(PAR_NAME_REF_CURSOR, GetType(DataSet))}
 
             Dim ds As New DataSet
-            Dim tbl As String = Me.TABLE_NAME
+            Dim tbl As String = TABLE_NAME
 
             DBHelper.FetchSp(selectStmt, inparameters, outParameters, ds, tbl)
             Return ds
@@ -75,18 +75,18 @@
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "Public Methods"
-    Public Function SaveInvoiceRegionTax(ByVal row As DataRow) As String
+    Public Function SaveInvoiceRegionTax(row As DataRow) As String
 
         Dim sqlstatement As String
         Dim rowState As DataRowState = row.RowState
@@ -95,45 +95,45 @@
             Select Case rowState
                 Case DataRowState.Added
                     'Insert
-                    sqlstatement = Me.Config("/SQL/INSERT_INVOICE_REGION_TAX")
+                    sqlstatement = Config("/SQL/INSERT_INVOICE_REGION_TAX")
                     updatedby = COL_NAME_CREATED_BY
                 Case DataRowState.Deleted
                     'delete
-                    sqlstatement = Me.Config("/SQL/DELETE_INVOICE_REGION_TAX")
+                    sqlstatement = Config("/SQL/DELETE_INVOICE_REGION_TAX")
                 Case DataRowState.Modified
                     'update
-                    sqlstatement = Me.Config("/SQL/UPDATE_INVOICE_REGION_TAX")
+                    sqlstatement = Config("/SQL/UPDATE_INVOICE_REGION_TAX")
                     updatedby = COL_NAME_MODIFIED_BY
             End Select
 
             Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {
-                        New DBHelper.DBHelperParameter(Me.PARAM_CRUD_STATUS, GetType(Integer))
+                        New DBHelper.DBHelperParameter(PARAM_CRUD_STATUS, GetType(Integer))
                     }
 
             If rowState = DataRowState.Deleted Then
                 Dim inParameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                        {
-                           New DBHelper.DBHelperParameter(Me.PAR_NAME_INVOICE_REGION_TAX_ID.ToLower(), row(Me.COL_NAME_INVOICE_REGION_TAX_ID, DataRowVersion.Original))
+                           New DBHelper.DBHelperParameter(PAR_NAME_INVOICE_REGION_TAX_ID.ToLower(), row(COL_NAME_INVOICE_REGION_TAX_ID, DataRowVersion.Original))
                        }
                 DBHelper.ExecuteSp(sqlstatement, inParameter, outputParameters)
                 row.AcceptChanges()
             ElseIf rowState = DataRowState.Added Then
                 Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                       {New DBHelper.DBHelperParameter(Me.PAR_NAME_INVOICE_REGION_TAX_ID, row(Me.COL_NAME_INVOICE_REGION_TAX_ID)),
-                        New DBHelper.DBHelperParameter(Me.PAR_NAME_INVOICE_TRANS_ID, row(Me.COL_NAME_INVOICE_TRANS_ID)),
-                        New DBHelper.DBHelperParameter(Me.PAR_NAME_REGION_ID, row(Me.COL_NAME_REGION_ID)),
-                        New DBHelper.DBHelperParameter(Me.PAR_NAME_TAX_TYPE, row(Me.COL_NAME_TAX_TYPE_XCD)),
-                        New DBHelper.DBHelperParameter(Me.PAR_NAME_TAX_AMOUNT, row(Me.COL_NAME_TAX_AMOUNT)),
+                       {New DBHelper.DBHelperParameter(PAR_NAME_INVOICE_REGION_TAX_ID, row(COL_NAME_INVOICE_REGION_TAX_ID)),
+                        New DBHelper.DBHelperParameter(PAR_NAME_INVOICE_TRANS_ID, row(COL_NAME_INVOICE_TRANS_ID)),
+                        New DBHelper.DBHelperParameter(PAR_NAME_REGION_ID, row(COL_NAME_REGION_ID)),
+                        New DBHelper.DBHelperParameter(PAR_NAME_TAX_TYPE, row(COL_NAME_TAX_TYPE_XCD)),
+                        New DBHelper.DBHelperParameter(PAR_NAME_TAX_AMOUNT, row(COL_NAME_TAX_AMOUNT)),
                         New DBHelper.DBHelperParameter("pi_" & updatedby.ToLower(), row(updatedby))
                        }
                 DBHelper.ExecuteSp(sqlstatement, inParameters, outputParameters)
                 row.AcceptChanges()
             Else
                 Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                      {New DBHelper.DBHelperParameter(Me.PAR_NAME_INVOICE_REGION_TAX_ID, row(Me.COL_NAME_INVOICE_REGION_TAX_ID)),
-                       New DBHelper.DBHelperParameter(Me.PAR_NAME_TAX_AMOUNT, row(Me.COL_NAME_TAX_AMOUNT)),
-                       New DBHelper.DBHelperParameter(Me.PAR_NAME_TAX_TYPE, row(Me.COL_NAME_TAX_TYPE_XCD)),
+                      {New DBHelper.DBHelperParameter(PAR_NAME_INVOICE_REGION_TAX_ID, row(COL_NAME_INVOICE_REGION_TAX_ID)),
+                       New DBHelper.DBHelperParameter(PAR_NAME_TAX_AMOUNT, row(COL_NAME_TAX_AMOUNT)),
+                       New DBHelper.DBHelperParameter(PAR_NAME_TAX_TYPE, row(COL_NAME_TAX_TYPE_XCD)),
                        New DBHelper.DBHelperParameter("pi_" & updatedby.ToLower(), row(updatedby))
                       }
                 DBHelper.ExecuteSp(sqlstatement, inParameters, outputParameters)

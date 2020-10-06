@@ -101,7 +101,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -115,20 +115,20 @@ Namespace Reports
             PopulateCompaniesDropdown()
             PopulateDealerDropDown()
             PopulateYearDropDown()
-            Me.moWeekBeginDateText.Text = String.Empty
-            Me.moWeekEndDateText.Text = String.Empty
-            Me.txtBeginWeekNum.Text = String.Empty
-            Me.txtEndWeekNum.Text = String.Empty
+            moWeekBeginDateText.Text = String.Empty
+            moWeekEndDateText.Text = String.Empty
+            txtBeginWeekNum.Text = String.Empty
+            txtEndWeekNum.Text = String.Empty
 
-            Me.txtBeginQuatNum.Text = String.Empty
-            Me.cboBeginQuatYear.SelectedIndex = -1
-            Me.txtEndQuatNum.Text = String.Empty
-            Me.cboEndQuatYear.SelectedIndex = -1
+            txtBeginQuatNum.Text = String.Empty
+            cboBeginQuatYear.SelectedIndex = -1
+            txtEndQuatNum.Text = String.Empty
+            cboEndQuatYear.SelectedIndex = -1
 
-            Me.txtBeginMonthNum.Text = String.Empty
-            Me.cboBeginMonthyear.SelectedIndex = -1
-            Me.txtEndMonthNum.Text = String.Empty
-            Me.cboEndMonthyear.SelectedIndex = -1
+            txtBeginMonthNum.Text = String.Empty
+            cboBeginMonthyear.SelectedIndex = -1
+            txtEndMonthNum.Text = String.Empty
+            cboEndMonthyear.SelectedIndex = -1
             rdealer.Checked = True
             TheRptCeInputControl.populateReportLanguages(RPT_FILENAME)
 
@@ -139,20 +139,20 @@ Namespace Reports
 
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moWeekBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moWeekEndDateText)
+                    AddCalendar(BtnBeginDate, moWeekBeginDateText)
+                    AddCalendar(BtnEndDate, moWeekEndDateText)
                     TheRptCeInputControl.ExcludeExport()
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
                 If moWeekEndDateText.Text.Trim <> String.Empty Then
                     txtEndWeekNum.Style.Add("display", "")
                     lblEndWeekNum.Style.Add("display", "")
@@ -169,22 +169,22 @@ Namespace Reports
                 End If
                 ClearErrLabels()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 ClearErrLabels()
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -194,7 +194,7 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
             Handles moUserCompanyMultipleDrop.SelectedDropChanged
             Try
                 PopulateDealerDropDown()
@@ -213,7 +213,7 @@ Namespace Reports
                     lblBeginWeekNum.Style.Add("display", "none")
                 End If
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -222,16 +222,16 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moWBeginDateLabel)
-            Me.ClearLabelErrSign(moWEndDateLabel)
-            Me.ClearLabelErrSign(moQBeginDateLabel)
-            Me.ClearLabelErrSign(moQEndDateLabel)
-            Me.ClearLabelErrSign(moMBeginDateLabel)
-            Me.ClearLabelErrSign(moMEndDateLabel)
-            Me.ClearLabelErrSign(lblWeeklySelect)
-            Me.ClearLabelErrSign(lblQuaterlySelect)
-            Me.ClearLabelErrSign(lblMonthlySelect)
-            Me.ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(moWBeginDateLabel)
+            ClearLabelErrSign(moWEndDateLabel)
+            ClearLabelErrSign(moQBeginDateLabel)
+            ClearLabelErrSign(moQEndDateLabel)
+            ClearLabelErrSign(moMBeginDateLabel)
+            ClearLabelErrSign(moMEndDateLabel)
+            ClearLabelErrSign(lblWeeklySelect)
+            ClearLabelErrSign(lblQuaterlySelect)
+            ClearLabelErrSign(lblMonthlySelect)
+            ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
         End Sub
 
 #End Region
@@ -245,7 +245,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, "*" + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
 
             End If
@@ -282,7 +282,7 @@ Namespace Reports
                 oListContext.CompanyId = _company
                 Dim YearListForCompany As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ClosingYearsByCompany", context:=oListContext, languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
                 If YearListForCompany.Count > 0 Then
-                    If Not YearList Is Nothing Then
+                    If YearList IsNot Nothing Then
                         YearList.AddRange(YearListForCompany)
                     Else
                         YearList = YearListForCompany.Clone()
@@ -292,7 +292,7 @@ Namespace Reports
 
             DistinctYearList = YearList.Distinct().ToList()
 
-            Me.cboBeginQuatYear.Populate(DistinctYearList.ToArray(),
+            cboBeginQuatYear.Populate(DistinctYearList.ToArray(),
                                          New PopulateOptions() With
                                          {
                                            .AddBlankItem = True,
@@ -300,7 +300,7 @@ Namespace Reports
                                            .ValueFunc = AddressOf .GetCode
                                          })
 
-            Me.cboEndQuatYear.Populate(DistinctYearList.ToArray(),
+            cboEndQuatYear.Populate(DistinctYearList.ToArray(),
                                          New PopulateOptions() With
                                          {
                                            .AddBlankItem = True,
@@ -308,14 +308,14 @@ Namespace Reports
                                            .ValueFunc = AddressOf .GetCode
                                          })
 
-            Me.cboBeginMonthyear.Populate(DistinctYearList.ToArray(),
+            cboBeginMonthyear.Populate(DistinctYearList.ToArray(),
                                          New PopulateOptions() With
                                          {
                                            .AddBlankItem = True,
                                            .BlankItemValue = "0"
                                          })
 
-            Me.cboEndMonthyear.Populate(DistinctYearList.ToArray(),
+            cboEndMonthyear.Populate(DistinctYearList.ToArray(),
                                          New PopulateOptions() With
                                          {
                                            .AddBlankItem = True,
@@ -329,15 +329,15 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal companyId As String, ByVal companydesc As String,
-                                    ByVal dealercode As String, ByVal dealerdesc As String, ByVal beginDate As String,
-                                      ByVal endDate As String, ByVal formatype As String, ByVal sortOrder As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyId As String, companydesc As String,
+                                    dealercode As String, dealerdesc As String, beginDate As String,
+                                      endDate As String, formatype As String, sortOrder As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim culturecode As String = TheRptCeInputControl.getCultureValue(False)
             Dim reportName As String = TheRptCeInputControl.getReportName(RPT_FILENAME, False)
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             Dim repParams() As ReportCeBaseForm.RptParam = New ReportCeBaseForm.RptParam() _
                     {
@@ -495,7 +495,7 @@ Namespace Reports
             End If
 
             'Dealer
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             Else
                 If selectedDealerId.Equals(Guid.Empty) Then
@@ -504,7 +504,7 @@ Namespace Reports
                 End If
             End If
 
-            Select Case Me.rdReportSortOrder.SelectedValue()
+            Select Case rdReportSortOrder.SelectedValue()
                 Case ZIP_CODE
                     sortOrder = "POSTAL_CODE"
                 Case BRANCH_CODE
@@ -518,7 +518,7 @@ Namespace Reports
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
         End Sub
 
-        Protected Sub moWeekBeginDateText_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles moWeekBeginDateText.TextChanged
+        Protected Sub moWeekBeginDateText_TextChanged(sender As Object, e As EventArgs) Handles moWeekBeginDateText.TextChanged
             Try
                 txtBeginWeekNum.Text = String.Empty
                 If moWeekBeginDateText.Text.Trim <> String.Empty Then
@@ -540,11 +540,11 @@ Namespace Reports
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Protected Sub moWeekEndDateText_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles moWeekEndDateText.TextChanged
+        Protected Sub moWeekEndDateText_TextChanged(sender As Object, e As EventArgs) Handles moWeekEndDateText.TextChanged
             Try
                 txtEndWeekNum.Text = String.Empty
                 If moWeekEndDateText.Text.Trim <> String.Empty Then
@@ -565,7 +565,7 @@ Namespace Reports
                     txtEndWeekNum.Text = String.Empty
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -580,7 +580,7 @@ Namespace Reports
         '    Return weekNum
 
         'End Function
-        Public Function GetWeekDates(ByVal dtCurrrent As Date, ByVal dttype As String) As String
+        Public Function GetWeekDates(dtCurrrent As Date, dttype As String) As String
             Dim dtStartOfWeek As DateTime = dtCurrrent
             Dim strday As DayOfWeek
             Dim days As Integer
@@ -609,13 +609,13 @@ Namespace Reports
             End If
 
         End Function
-        Private Function GetLastDayInMonth(ByVal dDate As Date) As Date
+        Private Function GetLastDayInMonth(dDate As Date) As Date
             dDate = DateAdd(DateInterval.Month, 1, dDate)
             dDate = Convert.ToDateTime(Month(dDate).ToString() & "/" & "1/" & Year(dDate).ToString())
             dDate = DateAdd(DateInterval.Day, -1, dDate)
             Return dDate
         End Function
-        Public Function GetWeekNumber(ByVal inDate As DateTime) As Integer
+        Public Function GetWeekNumber(inDate As DateTime) As Integer
             Const JAN As Integer = 1
             Const DEC As Integer = 12
             Const LASTDAYOFDEC As Integer = 31

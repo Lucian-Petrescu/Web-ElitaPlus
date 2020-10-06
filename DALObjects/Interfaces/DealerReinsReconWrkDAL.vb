@@ -46,16 +46,16 @@
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
+    Public Sub Load(familyDS As DataSet, id As Guid)
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(TABLE_KEY_NAME, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -64,27 +64,27 @@
 
     Public Function LoadList() As DataSet
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_LIST"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD_LIST"))
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadList(ByVal dealerfileProcessedID As Guid, ByVal recordMode As String
+    Public Function LoadList(dealerfileProcessedID As Guid, recordMode As String
                                       ) As DataSet
 
         Dim selectStmt As String
         Dim parameters() As OracleParameter
 
-        selectStmt = Me.Config("/SQL/LOAD_LIST")
+        selectStmt = Config("/SQL/LOAD_LIST")
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_DEALERFILE_PROCESSED_ID, dealerfileProcessedID.ToByteArray),
                                                 New OracleParameter("p_recordMode", recordMode)}
 
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -92,14 +92,14 @@
     End Function
 
 
-    Public Function LoadRejectList(ByVal dealerfileProcessedID As Guid) As DataSet
+    Public Function LoadRejectList(dealerfileProcessedID As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_REJECT_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_REJECT_LIST")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() _
                                     {New OracleParameter(COL_NAME_DEALERFILE_PROCESSED_ID, dealerfileProcessedID.ToByteArray)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -110,15 +110,15 @@
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
         If ds Is Nothing Then
             Return
         End If
         If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
             Throw New NotSupportedException()
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 

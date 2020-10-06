@@ -44,17 +44,17 @@ Public Class GetCertInfoWEPPTMX
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
     Private Sub Load(ByVal ds As GetCertInfoWEPPTMXDs)
         Try
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -100,53 +100,53 @@ Public Class GetCertInfoWEPPTMX
     '<ValueMandatory("")> _
     Public Property DealerCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_DEALER), String)
+                Return CType(Row(DATA_COL_NAME_DEALER), String)
             End If
         End Get
         Set(ByVal Value As String)
-            Me.SetValue(Me.DATA_COL_NAME_DEALER, Value)
+            SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
     Public Property CertNum() As String
         Get
-            If Row(Me.DATA_COL_NAME_CERT_NUM) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERT_NUM) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CERT_NUM), String)
+                Return CType(Row(DATA_COL_NAME_CERT_NUM), String)
             End If
         End Get
         Set(ByVal Value As String)
-            Me.SetValue(Me.DATA_COL_NAME_CERT_NUM, Value)
+            SetValue(DATA_COL_NAME_CERT_NUM, Value)
         End Set
     End Property
 
     Public Property PhoneNum() As String
         Get
-            If Row(Me.DATA_COL_NAME_PHONE_NUM) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_PHONE_NUM) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_PHONE_NUM), String)
+                Return CType(Row(DATA_COL_NAME_PHONE_NUM), String)
             End If
         End Get
         Set(ByVal Value As String)
-            Me.SetValue(Me.DATA_COL_NAME_PHONE_NUM, Value)
+            SetValue(DATA_COL_NAME_PHONE_NUM, Value)
         End Set
     End Property
 
     Public Property SerialNum() As String
         Get
-            If Row(Me.DATA_COL_NAME_SERIAL_NUM) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SERIAL_NUM) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_SERIAL_NUM), String)
+                Return CType(Row(DATA_COL_NAME_SERIAL_NUM), String)
             End If
         End Get
         Set(ByVal Value As String)
-            Me.SetValue(Me.DATA_COL_NAME_SERIAL_NUM, Value)
+            SetValue(DATA_COL_NAME_SERIAL_NUM, Value)
         End Set
     End Property
 
@@ -174,8 +174,8 @@ Public Class GetCertInfoWEPPTMX
                 objRoot.AppendChild(objE)
                 objE.InnerText = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_MISSING_SEARCH_CRITERION)
             Else
-                Me.Validate()
-                Dim _CertDataSet As DataSet = Certificate.GetCertInfoWEPPTMX(Me.DealerCode, Me.CertNum, Me.PhoneNum, Me.SerialNum)
+                Validate()
+                Dim _CertDataSet As DataSet = Certificate.GetCertInfoWEPPTMX(DealerCode, CertNum, PhoneNum, SerialNum)
                 If _CertDataSet.Tables(0).Rows.Count > 0 Then 'certificate found
                     Dim dr As DataRow() = _CertDataSet.Tables(0).Select("cert_Status='C'")
                     Dim I As Integer
@@ -192,8 +192,8 @@ Public Class GetCertInfoWEPPTMX
                         objRoot.AppendChild(objE)
                         objE.InnerText = "El contrato se encuentra expirado. Para cualquier duda o aclaración por favor comuníques con la aseguradora."
                     Else
-                        _CertDataSet.DataSetName = Me.DATASET_NAME & "Result"
-                        _CertDataSet.Tables(0).TableName = Me.DATASET_TABLE_NAME
+                        _CertDataSet.DataSetName = DATASET_NAME & "Result"
+                        _CertDataSet.Tables(0).TableName = DATASET_TABLE_NAME
 
 
                         retXml = XMLHelper.FromDatasetToXML(_CertDataSet, Nothing, True, True, True, False, True)

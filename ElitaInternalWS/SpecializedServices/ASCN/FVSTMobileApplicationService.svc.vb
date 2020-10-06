@@ -13,7 +13,7 @@ Public Class FVSTMobileApplicationService
     Private ReadOnly CommonManager As ICommonManager
 
 
-    Public Sub New(ByVal pCertificateManager As ICertificateManager, pCommonManager As ICommonManager)
+    Public Sub New(pCertificateManager As ICertificateManager, pCommonManager As ICommonManager)
 
         If (pCertificateManager Is Nothing) Then
             Throw New ArgumentNullException("pCertificateManager")
@@ -23,16 +23,16 @@ Public Class FVSTMobileApplicationService
             Throw New ArgumentNullException("pCommonManager")
         End If
 
-        Me.CertificateManager = pCertificateManager
-        Me.CommonManager = pCommonManager
+        CertificateManager = pCertificateManager
+        CommonManager = pCommonManager
     End Sub
 
-    Public Function GetCertificateInfo(ByVal request As GetCertificateInfoRequest) As GetCertificateInfoResponse Implements IFVSTMobileApplicationService.GetCertificateInfo
+    Public Function GetCertificateInfo(request As GetCertificateInfoRequest) As GetCertificateInfoResponse Implements IFVSTMobileApplicationService.GetCertificateInfo
 
         request.Validate("request").HandleFault()
         Dim cert As Certificate
         Try
-            cert = Me.CertificateManager.GetCertificate(DealerCode, request.CertificateNumber)
+            cert = CertificateManager.GetCertificate(DealerCode, request.CertificateNumber)
         Catch dnfe As DealerNotFoundException
             Throw New FaultException(Of DealerNotFoundFault)(New DealerNotFoundFault(), "Dealer not found")
         End Try
@@ -49,12 +49,12 @@ Public Class FVSTMobileApplicationService
                 {
                     .CertificateNumber = cert.CertificateNumber,
                     .CellNumber = cert.WorkPhone,
-                    .StatusChinese = cert.StatusCode.ToDescription(Me.CommonManager, ListCodes.CertificateStatus, LanguageCodes.Chinese),
-                    .StatusEnglish = cert.StatusCode.ToDescription(Me.CommonManager, ListCodes.CertificateStatus, LanguageCodes.USEnglish),
+                    .StatusChinese = cert.StatusCode.ToDescription(CommonManager, ListCodes.CertificateStatus, LanguageCodes.Chinese),
+                    .StatusEnglish = cert.StatusCode.ToDescription(CommonManager, ListCodes.CertificateStatus, LanguageCodes.USEnglish),
                     .ItemDescription = cic.Item.ItemDescription,
                     .CustomerName = cert.CustomerName,
-                    .CoverageChinese = cic.CoverageTypeId.ToDescription(Me.CommonManager, ListCodes.CoverageType, LanguageCodes.Chinese),
-                    .CoverageEnglish = cic.CoverageTypeId.ToDescription(Me.CommonManager, ListCodes.CoverageType, LanguageCodes.USEnglish),
+                    .CoverageChinese = cic.CoverageTypeId.ToDescription(CommonManager, ListCodes.CoverageType, LanguageCodes.Chinese),
+                    .CoverageEnglish = cic.CoverageTypeId.ToDescription(CommonManager, ListCodes.CoverageType, LanguageCodes.USEnglish),
                     .CoverageDuration = cic.BeginDate.GetFVSTMonths(cic.EndDate),
                     .WarrantyPurchaseDate = IIf(cert.WarrantySalesDate.HasValue, cert.WarrantySalesDate.Value.ToString(DateFormat), String.Empty)
                 }))

@@ -23,28 +23,28 @@
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 #End Region
 #Region "Load"
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New FileProcessedDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -76,7 +76,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_FILE_PROCESSED_ID, Value)
+            SetValue(FileProcessedDAL.COL_NAME_FILE_PROCESSED_ID, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
@@ -91,7 +91,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_FILE_NAME, Value)
+            SetValue(FileProcessedDAL.COL_NAME_FILE_NAME, Value)
         End Set
     End Property
     <ValueMandatory("")> _
@@ -106,7 +106,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(FileProcessedDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
     <ValueMandatory("")> _
@@ -123,7 +123,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            SetValue(FileProcessedDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
     <ValueMandatory("")> _
@@ -138,7 +138,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(FileProcessedDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
@@ -154,7 +154,7 @@
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_RECEIVED, Value)
+            SetValue(FileProcessedDAL.COL_NAME_RECEIVED, Value)
         End Set
     End Property
 
@@ -171,7 +171,7 @@
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_COUNTED, Value)
+            SetValue(FileProcessedDAL.COL_NAME_COUNTED, Value)
         End Set
     End Property
 
@@ -186,7 +186,7 @@
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_BYPASSED, Value)
+            SetValue(FileProcessedDAL.COL_NAME_BYPASSED, Value)
         End Set
     End Property
 
@@ -201,7 +201,7 @@
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_REJECTED, Value)
+            SetValue(FileProcessedDAL.COL_NAME_REJECTED, Value)
         End Set
     End Property
 
@@ -218,7 +218,7 @@
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_VALIDATED, Value)
+            SetValue(FileProcessedDAL.COL_NAME_VALIDATED, Value)
         End Set
     End Property
 
@@ -235,7 +235,7 @@
         End Get
         Set(ByVal Value As LongType)
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_LOADED, Value)
+            SetValue(FileProcessedDAL.COL_NAME_LOADED, Value)
         End Set
     End Property
 
@@ -252,7 +252,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(DealerFileProcessedDAL.COL_NAME_LAYOUT, Value)
+            SetValue(DealerFileProcessedDAL.COL_NAME_LAYOUT, Value)
         End Set
     End Property
 
@@ -267,7 +267,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(FileProcessedDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
     Public ReadOnly Property Status() As String

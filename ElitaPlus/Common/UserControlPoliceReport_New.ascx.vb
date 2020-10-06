@@ -17,7 +17,7 @@ Partial Class UserControlPoliceReport_New
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -42,10 +42,10 @@ Partial Class UserControlPoliceReport_New
 
     Public ReadOnly Property State() As MyState
         Get
-            If Me.Page.StateSession.Item(Me.UniqueID) Is Nothing Then
-                Me.Page.StateSession.Item(Me.UniqueID) = New MyState
+            If Page.StateSession.Item(UniqueID) Is Nothing Then
+                Page.StateSession.Item(UniqueID) = New MyState
             End If
-            Return CType(Me.Page.StateSession.Item(Me.UniqueID), MyState)
+            Return CType(Page.StateSession.Item(UniqueID), MyState)
         End Get
     End Property
 
@@ -64,8 +64,8 @@ Partial Class UserControlPoliceReport_New
 
     Private ReadOnly Property ErrCtrl() As MessageController
         Get
-            If Not Me.State.ErrControllerId Is Nothing Then
-                Return CType(Me.Page.MasterPage.FindControl(Me.State.ErrControllerId), MessageController)
+            If State.ErrControllerId IsNot Nothing Then
+                Return CType(Page.MasterPage.FindControl(State.ErrControllerId), MessageController)
             End If
         End Get
     End Property
@@ -80,7 +80,7 @@ Partial Class UserControlPoliceReport_New
         Get
             Return moIsStarNeededforDualDrop
         End Get
-        Set(ByVal Value As Boolean)
+        Set(Value As Boolean)
             moIsStarNeededforDualDrop = Value
         End Set
     End Property
@@ -89,14 +89,14 @@ Partial Class UserControlPoliceReport_New
 
 #Region "Page Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
 
         'If Not Me.IsPostBack AndAlso Not Me.State.myPoliceReport Is Nothing Then
         '    PopulatePoliceStationDropDown(moIsStarNeededforDualDrop)
         'End If
 
-        If Not Me.State.myPoliceReport Is Nothing Then
+        If State.myPoliceReport IsNot Nothing Then
             BindBoPropertiesToLabels()
             'Else
             '    SetTheRequiredFields()
@@ -105,52 +105,52 @@ Partial Class UserControlPoliceReport_New
     End Sub
 
     Public Sub SetTheRequiredFields()
-        If LabelReportNumber.Text.IndexOf("*") <> 0 Then Me.LabelReportNumber.Text = "* " & Me.LabelReportNumber.Text
+        If LabelReportNumber.Text.IndexOf("*") <> 0 Then LabelReportNumber.Text = "* " & LabelReportNumber.Text
         'If LabelOfficerName.Text.IndexOf("*") <> 0 Then Me.LabelOfficerName.Text = "* " & Me.LabelOfficerName.Text
     End Sub
-    Public Sub Bind(ByVal PoliceReportBo As PoliceReport, ByVal containerErrorController As MessageController, Optional ByVal starneeded As Boolean = False, Optional ByVal bypassdualdropinitialization As Boolean = False)
+    Public Sub Bind(PoliceReportBo As PoliceReport, containerErrorController As MessageController, Optional ByVal starneeded As Boolean = False, Optional ByVal bypassdualdropinitialization As Boolean = False)
         With State
             .ErrControllerId = containerErrorController.ID
             .myPoliceReport = PoliceReportBo
         End With
-        Me.TextboxOfficerName.Text = String.Empty
-        Me.TextboxReportNumber.Text = String.Empty
+        TextboxOfficerName.Text = String.Empty
+        TextboxReportNumber.Text = String.Empty
         'Me.IsStarNeededforDualDrop = starneeded
-        Me.moIsStarNeededforDualDrop = starneeded
-        Me.PopulateControlFromBo(bypassdualdropinitialization)
-        Me.Page.ShowMissingTranslations(Me.ErrCtrl)
+        moIsStarNeededforDualDrop = starneeded
+        PopulateControlFromBo(bypassdualdropinitialization)
+        Page.ShowMissingTranslations(ErrCtrl)
     End Sub
     Public Sub ReAssignTabIndex(Optional ByVal TabIndexStartingNumber As Int16 = 0)
         If TabIndexStartingNumber > 0 Then
             'Me.moPoliceMultipleColumnDropControl.TabIndex = TabIndexStartingNumber
-            Me.TextboxReportNumber.TabIndex = CType(TabIndexStartingNumber + 1, Int16)
-            Me.TextboxOfficerName.TabIndex = CType(TabIndexStartingNumber + 2, Int16)
+            TextboxReportNumber.TabIndex = CType(TabIndexStartingNumber + 1, Int16)
+            TextboxOfficerName.TabIndex = CType(TabIndexStartingNumber + 2, Int16)
         End If
     End Sub
     Protected Sub BindBoPropertiesToLabels()
-        Me.Page.BindBOPropertyToLabel(Me.State.myPoliceReport, "ReportNumber", LabelReportNumber)
-        Me.Page.BindBOPropertyToLabel(Me.State.myPoliceReport, "OfficerName", LabelOfficerName)
+        Page.BindBOPropertyToLabel(State.myPoliceReport, "ReportNumber", LabelReportNumber)
+        Page.BindBOPropertyToLabel(State.myPoliceReport, "OfficerName", LabelOfficerName)
         'Me.LabelDummy.Text = TranslationBase.TranslateLabelOrMessage(LABEL_POLICE_STATION)
-        Me.Page.BindBOPropertyToLabel(Me.State.myPoliceReport, "PoliceStationId", PoliceMultipleDrop.CaptionLabel)
+        Page.BindBOPropertyToLabel(State.myPoliceReport, "PoliceStationId", PoliceMultipleDrop.CaptionLabel)
         'Me.Page.BindBOPropertyToLabel(Me.State.myPoliceReport, "PoliceStationId", LabelDummy) 'PoliceMultipleDrop.CaptionLabel)
-        Me.Page.ClearGridHeadersAndLabelsErrSign()
+        Page.ClearGridHeadersAndLabelsErrSign()
     End Sub
 
-    Public Sub ChangeEnabledControlProperty(ByVal blnEnabledState As Boolean)
-        Page.ChangeEnabledControlProperty(Me.TextboxReportNumber, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.TextboxOfficerName, blnEnabledState)
-        Me.moPoliceMultipleColumnDropControl.ChangeEnabledControlProperty(blnEnabledState)
+    Public Sub ChangeEnabledControlProperty(blnEnabledState As Boolean)
+        Page.ChangeEnabledControlProperty(TextboxReportNumber, blnEnabledState)
+        Page.ChangeEnabledControlProperty(TextboxOfficerName, blnEnabledState)
+        moPoliceMultipleColumnDropControl.ChangeEnabledControlProperty(blnEnabledState)
     End Sub
 
     Public Sub PopulateBOFromControl(Optional ByVal blnExcludeSave As Boolean = False)
-        If Not Me.State.myPoliceReport Is Nothing Then
-            With Me.State.myPoliceReport
-                Me.BindBoPropertiesToLabels()
-                Me.Page.PopulateBOProperty(Me.State.myPoliceReport, "ReportNumber", TextboxReportNumber)
-                Me.Page.PopulateBOProperty(Me.State.myPoliceReport, "OfficerName", TextboxOfficerName)
-                Me.State.myPoliceReport.PoliceStationId = PoliceMultipleDrop.SelectedGuid
+        If State.myPoliceReport IsNot Nothing Then
+            With State.myPoliceReport
+                BindBoPropertiesToLabels()
+                Page.PopulateBOProperty(State.myPoliceReport, "ReportNumber", TextboxReportNumber)
+                Page.PopulateBOProperty(State.myPoliceReport, "OfficerName", TextboxOfficerName)
+                State.myPoliceReport.PoliceStationId = PoliceMultipleDrop.SelectedGuid
 
-                If Me.Page.ErrCollection.Count > 0 Then
+                If Page.ErrCollection.Count > 0 Then
                     Throw New PopulateBOErrorException
                 End If
                 '         Dim blnExcludeSave As Boolean
@@ -169,8 +169,8 @@ Partial Class UserControlPoliceReport_New
 
 #Region "Public"
     Public Function isempty() As Boolean
-        If (Me.TextboxReportNumber.Text = String.Empty) OrElse _
-            (Me.moPoliceMultipleColumnDropControl.SelectedGuid.Equals(System.Guid.Empty)) Then
+        If (TextboxReportNumber.Text = String.Empty) OrElse _
+            (moPoliceMultipleColumnDropControl.SelectedGuid.Equals(System.Guid.Empty)) Then
             Return True
         Else
             Return False
@@ -186,10 +186,10 @@ Partial Class UserControlPoliceReport_New
             PopulatePoliceStationDropDown(moIsStarNeededforDualDrop)
         End If
 
-        If Not Me.State.myPoliceReport Is Nothing Then
-            With Me.State.myPoliceReport
-                Me.Page.PopulateControlFromBOProperty(Me.TextboxReportNumber, .ReportNumber)
-                Me.Page.PopulateControlFromBOProperty(Me.TextboxOfficerName, .OfficerName)
+        If State.myPoliceReport IsNot Nothing Then
+            With State.myPoliceReport
+                Page.PopulateControlFromBOProperty(TextboxReportNumber, .ReportNumber)
+                Page.PopulateControlFromBOProperty(TextboxOfficerName, .OfficerName)
                 If .PoliceStationId.Equals(System.Guid.Empty) Then
                     PoliceMultipleDrop.SelectedGuid = System.Guid.Empty
                     'Else
@@ -200,7 +200,7 @@ Partial Class UserControlPoliceReport_New
         End If
     End Sub
 
-    Private Sub PopulatePoliceStationDropDown(ByVal isstarneeded As Boolean)
+    Private Sub PopulatePoliceStationDropDown(isstarneeded As Boolean)
 
         Dim dv As DataView = LookupListNew.GetPoliceLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
         PoliceMultipleDrop.NothingSelected = True
@@ -221,9 +221,9 @@ Partial Class UserControlPoliceReport_New
                                           "mcUserControlPoliceReport_mPoliceMultipleColumnDropControl_moMultipleColumnDrop", _
                                           "mcUserControlPoliceReport_mPoliceMultipleColumnDropControl_moMultipleColumnDropDesc", _
                                           "mcUserControlPoliceReport_mPoliceMultipleColumnDropControl_lb_DropDown")
-        If Not Me.State.myPoliceReport.PoliceStationId.Equals(Guid.Empty) Then
+        If Not State.myPoliceReport.PoliceStationId.Equals(Guid.Empty) Then
             'PoliceMultipleDrop.SelectedGuid = System.Guid.Empty
-            PoliceMultipleDrop.SelectedGuid = Me.State.myPoliceReport.PoliceStationId
+            PoliceMultipleDrop.SelectedGuid = State.myPoliceReport.PoliceStationId
         End If
 
     End Sub

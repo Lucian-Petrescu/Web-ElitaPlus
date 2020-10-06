@@ -107,8 +107,8 @@ Public Class OlitaUpdateConsumerInfo
             Next
         Next
 
-        Me.Dataset = New Dataset
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New Dataset
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -119,10 +119,10 @@ Public Class OlitaUpdateConsumerInfo
     Private Sub Load(ByVal ds As OlitaUpdateConsumerInfoDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -153,41 +153,41 @@ Public Class OlitaUpdateConsumerInfo
         Try
             If ds.OlitaUpdateConsumerInfo.Count = 0 Then Exit Sub
             With ds.OlitaUpdateConsumerInfo.Item(0)
-                Me.DealerCode = .dealer
-                Me.CertNumber = .cert_number
-                If Not .IsSALUTATIONNull Then Me.SalutationCode = .SALUTATION
-                Me.CustomerName = .customer_name
-                Me.Address1 = .address1
-                If Not .Isaddress2Null Then Me.Address2 = .address2
-                Me.City = .city
-                Me.ShortDescription = .short_desc
-                Me.CountryCode = .code
-                Me.PostalCode = .postal_code
-                Me.HomePhone = .home_phone
-                Me.Email = .email
-                Me.UserPassword = .user_pw
-                If Not .Iswork_phoneNull Then Me.WorkPhone = .work_phone
-                If Not .Ismembership_numberNull Then Me.MembershipNumber = .membership_number
-                If Not .Isprimary_member_nameNull Then Me.PrimaryMemberName = .primary_member_name
-                If Not .Ismailing_address1Null Then Me.MailingAddress1 = .mailing_address1
-                If Not .Ismailing_address2Null Then Me.MailingAddress2 = .mailing_address2
-                If Not .Ismailing_cityNull Then Me.MailingCity = .mailing_city
-                If Not .Ismailing_region_short_descNull Then Me.MailingRegionShortDescription = .mailing_region_short_desc
-                If Not .Ismailing_country_codeNull Then Me.MailingCountryCode = .mailing_country_code
-                If Not .Ismailing_postal_codeNull Then Me.MailingPostalCode = .mailing_postal_code
-                If Not .Iswarranty_sales_dateNull Then Me.WarrantySalesDate = .warranty_sales_date
-                If Not .Ismembership_typeNull Then Me.MembershipType = .membership_type
-                If Not .Isproduct_sales_dateNull Then Me.ProductSalesDate = .product_sales_date
-                If Not .Issales_priceNull Then Me.SalesPrice = .sales_price
-                If Not .Isvat_numNull Then Me.VATNum = .vat_num            
-                If Not .Isidentification_numberNull Then Me.IdentificationNumber = .identification_number
+                DealerCode = .dealer
+                CertNumber = .cert_number
+                If Not .IsSALUTATIONNull Then SalutationCode = .SALUTATION
+                CustomerName = .customer_name
+                Address1 = .address1
+                If Not .Isaddress2Null Then Address2 = .address2
+                City = .city
+                ShortDescription = .short_desc
+                CountryCode = .code
+                PostalCode = .postal_code
+                HomePhone = .home_phone
+                Email = .email
+                UserPassword = .user_pw
+                If Not .Iswork_phoneNull Then WorkPhone = .work_phone
+                If Not .Ismembership_numberNull Then MembershipNumber = .membership_number
+                If Not .Isprimary_member_nameNull Then PrimaryMemberName = .primary_member_name
+                If Not .Ismailing_address1Null Then MailingAddress1 = .mailing_address1
+                If Not .Ismailing_address2Null Then MailingAddress2 = .mailing_address2
+                If Not .Ismailing_cityNull Then MailingCity = .mailing_city
+                If Not .Ismailing_region_short_descNull Then MailingRegionShortDescription = .mailing_region_short_desc
+                If Not .Ismailing_country_codeNull Then MailingCountryCode = .mailing_country_code
+                If Not .Ismailing_postal_codeNull Then MailingPostalCode = .mailing_postal_code
+                If Not .Iswarranty_sales_dateNull Then WarrantySalesDate = .warranty_sales_date
+                If Not .Ismembership_typeNull Then MembershipType = .membership_type
+                If Not .Isproduct_sales_dateNull Then ProductSalesDate = .product_sales_date
+                If Not .Issales_priceNull Then SalesPrice = .sales_price
+                If Not .Isvat_numNull Then VATNum = .vat_num            
+                If Not .Isidentification_numberNull Then IdentificationNumber = .identification_number
 
                 If ((Not .Isproduct_sales_dateNull) OrElse (Not .Iswarranty_sales_dateNull) OrElse _
                     (Not .Issales_priceNull)) Then
-                    _CertListDataSet = Certificate.GetCertificatesList(Me.CertNumber, "", "", "", "", Me.DealerCode).Table.DataSet
+                    _CertListDataSet = Certificate.GetCertificatesList(CertNumber, "", "", "", "", DealerCode).Table.DataSet
                     If (Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count > 0) AndAlso _
-                        (Not _CertListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value) Then
-                        oCert = New Certificate(New Guid(CType(_CertListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte())))
+                        (Not _CertListDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value) Then
+                        oCert = New Certificate(New Guid(CType(_CertListDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID), Byte())))
                     Else
                         Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", CERTIFICATE_NOT_FOUND)
                     End If
@@ -250,404 +250,404 @@ Public Class OlitaUpdateConsumerInfo
     <ValueMandatory("")> _
     Public Property DealerCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_DEALER), String))
+                Return (CType(Row(DATA_COL_NAME_DEALER), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER, Value)
+            SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property CertNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CERT_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CERT_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
     Public Property SalutationCode() As String
         Get
-            If Row(Me.DATA_COL_SALUTATION) Is DBNull.Value Then
+            If Row(DATA_COL_SALUTATION) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_SALUTATION), String))
+                Return (CType(Row(DATA_COL_SALUTATION), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_SALUTATION, Value)
+            SetValue(DATA_COL_SALUTATION, Value)
         End Set
     End Property
     <ValueMandatory("")> _
     Public Property CustomerName() As String
         Get
-            If Row(Me.DATA_COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CUSTOMER_NAME), String)
+                Return CType(Row(DATA_COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CUSTOMER_NAME, Value)
+            SetValue(DATA_COL_NAME_CUSTOMER_NAME, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property Address1() As String
         Get
-            If Row(Me.DATA_COL_NAME_ADDRESS1) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_ADDRESS1) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_ADDRESS1), String)
+                Return CType(Row(DATA_COL_NAME_ADDRESS1), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_ADDRESS1, Value)
+            SetValue(DATA_COL_NAME_ADDRESS1, Value)
         End Set
     End Property
 
     Public Property Address2() As String
         Get
-            If Row(Me.DATA_COL_NAME_ADDRESS2) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_ADDRESS2) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_ADDRESS2), String)
+                Return CType(Row(DATA_COL_NAME_ADDRESS2), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_ADDRESS2, Value)
+            SetValue(DATA_COL_NAME_ADDRESS2, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property City() As String
         Get
-            If Row(Me.DATA_COL_NAME_CITY) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CITY) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CITY), String)
+                Return CType(Row(DATA_COL_NAME_CITY), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CITY, Value)
+            SetValue(DATA_COL_NAME_CITY, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property ShortDescription() As String
         Get
-            If Row(Me.DATA_COL_NAME_REGION_SHORT_DESCRIPTION) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_REGION_SHORT_DESCRIPTION) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_REGION_SHORT_DESCRIPTION), String)
+                Return CType(Row(DATA_COL_NAME_REGION_SHORT_DESCRIPTION), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_REGION_SHORT_DESCRIPTION, Value)
+            SetValue(DATA_COL_NAME_REGION_SHORT_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidUserCountry("")> _
     Public Property CountryCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_COUNTRY_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COUNTRY_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_COUNTRY_CODE), String)
+                Return CType(Row(DATA_COL_NAME_COUNTRY_CODE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_COUNTRY_CODE, Value)
+            SetValue(DATA_COL_NAME_COUNTRY_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property PostalCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_POSTAL_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_POSTAL_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_POSTAL_CODE), String)
+                Return CType(Row(DATA_COL_NAME_POSTAL_CODE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_POSTAL_CODE, Value)
+            SetValue(DATA_COL_NAME_POSTAL_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property HomePhone() As String
         Get
-            If Row(Me.DATA_COL_NAME_HOME_PHONE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_HOME_PHONE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_HOME_PHONE), String)
+                Return CType(Row(DATA_COL_NAME_HOME_PHONE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_HOME_PHONE, Value)
+            SetValue(DATA_COL_NAME_HOME_PHONE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property Email() As String
         Get
-            If Row(Me.DATA_COL_NAME_EMAIL) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_EMAIL) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_EMAIL), String)
+                Return CType(Row(DATA_COL_NAME_EMAIL), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_EMAIL, Value)
+            SetValue(DATA_COL_NAME_EMAIL, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
     Public Property UserPassword() As String
         Get
-            If Row(Me.DATA_COL_NAME_USER_PASSWORD) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_USER_PASSWORD) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_USER_PASSWORD), String)
+                Return CType(Row(DATA_COL_NAME_USER_PASSWORD), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_USER_PASSWORD, Value)
+            SetValue(DATA_COL_NAME_USER_PASSWORD, Value)
         End Set
     End Property
 
     Public Property WorkPhone() As String
         Get
-            If Row(Me.DATA_COL_NAME_WORK_PHONE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_WORK_PHONE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_WORK_PHONE), String)
+                Return CType(Row(DATA_COL_NAME_WORK_PHONE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_WORK_PHONE, Value)
+            SetValue(DATA_COL_NAME_WORK_PHONE, Value)
         End Set
     End Property
 
     Public Property MembershipNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_MEMBERSHIP_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MEMBERSHIP_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_MEMBERSHIP_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_MEMBERSHIP_NUMBER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MEMBERSHIP_NUMBER, Value)
+            SetValue(DATA_COL_NAME_MEMBERSHIP_NUMBER, Value)
         End Set
     End Property
 
     Public Property PrimaryMemberName() As String
         Get
-            If Row(Me.DATA_COL_NAME_PRIMARY_MEMBER_NAME) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_PRIMARY_MEMBER_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_PRIMARY_MEMBER_NAME), String)
+                Return CType(Row(DATA_COL_NAME_PRIMARY_MEMBER_NAME), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_PRIMARY_MEMBER_NAME, Value)
+            SetValue(DATA_COL_NAME_PRIMARY_MEMBER_NAME, Value)
         End Set
     End Property
 
     Public Property MailingAddress1() As String
         Get
-            If Row(Me.DATA_COL_NAME_MAILING_ADDRESS1) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MAILING_ADDRESS1) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_MAILING_ADDRESS1), String)
+                Return CType(Row(DATA_COL_NAME_MAILING_ADDRESS1), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MAILING_ADDRESS1, Value)
+            SetValue(DATA_COL_NAME_MAILING_ADDRESS1, Value)
         End Set
     End Property
 
     Public Property MailingAddress2() As String
         Get
-            If Row(Me.DATA_COL_NAME_MAILING_ADDRESS2) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MAILING_ADDRESS2) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_MAILING_ADDRESS2), String)
+                Return CType(Row(DATA_COL_NAME_MAILING_ADDRESS2), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MAILING_ADDRESS2, Value)
+            SetValue(DATA_COL_NAME_MAILING_ADDRESS2, Value)
         End Set
     End Property
 
     Public Property MailingCity() As String
         Get
-            If Row(Me.DATA_COL_NAME_MAILING_CITY) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MAILING_CITY) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_MAILING_CITY), String)
+                Return CType(Row(DATA_COL_NAME_MAILING_CITY), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MAILING_CITY, Value)
+            SetValue(DATA_COL_NAME_MAILING_CITY, Value)
         End Set
     End Property
 
     Public Property MailingRegionShortDescription() As String
         Get
-            If Row(Me.DATA_COL_NAME_MAILING_REGION_SHORT_DESCRIPTION) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MAILING_REGION_SHORT_DESCRIPTION) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_MAILING_REGION_SHORT_DESCRIPTION), String)
+                Return CType(Row(DATA_COL_NAME_MAILING_REGION_SHORT_DESCRIPTION), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MAILING_REGION_SHORT_DESCRIPTION, Value)
+            SetValue(DATA_COL_NAME_MAILING_REGION_SHORT_DESCRIPTION, Value)
         End Set
     End Property
 
     Public Property MailingCountryCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_MAILING_COUNTRY_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MAILING_COUNTRY_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_MAILING_COUNTRY_CODE), String)
+                Return CType(Row(DATA_COL_NAME_MAILING_COUNTRY_CODE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MAILING_COUNTRY_CODE, Value)
+            SetValue(DATA_COL_NAME_MAILING_COUNTRY_CODE, Value)
         End Set
     End Property
 
     Public Property MailingPostalCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_MAILING_POSTAL_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MAILING_POSTAL_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_MAILING_POSTAL_CODE), String)
+                Return CType(Row(DATA_COL_NAME_MAILING_POSTAL_CODE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MAILING_POSTAL_CODE, Value)
+            SetValue(DATA_COL_NAME_MAILING_POSTAL_CODE, Value)
         End Set
     End Property
 
     Public Property WarrantySalesDate() As DateType
         Get
             CheckDeleted()
-            If Row(Me.DATA_COL_NAME_WARRANTY_SALES_DATE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_WARRANTY_SALES_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New DateType(CType(Row(Me.DATA_COL_NAME_WARRANTY_SALES_DATE), Date))
+                Return New DateType(CType(Row(DATA_COL_NAME_WARRANTY_SALES_DATE), Date))
             End If
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_WARRANTY_SALES_DATE, Value)
+            SetValue(DATA_COL_NAME_WARRANTY_SALES_DATE, Value)
         End Set
     End Property
 
     Public Property MembershipType() As String
         Get
-            If Row(Me.DATA_COL_NAME_MEMBERSHIP_TYPE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MEMBERSHIP_TYPE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_MEMBERSHIP_TYPE), String)
+                Return CType(Row(DATA_COL_NAME_MEMBERSHIP_TYPE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MEMBERSHIP_TYPE, Value)
+            SetValue(DATA_COL_NAME_MEMBERSHIP_TYPE, Value)
         End Set
     End Property
 
     Public Property ProductSalesDate() As DateType
         Get
             CheckDeleted()
-            If Row(Me.DATA_COL_NAME_PRODUCT_SALES_DATE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_PRODUCT_SALES_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New DateType(CType(Row(Me.DATA_COL_NAME_PRODUCT_SALES_DATE), Date))
+                Return New DateType(CType(Row(DATA_COL_NAME_PRODUCT_SALES_DATE), Date))
             End If
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_PRODUCT_SALES_DATE, Value)
+            SetValue(DATA_COL_NAME_PRODUCT_SALES_DATE, Value)
         End Set
     End Property
 
     Public Property SalesPrice() As DecimalType
         Get
             CheckDeleted()
-            If Row(Me.DATA_COL_NAME_SALES_PRICE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SALES_PRICE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New DecimalType(CType(Row(Me.DATA_COL_NAME_SALES_PRICE), Decimal))
+                Return New DecimalType(CType(Row(DATA_COL_NAME_SALES_PRICE), Decimal))
             End If
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_SALES_PRICE, Value)
+            SetValue(DATA_COL_NAME_SALES_PRICE, Value)
         End Set
     End Property
 
     Public Property VATNum() As String
         Get
-            If Row(Me.DATA_COL_NAME_VAT_NUM) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_VAT_NUM) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_VAT_NUM), String)
+                Return CType(Row(DATA_COL_NAME_VAT_NUM), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_VAT_NUM, Value)
+            SetValue(DATA_COL_NAME_VAT_NUM, Value)
         End Set
     End Property
 
     Public Property IdentificationNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_IDENTIFICATION_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_IDENTIFICATION_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_IDENTIFICATION_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_IDENTIFICATION_NUMBER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_IDENTIFICATION_NUMBER, Value)
+            SetValue(DATA_COL_NAME_IDENTIFICATION_NUMBER, Value)
         End Set
     End Property
 #End Region
@@ -656,35 +656,35 @@ Public Class OlitaUpdateConsumerInfo
 
     Private ReadOnly Property CountryId() As Guid
         Get
-            If Me._countryId.Equals(Guid.Empty) Then
-                Dim objCountryDV As DataView = Country.getList("", Me.CountryCode)
+            If _countryId.Equals(Guid.Empty) Then
+                Dim objCountryDV As DataView = Country.getList("", CountryCode)
                 If objCountryDV Is Nothing Then
                     Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf objCountryDV.Count <> 1 Then
                     Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", COUNTRY_NOT_FOUND)
                 End If
-                Me._countryId = New Guid(CType(objCountryDV.Table.Rows(0).Item(Me.DATA_COL_NAME_COUNTRY_ID), Byte()))
+                _countryId = New Guid(CType(objCountryDV.Table.Rows(0).Item(DATA_COL_NAME_COUNTRY_ID), Byte()))
                 objCountryDV = Nothing
             End If
 
-            Return Me._countryId
+            Return _countryId
         End Get
     End Property
 
     Private ReadOnly Property RegionId() As Guid
         Get
-            If Me._regionId.Equals(Guid.Empty) Then
+            If _regionId.Equals(Guid.Empty) Then
                 'Dim alUserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-                Dim regionsDV As DataView = Region.LoadList("%", Me.ShortDescription, ElitaPlusIdentity.Current.ActiveUser.Companies)
+                Dim regionsDV As DataView = Region.LoadList("%", ShortDescription, ElitaPlusIdentity.Current.ActiveUser.Companies)
                 If regionsDV Is Nothing Then
                     Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf regionsDV.Count <> 1 Then
                     Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", REGION_NOT_FOUND)
                 End If
-                Me._regionId = New Guid(CType(regionsDV.Table.Rows(0).Item(Me.DATA_COL_NAME_REGION_ID), Byte()))
+                _regionId = New Guid(CType(regionsDV.Table.Rows(0).Item(DATA_COL_NAME_REGION_ID), Byte()))
                 regionsDV = Nothing
             End If
-            Return Me._regionId
+            Return _regionId
         End Get
     End Property
 
@@ -707,24 +707,24 @@ Public Class OlitaUpdateConsumerInfo
 
     Private ReadOnly Property MailingCountryId() As Guid
         Get
-            If Me.MailingCountryCode Is Nothing Then
-                Return Me._mailing_countryId
+            If MailingCountryCode Is Nothing Then
+                Return _mailing_countryId
             End If
-            If Me.MailingCountryCode = String.Empty Then
-                Return Me._mailing_countryId
+            If MailingCountryCode = String.Empty Then
+                Return _mailing_countryId
             End If
-            If Me._mailing_countryId.Equals(Guid.Empty) Then
-                Dim objMailingCountryDV As DataView = Country.getList("", Me.MailingCountryCode)
+            If _mailing_countryId.Equals(Guid.Empty) Then
+                Dim objMailingCountryDV As DataView = Country.getList("", MailingCountryCode)
                 If objMailingCountryDV Is Nothing Then
-                    Return Me._mailing_countryId
+                    Return _mailing_countryId
                 ElseIf objMailingCountryDV.Count <> 1 Then
-                    Return Me._mailing_countryId
+                    Return _mailing_countryId
                 End If
-                Me._mailing_countryId = New Guid(CType(objMailingCountryDV.Table.Rows(0).Item(Me.DATA_COL_NAME_COUNTRY_ID), Byte()))
+                _mailing_countryId = New Guid(CType(objMailingCountryDV.Table.Rows(0).Item(DATA_COL_NAME_COUNTRY_ID), Byte()))
                 objMailingCountryDV = Nothing
             End If
 
-            Return Me._mailing_countryId
+            Return _mailing_countryId
         End Get
     End Property
 
@@ -746,23 +746,23 @@ Public Class OlitaUpdateConsumerInfo
 
     Private ReadOnly Property MailingRegionId() As Guid
         Get
-            If Me.MailingRegionShortDescription Is Nothing Then
-                Return Me._mailing_regionId
+            If MailingRegionShortDescription Is Nothing Then
+                Return _mailing_regionId
             End If
-            If Me.MailingRegionShortDescription = String.Empty Then
-                Return Me._mailing_regionId
+            If MailingRegionShortDescription = String.Empty Then
+                Return _mailing_regionId
             End If
-            If Me._mailing_regionId.Equals(Guid.Empty) Then
-                Dim mailing_regionsDV As DataView = Region.LoadList("%", Me.MailingRegionShortDescription, Me.MailingCountryId)
+            If _mailing_regionId.Equals(Guid.Empty) Then
+                Dim mailing_regionsDV As DataView = Region.LoadList("%", MailingRegionShortDescription, MailingCountryId)
                 If mailing_regionsDV Is Nothing Then
-                    Return Me._mailing_regionId
+                    Return _mailing_regionId
                 ElseIf mailing_regionsDV.Count <> 1 Then
-                    Return Me._mailing_regionId
+                    Return _mailing_regionId
                 End If
-                Me._mailing_regionId = New Guid(CType(mailing_regionsDV.Table.Rows(0).Item(Me.DATA_COL_NAME_REGION_ID), Byte()))
+                _mailing_regionId = New Guid(CType(mailing_regionsDV.Table.Rows(0).Item(DATA_COL_NAME_REGION_ID), Byte()))
                 mailing_regionsDV = Nothing
             End If
-            Return Me._mailing_regionId
+            Return _mailing_regionId
         End Get
     End Property
 
@@ -844,22 +844,22 @@ Public Class OlitaUpdateConsumerInfo
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
 
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-            If Dealer.GetOlitaSearchType(compIds, Me.DealerCode).Equals(Codes.OLITA_SEARCH_GENERIC) Then
-                Me.CertNumber += "*"
+            If Dealer.GetOlitaSearchType(compIds, DealerCode).Equals(Codes.OLITA_SEARCH_GENERIC) Then
+                CertNumber += "*"
             End If
-            Dim _CertListDataSet As DataSet = Certificate.GetCertificatesList(Me.CertNumber, "", "", "", "", Me.DealerCode).Table.DataSet
+            Dim _CertListDataSet As DataSet = Certificate.GetCertificatesList(CertNumber, "", "", "", "", DealerCode).Table.DataSet
             If Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count > 0 Then
-                If _CertListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
+                If _CertListDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
                     Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", CERTIFICATE_NOT_FOUND)
                 Else
                     'if there are serial numbers to be update, then the Master BO will be the Cert_item, cert will be the child.
-                    If Me.Dataset.Tables(TABLE_NAME_PRODUCT_SERIAL_NUMBER).Rows.Count > 0 Then
+                    If Dataset.Tables(TABLE_NAME_PRODUCT_SERIAL_NUMBER).Rows.Count > 0 Then
                         Try
                             ' It has Product Serial Number
-                            Me.BuildCertItemParentAndCertChild(_CertListDataSet)
+                            BuildCertItemParentAndCertChild(_CertListDataSet)
 
                         Catch exV As BOValidationException
                             Dim code As String
@@ -873,7 +873,7 @@ Public Class OlitaUpdateConsumerInfo
                     Else
                         Try
                             ' Not Product Serial Number
-                            Me.BuildCertParentAndAddressChildAndSave(_CertListDataSet)
+                            BuildCertParentAndAddressChildAndSave(_CertListDataSet)
                         Catch exV As BOValidationException
                             Dim code As String
 
@@ -910,17 +910,17 @@ Public Class OlitaUpdateConsumerInfo
     End Function
 
     Private Sub PopulateCertItemForProducts(ByVal aCertItem As CertItem, ByVal i As Integer)
-        Dim aRow As DataRow = Me.Dataset.Tables(TABLE_NAME_PRODUCT_SERIAL_NUMBER).Rows(i)
+        Dim aRow As DataRow = Dataset.Tables(TABLE_NAME_PRODUCT_SERIAL_NUMBER).Rows(i)
 
-        aCertItem.SerialNumber = aRow(Me.DATA_COL_NAME_PRODUCT_SERIAL_NUMBER)
-        If Not aRow.IsNull(Me.DATA_COL_NAME_PRODUCT_DESCRIPTION) Then aCertItem.ItemDescription = aRow(Me.DATA_COL_NAME_PRODUCT_DESCRIPTION)
-        If Not aRow.IsNull(Me.DATA_COL_NAME_PRODUCT_ITEM_CODE) Then aCertItem.ItemCode = _
-                aRow(Me.DATA_COL_NAME_PRODUCT_ITEM_CODE)
-        If Not aRow.IsNull(Me.DATA_COL_NAME_PRODUCT_MODEL) Then aCertItem.Model = aRow(Me.DATA_COL_NAME_PRODUCT_MODEL)
-        If Not aRow.IsNull(Me.DATA_COL_NAME_PRODUCT_ITEM_RETAIL_PRICE) Then aCertItem.ItemRetailPrice = _
-                New DecimalType(CType(aRow(Me.DATA_COL_NAME_PRODUCT_ITEM_RETAIL_PRICE), Decimal))
+        aCertItem.SerialNumber = aRow(DATA_COL_NAME_PRODUCT_SERIAL_NUMBER)
+        If Not aRow.IsNull(DATA_COL_NAME_PRODUCT_DESCRIPTION) Then aCertItem.ItemDescription = aRow(DATA_COL_NAME_PRODUCT_DESCRIPTION)
+        If Not aRow.IsNull(DATA_COL_NAME_PRODUCT_ITEM_CODE) Then aCertItem.ItemCode = _
+                aRow(DATA_COL_NAME_PRODUCT_ITEM_CODE)
+        If Not aRow.IsNull(DATA_COL_NAME_PRODUCT_MODEL) Then aCertItem.Model = aRow(DATA_COL_NAME_PRODUCT_MODEL)
+        If Not aRow.IsNull(DATA_COL_NAME_PRODUCT_ITEM_RETAIL_PRICE) Then aCertItem.ItemRetailPrice = _
+                New DecimalType(CType(aRow(DATA_COL_NAME_PRODUCT_ITEM_RETAIL_PRICE), Decimal))
 
-        If Not aRow.IsNull(Me.DATA_COL_NAME_PRODUCT_MANUFACTURER) Then aCertItem.ManufacturerId = ManufacturerId(aRow(Me.DATA_COL_NAME_PRODUCT_MANUFACTURER))
+        If Not aRow.IsNull(DATA_COL_NAME_PRODUCT_MANUFACTURER) Then aCertItem.ManufacturerId = ManufacturerId(aRow(DATA_COL_NAME_PRODUCT_MANUFACTURER))
 
     End Sub
 
@@ -932,7 +932,7 @@ Public Class OlitaUpdateConsumerInfo
         Dim firstCertItem As CertItem = Nothing
 
         For i = 0 To certListDataSet.Tables(0).Rows.Count - 1
-            certIds.Add(New Guid(CType(certListDataSet.Tables(0).Rows(i).Item(Me.DATA_COL_NAME_CERT_ID), Byte())))
+            certIds.Add(New Guid(CType(certListDataSet.Tables(0).Rows(i).Item(DATA_COL_NAME_CERT_ID), Byte())))
         Next
 
         'Get the list of cert_item_id(s)
@@ -940,20 +940,20 @@ Public Class OlitaUpdateConsumerInfo
 
         'create the parent/childern cert_item object
         Dim certItemParentObj As CertItem
-        For i = 0 To Me.Dataset.Tables(TABLE_NAME_PRODUCT_SERIAL_NUMBER).Rows.Count - 1
+        For i = 0 To Dataset.Tables(TABLE_NAME_PRODUCT_SERIAL_NUMBER).Rows.Count - 1
             For Each rowItem As DataRow In certItemTable.Rows
-                If rowItem(CertItemDAL.COL_NAME_CERT_NUMBER).Equals(Me.Dataset.Tables(TABLE_NAME_PRODUCT_SERIAL_NUMBER).Rows(i).Item(Me.DATA_COL_NAME_FULL_CERT_NUMBER)) Then
+                If rowItem(CertItemDAL.COL_NAME_CERT_NUMBER).Equals(Dataset.Tables(TABLE_NAME_PRODUCT_SERIAL_NUMBER).Rows(i).Item(DATA_COL_NAME_FULL_CERT_NUMBER)) Then
                     If i = 0 Then
                         'first cert_item BO
                         If IsEndorse Then
-                            certItemParentObj = New CertItem(New Guid(CType(rowItem.Item(Me.DATA_COL_NAME_CERT_ITEM_ID), Byte())), TheCertEndorse.Dataset)
+                            certItemParentObj = New CertItem(New Guid(CType(rowItem.Item(DATA_COL_NAME_CERT_ITEM_ID), Byte())), TheCertEndorse.Dataset)
                         Else
-                            certItemParentObj = New CertItem(New Guid(CType(rowItem.Item(Me.DATA_COL_NAME_CERT_ITEM_ID), Byte())))
+                            certItemParentObj = New CertItem(New Guid(CType(rowItem.Item(DATA_COL_NAME_CERT_ITEM_ID), Byte())))
                         End If
                        PopulateCertItemForProducts(certItemParentObj, i)
                     Else
                         'childern cert_item BOs
-                        Dim certItemChildObj As CertItem = New CertItem(New Guid(CType(rowItem.Item(Me.DATA_COL_NAME_CERT_ITEM_ID), Byte())), certItemParentObj.Dataset)
+                        Dim certItemChildObj As CertItem = New CertItem(New Guid(CType(rowItem.Item(DATA_COL_NAME_CERT_ITEM_ID), Byte())), certItemParentObj.Dataset)
                         PopulateCertItemForProducts(certItemChildObj, i)
                     End If
                 End If
@@ -962,11 +962,11 @@ Public Class OlitaUpdateConsumerInfo
 
         'create all the cert BOs as childern
         For i = 0 To certListDataSet.Tables(0).Rows.Count - 1
-            Dim certChildObj As Certificate = New Certificate(New Guid(CType(certListDataSet.Tables(0).Rows(i).Item(Me.DATA_COL_NAME_CERT_ID), Byte())), certItemParentObj.Dataset)
+            Dim certChildObj As Certificate = New Certificate(New Guid(CType(certListDataSet.Tables(0).Rows(i).Item(DATA_COL_NAME_CERT_ID), Byte())), certItemParentObj.Dataset)
             If certItemTable.Rows.Count > 0 Then
-                firstCertItem = New CertItem(New Guid(CType(certItemTable.Rows(0).Item(Me.DATA_COL_NAME_CERT_ITEM_ID), Byte())))
+                firstCertItem = New CertItem(New Guid(CType(certItemTable.Rows(0).Item(DATA_COL_NAME_CERT_ITEM_ID), Byte())))
             End If
-            Me.PopulateCertificateWithConsumerInfo(True, certChildObj, firstCertItem)
+            PopulateCertificateWithConsumerInfo(True, certChildObj, firstCertItem)
             certChildObj.GetValFlag()
         Next
         'Finally save all
@@ -983,18 +983,18 @@ Public Class OlitaUpdateConsumerInfo
         Dim certParentObj As Certificate
         ' create the parent cert
         If IsEndorse Then
-            certParentObj = New Certificate(New Guid(CType(certListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte())), TheCertEndorse.Dataset)
+            certParentObj = New Certificate(New Guid(CType(certListDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID), Byte())), TheCertEndorse.Dataset)
         Else
-            certParentObj = New Certificate(New Guid(CType(certListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte())))
+            certParentObj = New Certificate(New Guid(CType(certListDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID), Byte())))
         End If
 
-        Me.PopulateCertificateWithConsumerInfo(False, certParentObj, Nothing)
+        PopulateCertificateWithConsumerInfo(False, certParentObj, Nothing)
         certParentObj.GetValFlag()
 
         For i As Integer = 1 To certListDataSet.Tables(0).Rows.Count - 1
             ' create the childern cert
-            Dim certChildObj As Certificate = New Certificate(New Guid(CType(certListDataSet.Tables(0).Rows(i).Item(Me.DATA_COL_NAME_CERT_ID), Byte())), certParentObj.Dataset)
-            Me.PopulateCertificateWithConsumerInfo(False, certChildObj, Nothing)
+            Dim certChildObj As Certificate = New Certificate(New Guid(CType(certListDataSet.Tables(0).Rows(i).Item(DATA_COL_NAME_CERT_ID), Byte())), certParentObj.Dataset)
+            PopulateCertificateWithConsumerInfo(False, certChildObj, Nothing)
         Next
 
         certParentObj.GetValFlag()
@@ -1018,16 +1018,16 @@ Public Class OlitaUpdateConsumerInfo
                 certIds.Add(certBO.Id)
                 certItemTable = CertItem.GetItemsForWS(certIds)
                 If certItemTable.Rows.Count > 0 Then
-                    firstCertItem = New CertItem(New Guid(CType(certItemTable.Rows(0).Item(Me.DATA_COL_NAME_CERT_ITEM_ID), Byte())))
+                    firstCertItem = New CertItem(New Guid(CType(certItemTable.Rows(0).Item(DATA_COL_NAME_CERT_ITEM_ID), Byte())))
                 End If
             End If
             If (Not firstCertItem Is Nothing) Then
                 'Create an Endorsement
                 With TheCertEndorse
                     .PopulateWithDefaultValues(certBO.Id, firstCertItem.Id)
-                    If Not Me.ProductSalesDate Is Nothing Then .ProductSalesDatePost = Me.ProductSalesDate
-                    If Not Me.WarrantySalesDate Is Nothing Then .WarrantySalesDatePost = Me.WarrantySalesDate
-                    If Not Me.SalesPrice Is Nothing Then .SalesPricePost = Me.SalesPrice
+                    If Not ProductSalesDate Is Nothing Then .ProductSalesDatePost = ProductSalesDate
+                    If Not WarrantySalesDate Is Nothing Then .WarrantySalesDatePost = WarrantySalesDate
+                    If Not SalesPrice Is Nothing Then .SalesPricePost = SalesPrice
                 End With
             End If
 
@@ -1041,60 +1041,60 @@ Public Class OlitaUpdateConsumerInfo
                                                     ByVal certItemBo As CertItem)
 
         
-        certBO.SalutationId = Me.SalutationId(Me.SalutationCode)
-        certBO.CustomerName = Me.CustomerName
-        certBO.HomePhone = Me.HomePhone
-        certBO.Email = Me.Email
-        certBO.Password = Me.UserPassword
+        certBO.SalutationId = SalutationId(SalutationCode)
+        certBO.CustomerName = CustomerName
+        certBO.HomePhone = HomePhone
+        certBO.Email = Email
+        certBO.Password = UserPassword
 
         Dim objAddress As Address = certBO.AddressChild
         If certBO.AddressId.Equals(Guid.Empty) Then
             certBO.AddressId = objAddress.Id
         End If
-        objAddress.Address1 = Me.Address1
-        objAddress.Address2 = Me.Address2
-        objAddress.City = Me.City
-        objAddress.RegionId = Me.RegionId
-        objAddress.PostalCode = Me.PostalCode
-        objAddress.CountryId = Me.CountryId
-        If Not Me.WorkPhone Is Nothing Then certBO.WorkPhone = Me.WorkPhone
-        If Not Me.MembershipNumber Is Nothing Then certBO.MembershipNumber = Me.MembershipNumber
-        If Not Me.PrimaryMemberName Is Nothing Then certBO.PrimaryMemberName = Me.PrimaryMemberName
-        If Not Me.WarrantySalesDate Is Nothing Then certBO.WarrantySalesDate = Me.WarrantySalesDate
-        If Not Me.ProductSalesDate Is Nothing Then certBO.ProductSalesDate = Me.ProductSalesDate
-        If Not Me.MembershipType Is Nothing Then certBO.MembershipTypeId = Me.MembershipTypeId(Me.MembershipType)
-        If Not Me.SalesPrice Is Nothing Then certBO.SalesPrice = Me.SalesPrice
-        If Not Me.VATNum Is Nothing Then certBO.VatNum = Me.VATNum
-        If Not Me.IdentificationNumber Is Nothing Then certBO.IdentificationNumber = Me.IdentificationNumber
+        objAddress.Address1 = Address1
+        objAddress.Address2 = Address2
+        objAddress.City = City
+        objAddress.RegionId = RegionId
+        objAddress.PostalCode = PostalCode
+        objAddress.CountryId = CountryId
+        If Not WorkPhone Is Nothing Then certBO.WorkPhone = WorkPhone
+        If Not MembershipNumber Is Nothing Then certBO.MembershipNumber = MembershipNumber
+        If Not PrimaryMemberName Is Nothing Then certBO.PrimaryMemberName = PrimaryMemberName
+        If Not WarrantySalesDate Is Nothing Then certBO.WarrantySalesDate = WarrantySalesDate
+        If Not ProductSalesDate Is Nothing Then certBO.ProductSalesDate = ProductSalesDate
+        If Not MembershipType Is Nothing Then certBO.MembershipTypeId = MembershipTypeId(MembershipType)
+        If Not SalesPrice Is Nothing Then certBO.SalesPrice = SalesPrice
+        If Not VATNum Is Nothing Then certBO.VatNum = VATNum
+        If Not IdentificationNumber Is Nothing Then certBO.IdentificationNumber = IdentificationNumber
 
-        If ((Not Me.MailingAddress1 Is Nothing) OrElse (Not Me.MailingAddress2 Is Nothing) OrElse _
-            (Not Me.MailingCity Is Nothing) OrElse (Not Me.MailingRegionId.Equals(Guid.Empty)) OrElse _
-             (Not Me.MailingPostalCode Is Nothing) OrElse (Not Me.MailingCountryId.Equals(Guid.Empty))) Then
+        If ((Not MailingAddress1 Is Nothing) OrElse (Not MailingAddress2 Is Nothing) OrElse _
+            (Not MailingCity Is Nothing) OrElse (Not MailingRegionId.Equals(Guid.Empty)) OrElse _
+             (Not MailingPostalCode Is Nothing) OrElse (Not MailingCountryId.Equals(Guid.Empty))) Then
             ' The user put info in one of the mailing fields
             Dim objMailingAddress As Address = certBO.MailingAddress
             If certBO.MailingAddressId.Equals(Guid.Empty) Then
                 'New Address Record
-                If ((Not Me.MailingAddress1 Is Nothing) AndAlso _
-                (Not Me.MailingCity Is Nothing) AndAlso (Not Me.MailingRegionId.Equals(Guid.Empty)) AndAlso _
-                 (Not Me.MailingPostalCode Is Nothing) AndAlso (Not Me.MailingCountryId.Equals(Guid.Empty))) Then
+                If ((Not MailingAddress1 Is Nothing) AndAlso _
+                (Not MailingCity Is Nothing) AndAlso (Not MailingRegionId.Equals(Guid.Empty)) AndAlso _
+                 (Not MailingPostalCode Is Nothing) AndAlso (Not MailingCountryId.Equals(Guid.Empty))) Then
                     certBO.MailingAddressId = objMailingAddress.Id
-                    objMailingAddress.Address1 = Me.MailingAddress1
-                    objMailingAddress.Address2 = Me.MailingAddress2
-                    objMailingAddress.City = Me.MailingCity
-                    objMailingAddress.RegionId = Me.MailingRegionId
-                    objMailingAddress.PostalCode = Me.MailingPostalCode
-                    objMailingAddress.CountryId = Me.MailingCountryId
+                    objMailingAddress.Address1 = MailingAddress1
+                    objMailingAddress.Address2 = MailingAddress2
+                    objMailingAddress.City = MailingCity
+                    objMailingAddress.RegionId = MailingRegionId
+                    objMailingAddress.PostalCode = MailingPostalCode
+                    objMailingAddress.CountryId = MailingCountryId
                 Else
                     Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", MAILING_INCOMPLETE)
                 End If
             ElseIf (Not certBO.MailingAddressId.Equals(Guid.Empty)) Then
                 ' Current Address Record
-                If Not Me.MailingAddress1 Is Nothing Then objMailingAddress.Address1 = Me.MailingAddress1
-                objMailingAddress.Address2 = Me.MailingAddress2
-                If Not Me.MailingCity Is Nothing Then objMailingAddress.City = Me.MailingCity
-                If Not Me.MailingRegionId.Equals(Guid.Empty) Then objMailingAddress.RegionId = Me.MailingRegionId
-                If Not Me.MailingPostalCode Is Nothing Then objMailingAddress.PostalCode = Me.MailingPostalCode
-                If Not Me.MailingCountryId.Equals(Guid.Empty) Then objMailingAddress.CountryId = Me.MailingCountryId
+                If Not MailingAddress1 Is Nothing Then objMailingAddress.Address1 = MailingAddress1
+                objMailingAddress.Address2 = MailingAddress2
+                If Not MailingCity Is Nothing Then objMailingAddress.City = MailingCity
+                If Not MailingRegionId.Equals(Guid.Empty) Then objMailingAddress.RegionId = MailingRegionId
+                If Not MailingPostalCode Is Nothing Then objMailingAddress.PostalCode = MailingPostalCode
+                If Not MailingCountryId.Equals(Guid.Empty) Then objMailingAddress.CountryId = MailingCountryId
             End If
         End If
 

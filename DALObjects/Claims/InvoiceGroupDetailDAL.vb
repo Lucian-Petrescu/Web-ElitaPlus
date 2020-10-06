@@ -50,38 +50,38 @@ Public Class InvoiceGroupDetailDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("invoice_group_detail_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal invgrpid As Guid, ByVal languageid As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(invgrpid As Guid, languageid As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters = New OracleParameter() {New OracleParameter("language_id", languageid.ToByteArray), _
                                                     New OracleParameter("invoice_group_id", invgrpid.ToByteArray)}
 
         Dim ds As New DataSet
         Try
-            ds = DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
   
-    Public Function LoadReconciledInvoiceslist(ByVal compids As ArrayList, ByVal servicecenterid As Guid, ByVal Invnumber As String, ByVal Invamount As String, ByVal InvoiceDate As String, _
-                                   ByVal Invoicestatusid As Guid, ByVal languageid As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_INVOICE_RECONCILIATION_RECORDS")
+    Public Function LoadReconciledInvoiceslist(compids As ArrayList, servicecenterid As Guid, Invnumber As String, Invamount As String, InvoiceDate As String, _
+                                   Invoicestatusid As Guid, languageid As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_INVOICE_RECONCILIATION_RECORDS")
         Dim parameters = New OracleParameter() {New OracleParameter("language_id", languageid.ToByteArray)}
         Dim whereClauseConditions As String = ""
 
@@ -90,27 +90,27 @@ Public Class InvoiceGroupDetailDAL
 
         End If
 
-        If Me.FormatSearchMask(Invnumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & Me.COL_NAME_INVOICE_NUMBER & " " & Invnumber
+        If FormatSearchMask(Invnumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & COL_NAME_INVOICE_NUMBER & " " & Invnumber
         End If
 
-        If Me.FormatSearchMask(Invamount) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_INVOICE_AMOUNT & ") " & Invamount
+        If FormatSearchMask(Invamount) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_INVOICE_AMOUNT & ") " & Invamount
         End If
 
         If Not (InvoiceDate = Nothing) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "trunc(i." & Me.COL_NAME_INVOICE_DATE & ") = '" & InvoiceDate & "'"
+            whereClauseConditions &= " AND " & Environment.NewLine & "trunc(i." & COL_NAME_INVOICE_DATE & ") = '" & InvoiceDate & "'"
         End If
 
       
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cl." & Me.COL_NAME_COMPANY_ID, compids, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cl." & COL_NAME_COMPANY_ID, compids, False)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Try
             Dim ds As New DataSet
 
-            ds = DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
             Return ds
         Catch ex As Exception
@@ -119,8 +119,8 @@ Public Class InvoiceGroupDetailDAL
 
     End Function
 
-    Public Function LoadlineitemRecords(ByVal Invoiceid As Guid, ByVal languageid As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LINE_ITEM_RECORDS")
+    Public Function LoadlineitemRecords(Invoiceid As Guid, languageid As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LINE_ITEM_RECORDS")
 
 
         Dim parameters = New OracleParameter() {New OracleParameter("language_id", languageid.ToByteArray), _
@@ -129,7 +129,7 @@ Public Class InvoiceGroupDetailDAL
 
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
             Return ds
         Catch ex As Exception
@@ -137,14 +137,14 @@ Public Class InvoiceGroupDetailDAL
         End Try
     End Function
 
-    Public Function getinvoicegrpnumber(ByVal company_group_id As Guid) As DBHelper.DBHelperParameter()
-        Dim selectStmt As String = Me.Config("/SQL/GET_INVOICE_GROUP_NUMBER")
+    Public Function getinvoicegrpnumber(company_group_id As Guid) As DBHelper.DBHelperParameter()
+        Dim selectStmt As String = Config("/SQL/GET_INVOICE_GROUP_NUMBER")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                                     New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY_GROUP_ID, company_group_id.ToByteArray)}
+                                     New DBHelper.DBHelperParameter(PAR_NAME_COMPANY_GROUP_ID, company_group_id.ToByteArray)}
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter(Me.PAR_INV_GRP_NUMBER, GetType(String)), _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)), _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
+                            New DBHelper.DBHelperParameter(PAR_INV_GRP_NUMBER, GetType(String)), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
 
         Try
 
@@ -157,12 +157,12 @@ Public Class InvoiceGroupDetailDAL
         End Try
     End Function
 
-    Public Function GetStandardlineitems(ByVal languageid As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_STANDARD_LINE_ITEMS")
+    Public Function GetStandardlineitems(languageid As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_STANDARD_LINE_ITEMS")
 
         Dim ds As New DataSet
         Try
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
 
             Return ds
         Catch ex As Exception
@@ -170,9 +170,9 @@ Public Class InvoiceGroupDetailDAL
         End Try
     End Function
 
-    Public Function getlineitemvalues(ByVal servicecentercode As String) As DataSet
+    Public Function getlineitemvalues(servicecentercode As String) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/GET_CLAIM_AUTH_NUMBERS")
+            Dim selectStmt As String = Config("/SQL/GET_CLAIM_AUTH_NUMBERS")
 
             Dim parameters = New OracleParameter() {New OracleParameter("code", servicecentercode)}
 
@@ -180,7 +180,7 @@ Public Class InvoiceGroupDetailDAL
            
 
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             
             Return ds
         Catch ex As Exception
@@ -189,9 +189,9 @@ Public Class InvoiceGroupDetailDAL
 
     End Function
 
-    Public Function getmaxlineitemnumber(ByVal invoiceid As Guid) As DataSet
+    Public Function getmaxlineitemnumber(invoiceid As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_MAX_LINE_ITEM_NUMBER")
+        Dim selectStmt As String = Config("/SQL/GET_MAX_LINE_ITEM_NUMBER")
         Dim parameters = New OracleParameter() {New OracleParameter("invoice_id", invoiceid.ToByteArray)}
 
         Try
@@ -206,9 +206,9 @@ Public Class InvoiceGroupDetailDAL
 
     End Function
 
-    Public Function getinvoicereconids(ByVal invoiceid As Guid) As DataSet
+    Public Function getinvoicereconids(invoiceid As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_INVOICE_RECON_ID")
+        Dim selectStmt As String = Config("/SQL/GET_INVOICE_RECON_ID")
         Dim parameters = New OracleParameter() {New OracleParameter("invoice_id", invoiceid.ToByteArray)}
 
         Try
@@ -227,12 +227,12 @@ Public Class InvoiceGroupDetailDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

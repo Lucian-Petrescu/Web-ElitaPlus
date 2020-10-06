@@ -6,48 +6,48 @@ Public Class EntityIssue
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New EntityIssueDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class EntityIssue
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New EntityIssueDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Not Row Is Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -109,9 +109,9 @@ Public Class EntityIssue
                 Return CType(row(EntityIssueDAL.COL_NAME_ENTITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             CheckDeleted()
-            Me.SetValue(EntityIssueDAL.COL_NAME_ENTITY, Value)
+            SetValue(EntityIssueDAL.COL_NAME_ENTITY, Value)
         End Set
     End Property
 
@@ -125,9 +125,9 @@ Public Class EntityIssue
                 Return New Guid(CType(row(EntityIssueDAL.COL_NAME_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(EntityIssueDAL.COL_NAME_ENTITY_ID, Value)
+            SetValue(EntityIssueDAL.COL_NAME_ENTITY_ID, Value)
         End Set
     End Property
 
@@ -141,9 +141,9 @@ Public Class EntityIssue
                 Return New Guid(CType(Row(EntityIssueDAL.COL_NAME_ISSUE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(EntityIssueDAL.COL_NAME_ISSUE_ID, Value)
+            SetValue(EntityIssueDAL.COL_NAME_ISSUE_ID, Value)
         End Set
     End Property
 
@@ -156,9 +156,9 @@ Public Class EntityIssue
                 Return New Guid(CType(Row(EntityIssueDAL.COL_NAME_WORKQUEUE_ITEM_CREATED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             CheckDeleted()
-            Me.SetValue(EntityIssueDAL.COL_NAME_WORKQUEUE_ITEM_CREATED_ID, Value)
+            SetValue(EntityIssueDAL.COL_NAME_WORKQUEUE_ITEM_CREATED_ID, Value)
         End Set
     End Property
     Public ReadOnly Property EntityIssueData() As String
@@ -174,7 +174,7 @@ Public Class EntityIssue
 #End Region
 
 #Region "Public Members"
-    Public Shared Function GetClaimIssuesByIssueType(ByVal issueTypeId As Guid) As DataView
+    Public Shared Function GetClaimIssuesByIssueType(issueTypeId As Guid) As DataView
         Dim dal As New EntityIssueDAL
         return dal.LoadClaimIssuesByIssueType(issueTypeId, ElitaPlusIdentity.Current.ActiveUser.Id).Tables(0).DefaultView                    
     End Function

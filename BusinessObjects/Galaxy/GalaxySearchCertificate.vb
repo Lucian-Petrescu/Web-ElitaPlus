@@ -47,8 +47,8 @@ Public Class GalaxySearchCertificate
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -59,10 +59,10 @@ Public Class GalaxySearchCertificate
     Private Sub Load(ByVal ds As GalaxyCertificateSearchDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -85,18 +85,18 @@ Public Class GalaxySearchCertificate
                     Throw New BOValidationException("Galaxy Invalid Parameters Error", Common.ErrorCodes.WS_MISSING_SEARCH_CRITERION)
                 End If
 
-                If Not .IsIdentification_NumberNull Then Me.IdentificationNumber = .Identification_Number
-                If Not .IsVehicle_License_TagNull Then Me.VehicleLicenseTag = .Vehicle_License_Tag
-                If Not .IsCert_NumberNull Then Me.CertNumber = .Cert_Number
-                If Not .IsVIN_LocatorNull Then Me.VinLocator = .VIN_Locator
-                If Not .IsCustomer_NameNull Then Me.CustomerName = .Customer_Name
-                If Not .IsDealer_CodeNull Then Me.DealerCode = .Dealer_Code
-                If Not .IsDealer_NameNull Then Me.DealerName = .Dealer_Name
-                If Not .IsCustomer_PhoneNull Then Me.CustomerPhone = .Customer_Phone
+                If Not .IsIdentification_NumberNull Then IdentificationNumber = .Identification_Number
+                If Not .IsVehicle_License_TagNull Then VehicleLicenseTag = .Vehicle_License_Tag
+                If Not .IsCert_NumberNull Then CertNumber = .Cert_Number
+                If Not .IsVIN_LocatorNull Then VinLocator = .VIN_Locator
+                If Not .IsCustomer_NameNull Then CustomerName = .Customer_Name
+                If Not .IsDealer_CodeNull Then DealerCode = .Dealer_Code
+                If Not .IsDealer_NameNull Then DealerName = .Dealer_Name
+                If Not .IsCustomer_PhoneNull Then CustomerPhone = .Customer_Phone
                 If Not .IsRecords_To_ReturnNull Then
-                    Me.RecordsToReturn = .Records_To_Return
+                    RecordsToReturn = .Records_To_Return
                 Else
-                    Me.RecordsToReturn = 100
+                    RecordsToReturn = 100
                 End If
 
             End With
@@ -119,29 +119,29 @@ Public Class GalaxySearchCertificate
     <ValidateParameters("")> _
     Public Property IdentificationNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_IDENTIFICATION_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_IDENTIFICATION_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_IDENTIFICATION_NUMBER), String))
+                Return (CType(Row(DATA_COL_NAME_IDENTIFICATION_NUMBER), String))
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_IDENTIFICATION_NUMBER, Value)
+            SetValue(DATA_COL_NAME_IDENTIFICATION_NUMBER, Value)
         End Set
     End Property
     <ValidateParameters("")> _
     Public Property CertNumber() As String
         Get
-            If Row(Me.DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CERT_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CERT_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
@@ -149,15 +149,15 @@ Public Class GalaxySearchCertificate
     <ValidateParameters("")> _
     Public Property VehicleLicenseTag() As String
         Get
-            If Row(Me.DATA_COL_NAME_VEHICLE_LICENSE_TAG) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_VEHICLE_LICENSE_TAG) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_VEHICLE_LICENSE_TAG), String)
+                Return CType(Row(DATA_COL_NAME_VEHICLE_LICENSE_TAG), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_VEHICLE_LICENSE_TAG, Value)
+            SetValue(DATA_COL_NAME_VEHICLE_LICENSE_TAG, Value)
         End Set
     End Property
 
@@ -165,30 +165,30 @@ Public Class GalaxySearchCertificate
     <ValidateParameters("")> _
     Public Property CustomerName() As String
         Get
-            If Row(Me.DATA_COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CUSTOMER_NAME), String)
+                Return CType(Row(DATA_COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CUSTOMER_NAME, Value)
+            SetValue(DATA_COL_NAME_CUSTOMER_NAME, Value)
         End Set
     End Property
 
     <ValidateParameters("")> _
      Public Property VinLocator() As String
         Get
-            If Row(Me.DATA_COL_NAME_VIN_LOCATOR) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_VIN_LOCATOR) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_VIN_LOCATOR), String)
+                Return CType(Row(DATA_COL_NAME_VIN_LOCATOR), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_VIN_LOCATOR, Value)
+            SetValue(DATA_COL_NAME_VIN_LOCATOR, Value)
         End Set
     End Property
 
@@ -196,52 +196,52 @@ Public Class GalaxySearchCertificate
     <ValidateParameters("")> _
     Public Property DealerCode() As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_DEALER), String)
+                Return CType(Row(DATA_COL_NAME_DEALER), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER, Value)
+            SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
     <ValidateParameters("")> _
     Public Property DealerName() As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER_NAME) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_DEALER_NAME), String)
+                Return CType(Row(DATA_COL_NAME_DEALER_NAME), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER_NAME, Value)
+            SetValue(DATA_COL_NAME_DEALER_NAME, Value)
         End Set
     End Property
 
     <ValidateParameters("")> _
     Public Property CustomerPhone() As String
         Get
-            If Row(Me.DATA_COL_NAME_CUSTOMER_PHONE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CUSTOMER_PHONE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CUSTOMER_PHONE), String)
+                Return CType(Row(DATA_COL_NAME_CUSTOMER_PHONE), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CUSTOMER_PHONE, Value)
+            SetValue(DATA_COL_NAME_CUSTOMER_PHONE, Value)
         End Set
     End Property
 
 
     Public Property RecordsToReturn() As Integer
         Get
-            Return Me._recordsToRreturn
+            Return _recordsToRreturn
         End Get
         Set(ByVal Value As Integer)
             _recordsToRreturn = Value
@@ -253,11 +253,11 @@ Public Class GalaxySearchCertificate
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
             Dim cert As New Certificate
-            Dim _CertListDataSet As DataSet = cert.GetGalaxyCertificatesList(Me.CertNumber, Me.CustomerName, Me.IdentificationNumber, Me.VehicleLicenseTag, Me.VinLocator, Me.DealerCode, Me.DealerName, Me.CustomerPhone, , Me.RecordsToReturn)
-            _CertListDataSet.DataSetName = Me.DATASET_NAME
-            _CertListDataSet.Tables(CertificateDAL.TABLE_NAME).TableName = Me.DATASET_TABLE_NAME
+            Dim _CertListDataSet As DataSet = cert.GetGalaxyCertificatesList(CertNumber, CustomerName, IdentificationNumber, VehicleLicenseTag, VinLocator, DealerCode, DealerName, CustomerPhone, , RecordsToReturn)
+            _CertListDataSet.DataSetName = DATASET_NAME
+            _CertListDataSet.Tables(CertificateDAL.TABLE_NAME).TableName = DATASET_TABLE_NAME
             Return (XMLHelper.FromDatasetToXML_Std(_CertListDataSet))
 
         Catch ex As BOValidationException

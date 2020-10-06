@@ -137,7 +137,7 @@ Public Class SVCUpdateClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_NAME_CLAIM_ID, Value)
+            SetValue(SOURCE_COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
@@ -152,7 +152,7 @@ Public Class SVCUpdateClaim
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_VISIT_DATE, Value)
+            SetValue(SOURCE_COL_VISIT_DATE, Value)
         End Set
     End Property
 
@@ -167,7 +167,7 @@ Public Class SVCUpdateClaim
         End Get
         Set(ByVal Value As DateType)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_REPAIR_DATE, Value)
+            SetValue(SOURCE_COL_REPAIR_DATE, Value)
         End Set
     End Property
 
@@ -182,7 +182,7 @@ Public Class SVCUpdateClaim
         End Get
         Set(ByVal Value As Decimal)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_SHIPPING_AMOUNT, Value)
+            SetValue(SOURCE_COL_SHIPPING_AMOUNT, Value)
         End Set
     End Property
 
@@ -197,7 +197,7 @@ Public Class SVCUpdateClaim
         End Get
         Set(ByVal Value As Decimal)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_LABOR_AMOUNT, Value)
+            SetValue(SOURCE_COL_LABOR_AMOUNT, Value)
         End Set
     End Property
 
@@ -212,7 +212,7 @@ Public Class SVCUpdateClaim
         End Get
         Set(ByVal Value As Decimal)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_SERVICE_CHARGE_AMOUNT, Value)
+            SetValue(SOURCE_COL_SERVICE_CHARGE_AMOUNT, Value)
         End Set
     End Property
 
@@ -227,7 +227,7 @@ Public Class SVCUpdateClaim
         End Get
         Set(ByVal Value As Decimal)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_TRIP_AMOUNT, Value)
+            SetValue(SOURCE_COL_TRIP_AMOUNT, Value)
         End Set
     End Property
 
@@ -242,7 +242,7 @@ Public Class SVCUpdateClaim
         End Get
         Set(ByVal Value As Decimal)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_OTHER_AMOUNT, Value)
+            SetValue(SOURCE_COL_OTHER_AMOUNT, Value)
         End Set
     End Property
 
@@ -257,7 +257,7 @@ Public Class SVCUpdateClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_OTHER_DESCRIPTION, Value)
+            SetValue(SOURCE_COL_OTHER_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -272,7 +272,7 @@ Public Class SVCUpdateClaim
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SOURCE_COL_AUTHORIZATION_NUMBER, Value)
+            SetValue(SOURCE_COL_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
@@ -282,24 +282,24 @@ Public Class SVCUpdateClaim
 
     Private Property ClaimBO() As Claim
         Get
-            If Me._claimBo Is Nothing Then
-                If Not Me.ClaimIDString.Equals(String.Empty) AndAlso Me.ClaimIDString.Length = 32 Then
-                    Me._claimID = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(Me.ClaimIDString))
+            If _claimBo Is Nothing Then
+                If Not ClaimIDString.Equals(String.Empty) AndAlso ClaimIDString.Length = 32 Then
+                    _claimID = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(ClaimIDString))
                     'PickupListHeader.GetClaimIDByCode(Me.ClaimNumber, Me.CertItemCoverageCode)
 
-                    If Me._claimID.Equals(Guid.Empty) Then
+                    If _claimID.Equals(Guid.Empty) Then
                         Throw New BOValidationException("SVCUpdateClaim Error: ", Common.ErrorCodes.INVALID_CLAIM_NOT_FOUND)
                     End If
-                    Me._claimBo = ClaimFacade.Instance.GetClaim(Of Claim)(Me._claimID)
+                    _claimBo = ClaimFacade.Instance.GetClaim(Of Claim)(_claimID)
                 Else
                     Throw New BOValidationException("SVCUpdateClaim Error: ", Common.ErrorCodes.INVALID_CLAIM_NOT_FOUND)
                 End If
             End If
 
-            Return Me._claimBo
+            Return _claimBo
         End Get
         Set(ByVal value As Claim)
-            Me._claimBo = value
+            _claimBo = value
         End Set
     End Property
 
@@ -323,8 +323,8 @@ Public Class SVCUpdateClaim
     Protected Sub CheckClaimPaymentInProgress(ByVal Id As Guid)
         Dim ds As New DataSet
         Dim blockInvoice As String
-        Dim oCompany As New Company(Me.ClaimBO.Company.Id)
-        Dim oDealer As New Dealer(Me.ClaimBO.Dealer.Id)
+        Dim oCompany As New Company(ClaimBO.Company.Id)
+        Dim oDealer As New Dealer(ClaimBO.Dealer.Id)
         
         'Check the flag at Company level
         If (oCompany.AttributeValues.Contains(COMP_ATTR_BLOCK_PAY_INVOICE)) Then
@@ -332,7 +332,7 @@ Public Class SVCUpdateClaim
         End If
 
         If (blockInvoice = YES) Then
-            If Claim.CheckClaimPaymentInProgress(Id, Me.ClaimBO.Company.CompanyGroupId) Then
+            If Claim.CheckClaimPaymentInProgress(Id, ClaimBO.Company.CompanyGroupId) Then
                 Throw New BOValidationException("CLAIM_PROCESS_IN_PROGRESS_ERR", Assurant.ElitaPlus.Common.ErrorCodes.CLAIM_PROCESS_IN_PROGRESS_ERR)
             End If
         End If
@@ -342,51 +342,51 @@ Public Class SVCUpdateClaim
         Try
             If ds.SVCUpdateClaim.Count = 0 Then Exit Sub
             With ds.SVCUpdateClaim.Item(pos)
-                Me.ClaimIDString = .Claim_ID ' GUID value
+                ClaimIDString = .Claim_ID ' GUID value
 
-                CheckClaimPaymentInProgress(Me.ClaimBO.Id)
+                CheckClaimPaymentInProgress(ClaimBO.Id)
 
                 If Not .IsVisit_DateNull Then
-                    Me.VisitDate = .Visit_Date
+                    VisitDate = .Visit_Date
                     IsVisitDateNull = False
                 End If
                 If Not .IsRepair_DateNull Then
-                    Me.RepairDate = .Repair_Date
+                    RepairDate = .Repair_Date
                     IsRepairDateNull = False
                 End If
 
                 If Not .IsShipping_AmountNull Then
-                    Me.ShippingAmount = .Shipping_Amount
+                    ShippingAmount = .Shipping_Amount
                     IsShippingAmountNull = False
                 End If
 
                 If Not .IsLabor_AmountNull Then
-                    Me.LaborAmount = .Labor_Amount
+                    LaborAmount = .Labor_Amount
                     IsLaborAmountNull = False
                 End If
 
                 If Not .IsService_Charge_AmountNull Then
-                    Me.ServiceChargeAmount = .Service_Charge_Amount
+                    ServiceChargeAmount = .Service_Charge_Amount
                     IsServiceChargeAmountNull = False
                 End If
 
                 If Not .IsTrip_AmountNull Then
-                    Me.TripAmount = .Trip_Amount
+                    TripAmount = .Trip_Amount
                     IsTripAmountNull = False
                 End If
 
                 If Not .IsOther_AmountNull Then
-                    Me.OtherAmount = .Other_Amount
+                    OtherAmount = .Other_Amount
                     IsOtherAmountNull = False
                 End If
 
                 If Not .IsOther_DescriptionNull Then
-                    Me.OtherDescription = .Other_Description
+                    OtherDescription = .Other_Description
                     IsOtherDescriptionNull = False
                 End If
 
                 If Not .IsAuthorization_NumberNull Then
-                    Me.AuthorizationNumber = .Authorization_Number
+                    AuthorizationNumber = .Authorization_Number
                     IsAuthorizationNumberNull = False
                 End If
 
@@ -397,9 +397,9 @@ Public Class SVCUpdateClaim
                 Dim PartAmount As Decimal = Nothing
                 Dim InStock As String = String.Empty
                 
-                Me._PartsInfoDV = PartsInfo.getSelectedList(Me.ClaimBO.Id)
+                _PartsInfoDV = PartsInfo.getSelectedList(ClaimBO.Id)
                 'delet existing claim parts
-                Me.DeleteExistingParts()
+                DeleteExistingParts()
 
                For j = 0 To ds.Parts_List.Count - 1
                     With ds.Parts_List(j)
@@ -408,7 +408,7 @@ Public Class SVCUpdateClaim
                             PartAmount = .Part_Amount
                             If Not .IsIn_StockNull Then InStock = .In_Stock
 
-                            NewPartsList(PartCode, PartAmount, InStock, .IsIn_StockNull, Me.ClaimBO.Id)
+                            NewPartsList(PartCode, PartAmount, InStock, .IsIn_StockNull, ClaimBO.Id)
                             PartCode = Nothing
                             PartAmount = Nothing
                             InStock = Nothing
@@ -451,49 +451,49 @@ Public Class SVCUpdateClaim
             If ds.SVCUpdateClaim.Count = 0 Then Exit Sub
             'For j = 0 To ds.SVCUpdateClaim.Count - 1
             With ds.SVCUpdateClaim.Item(0)
-                Me.ClaimIDString = .Claim_ID ' GUID value
+                ClaimIDString = .Claim_ID ' GUID value
 
                 If Not .IsVisit_DateNull Then
-                    Me.VisitDate = .Visit_Date
+                    VisitDate = .Visit_Date
                     IsVisitDateNull = False
                 End If
                 If Not .IsRepair_DateNull Then
-                    Me.RepairDate = .Repair_Date
+                    RepairDate = .Repair_Date
                     IsRepairDateNull = False
                 End If
 
                 If Not .IsShipping_AmountNull Then
-                    Me.ShippingAmount = .Shipping_Amount
+                    ShippingAmount = .Shipping_Amount
                     IsShippingAmountNull = False
                 End If
 
                 If Not .IsLabor_AmountNull Then
-                    Me.LaborAmount = .Labor_Amount
+                    LaborAmount = .Labor_Amount
                     IsLaborAmountNull = False
                 End If
 
                 If Not .IsService_Charge_AmountNull Then
-                    Me.ServiceChargeAmount = .Service_Charge_Amount
+                    ServiceChargeAmount = .Service_Charge_Amount
                     IsServiceChargeAmountNull = False
                 End If
 
                 If Not .IsTrip_AmountNull Then
-                    Me.TripAmount = .Trip_Amount
+                    TripAmount = .Trip_Amount
                     IsTripAmountNull = False
                 End If
 
                 If Not .IsOther_AmountNull Then
-                    Me.OtherAmount = .Other_Amount
+                    OtherAmount = .Other_Amount
                     IsOtherAmountNull = False
                 End If
 
                 If Not .IsOther_DescriptionNull Then
-                    Me.OtherDescription = .Other_Description
+                    OtherDescription = .Other_Description
                     IsOtherDescriptionNull = False
                 End If
 
                 If Not .IsAuthorization_NumberNull Then
-                    Me.AuthorizationNumber = .Authorization_Number
+                    AuthorizationNumber = .Authorization_Number
                     IsAuthorizationNumberNull = False
                 End If
 
@@ -503,9 +503,9 @@ Public Class SVCUpdateClaim
                 Dim PartAmount As Decimal = Nothing
                 Dim InStock As String = String.Empty
 
-                Me._PartsInfoDV = PartsInfo.getSelectedList(Me.ClaimBO.Id)
+                _PartsInfoDV = PartsInfo.getSelectedList(ClaimBO.Id)
                 'delet existing claim parts
-                Me.DeleteExistingParts()
+                DeleteExistingParts()
 
                 For i = 0 To ds.Parts_List.Count - 1
                     With ds.Parts_List(i)
@@ -513,7 +513,7 @@ Public Class SVCUpdateClaim
                         PartAmount = .Part_Amount
                         If Not .IsIn_StockNull Then InStock = .In_Stock
 
-                        NewPartsList(PartCode, PartAmount, InStock, .IsIn_StockNull, Me.ClaimBO.Id)
+                        NewPartsList(PartCode, PartAmount, InStock, .IsIn_StockNull, ClaimBO.Id)
 
                         PartCode = Nothing
                         PartAmount = Nothing
@@ -555,16 +555,16 @@ Public Class SVCUpdateClaim
         End If
 
 
-        Dim oPartInfo As PartsInfo = Me.ClaimBO.AddPartsInfo(Guid.Empty)
+        Dim oPartInfo As PartsInfo = ClaimBO.AddPartsInfo(Guid.Empty)
         oPartInfo.PartsDescriptionId = objPartDescriptionId
-        oPartInfo.ClaimId = Me.ClaimBO.Id
+        oPartInfo.ClaimId = ClaimBO.Id
         oPartInfo.Cost = PartAmount
         If Not IsInStockNull Then
             oPartInfo.InStockID = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, InStock)
         End If
         Try
             oPartInfo.Validate()
-            Me._PartsAmount += oPartInfo.Cost.Value
+            _PartsAmount += oPartInfo.Cost.Value
         Catch ex As BOValidationException
             Throw New BOValidationException(ex.Message, ex.Code)
         End Try
@@ -581,8 +581,8 @@ Public Class SVCUpdateClaim
             Throw New BOValidationException("UpdateClaimData Error: ", Common.ErrorCodes.INVALID_CLAIM_EXTENDED_STATUS_CODE)
         End If
 
-        oClaimStatus = Me.ClaimBO.AddExtendedClaimStatus(Guid.Empty)
-        oClaimStatus.ClaimId = Me.ClaimBO.Id
+        oClaimStatus = ClaimBO.AddExtendedClaimStatus(Guid.Empty)
+        oClaimStatus.ClaimId = ClaimBO.Id
         oClaimStatus.ClaimStatusByGroupId = ClaimStatusByGroupID
         oClaimStatus.StatusDate = Claim_Extended_Status_Date
         If Not IsClaim_Extended_Status_CommentNull Then oClaimStatus.Comments = Claim_Extended_Status_Comment
@@ -604,77 +604,77 @@ Public Class SVCUpdateClaim
 
         For i = 0 To _PartsInfoDV.Count - 1
             Dim objPartInfoId As Guid = New Guid(CType(_PartsInfoDV.Item(i)(PartsInfoDAL.COL_NAME_PARTS_INFO_ID), Byte()))
-            Dim objPartInfo As PartsInfo = Me.ClaimBO.AddPartsInfo(objPartInfoId)
+            Dim objPartInfo As PartsInfo = ClaimBO.AddPartsInfo(objPartInfoId)
             objPartInfo.Delete()
         Next
     End Sub
 
     Public Function SetClaimBOProperties()
-        If Not Me.IsRepairDateNull Then
-            Me.ClaimBO.RepairDate = Me.RepairDate
+        If Not IsRepairDateNull Then
+            ClaimBO.RepairDate = RepairDate
         End If
 
-        If Not Me.IsVisitDateNull Then
-            Me.ClaimBO.VisitDate = Me.VisitDate
+        If Not IsVisitDateNull Then
+            ClaimBO.VisitDate = VisitDate
         End If
 
-        If Not Me.IsRepairDateNull Then
-            Me.ClaimBO.RepairDate = Me.RepairDate
+        If Not IsRepairDateNull Then
+            ClaimBO.RepairDate = RepairDate
         End If
 
-        If Not Me.IsAuthorizationNumberNull Then
+        If Not IsAuthorizationNumberNull Then
             Dim Cnt As Integer
-            Me.ClaimBO.AuthorizationNumber = Me.AuthorizationNumber
-            Cnt = Me.ClaimBO.IsClaimActive(Me.ClaimBO.Id)
+            ClaimBO.AuthorizationNumber = AuthorizationNumber
+            Cnt = ClaimBO.IsClaimActive(ClaimBO.Id)
 
             If Cnt = 0 Then
                 Throw New BOValidationException("UpdateClaimData Error: ", Common.ErrorCodes.INVALID_CLAIM_NOT_ACTIVE)
             End If
 
-            Cnt = Me.ClaimBO.IsClaimAuthNumberExists(Me.ClaimBO.Id, Me.AuthorizationNumber)
+            Cnt = ClaimBO.IsClaimAuthNumberExists(ClaimBO.Id, AuthorizationNumber)
 
             If Cnt > 0 Then
                 Throw New BOValidationException("UpdateClaimData Error: ", Common.ErrorCodes.INVALID_DUPLICATE_AUTHORIZATION_NUMBER)
             End If
         End If
 
-        If Not Me.IsShippingAmountNull Or Not Me.IsLaborAmountNull Or Not Me.IsServiceChargeAmountNull Or Not Me.IsTripAmountNull Or Not Me.IsOtherAmountNull Then
+        If Not IsShippingAmountNull Or Not IsLaborAmountNull Or Not IsServiceChargeAmountNull Or Not IsTripAmountNull Or Not IsOtherAmountNull Then
             Dim objClaimAuthDetail As ClaimAuthDetail
             'This claim may/may not have a claimAuthDetail record.
             Try
-                objClaimAuthDetail = Me.ClaimBO.AddClaimAuthDetail(Me.ClaimBO.Id, True)
+                objClaimAuthDetail = ClaimBO.AddClaimAuthDetail(ClaimBO.Id, True)
             Catch ex As Exception
-                objClaimAuthDetail = Me.ClaimBO.AddClaimAuthDetail(Guid.Empty)
-                objClaimAuthDetail.ClaimId = Me.ClaimBO.Id
+                objClaimAuthDetail = ClaimBO.AddClaimAuthDetail(Guid.Empty)
+                objClaimAuthDetail.ClaimId = ClaimBO.Id
             End Try
 
-            If Not Me.IsShippingAmountNull Then
-                objClaimAuthDetail.ShippingAmount = Me.ShippingAmount
+            If Not IsShippingAmountNull Then
+                objClaimAuthDetail.ShippingAmount = ShippingAmount
             End If
-            If Not Me.IsLaborAmountNull Then
-                objClaimAuthDetail.LaborAmount = Me.LaborAmount
+            If Not IsLaborAmountNull Then
+                objClaimAuthDetail.LaborAmount = LaborAmount
             End If
-            If Not Me.IsServiceChargeAmountNull Then
-                objClaimAuthDetail.ServiceCharge = Me.ServiceChargeAmount
+            If Not IsServiceChargeAmountNull Then
+                objClaimAuthDetail.ServiceCharge = ServiceChargeAmount
             End If
-            If Not Me.IsTripAmountNull Then
-                objClaimAuthDetail.TripAmount = Me.TripAmount
+            If Not IsTripAmountNull Then
+                objClaimAuthDetail.TripAmount = TripAmount
             End If
-            If Not Me.IsOtherAmountNull Then
-                objClaimAuthDetail.OtherAmount = Me.OtherAmount
+            If Not IsOtherAmountNull Then
+                objClaimAuthDetail.OtherAmount = OtherAmount
             End If
-            If Not Me.IsOtherDescriptionNull Then
-                objClaimAuthDetail.OtherExplanation = Me.OtherDescription
+            If Not IsOtherDescriptionNull Then
+                objClaimAuthDetail.OtherExplanation = OtherDescription
             End If
 
-            objClaimAuthDetail.PartAmount = Me._PartsAmount
+            objClaimAuthDetail.PartAmount = _PartsAmount
 
             objClaimAuthDetail.Validate()
-            Me.ClaimBO.AuthDetailDataHasChanged = True
+            ClaimBO.AuthDetailDataHasChanged = True
         End If
 
-        If Me.ClaimBO.AuthDetailDataHasChanged = False Then
-            ClaimBO.AuthDetailDataHasChanged = Me.PartsDataHasChanged
+        If ClaimBO.AuthDetailDataHasChanged = False Then
+            ClaimBO.AuthDetailDataHasChanged = PartsDataHasChanged
         End If
     End Function
 
@@ -697,17 +697,17 @@ Public Class SVCUpdateClaim
             For i = 0 To ds1.SVCUpdateClaim.Count - 1
                 Try
                     Load(ds1, i)
-                    Me.Validate()
+                    Validate()
                     SetClaimBOProperties()
-                    Me.ClaimBO.Save()
-                    respXmlTable.Rows.Add(Me.ClaimIDString, True)
+                    ClaimBO.Save()
+                    respXmlTable.Rows.Add(ClaimIDString, True)
                     'processed_count += 1
                 Catch ex As BOValidationException
                     If Not ds1.SVCUpdateClaim.Count > 1 Then
                         Throw New BOValidationException(ex.Message, ex.Code)
                     Else
-                        respXmlTable.Rows.Add(Me.ClaimIDString, False)
-                        respXmlErrorTable.Rows.Add(Me.ClaimIDString, ex.Code, ex.Message)
+                        respXmlTable.Rows.Add(ClaimIDString, False)
+                        respXmlErrorTable.Rows.Add(ClaimIDString, ex.Code, ex.Message)
                     End If
 
 
@@ -715,29 +715,29 @@ Public Class SVCUpdateClaim
                     If Not ds1.SVCUpdateClaim.Count > 1 Then
                         Throw ex
                     Else
-                        respXmlTable.Rows.Add(Me.ClaimIDString, False)
-                        respXmlErrorTable.Rows.Add(Me.ClaimIDString, ex.Code, ex.Message)
+                        respXmlTable.Rows.Add(ClaimIDString, False)
+                        respXmlErrorTable.Rows.Add(ClaimIDString, ex.Code, ex.Message)
                     End If
 
                 Catch ex As DataBaseUniqueKeyConstraintViolationException
                     If Not ds1.SVCUpdateClaim.Count > 1 Then
                         Throw ex
                     Else
-                        respXmlTable.Rows.Add(Me.ClaimIDString, False)
-                        respXmlErrorTable.Rows.Add(Me.ClaimIDString, ex.Code, ex.Message)
+                        respXmlTable.Rows.Add(ClaimIDString, False)
+                        respXmlErrorTable.Rows.Add(ClaimIDString, ex.Code, ex.Message)
                     End If
 
                 Catch ex As Exception
                     If Not ds1.SVCUpdateClaim.Count > 1 Then
                         Throw ex
                     Else
-                        respXmlTable.Rows.Add(Me.ClaimIDString, False)
-                        respXmlErrorTable.Rows.Add(Me.ClaimIDString, "Unexpected Error", ex.Message)
+                        respXmlTable.Rows.Add(ClaimIDString, False)
+                        respXmlErrorTable.Rows.Add(ClaimIDString, "Unexpected Error", ex.Message)
                     End If
 
                     'error_count += 1
                 Finally
-                    Me.ClaimBO = Nothing
+                    ClaimBO = Nothing
                 End Try
 
             Next
@@ -755,7 +755,7 @@ Public Class SVCUpdateClaim
         Catch ex As Exception
             Throw ex
         Finally
-            Me.ClaimBO = Nothing
+            ClaimBO = Nothing
         End Try
 
 
@@ -774,18 +774,18 @@ Public Class SVCUpdateClaim
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
     Private Sub Load(ByVal ds As SVCUpdateClaimDs, ByVal pos As Integer)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds, pos)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -799,10 +799,10 @@ Public Class SVCUpdateClaim
     Private Sub Load(ByVal ds As SVCUpdateClaimDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException

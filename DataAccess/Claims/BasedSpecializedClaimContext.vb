@@ -9,7 +9,7 @@ Public MustInherit Class BasedSpecializedClaimContext
 
     Private Sub CheckDBConnection()
         If Me.Database.Connection.State = ConnectionState.Closed Then
-            Me.Database.Connection.Open()
+            Database.Connection.Open()
         End If
     End Sub
 
@@ -25,7 +25,7 @@ Public MustInherit Class BasedSpecializedClaimContext
                                                        ByRef pErrorMessage As String) As DataSet
         Dim dsCertList As New DataSet
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
         'elita.elp_ws_sps_timb_certclaim.GetCertClaimInfo
         Dim commandTxt As String = String.Concat("elp_ws_sps_",

@@ -11,7 +11,7 @@ Namespace Translation
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -99,7 +99,7 @@ Namespace Translation
 
         Public ReadOnly Property IsGridFormInEditMode() As Boolean
             Get
-                Return Me.GridForm.EditIndex > Me.NO_ITEM_SELECTED_INDEX
+                Return GridForm.EditIndex > NO_ITEM_SELECTED_INDEX
             End Get
         End Property
 
@@ -155,26 +155,26 @@ Namespace Translation
 
 
 #Region "Page event"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.ErrControllerMaster.Clear_Hide()
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            ErrControllerMaster.Clear_Hide()
             ShowAllStatistics(False)
             If Not Page.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
                 'populateSearchControls()
                 TranslateGridHeader(GridTab)
                 TranslateGridHeader(GridForm)
 
-                Me.btnClearTables.Attributes.Add("onclick", "javascript:return window.confirm('" & Me.CONFIRM_MSG & "');")
+                btnClearTables.Attributes.Add("onclick", "javascript:return window.confirm('" & CONFIRM_MSG & "');")
                 PopulateTabs()
                 PopulateForms()
                 ShowAllStatistics(False)
-                Me.btnImport.Text = "Import New Objects to " & EnvironmentContext.Current.EnvironmentName
+                btnImport.Text = "Import New Objects to " & EnvironmentContext.Current.EnvironmentName
             End If
             'Me.ShowMissingTranslations(Me.ErrControllerMaster)
         End Sub
 
-        Private Sub Page_LoadComplete(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LoadComplete
+        Private Sub Page_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
             Try
                 SetControlState()
                 Dim blnIsDev As Boolean = True
@@ -200,13 +200,13 @@ Namespace Translation
                 btnCancel.Visible = (btnCancel.Visible AndAlso blnIsDev)
                 btnSave.Visible = (btnSave.Visible AndAlso blnIsDev)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
 
 #Region "Grid Related"
-        Private Sub GridForm_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridForm.RowCommand
+        Private Sub GridForm_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridForm.RowCommand
             Try
                 'ignore other commands
                 If e.CommandName = "SelectAction" OrElse e.CommandName = "DeleteAction" Then
@@ -220,7 +220,7 @@ Namespace Translation
                         GridForm.EditIndex = RowInd
                         PopulateForms()
                         'Disable all Edit and Delete icon buttons on the Grid
-                        SetGridControls(Me.GridForm, False)
+                        SetGridControls(GridForm, False)
                     ElseIf e.CommandName = "DeleteAction" Then
                         Dim intErrCode As Integer, strErrMsg As String
                         TabForm.DeleteNewForm(intErrCode, strErrMsg, State.NewFormID)
@@ -229,12 +229,12 @@ Namespace Translation
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
 
-        Private Sub GridForm_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridForm.RowDataBound
+        Private Sub GridForm_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridForm.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -245,19 +245,19 @@ Namespace Translation
                         If .RowIndex = GridForm.EditIndex Then
 
                             txt = CType(e.Row.FindControl(GRID_CTRL_NAME_FORM_CODE), TextBox)
-                            If Not txt Is Nothing Then
+                            If txt IsNot Nothing Then
                                 If State.IsGridAddNew Then txt.Text = State.NewFormCode
                                 txt = Nothing
                             End If
 
                             txt = CType(e.Row.FindControl(GRID_CTRL_NAME_ENGLISH), TextBox)
-                            If Not txt Is Nothing Then
+                            If txt IsNot Nothing Then
                                 If State.IsGridAddNew Then txt.Text = State.NewFormEnglish
                                 txt = Nothing
                             End If
 
                             txt = CType(e.Row.FindControl(GRID_CTRL_NAME_URL), TextBox)
-                            If Not txt Is Nothing Then
+                            If txt IsNot Nothing Then
                                 If State.IsGridAddNew Then
                                     txt.Text = State.NewFormURL
                                 End If
@@ -265,12 +265,12 @@ Namespace Translation
                             End If
 
                             ddl = CType(e.Row.FindControl(GRID_CTRL_NAME_NAV_ALLOWED), DropDownList)
-                            If Not ddl Is Nothing Then
+                            If ddl IsNot Nothing Then
                                 Try
                                     If State.IsGridAddNew Then
-                                        Me.SetSelectedItem(ddl, State.NewFormNavAllowed)
+                                        SetSelectedItem(ddl, State.NewFormNavAllowed)
                                     Else
-                                        Me.SetSelectedItem(ddl, dvRow("NAV_ALWAYS_ALLOWED").ToString())
+                                        SetSelectedItem(ddl, dvRow("NAV_ALWAYS_ALLOWED").ToString())
                                     End If
                                 Catch ex As Exception
                                 End Try
@@ -279,24 +279,24 @@ Namespace Translation
 
                             ddl = CType(e.Row.FindControl(GRID_CTRL_NAME_FORM_CATEGORY), DropDownList)
                             Dim strFormCatDDL As String = ""
-                            If Not ddl Is Nothing Then
+                            If ddl IsNot Nothing Then
                                 Try
                                     strFormCatDDL = ddl.ClientID
                                     Dim dv As DataView = FORMCATLIST
                                     If State.IsGridAddNew Then
                                         If State.NewFormTab = "" Then
                                             dv.RowFilter = "1=2"
-                                            Me.BindDDLToDataView(ddl, dv, "Description", "Code", True)
+                                            BindDDLToDataView(ddl, dv, "Description", "Code", True)
                                             ddl.Enabled = False
                                         Else
                                             dv.RowFilter = "Tab_Code='" & State.NewFormTab & "'"
-                                            Me.BindDDLToDataView(ddl, dv, "Description", "Code", True)
-                                            Me.SetSelectedItem(ddl, State.NewFormFormCat)
+                                            BindDDLToDataView(ddl, dv, "Description", "Code", True)
+                                            SetSelectedItem(ddl, State.NewFormFormCat)
                                         End If
                                     Else
                                         dv.RowFilter = "Tab_Code='" & dvRow("Tab").ToString() & "'"
-                                        Me.BindDDLToDataView(ddl, dv, "Description", "Code", True)
-                                        Me.SetSelectedItem(ddl, dvRow("FORM_CATEGORY_CODE").ToString())
+                                        BindDDLToDataView(ddl, dv, "Description", "Code", True)
+                                        SetSelectedItem(ddl, dvRow("FORM_CATEGORY_CODE").ToString())
                                     End If
                                     dv.RowFilter = ""
                                 Catch ex As Exception
@@ -307,13 +307,13 @@ Namespace Translation
                             End If
 
                             ddl = CType(e.Row.FindControl(GRID_CTRL_NAME_TAB), DropDownList)
-                            If Not ddl Is Nothing Then
+                            If ddl IsNot Nothing Then
                                 Try
-                                    Me.BindDDLToDataView(ddl, TABLIST, "Tab_DESC", "Tab_Code", True)
+                                    BindDDLToDataView(ddl, TABLIST, "Tab_DESC", "Tab_Code", True)
                                     If State.IsGridAddNew Then
-                                        Me.SetSelectedItem(ddl, State.NewFormTab)
+                                        SetSelectedItem(ddl, State.NewFormTab)
                                     Else
-                                        Me.SetSelectedItem(ddl, dvRow("Tab").ToString())
+                                        SetSelectedItem(ddl, dvRow("Tab").ToString())
                                     End If
                                 Catch ex As Exception
                                 End Try
@@ -323,7 +323,7 @@ Namespace Translation
                             End If
 
                             txt = CType(e.Row.FindControl(GRID_CTRL_NAME_QUERY_STRING), TextBox)
-                            If Not txt Is Nothing Then
+                            If txt IsNot Nothing Then
                                 If State.IsGridAddNew Then txt.Text = State.QueryString
                                 txt = Nothing
                             End If
@@ -332,7 +332,7 @@ Namespace Translation
                 End If
                 BaseItemBound(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
@@ -355,7 +355,7 @@ Namespace Translation
                     Next
                 End If
             Catch oEx As Exception
-                ELPWebConstants.ShowTranslatedMessageAsPopup(APPOBJECTFORM002, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.Page, oEx)
+                ELPWebConstants.ShowTranslatedMessageAsPopup(APPOBJECTFORM002, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Page, oEx)
             End Try
         End Sub
 
@@ -385,7 +385,7 @@ Namespace Translation
                     Next
                 End If
             Catch oEx As Exception
-                ELPWebConstants.ShowTranslatedMessageAsPopup(APPOBJECTFORM003, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.Page, oEx)
+                ELPWebConstants.ShowTranslatedMessageAsPopup(APPOBJECTFORM003, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Page, oEx)
             End Try
 
         End Sub
@@ -398,8 +398,8 @@ Namespace Translation
             Try
                 ' Load Tabs
                 Proc.LoadTabs(ElitaPlusIdentity.Current.ActiveUser.NetworkId)
-                Me.txtNewTabs.Text = Proc.outNew.ToString
-                Me.txtAddedTabs.Text = Proc.Added.ToString
+                txtNewTabs.Text = Proc.outNew.ToString
+                txtAddedTabs.Text = Proc.Added.ToString
                 ShowTabStatistics(True)
                 ' Something went wrong
                 If Proc.ReturnCode <> GOOD_RETURN Then
@@ -408,33 +408,33 @@ Namespace Translation
 
                 ' Load the Forms
                 Proc.LoadForms(ElitaPlusIdentity.Current.ActiveUser.NetworkId)
-                Me.txtNewForms.Text = Proc.outNew.ToString
-                Me.txtAddedForms.Text = Proc.Added.ToString
+                txtNewForms.Text = Proc.outNew.ToString
+                txtAddedForms.Text = Proc.Added.ToString
                 ShowFormStatistics(True)
                 ' Something went wrong
                 If Proc.ReturnCode <> GOOD_RETURN Then
                     errMsg.Add(Proc.English)
                 End If
                 If errMsg.Count > 0 Then '
-                    Me.ErrControllerMaster.AddErrorAndShow(errMsg.ToArray, False)
+                    ErrControllerMaster.AddErrorAndShow(errMsg.ToArray, False)
                 End If
             Catch oEx As Exception
-                ELPWebConstants.ShowTranslatedMessageAsPopup(APPOBJECTFORM004, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.Page, oEx)
+                ELPWebConstants.ShowTranslatedMessageAsPopup(APPOBJECTFORM004, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Page, oEx)
             End Try
         End Sub
 
-        Private Sub ShowAllStatistics(ByVal Show As Boolean)
+        Private Sub ShowAllStatistics(Show As Boolean)
             ShowFormStatistics(Show)
             ShowTabStatistics(Show)
         End Sub
 
-        Private Sub ShowTabStatistics(ByVal Show As Boolean)
+        Private Sub ShowTabStatistics(Show As Boolean)
             lblNewTabs.Visible = Show
             txtNewTabs.Visible = Show
             lblAddedTabs.Visible = Show
             txtAddedTabs.Visible = Show
         End Sub
-        Private Sub ShowFormStatistics(ByVal Show As Boolean)
+        Private Sub ShowFormStatistics(Show As Boolean)
             lblNewForms.Visible = Show
             txtNewForms.Visible = Show
             lblAddedForms.Visible = Show
@@ -453,14 +453,14 @@ Namespace Translation
                 End If
                 PopulateTabs()
                 PopulateForms()
-                Me.btnImport.Enabled = False
+                btnImport.Enabled = False
 
             Catch oEx As Exception
-                ELPWebConstants.ShowTranslatedMessageAsPopup(APPOBJECTFORM001, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.Page, oEx)
+                ELPWebConstants.ShowTranslatedMessageAsPopup(APPOBJECTFORM001, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Page, oEx)
             End Try
         End Sub
 
-        Public Shared Function GetGuidStringFromByteArrayNullable(ByVal value As Byte()) As String
+        Public Shared Function GetGuidStringFromByteArrayNullable(value As Byte()) As String
             If value Is Nothing Then
                 Return Guid.Empty.ToString
             Else
@@ -477,7 +477,7 @@ Namespace Translation
             dv = dt.DefaultView
         End Sub
 
-        Private Sub AddNewFormToDV(ByVal NewFormID As Guid)
+        Private Sub AddNewFormToDV(NewFormID As Guid)
             Dim dt As DataTable, row As DataRow
             dt = State.dvForms.Table
             row = dt.NewRow
@@ -485,14 +485,14 @@ Namespace Translation
             dt.Rows.Add(row)
         End Sub
 
-        Private Sub BindDDLToDataView(ByVal lstControl As ListControl, ByVal Data As DataView, ByVal TextColumnName As String,
-                                      ByVal ValueColumnName As String, Optional ByVal AddNothingSelected As Boolean = True)
+        Private Sub BindDDLToDataView(lstControl As ListControl, Data As DataView, TextColumnName As String,
+                                      ValueColumnName As String, Optional ByVal AddNothingSelected As Boolean = True)
             Dim i As Integer
             lstControl.Items.Clear()
             If AddNothingSelected Then
                 lstControl.Items.Add(New ListItem("", ""))
             End If
-            If Not Data Is Nothing Then
+            If Data IsNot Nothing Then
                 For i = 0 To Data.Count - 1
                     lstControl.Items.Add(New ListItem(Data(i)(TextColumnName).ToString, Data(i)(ValueColumnName).ToString))
                 Next
@@ -502,7 +502,7 @@ Namespace Translation
         Private Function PopulateBOFromForm(ByRef errMsg As Collections.Generic.List(Of String)) As Boolean
             Dim blnSuccess As Boolean = True, strTemp As String
             Dim ind As Integer = GridForm.EditIndex
-            With Me.State
+            With State
                 Dim ddl As DropDownList = CType(GridForm.Rows(ind).Cells(GRID_COL_TAB_IDX).FindControl(GRID_CTRL_NAME_TAB), DropDownList)
                 strTemp = ddl.SelectedValue
                 If strTemp <> .NewFormTab Then .IsFormValueChanged = True
@@ -589,11 +589,11 @@ Namespace Translation
                 ControlMgr.SetVisibleControl(Me, btnSave, True)
                 ControlMgr.SetVisibleControl(Me, btnImport, False)
                 ControlMgr.SetVisibleControl(Me, btnClearTables, False)
-                Me.MenuEnabled = False
+                MenuEnabled = False
                 If litScriptArray.Text.Trim = String.Empty Then WriteFormCategoryArray()
                 If State.IsGridAddNew Then
                     Dim objCtrl As WebControl = CType(GridForm.Rows(GridForm.EditIndex).Cells(GRID_COL_CODE_IDX).FindControl(GRID_CTRL_NAME_FORM_CODE), WebControl)
-                    If Not objCtrl Is Nothing Then
+                    If objCtrl IsNot Nothing Then
                         objCtrl.Enabled = True
                     End If
                 End If
@@ -603,7 +603,7 @@ Namespace Translation
                 ControlMgr.SetVisibleControl(Me, btnSave, False)
                 ControlMgr.SetVisibleControl(Me, btnImport, True)
                 ControlMgr.SetVisibleControl(Me, btnClearTables, True)
-                Me.MenuEnabled = True
+                MenuEnabled = True
             End If
         End Sub
 
@@ -663,38 +663,38 @@ Namespace Translation
             sbArray.Append("];")
             sbArray.Append(Environment.NewLine)
             sbArray.Append("</script>")
-            Me.litScriptArray.Text = sbArray.ToString
+            litScriptArray.Text = sbArray.ToString
         End Sub
 #End Region
 
 #Region "button event handlers"
-        Private Sub btnImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImport.Click
+        Private Sub btnImport_Click(sender As System.Object, e As System.EventArgs) Handles btnImport.Click
             Import_Objects()
         End Sub
 
-        Private Sub btnClearTables_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearTables.Click
+        Private Sub btnClearTables_Click(sender As System.Object, e As System.EventArgs) Handles btnClearTables.Click
             Try
                 WipeoutTables()
             Catch oex As Exception
-                ELPWebConstants.ShowTranslatedMessageAsPopup(APPOBJECTFORM001, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.Page, oex)
+                ELPWebConstants.ShowTranslatedMessageAsPopup(APPOBJECTFORM001, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Page, oex)
             End Try
         End Sub
 
-        Protected Sub btnNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew.Click
+        Protected Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
             Try
                 State.IsGridVisible = True
-                Me.State.NewFormID = Guid.NewGuid
+                State.NewFormID = Guid.NewGuid
                 AddNewFormToDV(State.NewFormID)
                 State.IsGridAddNew = True
                 PopulateForms()
                 'Disable all Edit and Delete icon buttons on the Grid
-                SetGridControls(Me.GridForm, False)
+                SetGridControls(GridForm, False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
+        Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
             Try
                 Dim ErrMsg As New Collections.Generic.List(Of String)
                 Dim intErrCode As Integer, strErrMsg As String
@@ -705,29 +705,29 @@ Namespace Translation
                                                  .NewFormURL, .NewFormNavAllowed, String.Empty, .NewFormFormCat, .QueryString)
                             If intErrCode = 0 Then
                                 ClearStateProperties()
-                                Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                                AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                                 State.dvForms = Nothing
                             Else
                                 ErrMsg.Add(strErrMsg)
-                                Me.ErrControllerMaster.AddErrorAndShow(ErrMsg.ToArray, False)
+                                ErrControllerMaster.AddErrorAndShow(ErrMsg.ToArray, False)
                             End If
 
                         Else
-                            Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+                            AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
                         End If
-                        GridForm.EditIndex = Me.NO_ITEM_SELECTED_INDEX
+                        GridForm.EditIndex = NO_ITEM_SELECTED_INDEX
                         .IsGridAddNew = False
                     End With
                 Else
-                    Me.ErrControllerMaster.AddErrorAndShow(ErrMsg.ToArray, False)
+                    ErrControllerMaster.AddErrorAndShow(ErrMsg.ToArray, False)
                 End If
-                Me.PopulateForms()
+                PopulateForms()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+        Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
             Try
                 With State
                     If .IsGridAddNew Then
@@ -739,7 +739,7 @@ Namespace Translation
                 GridForm.EditIndex = NO_ITEM_SELECTED_INDEX
                 PopulateForms()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region

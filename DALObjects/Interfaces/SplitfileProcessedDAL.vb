@@ -45,7 +45,7 @@ Public Class SplitfileProcessedDAL
 
 #Region "Signatures"
 
-    Public Delegate Sub AsyncCaller(ByVal oSplitFileProcessedData As SplitFileProcessedData, ByVal selectStmt As String)
+    Public Delegate Sub AsyncCaller(oSplitFileProcessedData As SplitFileProcessedData, selectStmt As String)
 
 #End Region
 
@@ -58,22 +58,22 @@ Public Class SplitfileProcessedDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("splitfile_processed_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal splitSystemId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(splitSystemId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters(0) As DBHelperParameter
         Dim sFileTypeCode As String
 
@@ -85,15 +85,15 @@ Public Class SplitfileProcessedDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadTotalRecordsByFile(ByVal SplitfileProcessedId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_TOTAL_RECORDS_BY_FILE_LIST")
+    Public Function LoadTotalRecordsByFile(SplitfileProcessedId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_TOTAL_RECORDS_BY_FILE_LIST")
         Dim parameters(0) As DBHelperParameter
         Dim sFileTypeCode As String
 
@@ -105,7 +105,7 @@ Public Class SplitfileProcessedDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -115,9 +115,9 @@ Public Class SplitfileProcessedDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
@@ -142,7 +142,7 @@ Public Class SplitfileProcessedDAL
     '    End If
     'End Sub
 
-    Private Sub AsyncExecuteSP(ByVal oSplitFileProcessedData As SplitFileProcessedData, ByVal selectStmt As String)
+    Private Sub AsyncExecuteSP(oSplitFileProcessedData As SplitFileProcessedData, selectStmt As String)
         Dim inputParameters(TOTAL_PARAM_SP) As DBHelperParameter
         Dim outputParameter(0) As DBHelperParameter
 
@@ -160,16 +160,16 @@ Public Class SplitfileProcessedDAL
         End If
     End Sub
 
-    Private Sub ExecuteSP(ByVal oSplitFileProcessedData As SplitFileProcessedData, ByVal selectStmt As String)
+    Private Sub ExecuteSP(oSplitFileProcessedData As SplitFileProcessedData, selectStmt As String)
         Dim aSyncHandler As New AsyncCaller(AddressOf AsyncExecuteSP)
         aSyncHandler.BeginInvoke(oSplitFileProcessedData, selectStmt, Nothing, Nothing)
     End Sub
 
-    Public Sub SplitFile(ByVal oData As Object)
+    Public Sub SplitFile(oData As Object)
         Dim oSplitFileProcessedData As SplitFileProcessedData = CType(oData, SplitFileProcessedData)
         Dim selectStmt As String
 
-        selectStmt = Me.Config("/SQL/SPLIT_FILE")
+        selectStmt = Config("/SQL/SPLIT_FILE")
 
         Try
             ExecuteSP(oSplitFileProcessedData, selectStmt)
@@ -178,11 +178,11 @@ Public Class SplitfileProcessedDAL
         End Try
     End Sub
 
-    Public Sub DeleteFile(ByVal oData As Object)
+    Public Sub DeleteFile(oData As Object)
         Dim oSplitFileProcessedData As SplitFileProcessedData = CType(oData, SplitFileProcessedData)
         Dim selectStmt As String
 
-        selectStmt = Me.Config("/SQL/DELETE_SPLIT_FILE")
+        selectStmt = Config("/SQL/DELETE_SPLIT_FILE")
 
         Try
             ExecuteSP(oSplitFileProcessedData, selectStmt)

@@ -29,29 +29,29 @@ Public Class DailyObdFileDetailTempDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("file_detail_temp_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function Load(ByVal FromDate As String, ByVal ToDate As String, ByVal CertNumber As String, ByVal SelectOnNewEnrollmnt As String, _
-                               ByVal SelectOnCancel As String, ByVal selectOnBilling As String) As DataSet
+    Public Function Load(FromDate As String, ToDate As String, CertNumber As String, SelectOnNewEnrollmnt As String, _
+                               SelectOnCancel As String, selectOnBilling As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         'Dim whereclausecondition As String = ""
 
 
@@ -66,7 +66,7 @@ Public Class DailyObdFileDetailTempDAL
         'End If
 
 
-        If ((Not (CertNumber Is Nothing)) AndAlso (Me.FormatSearchMask(CertNumber))) Then
+        If ((Not (CertNumber Is Nothing)) AndAlso (FormatSearchMask(CertNumber))) Then
 
             selectStmt &= Environment.NewLine & "AND c.cert_number " & CertNumber
 
@@ -83,7 +83,7 @@ Public Class DailyObdFileDetailTempDAL
         'End If
 
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -92,22 +92,22 @@ Public Class DailyObdFileDetailTempDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
-    Public Sub getrecordslist(ByVal CompanyCode As String, ByVal Dealercode As String, ByVal CertNumber As String, _
-                            ByVal selectonNewEnrollment As String, ByVal selectoncancel As String, ByVal selectonbilling As String, _
-                                        ByVal fromdate As Date, ByVal todate As Date, ByVal callfrom As String, _
+    Public Sub getrecordslist(CompanyCode As String, Dealercode As String, CertNumber As String, _
+                            selectonNewEnrollment As String, selectoncancel As String, selectonbilling As String, _
+                                        fromdate As Date, todate As Date, callfrom As String, _
                                             Optional ByVal processeddate As Date = Nothing, Optional ByVal selectioncertificate As String = "N")
         Dim sqlStmt As String
-        sqlStmt = Me.Config("/SQL/Detail_Records_List")
+        sqlStmt = Config("/SQL/Detail_Records_List")
         Dim ds As DataSet
         Try
 
@@ -131,9 +131,9 @@ Public Class DailyObdFileDetailTempDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Sub deletetemprecord(ByVal file_detail_temp_id As Guid)
+    Public Sub deletetemprecord(file_detail_temp_id As Guid)
         Dim sqlStmt As String
-        sqlStmt = Me.Config("/SQL/DELETE")
+        sqlStmt = Config("/SQL/DELETE")
         Dim ds As DataSet
         Try
             'If file_detail_Id.Count > 0 Then

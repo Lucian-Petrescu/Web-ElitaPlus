@@ -39,26 +39,26 @@ Public Class ClaimBonusSettingsDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_bonus_settings_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal dealerId As Guid, ByVal servicecenterId As Guid, ByVal productcodeId As Guid, ByVal companyIds As ArrayList,
-                             ByVal companyGroupId As Guid) As DataSet
+    Public Function LoadList(dealerId As Guid, servicecenterId As Guid, productcodeId As Guid, companyIds As ArrayList,
+                             companyGroupId As Guid) As DataSet
 
 
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
         'Dim inCausecondition As String = ""
         Dim bIsLikeClause As Boolean = False
@@ -67,34 +67,34 @@ Public Class ClaimBonusSettingsDAL
 
 
         If Not dealerId.Equals(Guid.Empty) Then
-            whereClauseConditions &= " AND cbs.dealer_id = '" & Me.GuidToSQLString(dealerId) & "'"
+            whereClauseConditions &= " AND cbs.dealer_id = '" & GuidToSQLString(dealerId) & "'"
         End If
         If Not servicecenterId.Equals(Guid.Empty) Then
-            whereClauseConditions &= " AND cbs.service_center_id = '" & Me.GuidToSQLString(servicecenterId) & "'"
+            whereClauseConditions &= " AND cbs.service_center_id = '" & GuidToSQLString(servicecenterId) & "'"
         End If
         If Not productcodeId.Equals(Guid.Empty) Then
-            whereClauseConditions &= " AND cbs.product_code_id = '" & Me.GuidToSQLString(productcodeId) & "'"
+            whereClauseConditions &= " AND cbs.product_code_id = '" & GuidToSQLString(productcodeId) & "'"
         End If
 
         'selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
 
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function ClaimBonusSettingsCount(ByVal dealerId As Guid, ByVal servicecenterId As Guid, ByVal productcodeId As Guid, ByVal BonusSettingsId As Guid) As Object
+    Public Function ClaimBonusSettingsCount(dealerId As Guid, servicecenterId As Guid, productcodeId As Guid, BonusSettingsId As Guid) As Object
 
-        Dim selectStmt As String = Me.Config("/SQL/BONUS_SETTINGS_COUNT")
+        Dim selectStmt As String = Config("/SQL/BONUS_SETTINGS_COUNT")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
          New DBHelper.DBHelperParameter(COL_NAME_SERVICE_CENTER_ID, servicecenterId.ToByteArray),
@@ -114,18 +114,18 @@ Public Class ClaimBonusSettingsDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Sub Delete(ByVal BonusSettingsId As Guid)
+    Public Sub Delete(BonusSettingsId As Guid)
         Try
-            Dim deleteStatement As String = Me.Config("/SQL/DELETE")
+            Dim deleteStatement As String = Config("/SQL/DELETE")
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_CLAIM_BONUS_SETTINGS_ID, BonusSettingsId.ToByteArray)}
             DBHelper.Execute(deleteStatement, parameters)
         Catch ex As Exception

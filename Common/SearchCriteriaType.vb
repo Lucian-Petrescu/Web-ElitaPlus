@@ -13,7 +13,7 @@ Public MustInherit Class SearchCriteriaType
         Get
             Return _searchType
         End Get
-        Set(ByVal value As SearchTypeEnum)
+        Set(value As SearchTypeEnum)
             _searchType = value
         End Set
     End Property
@@ -21,8 +21,8 @@ Public MustInherit Class SearchCriteriaType
     Public MustOverride Function IsValid() As Boolean
     Public MustOverride Function IsEmpty() As Boolean
 
-    Protected Sub New(ByVal pSearchDataType As SearchDataType)
-        Me._searchDataType = pSearchDataType
+    Protected Sub New(pSearchDataType As SearchDataType)
+        _searchDataType = pSearchDataType
     End Sub
 End Class
 
@@ -36,7 +36,7 @@ Public MustInherit Class SearchCriteriaType(Of TDataType)
         Get
             Return _fromValue
         End Get
-        Set(ByVal value As TDataType)
+        Set(value As TDataType)
             _fromValue = value
         End Set
     End Property
@@ -49,7 +49,7 @@ Public MustInherit Class SearchCriteriaType(Of TDataType)
                 Return Nothing
             End If
         End Get
-        Set(ByVal value As TDataType)
+        Set(value As TDataType)
             _toValue = value
         End Set
     End Property
@@ -59,12 +59,12 @@ Public MustInherit Class SearchCriteriaType(Of TDataType)
         Dim firstParameterSpecified As Boolean = False
         Dim secondParameterSpecified As Boolean = False
         ' Check if First Parameter is specified
-        If (Not (Me.FromValue Is Nothing OrElse Me.FromValue.ToString().Trim() = String.Empty)) Then
+        If (Not (FromValue Is Nothing OrElse FromValue.ToString().Trim() = String.Empty)) Then
             firstParameterSpecified = True
         End If
 
         ' Check if Second Parameter is specified
-        If (Me.SearchType = SearchType.Between) AndAlso (Not (Me.ToValue Is Nothing OrElse Me.ToValue.ToString().Trim() = String.Empty)) Then
+        If (Me.SearchType = SearchType.Between) AndAlso (Not (ToValue Is Nothing OrElse ToValue.ToString().Trim() = String.Empty)) Then
             secondParameterSpecified = True
         End If
 
@@ -76,7 +76,7 @@ Public MustInherit Class SearchCriteriaType(Of TDataType)
         Return returnValue
     End Function
 
-    Protected Sub New(ByVal pSearchDataType As SearchDataType)
+    Protected Sub New(pSearchDataType As SearchDataType)
         MyBase.New(pSearchDataType)
     End Sub
 End Class
@@ -98,7 +98,7 @@ Public NotInheritable Class SearchCriteriaStructType(Of TType As {Structure, IEq
         Return (FromValue Is Nothing AndAlso ToValue Is Nothing)
     End Function
 
-    Public Sub New(ByVal pSearchDataType As SearchDataType)
+    Public Sub New(pSearchDataType As SearchDataType)
         MyBase.New(pSearchDataType)
     End Sub
 End Class

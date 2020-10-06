@@ -18,9 +18,9 @@ Namespace SpecializedServices.GW
         <DataMember(IsRequired:=True, Name:="EffectiveEndingOn")>
         Public Property EndDate As Date
 
-        Public Sub New(ByVal pCertficateItemCoverage As CertificateItemCoverage,
-                       ByVal pCommonManager As CommonManager,
-                       ByVal pLangauge As String)
+        Public Sub New(pCertficateItemCoverage As CertificateItemCoverage,
+                       pCommonManager As CommonManager,
+                       pLangauge As String)
             ' Copy properties from Certificate Item to current instance
             With Me
                 .CoverageName = pCertficateItemCoverage.CoverageTypeId.ToDescription(pCommonManager, ListCodes.CoverageType, pLangauge)

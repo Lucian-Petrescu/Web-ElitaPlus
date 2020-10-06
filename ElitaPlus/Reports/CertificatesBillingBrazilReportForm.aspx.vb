@@ -36,7 +36,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As Object
 
-        Private Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -74,18 +74,18 @@ Namespace Reports
         Private Sub InitializeForm()
             PopulateDropDowns()
             Dim t As Date = Date.Now
-            Me.moRunDateText.Text = GetDateFormattedString(t)
+            moRunDateText.Text = GetDateFormattedString(t)
         End Sub
 
-        Private Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load, Me.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load, Me.Load
             If Not String.IsNullOrEmpty(Request.QueryString("rid")) Then
 
             End If
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
-            Me.ClearLabelsErrSign()
+            MasterPage.MessageController.Clear_Hide()
+            ClearLabelsErrSign()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     TheReportExtractInputControl.ViewVisible = False
                     TheReportExtractInputControl.PdfVisible = False
@@ -94,7 +94,7 @@ Namespace Reports
                     MasterPage.UsePageTabTitleInBreadCrum = False
                     UpdateBreadCrum()
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnRunDate, Me.moRunDateText)
+                    AddCalendar(BtnRunDate, moRunDateText)
                 Else
                     btnGenRpt.Enabled = True
                     'If (Me.moDealerList.SelectedValue.Equals("SINGLE")) Then
@@ -104,18 +104,18 @@ Namespace Reports
                     '    cboDealer.ClearSelection()
                     'End If
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
 
 #End Region
@@ -133,7 +133,7 @@ Namespace Reports
                 oListContext.CompanyId = _company
                 Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = oDealerListForCompany.Clone()
@@ -141,8 +141,8 @@ Namespace Reports
                 End If
             Next
 
-            Me.cboDealer.Items.Clear()
-            Me.cboDealer.Populate(oDealerList.ToArray(), New PopulateOptions() With
+            cboDealer.Items.Clear()
+            cboDealer.Populate(oDealerList.ToArray(), New PopulateOptions() With
                                      {
                                      .AddBlankItem = True,
                                      .TextFunc = Function(ListItem) ListItem.Code + " - " + ListItem.Translation
@@ -159,7 +159,7 @@ Namespace Reports
                 ClearLabelErrSign(moDealerLabel)
                 ClearLabelErrSign(lblRejectedRecords)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -167,12 +167,12 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As Object, e As EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -181,7 +181,7 @@ Namespace Reports
         Private Sub GenerateReport()
             Dim reportParams As New StringBuilder
 
-            Dim selectedDealerId As Guid = GetSelectedItem(Me.cboDealer)
+            Dim selectedDealerId As Guid = GetSelectedItem(cboDealer)
 
             If selectedDealerId.Equals(Guid.Empty) Then
                 SetLabelError(moDealerLabel)
@@ -201,12 +201,12 @@ Namespace Reports
             reportParams.AppendFormat("p_run_date => '{0}',", moRunDateText.Text)
             reportParams.AppendFormat("p_rejected => {0}", chkRejectedRecords.Checked.ToString().ToLower())
 
-            Me.State.MyBO = New ReportRequests
-            Me.State.ForEdit = True
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", PAGETITLE)
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "r_ascelx_enrollment_extract.report_by_dealer")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
-            Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+            State.MyBO = New ReportRequests
+            State.ForEdit = True
+            PopulateBOProperty(State.MyBO, "ReportType", PAGETITLE)
+            PopulateBOProperty(State.MyBO, "ReportProc", "r_ascelx_enrollment_extract.report_by_dealer")
+            PopulateBOProperty(State.MyBO, "ReportParameters", reportParams.ToString())
+            PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
 
             ScheduleReport()
         End Sub
@@ -214,26 +214,26 @@ Namespace Reports
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = TheReportExtractInputControl.GetSchedDate()
-                If Me.State.MyBO.IsDirty Then
+                If State.MyBO.IsDirty Then
                     'Me.State.MyBO.Save()
 
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
+                    State.IsNew = False
+                    State.HasDataChanged = True
                     'Me.State.MyBO.CreateJob(scheduleDate)
 
-                    Me.State.MyBO.CreateReportRequest(scheduleDate)
+                    State.MyBO.CreateReportRequest(scheduleDate)
 
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
 
                     btnGenRpt.Enabled = False
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -241,7 +241,7 @@ Namespace Reports
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Try
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
     End Class

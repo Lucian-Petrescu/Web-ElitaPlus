@@ -61,11 +61,11 @@ Public Class CaseDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDs As DataSet, ByVal id As Guid)
+    Public Sub Load(familyDs As DataSet, id As Guid)
         Try
             Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(TableKeyName, OracleDbType.Raw, id.ToByteArray())
@@ -76,7 +76,7 @@ Public Class CaseDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Sub LoadCaseByCaseNumber(ByVal familyDs As DataSet, ByVal caseNumber As String, ByVal companyCode As String)
+    Public Sub LoadCaseByCaseNumber(familyDs As DataSet, caseNumber As String, companyCode As String)
         Try
             Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD_CASE_BY_CASE_NUMBER"))
                 cmd.AddParameter(ParINameCaseNumber, OracleDbType.Varchar2, caseNumber)
@@ -89,7 +89,7 @@ Public Class CaseDAL
         End Try
     End Sub
 
-    Public Function LoadCaseByClaimId(ByVal claimId As Guid) As DataSet
+    Public Function LoadCaseByClaimId(claimId As Guid) As DataSet
 
         Dim selectStmt As String = Config("/SQL/LOAD_CASE_BY_CLAIM_ID")
         Dim ds As DataSet = New DataSet
@@ -111,8 +111,8 @@ Public Class CaseDAL
         End Try
     End Function
 
-    Public Function LoadCaseList(ByVal companyId As Guid, ByVal caseNumber As String, ByVal caseStatus As String, ByVal callerFirstName As String, ByVal callerLastName As String, ByVal caseOpenDateFrom As Date?, ByVal caseOpenDateTo As Date?, ByVal casePurpose As String, ByVal certificateNumber As String, ByVal caseClosedReason As String,
-                                 ByVal languageId As Guid, ByVal networkId As String) As DataSet
+    Public Function LoadCaseList(companyId As Guid, caseNumber As String, caseStatus As String, callerFirstName As String, callerLastName As String, caseOpenDateFrom As Date?, caseOpenDateTo As Date?, casePurpose As String, certificateNumber As String, caseClosedReason As String,
+                                 languageId As Guid, networkId As String) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_CASE_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(PoCursorCase) As DBHelper.DBHelperParameter
@@ -173,13 +173,13 @@ Public Class CaseDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function LoadAgentSearchList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal customerFirstName As String, ByVal customerLastName As String,
-                                        ByVal caseNumber As String, ByVal claimNumber As String, ByVal certificateNumber As String,
-                                        ByVal serialNumber As String, ByVal invoiceNumber As String, ByVal phoneNumber As String, ByVal zipcode As String,
-                                        ByVal certificateStatus As String, ByVal email As String,
-                                        ByVal taxId As String, ByVal serviceLineNumber As String, ByVal accountNumber As String,
-                                        ByVal globalCustomerNumber As String, ByVal dateofBirth As String, ByVal networkId As String,
-                                        ByVal languageId As Guid,ByVal branchCode As String,ByVal branchName As String) As DataSet
+    Public Function LoadAgentSearchList(companyId As Guid, dealerId As Guid, customerFirstName As String, customerLastName As String,
+                                        caseNumber As String, claimNumber As String, certificateNumber As String,
+                                        serialNumber As String, invoiceNumber As String, phoneNumber As String, zipcode As String,
+                                        certificateStatus As String, email As String,
+                                        taxId As String, serviceLineNumber As String, accountNumber As String,
+                                        globalCustomerNumber As String, dateofBirth As String, networkId As String,
+                                        languageId As Guid,branchCode As String,branchName As String) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_AGENT_SEARCH_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(PoCursorCase) As DBHelper.DBHelperParameter
@@ -286,7 +286,7 @@ Public Class CaseDAL
 
 
 
-    Public Function LoadAgentSearchConfigList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal searchType As String) As DataSet
+    Public Function LoadAgentSearchConfigList(companyId As Guid, dealerId As Guid, searchType As String) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_AGENT_SEARCH_RESULTS_CONFIG_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(PoCursorCase) As DBHelper.DBHelperParameter
@@ -324,7 +324,7 @@ Public Class CaseDAL
     End Function
 
 
-    Public Function LoadExclSecFieldsList(ByVal companyId As Guid, ByVal dealerId As Guid) As DataSet
+    Public Function LoadExclSecFieldsList(companyId As Guid, dealerId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_EXCL_SEC_FIELDS_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(PoCursorCase) As DBHelper.DBHelperParameter
@@ -352,7 +352,7 @@ Public Class CaseDAL
 
 
 
-    Public Function LoadClaimCaseList(ByVal claimId As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadClaimCaseList(claimId As Guid, languageId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_CLAIM_CASE_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(PoCursorCase) As DBHelper.DBHelperParameter
@@ -375,7 +375,7 @@ Public Class CaseDAL
         End Try
     End Function
 
-    Public Function LoadCaseDeniedReasonsList(ByVal caseId As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadCaseDeniedReasonsList(caseId As Guid, languageId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_CASE_DENIED_REASONS_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(PoCursorCase) As DBHelper.DBHelperParameter
@@ -398,7 +398,7 @@ Public Class CaseDAL
         End Try
     End Function
 
-    Public Function LoadCaseFieldsList(ByVal claimId As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadCaseFieldsList(claimId As Guid, languageId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_CASE_FIELDS_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(PoCursorCase) As DBHelper.DBHelperParameter
@@ -466,7 +466,7 @@ Public Class CaseDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function LoadCaseNotesList(ByVal caseId As Guid) As DataSet
+    Public Function LoadCaseNotesList(caseId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_CASE_NOTES_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(PoCursorCase) As DBHelper.DBHelperParameter
@@ -487,7 +487,7 @@ Public Class CaseDAL
         End Try
     End Function
 
-    Public Sub UpdateCaseFieldValues(ByVal caseId As Guid, ByRef caseFieldXcds() As String, ByRef caseFieldValues() As String)
+    Public Sub UpdateCaseFieldValues(caseId As Guid, ByRef caseFieldXcds() As String, ByRef caseFieldValues() As String)
         Using command As OracleCommand = CreateCommand("elp_case_utility.UpdateCaseFieldValues", CommandType.StoredProcedure)
             Dim caseFieldXcdsParameter As New OracleParameter
             Dim caseFieldValuesParameter As New OracleParameter
@@ -526,7 +526,7 @@ Public Class CaseDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = SupportChangesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = SupportChangesFilter)
         If ds Is Nothing Then
             Return
         End If

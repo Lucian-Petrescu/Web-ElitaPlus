@@ -206,7 +206,7 @@ Partial Class ClaimIssueActionAnswerForm
         Public ClaimBo As MultiAuthClaim
         Public ClaimAuthorizationId As Guid
 
-        Public Sub New(ByVal oClaimBo As MultiAuthClaim, ByVal guEntityIssueId As Guid, ByVal sActionCode As String, ByVal guClaimAuthorizationId As Guid)
+        Public Sub New(oClaimBo As MultiAuthClaim, guEntityIssueId As Guid, sActionCode As String, guClaimAuthorizationId As Guid)
             ClaimBo = oClaimBo
             EntityIssueId = guEntityIssueId
             ActionCode = sActionCode
@@ -235,7 +235,7 @@ Partial Class ClaimIssueActionAnswerForm
         State.InputParameters = TryCast(NavController.ParametersPassed, Parameters)
 
         Try
-            If Not State.InputParameters Is Nothing Then
+            If State.InputParameters IsNot Nothing Then
                 State.SelectedActionCode = SetIssueActionCode(State.InputParameters.ActionCode)
                 State.ClaimIssueBo = New ClaimIssue(State.InputParameters.EntityIssueId)
                 State.ClaimBo = State.InputParameters.ClaimBo
@@ -249,9 +249,9 @@ Partial Class ClaimIssueActionAnswerForm
         End Try
     End Sub
 
-    Private Sub Page_PageCall(ByVal callFromUrl As String, ByVal callingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(callFromUrl As String, callingPar As Object) Handles MyBase.PageCall
         Try
-            If Not CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 State.InputParameters = CType(CallingParameters, Parameters)
                 State.SelectedActionCode = SetIssueActionCode(State.InputParameters.ActionCode)
                 State.ClaimIssueBo = New ClaimIssue(State.InputParameters.EntityIssueId)
@@ -263,7 +263,7 @@ Partial Class ClaimIssueActionAnswerForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         MasterPage.MessageController.Clear_Hide()
         Try
             SetFocusDefaultButtonforScreen()
@@ -278,7 +278,7 @@ Partial Class ClaimIssueActionAnswerForm
     End Sub
 #End Region
 #Region "Common Page - Sub & Function"
-    Private Function SetIssueActionCode(ByVal actionCode As String) As IssueActionCode
+    Private Function SetIssueActionCode(actionCode As String) As IssueActionCode
         Dim selectActionCode As IssueActionCode
         Select Case actionCode
             Case "BRDEVSEL"
@@ -563,7 +563,7 @@ Partial Class ClaimIssueActionAnswerForm
                 Form.DefaultButton = btnSkuSearch.UniqueID
         End Select
     End Sub
-    Private Sub CreateClaimIssueResponse(ByVal answerCode As String)
+    Private Sub CreateClaimIssueResponse(answerCode As String)
         Dim oClaimAuthorization As ClaimAuthorization
         oClaimAuthorization = CType(State.ClaimBo.ClaimAuthorizationChildren.GetChild(State.ClaimAuthorizationId), ClaimAuthorization)
 
@@ -573,7 +573,7 @@ Partial Class ClaimIssueActionAnswerForm
         State.WsSubmitIssueAnswerRequest.IssueCode = State.ClaimIssueBo.IssueCode
         State.WsSubmitIssueAnswerRequest.AnswerCode = answerCode
     End Sub
-    Private Sub DisplayWsErrorMessage(ByVal errCode As String, ByVal errDescription As String)
+    Private Sub DisplayWsErrorMessage(errCode As String, errDescription As String)
         MasterPage.MessageController.AddError(errCode & " - " & errDescription, False)
     End Sub
     Private Sub CallSubmitFulfillmentIssueAnswerWs()
@@ -584,7 +584,7 @@ Partial Class ClaimIssueActionAnswerForm
             wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, SubmitIssueAnswerResponse)(
                                                        GetClient(),
                                                        New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                       Function(ByVal c As FulfillmentServiceClient)
+                                                       Function(c As FulfillmentServiceClient)
                                                            Return c.SubmitFulfillmentIssueAnswer(wsRequest)
                                                        End Function)
         Catch ex As Exception
@@ -617,7 +617,7 @@ Partial Class ClaimIssueActionAnswerForm
         client.ClientCredentials.UserName.Password = oWebPasswd.Password
         Return client
     End Function
-    Private Sub CallSubmitCustomerDecisionWs(ByVal answerCode As String)
+    Private Sub CallSubmitCustomerDecisionWs(answerCode As String)
         Dim wsRequest As CustomerDecisionRequest = New CustomerDecisionRequest()
         Dim wsResponse As CustomerDecisionResponse
         wsRequest.CompanyCode = State.ClaimBo.Company.Code
@@ -627,7 +627,7 @@ Partial Class ClaimIssueActionAnswerForm
             wsResponse = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, CustomerDecisionResponse)(
                                                        GetClaimFulfillmentWebAppGatewayClient(),
                                                        New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                       Function(ByVal c As WebAppGatewayClient)
+                                                       Function(c As WebAppGatewayClient)
                                                            Return c.CustomerDecision(wsRequest)
                                                        End Function)
         Catch fex As FaultException
@@ -644,7 +644,7 @@ Partial Class ClaimIssueActionAnswerForm
             End If
         End If
     End Sub
-    Private Sub ShowFaultException(ByVal fex As FaultException)
+    Private Sub ShowFaultException(fex As FaultException)
         If fex IsNot Nothing Then
             If fex.Code IsNot Nothing OrElse Not String.IsNullOrEmpty(fex.Message) Then
                 MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_WEB_APP_GATEWAY_SERVICE_ERR) & " - " & fex.Message, False)
@@ -655,7 +655,7 @@ Partial Class ClaimIssueActionAnswerForm
     End Sub
 #End Region
 #Region "Issue Response Display - Sub & Function"
-    Private Sub DisplayIssueResponse(ByVal wsIssueResponse As SubmitIssueAnswerResponse)
+    Private Sub DisplayIssueResponse(wsIssueResponse As SubmitIssueAnswerResponse)
         If wsIssueResponse.IsIssueResolved Then
             MasterPage.MessageController.AddSuccess("ISSUE_ANSWER_RESOLVED", True)
         End If
@@ -693,7 +693,7 @@ Partial Class ClaimIssueActionAnswerForm
                 .AddBlankItem = True
                 })
 
-            If Not State.SelectedDeviceManufacture Is Nothing AndAlso Not String.IsNullOrEmpty(State.SelectedDeviceManufacture.ToString()) Then
+            If State.SelectedDeviceManufacture IsNot Nothing AndAlso Not String.IsNullOrEmpty(State.SelectedDeviceManufacture.ToString()) Then
                 SetSelectedItemByText(ddlDeviceMake, State.SelectedDeviceManufacture)
             End If
         Catch ex As Exception
@@ -782,7 +782,7 @@ Partial Class ClaimIssueActionAnswerForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Function
-    Private Sub LoadDeviceSelectionTable(ByVal skuResponseList As SearchSKUResponse)
+    Private Sub LoadDeviceSelectionTable(skuResponseList As SearchSKUResponse)
         ' Create a new table.
         Dim deviceSelectionTable As New DataTable(DeviceSelectionTableName)
 
@@ -840,7 +840,7 @@ Partial Class ClaimIssueActionAnswerForm
         End If
     End Sub
     Private Sub UpdateDeviceSelectionTable()
-        If Not State.DeviceSelectionTable Is Nothing AndAlso State.DeviceSelectionTable.Rows.Count > 0 Then
+        If State.DeviceSelectionTable IsNot Nothing AndAlso State.DeviceSelectionTable.Rows.Count > 0 Then
             'Update the values.
             For Each dr As GridViewRow In GridViewDeviceSelection.Rows
                 State.DeviceSelectionTable.Rows(dr.DataItemIndex).Item(DsTableColNameInventoryCheck) = (CType((dr.Cells(GridColInventoryCheckIdx).FindControl(GridColInventoryCheckCtrl)), CheckBox)).Checked
@@ -849,7 +849,7 @@ Partial Class ClaimIssueActionAnswerForm
         End If
     End Sub
     Private Sub DeSelectRdoDeviceSelectionTable()
-        If Not State.DeviceSelectionTable Is Nothing AndAlso State.DeviceSelectionTable.Rows.Count > 0 Then
+        If State.DeviceSelectionTable IsNot Nothing AndAlso State.DeviceSelectionTable.Rows.Count > 0 Then
             'Update the values.
             For Each dr As DataRow In State.DeviceSelectionTable.Rows
                 dr(DsTableColNameSelectRdoDevice) = False
@@ -860,10 +860,10 @@ Partial Class ClaimIssueActionAnswerForm
         Dim oClaimAuthorization As ClaimAuthorization
         oClaimAuthorization = CType(State.ClaimBo.ClaimAuthorizationChildren.GetChild(State.ClaimAuthorizationId), ClaimAuthorization)
 
-        If Not oClaimAuthorization Is Nothing Then
+        If oClaimAuthorization IsNot Nothing Then
             State.ClaimAuthfulfillmentTypeXcd = oClaimAuthorization.ClaimAuthfulfillmentTypeXcd
             If State.ClaimAuthfulfillmentTypeXcd <> Codes.AUTH_FULFILLMENT_TYPE_SERVICE_WARRANTY_REPLACEMENT _
-               AndAlso Not oClaimAuthorization.ReplacementAmount Is Nothing _
+               AndAlso oClaimAuthorization.ReplacementAmount IsNot Nothing _
                AndAlso oClaimAuthorization.ReplacementAmount.Value > 0 Then
                 State.AuthorizedAmountAllowed = oClaimAuthorization.ReplacementAmount.Value
             End If
@@ -893,7 +893,7 @@ Partial Class ClaimIssueActionAnswerForm
             skuResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, SearchSKUResponse)(
                                                        GetClient(),
                                                        New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                       Function(ByVal c As FulfillmentServiceClient)
+                                                       Function(c As FulfillmentServiceClient)
                                                            Return c.SearchVendorSKU(skuRequest)
                                                        End Function)
         Catch ex As Exception
@@ -930,7 +930,7 @@ Partial Class ClaimIssueActionAnswerForm
                     inventoryResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, ItemInventoryResponse)(
                                                         GetClient(),
                                                         New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                        Function(ByVal c As FulfillmentServiceClient)
+                                                        Function(c As FulfillmentServiceClient)
                                                             Return c.InventoryCheck(inventoryRequest)
                                                         End Function)
 
@@ -944,7 +944,7 @@ Partial Class ClaimIssueActionAnswerForm
                             DisplayWsErrorMessage(inventoryResponse.Error.ErrorCode, inventoryResponse.Error.ErrorMessage)
                             Exit Sub
                         End If
-                        If Not inventoryResponse.Item Is Nothing Then
+                        If inventoryResponse.Item IsNot Nothing Then
                             dr(DsTableColNameReplacementCost) = inventoryResponse.Item.ReplacementCost
                             dr(DsTableColNameNumberOfDevice) = inventoryResponse.Item.StockQuantity
                             dr(DsTableColNameSelectRdoDevice) = False
@@ -1028,7 +1028,7 @@ Partial Class ClaimIssueActionAnswerForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub GridViewDeviceSelection_PageIndexChanging(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles GridViewDeviceSelection.PageIndexChanging
+    Private Sub GridViewDeviceSelection_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridViewDeviceSelection.PageIndexChanging
         Try
             GridViewDeviceSelection.PageIndex = e.NewPageIndex
             State.PageIndex = GridViewDeviceSelection.PageIndex
@@ -1037,7 +1037,7 @@ Partial Class ClaimIssueActionAnswerForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal source As Object, ByVal e As EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(GridViewDeviceSelection, GridViewDeviceSelection.Rows.Count, State.PageSize)
@@ -1047,7 +1047,7 @@ Partial Class ClaimIssueActionAnswerForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Public Sub RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles GridViewDeviceSelection.RowCreated
+    Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles GridViewDeviceSelection.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -1064,7 +1064,7 @@ Partial Class ClaimIssueActionAnswerForm
         End If
     End Sub
     
-    Private Sub GridViewDeviceSelection_PageIndexChanged(ByVal source As Object, ByVal e As EventArgs) Handles GridViewDeviceSelection.PageIndexChanged
+    Private Sub GridViewDeviceSelection_PageIndexChanged(source As Object, e As EventArgs) Handles GridViewDeviceSelection.PageIndexChanged
         Try
             PopulateGrid()
         Catch ex As Exception
@@ -1118,7 +1118,7 @@ Partial Class ClaimIssueActionAnswerForm
 
         ControlMgr.SetEnableControl(Me, btnDeviceSelected, True)
     End Sub
-    Private Sub btnSkuSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSkuSearch.Click
+    Private Sub btnSkuSearch_Click(sender As Object, e As EventArgs) Handles btnSkuSearch.Click
         Try
 
             DisplayNewProgressBarOnClick(btnSkuSearch, "Loading_Device")
@@ -1136,7 +1136,7 @@ Partial Class ClaimIssueActionAnswerForm
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
             ClearDeviceSelectionSearch()
             ClearDeviceSelectionState()
@@ -1149,7 +1149,7 @@ Partial Class ClaimIssueActionAnswerForm
         End Try
     End Sub
 
-    Private Sub btnSearchInventory_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearchInventory.Click
+    Private Sub btnSearchInventory_Click(sender As Object, e As EventArgs) Handles btnSearchInventory.Click
         Try
             DisplayNewProgressBarOnClick(btnSearchInventory, "Loading_Inventory")
             ControlMgr.SetEnableControl(Me, btnDeviceSelected, False)
@@ -1233,7 +1233,7 @@ Partial Class ClaimIssueActionAnswerForm
             wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, GetClaimReimburseAmountResponse)(
                                                        GetClient(),
                                                        New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                       Function(ByVal c As FulfillmentServiceClient)
+                                                       Function(c As FulfillmentServiceClient)
                                                            Return c.GetClaimReimbursementAmount(wsRequest)
                                                        End Function)
         Catch ex As Exception
@@ -1266,8 +1266,8 @@ Partial Class ClaimIssueActionAnswerForm
             Case IssueActionCode.PymtInsSel
                 Dim oClaimAuthorization As ClaimAuthorization
                 oClaimAuthorization = CType(State.ClaimBo.ClaimAuthorizationChildren.GetChild(State.ClaimAuthorizationId), ClaimAuthorization)
-                If Not oClaimAuthorization Is Nothing _
-                        AndAlso Not oClaimAuthorization.ReimbursementAmount Is Nothing _
+                If oClaimAuthorization IsNot Nothing _
+                        AndAlso oClaimAuthorization.ReimbursementAmount IsNot Nothing _
                         AndAlso oClaimAuthorization.ReimbursementAmount.Value > 0 Then
                     TextBoxReimbursementAmount.Text = GetAmountFormattedString(oClaimAuthorization.ReimbursementAmount.Value)
                     isReimbursementAmountExist = True
@@ -1376,7 +1376,7 @@ Partial Class ClaimIssueActionAnswerForm
         moBankInfoController.PopulateBOFromControl(True)
 
         accountTypeCode = LookupListNew.GetCodeFromId(LookupListNew.GetAccountTypeLookupList(Authentication.LangId), moBankInfoController.State.myBankInfoBo.AccountTypeId)
-        If Not accountTypeCode Is Nothing Then
+        If accountTypeCode IsNot Nothing Then
             If accountTypeCode.Equals(Codes.ACCOUNT_TYPE_CODE__SAVE) Then
                 oBankInfo.AccountType = AccountTypes.Saving
             ElseIf accountTypeCode.Equals(Codes.ACCOUNT_TYPE_CODE__CHECK) Then
@@ -1392,11 +1392,11 @@ Partial Class ClaimIssueActionAnswerForm
         oBankInfo.BankSortCode = moBankInfoController.State.myBankInfoBo.BankSortCode
         oBankInfo.BranchName = moBankInfoController.State.myBankInfoBo.BranchName
         oBankInfo.IbanNumber = moBankInfoController.State.myBankInfoBo.IbanNumber
-        If Not moBankInfoController.State.myBankInfoBo.BranchNumber Is Nothing Then
+        If moBankInfoController.State.myBankInfoBo.BranchNumber IsNot Nothing Then
             oBankInfo.BranchNumber = CType(moBankInfoController.State.myBankInfoBo.BranchNumber.Value, Integer)
         End If
         countryCode = LookupListNew.GetCodeFromId(LookupListNew.GetCountryLookupList(), moBankInfoController.State.myBankInfoBo.CountryID)
-        If Not countryCode Is Nothing Then
+        If countryCode IsNot Nothing Then
             oBankInfo.CountryCode = countryCode
         End If
 
@@ -1426,7 +1426,7 @@ Partial Class ClaimIssueActionAnswerForm
             wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, BaseFulfillmentResponse)(
                                                        GetClient(),
                                                        New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                       Function(ByVal c As FulfillmentServiceClient)
+                                                       Function(c As FulfillmentServiceClient)
                                                            Return c.ReSendFailedServiceOrder(wsRequest)
                                                        End Function)
         Catch ex As Exception
@@ -1476,7 +1476,7 @@ Partial Class ClaimIssueActionAnswerForm
             wsResponse = WcfClientHelper.Execute(Of ClaimServiceClient, IClaimService, NewClaimEntitledResponse)(
                                                        GetClientClaimService(),
                                                        New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                       Function(ByVal c As ClaimServiceClient)
+                                                       Function(c As ClaimServiceClient)
                                                            Return c.NewClaimEntitled(wsRequest)
                                                        End Function)
         Catch ex As Exception
@@ -1534,7 +1534,7 @@ Partial Class ClaimIssueActionAnswerForm
         TextBoxSerialNumber.Text = String.Empty
         TextBoxImei.Text = String.Empty
 
-        If Not State.ClaimIssueBo Is Nothing AndAlso Not String.IsNullOrWhiteSpace(State.ClaimIssueBo.EntityIssueData) Then
+        If State.ClaimIssueBo IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(State.ClaimIssueBo.EntityIssueData) Then
             ' Sample String value -> (SerialNo: 14527863 , IMEI: 353556084081101)
             ' Split the string with delimiter comma(,)
             Dim splitImeiSerialNumber As String() = State.ClaimIssueBo.EntityIssueData.Split(New Char() {","c}, StringSplitOptions.RemoveEmptyEntries)
@@ -1630,7 +1630,7 @@ Partial Class ClaimIssueActionAnswerForm
     Private Const QuestionDesc As String = "lblQuestionDesc"
     Private Const ddlYesNoControl As String = "ddlList"
     Private Const ddlWidthForOptusClaimChoices As String = "200"
-    Private Sub GridQuestions_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles GridQuestions.RowDataBound
+    Private Sub GridQuestions_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridQuestions.RowDataBound
         Try
 
             If (e.Row.RowType = DataControlRowType.DataRow) Then

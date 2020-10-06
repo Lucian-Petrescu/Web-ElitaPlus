@@ -89,7 +89,7 @@ Namespace Interfaces
 
 #End Region
 #Region "Page Events"
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
             'Put user code to initialize the page here
             MasterPage.MessageController.Clear_Hide()
             MenuEnabled = False
@@ -158,7 +158,7 @@ Namespace Interfaces
             End Try
         End Sub
 
-        Private Function CreateBoFromGrid(ByVal index As Integer) As VendorloadInvReconWrk
+        Private Function CreateBoFromGrid(index As Integer) As VendorloadInvReconWrk
             Dim vendorloadInvReconWrkId As Guid
             Dim vendorloadInvReconWrkInfo As VendorloadInvReconWrk
             Dim sModifiedDate As String
@@ -193,7 +193,7 @@ Namespace Interfaces
             Dim result As String = HiddenIsPageDirty.Value
             Return result.Equals("YES")
         End Function
-        Private Sub EnableDisableControl(ByVal oWebControl As WebControl, ByVal grid As GridView)
+        Private Sub EnableDisableControl(oWebControl As WebControl, grid As GridView)
             Select Case State.OReturnType.RecMode
                 Case FileProcessedControllerNew.RecordMode.Rejected
                     ControlMgr.SetEnableControl(Me, oWebControl, True)
@@ -210,7 +210,7 @@ Namespace Interfaces
             End Select
         End Sub
 
-        Private Sub EnableAGridControl(ByVal oControl As Control, ByVal enable As Boolean)
+        Private Sub EnableAGridControl(oControl As Control, enable As Boolean)
             Dim oWebControl As WebControl
 
             If TypeOf oControl Is Button Then Return
@@ -220,7 +220,7 @@ Namespace Interfaces
             End If
         End Sub
 
-        Private Sub EnableAllGridControls(ByVal grid As GridView, ByVal enable As Boolean)
+        Private Sub EnableAllGridControls(grid As GridView, enable As Boolean)
             Dim row, column As Integer
             Dim oControl As Control
 
@@ -258,7 +258,7 @@ Namespace Interfaces
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Sub PopulateRecordTypeDrop(ByVal recordTypeDrop As DropDownList, Optional ByVal addNothingSelected As Boolean = False)
+        Sub PopulateRecordTypeDrop(recordTypeDrop As DropDownList, Optional ByVal addNothingSelected As Boolean = False)
             Try
                 Dim oLangId As Guid = Authentication.LangId
                 Dim recordTypeList As DataView = LookupListNew.GetRecordTypeLookupList(oLangId)
@@ -307,17 +307,17 @@ Namespace Interfaces
             End Try
         End Sub
 
-        Private Sub PopulateBoItem(ByVal vendorloadInvReconWrkInfo As VendorloadInvReconWrk, ByVal oPropertyName As String, ByVal oCellPosition As Integer)
+        Private Sub PopulateBoItem(vendorloadInvReconWrkInfo As VendorloadInvReconWrk, oPropertyName As String, oCellPosition As Integer)
             PopulateBOProperty(vendorloadInvReconWrkInfo, oPropertyName,
                                             CType(GetSelectedGridControl(moDataGrid, oCellPosition), TextBox))
         End Sub
 
-        Private Sub PopulateBoDrop(ByVal vendorloadInvReconWrkInfo As VendorloadInvReconWrk, ByVal oPropertyName As String, ByVal oCellPosition As Integer)
+        Private Sub PopulateBoDrop(vendorloadInvReconWrkInfo As VendorloadInvReconWrk, oPropertyName As String, oCellPosition As Integer)
             PopulateBOProperty(vendorloadInvReconWrkInfo, oPropertyName,
                                 CType(GetSelectedGridControl(moDataGrid, oCellPosition), DropDownList), False)
         End Sub
 
-        Private Sub PopulateBoFromForm(ByVal vendorloadInvReconWrkInfo As VendorloadInvReconWrk)
+        Private Sub PopulateBoFromForm(vendorloadInvReconWrkInfo As VendorloadInvReconWrk)
 
             PopulateBoDrop(vendorloadInvReconWrkInfo, RecordTypeProperty, RecordTypeCol)
             PopulateBoItem(vendorloadInvReconWrkInfo, RejectCodeProperty, RejectCodeCol)
@@ -333,7 +333,7 @@ Namespace Interfaces
 #End Region
 #Region "GridHandlers"
 
-        Private Sub moDataGrid_PageIndexChanged(ByVal source As Object, ByVal e As GridViewPageEventArgs) Handles moDataGrid.PageIndexChanging
+        Private Sub moDataGrid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles moDataGrid.PageIndexChanging
             Try
                 State.SelectedPageIndex = e.NewPageIndex
                 If IsDataGPageDirty() Then
@@ -347,7 +347,7 @@ Namespace Interfaces
             End Try
         End Sub
 
-        Private Sub moDataGrid_PageSizeChanged(ByVal source As Object, ByVal e As EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub moDataGrid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 If IsDataGPageDirty() Then
                     State.ActionInProgress = DetailPageCommand.GridPageSize
@@ -361,7 +361,7 @@ Namespace Interfaces
             End Try
         End Sub
 
-        Protected Sub RowDataBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles moDataGrid.RowDataBound
+        Protected Sub RowDataBound(source As Object, e As GridViewRowEventArgs) Handles moDataGrid.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim oTextBox As TextBox
@@ -391,7 +391,7 @@ Namespace Interfaces
             BaseItemBound(source, e)
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As GridViewSortEventArgs) Handles moDataGrid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles moDataGrid.Sorting
             Try
                 If (State.SortColumn = e.SortExpression) Then
                     State.SortDirection = If(State.SortDirection = WebControls.SortDirection.Ascending, WebControls.SortDirection.Descending, WebControls.SortDirection.Ascending)
@@ -405,14 +405,14 @@ Namespace Interfaces
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Protected Overloads Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Protected Overloads Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Protected Overloads Sub ItemCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+        Protected Overloads Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
-        Protected Sub BindBoPropertiesToGridHeaders(ByVal vendorloadInvReconWrkInfo As VendorloadInvReconWrk)
+        Protected Sub BindBoPropertiesToGridHeaders(vendorloadInvReconWrkInfo As VendorloadInvReconWrk)
             BindBOPropertyToGridHeader(vendorloadInvReconWrkInfo, "RecordType", moDataGrid.Columns(RecordTypeCol))
             BindBOPropertyToGridHeader(vendorloadInvReconWrkInfo, "RejectReason", moDataGrid.Columns(RejectReasonCol))
             BindBOPropertyToGridHeader(vendorloadInvReconWrkInfo, "RejectCode", moDataGrid.Columns(RejectCodeCol))
@@ -425,9 +425,9 @@ Namespace Interfaces
 
 #Region "Button Click Events"
 
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
-                If IsDataGPageDirty() Or (Not State.BundlesHashTable Is Nothing AndAlso State.BundlesHashTable.Count > 0) Then
+                If IsDataGPageDirty() Or (State.BundlesHashTable IsNot Nothing AndAlso State.BundlesHashTable.Count > 0) Then
                     DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                     State.ActionInProgress = DetailPageCommand.Back
                 Else
@@ -440,7 +440,7 @@ Namespace Interfaces
             End Try
         End Sub
 
-        Private Sub SaveButton_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles SaveButton_WRITE.Click
+        Private Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles SaveButton_WRITE.Click
             Try
                 SavePage()
                 DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
@@ -451,7 +451,7 @@ Namespace Interfaces
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As Object, e As EventArgs) Handles btnUndo_WRITE.Click
             Try
                 State.BundlesHashTable = Nothing
                 PopulateGrid()
@@ -460,7 +460,7 @@ Namespace Interfaces
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+        Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
             Try
                 SaveGuiState()
                 State.SortColumn = DefaultSortColumn
@@ -472,7 +472,7 @@ Namespace Interfaces
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+        Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
             Try
                 State.SrchRecordType = String.Empty
                 State.SrchRejectCode = String.Empty
