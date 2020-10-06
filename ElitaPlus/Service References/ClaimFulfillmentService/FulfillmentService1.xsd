@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Orders" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Orders" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Orders" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Orders" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd0" namespace="http://elita.assurant.com/Elita/FulfillmentService" />
+  <xs:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" />
+  <xs:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:complexType name="OrderStatusRequest">
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q1="http://elita.assurant.com/Elita/FulfillmentService" base="q1:BaseFulfillmentRequest">
@@ -336,4 +338,34 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="ProcessServiceOrderResponse" nillable="true" type="tns:ProcessServiceOrderResponse" />
+  <xs:complexType name="CancelServiceOrderRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q6="http://elita.assurant.com/Elita/FulfillmentService" base="q6:BaseFulfillmentRequest">
+        <xs:sequence>
+          <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" name="OrderUpdate" nillable="true" type="q7:OrderInfo">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="addrDetails" nillable="true" type="xs:string">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="AuthorizationId" type="ser:guid">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CancelServiceOrderRequest" nillable="true" type="tns:CancelServiceOrderRequest" />
 </xs:schema>
