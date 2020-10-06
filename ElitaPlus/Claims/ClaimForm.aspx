@@ -517,8 +517,12 @@
                                 </td>
                                 <td nowrap="nowrap">
                                     <asp:TextBox ID="TextboxLoanerRequested" TabIndex="-1" runat="server" SkinID="MediumTextBox" ReadOnly="True"></asp:TextBox>
+                                 <td nowrap="nowrap" align="right">
+                                    <asp:Label ID="LabelDeductibleCollected" runat="server">Deductible_Collected</asp:Label>
                                 </td>
-                                <td nowrap="nowrap" align="right" colspan="2">
+                                <td nowrap="nowrap">
+                                    <asp:TextBox ID="TextboxDeductibleCollected" TabIndex="-1" runat="server" SkinID="MediumTextBox"
+                                        ReadOnly="True"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>

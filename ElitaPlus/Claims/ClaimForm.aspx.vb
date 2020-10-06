@@ -605,6 +605,8 @@ Partial Class ClaimForm
         ControlMgr.SetVisibleControl(Me, Me.TextboxTechnicalReport, Me.TextboxTechnicalReport.Visible And Not Me.State.IsMultiAuthClaim)
         ControlMgr.SetVisibleControl(Me, Me.LabelSpecialInstruction, Me.LabelSpecialInstruction.Visible And Not Me.State.IsMultiAuthClaim)
         ControlMgr.SetVisibleControl(Me, Me.TextboxSpecialInstruction, Me.TextboxSpecialInstruction.Visible And Not Me.State.IsMultiAuthClaim)
+        ControlMgr.SetVisibleControl(Me, Me.LabelDeductibleCollected, Me.LabelDeductibleCollected.Visible And Not Me.State.IsMultiAuthClaim)
+        ControlMgr.SetVisibleControl(Me, Me.TextboxDeductibleCollected, Me.TextboxDeductibleCollected.Visible And Not Me.State.IsMultiAuthClaim)
 
         'Disable Buttons for MultiAuthClaim
         ControlMgr.SetVisibleControl(Me, Me.btnPrint, Me.btnPrint.Visible And Not Me.State.IsMultiAuthClaim)
@@ -839,6 +841,8 @@ Partial Class ClaimForm
             ControlMgr.SetVisibleForControlFamily(Me, Me.LabelDiscount, False, True)
             ControlMgr.SetVisibleForControlFamily(Me, Me.TextboxBonusAmount, False, True)
             ControlMgr.SetVisibleForControlFamily(Me, Me.LabelBonusAmount, False, True)
+            ControlMgr.SetVisibleForControlFamily(Me, Me.TextboxDeductibleCollected, False, True)
+            ControlMgr.SetVisibleForControlFamily(Me, Me.LabelDeductibleCollected, False, True)
 
             'For Service Warranty claim the authorization amount should not be editable 
             Me.SetEnabledForControlFamily(Me.TextboxAuthorizedAmount, False, True)
@@ -1524,6 +1528,7 @@ Partial Class ClaimForm
         Me.BindBOPropertyToLabel(Me.State.MyBO, "IsLawsuitId", Me.LabelIsLawsuitId)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "ProblemDescription", Me.LabelProblemDescription)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "BonusAmount", Me.LabelBonusAmount)
+        Me.BindBOPropertyToLabel(Me.State.MyBO, "DeductibleCollected", Me.LabelDeductibleCollected)
         '5921
         Me.BindBOPropertyToLabel(Me.State.MyBO, "TrackingNumber", Me.LabelTrackingNumber)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "FulfilmentMethod", Me.LabelFulfilmentMethod)
@@ -2049,6 +2054,7 @@ Partial Class ClaimForm
                                          LookupListNew.GetDescriptionFromId(LookupListNew.GetDedCollMethodLookupList(Authentication.LangId),
                                                                             Me.State.MyBO.DedCollectionMethodID))
         Me.PopulateControlFromBOProperty(Me.TextboxCCAuthCode, Me.State.MyBO.DedCollectionCCAuthCode)
+        Me.PopulateControlFromBOProperty(Me.TextboxDeductibleCollected, Me.State.MyBO.DeductibleCollected)
         Me.PopulateControlFromBOProperty(Me.TextboxSlavageAmount, Me.State.MyBO.SalvageAmount)
         Me.PopulateControlFromBOProperty(Me.TextboxClaimsAdjuster, Me.State.MyBO.ClaimsAdjusterName)
         Me.PopulateControlFromBOProperty(Me.TextboxReportedDate, Me.State.MyBO.ReportedDate)
@@ -2203,6 +2209,15 @@ Partial Class ClaimForm
 
         ControlMgr.SetVisibleControl(Me, Me.LabelMethodOfRepair, Not IsDfFulfillment())
         ControlMgr.SetVisibleControl(Me, Me.TextboxMethodOfRepair, Not IsDfFulfillment())
+
+        If (Not Me.State.MyBO.DeductibleCollected Is Nothing AndAlso Me.State.MyBO.DeductibleCollected.Value > 0) Then
+
+            ControlMgr.SetVisibleControl(Me, Me.TextboxDeductibleCollected, True)
+            ControlMgr.SetVisibleControl(Me, Me.LabelDeductibleCollected, True)
+        Else
+            ControlMgr.SetVisibleControl(Me, Me.TextboxDeductibleCollected, False)
+            ControlMgr.SetVisibleControl(Me, Me.LabelDeductibleCollected, False)
+        End If
 
         PopulateRefurbReplaceClaimEquipment()
         PopulateClaimShipping()
